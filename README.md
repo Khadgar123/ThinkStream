@@ -4,7 +4,7 @@ This is the official repository for the paper "Thinking in Streaming Video".
 
 ## 📰 News
 
-- [2026/03/25] We have released our Code and [ThinkStream dataset](https://huggingface.co/datasets/JohnCage/ThinkStream).
+- [2026/03/25] We have released our Code and [ThinkStream dataset](https://huggingface.co/datasets/CASIA-IVA-Lab/ThinkStream).
 - [2026/03/16] We have released our paper on arXiv [Thinking in Streaming Video](https://arxiv.org/abs/2603.12938v1). We are working on refactoring the codebase and conducting the final check. Please stay tuned!
 
 ## 📝 TODO
@@ -104,6 +104,7 @@ You will see the output results in the command line.
 
 We would like to thank the following open-source projects for their valuable contributions:
 
+* [deepslyme](https://github.com/Slymer-Tech/deepslyme)
 * [qwen-vl-finetune](https://github.com/QwenLM/Qwen3-VL/)
 * [FlashAttention](https://github.com/Dao-AILab/flash-attention)
 * [FlashInfer](https://github.com/flashinfer-ai/flashinfer)
