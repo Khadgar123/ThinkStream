@@ -41,8 +41,8 @@ args="
     --args.model.max_length 32768 \
     --args.data.dataset_use ${datasets} \
     --args.data.flatten False \
-    --args.data.max_pixels 150528 \
-    --args.data.min_pixels 100352 \
+    --args.data.video_max_pixels 150528 \
+    --args.data.video_min_pixels 100352 \
     --args.train.bf16 True \
     --args.train.output_dir ${output_dir} \
     --args.train.num_train_epochs 1.0 \
