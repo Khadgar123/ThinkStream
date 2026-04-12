@@ -1,12 +1,12 @@
 import re
 
 STREAM_COLD_START = {
-    "annotation_path": "./datasets/streaming_cot_cold_processed_5_20.jsonl",
+    "annotation_path": "/home/tione/notebook/gaozhenkun/hzh/data/ThinkStream/streaming_cot_cold_processed_5_20.jsonl",
     "data_path": "./",
 }
 
 STREAM_RLVR = {
-    "annotation_path": "./datasets/streaming_rlvr_processed.jsonl",
+    "annotation_path": "/home/tione/notebook/gaozhenkun/hzh/data/ThinkStream/streaming_rlvr_processed.jsonl",
     "data_path": "./",
 }
 

@@ -2,19 +2,26 @@
 标注数据验证与清洗脚本
 
 功能：
-1. 读取指定的 JSONL 标注文件
+1. 从 thinkstream/data/__init__.py 中读取所有已注册数据集的标注路径
 2. 修复 LLaVA-Video 数据集中多余的 /data/ 中间路径
-3. 基于数据集根目录检查视频文件是否存在
+3. 基于 --data-root 检查视频文件是否存在（video_path 相对于此目录解析）
 4. 不存在的视频对应的样本会被删除，并输出报告
 5. 处理前自动备份原始文件
 
 Usage:
+    # 仅检查，不修改（推荐先运行）
     python scripts/validate_and_clean_data.py \
-        --data-root /home/tione/notebook/gaozhenkun/hzh/data/ThinkStream
+        --data-root /home/tione/notebook/gaozhenkun/hzh/data \
+        --dry-run
 
+    # 执行清洗
     python scripts/validate_and_clean_data.py \
-        --data-root /home/tione/notebook/gaozhenkun/hzh/data/ThinkStream \
-        --annotation-dir /home/tione/notebook/gaozhenkun/hzh/data/ThinkStream \
+        --data-root /home/tione/notebook/gaozhenkun/hzh/data
+
+    # 只处理指定数据集
+    python scripts/validate_and_clean_data.py \
+        --data-root /home/tione/notebook/gaozhenkun/hzh/data \
+        --dataset stream_rlvr \
         --dry-run
 """
 
@@ -26,11 +33,11 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Any, Tuple
 
+# 将项目根目录加入 sys.path，以便直接导入 thinkstream 包
+_project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(_project_root))
 
-ANNOTATION_FILES = [
-    "streaming_rlvr_processed.jsonl",
-    "streaming_cot_cold_processed_5_20.jsonl",
-]
+from thinkstream.data import data_dict  # noqa: E402
 
 LLAVA_VIDEO_PREFIX = "LLaVA-Video-178K"
 
@@ -174,20 +181,21 @@ def main() -> None:
         "--data-root",
         type=str,
         required=True,
-        help="数据集根目录，video_path 中的相对路径将基于此目录解析",
+        help=(
+            "视频数据集根目录，video_path 中的相对路径（./datasets/...）"
+            "将基于此目录解析。"
+            "例：/home/tione/notebook/gaozhenkun/hzh/data"
+        ),
     )
     parser.add_argument(
-        "--annotation-dir",
+        "--dataset",
         type=str,
         default=None,
-        help="标注文件所在目录 (默认与 --data-root 相同)",
-    )
-    parser.add_argument(
-        "--files",
-        type=str,
-        nargs="+",
-        default=None,
-        help="要处理的标注文件名列表 (默认处理预设的两个文件)",
+        help=(
+            "只处理指定数据集，逗号分隔。"
+            f"可选值: {', '.join(data_dict.keys())}。"
+            "默认处理所有已注册数据集。"
+        ),
     )
     parser.add_argument(
         "--dry-run",
@@ -198,26 +206,33 @@ def main() -> None:
     args = parser.parse_args()
 
     data_root = Path(args.data_root)
-    annotation_dir = Path(args.annotation_dir) if args.annotation_dir else data_root
-    filenames = args.files if args.files else ANNOTATION_FILES
-
     if not data_root.is_dir():
         print(f"[错误] 数据根目录不存在: {data_root}")
         sys.exit(1)
-    if not annotation_dir.is_dir():
-        print(f"[错误] 标注文件目录不存在: {annotation_dir}")
-        sys.exit(1)
 
-    print(f"数据根目录: {data_root}")
-    print(f"标注文件目录: {annotation_dir}")
+    # 从 thinkstream/data/__init__.py 获取所有已注册数据集的标注路径
+    if args.dataset:
+        selected_names = [d.strip() for d in args.dataset.split(",") if d.strip()]
+        unknown = [n for n in selected_names if n not in data_dict]
+        if unknown:
+            print(f"[错误] 未知数据集: {unknown}")
+            print(f"可用数据集: {list(data_dict.keys())}")
+            sys.exit(1)
+        configs = {n: data_dict[n] for n in selected_names}
+    else:
+        configs = data_dict
+
+    print(f"数据根目录 (video_path 相对于此解析): {data_root}")
+    print(f"待处理数据集: {list(configs.keys())}")
     if args.dry_run:
         print("[模式] dry-run — 仅检查，不修改文件")
 
     total_orig, total_fix, total_rm = 0, 0, 0
-    for fname in filenames:
-        ann_path = annotation_dir / fname
+    for name, cfg in configs.items():
+        ann_path = Path(cfg["annotation_path"])
+        print(f"\n[数据集] {name}  →  {ann_path}")
         if not ann_path.exists():
-            print(f"\n[跳过] 文件不存在: {ann_path}")
+            print(f"  [跳过] 标注文件不存在: {ann_path}")
             continue
         orig, fix, rm = validate_and_clean(ann_path, data_root, dry_run=args.dry_run)
         total_orig += orig
