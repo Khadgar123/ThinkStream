@@ -1,0 +1,102 @@
+# =============================================================================
+# 审计策略配置文件
+#
+# 此文件定义 Phase 2 (apply_audit_policy.py) 的所有决策规则。
+# 修改此文件后重跑 Phase 2 即可, 无需重新执行 Phase 1 的标记脚本。
+# =============================================================================
+
+# --- 可用性分级规则 ---
+usability:
+  level_A:
+    description: "直接可迁移: 有完整时间信息, 可 agent 化"
+    conditions:
+      # 满足任意一组即为 A 类
+      any_of:
+        # 组 1: ThinkStream 样本, 有 think 时间戳
+        - has_think_timestamp: true
+          has_user_timestamp: true
+        # 组 2: Streamo 有 support span + 视频足够长 (可做 recall)
+        - has_support_span: true
+          min_estimated_duration_sec: 32
+        # 组 3: 有完整时间信息 (user + assistant + support)
+        - has_user_timestamp: true
+          has_assistant_timestamp: true
+          has_support_span: true
+
+  level_B:
+    description: "部分可用: 有部分时间信息"
+    conditions:
+      any_of:
+        - has_user_timestamp: true
+        - has_assistant_timestamp: true
+
+  level_C:
+    description: "弱锚点或丢弃"
+
+# --- 可用性子标签规则 ---
+usability_tags:
+  usable_for_protocol_sft:
+    any_of:
+      - has_user_timestamp: true
+        has_think_timestamp: true
+      - has_user_timestamp: true
+        has_assistant_timestamp: true
+
+  usable_for_recall:
+    all_of:
+      has_support_span: true
+      min_estimated_duration_sec: 32
+    # ThinkStream 短视频可以通过缩小 recent_window 强制制造 recall
+    override_for_thinkstream:
+      temporal_scope_raw_lower: "past"
+      min_estimated_duration_sec: 8
+
+  usable_for_timing:
+    all_of:
+      has_user_timestamp: true
+      has_assistant_timestamp: true
+
+  usable_for_rl_verifiable:
+    response_format_raw_in:
+      - "Binary"
+      - "Multiple Choice"
+      - "Counting"
+      - "binary"
+      - "multiple_choice"
+      - "counting"
+      - "Yes/No"
+
+# --- 去重决策 ---
+dedup:
+  # 语义相似度 > 此阈值: 丢弃标注较少的一条
+  semantic_sim_drop_threshold: 0.95
+  # 视觉相似度 > 此阈值: 丢弃 (几乎完全相同的 clip)
+  visual_sim_drop_threshold: 0.98
+  # 跨数据集同源处理策略:
+  #   "mark_only" — 仅标记, 不自动丢弃
+  #   "prefer_thinkstream" — 同源时丢弃 Streamo 保留 ThinkStream
+  #   "prefer_streamo" — 反之
+  cross_dataset_policy: "mark_only"
+  # 层 2 元数据匹配成功后是否合并 origin_id
+  metadata_match_merge: true
+
+# --- 采样上限 ---
+sampling:
+  # 每个 origin_video_id 最多保留的样本数
+  max_per_origin: 12
+  # 超限时优先保留的来源 (排前面的优先)
+  priority_order:
+    - thinkstream
+    - streamo
+  # 超限时优先保留的等级
+  level_priority:
+    - A
+    - B
+    - C
+
+# --- Train/Val 分割 ---
+split:
+  val_ratio: 0.05
+  # 按 origin 分割, 保证同一原视频不同时出现在 train 和 val 中
+  split_by: "video_origin_id"
+  random_seed: 42

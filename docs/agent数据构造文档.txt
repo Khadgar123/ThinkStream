@@ -1,0 +1,1334 @@
+先把在线协议和三层记忆搭好，尤其是 external recall archive
+先把现有两套数据统一重构成 step-level agent schema，不要直接混原始格式
+先做单次 recall 版本，不要一上来做多次循环
+先做 SFT 把格式、timing、silence 学稳，再上 RL
+RL 只上可验证任务，开放式表达留给 SFT 或少量偏好优化
+先训 4/8B student
+先把 easy fast-path 留住 25–30%，别把所有“小模型能答”的样本都删掉
+OCR：Qwen3-VL-30B-A3B：只做 teacher / adjudicator，不做全量预处理
+
+先按任务分类构造
+5）是不是应该先按任务分类构造，再回头检查视频种类和原数据？
+
+对，必须这么做。顺序不能反。
+
+如果你先扫原视频再想任务，最后一定会被原数据分布绑架，得到一个“会看视频，但不会做 agent 决策”的模型。
+
+正确顺序
+
+我建议固定成 5 步：
+
+先定义任务本体
+给每类任务定目标比例
+再盘点哪些视频类型能承载这些任务
+决定每个桶是“派生”还是“补造”
+最后才批量出样本
+我建议的任务三维配额
+交互形态
+
+按 episode 计：
+
+单轮单答：50%
+一问多答：20%
+多问多答：20%
+主动触发 / 持续监控：10%
+记忆需求
+
+按 episode 计：
+
+当前可见即可答：55%
+需要 think 但不需要 recall：25%
+需要 think + recall：20%
+
+按 chunk-level action 计，<recall> 最终保持 10%–15% 就够，不要更高。
+
+推理类型
+
+按任务计：
+
+当前感知 / 描述：25%
+短时序 / 顺序：15%
+程序步骤跟踪：15%
+过去 vs 现在比较：10%
+因果解释：10%
+OCR / 屏幕 / 数字：10%
+trigger / monitoring：10%
+社交 / 语气 / 用户适配：5%
+然后再映射视频类型
+
+这个映射很重要：
+
+教程 / 做菜 / 装配：程序步骤、recall、因果
+监控 / vlog / 长镜头观察：trigger、一问多答、延迟回答
+屏幕录制 / UI：OCR、状态跟踪、多轮追问
+剧情 / 综艺：多问多答、角色回忆、长因果
+体育 / 户外：连续解说、事件触发、比较题
+
+
+1、但有一个关键点要先改：固定视觉 buffer + 固定 think buffer 只能解决“工作记忆”，不能单独覆盖无限长视频。 你还必须加第三层：
+Recent visual buffer：近端视觉工作区，固定大小，FIFO
+Think buffer：近端思维工作区，固定大小，溢出后压缩总结
+External episodic memory / recall archive：无限长外部回忆库，存整个历史视频的 segment embedding、keyframe、caption/OCR/ASR、时间戳。recall 实际上查的是这一层
+
+2、动作协议
+V1 不要一上来做任意长度 agent loop。先限制成每个 chunk 最多一次 recall，这样训练和时延都可控。
+
+建议统一输出语法：
+
+<think>...</think><action>silent</action>
+
+<think>...</think><action>response</action><response>...</response>
+
+<think>...</think><action>recall</action>
+<query>{"query":"...","time_bias":"past_recent|past_far|current","target":"entity|event|ocr|procedure|cause","topk":3}</query>
+
+如果触发 recall：
+<think>...</think><action>recall</action>
+<query>{"query":"...","time_bias":"past_recent|past_far|any","target":"entity|action|event|ocr|dialogue|procedure|cause","topk":3}</query>
+
+assistant: <think>...</think><action>recall</action><query>...</query>
+tool: retrieved segments / keyframes / summaries
+assistant: <think>...</think><action>silent|response</action>[<response>...</response>]
+
+
+system prompt：
+你是流视频问答 agent。
+
+每次 assistant turn 必须严格输出以下三种形式之一：
+1) <think>...</think><action>silent</action>
+2) <think>...</think><action>response</action><response>...</response>
+3) <think>...</think><action>recall</action><query>{"query":"...","time_bias":"...","target":"...","topk":3}</query>
+
+规则：
+- 每个 turn 只允许一个 action。
+- think 只写当前新增判断，不能复述整段视频。
+- 若当前 recent window 证据已足够，直接 response，不要 recall。
+- 若问题依赖已经离开 recent window 的历史内容，优先 recall。
+- recall query 必须短、可检索、非完整问句、避免代词和泛词。
+- 收到 <recall_result> 后，只能再输出 silent 或 response。
+- 若当前 chunk 不该说话，输出 silent。
+
+3、
+建议存储窗口 24–32 秒，但注意：“存储窗口”不等于“每次都喂给模型的窗口”。Qwen3-VL 官方训练示例里给了 VIDEO_MAX_TOKEN_NUM=128、FPS_MAX_FRAMES=16，这意味着你不能每步把 32 秒 × 2 fps 的 64 帧都塞进去；更合理的是外部原始缓存保留 24–32 秒，而每次模型前向只选 12–20 个 visual slots
+我建议这样选帧：
+8 张：最近窗口内均匀采样；
+4 张：高运动/场景切换/显著 OCR 帧；
+4 张：最新 2–4 秒强保留；
+recall 触发时，额外附加4–6个给回忆帧
+
+B. Think buffer
+
+C. External recall archive
+这是无限流的关键。建议按 4 秒 segment、2 秒 overlap、2 fps 建库。每个 segment 存：
+
+segment_id / t0 / t1
+1–2 张 keyframe
+一个短 caption / OCR / ASR 摘要
+visual embedding
+text embedding
+实体/动作/场景标签
+salience score
+
+老数据冷存即可，GPU 只在 recall 命中后把 keyframe/mini-clip 拉回。
+
+
+4、参数配置：
+默认 chunk：2s；
+活跃问答/高运动/trigger armed 时，降到 1s；
+平均 think：24–40 token / 2s chunk；
+burst think：64–80 token，只在以下情况启用：用户提问、歧义、recall 前后、因果链更新；
+response：
+简短即时答：40–80 token；
+明确解释型答复：80–140 token；
+连续解说：15–40 token；
+recall query：8–20 token 主体 + 少量结构字段。
+recall 频率建议
+训练集 chunk-level action 分布：
+<silent> 58–65%，<response> 23–30%，<recall> 10–15%；
+线上目标：
+总体 recall 5–12%，活跃回溯问答场景 15–25%；
+
+5、什么任务需要 think，什么任务需要 think+recall
+5.1 只需要 think，不需要 recall
+
+这些都应该在 recent visual buffer + think memory 内解决：
+
+当前感知：现在画面里是什么、谁在做什么、OCR 当前文本；
+短时时序：过去 2–16 秒内动作顺序、是否刚刚发生变化；
+trigger 监测：用户说“看到 XX 就提醒我”；
+连续解说：直播点评、过程播报；
+根据用户水平改写答案：新手版/专家版，只改表达，不改证据。
+5.2 需要 think+recall
+
+这些是 recall 的主战场：
+
+超出 recent buffer 的细节回忆；
+跨长间隔的人/物 re-identification；
+现在与过去的比较题；
+长程因果链：先前发生的原因导致了现在的结果；
+程序/流程类回溯：前面做到第几步、哪一步错了；
+多轮对话引用先前答案；
+OCR/数字的历史比对；
+需要从“长时间沉默”后突然回答的 delayed response。
+5.3 recall 的触发信号
+
+不建议完全靠生成式自由发挥，建议再加一个轻量 action head 或规则分数，辅助校准 {silent,response,recall}。
+可用四个触发分量：
+
+temporal_gap_score：问题目标是否明显指向过去；
+reference_score：是否出现“刚才/前面/之前那个/上一次”等回指；
+uncertainty_score：当前证据不足；
+causal_need_score：当前现象解释需要 antecedent。
+
+如果总分高且不在 recall 冷却中，就走 recall。
+
+6、任务类型配比（SFT 终盘）
+当前感知即时回答：16%
+短时时序理解：12%
+沉默校准 / delayed trigger：15%
+长程细节回忆（需 recall）：16%
+长程因果 / 多跳推理：10%
+程序状态跟踪：10%
+多轮对话追问 / 指代：8%
+连续解说 / 多次间断回答：5%
+OCR / UI / 屏幕类：4%
+音频/ASR 对齐（如果做全模态）：4%
+
+7、Streamo-Instruct-465K重构：
+保留
+原视频；
+query；
+原有 response 的时间区间/时间点；
+同一视频的多 response 关系
+不直接保留
+原 response 的表面文本，只把它当弱标签；
+原 [start, end] 直接当成最终“回答时刻”。
+重构
+最早可答时刻 t* 重估
+用原 support interval 只做证据锚点，再通过 prefix sufficiency 检测找到“最早可以稳定答对”的 chunk。
+从一个 interval 派生三类样本
+当前实时答；
+提前设定 trigger，等事件出现再答；
+在事件过去很久后再问，强制 recall。
+构造 timing 对比样本
+同一问题在 t*-1 chunk 标成 <silent>，在 t* 标成 <response>。
+把短 response 改写成两层答案
+canonical_answer：短、可验证；
+natural_response：自然语言，给 SFT 用。
+这样，Streamo 的“区间标注不适合实时输出”这个问题反而变成优点：它天然提供了支持证据 span，适合派生 trigger、recall、timing calibration 三类数据。
+
+8、ThinkStream 怎么用
+作为 协议 warm start：教模型学会 <think> + action 的格式；
+作为 short-horizon think style 数据；
+作为 RL 冷启动 数据。
+
+9、统一数据格式
+统一成 step-level agent episode：
+{
+  "video_id": "...",
+  "task_type": "retrospective_recall",
+  "video_type": "tutorial",
+  "ask_time": 42.0,
+  "answer_time": 44.0,
+  "support_spans": [[10.0, 12.0]],
+  "need_recall": true,
+  "pre_context": {
+    "recent_video_segment_ids": [...],
+    "think_memory": "...",
+    "dialogue_history": "..."
+  },
+  "step1_target": "<think>...</think><action>recall</action><query>...</query>",
+  "tool_result": {
+    "retrieved_segment_ids": ["..."]
+  },
+  "step2_target": "<think>...</think><action>response</action><response>...</response>",
+  "canonical_answer": "...",
+  "natural_response": "..."
+}
+
+10、数据构造流程
+A. 8 卡 AMD 上的 qwen3.5 397B FP8
+负责文本层高价值工作：
+任务生成；
+稀疏 think 轨迹生成；
+因果链补全；
+response 改写；
+disputed sample 仲裁。
+
+B. 8 卡 H20
+小/中型 VL 模型批量预处理：
+dense caption
+entity/action/OCR/ASR 摘要
+easy QA
+recall query 生成与检索验证
+主训练：SFT + RL
+检索工具：Embedding / Reranker 批推理
+
+Stage 0：便宜预处理
+切 chunk / scene；
+2 fps 抽帧；
+OCR / ASR；
+小 VL 模型做 dense caption；
+为每个 4 秒 segment 建 embedding、文本摘要、实体动作标签
+
+Stage 1：生成“结构化时间线”
+输出不是自然语言长文，而是：
+事件表；
+实体轨迹；
+过程状态；
+OCR 时间线；
+ASR 时间线；
+候选 support spans。
+
+Stage 2：397B 一次生成多任务包
+一条 60–120 秒的结构化时间线，397B 一次输出 8–20 个候选任务，每个任务只输出：
+任务类型；
+ask_time；
+answer_time；
+support_spans；
+need_recall；
+sparse think milestones；
+canonical_answer；
+natural_response。
+
+Stage 3：用脚本或小模型把 sparse trace 扩成 dense chunk trace
+不要让 397B 为每个 chunk 写 think。
+大模型只写“状态变化点”和“关键回合”，例如：
+t=12：开始怀疑在煮面；
+t=28：看到下锅，确认；
+t=41：用户追问；
+t=42：需回忆前面拿了什么调料。
+然后再自动展开成 chunk-level <silent>/<response>/<recall>。
+
+不要把“简单题”全部删掉。
+一个 streaming assistant 必须有 25–30% easy fast-path 数据，否则它学不会“当前就答、别想太多”。
+
+我建议按四档难度分桶：
+Easy：4B/7B 无 recall、只看 recent buffer 就能稳定答；
+Medium：需要 think，但不需要 recall；
+Hard：需要 recall，no-recall 会失败；
+Very hard：长程因果 / 多轮 / 多跳，只有 teacher 或多次采样能做稳。
+
+训练集建议保留比例：
+Easy 25%
+Medium 35%
+Hard 30%
+Very hard 10%
+
+优先做可验证样本
+multiple choice
+yes/no
+counting
+event trigger
+canonical slot filling
+
+对开放式答案做双层标注
+canonical_answer 用于自动评测；
+natural_response 用于 SFT 学表达。
+
+自动过滤规则
+Prefix causality check：答案不能依赖未来帧。
+Early-silence contrastive check：同题在 t*-1 必须答不出。
+Answer stability check：从 t* 开始连续 2–3 个 prefix 归一化答案一致。
+Recall hit@k check：若 need_recall=true，检索 top-k 必须覆盖 support span。
+Counterfactual removal：去掉 gold support 后，小模型应明显退化。
+Dual-small-model agreement：两个小模型/两个解码种子一致才收。
+397B only-on-dispute：只有争议样本再送大模型裁决。
+这样可以把大模型 judge 压到 10–15% 以内。
+
+11、数据比例
+10 万级高质量 streaming reasoning 样本足以作为一个强冷启动
+
+3.1 segment_archive.jsonl
+
+这是外部 episodic memory 的底表。recall 不是查 think buffer，而是查这张表。
+
+建议切法：
+
+segment_sec = 4
+overlap_sec = 2
+原始抽帧 fps = 2
+retrieval 编码可降到 fps = 1
+每段保留 1–2 张 keyframe
+
+示例：
+
+{
+  "video_id": "vid_001",
+  "segment_id": "vid_001_00040000_00044000",
+  "start_ms": 40000,
+  "end_ms": 44000,
+  "scene_id": "scene_05",
+  "raw_fps": 2,
+  "num_frames": 8,
+  "keyframe_paths": [
+    "frame_store/vid_001_00040000_a.jpg",
+    "frame_store/vid_001_00040000_b.jpg"
+  ],
+  "ocr_text": "无",
+  "asr_text": "先把蒜末下锅",
+  "dense_caption": "厨师把蒜末倒入锅中并开始翻炒。",
+  "entity_tags": ["厨师", "锅", "蒜末"],
+  "action_tags": ["倒入", "翻炒"],
+  "state_tags": ["cooking", "garlic_added"],
+  "memory_keys": [
+    "蒜末 下锅",
+    "翻炒 第一步",
+    "调料 顺序"
+  ],
+  "visual_emb_path": "emb_store/vid_001_00040000_visual.npy",
+  "text_emb_path": "emb_store/vid_001_00040000_text.npy",
+  "salience": 0.82
+}
+
+关键字段只抓 4 类：
+
+dense_caption / ocr_text / asr_text
+entity_tags / action_tags / state_tags
+memory_keys
+embedding 路径
+
+memory_keys 很重要。它不是给模型看的自然语言，而是给检索器和 query 生成器用的“可命中短键”。
+
+3.2 event_timeline.jsonl
+
+这张表是 teacher 只看文本、不看原视频 的核心输入。
+
+{
+  "video_id": "vid_001",
+  "event_id": "evt_0017",
+  "start_ms": 39800,
+  "end_ms": 44600,
+  "support_segment_ids": [
+    "vid_001_00038000_00042000",
+    "vid_001_00040000_00044000",
+    "vid_001_00042000_00046000"
+  ],
+  "event_type": "procedure_step",
+  "summary": "把蒜末下锅并翻炒",
+  "entities": ["厨师", "锅", "蒜末"],
+  "preconditions": ["锅已加热"],
+  "effects": ["进入爆香步骤"],
+  "evidence": {
+    "visual": "手把蒜末倒入锅中",
+    "asr": "先把蒜末下锅",
+    "ocr": ""
+  },
+  "causal_links_prev": ["evt_0016"],
+  "causal_links_next": ["evt_0018"],
+  "importance": 0.88
+}
+
+这张表最好由 小/中型 VL 模型 + 规则 + ASR/OCR 预先做出来，397B 只读它。
+
+3.3 episode_recall.jsonl
+
+这是 recall 训练的主样本表。后续 SFT、retriever、reranker、RL 都从这里派生。
+
+{
+  "episode_id": "ep_recall_000123",
+  "source_dataset": "streamo",
+  "video_id": "vid_001",
+  "task_type": "procedural_state_recall",
+  "video_type": "tutorial",
+  "question": "前面先下锅的是什么？",
+  "dialogue_history": [
+    {
+      "role": "user",
+      "text": "现在做到哪一步了？",
+      "time_ms": 72000
+    },
+    {
+      "role": "assistant",
+      "text": "已经开始翻炒配料了。",
+      "time_ms": 73000
+    }
+  ],
+  "ask_time_ms": 78000,
+  "earliest_response_time_ms": 78000,
+  "recent_window_sec": 24,
+  "recent_visible_segment_ids": [
+    "vid_001_00054000_00058000",
+    "vid_001_00056000_00060000",
+    "vid_001_00058000_00062000",
+    "vid_001_00060000_00064000",
+    "vid_001_00062000_00066000",
+    "vid_001_00064000_00068000",
+    "vid_001_00066000_00070000",
+    "vid_001_00068000_00072000",
+    "vid_001_00070000_00074000",
+    "vid_001_00072000_00076000",
+    "vid_001_00074000_00078000"
+  ],
+  "support_event_ids": ["evt_0017"],
+  "support_segment_ids": [
+    "vid_001_00038000_00042000",
+    "vid_001_00040000_00044000",
+    "vid_001_00042000_00046000"
+  ],
+  "support_outside_recent": true,
+  "need_recall": true,
+  "recall_reason": "答案依赖早期步骤，当前 recent window 内无充分证据",
+  "gold_query": {
+    "query": "蒜末 下锅 翻炒 第一步 调料",
+    "time_bias": "past_far",
+    "target": "procedure",
+    "topk": 3
+  },
+  "gold_retrieved_segment_ids": [
+    "vid_001_00040000_00044000",
+    "vid_001_00042000_00046000"
+  ],
+  "canonical_answer": {
+    "answer_type": "slot",
+    "slots": {
+      "ingredient": "蒜末"
+    }
+  },
+  "natural_response": "前面先下锅的是蒜末，先炒香再继续往后做的。",
+  "sparse_think_milestones": [
+    {
+      "time_ms": 78000,
+      "text": "当前画面看不到早期加料顺序，需要回忆前面的步骤。"
+    },
+    {
+      "time_ms": 78120,
+      "text": "检索命中蒜末下锅片段，证据足够。"
+    }
+  ],
+  "verification": {
+    "retrieval_hit_at_3": true,
+    "support_coverage": 0.67,
+    "no_recall_student_fail": true,
+    "with_recall_student_pass": true,
+    "counterfactual_remove_support_fail": true,
+    "answer_stable_for_next_2_chunks": true
+  }
+}
+
+这张表的核心不是答案，而是 8 个字段：
+
+ask_time_ms
+support_segment_ids
+support_outside_recent
+need_recall
+gold_query
+gold_retrieved_segment_ids
+canonical_answer
+verification
+3.4 sft_stage2.jsonl
+
+这是给 student 训 agent 协议的最终样本。为了兼容通用 chat 格式，tool 返回统一伪装成下一条 user 消息。
+
+Qwen3-VL 的自定义多模态数据格式支持 messages，并可额外带 images、videos；官方也给了 image+video 混合输入的例子。
+
+{
+  "id": "sft_recall_000123",
+  "messages": [
+    {
+      "role": "system",
+      "content": "你是流视频问答 agent。每次 assistant turn 必须严格输出 <think>...</think><action>silent|response|recall</action> 协议。"
+    },
+    {
+      "role": "user",
+      "content": "<video>\n<dialogue_history>\n用户: 现在做到哪一步了？\n助手: 已经开始翻炒配料了。\n</dialogue_history>\n<think_memory>\n当前在炒锅阶段；早期准备步骤已离开 recent window。\n</think_memory>\n<question>\n前面先下锅的是什么？\n</question>"
+    },
+    {
+      "role": "assistant",
+      "content": "<think>当前窗口内看不到早期加料顺序，需要检索历史步骤。</think><action>recall</action><query>{\"query\":\"蒜末 下锅 翻炒 第一步 调料\",\"time_bias\":\"past_far\",\"target\":\"procedure\",\"topk\":3}</query>"
+    },
+    {
+      "role": "user",
+      "content": "<recall_result>\n<item rank=\"1\" start=\"40.0\" end=\"44.0\">caption: 厨师把蒜末倒入锅中并开始翻炒。 asr: 先把蒜末下锅。 ocr: 无。</item>\n<item rank=\"2\" start=\"42.0\" end=\"46.0\">caption: 锅中继续翻炒蒜末。 asr: 无。 ocr: 无。</item>\n</recall_result>\n继续按协议回答。"
+    },
+    {
+      "role": "assistant",
+      "content": "<think>检索结果直接命中早期加料步骤，证据充分。</think><action>response</action><response>前面先下锅的是蒜末，先炒香之后才继续往后做。</response>"
+    }
+  ],
+  "videos": [
+    "clips_recent/vid_001_54_78.mp4"
+  ],
+  "images": [
+    "frame_store/vid_001_00040000_a.jpg",
+    "frame_store/vid_001_00042000_a.jpg"
+  ]
+}
+
+注意两个实现细节：
+
+videos 只放 recent buffer clip
+recall 返回只放 top1/top2 的 keyframes + 文本摘要，不要把 recall 命中的 clip 再整段塞回去
+3.5 retriever_train.jsonl
+
+embedding 训练直接从 recall episode 派生。SWIFT 的 embedding 训练支持 positive_messages / negative_messages，并支持 InfoNCE 与 in-batch negatives。
+
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "检索最相关的历史视频片段，用于回答当前流视频中的回忆问题。"
+    },
+    {
+      "role": "user",
+      "content": "蒜末 下锅 翻炒 第一步 调料"
+    }
+  ],
+  "positive_messages": [
+    [
+      {
+        "role": "user",
+        "content": "<image><image>\n40-44秒: 厨师把蒜末倒入锅中并翻炒。 ASR: 先把蒜末下锅。 OCR: 无。"
+      }
+    ]
+  ],
+  "negative_messages": [
+    [
+      {
+        "role": "user",
+        "content": "<image>\n48-52秒: 厨师把洋葱倒入锅中。 ASR: 现在放洋葱。"
+      }
+    ],
+    [
+      {
+        "role": "user",
+        "content": "<image>\n36-40秒: 厨师正在切蒜，还没有下锅。"
+      }
+    ],
+    [
+      {
+        "role": "user",
+        "content": "<image>\n60-64秒: 锅里继续翻炒食材，但看不出早期下锅顺序。"
+      }
+    ]
+  ]
+}
+3.6 rl_pool.jsonl
+
+RL 不直接从 SFT 样本读，要单独带 reward 元信息。
+
+{
+  "episode_id": "rl_000123",
+  "video_id": "vid_001",
+  "question": "前面先下锅的是什么？",
+  "ask_time_ms": 78000,
+  "recent_window_sec": 24,
+  "support_segment_ids": [
+    "vid_001_00040000_00044000"
+  ],
+  "gold_query": {
+    "query": "蒜末 下锅 翻炒 第一步 调料",
+    "time_bias": "past_far",
+    "target": "procedure",
+    "topk": 3
+  },
+  "canonical_answer": {
+    "answer_type": "slot",
+    "slots": {
+      "ingredient": "蒜末"
+    }
+  },
+  "reward_spec": {
+    "need_recall": true,
+    "action_full_credit": "recall_then_response",
+    "action_partial_credit": "direct_response_if_correct_after_retrieval_context",
+    "earliest_response_time_ms": 78000,
+    "latest_full_credit_time_ms": 82000,
+    "retrieval_hit_metric": "hit@3",
+    "wrong_action_penalty": 1.0,
+    "over_recall_penalty": 0.3,
+    "long_think_penalty_after_tokens": 48
+  }
+}
+四、recall 相关数据构造：这是整个方案的重点
+
+下面这部分最关键。我按 “怎么选视频 → 怎么派生 recall 任务 → 怎么保证 query 能打中 → 怎么自动验” 来讲。
+
+4.1 哪些视频值得进 recall pool
+
+不是所有视频都该做 recall。建议先给每个视频打一个 recallability_score：
+
+recallability_score =
+0.25 * duration_score
++ 0.20 * entity_recurrence
++ 0.20 * event_chain_depth
++ 0.15 * procedurality
++ 0.10 * ocr_density
++ 0.10 * dialogue_density
+- 0.20 * cut_rate
+
+经验阈值：
+
+duration_sec >= recent_window_sec + 8
+event_chain_depth >= 3
+entity_recurrence >= 0.3 或 procedurality >= 0.5
+cut_rate 太高的剪辑短视频直接降权
+
+最适合 recall 的视频类型：
+
+教程 / 做菜 / 维修 / 装配
+监控 / 观察 / vlog 长镜头
+剧情 / 综艺 / 长场景对话
+屏幕录制 / UI / OCR 连续操作
+运动 / 户外里有明显“先前事件导致当前结果”的视频
+
+4.3 从 Streamo 派生 recall-positive 样本
+
+Streamo 的原始价值不在 response 文字，而在 多任务 + 时间区间 + backward / TSQA 语义。论文里明确写了它覆盖 real-time narration、caption、temporal grounding、time-sensitive QA，并对每个视频给了统一时间标注；benchmark 还显式区分了 forward / backward grounding。
+
+具体派生方法：
+
+A. 先找最早可答时刻 t*
+
+对每个 Streamo 样本，用 support interval 当证据锚点，不直接拿原 start/end 当回答时刻。
+做 prefix sufficiency search：
+
+def search_earliest_answerable(question, support, prefixes):
+    # prefixes: [0:t1], [0:t2], ...
+    # 用小VL模型或已训练student判断 canonical answer 是否稳定答对
+    # 返回最早稳定答对的时刻 t*
+
+判定标准：
+
+在 t* 时 canonical answer 首次答对
+在 t* + 1chunk、t* + 2chunk 仍稳定答对
+t* - 1chunk 不能稳定答对
+B. 再派生 recall ask time
+
+从 t* 往后取多个 ask_time_ms：
+
+t* + 8s
+t* + 16s
+t* + 32s
+t* + 64s
+
+保留那些满足：
+
+support_segment_ids 与 recent window 无重叠
+当前问题仍然有意义
+no-recall baseline 失败
+gold recall + retrieval 通过
+C. 把一条 Streamo 样本拆成 3 条
+
+每个 recall-positive，都配套生成两个 control：
+
+recall-positive
+support 已离开 recent window，need_recall=true
+no-recall control
+同一问题提前到 support 还在 recent window 时问，need_recall=false
+false-recall negative
+问题表面像“回忆”，但当前窗口已足够，正确 action 应是 response 而不是 recall
+
+这 3 条必须绑在一起进训练，才能把 该 recall 时 recall，不该 recall 时不 recall 训出来。
+
+4.4 从 ThinkStream 派生 recall-positive 样本
+
+ThinkStream 的优点不是长视频，而是 incremental think 的风格非常对。论文核心也是短 reasoning update + 决定何时响应。
+
+做法：
+
+A. 原样保留它的增量 think 风格
+
+这部分直接拿来做 Stage-1 协议 warm start。
+
+B. 人为缩小 recent window，强行制造 recall
+
+例如一段 10s 视频：
+
+训练时 recent window 只给 4s
+在 9s 位置问 1s 处发生的细节
+这样就能把短视频转成 recall 样本
+C. recall 样本只让 teacher 补最小量内容
+
+不要重新生成整条 think 链。
+直接复用原始 incremental think，只让 teacher 生成：
+
+need_recall
+gold_query
+recall 后第二段 think
+final response
+
+这样能大幅减少 397B 调用次数。
+
+4.5 recall query 怎么造，才能既短又能打中
+
+这是 recall 数据构造里最容易翻车的点。
+
+query 生成规则
+
+query 必须满足 5 条：
+
+不是问句
+不用代词
+必须有区分性锚点
+尽量不泄露完整答案表述
+长度短，目标 10–30 token
+
+我建议 query 结构固定成：
+
+[anchor entity] + [distinct action/state] + [object/attribute] + [optional temporal hint]
+
+例子：
+
+人物回忆：红衣 男人 把 杯子 放到 水槽旁
+程序步骤：蒜末 下锅 翻炒 第一步
+OCR 历史：白色 价签 19.9 元
+因果回忆：杯子 打翻 之前 手碰 桌边
+多轮 follow-up：刚才 提到 的 黑色 包 放置位置
+query 生成推荐流程
+
+不是一次生成一个 query，而是一次生成 3 个候选：
+
+{
+  "candidates": [
+    {
+      "query": "蒜末 下锅 翻炒 第一步",
+      "time_bias": "past_far",
+      "target": "procedure"
+    },
+    {
+      "query": "蒜末 倒入 锅中 爆香",
+      "time_bias": "past_far",
+      "target": "action"
+    },
+    {
+      "query": "先把蒜末下锅 调料顺序",
+      "time_bias": "past_far",
+      "target": "procedure"
+    }
+  ]
+}
+
+然后自动做：
+
+embedding 检索 top20
+rerank 到 top5
+看 top3 是否覆盖 gold support
+选最短且命中的 query
+
+如果 3 个都不命中：
+
+先用小模型做 query repair
+还不行再送 397B
+query repair 只改两类东西
+加锚点：实体 / 数字 / OCR / 物体属性
+换表述：动词同义替换、去掉抽象词
+
+不要把 query 越修越长。
+超长 query 往往会把检索带偏。
+
+4.6 recall hard negatives 怎么做
+
+如果没有 hard negatives，retriever 和 reranker 都会看起来很准，但上线一塌糊涂。
+
+每个 recall-positive 至少配 4 类 negative：
+
+1. temporal near-miss
+
+同视频、同场景、前后相邻，但不是 support。
+
+例：
+
+gold: 40–44s 蒜末下锅
+neg: 36–40s 切蒜
+neg: 48–52s 下洋葱
+2. semantic confounder
+
+同实体，不同动作；或同动作，不同对象。
+
+例：
+
+gold: 男人把红杯放水槽旁
+neg: 男人把蓝杯放桌上
+3. OCR confounder
+
+文本相似，但数字/关键词不同。
+
+例：
+
+gold: 19.9
+neg: 18.9
+4. same-video random hard
+
+同一视频里风格相近、但答案无关的片段。
+
+推荐比例：
+
+temporal near-miss : semantic confounder : OCR confounder/random
+= 2 : 1 : 1
+4.7 recall-positive 的自动验收门槛
+
+这是你减少人工的关键。每条 recall-positive 必须过 6 个闸门：
+
+闸门 1：support 真在窗口外
+overlap(recent_window, support_span) == 0
+闸门 2：retrieval hit
+hit@3 == 1
+闸门 3：support coverage
+max_temporal_overlap(retrieved, gold_support) >= 0.5
+闸门 4：no-recall fail
+
+只给 recent window，让小 VL/student 尝试答：
+
+EM/F1 < 0.4  或  slot_match == false
+闸门 5：with-recall pass
+
+给 gold query 或 selected query 的 recall 结果后再答：
+
+EM/F1 >= 0.8  或  slot_match == true
+闸门 6：counterfactual fail
+
+把 gold support 从 recall_result 里删掉，重新答一次，性能必须明显下降。
+
+score_drop >= 0.5
+
+只有全过，才收进 episode_recall.jsonl。
+
+4.8 recall 数据的样本配比
+
+首版建议 recall 只在后两阶段拉高，不要一开始就塞满。
+
+recall pool 内部类型配比
+
+建议：
+
+retrospective detail：35%
+procedural state：20%
+compare past vs present：15%
+long causal：15%
+OCR history：10%
+multi-turn follow-up：5%
+SFT chunk/action 层面的比例
+
+建议最终成品里：
+
+<silent>：58–65%
+<response>：23–30%
+<recall>：10–15%
+
+这个比例能把“别乱说、别乱检索”训出来。
+
+五、teacher prompt 模板
+
+下面是最值得直接复用的 4 个 prompt。
+
+5.1 结构化时间线 → recall task pack
+system
+你是流视频 agent 训练数据构造器。
+输入不是原始视频，而是一个视频的结构化时间线，包括事件、OCR、ASR、实体、动作、因果关系和候选支持片段。
+你的任务是一次生成多个高质量 streaming 任务，重点生成需要 recall 的样本。
+
+硬性要求：
+- 只能使用输入时间线中的证据，不允许臆造。
+- 问题必须适合在线流视频场景。
+- 对于 need_recall=true 的任务，ask_time 时 gold support 必须位于 recent window 之外。
+- 优先生成可验证答案：yes/no、slot、number、entity、ordered_step。
+- 每个任务输出 3 个 query candidates，用于后续自动检索验证。
+- 不要输出长篇解释，只输出 JSON。
+user
+recent_window_sec = 24
+video_type = {{video_type}}
+target_task_count = 12
+
+timeline_json =
+{{event_timeline_json}}
+
+archive_summary =
+{{segment_archive_summary}}
+
+请输出：
+{
+  "video_id": "...",
+  "tasks": [
+    {
+      "task_id": "...",
+      "task_type": "retrospective_detail|procedural_state|compare_past_present|long_causal|ocr_history|multi_turn_followup",
+      "question": "...",
+      "ask_time_ms": 0,
+      "earliest_response_time_ms": 0,
+      "support_event_ids": ["..."],
+      "support_segment_ids": ["..."],
+      "need_recall": true,
+      "recall_reason": "...",
+      "canonical_answer": {
+        "answer_type": "slot|entity|yesno|number|ordered_steps|span",
+        "value": {}
+      },
+      "natural_response": "...",
+      "query_candidates": [
+        {"query": "...", "time_bias": "past_recent|past_far|any", "target": "entity|action|event|ocr|dialogue|procedure|cause"},
+        {"query": "...", "time_bias": "...", "target": "..."},
+        {"query": "...", "time_bias": "...", "target": "..."}
+      ],
+      "sparse_think_milestones": [
+        {"time_ms": 0, "text": "..."},
+        {"time_ms": 0, "text": "..."}
+      ]
+    }
+  ]
+}
+5.2 recall query 生成 / 修复
+system
+你是 recall query 压缩器。
+你的目标是把“当前问题 + 当前可见上下文 + gold support 摘要”压缩成短检索 query。
+
+规则：
+- query 不是问句。
+- query 不能用代词。
+- query 必须包含实体或物体锚点。
+- query 尽量短，但要保留区分性动作/属性/OCR/数字。
+- 生成 3 个候选，从最短到最稳。
+- 输出 JSON，不要解释。
+user
+question = {{question}}
+visible_context = {{recent_context_summary}}
+gold_support = {{support_summary}}
+failure_reason = {{optional_retrieval_failure_reason}}
+
+输出：
+{
+  "candidates": [
+    {"query":"...", "time_bias":"past_far", "target":"procedure"},
+    {"query":"...", "time_bias":"past_far", "target":"action"},
+    {"query":"...", "time_bias":"past_far", "target":"event"}
+  ]
+}
+5.3 recall necessity judge
+system
+你是 recall necessity judge。
+判断该 streaming 问题在给定 recent window 下是否真的需要 recall。
+
+判定原则：
+- 如果 recent window 内已经有充分证据，need_recall 必须为 false。
+- 如果不给 recall 也能稳定答对，need_recall 必须为 false。
+- 只有答案依赖 recent window 外支持证据时，need_recall 才能为 true。
+- 输出严格 JSON。
+user
+question = {{question}}
+recent_window_segments = {{recent_segments_summary}}
+support_segments = {{gold_support_summary}}
+student_no_recall_answer = {{baseline_answer}}
+student_no_recall_score = {{baseline_score}}
+
+输出：
+{
+  "need_recall": true,
+  "reason": "...",
+  "earliest_response_time_ms": 0,
+  "support_outside_recent": true
+}
+5.4 canonical answer → natural response
+system
+你是流视频助手的话术重写器。
+把 canonical answer 改写成自然、简短、在线口语化的 response。
+要求：
+- 不超过 2 句。
+- 优先直接回答，不绕弯。
+- 不要加入支持证据里没有的信息。
+user
+question = {{question}}
+canonical_answer = {{canonical_answer}}
+style = brief|standard|explain
+
+输出一个 response 文本。
+
+AMD 8 卡（Qwen3.5-397B FP8）
+
+只做高价值文本工作：
+
+结构化时间线 → task pack
+recall query candidate 生成 / 修复
+disputed sample 仲裁
+少量 long-causal 高难样本
+H20 8 卡
+
+持续跑 4 条流水线：
+
+预处理
+OCR / ASR / dense caption / segment archive / embeddings
+检索验证
+query candidate hit@k 测试、hard negative 采样、counterfactual 验证
+retriever / reranker 训练
+student SFT / RL
+
+这样调度后，大模型节点不会被用来做低价值逐段 caption，小模型节点也不会只在训练时才工作。
+
+12 训练顺序
+SFT-1：协议对齐
+目标：学会 <think> + {silent,response,recall}
+数据配比：
+ThinkStream-style 协议样本 50%
+Streamo 转换后的 timing 样本 30%
+通用保能力 VL 数据 20%
+
+SFT-2：长程记忆与 recall
+目标：学会 recent buffer 不够时触发 recall
+配比：
+Streamo recall 派生样本 35%
+人工缩窗的 ThinkStream recall 样本 20%
+长程因果/程序样本 25%
+多轮追问样本 10%
+通用 VL 保能力 10%
+
+SFT-3：困难样本收敛
+目标：少说废话、别乱 recall、长因果更稳
+配比：
+recall-hard 40%
+silent/trigger calibration 20%
+long-causal/procedural 25%
+open-ended explanatory 15%
+
+
+6）每个 stage 具体放什么数据、什么任务？
+
+我建议你按 7 个 stage 来做。顺序上也基本符合最近 streaming video post-training 里常见的 SFT 先行，再 RL 的路线。
+
+Stage 0：资产化和过滤
+
+目标：把原始视频变成可检索、可派生、可验证的底座。
+
+输入数据
+
+Streamo 全量长视频
+ThinkStream 全量短视频
+
+输出
+
+segment_archive
+event_timeline
+scene_map
+OCR / ASR / dense caption
+recallability_score
+
+这个阶段不训主模型。
+
+主要筛选条件
+
+recall 候选视频：duration > recent_window + 8s
+entity recurrence 高
+event chain depth 足够
+cut rate 不要太高
+Stage 1：Retriever / Reranker 预训练
+
+目标：先把 recall 工具训稳。
+
+数据
+
+Streamo 派生的 recall-positive
+ThinkStream 缩窗制造的 forced-recall
+temporal near-miss / semantic confounder / OCR confounder 负样本
+
+任务
+
+query → support segment 检索
+top20 rerank → top3
+
+这一阶段不训主 agent。
+
+Stage 2：SFT-A，协议和时机 warm start
+
+目标：先学会 <think> + <silent>/<response>，别乱说话。
+
+数据组成
+
+ThinkStream 原始协议样本：45%
+Streamo 派生的 early-silent / earliest-response timing 对比：35%
+synthetic silent negatives / immediate QA controls：20%
+
+主要任务
+
+增量 think
+silent vs response
+当前可见即时答
+短时序问答
+no-recall follow-up
+
+这一阶段 recall 比例
+
+action 里只放 0%–5% recall
+
+建议规模
+
+12万–18万 episodes
+Stage 3：SFT-B，recall bootstrap
+
+目标：教模型什么时候该 recall，query 怎么发，回来后怎么答。
+
+数据组成
+
+Streamo recall-positive：35%
+no-recall controls：20%
+false-recall negatives：15%
+ThinkStream forced-recall：10%
+OCR / ASR history recall：10%
+general keepalive：10%
+
+主要任务
+
+长程细节回忆
+过去 vs 现在比较
+程序步骤回忆
+OCR 历史回忆
+recall → response
+recall → silent
+
+这一阶段 recall 比例
+
+action 里放到 12%–18%
+
+建议规模
+
+8万–12万 episodes
+
+这个阶段的主 loss
+
+𝐿
+=
+4.0
+𝐿
+𝑎
+𝑐
+𝑡
+𝑖
+𝑜
+𝑛
++
+1.5
+𝐿
+𝑞
+𝑢
+𝑒
+𝑟
+𝑦
++
+1.0
+𝐿
+𝑟
+𝑒
+𝑠
+𝑝
+𝑜
+𝑛
+𝑠
+𝑒
++
+0.2
+𝐿
+𝑡
+ℎ
+𝑖
+𝑛
+𝑘
+L=4.0L
+action
+	​
+
++1.5L
+query
+	​
+
++1.0L
+response
+	​
+
++0.2L
+think
+	​
+
+Stage 4：SFT-C，复合对话
+
+目标：把 agent 训成“不是只会单轮 recall”。
+
+数据组成
+
+一问多答，来自 Streamo 多 response 派生：30%
+多问多答 dialogue expansion：25%
+proactive trigger / persistent monitoring：15%
+long causal / procedural tracking：20%
+mixed recall dialogue：10%
+
+主要任务
+
+一问多答
+多问多答
+持续监控
+连续解说 + 适时 silent
+用户层级适配
+部分 turn recall，部分 turn 不 recall
+
+这一阶段 recall 比例
+
+8%–15%
+
+建议规模
+
+8万–12万 episodes
+Stage 5：SFT-D，hardening
+
+目标：把线上最容易翻车的地方修掉。
+
+数据组成
+
+over-recall negatives
+over-talk negatives
+boundary ambiguous samples
+low-quality OCR/ASR conflict samples
+teacher adjudicated hard cases
+
+主要任务
+
+该 silent 时别说
+不要过早回答
+不要为了 recall 而 recall
+query 要短而有效
+response 要短而不漏信息
+
+这一阶段 recall 比例
+
+压回线上目标分布，5%–12%
+
+建议规模
+
+3万–6万 episodes
+Stage 6：RL-A，先校准 action / timing
+
+目标：先把行为学稳，不急着追长回答。
+
+数据
+
+可验证单轮任务
+delayed trigger
+一问多答里的 action timing
+
+奖励
+
+action 正确
+earliest response timing
+silence precision
+think 不超长
+
+这一步不要上太多开放式答案。
+
+Stage 7：RL-B，再做 recall utility 和多轮一致性
+
+目标：把 recall 真正变成有用工具。
+
+数据
+
+recall-positive
+compare / causal recall
+multi-turn consistency
+canonical answer 明确的样本
+
+奖励
+
+need_recall 判对
+hit@k / support coverage
+最终答案正确
+over-recall 惩罚
+long-think 惩罚
+多轮一致性
+
+建议规模
+
+2万–4万 high-confidence trajectories
