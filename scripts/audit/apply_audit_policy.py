@@ -372,7 +372,8 @@ def apply_split(df: pd.DataFrame, policy: Dict) -> pd.DataFrame:
     keep_mask = df["dedup_action"] == "keep"
     keep_origins = df[keep_mask]["video_origin_id"].unique()
 
-    rng = pd.np.random.default_rng(seed) if hasattr(pd.np, "random") else __import__("numpy").random.default_rng(seed)
+    import numpy as np
+    rng = np.random.default_rng(seed)
     shuffled = rng.permutation(keep_origins)
     n_val = max(1, int(len(shuffled) * val_ratio))
     val_origins = set(shuffled[:n_val])

@@ -86,7 +86,7 @@ def table3_clip_distribution(df: pd.DataFrame) -> pd.DataFrame:
     for oid, grp in df.groupby("video_origin_id"):
         if len(grp) < 2:
             continue  # 只关注多 clip 的 origin
-        durations = grp["duration_sec"].dropna()
+        durations = grp["estimated_video_duration_sec"].dropna()
         rows.append({
             "origin_video_id": oid,
             "source_datasets": ",".join(sorted(grp["source_dataset"].unique())),
@@ -106,14 +106,14 @@ def table4_task_distribution(df: pd.DataFrame) -> pd.DataFrame:
     rows = []
     for ds in sorted(df["source_dataset"].unique()):
         sub = df[df["source_dataset"] == ds]
-        for _, grp in sub.groupby(["task_type_raw", "temporal_scope", "response_format"]):
+        for _, grp in sub.groupby(["task_type_raw", "temporal_scope_raw", "response_format_raw"]):
             row = grp.iloc[0]
             rows.append({
                 "source_dataset": ds,
                 "task_type": row["task_type_raw"],
-                "temporal_scope": row["temporal_scope"],
-                "response_format": row["response_format"],
-                "content_dimension": row["content_dimension"],
+                "temporal_scope": row["temporal_scope_raw"],
+                "response_format": row["response_format_raw"],
+                "content_dimension": row["content_dimension_raw"],
                 "count": len(grp),
                 "percentage": round(len(grp) / len(sub) * 100, 2),
             })
@@ -308,14 +308,14 @@ def answer_12_questions(df: pd.DataFrame) -> list:
     # Q8
     for ds in sorted(df["source_dataset"].unique()):
         sub = df[df["source_dataset"] == ds]
-        dist = sub["temporal_scope"].value_counts(normalize=True)
+        dist = sub["temporal_scope_raw"].value_counts(normalize=True)
         out = ", ".join(f"{k}: {v * 100:.1f}%" for k, v in dist.items())
         answers.append(f"Q8. {ds} temporal_scope: {out}")
 
     # Q9
     for ds in sorted(df["source_dataset"].unique()):
         sub = df[df["source_dataset"] == ds]
-        dist = sub["response_format"].value_counts(normalize=True)
+        dist = sub["response_format_raw"].value_counts(normalize=True)
         out = ", ".join(f"{k}: {v * 100:.1f}%" for k, v in dist.items())
         answers.append(f"Q9. {ds} response_format: {out}")
 
