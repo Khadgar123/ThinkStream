@@ -137,6 +137,7 @@ def build_recall_sft(
         "images": recall_images,
         "episode_id": episode["episode_id"],
         "sample_type": "recall_positive",
+        "protocol_version": "3action",
     }
 
 
@@ -194,6 +195,7 @@ def build_no_recall_control(
         "images": [],
         "episode_id": episode["episode_id"],
         "sample_type": "no_recall_control",
+        "protocol_version": "3action",
     }
 
 
@@ -249,6 +251,7 @@ def build_false_recall_negative(
         "images": [],
         "episode_id": episode["episode_id"],
         "sample_type": "false_recall_negative",
+        "protocol_version": "3action",
     }
 
 
@@ -256,7 +259,12 @@ def build_simple_sft(
     episode: Dict,
     segments: List[Dict],
 ) -> Dict:
-    """Build a simple SFT sample (no recall, just think + response/silent)."""
+    """Build a simple SFT sample with multi-chunk streaming (silent + response).
+
+    Unlike recall samples, this shows the full chunk-level streaming pattern:
+    multiple silent chunks followed by the response chunk when the question
+    arrives. This teaches the model the core streaming protocol.
+    """
     video_id = episode["video_id"]
     ask_time_ms = episode["ask_time_ms"]
 
@@ -264,32 +272,37 @@ def build_simple_sft(
     recent_end = ask_time_ms / 1000
     clip_path = str(CLIP_DIR / f"{video_id}_{int(recent_start)}_{int(recent_end)}.mp4")
 
-    # Build chunk-level multi-turn messages
     chunks = episode.get("chunk_sequence", [])
     messages = [{"role": "system", "content": AGENT_SYSTEM_PROMPT_ZH}]
 
-    # Find the key chunks (question chunk and response chunk)
-    question_placed = False
-    for c in chunks:
-        if c["action"] == "response" and not question_placed:
-            # User message with question
-            messages.append({
-                "role": "user",
-                "content": f"<video>\n<question>\n{episode['question']}\n</question>",
-            })
-            messages.append({
-                "role": "assistant",
-                "content": (
-                    f"<think>{c['think']}</think>"
-                    f"<action>response</action>"
-                    f"<response>{episode.get('natural_response', '')}</response>"
-                ),
-            })
-            question_placed = True
-            break
+    if chunks:
+        # Build full chunk-level multi-turn: silent chunks + response chunk
+        for c in chunks:
+            # Each chunk = one user turn (video) + one assistant turn (action)
+            user_parts = f"<video>"
+            # Attach question text to the chunk where question arrives
+            if c["action"] == "response":
+                user_parts += f"\n<question>\n{episode['question']}\n</question>"
 
-    if not question_placed:
-        # Fallback: just a simple Q&A
+            messages.append({"role": "user", "content": user_parts})
+
+            if c["action"] == "silent":
+                messages.append({
+                    "role": "assistant",
+                    "content": f"<think>{c['think']}</think><action>silent</action>",
+                })
+            elif c["action"] == "response":
+                messages.append({
+                    "role": "assistant",
+                    "content": (
+                        f"<think>{c['think']}</think>"
+                        f"<action>response</action>"
+                        f"<response>{episode.get('natural_response', '')}</response>"
+                    ),
+                })
+                break  # Stop after response
+    else:
+        # Fallback: single-turn Q&A
         messages.append({
             "role": "user",
             "content": f"<video>\n<question>\n{episode['question']}\n</question>",
@@ -310,6 +323,7 @@ def build_simple_sft(
         "images": [],
         "episode_id": episode["episode_id"],
         "sample_type": "easy_qa" if episode.get("difficulty") == "easy" else "protocol",
+        "protocol_version": "3action",
     }
 
 
