@@ -396,8 +396,11 @@ def parse_annotation_result(raw: Optional[str], meta: Dict) -> Dict:
                 "ocr": parsed.get("ocr", "none"),
                 "change": parsed.get("change", ""),
             })
+        else:
+            # No JSON found at all — use raw text as action
+            default["action"] = raw.strip()[:200]
     except (json.JSONDecodeError, ValueError):
-        default["action"] = raw[:200]  # Fallback: use raw text
+        default["action"] = raw[:200]
 
     return default
 
