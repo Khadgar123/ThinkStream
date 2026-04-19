@@ -96,17 +96,49 @@ F. 比较 recall (RC4) × {n_rc4}：问"和之前比有什么变化"
 G. Trigger (S4_R4) × {n_trigger}：设定监控条件
 
 每个任务输出 JSON：
-{{"task_type":"R1|S3_R2|RC1|RC2|RC3|RC4|RC5|RC6|RC7|S4_R4","question":"自然口语化","support_segment":"seg_xx","ask_segment":"seg_xx","answer_segment":"seg_xx","expected_answer":"简短可验证","natural_response":"自然回答","why_recall":"为什么需要recall(仅recall类)"}}
+{{"task_type":"R1|S3_R2|RC1|RC2|RC3|RC4|RC5|RC6|RC7|S4_R4","question":"自然口语化","support_segment":"seg_xx","ask_segment":"seg_xx","answer_segment":"seg_xx","expected_answer":"简短可验证","natural_response":"自然回答","why_recall":"为什么需要recall(仅recall类)","query_candidates":[{{"query":"短关键词 不是问句","time_bias":"past_far","target":"entity|action|ocr|procedure","topk":3}}]}}
+
+recall 类任务的 query_candidates 必须：
+- 不是问句，不用代词
+- 包含实体或物体锚点
+- 尽量短（5-15字），但能区分目标
+- 至少 2 个候选
 
 输出 JSON 数组，不要解释。"""
 
-THINK_PROMPT = """你是流视频 agent。你正在观看视频，当前看到的是 t={window_start}s 到 t={window_end}s 的内容。
+THINK_ASK_PROMPT = """你是流视频 agent。以下是你当前能看到的视频帧 (t={window_start}s 到 t={window_end}s)。
 
-当前段 (t={chunk_start}-{chunk_end}s) 的内容: {chunk_description}
+用户刚问: "{question}"
 
-{context}
+请写出你的内部推理 (think)：
+- 判断当前可见帧中是否有回答这个问题的证据
+- 如果有，简述证据在哪
+- 如果没有，说明需要检索什么历史信息
+只写一段话(30-50字)，不要写 action。"""
 
-请写出你此刻的内部推理 (think)，只写一句话(20-40字)，描述你的判断。不要写 action。"""
+THINK_POST_RECALL_PROMPT = """你是流视频 agent。你刚触发了检索。
+
+前面的帧是检索到的历史片段 (t={support_start}s-{support_end}s)。
+后面的帧是你当前的视频画面 (t={window_start}s-{window_end}s)。
+
+用户的问题是: "{question}"
+
+请结合检索到的历史帧和当前画面，写出你的推理 (think)：
+- 检索结果是否包含回答所需的信息
+- 你的判断和答案依据
+只写一段话(20-40字)，不要写 action。"""
+
+THINK_RESPONSE_PROMPT = """你是流视频 agent。以下是你当前能看到的视频帧 (t={window_start}s 到 t={window_end}s)。
+
+用户问: "{question}"
+
+你判断当前帧中有足够的证据回答。请写出你的推理 (think)：
+- 证据在哪，看到了什么
+只写一句话(20-40字)，不要写 action。"""
+
+THINK_SILENT_PROMPT = """你是流视频 agent。以下是当前视频帧 (t={chunk_start}s-{chunk_end}s)。
+
+请用一句话描述你此刻观察到的内容(15-25字)。不要写 action。"""
 
 RECALL_PHRASING = ["之前", "前面", "刚才", "早些时候", "一开始"]
 
@@ -215,12 +247,12 @@ def extract_frames(video_path: str, output_dir: Path, fps: int = FPS) -> List[Di
     )
     duration = float(result.stdout.strip())
 
-    # Extract all frames at fps, resize to 384px short edge
-    # 384px → ~600 vision tokens per frame in Qwen3.5 VL
-    # This keeps Step 2d (24 frames) under ~15K tokens total
+    # Extract all frames at fps, resize to 720px short edge
+    # 720px → ~1500 vision tokens per frame (good for OCR + visual details)
+    # Step 2d with 12 window frames → ~18K tokens, fits in max-model-len 32768
     subprocess.run(
         ["ffmpeg", "-y", "-loglevel", "error", "-i", video_path,
-         "-vf", f"fps={fps},scale='if(gt(iw,ih),384,-2)':'if(gt(iw,ih),-2,384)'",
+         "-vf", f"fps={fps},scale='if(gt(iw,ih),720,-2)':'if(gt(iw,ih),-2,720)'",
          "-q:v", "2",
          str(output_dir / "frame_%06d.jpg")],
         check=True, capture_output=True,
