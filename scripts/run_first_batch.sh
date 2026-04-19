@@ -26,8 +26,8 @@ AMD_IP="${1:?Usage: $0 <AMD_IP> <AMD_PORT>}"
 AMD_PORT="${2:-8000}"
 API_BASE="http://${AMD_IP}:${AMD_PORT}/v1"
 TEACHER_MODEL="Qwen/Qwen3.5-397B-A22B-FP8"
-CAPTION_MODEL="Qwen/Qwen2.5-VL-7B-Instruct"
-VL_MODEL="Qwen/Qwen2.5-VL-7B-Instruct"
+CAPTION_MODEL="Qwen/Qwen2.5-VL-72B-Instruct"
+VL_MODEL="Qwen/Qwen2.5-VL-72B-Instruct"
 
 # 数据路径 (根据实际环境修改)
 STREAMO_ANNOTATION="${STREAMO_ANNOTATION:-/home/tione/notebook/gaozhenkun/hzh/data/Streamo/raw_data.json}"

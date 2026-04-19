@@ -139,11 +139,11 @@ def _get_text_encoder():
     if _text_encoder is None:
         try:
             from sentence_transformers import SentenceTransformer
-            _text_encoder = SentenceTransformer("BAAI/bge-m3")
+            _text_encoder = SentenceTransformer("Alibaba-NLP/gte-Qwen2-7B-instruct")
         except ImportError:
             try:
                 from FlagEmbedding import FlagModel
-                _text_encoder = FlagModel("BAAI/bge-m3")
+                _text_encoder = FlagModel("Alibaba-NLP/gte-Qwen2-7B-instruct")
             except ImportError:
                 logger.error("No text encoder available (install sentence-transformers or FlagEmbedding)")
                 return None

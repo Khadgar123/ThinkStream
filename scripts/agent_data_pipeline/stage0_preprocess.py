@@ -15,7 +15,7 @@ Usage:
     python -m scripts.agent_data_pipeline.stage0_preprocess \
         --video_list data/agent/video_list.json \
         --output_dir data/agent \
-        [--caption_model Qwen/Qwen2.5-VL-7B-Instruct] \
+        [--caption_model Qwen/Qwen2.5-VL-72B-Instruct] \
         [--num_gpus 8] \
         [--skip_asr] [--skip_embedding]
 """
@@ -367,7 +367,7 @@ def extract_tags_and_keys(segments: List[Dict]) -> List[Dict]:
 def compute_text_embeddings(
     segments: List[Dict],
     video_id: str,
-    model_name: str = "BAAI/bge-m3",
+    model_name: str = "Alibaba-NLP/gte-Qwen2-7B-instruct",
 ) -> List[Dict]:
     """Compute text embeddings for each segment."""
     try:
@@ -391,7 +391,7 @@ def compute_text_embeddings(
         try:
             from sentence_transformers import SentenceTransformer
 
-            model = SentenceTransformer("BAAI/bge-m3")
+            model = SentenceTransformer("Alibaba-NLP/gte-Qwen2-7B-instruct")
 
             for seg in segments:
                 text = seg.get("dense_caption", "") + " " + " ".join(seg.get("memory_keys", []))

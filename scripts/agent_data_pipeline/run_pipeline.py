@@ -261,7 +261,7 @@ Examples:
                         help="OpenAI-compatible API base for teacher model")
     parser.add_argument("--teacher_model", default="Qwen/Qwen3.5-397B-A22B-FP8")
     parser.add_argument("--caption_model", default=None,
-                        help="VL model for dense captioning/OCR (e.g. Qwen/Qwen2.5-VL-7B-Instruct)")
+                        help="VL model for dense captioning/OCR (e.g. Qwen/Qwen2.5-VL-72B-Instruct)")
     parser.add_argument("--vl_model", default=None,
                         help="VL model for Stage 5 gate verification")
     parser.add_argument("--target_tasks", type=int, default=12,

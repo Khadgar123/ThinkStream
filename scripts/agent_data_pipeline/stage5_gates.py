@@ -13,7 +13,7 @@ Gates 4-6 require VL model inference (optional, can be skipped for fast mode).
 
 Usage:
     python -m scripts.agent_data_pipeline.stage5_gates \
-        [--vl_model Qwen/Qwen2.5-VL-7B-Instruct] \
+        [--vl_model Qwen/Qwen2.5-VL-72B-Instruct] \
         [--fast]  # skip Gates 4-6
 """
 
