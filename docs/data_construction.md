@@ -1,190 +1,311 @@
-# 流视频 Agent 数据构造方案
+# Streaming Video Agent Data Construction
 
-> 版本: v1.0 | 日期: 2026-04-19
+> Version: v2.0 | Date: 2026-04-20
 
-## 1. 目标
+## 1. Goal
 
-为流视频 Agent 构造三动作格式 (`<think>...<action>silent|response|recall</action>`) 的 SFT + RL 训练数据。模型需要学会在每个 2s chunk：
-- **Silent**: 没有需要回答的事，增量观察
-- **Response**: 有足够证据时回答
-- **Recall**: 证据已离开 recent window (24s)，需要检索历史帧
+Construct 3-action format (`<think>...<action>silent|response|recall</action>`) SFT + RL training data for the streaming video agent. The model learns to act at every 2s chunk:
+- **Silent**: no question to answer, incremental observation
+- **Response**: sufficient evidence to answer
+- **Recall**: evidence has left the recent window (24s), retrieve historical frames
 
-## 2. 基础设施
+## 2. Infrastructure
 
-| 节点 | 硬件 | 用途 | vLLM 启动命令 |
-|------|------|------|-------------|
-| AMD | MI300X × 8 | 397B teacher | `vllm serve Qwen/Qwen3.5-397B-A17B-FP8 --tensor-parallel-size 8 --mm-encoder-tp-mode data --max-model-len 32768 --gpu-memory-utilization 0.90 --max-num-seqs 64 --port 8000` |
-| H20 | H20 96GB × 8 | 训练 + 验证 | (可选) 部署 35B 做验证 |
+| Node | Hardware | Purpose | vLLM Launch Command |
+|------|----------|---------|-------------------|
+| AMD | MI300X × 8 (192GB each) | 397B teacher | See below |
+| H20 | H20 96GB × 8 | Training + verification | (Optional) deploy 35B for verification |
 
-**并发压测**：先用少量请求测 throughput，逐步增加 `--max-num-seqs` 直到显存占用 ~85%。
+### vLLM Launch Command
 
-## 3. 任务分类体系
-
-### 3.1 按 action 分（chunk 级目标分布）
-
-| Action | 占比 | 说明 |
-|--------|------|------|
-| Silent | 58-65% | 大部分 chunk 不说话 |
-| Response | 23-30% | 有证据时回答 |
-| Recall | 10-15% | 证据不在窗口内 |
-
-### 3.2 子任务详细分类
-
-**Silent 子任务**
-
-| ID | 名称 | 说明 | 边界区分 |
-|----|------|------|---------|
-| S1 | 无问题观察 | 没有用户问题 | 所有样本自然包含 |
-| S2 | 问题已答完 | 之前已回答 | 自然包含 |
-| S3 | Standby 等待 | 问了但事件没发生 | vs R2 (差 1 chunk) |
-| S4 | Trigger 监控 | 条件未满足 | vs R4 (条件满足时) |
-
-**Response 子任务**
-
-| ID | 名称 | 说明 | 边界区分 |
-|----|------|------|---------|
-| R1 | 即时回答 | 证据在当前帧 | vs S3 (证据到没到) |
-| R2 | 延迟回答 | Standby 后事件发生 | vs S3 (前一 chunk) |
-| R3 | 多次回答 | 持续性问题分次答 | |
-| R4 | Trigger 触发 | 监控条件满足 | vs S4 |
-| R5 | 连续解说 | 实时解说 | |
-| R6 | Recall 后回答 | 检索后回答 | 必须跟在 RC 后 |
-| R7 | 假 recall 负样本 | 听起来要回忆但不需要 | vs RC1 (核心区分) |
-
-**Recall 子任务**
-
-| ID | 名称 | 问什么 | query 特征 |
-|----|------|--------|-----------|
-| RC1 | 视觉细节回忆 | 颜色/形状/外观/穿着 | 实体+属性 |
-| RC2 | 精确数值回忆 | 价格/数字/文字 | OCR+数字 |
-| RC3 | 程序步骤回忆 | 第几步/顺序 | 动作+步骤 |
-| RC4 | 跨时间比较 | 和之前比变了什么 | 实体+状态 |
-| RC5 | 长程因果回忆 | 为什么会这样 | 事件+因果 |
-| RC6 | 实体再识别 | 是不是之前那个人/物 | 实体+外观 |
-| RC7 | 多轮 follow-up | 追问之前对话细节 | 对话+细节 |
-
-### 3.3 三合一绑定规则
-
-每条 recall (RC1-RC7) 必须配套:
-- 1 条 **no-recall control** (R1/R2): 同问题在证据可见时提问
-- 1 条 **false-recall negative** (R7): 同问题加"之前"措辞但证据可见
-
-### 3.4 任务配比（episode 级）
-
-| 子任务 | 目标占比 | 首批最低数量 |
-|--------|---------|-------------|
-| R1 即时回答 | 16% | 300 |
-| S3+R2 延迟回答 | 12% | 200 |
-| RC1 视觉细节 | 10% | 200 |
-| RC2-RC7 其他 recall | 15% | 300 |
-| R7 假 recall | 与 RC 配对 | 自动 |
-| S4+R4 Trigger | 5% | 80 |
-| R3 多次回答 | 5% | 80 |
-| Protocol (ThinkStream) | 25% | 2000 |
-
-### 3.5 视频类型→任务映射
-
-| 视频类型 | 时长要求 | 适合任务 |
-|---------|---------|---------|
-| 教程/烹饪/装配 | >120s | RC1, RC3, RC5 |
-| Vlog/长镜头 | >90s | RC4, RC6, R2, R3 |
-| 屏幕录制/UI | >60s | RC2, R1 |
-| 剧情/综艺 | >120s | RC5, RC7 |
-| 体育/户外 | >90s | R4, R5, RC4 |
-| 短视频 (<30s) | any | R1, S1 (protocol only) |
-
-## 4. 数据构造流程
-
-### 4.1 全流程
-
-```
-Step 1: 选视频 + 抽帧                    [CPU, ~5min]
-Step 2a: 397B 逐段标注                   [AMD vLLM, ~N min]
-Step 2b: 397B 设计任务 (引用 segment ID)  [AMD vLLM, ~N min]
-Step 2c: 规则校验修正 timing              [CPU, <1s]
-Step 2d: 397B 写 think + 构造答案         [AMD vLLM, ~N min]
-Step 3: 三合一绑定派生                    [CPU, <1s]
-Step 4: 展开成 chunk-level 数据           [CPU, ~1min]
-Step 5: 过滤                             [CPU + 可选小模型]
-Step 6: 按配比采样 + 组装                 [CPU, <1s]
+```bash
+vllm serve Qwen/Qwen3.5-397B-A17B-FP8 \
+    --tensor-parallel-size 8 \
+    --mm-encoder-tp-mode data \
+    --max-model-len 65536 \
+    --gpu-memory-utilization 0.90 \
+    --max-num-seqs 64 \
+    --port 8000 \
+    --enable-prefix-caching
 ```
 
-### 4.2 各 Step 详细说明
+### Stress Test Results (text-only baseline)
 
-**Step 1: 选视频 + 抽帧**
-- 从 Streamo >60s 视频中按类型分桶选取
-- 2fps 抽帧，每 4s 打包为一个 segment
-- 输出: `video_registry.jsonl` + 帧文件
+| Concurrency | Throughput (req/s) | Latency | Status |
+|-------------|-------------------|---------|--------|
+| 8 | 0.86 | 23.1s | Baseline |
+| 16 | 8.52 | 4.7s | Good |
+| 32 | 10.77 | 3.7s | Peak |
+| 64 | 5.75 | 7.0s | Degraded (memory pressure) |
 
-**Step 2a: 397B 逐段标注**
-- 每个 segment 的 2 张帧 → 397B 描述内容
-- 输出每段: action, entities, visual_details, ocr_text, change_from_prev
-- 并发: 全部 segment 一次发出，vLLM continuous batching
-- 输出: `segment_annotations.jsonl`
+Peak throughput at concurrency 32 for text-only (16 input tokens). With vision tokens (~6.8K–37.5K per request), optimal concurrency is lower.
 
-**Step 2b: 397B 设计任务**
-- 每个视频的全部段标注（文本）→ 397B 设计 8-15 个任务
-- 引用 segment_id 而不是猜时间
-- 输出: `task_candidates_raw.jsonl`
+### Per-Step Concurrency Configuration
 
-**Step 2c: 规则校验修正**
-- segment_id → 精确时间转换
-- 验证: support_time + 24s < ask_time (recall)
-- 修正不合法的 timing
-- 输出: `task_candidates_verified.jsonl`
+| Step | Tokens/Request | Concurrent | max_tokens | temperature |
+|------|---------------|------------|------------|-------------|
+| 2a (segment annotation) | ~6.8K (4 frames) | 32 | 512 | 0.3 |
+| 2b (task design) | ~8K (text only) | 32 | 4096 | 0.7 |
+| 2d (think generation) | ~37.5K (24 frames) | 16 | 128 | 0.5 |
 
-**Step 2d: 397B 写 think + 答案**
-- 对 ask chunk: 397B 看 recent window 帧写 think
-- 对 recall 后: 397B 写拿到检索结果后的 think
-- 构造 canonical_answer (可验证格式)
-- 输出: `task_pool.jsonl`
-
-**Step 3: 三合一绑定派生**
-- 每条 recall → control + false-negative
-- 纯规则，不调模型
-- 输出: `task_triplets.jsonl`
-
-**Step 4: 展开 chunk-level**
-- 按 2s chunk 展开消息序列
-- Silent chunk 用段标注填充 think
-- Recall chunk 展开为 3 轮消息
-- 输出: `sft_episodes_raw.jsonl`
-
-**Step 5: 过滤**
-- 硬规则: timing 合法, 答案非空, 格式正确
-- 软规则 (可选): 小模型验证 recall 必要性
-- 输出: `sft_episodes_filtered.jsonl`
-
-**Step 6: 采样组装**
-- 按目标配比采样
-- 混合 ThinkStream 协议数据
-- 输出: `sft_a.jsonl`, `sft_b.jsonl`, `rl_pool.jsonl`
-
-## 5. 持久化资产表
-
-| 表 | 内容 | 何时重新生成 |
-|----|------|------------|
-| `video_registry.jsonl` | 视频索引 | 加新视频时追加 |
-| `segment_annotations.jsonl` | 逐段标注 | 不重新生成（最贵） |
-| `task_pool.jsonl` | 完整任务 | 不重新生成 |
-| `task_triplets.jsonl` | 三合一绑定 | 自动派生 |
-| `sft_episodes_raw.jsonl` | 展开数据 | 改格式时重跑 |
-| `sft_a/b.jsonl` | 训练数据 | 改配比时重跑 |
-
-## 6. 训练计划
+### Token Budget Analysis
 
 ```
-SFT-A (协议对齐):   datasets=sft_a, lr=1e-5, epochs=3
-SFT-B (recall 重点): datasets=sft_b, lr=5e-6, epochs=3, 基于 SFT-A ckpt
-RL-A (action 校准):  datasets=rl_pool, lr=2e-7, 基于 SFT-B ckpt
+Step 2a: 4 frames × 1500 vision + 300 text = ~6.8K tokens/request
+Step 2b: ~3K annotation text + 1K prompt = ~8K tokens (output ~4K)
+Step 2d: 24 frames × 1500 vision + 1.5K text = ~37.5K tokens/request
+         → requires --max-model-len >= 65536
 ```
 
-## 7. 质量验证
+## 3. Task Classification
 
-| 指标 | 通过标准 |
-|------|---------|
-| 格式合规率 | ≥ 95% |
-| OVO-Bench accuracy | 不低于原模型 -2% |
-| RTVU accuracy | 不低于原模型 -2% |
+### 3.1 Action Distribution (chunk-level targets)
+
+| Action | Ratio | Description |
+|--------|-------|-------------|
+| Silent | 58-65% | Most chunks: observe silently |
+| Response | 23-30% | Answer when evidence is available |
+| Recall | 10-15% | Evidence outside window |
+
+### 3.2 Sub-task Types
+
+**Silent Sub-tasks**
+
+| ID | Name | Description | Implementation |
+|----|------|-------------|----------------|
+| S1 | No-question observation | No user question | Naturally included in all episodes |
+| S2 | Post-answer silence | Already answered | Naturally included |
+| S3 | Standby waiting | Asked but event not occurred | S3_R2 silent chunks between ask→answer |
+| S4 | Trigger monitoring | Condition not met | S4_R4 silent chunks between ask→answer |
+
+**Response Sub-tasks**
+
+| ID | Name | Description | Implementation |
+|----|------|-------------|----------------|
+| R1 | Immediate answer | Evidence in current frame | `assemble_episode` default path |
+| R2 | Delayed answer | Event occurred after standby | S3_R2 answer chunk |
+| R3 | Progressive answer | Answer unfolds over time, multiple responses | `_assemble_r3` |
+| R4 | Trigger fired | Monitoring condition met | S4_R4 answer chunk |
+| R5 | Continuous narration | Real-time commentary | Not implemented (deferred) |
+| R6 | Post-recall answer | Answer after retrieval | Recall episode response chunk |
+| R7 | False recall negative | Sounds like recall but isn't | `generate_triplets` false_negative |
+
+**Recall Sub-tasks**
+
+| ID | Name | What to ask | query pattern | Implementation |
+|----|------|-------------|---------------|----------------|
+| RC1 | Visual detail recall | Color/shape/appearance | entity+attribute | Generic RC handler |
+| RC2 | Numeric recall | Price/number/text | OCR+number | Generic RC handler |
+| RC3 | Procedural recall | Step details/order | action+step | Generic RC handler |
+| RC4 | Cross-time comparison | What changed | entity+state | Generic RC handler |
+| RC5 | Long causal recall | Why did this happen | event+cause | Generic RC handler |
+| RC6 | Entity re-identification | Same person/object? | entity+appearance | Generic RC handler |
+| RC7 | Multi-turn follow-up | Ask about prior conversation | dialogue+detail | `_assemble_rc7` |
+
+### 3.3 Triplet Binding Rules
+
+Each recall task (RC1-RC6) generates a triplet:
+- 1 × **no-recall control** (R1): same question asked when evidence is visible
+- 1 × **false-recall negative** (R7): same question with "earlier/before" phrasing when evidence is visible
+
+**Exception**: RC7 is excluded from triplet binding because the control would reference a base conversation that doesn't exist in the control episode.
+
+### 3.4 Task Counts per Video
+
+| Task Type | Count | Condition |
+|-----------|-------|-----------|
+| R1 (immediate) | 3 | Always |
+| S3_R2 (delayed) | 2 | Always |
+| RC1 (visual detail) | 1-3 | `num_segments // 10` |
+| RC2 (numeric) | 2 | Has OCR segments |
+| RC3 (procedural) | 2 | >10 segments |
+| RC4 (comparison) | 1 | >15 segments |
+| RC5 (causal) | 1 | Always |
+| RC6 (re-identification) | 1 | Always |
+| RC7 (follow-up) | 1 | >15 segments |
+| R3 (progressive) | 1 | >10 segments |
+| S4_R4 (trigger) | 1 | Always |
+
+### 3.5 Video Type → Task Mapping
+
+| Video Type | Duration Req. | Suitable Tasks |
+|------------|--------------|----------------|
+| Tutorial/Cooking/Assembly | >120s | RC1, RC3, RC5 |
+| Vlog/Long-take | >90s | RC4, RC6, R2, R3 |
+| Screen recording/UI | >60s | RC2, R1 |
+| Drama/Variety | >120s | RC5, RC7 |
+| Sports/Outdoor | >90s | R4, RC4 |
+| Short video (<30s) | any | R1, S1 (protocol only) |
+
+## 4. Data Construction Pipeline
+
+### 4.1 Overview
+
+```
+Step 1:  Select videos + extract frames          [CPU, ~5min]
+Step 2a: 397B segment annotation                 [AMD vLLM, concurrent=32]
+Step 2b: 397B task design (reference segment ID) [AMD vLLM, concurrent=32]
+Step 2c: Rule validation + timing fix            [CPU, <1s]
+Step 2d: 397B think generation                   [AMD vLLM, concurrent=16]
+Step 3:  Triplet binding                         [CPU, <1s]
+Step 4:  Chunk-level episode assembly             [CPU, ~1min]
+Step 5:  Filtering                               [CPU + optional small model]
+Step 6:  Sampling + final assembly               [CPU, <1s]
+```
+
+### 4.2 Step Details
+
+**Step 1: Video Selection + Frame Extraction**
+- Select from Streamo videos ≥60s, ranked by richness score (duration × type diversity × annotation density)
+- Extract at 2fps, resize to 720px short edge (~1500 vision tokens/frame)
+- Group into 4s segments, select 4 keyframes per segment (1fps coverage)
+- Failed videos are skipped (logged, not crash)
+- `duration_sec` updated from ffprobe (not annotation timestamps)
+- Output: `video_registry.jsonl` + `frames/` + `segments/`
+
+**Step 2a: 397B Segment Annotation**
+- Each segment's 4 keyframes → 397B describes content in English
+- Output per segment: `action`, `entities[]`, `visual_details[{entity, attributes}]`, `ocr`, `change`
+- Prompt includes JSON example with exact schema
+- Parse: try direct JSON, then balanced-bracket extraction, fallback to raw text
+- Output: `segment_annotations.jsonl`
+
+**Step 2b: 397B Task Design**
+- All segment annotations (text) for one video → 397B designs 10-15 tasks
+- Prompt specifies per-type counts, answer_type constraints, and few-shot examples (RC1, R3, RC7)
+- References segment_id (not timestamps)
+- Parse: balanced-bracket JSON array extraction
+- Output: `task_candidates_raw.jsonl`
+
+**Step 2c: Rule Validation**
+- Resolve segment_id → precise timestamps
+- Validation order: RC7 → R3 → RC* (generic) → S3_R2 → S4_R4 → else (R1)
+- RC7: validate `base_ask_segment`, `base_question`, `base_answer`, gap ≥ 24s
+- R3: validate `response_segments` (≥2, ascending order), pad `partial_answers`
+- RC*: validate `support_segment`, gap ≥ 24s (auto-fix by pushing ask forward)
+- General: reject empty question, empty answer, ask > duration
+- Output: `task_candidates_verified.jsonl`
+
+**Step 2d: 397B Think Generation**
+- Send 24 actual frames from the 24s recent window (not text annotations)
+- Token budget: 24 × 1500 + 1500 = ~37.5K → requires `--max-model-len 65536`
+- For recall tasks: additional post-recall think with support frames + current frames
+- Output: `task_pool.jsonl` (tasks with `think_at_ask` and `think_after_recall`)
+
+**Step 3: Triplet Binding**
+- Each RC1-RC6 recall task → 3 episodes:
+  - `recall_positive`: original (need recall)
+  - `control` (R1): same question, ask when evidence is visible
+  - `false_negative` (R7): add "Earlier/Before, ..." phrasing, evidence still visible
+- RC7 excluded (control would reference nonexistent base conversation)
+- R3 excluded (not a recall task)
+- Output: `task_triplets.jsonl`
+
+**Step 4: Chunk-Level Assembly**
+
+Dispatched by task type:
+
+| Task Type | Assembly Function | Episode Structure |
+|-----------|------------------|-------------------|
+| R3 | `_assemble_r3` | question → response₁ → silent → response₂ → ... → responseₙ |
+| RC7 | `_assemble_rc7` | base Q&A → (gap truncated to 3 context chunks) → follow-up recall → response |
+| RC1-RC6 | default (recall path) | silent... → question+recall → recall_result → response |
+| R1 | default (response path) | silent... → question+response |
+| S3_R2 | default (delayed path) | silent... → question → waiting silents → response |
+| S4_R4 | default (delayed path) | silent... → question → monitoring silents → response |
+
+Key design decisions:
+- Silent think: segment `action` description (annotation text), max 50 chars
+- S3_R2/S4_R4 waiting silents: "User asked about this, but the event hasn't occurred yet. Waiting."
+- RC7 gap truncation: only 3 silent chunks around each event (avoids 30+ filler silents)
+- `answer_type` from 397B output, fallback to heuristic (yes/no → yesno, digit → number)
+- Recall tasks without triplet binding (RC7) auto-promoted to `sample_type=recall_positive`
+
+Output: `sft_episodes_raw.jsonl`
+
+**Step 5: Filtering**
+- Hard rules: ≥3 messages, all assistant messages match format regex, non-empty answer
+- Format regex: `<think>.*</think><action>(silent|response|recall)</action>(<response>.*</response>|<query>{.*}</query>)?`
+- Output: `sft_episodes_filtered.jsonl`
+
+**Step 6: Sampling + Final Assembly**
+
+| Dataset | Composition | Purpose |
+|---------|-------------|---------|
+| `sft_a.jsonl` | simple + 25% recall + 25% control | Protocol warmstart |
+| `sft_b.jsonl` | all recall + control + false_neg + matched simple | Recall-heavy training |
+| `rl_pool.jsonl` | verifiable answers only (yesno, number, entity, slot, multiple_choice) | RL training |
+
+## 5. Persistence Table
+
+| File | Content | When to Regenerate |
+|------|---------|-------------------|
+| `video_registry.jsonl` | Video index | Append when adding videos |
+| `segments/*.json` | Per-video frame paths | Never (cached per video) |
+| `segment_annotations.jsonl` | Per-segment 397B annotations | Never (most expensive) |
+| `task_candidates_raw.jsonl` | 397B task designs | Delete to regenerate with new prompt |
+| `task_candidates_verified.jsonl` | Rule-validated tasks | Auto-regenerated |
+| `task_pool.jsonl` | Tasks with think content | Delete to regenerate |
+| `task_triplets.jsonl` | Triplet bindings | Auto-derived |
+| `sft_episodes_raw.jsonl` | Assembled episodes | Rerun when format changes |
+| `sft_a.jsonl` / `sft_b.jsonl` | Training data | Rerun when ratios change |
+| `rl_pool.jsonl` | RL training pool | Rerun when ratios change |
+| `pipeline_stats.json` | Run statistics | Auto-generated |
+
+## 6. Prompts
+
+All prompts are in English. Key design choices:
+
+- **SEGMENT_ANNOTATE_PROMPT**: includes JSON example with exact schema, `visual_details` as `[{entity, attributes}]` array
+- **TASK_DESIGN_PROMPT**: per-type answer_type constraints, 3 few-shot examples (RC1, R3, RC7), query_candidates rules
+- **THINK_PROMPT**: token-based length constraints (15-48 tokens), "Output English only"
+- **AGENT_SYSTEM_PROMPT**: 3-action protocol definition, used as system message in all episodes
+
+## 7. Error Handling
+
+| Scenario | Behavior |
+|----------|----------|
+| ffprobe/ffmpeg fails for a video | Skip video, log warning, continue |
+| 397B returns no JSON (plain text) | Use raw text as `action`, other fields empty |
+| 397B returns JSON with trailing text | Balanced-bracket extraction (not greedy regex) |
+| `query_candidates` is null | Fallback to default query from expected_answer |
+| Task validation fails | Reject task, log count |
+| vLLM request fails | Retry 3× with exponential backoff (1s→2s→4s) |
+| All videos fail | `print_statistics` handles empty list gracefully |
+
+## 8. Training Plan
+
+```
+SFT-A (protocol alignment): datasets=sft_a, lr=1e-5, epochs=3
+SFT-B (recall focus):        datasets=sft_b, lr=5e-6, epochs=3, from SFT-A ckpt
+RL-A  (action calibration):  datasets=rl_pool, lr=2e-7, from SFT-B ckpt
+```
+
+## 9. Quality Metrics
+
+| Metric | Pass Threshold |
+|--------|---------------|
+| Format compliance rate | ≥ 95% |
+| OVO-Bench accuracy | Within -2% of base model |
+| RTVU accuracy | Within -2% of base model |
 | Recall precision | ≥ 70% |
 | Recall specificity | ≥ 85% |
+
+## 10. Usage
+
+```bash
+# 1. Start vLLM on AMD node (see Section 2)
+
+# 2. Stress test
+python -m scripts.agent_data_pipeline.generate_data stress_test \
+    --api_base http://AMD_IP:8000/v1 --max_concurrent 8 --num_requests 20
+
+# 3. Run full pipeline
+python -m scripts.agent_data_pipeline.generate_data run \
+    --api_base http://AMD_IP:8000/v1 \
+    --streamo_dir /path/to/streamo \
+    --video_root /path/to/videos \
+    --output_dir data/agent \
+    --max_concurrent 32 \
+    --num_videos 200
+```
