@@ -51,96 +51,164 @@ FPS = 2  # frames per second for extraction
 FRAMES_PER_SEGMENT = 4  # keyframes sent to 397B per segment (1fps coverage)
 
 AGENT_SYSTEM_PROMPT = (
-    "你是流视频问答 agent。你会持续接收视频片段流。\n\n"
-    "每次 assistant turn 必须严格输出以下三种形式之一：\n"
+    "You are a streaming video QA agent receiving a continuous stream of video chunks.\n\n"
+    "Each assistant turn must output exactly one of these three forms:\n"
     "1) <think>...</think><action>silent</action>\n"
     "2) <think>...</think><action>response</action><response>...</response>\n"
     "3) <think>...</think><action>recall</action>"
     '<query>{"query":"...","time_bias":"...","target":"...","topk":3}</query>\n\n'
-    "规则：\n"
-    "- 每个 turn 只允许一个 action。\n"
-    "- think 只写当前新增判断，不复述整段视频。\n"
-    "- 若当前 recent window 证据已足够，直接 response，不要 recall。\n"
-    "- 若问题依赖已离开 recent window 的历史内容，优先 recall。\n"
-    "- recall query 必须短、可检索、非完整问句、避免代词和泛词。\n"
-    "- 收到 <recall_result> 后，只能再输出 silent 或 response。\n"
-    "- 若当前 chunk 不该说话，输出 silent。"
+    "Rules:\n"
+    "- Only one action per turn.\n"
+    "- Think only about new observations in the current chunk. Do not restate the whole video.\n"
+    "- If the recent window has enough evidence, respond directly without recall.\n"
+    "- If the answer depends on content that has left the recent window, use recall.\n"
+    "- Recall queries must be short, searchable keywords — not full questions, no pronouns.\n"
+    "- After receiving <recall_result>, only output silent or response.\n"
+    "- If no speech is needed for the current chunk, output silent."
 )
 
 # Prompt templates
-SEGMENT_ANNOTATE_PROMPT = """请描述这个视频片段 (t={start}-{end}s) 中看到的内容：
-1. 主要动作（谁在做什么）
-2. 出现的实体（人/物/场景，列出名称）
-3. 视觉细节（颜色、形状、文字、数字、穿着、位置关系）
-4. OCR文字（如果有可见文字/数字，完整列出；没有写"无"）
-5. 与前一段的变化（新出现/消失/状态改变，如果是第一段写"视频开始"）
+SEGMENT_ANNOTATE_PROMPT = """Describe what you see in this video segment (t={start}-{end}s).
 
-输出严格 JSON：
-{{"action":"...","entities":["..."],"visual_details":{{"实体名":"描述"}},"ocr":"...","change":"..."}}"""
+Output strict JSON with exactly these keys:
+{{"action":"one sentence: who does what","entities":["person_A","knife","cutting_board"],"visual_details":[{{"entity":"person_A","attributes":"red apron, short hair, standing left"}},{{"entity":"knife","attributes":"silver blade, black handle"}}],"ocr":"exact text if visible, otherwise none","change":"new entity appeared / state changed / video start"}}
 
-TASK_DESIGN_PROMPT = """你是流视频 agent 训练数据构造器。
+Rules:
+- action: one sentence, subject + verb + object
+- entities: flat list of noun phrases, max 6
+- visual_details: array of {{"entity":"...","attributes":"color, shape, clothing, position"}} for each important entity
+- ocr: copy exact text/numbers verbatim; write "none" if no visible text
+- change: compared to previous segment; write "video start" for the first segment
+- Use English for all output"""
 
-以下是一个 {duration}s 视频的逐段标注（共 {num_segments} 段，每段 4 秒）：
+TASK_DESIGN_PROMPT = """You are a streaming video agent training data constructor.
+
+Below are per-segment annotations for a {duration}s video ({num_segments} segments, 4s each):
 {annotations_text}
 
-recent_window = 24 秒（模型在 ask_time 时只能看到最近 24 秒的帧）
+recent_window = 24 seconds (the model can only see the most recent 24s of frames at ask_time).
+For recall tasks: support_segment must be >= 7 segments before ask_segment (gap > 24s).
 
-请设计以下训练任务（引用 segment_id，不要猜测时间）：
+Design the following training tasks (reference segment_id, do not guess timestamps):
 
-A. 即时回答 (R1) × {n_r1}：问当前段可见的内容
-B. 延迟回答 (S3_R2) × {n_s3r2}：问还没发生的事，ask_segment < answer_segment，间隔 ≥2 段
-C. 视觉细节 recall (RC1) × {n_rc1}：问 visual_details 中的具体属性（颜色/外观/穿着），support_segment 和 ask_segment 间隔 ≥7 段（>24s），必须是文字描述记不住的视觉细节
-D. 数值 recall (RC2) × {n_rc2}：问 ocr 中的精确数字/文字（如果有）
-E. 步骤 recall (RC3) × {n_rc3}：问之前步骤的细节/顺序（如果有操作步骤）
-F. 比较 recall (RC4) × {n_rc4}：问"和之前比有什么变化"
-G. Trigger (S4_R4) × {n_trigger}：设定监控条件
+A. Immediate answer (R1) x {n_r1}: ask about content visible in the current segment
+   answer_type: entity | yesno | number | slot
+B. Delayed answer (S3_R2) x {n_s3r2}: ask about something not yet happened, ask_segment < answer_segment, gap >= 2 segments
+   answer_type: entity | yesno
+C. Visual detail recall (RC1) x {n_rc1}: ask about specific visual attributes (color/shape/clothing) from visual_details that require seeing the original frame — not memorizable from text
+   answer_type: slot | entity
+D. Numeric recall (RC2) x {n_rc2}: ask about exact numbers/text from ocr field (skip if no ocr segments)
+   answer_type: number | slot
+E. Procedural recall (RC3) x {n_rc3}: ask about previous step details/order (skip if no procedural actions)
+   answer_type: ordered_steps | entity
+F. Comparison recall (RC4) x {n_rc4}: ask what changed between support_segment and ask_segment
+   answer_type: slot | entity
+G. Causal recall (RC5) x 1: ask why something happened, referencing a cause from much earlier
+   answer_type: span
+H. Entity re-identification (RC6) x 1: ask whether current entity is the same one from before
+   answer_type: yesno
+I. Trigger (S4_R4) x {n_trigger}: user sets a monitoring condition, agent waits then fires
+   answer_type: entity | yesno
+J. Progressive answer (R3) x {n_r3}: ask a question whose answer unfolds over time — the agent responds multiple times as new info appears. E.g. "What ingredients are being added?" → response at each new ingredient. Provide response_segments (2-4 segments where the agent should respond) and partial_answers for each.
+   answer_type: entity | slot
+K. Multi-turn follow-up recall (RC7) x {n_rc7}: first a base Q&A happens at base_ask_segment, then much later (>24s) a follow-up question references that earlier conversation. The follow-up requires recall to retrieve the base Q&A context. Provide base_question, base_answer, base_ask_segment.
+   answer_type: slot | entity | yesno
 
-每个任务输出 JSON：
-{{"task_type":"R1|S3_R2|RC1|RC2|RC3|RC4|RC5|RC6|RC7|S4_R4","question":"自然口语化","support_segment":"seg_xx","ask_segment":"seg_xx","answer_segment":"seg_xx","expected_answer":"简短可验证","natural_response":"自然回答","why_recall":"为什么需要recall(仅recall类)","query_candidates":[{{"query":"短关键词 不是问句","time_bias":"past_far","target":"entity|action|ocr|procedure","topk":3}}]}}
+Example tasks:
+{{"task_type":"RC1","question":"What color was the apron the chef was wearing at the beginning?","support_segment":"seg_002","ask_segment":"seg_015","answer_segment":"seg_015","expected_answer":"red","answer_type":"slot","natural_response":"The chef was wearing a red apron.","why_recall":"The chef's apron was visible around t=8s but is now outside the 24s window at t=60s.","query_candidates":[{{"query":"chef apron color","time_bias":"past_far","target":"entity","topk":3}},{{"query":"apron beginning","time_bias":"past_far","target":"entity","topk":3}}]}}
 
-recall 类任务的 query_candidates 必须：
-- 不是问句，不用代词
-- 包含实体或物体锚点
-- 尽量短（5-15字），但能区分目标
-- 至少 2 个候选
+{{"task_type":"R3","question":"What ingredients are being added to the pan?","ask_segment":"seg_005","response_segments":["seg_005","seg_008","seg_011"],"partial_answers":["Adding oil","Now adding garlic","Adding the sliced onions"],"expected_answer":"oil, garlic, onions","answer_type":"entity","natural_response":"Oil, garlic, and sliced onions were added."}}
 
-输出 JSON 数组，不要解释。"""
+{{"task_type":"RC7","base_question":"What did the chef add to the soup?","base_answer":"Salt and pepper","base_ask_segment":"seg_003","question":"Earlier you said something was added to the soup — how much salt was it?","support_segment":"seg_003","ask_segment":"seg_015","answer_segment":"seg_015","expected_answer":"two pinches","answer_type":"slot","natural_response":"It was about two pinches of salt.","why_recall":"The base Q&A about soup ingredients happened at t=12s, now out of window at t=60s.","query_candidates":[{{"query":"salt added soup amount","time_bias":"past_far","target":"entity","topk":3}},{{"query":"soup seasoning","time_bias":"past_far","target":"entity","topk":3}}]}}
 
-THINK_ASK_PROMPT = """你是流视频 agent。以下是你当前能看到的视频帧 (t={window_start}s 到 t={window_end}s)。
+Output JSON for each task with these exact keys:
+{{"task_type":"R1|S3_R2|R3|RC1|RC2|RC3|RC4|RC5|RC6|RC7|S4_R4",
+  "question":"natural conversational English question",
+  "support_segment":"seg_xx (recall tasks only, otherwise null)",
+  "ask_segment":"seg_xx",
+  "answer_segment":"seg_xx (same as ask for R1/RC, later for S3_R2/S4_R4, null for R3)",
+  "expected_answer":"short verifiable answer",
+  "answer_type":"yesno|number|slot|entity|ordered_steps|span",
+  "natural_response":"1-2 sentence natural answer",
+  "why_recall":"reason (recall tasks only, otherwise null)",
+  "query_candidates":[{{"query":"short keywords NOT a question","time_bias":"past_far|past_recent|any","target":"entity|action|ocr|procedure","topk":3}}],
+  "response_segments":["seg_xx","seg_xx"] (R3 only, otherwise omit),
+  "partial_answers":["answer1","answer2"] (R3 only, otherwise omit),
+  "base_question":"..." (RC7 only),
+  "base_answer":"..." (RC7 only),
+  "base_ask_segment":"seg_xx" (RC7 only)}}
 
-用户刚问: "{question}"
+query_candidates rules (recall tasks only, at least 2):
+- NOT a question, no pronouns, no articles
+- Must contain entity or object anchor words
+- Short (2-6 words) but discriminative enough to retrieve the right segment
 
-请写出你的内部推理 (think)：
-- 判断当前可见帧中是否有回答这个问题的证据
-- 如果有，简述证据在哪
-- 如果没有，说明需要检索什么历史信息
-只写一段话(30-50字)，不要写 action。"""
+Output JSON array only, no explanation."""
 
-THINK_POST_RECALL_PROMPT = """你是流视频 agent。你刚触发了检索。
+THINK_ASK_PROMPT = """You are a streaming video agent. Below are the video frames you can currently see (t={window_start}s to t={window_end}s).
 
-前面的帧是检索到的历史片段 (t={support_start}s-{support_end}s)。
-后面的帧是你当前的视频画面 (t={window_start}s-{window_end}s)。
+The user just asked: "{question}"
 
-用户的问题是: "{question}"
+Write your internal reasoning (think) in 15-48 tokens:
+- Is there evidence in the visible frames to answer? If yes, state what and where.
+- If no, state what historical information is needed.
+Do not write an action. Output English only."""
 
-请结合检索到的历史帧和当前画面，写出你的推理 (think)：
-- 检索结果是否包含回答所需的信息
-- 你的判断和答案依据
-只写一段话(20-40字)，不要写 action。"""
+THINK_POST_RECALL_PROMPT = """You are a streaming video agent. You just triggered a recall.
 
-THINK_RESPONSE_PROMPT = """你是流视频 agent。以下是你当前能看到的视频帧 (t={window_start}s 到 t={window_end}s)。
+The first frames are retrieved historical segments (t={support_start}s-{support_end}s).
+The later frames are your current video view (t={window_start}s-{window_end}s).
 
-用户问: "{question}"
+The user's question is: "{question}"
 
-你判断当前帧中有足够的证据回答。请写出你的推理 (think)：
-- 证据在哪，看到了什么
-只写一句话(20-40字)，不要写 action。"""
+Write your reasoning (think) in 15-40 tokens:
+- Does the retrieved segment contain the needed evidence?
+- State your conclusion and the key evidence.
+Do not write an action. Output English only."""
 
-THINK_SILENT_PROMPT = """你是流视频 agent。以下是当前视频帧 (t={chunk_start}s-{chunk_end}s)。
+THINK_RESPONSE_PROMPT = """You are a streaming video agent. Below are the video frames you can currently see (t={window_start}s to t={window_end}s).
 
-请用一句话描述你此刻观察到的内容(15-25字)。不要写 action。"""
+User asked: "{question}"
 
-RECALL_PHRASING = ["之前", "前面", "刚才", "早些时候", "一开始"]
+The current frames contain sufficient evidence to answer. Write your reasoning (think) in 15-30 tokens:
+- State what evidence you see and where.
+Do not write an action. Output English only."""
+
+THINK_SILENT_PROMPT = """You are a streaming video agent. Below are the current video frames (t={chunk_start}s-{chunk_end}s).
+
+Describe what you observe right now in 10-25 tokens. Do not write an action. Output English only."""
+
+THINK_PROMPT = """You are a streaming video agent. Below are the current video frames (t={window_start}s to t={window_end}s).
+Current chunk: t={chunk_start}s-{chunk_end}s, happening: {chunk_description}
+
+{context}
+
+Write your internal reasoning in 15-48 tokens. Do not write an action. Output English only."""
+
+RECALL_PHRASING = ["earlier", "before", "previously", "a while ago", "at the beginning"]
+
+# ---------------------------------------------------------------------------
+# Per-step concurrency & token config (based on GPU memory analysis)
+# 8× MI300X 192GB, Qwen3.5-397B-A17B-FP8
+# ---------------------------------------------------------------------------
+
+STEP_CONFIG = {
+    "2a": {  # Segment annotation
+        "max_concurrent": 64,
+        "max_tokens": 512,
+        "temperature": 0.3,
+    },
+    "2b": {  # Task design
+        "max_concurrent": 64,
+        "max_tokens": 4096,
+        "temperature": 0.7,
+    },
+    "2d": {  # Think generation — 24 frames × 1500 = 36K+ per request
+        "max_concurrent": 32,
+        "max_tokens": 128,
+        "temperature": 0.5,
+    },
+}
 
 
 # ===================================================================
@@ -245,11 +313,13 @@ def extract_frames(video_path: str, output_dir: Path, fps: int = FPS) -> List[Di
          "-of", "default=noprint_wrappers=1:nokey=1", video_path],
         capture_output=True, text=True,
     )
+    if result.returncode != 0 or not result.stdout.strip():
+        raise RuntimeError(f"ffprobe failed for {video_path}: {result.stderr}")
     duration = float(result.stdout.strip())
 
     # Extract all frames at fps, resize to 720px short edge
     # 720px → ~1500 vision tokens per frame (good for OCR + visual details)
-    # Step 2d with 12 window frames → ~18K tokens, fits in max-model-len 32768
+    # Step 2d with 24 window frames → ~37.5K tokens, requires max-model-len >= 65536
     subprocess.run(
         ["ffmpeg", "-y", "-loglevel", "error", "-i", video_path,
          "-vf", f"fps={fps},scale='if(gt(iw,ih),720,-2)':'if(gt(iw,ih),-2,720)'",
@@ -329,7 +399,7 @@ def parse_annotation_result(raw: Optional[str], meta: Dict) -> Dict:
         "action": "",
         "entities": [],
         "visual_details": {},
-        "ocr": "无",
+        "ocr": "none",
         "change": "",
         "frame_paths": meta.get("frame_paths", []),
     }
@@ -337,15 +407,29 @@ def parse_annotation_result(raw: Optional[str], meta: Dict) -> Dict:
         return default
 
     try:
-        # Extract JSON from response
-        match = re.search(r'\{[\s\S]*\}', raw)
-        if match:
-            parsed = json.loads(match.group())
+        # Try direct parse first, then extract JSON block
+        parsed = None
+        try:
+            parsed = json.loads(raw.strip())
+        except (json.JSONDecodeError, ValueError):
+            # Find the first balanced JSON object
+            start = raw.find("{")
+            if start >= 0:
+                depth = 0
+                for i in range(start, len(raw)):
+                    if raw[i] == "{":
+                        depth += 1
+                    elif raw[i] == "}":
+                        depth -= 1
+                        if depth == 0:
+                            parsed = json.loads(raw[start:i + 1])
+                            break
+        if parsed:
             default.update({
                 "action": parsed.get("action", ""),
                 "entities": parsed.get("entities", []),
-                "visual_details": parsed.get("visual_details", {}),
-                "ocr": parsed.get("ocr", "无"),
+                "visual_details": parsed.get("visual_details", []),
+                "ocr": parsed.get("ocr", "none"),
                 "change": parsed.get("change", ""),
             })
     except (json.JSONDecodeError, ValueError):
@@ -375,13 +459,13 @@ def build_task_design_request(
             f"{seg.get('action', '')} | "
             f"entities: {seg.get('entities', [])} | "
             f"details: {json.dumps(seg.get('visual_details', {}), ensure_ascii=False)} | "
-            f"ocr: {seg.get('ocr', '无')} | "
+            f"ocr: {seg.get('ocr', 'none')} | "
             f"change: {seg.get('change', '')}"
         )
         anno_lines.append(line)
 
     # Calculate task counts based on video length
-    has_ocr = any(s.get("ocr", "无") != "无" for s in segments)
+    has_ocr = any(s.get("ocr", "none") != "none" for s in segments)
     has_steps = num_segments > 10  # Long enough for procedural
 
     n_r1 = 3
@@ -391,6 +475,8 @@ def build_task_design_request(
     n_rc3 = 2 if has_steps else 0
     n_rc4 = 1 if num_segments > 15 else 0
     n_trigger = 1
+    n_r3 = 1 if num_segments > 10 else 0  # progressive answer needs enough segments
+    n_rc7 = 1 if num_segments > 15 else 0  # follow-up needs base Q&A + 24s gap
 
     prompt = TASK_DESIGN_PROMPT.format(
         duration=f"{duration_sec:.0f}",
@@ -398,6 +484,7 @@ def build_task_design_request(
         annotations_text="\n".join(anno_lines),
         n_r1=n_r1, n_s3r2=n_s3r2, n_rc1=n_rc1, n_rc2=n_rc2,
         n_rc3=n_rc3, n_rc4=n_rc4, n_trigger=n_trigger,
+        n_r3=n_r3, n_rc7=n_rc7,
     )
 
     return {
@@ -417,12 +504,28 @@ def parse_task_design_result(
         return []
 
     try:
-        # Try to extract JSON array
-        match = re.search(r'\[[\s\S]*\]', raw)
-        if match:
-            tasks = json.loads(match.group())
-        else:
-            tasks = json.loads(raw)
+        # Try direct parse first
+        try:
+            tasks = json.loads(raw.strip())
+        except (json.JSONDecodeError, ValueError):
+            # Find the first balanced JSON array
+            start = raw.find("[")
+            if start < 0:
+                logger.warning("No JSON array found in task design for %s", video_id)
+                return []
+            depth = 0
+            tasks = None
+            for i in range(start, len(raw)):
+                if raw[i] == "[":
+                    depth += 1
+                elif raw[i] == "]":
+                    depth -= 1
+                    if depth == 0:
+                        tasks = json.loads(raw[start:i + 1])
+                        break
+            if tasks is None:
+                logger.warning("Unbalanced JSON array in task design for %s", video_id)
+                return []
     except (json.JSONDecodeError, ValueError):
         logger.warning("Failed to parse task design for %s", video_id)
         return []
@@ -467,23 +570,80 @@ def validate_task(
 
     task_type = task.get("task_type", "")
 
-    # Recall tasks: validate support timing
-    if task_type.startswith("RC"):
+    # RC7 must be checked BEFORE the generic RC* handler
+    if task_type == "RC7":
+        # Multi-turn follow-up recall
+        base_ask_seg = seg_map.get(task.get("base_ask_segment", ""))
+        if not base_ask_seg:
+            return None
+        if not task.get("base_question") or not task.get("base_answer"):
+            return None
+        if not support_seg:
+            # support_segment should be base_ask_segment for RC7
+            support_seg = base_ask_seg
+            task["support_segment"] = base_ask_seg["segment_id"]
+        task["support_time_sec"] = support_seg["start_sec"]
+        task["base_ask_time_sec"] = base_ask_seg["start_sec"]
+        task["need_recall"] = True
+        # Constraint: base Q&A + 24s < follow-up ask
+        gap = task["ask_time_sec"] - task["base_ask_time_sec"]
+        if gap < RECENT_WINDOW_SEC:
+            fixed_ask = task["base_ask_time_sec"] + RECENT_WINDOW_SEC + 2
+            if fixed_ask > duration_sec:
+                return None
+            task["ask_time_sec"] = fixed_ask
+            task["answer_time_sec"] = fixed_ask
+            task["timing_fixed"] = True
+            for s in segments:
+                if s["start_sec"] <= fixed_ask < s["end_sec"]:
+                    task["ask_segment"] = s["segment_id"]
+                    task["answer_segment"] = s["segment_id"]
+                    break
+
+    elif task_type == "R3":
+        task["need_recall"] = False
+        # Validate response_segments list
+        resp_segs = task.get("response_segments") or []
+        partial_answers = task.get("partial_answers") or []
+        if len(resp_segs) < 2:
+            return None
+        # Resolve all response segments to times
+        resp_times = []
+        for rs_id in resp_segs:
+            rs = seg_map.get(rs_id)
+            if not rs:
+                return None
+            resp_times.append(rs["start_sec"])
+        # Must be in ascending order
+        if resp_times != sorted(resp_times):
+            return None
+        task["response_times_sec"] = resp_times
+        task["answer_time_sec"] = resp_times[-1]  # last response
+        # Pad partial_answers if needed
+        if len(partial_answers) < len(resp_segs):
+            partial_answers.extend([""] * (len(resp_segs) - len(partial_answers)))
+        task["partial_answers"] = partial_answers[:len(resp_segs)]
+
+    elif task_type.startswith("RC"):
+        # Generic recall handler (RC1-RC6)
         if not support_seg:
             return None
         task["support_time_sec"] = support_seg["start_sec"]
         task["need_recall"] = True
-
         # Constraint: support + 24s < ask
         gap = task["ask_time_sec"] - task["support_time_sec"]
         if gap < RECENT_WINDOW_SEC:
-            # Try to fix: push ask_time forward
             fixed_ask = task["support_time_sec"] + RECENT_WINDOW_SEC + 2
             if fixed_ask > duration_sec:
-                return None  # Video too short
+                return None
             task["ask_time_sec"] = fixed_ask
             task["answer_time_sec"] = fixed_ask
             task["timing_fixed"] = True
+            for s in segments:
+                if s["start_sec"] <= fixed_ask < s["end_sec"]:
+                    task["ask_segment"] = s["segment_id"]
+                    task["answer_segment"] = s["segment_id"]
+                    break
 
     elif task_type == "S3_R2":
         task["need_recall"] = False
@@ -527,6 +687,7 @@ def _collect_window_frames(
     """Collect frames from segments within the recent window.
 
     Returns up to max_frames evenly sampled from the window.
+    Default 24 frames → 24 × 1500 = 36K vision tokens, requires max-model-len >= 65536.
     """
     window_start = max(0, ask_time - window_sec)
     window_segs = [
@@ -555,8 +716,8 @@ def build_think_requests(
     to avoid hallucination. Each request includes up to max_window_frames
     frames from the 24s window.
 
-    Token budget per request: ~24 frames × 600 tok + ~500 text ≈ 15K
-    Requires --max-model-len >= 16384 (32768 recommended).
+    Token budget per request: ~24 frames × 1500 tok + ~1500 text ≈ 37.5K
+    Requires --max-model-len >= 65536.
     """
     requests = []
     for task in tasks:
@@ -583,15 +744,15 @@ def build_think_requests(
 
         if task.get("need_recall"):
             context = (
-                f'用户刚问: "{task["question"]}"\n'
-                f"你正在看 t={window_start:.0f}s 到 t={ask_time:.0f}s 的视频帧。\n"
-                f"判断当前窗口内是否有足够信息回答，如果没有，说明需要检索哪些历史信息。"
+                f'User just asked: "{task["question"]}"\n'
+                f"You are viewing frames from t={window_start:.0f}s to t={ask_time:.0f}s.\n"
+                f"Determine whether the current window has enough information to answer. If not, explain what historical information needs to be retrieved."
             )
         else:
             context = (
-                f'用户刚问: "{task["question"]}"\n'
-                f"你正在看 t={window_start:.0f}s 到 t={ask_time:.0f}s 的视频帧。\n"
-                f"判断当前窗口内是否有足够信息回答。"
+                f'User just asked: "{task["question"]}"\n'
+                f"You are viewing frames from t={window_start:.0f}s to t={ask_time:.0f}s.\n"
+                f"Determine whether the current window has enough information to answer."
             )
 
         prompt = THINK_PROMPT.format(
@@ -631,10 +792,10 @@ def build_think_requests(
                 recall_all_frames = support_frames + current_frames
 
                 recall_prompt = (
-                    f"你是流视频 agent。你刚触发了检索，获得了历史片段 (t={support_seg['start_sec']:.0f}s) 的帧。\n"
-                    f"前 {len(support_frames)} 张是检索到的历史帧，后 {len(current_frames)} 张是当前画面。\n"
-                    f"用户的问题是: \"{task['question']}\"\n"
-                    f"请结合历史帧和当前画面写出你的推理(一句话，20-30字)。"
+                    f"You are a streaming video agent. You just triggered recall and retrieved historical frames (t={support_seg['start_sec']:.0f}s).\n"
+                    f"The first {len(support_frames)} frames are retrieved history, the last {len(current_frames)} frames are the current view.\n"
+                    f"The user's question is: \"{task['question']}\"\n"
+                    f"Combining history and current view, write your reasoning in 15-40 tokens. Output English only."
                 )
                 if recall_all_frames:
                     recall_content = build_content_with_images(recall_prompt, recall_all_frames)
@@ -670,7 +831,7 @@ def generate_triplets(tasks: List[Dict]) -> List[Dict]:
         control["ask_time_sec"] = task.get("support_time_sec", 0) + 2
         control["answer_time_sec"] = control["ask_time_sec"]
         control["need_recall"] = False
-        control["think_at_ask"] = "当前窗口内就能看到答案，直接回答。"
+        control["think_at_ask"] = "The answer is visible in the current window, responding directly."
         control["triplet_role"] = "control"
 
         # False-recall negative: add recall phrasing but evidence is visible
@@ -679,12 +840,14 @@ def generate_triplets(tasks: List[Dict]) -> List[Dict]:
         fn["task_type"] = "R7"
         prefix = random.choice(RECALL_PHRASING)
         q = fn["question"]
-        if not any(p in q for p in RECALL_PHRASING):
-            fn["question"] = f"{prefix}{q}"
+        if not any(p.lower() in q.lower() for p in RECALL_PHRASING):
+            # Lowercase the first char of original question after prefix
+            q_body = q[0].lower() + q[1:] if q else q
+            fn["question"] = f"{prefix.capitalize()}, {q_body}"
         fn["ask_time_sec"] = task.get("support_time_sec", 0) + 2
         fn["answer_time_sec"] = fn["ask_time_sec"]
         fn["need_recall"] = False
-        fn["think_at_ask"] = f"虽然用户说了'{prefix}'，但证据就在当前窗口里，不需要检索。"
+        fn["think_at_ask"] = f"Although the user said '{prefix}', the evidence is in the current window — no recall needed."
         fn["triplet_role"] = "false_negative"
 
         task["triplet_role"] = "recall_positive"
@@ -710,6 +873,16 @@ def assemble_episode(
     video_path: str,
 ) -> Dict:
     """Assemble a task into chunk-level SFT episode."""
+    task_type = task.get("task_type", "")
+
+    # ── R3: Progressive answer (multiple response chunks) ──
+    if task_type == "R3":
+        return _assemble_r3(task, segments, duration_sec, video_path)
+
+    # ── RC7: Multi-turn follow-up recall ──
+    if task_type == "RC7":
+        return _assemble_rc7(task, segments, duration_sec, video_path)
+
     ask_time = task["ask_time_sec"]
     answer_time = task["answer_time_sec"]
 
@@ -743,8 +916,9 @@ def assemble_episode(
         # Assistant message
         if task.get("need_recall") and is_ask_chunk:
             # Recall chunk
-            think = task.get("think_at_ask", "当前窗口内找不到答案，需要检索。")
-            query = task.get("query_candidates", [{}])[0] if task.get("query_candidates") else {
+            think = task.get("think_at_ask", "Cannot find the answer in the current window, need to recall.")
+            candidates = task.get("query_candidates") or []
+            query = candidates[0] if candidates else {
                 "query": task.get("expected_answer", ""),
                 "time_bias": "past_far",
                 "target": "entity",
@@ -771,17 +945,17 @@ def assemble_episode(
                     f'<item rank="1" start="{support_seg["start_sec"]:.1f}" '
                     f'end="{support_seg["end_sec"]:.1f}">'
                     f'caption: {support_seg.get("action", "")} '
-                    f'ocr: {support_seg.get("ocr", "无")}'
+                    f'ocr: {support_seg.get("ocr", "none")}'
                     f'</item>\n'
-                    f"</recall_result>\n继续按协议回答。"
+                    f"</recall_result>\nContinue following the protocol to respond."
                 )
             else:
-                recall_text = "<recall_result>\n<item>未找到</item>\n</recall_result>\n继续按协议回答。"
+                recall_text = "<recall_result>\n<item>Not found</item>\n</recall_result>\nContinue following the protocol to respond."
 
             messages.append({"role": "user", "content": recall_text})
 
             # Post-recall response
-            think_after = task.get("think_after_recall", "检索到相关信息，可以回答。")
+            think_after = task.get("think_after_recall", "Retrieved relevant information, can now answer.")
             messages.append({
                 "role": "assistant",
                 "content": (
@@ -794,7 +968,7 @@ def assemble_episode(
 
         elif is_ask_chunk or is_answer_chunk:
             # Response chunk (immediate or delayed answer)
-            think = task.get("think_at_ask", "当前画面有足够信息回答。")
+            think = task.get("think_at_ask", "The current frames have sufficient information to answer.")
             messages.append({
                 "role": "assistant",
                 "content": (
@@ -808,10 +982,16 @@ def assemble_episode(
 
         else:
             # Silent chunk
-            if seg:
-                think = seg.get("action", "场景进行中。")[:50]
+            is_waiting = (
+                task.get("task_type") in ("S3_R2", "S4_R4")
+                and ask_time <= t < answer_time
+            )
+            if is_waiting:
+                think = f"User asked about this, but the event hasn't occurred yet. Waiting."
+            elif seg:
+                think = seg.get("action", "Scene in progress.")[:50]
             else:
-                think = "继续观察。"
+                think = "Continuing to observe."
             messages.append({
                 "role": "assistant",
                 "content": f"<think>{think}</think><action>silent</action>",
@@ -819,14 +999,25 @@ def assemble_episode(
 
         t = chunk_end
 
-    # Build canonical answer
-    expected = task.get("expected_answer", "")
-    canonical = {"answer_type": "entity", "value": {"answer": expected}}
-    if expected.lower() in ("是", "否", "yes", "no"):
-        canonical["answer_type"] = "yesno"
-    elif re.match(r'^\d+', expected):
-        canonical["answer_type"] = "number"
+    return _make_episode(task, messages, video_path)
 
+
+def _build_canonical(task: Dict) -> Dict:
+    """Build canonical answer dict from task."""
+    expected = task.get("expected_answer", "")
+    answer_type = task.get("answer_type", "")
+    if answer_type not in ("yesno", "number", "slot", "entity", "ordered_steps", "span", "multiple_choice"):
+        if expected.lower() in ("yes", "no"):
+            answer_type = "yesno"
+        elif re.match(r'^\d+', expected):
+            answer_type = "number"
+        else:
+            answer_type = "entity"
+    return {"answer_type": answer_type, "value": {"answer": expected}}
+
+
+def _make_episode(task: Dict, messages: List[Dict], video_path: str) -> Dict:
+    """Build the final episode dict."""
     return {
         "episode_id": f"ep_{task['task_id']}",
         "task_id": task["task_id"],
@@ -835,11 +1026,218 @@ def assemble_episode(
         "video_id": task["video_id"],
         "video_path": video_path,
         "messages": messages,
-        "canonical_answer": canonical,
+        "canonical_answer": _build_canonical(task),
         "need_recall": task.get("need_recall", False),
         "difficulty": "hard" if task.get("need_recall") else "medium",
         "protocol_version": "3action",
     }
+
+
+def _assemble_r3(
+    task: Dict, segments: List[Dict], duration_sec: float, video_path: str,
+) -> Dict:
+    """Assemble R3 (progressive answer) episode.
+
+    User asks once, agent responds multiple times as new info appears.
+    Between responses the agent outputs silent (observing, waiting for more).
+    """
+    ask_time = task["ask_time_sec"]
+    resp_times = task.get("response_times_sec", [])
+    partial_answers = task.get("partial_answers", [])
+    if not resp_times:
+        resp_times = [ask_time]
+        partial_answers = [task.get("natural_response", task.get("expected_answer", ""))]
+
+    start_time = max(0, ask_time - AGENT_CHUNK_SEC * 2)
+    end_time = min(resp_times[-1] + AGENT_CHUNK_SEC * 2, duration_sec)
+
+    messages = [{"role": "system", "content": AGENT_SYSTEM_PROMPT}]
+    resp_idx = 0  # which response we're on
+    question_asked = False
+
+    t = start_time
+    while t < end_time:
+        chunk_end = min(t + AGENT_CHUNK_SEC, duration_sec)
+        is_ask_chunk = (t <= ask_time < chunk_end)
+
+        seg = None
+        for s in segments:
+            if s["start_sec"] <= t < s["end_sec"]:
+                seg = s
+                break
+
+        # User message
+        user_content = "<video>"
+        if is_ask_chunk:
+            user_content += f"\n<question>\n{task['question']}\n</question>"
+            question_asked = True
+        messages.append({"role": "user", "content": user_content})
+
+        # Check if this chunk matches a response time
+        is_resp_chunk = (
+            resp_idx < len(resp_times)
+            and t <= resp_times[resp_idx] < chunk_end
+        )
+
+        if is_resp_chunk:
+            answer_text = partial_answers[resp_idx] if resp_idx < len(partial_answers) else ""
+            if resp_idx == 0:
+                think = task.get("think_at_ask", "New information visible, responding.")
+            else:
+                think = f"New information appeared, updating answer ({resp_idx + 1}/{len(resp_times)})."
+            messages.append({
+                "role": "assistant",
+                "content": (
+                    f"<think>{think}</think>"
+                    f"<action>response</action>"
+                    f"<response>{answer_text}</response>"
+                ),
+            })
+            resp_idx += 1
+            if resp_idx >= len(resp_times):
+                break  # all responses done
+        elif question_asked and resp_idx < len(resp_times):
+            # Between responses: silent, waiting for more info
+            think = "Watching for more information to appear."
+            messages.append({
+                "role": "assistant",
+                "content": f"<think>{think}</think><action>silent</action>",
+            })
+        else:
+            # Before question
+            think = seg.get("action", "Scene in progress.")[:50] if seg else "Continuing to observe."
+            messages.append({
+                "role": "assistant",
+                "content": f"<think>{think}</think><action>silent</action>",
+            })
+
+        t = chunk_end
+
+    return _make_episode(task, messages, video_path)
+
+
+def _assemble_rc7(
+    task: Dict, segments: List[Dict], duration_sec: float, video_path: str,
+) -> Dict:
+    """Assemble RC7 (multi-turn follow-up recall) episode.
+
+    1. Base Q&A happens at base_ask_time (within window at that point)
+    2. Time passes, base Q&A leaves the window
+    3. Follow-up question at ask_time requires recall to retrieve base Q&A context
+    """
+    base_ask_time = task.get("base_ask_time_sec", 0)
+    ask_time = task["ask_time_sec"]
+
+    # Episode starts a few chunks before the base Q&A
+    start_time = max(0, base_ask_time - AGENT_CHUNK_SEC * 2)
+    end_time = min(ask_time + AGENT_CHUNK_SEC * 2, duration_sec)
+
+    messages = [{"role": "system", "content": AGENT_SYSTEM_PROMPT}]
+    base_done = False
+    followup_done = False
+
+    t = start_time
+    while t < end_time:
+        chunk_end = min(t + AGENT_CHUNK_SEC, duration_sec)
+        is_base_ask = (t <= base_ask_time < chunk_end) and not base_done
+        is_followup_ask = (t <= ask_time < chunk_end) and base_done and not followup_done
+
+        seg = None
+        for s in segments:
+            if s["start_sec"] <= t < s["end_sec"]:
+                seg = s
+                break
+
+        # User message
+        user_content = "<video>"
+        if is_base_ask:
+            user_content += f"\n<question>\n{task.get('base_question', '')}\n</question>"
+        elif is_followup_ask:
+            user_content += f"\n<question>\n{task['question']}\n</question>"
+        messages.append({"role": "user", "content": user_content})
+
+        # Assistant message
+        if is_base_ask:
+            # Base Q&A: immediate response (evidence is visible)
+            messages.append({
+                "role": "assistant",
+                "content": (
+                    f"<think>The answer is visible in the current frames.</think>"
+                    f"<action>response</action>"
+                    f"<response>{task.get('base_answer', '')}</response>"
+                ),
+            })
+            base_done = True
+
+        elif is_followup_ask:
+            # Follow-up: needs recall to retrieve base Q&A context
+            think = task.get("think_at_ask", "The earlier conversation is outside my window, need to recall.")
+            candidates = task.get("query_candidates") or []
+            query = candidates[0] if candidates else {
+                "query": task.get("base_question", ""),
+                "time_bias": "past_far",
+                "target": "dialogue",
+                "topk": 3,
+            }
+            messages.append({
+                "role": "assistant",
+                "content": (
+                    f"<think>{think}</think>"
+                    f"<action>recall</action>"
+                    f"<query>{json.dumps(query, ensure_ascii=False)}</query>"
+                ),
+            })
+
+            # Recall result
+            support_seg = None
+            for s in segments:
+                if s["segment_id"] == task.get("support_segment"):
+                    support_seg = s
+                    break
+            base_q = task.get("base_question", "")
+            base_a = task.get("base_answer", "")
+            if support_seg:
+                recall_text = (
+                    f"<recall_result>\n"
+                    f'<item rank="1" start="{support_seg["start_sec"]:.1f}" '
+                    f'end="{support_seg["end_sec"]:.1f}">'
+                    f'caption: {support_seg.get("action", "")} '
+                    f'Q: {base_q} A: {base_a}'
+                    f'</item>\n'
+                    f"</recall_result>\nContinue following the protocol to respond."
+                )
+            else:
+                recall_text = "<recall_result>\n<item>Not found</item>\n</recall_result>\nContinue following the protocol to respond."
+
+            messages.append({"role": "user", "content": recall_text})
+
+            # Post-recall response
+            think_after = task.get("think_after_recall", "Retrieved the earlier conversation, can now answer the follow-up.")
+            messages.append({
+                "role": "assistant",
+                "content": (
+                    f"<think>{think_after}</think>"
+                    f"<action>response</action>"
+                    f"<response>{task.get('natural_response', task.get('expected_answer', ''))}</response>"
+                ),
+            })
+            followup_done = True
+            break
+
+        else:
+            # Silent chunk
+            if seg:
+                think = seg.get("action", "Scene in progress.")[:50]
+            else:
+                think = "Continuing to observe."
+            messages.append({
+                "role": "assistant",
+                "content": f"<think>{think}</think><action>silent</action>",
+            })
+
+        t = chunk_end
+
+    return _make_episode(task, messages, video_path)
 
 
 # ===================================================================
@@ -924,7 +1322,7 @@ def assemble_final(
     rl = [
         ep for ep in episodes
         if ep.get("canonical_answer", {}).get("answer_type") in
-           ("yesno", "number", "entity", "multiple_choice")
+           ("yesno", "number", "entity", "slot", "multiple_choice")
     ]
 
     def write_jsonl(items, path):
@@ -981,7 +1379,7 @@ def print_statistics(
     print(f"  Total: {total_segs}")
     ocr_count = sum(
         1 for segs in annotations.values() for s in segs
-        if s.get("ocr", "无") != "无"
+        if s.get("ocr", "none") != "none"
     )
     print(f"  With OCR: {ocr_count} ({100*ocr_count/max(total_segs,1):.1f}%)")
 
@@ -1090,11 +1488,13 @@ async def run_pipeline(
         for a in all_annos_flat:
             video_annotations[a.get("video_id", "")].append(a)
     else:
-        logger.info("Step 2a: Annotating %d segments...", total_segs)
+        logger.info("Step 2a: Annotating %d segments (concurrent=%d)...",
+                     total_segs, STEP_CONFIG["2a"]["max_concurrent"])
         anno_requests = []
         for vid, segs in all_segments.items():
             anno_requests.extend(build_annotation_requests(vid, segs))
 
+        client.semaphore = asyncio.Semaphore(STEP_CONFIG["2a"]["max_concurrent"])
         results = await client.batch_chat(anno_requests, max_tokens=512, temperature=0.3)
         client.print_stats()
 
@@ -1118,7 +1518,8 @@ async def run_pipeline(
         with open(task_raw_path) as f:
             all_tasks_raw = [json.loads(l) for l in f if l.strip()]
     else:
-        logger.info("Step 2b: Designing tasks for %d videos...", len(videos))
+        logger.info("Step 2b: Designing tasks for %d videos (concurrent=%d)...",
+                     len(videos), STEP_CONFIG["2b"]["max_concurrent"])
         design_requests = []
         for v in videos:
             vid = v["video_id"]
@@ -1127,6 +1528,7 @@ async def run_pipeline(
                 req = build_task_design_request(vid, annos, v["duration_sec"])
                 design_requests.append(req)
 
+        client.semaphore = asyncio.Semaphore(STEP_CONFIG["2b"]["max_concurrent"])
         results = await client.batch_chat(design_requests, max_tokens=4096, temperature=0.7)
         client.print_stats()
 
@@ -1170,8 +1572,10 @@ async def run_pipeline(
         with open(task_pool_path) as f:
             verified_tasks = [json.loads(l) for l in f if l.strip()]
     else:
-        logger.info("Step 2d: Generating think content...")
+        logger.info("Step 2d: Generating think content (concurrent=%d)...",
+                     STEP_CONFIG["2d"]["max_concurrent"])
         think_requests = build_think_requests(verified_tasks, video_annotations)
+        client.semaphore = asyncio.Semaphore(STEP_CONFIG["2d"]["max_concurrent"])
         results = await client.batch_chat(think_requests, max_tokens=128, temperature=0.5)
         client.print_stats()
 

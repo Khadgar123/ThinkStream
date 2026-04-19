@@ -191,16 +191,16 @@ AGENT_SYSTEM_PROMPT_EN = (
 # ---------------------------------------------------------------------------
 
 TEACHER_TASK_PACK_SYSTEM = (
-    "你是流视频 agent 训练数据构造器。\n"
-    "输入不是原始视频，而是一个视频的结构化时间线，包括事件、OCR、ASR、实体、动作、因果关系和候选支持片段。\n"
-    "你的任务是一次生成多个高质量 streaming 任务，重点生成需要 recall 的样本。\n\n"
-    "硬性要求：\n"
-    "- 只能使用输入时间线中的证据，不允许臆造。\n"
-    "- 问题必须适合在线流视频场景。\n"
-    "- 对于 need_recall=true 的任务，ask_time 时 gold support 必须位于 recent window 之外。\n"
-    "- 优先生成可验证答案：yes/no、slot、number、entity、ordered_step。\n"
-    "- 每个任务输出 3 个 query candidates，用于后续自动检索验证。\n"
-    "- 不要输出长篇解释，只输出 JSON。"
+    "You are a streaming video agent training data constructor.\n"
+    "The input is not raw video but a structured timeline of a video, including events, OCR, ASR, entities, actions, causal relations, and candidate support segments.\n"
+    "Your task is to generate multiple high-quality streaming tasks at once, with emphasis on recall-required samples.\n\n"
+    "Hard requirements:\n"
+    "- Only use evidence from the input timeline. No fabrication.\n"
+    "- Questions must be suitable for online streaming video scenarios.\n"
+    "- For need_recall=true tasks, the gold support must be outside the recent window at ask_time.\n"
+    "- Prefer verifiable answers: yes/no, slot, number, entity, ordered_step.\n"
+    "- Output 3 query candidates per task for downstream automatic retrieval verification.\n"
+    "- Output JSON only, no explanations."
 )
 
 TEACHER_TASK_PACK_USER_TEMPLATE = (
@@ -209,7 +209,7 @@ TEACHER_TASK_PACK_USER_TEMPLATE = (
     "target_task_count = {target_task_count}\n\n"
     "timeline_json =\n{timeline_json}\n\n"
     "archive_summary =\n{archive_summary}\n\n"
-    "请输出：\n"
+    "Output:\n"
     '{{\n'
     '  "video_id": "...",\n'
     '  "tasks": [\n'
@@ -243,34 +243,34 @@ TEACHER_TASK_PACK_USER_TEMPLATE = (
 )
 
 TEACHER_QUERY_REPAIR_SYSTEM = (
-    "你是 recall query 压缩器。\n"
-    "你的目标是把\"当前问题 + 当前可见上下文 + gold support 摘要\"压缩成短检索 query。\n\n"
-    "规则：\n"
-    "- query 不是问句。\n"
-    "- query 不能用代词。\n"
-    "- query 必须包含实体或物体锚点。\n"
-    "- query 尽量短，但要保留区分性动作/属性/OCR/数字。\n"
-    "- 生成 3 个候选，从最短到最稳。\n"
-    "- 输出 JSON，不要解释。"
+    "You are a recall query compressor.\n"
+    "Your goal is to compress \"current question + visible context + gold support summary\" into a short retrieval query.\n\n"
+    "Rules:\n"
+    "- The query must not be a question.\n"
+    "- The query must not use pronouns.\n"
+    "- The query must contain entity or object anchors.\n"
+    "- Keep the query short but retain discriminative actions/attributes/OCR/numbers.\n"
+    "- Generate 3 candidates, from shortest to most robust.\n"
+    "- Output JSON only, no explanations."
 )
 
 TEACHER_RECALL_JUDGE_SYSTEM = (
-    "你是 recall necessity judge。\n"
-    "判断该 streaming 问题在给定 recent window 下是否真的需要 recall。\n\n"
-    "判定原则：\n"
-    "- 如果 recent window 内已经有充分证据，need_recall 必须为 false。\n"
-    "- 如果不给 recall 也能稳定答对，need_recall 必须为 false。\n"
-    "- 只有答案依赖 recent window 外支持证据时，need_recall 才能为 true。\n"
-    "- 输出严格 JSON。"
+    "You are a recall necessity judge.\n"
+    "Determine whether this streaming question truly requires recall given the recent window.\n\n"
+    "Judgment criteria:\n"
+    "- If the recent window already has sufficient evidence, need_recall must be false.\n"
+    "- If the question can be reliably answered without recall, need_recall must be false.\n"
+    "- need_recall is true only when the answer depends on support evidence outside the recent window.\n"
+    "- Output strict JSON."
 )
 
 TEACHER_REWRITE_SYSTEM = (
-    "你是流视频助手的话术重写器。\n"
-    "把 canonical answer 改写成自然、简短、在线口语化的 response。\n"
-    "要求：\n"
-    "- 不超过 2 句。\n"
-    "- 优先直接回答，不绕弯。\n"
-    "- 不要加入支持证据里没有的信息。"
+    "You are a response rewriter for a streaming video assistant.\n"
+    "Rewrite the canonical answer into a natural, concise, conversational response.\n"
+    "Requirements:\n"
+    "- No more than 2 sentences.\n"
+    "- Answer directly, do not beat around the bush.\n"
+    "- Do not add information not present in the supporting evidence."
 )
 
 # ---------------------------------------------------------------------------
@@ -278,18 +278,18 @@ TEACHER_REWRITE_SYSTEM = (
 # ---------------------------------------------------------------------------
 
 CAPTION_PROMPT = (
-    "请用1-2句中文描述这个4秒视频片段中发生了什么。\n"
-    "要求：\n"
-    "- 描述主要动作和参与实体\n"
-    "- 如果有明显的状态变化，请提及\n"
-    "- 不要推测画面外的内容\n"
-    "- 保持简洁"
+    "Describe what happens in this 4-second video segment in 1-2 sentences.\n"
+    "Requirements:\n"
+    "- Describe the main action and participating entities\n"
+    "- Mention any obvious state changes\n"
+    "- Do not speculate about content outside the frame\n"
+    "- Keep it concise"
 )
 
 OCR_PROMPT = (
-    "请提取这张图片中所有可见的文字内容。\n"
-    "如果没有可见文字，回复\"无\"。\n"
-    "只输出文字内容本身，不要添加解释。"
+    "Extract all visible text content from this image.\n"
+    "If there is no visible text, reply \"none\".\n"
+    "Output only the text content itself, no explanations."
 )
 
 # ---------------------------------------------------------------------------

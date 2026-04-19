@@ -109,39 +109,49 @@ class VLLMClient:
         max_tokens: int = 2048,
         temperature: float = 0.7,
         request_id: str = "",
+        max_retries: int = 3,
     ) -> Optional[str]:
-        """Make a single API call with semaphore-controlled concurrency."""
+        """Make a single API call with semaphore-controlled concurrency and retry."""
         async with self.semaphore:
             client = await self._get_client()
-            try:
-                response = await client.chat.completions.create(
-                    model=self.model,
-                    messages=messages,
-                    max_tokens=max_tokens,
-                    temperature=temperature,
-                )
-                result = response.choices[0].message.content
-                usage = response.usage
-                self.stats.completed += 1
-                if usage:
-                    self.stats.total_input_tokens += usage.prompt_tokens
-                    self.stats.total_output_tokens += usage.completion_tokens
-
-                # Progress log every 50 requests
-                if self.stats.completed % 50 == 0:
-                    logger.info(
-                        "Progress: %d/%d completed (%.1f req/s, %.1f tok/s)",
-                        self.stats.completed,
-                        self.stats.total,
-                        self.stats.throughput_rps,
-                        self.stats.throughput_tps,
+            for attempt in range(max_retries):
+                try:
+                    response = await client.chat.completions.create(
+                        model=self.model,
+                        messages=messages,
+                        max_tokens=max_tokens,
+                        temperature=temperature,
                     )
-                return result
-            except Exception as exc:
-                self.stats.failed += 1
-                self.stats.errors.append(f"{request_id}: {exc}")
-                logger.warning("Request %s failed: %s", request_id, exc)
-                return None
+                    result = response.choices[0].message.content
+                    usage = response.usage
+                    self.stats.completed += 1
+                    if usage:
+                        self.stats.total_input_tokens += usage.prompt_tokens
+                        self.stats.total_output_tokens += usage.completion_tokens
+
+                    # Progress log every 50 requests
+                    if self.stats.completed % 50 == 0:
+                        logger.info(
+                            "Progress: %d/%d completed (%.1f req/s, %.1f tok/s)",
+                            self.stats.completed,
+                            self.stats.total,
+                            self.stats.throughput_rps,
+                            self.stats.throughput_tps,
+                        )
+                    return result
+                except Exception as exc:
+                    if attempt < max_retries - 1:
+                        wait = 2 ** attempt
+                        logger.warning(
+                            "Request %s attempt %d failed: %s, retrying in %ds",
+                            request_id, attempt + 1, exc, wait,
+                        )
+                        await asyncio.sleep(wait)
+                    else:
+                        self.stats.failed += 1
+                        self.stats.errors.append(f"{request_id}: {exc}")
+                        logger.warning("Request %s failed after %d attempts: %s", request_id, max_retries, exc)
+                        return None
 
     async def batch_chat(
         self,
