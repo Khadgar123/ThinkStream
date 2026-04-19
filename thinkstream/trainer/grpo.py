@@ -43,17 +43,74 @@ _CHUNK_FORMAT_RE = re.compile(
     re.DOTALL,
 )
 
+# 3-action agent format regex
+_CHUNK_FORMAT_RE_AGENT = re.compile(
+    r"^<think>.*?</think>"
+    r"<action>(?:silent|response|recall)</action>"
+    r"(?:<response>.*?</response>|<query>\{.*?\}</query>)?"
+    r"<\|im_end\|>$",
+    re.DOTALL,
+)
 
-def _check_chunk_format(text: str) -> bool:
+_ACTION_RE = re.compile(r"<action>(silent|response|recall)</action>")
+
+_RESPONSE_RE_AGENT = re.compile(
+    r"<action>response</action><response>(.*?)</response>", re.DOTALL
+)
+
+
+def _check_chunk_format(text: str, agent_mode: bool = False) -> bool:
     """Return *True* if a single chunk's generated text matches the format."""
-    return _CHUNK_FORMAT_RE.match(text.strip()) is not None
+    regex = _CHUNK_FORMAT_RE_AGENT if agent_mode else _CHUNK_FORMAT_RE
+    return regex.match(text.strip()) is not None
 
 
-def _compute_format_reward(chunk_texts: List[str]) -> float:
+def _extract_action(text: str) -> str:
+    """Extract action type from a generated chunk. Returns 'silent'/'response'/'recall'/'unknown'."""
+    m = _ACTION_RE.search(text)
+    return m.group(1) if m else "unknown"
+
+
+def _compute_action_reward(
+    predicted_actions: List[str],
+    need_recall: bool,
+    wrong_action_penalty: float = 1.0,
+    over_recall_penalty: float = 0.3,
+) -> float:
+    """Evaluate whether the model chose the correct action sequence.
+
+    For need_recall=True samples:
+      recall → response = 1.0 (full credit)
+      direct response (if correct) = 0.3 (partial)
+      all silent = 0.0
+
+    For need_recall=False samples:
+      response (no recall) = 1.0
+      recall triggered = -over_recall_penalty
+      all silent = 0.0
+    """
+    if need_recall:
+        if "recall" in predicted_actions:
+            recall_idx = predicted_actions.index("recall")
+            if "response" in predicted_actions[recall_idx + 1:]:
+                return 1.0  # recall then response
+            return 0.5  # recall but no response after
+        if "response" in predicted_actions:
+            return 0.3  # direct response without recall
+        return 0.0  # all silent
+    else:
+        if "recall" in predicted_actions:
+            return max(0.0, 1.0 - over_recall_penalty)
+        if "response" in predicted_actions:
+            return 1.0
+        return 0.0
+
+
+def _compute_format_reward(chunk_texts: List[str], agent_mode: bool = False) -> float:
     """Return format reward in [0, 1]: proportion of chunks that match format."""
     if not chunk_texts:
         return 0.0
-    correct_count = sum(1 for t in chunk_texts if _check_chunk_format(t))
+    correct_count = sum(1 for t in chunk_texts if _check_chunk_format(t, agent_mode))
     return correct_count / len(chunk_texts)
 
 

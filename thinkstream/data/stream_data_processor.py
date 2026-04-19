@@ -437,6 +437,42 @@ SYSTEM_PROMPT = (
     "Your generated thoughts and responses should be continuous and fluent across the video chunks."
 )
 
+# --- 3-action agent protocol system prompts ---
+
+AGENT_SYSTEM_PROMPT = (
+    "你是流视频问答 agent。你会持续接收视频片段流。\n\n"
+    "每次 assistant turn 必须严格输出以下三种形式之一：\n"
+    "1) <think>...</think><action>silent</action>\n"
+    "2) <think>...</think><action>response</action><response>...</response>\n"
+    "3) <think>...</think><action>recall</action>"
+    '<query>{"query":"...","time_bias":"...","target":"...","topk":3}</query>\n\n'
+    "规则：\n"
+    "- 每个 turn 只允许一个 action。\n"
+    "- think 只写当前新增判断，不复述整段视频。\n"
+    "- 若当前 recent window 证据已足够，直接 response，不要 recall。\n"
+    "- 若问题依赖已离开 recent window 的历史内容，优先 recall。\n"
+    "- recall query 必须短、可检索、非完整问句、避免代词和泛词。\n"
+    "- 收到 <recall_result> 后，只能再输出 silent 或 response。\n"
+    "- 若当前 chunk 不该说话，输出 silent。"
+)
+
+AGENT_SYSTEM_PROMPT_EN = (
+    "You are a streaming video QA agent receiving a continuous stream of video chunks.\n\n"
+    "Each assistant turn must output exactly one of these three forms:\n"
+    "1) <think>...</think><action>silent</action>\n"
+    "2) <think>...</think><action>response</action><response>...</response>\n"
+    "3) <think>...</think><action>recall</action>"
+    '<query>{"query":"...","time_bias":"...","target":"...","topk":3}</query>\n\n'
+    "Rules:\n"
+    "- Only one action per turn.\n"
+    "- Think only about new observations in the current chunk. Do not restate the whole video.\n"
+    "- If the recent window has enough evidence, respond directly without recall.\n"
+    "- If the answer depends on content that has left the recent window, use recall.\n"
+    "- Recall queries must be short, searchable keywords — not full questions, no pronouns.\n"
+    "- After receiving <recall_result>, only output silent or response.\n"
+    "- If no speech is needed for the current chunk, output silent."
+)
+
 # Chat template without system prompt (for subsequent streaming chunks)
 QWEN_TEMPLATE_WO_SYSTEM = (
     "\n{% set image_count = namespace(value=0) %}"
@@ -589,6 +625,114 @@ def _build_messages(
 
         assistant_content = [{"type": "text", "text": final_content}]
         messages.append({"role": "assistant", "content": assistant_content})
+
+    total_covered_duration = min(video_chunks_count * video_chunk_size, video_duration)
+
+    video_meta = build_video_meta(
+        abs_path=abs_video_path,
+        total_start=0.0,
+        total_end=total_covered_duration,
+        num_chunks=video_chunks_count,
+    )
+
+    return {
+        "messages": messages,
+        "video_meta": video_meta,
+        "video_chunk_size": video_chunk_size,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Agent 3-action message builder (for Stage 6 sft_final.jsonl data)
+# ---------------------------------------------------------------------------
+
+AGENT_CHUNK_SEC = 2.0  # Fixed 2s chunk for agent data
+
+
+def _build_agent_messages(
+    item: Dict[str, Any], base_path: Path, remaining_video_chunks: int = 3
+) -> Dict[str, Any]:
+    """Build chat messages from a Stage 6 agent sft_final sample.
+
+    Unlike ``_build_messages`` which constructs content from raw
+    conversations + thoughts, this function reads pre-assembled messages
+    from the pipeline's Stage 6 output (which already contain the correct
+    ``<think>...<action>...<response>/<query>`` format).
+
+    The video is loaded using the ``videos`` field (recent buffer clip)
+    and optionally ``images`` (recall keyframes).
+
+    The assistant messages already have correct loss semantics:
+      - assistant (recall/response): model learns to generate → loss ON
+      - user (recall_result): oracle injection        → loss OFF (auto)
+    """
+    # The sample from Stage 6 already has pre-built messages.
+    # We just need to:
+    # 1. Resolve video paths to absolute paths
+    # 2. Build video_meta for the frame loading pipeline
+
+    pre_messages = item.get("messages", [])
+    if not pre_messages:
+        raise ValueError("Agent sample has no messages")
+
+    # Get video path from the sample's videos field
+    videos = item.get("videos", [])
+    video_path = videos[0] if videos else item.get("video_path", "")
+    if not video_path:
+        raise ValueError("Agent sample has no video path")
+
+    abs_video_path = str(_make_abs_paths(base_path, video_path))
+
+    # Determine video duration and chunk size
+    video_duration = _get_duration(abs_video_path)
+    video_chunk_size = AGENT_CHUNK_SEC
+
+    # Count video chunks in the messages (each user turn with <video> = 1 chunk)
+    video_chunks_count = 0
+    messages = []
+    for msg in pre_messages:
+        content = msg.get("content", "")
+        role = msg.get("role", "")
+
+        if role == "user":
+            # Check if this user message contains a video reference
+            if isinstance(content, str) and "<video>" in content:
+                # Convert text-based <video> placeholder to structured content
+                text_part = content.replace("<video>", "").strip()
+                user_content = [
+                    {
+                        "type": "video",
+                        "video": abs_video_path,
+                        "video_start": video_chunks_count * video_chunk_size,
+                        "video_end": min(
+                            (video_chunks_count + 1) * video_chunk_size,
+                            video_duration,
+                        ),
+                    },
+                ]
+                if text_part:
+                    user_content.append({"type": "text", "text": "\n" + text_part})
+                messages.append({"role": "user", "content": user_content})
+                video_chunks_count += 1
+            elif isinstance(content, str) and "<recall_result>" in content:
+                # Recall result injection — keep as plain text user message
+                # No video in this turn, model sees text only
+                messages.append({"role": "user", "content": content})
+            else:
+                messages.append(msg)
+        elif role == "assistant":
+            # Assistant content is already in 3-action format
+            if isinstance(content, str):
+                messages.append({
+                    "role": "assistant",
+                    "content": [{"type": "text", "text": content}],
+                })
+            else:
+                messages.append(msg)
+        elif role == "system":
+            messages.append(msg)
+        else:
+            messages.append(msg)
 
     total_covered_duration = min(video_chunks_count * video_chunk_size, video_duration)
 
@@ -837,6 +981,43 @@ def preprocess_qwen_visual(sources, processor, model_type: str) -> Dict:
     return full_result
 
 
+def preprocess_qwen_visual_agent(sources, processor, model_type: str) -> Dict:
+    """Preprocess a 3-action agent sample (Stage 6 sft_final format).
+
+    Uses ``_build_agent_messages`` instead of ``_build_messages``.
+    Labels are computed identically: only assistant spans get gradient.
+    Recall result (user) spans are automatically IGNORE_INDEX.
+    """
+    if len(sources) != 1:
+        raise ValueError(f"Expected 1 source, got {len(sources)}")
+    source = sources[0]
+    base_path = Path(source.get("data_path", ""))
+
+    build_result = _build_agent_messages(source, base_path)
+    messages = build_result["messages"]
+    video_meta = build_result["video_meta"]
+    video_chunk_size = build_result["video_chunk_size"]
+
+    full_result = process_messages_to_model_inputs(
+        messages=messages,
+        video_meta=video_meta,
+        video_chunk_size=video_chunk_size,
+        processor=processor,
+        model_type=model_type,
+        add_generation_prompt=False,
+    )
+
+    # SFT labels: only train on assistant turns
+    # recall_result turns are "user" role → auto IGNORE_INDEX
+    input_ids = full_result["input_ids"]
+    labels = torch.full_like(input_ids, IGNORE_INDEX)
+    for start, end in find_assistant_spans(input_ids[0].tolist(), processor.tokenizer):
+        labels[0, start:end] = input_ids[0, start:end]
+
+    full_result["labels"] = labels
+    return full_result
+
+
 class LazySupervisedDataset(Dataset):
     """Dataset for supervised fine-tuning."""
 
@@ -978,7 +1159,12 @@ class LazySupervisedDataset(Dataset):
             raise
 
     def _get_item(self, sources) -> Dict[str, torch.Tensor]:
-        data_dict = preprocess_qwen_visual(
+        # Route to agent preprocessor if 3-action protocol data
+        preprocess_fn = preprocess_qwen_visual
+        if sources and sources[0].get("protocol_version") == "3action":
+            preprocess_fn = preprocess_qwen_visual_agent
+
+        data_dict = preprocess_fn(
             sources,
             self.processor,
             model_type=self.model_type,

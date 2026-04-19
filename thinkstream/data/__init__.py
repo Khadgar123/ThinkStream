@@ -10,9 +10,28 @@ STREAM_RLVR = {
     "data_path": "./",
 }
 
+# --- Agent 3-action protocol datasets (Stage 6 output) ---
+STREAM_AGENT_SFT_A = {
+    "annotation_path": "/home/tione/notebook/gaozhenkun/hzh/data/ThinkStream/agent/sft_final/sft_v0.1.jsonl",
+    "data_path": "./",
+}
+
+STREAM_AGENT_SFT_B = {
+    "annotation_path": "/home/tione/notebook/gaozhenkun/hzh/data/ThinkStream/agent/sft_final/sft_v0.1.jsonl",
+    "data_path": "./",
+}
+
+STREAM_AGENT_RL = {
+    "annotation_path": "/home/tione/notebook/gaozhenkun/hzh/data/ThinkStream/agent/rl_pool.jsonl",
+    "data_path": "./",
+}
+
 data_dict = {
     "stream_cold_start": STREAM_COLD_START,
     "stream_rlvr": STREAM_RLVR,
+    "stream_agent_sft_a": STREAM_AGENT_SFT_A,
+    "stream_agent_sft_b": STREAM_AGENT_SFT_B,
+    "stream_agent_rl": STREAM_AGENT_RL,
 }
 
 
