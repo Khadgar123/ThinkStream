@@ -215,10 +215,13 @@ def extract_frames(video_path: str, output_dir: Path, fps: int = FPS) -> List[Di
     )
     duration = float(result.stdout.strip())
 
-    # Extract all frames at fps
+    # Extract all frames at fps, resize to 384px short edge
+    # 384px → ~600 vision tokens per frame in Qwen3.5 VL
+    # This keeps Step 2d (24 frames) under ~15K tokens total
     subprocess.run(
         ["ffmpeg", "-y", "-loglevel", "error", "-i", video_path,
-         "-vf", f"fps={fps}", "-q:v", "2",
+         "-vf", f"fps={fps},scale='if(gt(iw,ih),384,-2)':'if(gt(iw,ih),-2,384)'",
+         "-q:v", "2",
          str(output_dir / "frame_%06d.jpg")],
         check=True, capture_output=True,
     )
@@ -590,14 +593,19 @@ def build_think_requests(
                     support_seg = seg
                     break
             if support_seg:
+                # Recall think sees: support frames (evidence) + current chunk frames (context)
                 support_frames = support_seg.get("frame_paths", [])[:FRAMES_PER_SEGMENT]
+                current_frames = chunk_seg.get("frame_paths", [])[:2]  # 2 frames for current context
+                recall_all_frames = support_frames + current_frames
+
                 recall_prompt = (
-                    f"刚才检索到了历史片段 (t={support_seg['start_sec']:.0f}s)，以下是检索到的帧。\n"
+                    f"你是流视频 agent。你刚触发了检索，获得了历史片段 (t={support_seg['start_sec']:.0f}s) 的帧。\n"
+                    f"前 {len(support_frames)} 张是检索到的历史帧，后 {len(current_frames)} 张是当前画面。\n"
                     f"用户的问题是: \"{task['question']}\"\n"
-                    f"请根据检索到的帧写出你的推理(一句话)。"
+                    f"请结合历史帧和当前画面写出你的推理(一句话，20-30字)。"
                 )
-                if support_frames:
-                    recall_content = build_content_with_images(recall_prompt, support_frames)
+                if recall_all_frames:
+                    recall_content = build_content_with_images(recall_prompt, recall_all_frames)
                 else:
                     recall_content = recall_prompt
                 requests.append({
