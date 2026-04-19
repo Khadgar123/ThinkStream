@@ -1,3 +1,8 @@
 # Agent Data Construction Pipeline
-# Implements the 7-stage data generation flow described in
-# docs/agent_data_construction_detail.md
+# See docs/data_construction.md for the full design.
+#
+# Core scripts:
+#   generate_data.py  — Main pipeline (Step 1-6)
+#   vllm_client.py    — Async vLLM client with concurrency control
+#   config.py         — Shared constants and prompts
+#   utils.py          — Utility functions
