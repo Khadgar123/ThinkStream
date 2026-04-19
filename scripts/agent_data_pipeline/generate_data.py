@@ -157,18 +157,18 @@ RECALL_PHRASING = ["earlier", "before", "previously", "a while ago", "at the beg
 # ---------------------------------------------------------------------------
 
 STEP_CONFIG = {
-    "2a": {  # Segment annotation
-        "max_concurrent": 64,
+    "2a": {  # Segment annotation — 4 frames per request, ~6.8K tokens
+        "max_concurrent": 32,
         "max_tokens": 512,
         "temperature": 0.3,
     },
-    "2b": {  # Task design
-        "max_concurrent": 64,
+    "2b": {  # Task design — text only, ~8K tokens
+        "max_concurrent": 32,
         "max_tokens": 4096,
         "temperature": 0.7,
     },
-    "2d": {  # Think generation — 24 frames × 1500 = 36K+ per request
-        "max_concurrent": 32,
+    "2d": {  # Think generation — 24 frames, ~37.5K tokens per request
+        "max_concurrent": 16,
         "max_tokens": 128,
         "temperature": 0.5,
     },
