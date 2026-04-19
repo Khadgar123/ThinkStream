@@ -485,32 +485,79 @@ def validate_task(
 # ===================================================================
 
 
+def _collect_window_frames(
+    segments: List[Dict], ask_time: float, window_sec: int = RECENT_WINDOW_SEC,
+    max_frames: int = 24,
+) -> List[str]:
+    """Collect frames from segments within the recent window.
+
+    Returns up to max_frames evenly sampled from the window.
+    """
+    window_start = max(0, ask_time - window_sec)
+    window_segs = [
+        s for s in segments
+        if s["end_sec"] > window_start and s["start_sec"] < ask_time
+    ]
+    all_frames = []
+    for s in window_segs:
+        all_frames.extend(s.get("frame_paths", []))
+
+    if len(all_frames) <= max_frames:
+        return all_frames
+
+    step = len(all_frames) / max_frames
+    return [all_frames[int(i * step)] for i in range(max_frames)]
+
+
 def build_think_requests(
     tasks: List[Dict],
     video_annotations: Dict[str, List[Dict]],
+    max_window_frames: int = 24,
 ) -> List[Dict]:
-    """Build requests for 397B to write think content."""
+    """Build requests for 397B to write think content.
+
+    Sends ACTUAL FRAMES from the recent window (not text annotations)
+    to avoid hallucination. Each request includes up to max_window_frames
+    frames from the 24s window.
+
+    Token budget per request: ~24 frames × 600 tok + ~500 text ≈ 15K
+    Requires --max-model-len >= 16384 (32768 recommended).
+    """
     requests = []
     for task in tasks:
         video_id = task["video_id"]
         segments = video_annotations.get(video_id, [])
         ask_time = task["ask_time_sec"]
+        window_start = max(0, ask_time - RECENT_WINDOW_SEC)
 
-        # Find chunk description at ask time
+        # Collect actual frames from recent window
+        window_frames = _collect_window_frames(
+            segments, ask_time, RECENT_WINDOW_SEC, max_window_frames
+        )
+
+        # Find current chunk segment
         chunk_seg = None
         for seg in segments:
             if seg["start_sec"] <= ask_time < seg["end_sec"]:
                 chunk_seg = seg
                 break
         if not chunk_seg:
-            chunk_seg = segments[-1] if segments else {"action": "", "start_sec": 0, "end_sec": 0}
-
-        window_start = max(0, ask_time - RECENT_WINDOW_SEC)
+            chunk_seg = segments[-1] if segments else {
+                "action": "", "start_sec": 0, "end_sec": 0,
+            }
 
         if task.get("need_recall"):
-            context = f'用户刚问: "{task["question"]}"\n你判断是否需要检索历史片段来回答。'
+            context = (
+                f'用户刚问: "{task["question"]}"\n'
+                f"你正在看 t={window_start:.0f}s 到 t={ask_time:.0f}s 的视频帧。\n"
+                f"判断当前窗口内是否有足够信息回答，如果没有，说明需要检索哪些历史信息。"
+            )
         else:
-            context = f'用户刚问: "{task["question"]}"\n你判断当前窗口内是否有足够信息回答。'
+            context = (
+                f'用户刚问: "{task["question"]}"\n'
+                f"你正在看 t={window_start:.0f}s 到 t={ask_time:.0f}s 的视频帧。\n"
+                f"判断当前窗口内是否有足够信息回答。"
+            )
 
         prompt = THINK_PROMPT.format(
             window_start=f"{window_start:.0f}",
@@ -521,15 +568,21 @@ def build_think_requests(
             context=context,
         )
 
+        # Send actual window frames + prompt
+        if window_frames:
+            content = build_content_with_images(prompt, window_frames)
+        else:
+            content = prompt
+
         requests.append({
-            "messages": [{"role": "user", "content": prompt}],
+            "messages": [{"role": "user", "content": content}],
             "max_tokens": 128,
             "temperature": 0.5,
             "id": f"think_{task['task_id']}",
             "_meta": {"task_id": task["task_id"], "role": "ask"},
         })
 
-        # For recall tasks: also generate post-recall think
+        # For recall tasks: post-recall think with support segment frames
         if task.get("need_recall"):
             support_seg = None
             for seg in segments:
@@ -537,14 +590,18 @@ def build_think_requests(
                     support_seg = seg
                     break
             if support_seg:
-                recall_context = (
-                    f"刚才检索到了历史片段 (t={support_seg['start_sec']:.0f}s): "
-                    f"{support_seg.get('action', '')}\n"
+                support_frames = support_seg.get("frame_paths", [])[:FRAMES_PER_SEGMENT]
+                recall_prompt = (
+                    f"刚才检索到了历史片段 (t={support_seg['start_sec']:.0f}s)，以下是检索到的帧。\n"
                     f"用户的问题是: \"{task['question']}\"\n"
-                    f"请写出获得检索结果后的推理。"
+                    f"请根据检索到的帧写出你的推理(一句话)。"
                 )
+                if support_frames:
+                    recall_content = build_content_with_images(recall_prompt, support_frames)
+                else:
+                    recall_content = recall_prompt
                 requests.append({
-                    "messages": [{"role": "user", "content": recall_context}],
+                    "messages": [{"role": "user", "content": recall_content}],
                     "max_tokens": 64,
                     "temperature": 0.3,
                     "id": f"think_recall_{task['task_id']}",
