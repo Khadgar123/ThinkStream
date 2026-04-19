@@ -26,15 +26,12 @@ import asyncio
 import copy
 import json
 import logging
-import math
-import os
 import random
 import re
 import subprocess
-import time
 from collections import Counter, defaultdict
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from .vllm_client import VLLMClient, build_content_with_images, encode_image_base64
 
@@ -144,39 +141,6 @@ query_candidates rules (recall tasks only, at least 2):
 - Short (2-6 words) but discriminative enough to retrieve the right segment
 
 Output JSON array only, no explanation."""
-
-THINK_ASK_PROMPT = """You are a streaming video agent. Below are the video frames you can currently see (t={window_start}s to t={window_end}s).
-
-The user just asked: "{question}"
-
-Write your internal reasoning (think) in 15-48 tokens:
-- Is there evidence in the visible frames to answer? If yes, state what and where.
-- If no, state what historical information is needed.
-Do not write an action. Output English only."""
-
-THINK_POST_RECALL_PROMPT = """You are a streaming video agent. You just triggered a recall.
-
-The first frames are retrieved historical segments (t={support_start}s-{support_end}s).
-The later frames are your current video view (t={window_start}s-{window_end}s).
-
-The user's question is: "{question}"
-
-Write your reasoning (think) in 15-40 tokens:
-- Does the retrieved segment contain the needed evidence?
-- State your conclusion and the key evidence.
-Do not write an action. Output English only."""
-
-THINK_RESPONSE_PROMPT = """You are a streaming video agent. Below are the video frames you can currently see (t={window_start}s to t={window_end}s).
-
-User asked: "{question}"
-
-The current frames contain sufficient evidence to answer. Write your reasoning (think) in 15-30 tokens:
-- State what evidence you see and where.
-Do not write an action. Output English only."""
-
-THINK_SILENT_PROMPT = """You are a streaming video agent. Below are the current video frames (t={chunk_start}s-{chunk_end}s).
-
-Describe what you observe right now in 10-25 tokens. Do not write an action. Output English only."""
 
 THINK_PROMPT = """You are a streaming video agent. Below are the current video frames (t={window_start}s to t={window_end}s).
 Current chunk: t={chunk_start}s-{chunk_end}s, happening: {chunk_description}
@@ -398,7 +362,7 @@ def parse_annotation_result(raw: Optional[str], meta: Dict) -> Dict:
         "end_sec": meta["end_sec"],
         "action": "",
         "entities": [],
-        "visual_details": {},
+        "visual_details": [],
         "ocr": "none",
         "change": "",
         "frame_paths": meta.get("frame_paths", []),
@@ -818,11 +782,17 @@ def build_think_requests(
 
 
 def generate_triplets(tasks: List[Dict]) -> List[Dict]:
-    """Generate three-way binding for each recall task."""
+    """Generate three-way binding for each recall task.
+
+    RC7 (multi-turn follow-up) is excluded because its control would
+    reference a base conversation that doesn't exist in the control episode.
+    """
     triplets = []
     for task in tasks:
         if not task.get("need_recall"):
             continue
+        if task.get("task_type") == "RC7":
+            continue  # RC7 control needs base Q&A — skip triplet binding
 
         # Control: same question, ask when evidence is visible
         control = copy.deepcopy(task)
@@ -1462,6 +1432,7 @@ async def run_pipeline(
     # Extract frames
     frames_dir = out / "frames"
     all_segments = {}
+    failed_videos = []
     for v in videos:
         vid = v["video_id"]
         seg_cache = out / "segments" / f"{vid}.json"
@@ -1469,11 +1440,18 @@ async def run_pipeline(
             with open(seg_cache) as f:
                 all_segments[vid] = json.load(f)
         else:
-            segs = extract_frames(v["video_path"], frames_dir / vid)
-            all_segments[vid] = segs
-            seg_cache.parent.mkdir(parents=True, exist_ok=True)
-            with open(seg_cache, "w") as f:
-                json.dump(segs, f, ensure_ascii=False)
+            try:
+                segs = extract_frames(v["video_path"], frames_dir / vid)
+                all_segments[vid] = segs
+                seg_cache.parent.mkdir(parents=True, exist_ok=True)
+                with open(seg_cache, "w") as f:
+                    json.dump(segs, f, ensure_ascii=False)
+            except Exception as exc:
+                logger.warning("Failed to extract frames for %s: %s", vid, exc)
+                failed_videos.append(vid)
+    if failed_videos:
+        logger.warning("Skipped %d videos due to extraction failures", len(failed_videos))
+        videos = [v for v in videos if v["video_id"] not in failed_videos]
 
     total_segs = sum(len(s) for s in all_segments.values())
     logger.info("Total segments: %d", total_segs)
