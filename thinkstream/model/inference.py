@@ -1420,6 +1420,206 @@ def think_budget_sample_restricted(
     return next_token
 
 
+def think_budget_sample_agent(
+    next_token: torch.Tensor,
+    logits: torch.Tensor,
+    step: int,
+    generated_tokens: torch.Tensor,
+    generated_length: torch.Tensor,
+    think_end_token_id: int,
+    max_think_tokens: int,
+    eos_token_id: int,
+    action_start_token_id: int,
+    action_end_token_id: int,
+    response_start_token_id: int,
+    response_end_token_id: int,
+    query_start_token_id: int,
+    query_end_token_id: int,
+    restricted_token_ids: list[int],
+    allow_recall: bool = False,
+    is_query_window: bool = True,
+    allow_deferral: bool = False,
+    silent_first_token_id: int = 0,
+    response_first_token_id: int = 0,
+    recall_first_token_id: int = 0,
+    silent_token_ids: list[int] = None,
+    response_word_token_ids: list[int] = None,
+    recall_token_ids: list[int] = None,
+    **kwargs,
+) -> torch.Tensor:
+    """3-action agent sampling: ``</think> → <action> → word → </action> → tail``.
+
+    State machine after ``</think>``::
+
+        </think> → <action> → {silent|response|recall} → </action> → ...
+          silent:   → <|im_end|>
+          response: → <response> → argmax(restricted) → </response> → <|im_end|>
+          recall:   → <query> → free JSON → </query> → <|im_end|>
+
+    When ``allow_recall=False`` (eval), recall never fires.
+    """
+    # Phase 1: enforce thinking budget
+    next_token = think_budget_sample(
+        next_token=next_token,
+        logits=logits,
+        step=step,
+        generated_tokens=generated_tokens,
+        generated_length=generated_length,
+        think_end_token_id=think_end_token_id,
+        max_think_tokens=max_think_tokens,
+    )
+
+    if step == 0:
+        return next_token
+
+    device = next_token.device
+    B = next_token.size(0)
+    history = generated_tokens[:, :step]
+
+    # Locate first </think>
+    think_mask = history == think_end_token_id
+    has_think = think_mask.any(dim=1)
+    if not has_think.any():
+        return next_token
+
+    think_pos = think_mask.to(torch.long).argmax(dim=1)
+    tokens_after = (step - think_pos - 1) * has_think.long()
+
+    # Defaults for action word token sequences
+    if silent_token_ids is None:
+        silent_token_ids = [silent_first_token_id]
+    if response_word_token_ids is None:
+        response_word_token_ids = [response_first_token_id]
+    if recall_token_ids is None:
+        recall_token_ids = [recall_first_token_id]
+
+    action_word_len = max(
+        len(silent_token_ids), len(response_word_token_ids), len(recall_token_ids)
+    )
+
+    # --- State 0: Force <action> ---
+    force_action_start = has_think & (tokens_after == 0)
+    if force_action_start.any():
+        at = torch.full_like(next_token, action_start_token_id)
+        next_token = torch.where(force_action_start.unsqueeze(1), at, next_token)
+        return next_token
+
+    # --- State 1: First token of action word ---
+    force_action_choice = has_think & (tokens_after == 1)
+    if force_action_choice.any():
+        if not is_query_window:
+            ft = torch.full_like(next_token, silent_token_ids[0])
+            next_token = torch.where(force_action_choice.unsqueeze(1), ft, next_token)
+        elif not allow_deferral:
+            ft = torch.full_like(next_token, response_word_token_ids[0])
+            next_token = torch.where(force_action_choice.unsqueeze(1), ft, next_token)
+        else:
+            allowed = [silent_token_ids[0], response_word_token_ids[0]]
+            if allow_recall:
+                allowed.append(recall_token_ids[0])
+            a_ids = torch.tensor(allowed, device=device)
+            masked = torch.full_like(logits, float('-inf'))
+            masked[:, a_ids] = logits[:, a_ids]
+            chosen = masked.argmax(dim=-1).unsqueeze(1)
+            next_token = torch.where(force_action_choice.unsqueeze(1), chosen, next_token)
+        return next_token
+
+    # --- State 2..N: Remaining action word tokens ---
+    batch_indices = torch.arange(B, device=device)
+    first_action_token = generated_tokens[batch_indices, think_pos + 2]
+
+    for off in range(1, action_word_len):
+        s = 1 + off
+        force = has_think & (tokens_after == s)
+        if not force.any():
+            continue
+        for ids in [silent_token_ids, response_word_token_ids, recall_token_ids]:
+            if off < len(ids):
+                match = force & (first_action_token == ids[0])
+                if match.any():
+                    ft = torch.full_like(next_token, ids[off])
+                    next_token = torch.where(match.unsqueeze(1), ft, next_token)
+
+    # --- Force </action> ---
+    aes = 1 + action_word_len
+    force_ae = has_think & (tokens_after == aes)
+    if force_ae.any():
+        ft = torch.full_like(next_token, action_end_token_id)
+        next_token = torch.where(force_ae.unsqueeze(1), ft, next_token)
+        return next_token
+
+    # --- Post-</action> states ---
+    pao = tokens_after - aes - 1
+    is_post = has_think & (tokens_after > aes)
+    if not is_post.any():
+        return next_token
+
+    is_s = is_post & (first_action_token == silent_token_ids[0])
+    is_r = is_post & (first_action_token == response_word_token_ids[0])
+    is_rc = is_post & (first_action_token == recall_token_ids[0])
+
+    # Silent: → <|im_end|>
+    f_eos_s = is_s & (pao == 0)
+    if f_eos_s.any():
+        next_token = torch.where(
+            f_eos_s.unsqueeze(1),
+            torch.full_like(next_token, eos_token_id),
+            next_token,
+        )
+
+    # Response: → <response> → restricted → </response> → <|im_end|>
+    f_rs = is_r & (pao == 0)
+    f_rv = is_r & (pao == 1)
+    f_re = is_r & (pao == 2)
+    f_eos_r = is_r & (pao == 3)
+    if f_rs.any():
+        next_token = torch.where(
+            f_rs.unsqueeze(1),
+            torch.full_like(next_token, response_start_token_id),
+            next_token,
+        )
+    if f_rv.any() and restricted_token_ids:
+        r_ids = torch.tensor(restricted_token_ids, device=device, dtype=torch.long)
+        top1 = r_ids[logits[:, r_ids].argmax(dim=-1)]
+        next_token = torch.where(f_rv.unsqueeze(1), top1.unsqueeze(1), next_token)
+    if f_re.any():
+        next_token = torch.where(
+            f_re.unsqueeze(1),
+            torch.full_like(next_token, response_end_token_id),
+            next_token,
+        )
+    if f_eos_r.any():
+        next_token = torch.where(
+            f_eos_r.unsqueeze(1),
+            torch.full_like(next_token, eos_token_id),
+            next_token,
+        )
+
+    # Recall: → <query> → free JSON → </query> → <|im_end|>
+    f_qs = is_rc & (pao == 0)
+    if f_qs.any():
+        next_token = torch.where(
+            f_qs.unsqueeze(1),
+            torch.full_like(next_token, query_start_token_id),
+            next_token,
+        )
+    if is_rc.any():
+        qe_mask = history == query_end_token_id
+        has_qe = is_rc & qe_mask.any(dim=1)
+        if has_qe.any():
+            qe_pos = qe_mask.to(torch.long).argmax(dim=1)
+            after_qe = (step - qe_pos - 1) * has_qe.long()
+            f_eos_rc = has_qe & (after_qe == 0)
+            if f_eos_rc.any():
+                next_token = torch.where(
+                    f_eos_rc.unsqueeze(1),
+                    torch.full_like(next_token, eos_token_id),
+                    next_token,
+                )
+
+    return next_token
+
+
 @torch.inference_mode()
 def streaming_video_chat(
     engine: "StreamingWindowInferenceEngine",
