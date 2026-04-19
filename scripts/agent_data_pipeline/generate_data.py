@@ -1086,31 +1086,45 @@ def _assemble_r3(
     return _make_episode(task, messages, video_path)
 
 
+_RC7_CONTEXT_CHUNKS = 3  # silent chunks to keep around each key event
+
+
 def _assemble_rc7(
     task: Dict, segments: List[Dict], duration_sec: float, video_path: str,
 ) -> Dict:
     """Assemble RC7 (multi-turn follow-up recall) episode.
 
     1. Base Q&A happens at base_ask_time (within window at that point)
-    2. Time passes, base Q&A leaves the window
+    2. Gap is truncated to _RC7_CONTEXT_CHUNKS silent chunks (avoids 30+ filler silents)
     3. Follow-up question at ask_time requires recall to retrieve base Q&A context
     """
     base_ask_time = task.get("base_ask_time_sec", 0)
     ask_time = task["ask_time_sec"]
 
-    # Episode starts a few chunks before the base Q&A
-    start_time = max(0, base_ask_time - AGENT_CHUNK_SEC * 2)
-    end_time = min(ask_time + AGENT_CHUNK_SEC * 2, duration_sec)
+    # Build two windows: around base Q&A and around follow-up, skip the gap
+    base_start = max(0, base_ask_time - AGENT_CHUNK_SEC * _RC7_CONTEXT_CHUNKS)
+    base_end = base_ask_time + AGENT_CHUNK_SEC * (_RC7_CONTEXT_CHUNKS + 1)
+    followup_start = max(base_end, ask_time - AGENT_CHUNK_SEC * _RC7_CONTEXT_CHUNKS)
+    followup_end = min(ask_time + AGENT_CHUNK_SEC * 2, duration_sec)
+
+    # Collect chunk times from both windows
+    chunk_times = []
+    t = base_start
+    while t < base_end:
+        chunk_times.append(t)
+        t += AGENT_CHUNK_SEC
+    t = followup_start
+    while t < followup_end:
+        chunk_times.append(t)
+        t += AGENT_CHUNK_SEC
 
     messages = [{"role": "system", "content": AGENT_SYSTEM_PROMPT}]
     base_done = False
-    followup_done = False
 
-    t = start_time
-    while t < end_time:
-        chunk_end = min(t + AGENT_CHUNK_SEC, duration_sec)
+    for t in chunk_times:
+        chunk_end = t + AGENT_CHUNK_SEC
         is_base_ask = (t <= base_ask_time < chunk_end) and not base_done
-        is_followup_ask = (t <= ask_time < chunk_end) and base_done and not followup_done
+        is_followup_ask = (t <= ask_time < chunk_end) and base_done
 
         seg = None
         for s in segments:
@@ -1128,7 +1142,6 @@ def _assemble_rc7(
 
         # Assistant message
         if is_base_ask:
-            # Base Q&A: immediate response (evidence is visible)
             messages.append({
                 "role": "assistant",
                 "content": (
@@ -1140,7 +1153,6 @@ def _assemble_rc7(
             base_done = True
 
         elif is_followup_ask:
-            # Follow-up: needs recall to retrieve base Q&A context
             think = task.get("think_at_ask", "The earlier conversation is outside my window, need to recall.")
             candidates = task.get("query_candidates") or []
             query = candidates[0] if candidates else {
@@ -1181,7 +1193,6 @@ def _assemble_rc7(
 
             messages.append({"role": "user", "content": recall_text})
 
-            # Post-recall response
             think_after = task.get("think_after_recall", "Retrieved the earlier conversation, can now answer the follow-up.")
             messages.append({
                 "role": "assistant",
@@ -1191,11 +1202,9 @@ def _assemble_rc7(
                     f"<response>{task.get('natural_response', task.get('expected_answer', ''))}</response>"
                 ),
             })
-            followup_done = True
             break
 
         else:
-            # Silent chunk
             if seg:
                 think = seg.get("action", "Scene in progress.")[:50]
             else:
@@ -1204,8 +1213,6 @@ def _assemble_rc7(
                 "role": "assistant",
                 "content": f"<think>{think}</think><action>silent</action>",
             })
-
-        t = chunk_end
 
     return _make_episode(task, messages, video_path)
 
@@ -1439,6 +1446,9 @@ async def run_pipeline(
         if seg_cache.exists():
             with open(seg_cache) as f:
                 all_segments[vid] = json.load(f)
+            # Update duration from actual segments
+            if all_segments[vid]:
+                v["duration_sec"] = max(v["duration_sec"], all_segments[vid][-1]["end_sec"])
         else:
             try:
                 segs = extract_frames(v["video_path"], frames_dir / vid)
@@ -1446,6 +1456,9 @@ async def run_pipeline(
                 seg_cache.parent.mkdir(parents=True, exist_ok=True)
                 with open(seg_cache, "w") as f:
                     json.dump(segs, f, ensure_ascii=False)
+                # Update duration from ffprobe-based segments
+                if segs:
+                    v["duration_sec"] = max(v["duration_sec"], segs[-1]["end_sec"])
             except Exception as exc:
                 logger.warning("Failed to extract frames for %s: %s", vid, exc)
                 failed_videos.append(vid)
