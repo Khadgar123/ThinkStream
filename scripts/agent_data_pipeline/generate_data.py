@@ -991,11 +991,15 @@ def _build_canonical(task: Dict) -> Dict:
 
 def _make_episode(task: Dict, messages: List[Dict], video_path: str) -> Dict:
     """Build the final episode dict."""
+    # Recall tasks without triplet binding (e.g. RC7) should still be recall_positive
+    sample_type = task.get("triplet_role", "simple")
+    if sample_type == "simple" and task.get("need_recall"):
+        sample_type = "recall_positive"
     return {
         "episode_id": f"ep_{task['task_id']}",
         "task_id": task["task_id"],
         "task_type": task.get("task_type", ""),
-        "sample_type": task.get("triplet_role", "simple"),
+        "sample_type": sample_type,
         "video_id": task["video_id"],
         "video_path": video_path,
         "messages": messages,
@@ -1346,6 +1350,9 @@ def print_statistics(
     # Video stats
     print(f"\n--- Videos ---")
     print(f"  Total: {len(videos)}")
+    if not videos:
+        print("  No videos processed.")
+        return
     durations = [v["duration_sec"] for v in videos]
     print(f"  Duration: mean={sum(durations)/len(durations):.0f}s, "
           f"min={min(durations):.0f}s, max={max(durations):.0f}s")
