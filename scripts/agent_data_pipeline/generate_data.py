@@ -48,6 +48,7 @@ RECENT_WINDOW_SEC = 24
 AGENT_CHUNK_SEC = 2
 SEGMENT_SEC = 4
 FPS = 2  # frames per second for extraction
+FRAMES_PER_SEGMENT = 4  # keyframes sent to 397B per segment (1fps coverage)
 
 AGENT_SYSTEM_PROMPT = (
     "你是流视频问答 agent。你会持续接收视频片段流。\n\n"
@@ -237,11 +238,21 @@ def extract_frames(video_path: str, output_dir: Path, fps: int = FPS) -> List[Di
                 frame_paths.append(str(fp))
 
         if frame_paths:
+            # Select evenly spaced keyframes (1fps = 4 frames per 4s segment)
+            n = min(FRAMES_PER_SEGMENT, len(frame_paths))
+            if len(frame_paths) <= n:
+                selected_frames = frame_paths
+            else:
+                step = len(frame_paths) / n
+                indices = [int(i * step) for i in range(n)]
+                selected_frames = [frame_paths[i] for i in indices]
+
             segments.append({
                 "segment_id": f"seg_{seg_idx // seg_frames:03d}",
                 "start_sec": start_sec,
                 "end_sec": end_sec,
-                "frame_paths": frame_paths[:2],  # 2 keyframes per segment
+                "frame_paths": selected_frames,
+                "all_frame_paths": frame_paths,  # keep full set for later use
             })
 
     return segments
