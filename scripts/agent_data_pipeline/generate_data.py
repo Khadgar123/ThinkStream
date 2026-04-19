@@ -250,12 +250,37 @@ def select_videos(
     if len(selected) > num_videos:
         selected = random.sample(selected, num_videos)
 
-    # Build video list with full paths
+    # Build video list with full paths (apply path mapping for Streamo)
+    VM = Path(video_root) / "datasets" / "VideoMind-Dataset"
+    LLAVA = Path(video_root) / "datasets" / "LLaVA-Video-178K"
+    PATH_MAP = {
+        "LLaVA_Video": str(LLAVA),
+        "QVHighlight": str(VM / "qvhighlights" / "videos"),
+        "didemo": str(VM / "didemo" / "videos"),
+        "ActivityNet": str(VM / "activitynet" / "videos"),
+        "coin": str(VM / "coin" / "videos"),
+        "queryd": str(VM / "queryd" / "videos"),
+        "YouCookv2": str(VM / "youcook2" / "videos"),
+        "tacos": str(VM / "tacos" / "videos"),
+        "Koala": str(Path(video_root) / "datasets" / "Koala"),
+        "how_to_step": str(Path(video_root) / "datasets" / "how_to_step"),
+        "how_to_caption": str(Path(video_root) / "datasets" / "how_to_caption"),
+    }
+
     result = []
     for v in selected:
         vpath = v["video_path"]
         if not Path(vpath).is_absolute():
-            vpath = str(Path(video_root) / vpath)
+            top = vpath.split("/")[0]
+            mapped_base = PATH_MAP.get(top)
+            if mapped_base and top == "LLaVA_Video":
+                rest = "/".join(vpath.split("/")[1:])
+                vpath = str(Path(mapped_base) / rest)
+            elif mapped_base:
+                filename = vpath.split("/")[-1]
+                vpath = str(Path(mapped_base) / filename)
+            else:
+                vpath = str(Path(video_root) / vpath)
         result.append({
             "video_id": v["video_name"].replace(".mp4", ""),
             "video_path": vpath,
