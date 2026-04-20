@@ -1,0 +1,679 @@
+有问题，但这版已经把上一轮最大的结构性坑修掉了。现在剩下的主要是边界定义、样本格式、检索/压缩一致性、示例与规则不一致这些问题。整体判断是：v5.0 的主方向可以保留，但还需要再补一层“状态机定义”和“可答性/检索闭环验证”，否则还是会有不少高质量表面下的噪声样本。
+
+下面按严重程度说。
+
+1. 最大新问题：recall 之后的 post-recall 样本可能丢失原始问题
+
+你现在在 recall 后 follow-up 样本里写的是：
+
+"recall_result": {...},
+"user_input": "Continue following the protocol to respond."
+
+但这个 post-recall input 里没有显式保留原始问题：
+
+How much salt did the chef add?
+
+如果 memory block 里也没有 pending question，那么模型在第二步只看到 recall_result 和一句 “Continue”，它其实不知道自己要回答哪个问题。它可能靠 recall_result 猜，但这会训练出一种错误模式：只要拿到检索结果，就根据检索结果自由回答，而不是围绕原始用户问题回答。
+
+建议把 post-recall input 改成：
+
+<pending type="awaiting_recall_response" since="44">
+How much salt did the chef add?
+</pending>
+
+<recall_result source="historical_frames" time="28-30">
+...
+</recall_result>
+
+[user_input]
+Continue.
+
+或者更直接：
+
+{
+  "user_question": "How much salt did the chef add?",
+  "recall_result": {...}
+}
+
+这一点要强制写进格式规范。v5 已经引入了 pending 字段和 recalled frames 区分，这是对的，但 post-recall 样本目前还没有把 pending question 和 recall_result 绑定起来。
+
+2. recall_turn、result_turn、response_turn 不能打包成一个 output
+
+v5 说训练是 per-timestep 独立样本，只监督当前 output，这个方向是对的。但在 generate_recall_output() 里又返回了：
+
+{
+  "recall_turn": ...,
+  "result_turn": recall_result,
+  "response_turn": ...
+}
+
+这容易重新把多步链条混成一个训练目标。正确做法应该是拆成两条或三条独立样本：
+
+样本 1：
+input = memory + visual_window + user_question
+output = observation + action=recall + query
+
+样本 2：
+input = memory + visual_window + pending_question + recall_result
+output = observation + action=response + response
+
+可选样本 3：
+input = 下一 timestep memory + visual_window
+output = silent / response / compress
+
+recall_result 永远是系统/tool 注入的 input，不应该出现在模型要生成的 output 里。否则模型可能学会“自造检索结果”。
+
+3. 示例里有一个严重的 action minimality 冲突：视觉窗口已经包含被 recall 的片段
+
+v5 示例中，t=44 时：
+
+"visual_window": {"video_start": 20, "video_end": 44, "frames": 24}
+
+而 salt 的证据时间是：
+
+[28-30]
+
+这意味着 salt 片段仍然在当前视觉窗口 20-44 里。按你自己的最小动作原则，答案如果在当前视觉帧中可见，gold_action 应该是 response，不是 recall。但示例仍把它标成 recall。
+
+这个问题非常危险，因为它会直接污染 action 标签。
+
+要修有两种方式：
+
+方式 A：
+把 ask_time 往后放，例如 t=60。
+visual_window = [36-60]
+salt [28-30] 已经离开视觉窗口 → recall 合理。
+
+方式 B：
+把视觉窗口缩短，例如只保留最近 4 chunks。
+t=44 时 visual_window = [36-44]
+salt [28-30] 不在窗口 → recall 合理。
+
+同时所有样本都要加一个硬检查：
+
+assert support_time not in current_visual_window
+
+对于 recall-required 样本，这个断言应该必须成立。
+
+4. 压缩触发条件和“不能压缩视觉窗口内内容”存在逻辑冲突
+
+你现在写的是：
+
+VISUAL_WINDOW_CHUNKS = 12
+COMPRESS_THRESHOLD = 10
+COMPRESS_RANGE = 10
+
+同时又规定合法压缩范围：
+
+不能包含视觉窗口内的新 observations
+
+如果视觉窗口是最近 12 个 chunks，而 recent_observations 只有 10 条就触发压缩，那么这 10 条大概率还都在视觉窗口里。这样按规则其实没有任何合法压缩范围。
+
+这里需要明确二选一。
+
+方案 A：允许压缩仍在视觉窗口中的文本 observation
+
+也就是压缩只操作文本 memory，不操作视觉帧。即使 [20-40] 的 observation 被压缩了，只要对应视频帧还在 visual_window 中，模型仍然能从视觉上回答。这是可行的，但你就要删掉“不能包含视觉窗口内 observations”这条，改成：
+
+不能包含当前 chunk / 刚生成但还未稳定的 observation；
+允许压缩仍在视觉窗口内的旧文本 observation，
+因为视觉帧是否保留由 FIFO 独立决定。
+方案 B：严格不压缩视觉窗口内内容
+
+那触发条件必须改成：
+
+eligible_observations = observations whose end_time < visual_window_start
+
+if len(eligible_observations) >= COMPRESS_RANGE:
+    compress eligible_observations[:COMPRESS_RANGE]
+
+并且 COMPRESS_THRESHOLD 应该大于 VISUAL_WINDOW_CHUNKS + COMPRESS_RANGE，否则早期没有可压缩内容。
+
+我更建议方案 B，因为它更干净，能避免压缩时模型借助当前视觉窗口补写 summary。
+
+5. compressed_segments 仍然会无限增长
+
+v5 的 token 预算里假设：
+
+压缩段 ≤5 × 150 = ≤750 tokens
+
+但方案没有定义第 6 个、第 10 个、第 20 个 compressed segment 出现时怎么办。对于 300s 视频，如果每 20s 压缩一次，很快就超过 5 段。v5 虽然说单层替换，但没有真正的 compressed segment 上限策略。
+
+需要补一个明确策略：
+
+if len(compressed_segments) > MAX_COMPRESSED_SEGMENTS:
+    merge oldest k summaries into a super-summary
+
+或者：
+
+context memory:
+  只保留最近 K 个 compressed summaries
+
+retrieval archive:
+  保存所有 raw observations / historical frames / old summaries
+
+这会引出一个更重要的设计点：上下文 memory 和检索 archive 必须分开定义。
+
+6. 需要明确 raw observations 被压缩后是否还能被 recall 检索
+
+v5 说压缩会把 observations 替换成 compressed_summary；但 recall result 的来源又包括：
+
+student observation
+compressed summary
+historical frames
+
+这里有个潜在矛盾：
+
+如果 raw observations 被压缩后彻底删除：
+  recall 就不能再从 raw student observation 检索，只能从 summary 或 historical frames 检索。
+
+如果 raw observations 被压缩后仍进入 retrieval archive：
+  那压缩只是从上下文中删除，不是从检索库中删除。
+
+这两种系统完全不同。建议明确写成：
+
+context_memory:
+  compressed_segments + recent_observations
+  进入模型上下文，受 token budget 限制。
+
+retrieval_archive:
+  all_student_observations + all_compressed_summaries + historical_frames
+  不进入上下文，只供 recall 工具检索。
+
+这样就能解释为什么“压缩后 summary 丢失细节，但 recall 还能从历史 observation/frame 找回来”。
+
+否则 B1-B5 这类“压缩后 recall”任务的系统语义是不清楚的。
+
+7. 不要为了造 recall 任务而训练“坏压缩”
+
+v5 里有一种任务是：
+
+答案被压缩丢失，只能从历史帧 recall
+
+这本身合理，但要小心：如果被丢失的是 summary 本该保留的关键信息，例如数量、OCR、用户问答、关键状态变化，那其实是在训练模型做坏压缩。
+
+比如：
+
+[28-30] Salt added approximately 1 teaspoon.
+
+如果通用 compression policy 要求保留显著数量，那么 summary 漏掉 1 teaspoon 就不应该作为高质量 compression 样本。后面再用它造 recall，会让模型学到：
+
+压缩可以随便丢细节，反正后面 recall。
+
+建议把 “summary 丢失导致 recall” 限制在这些场景：
+
+1. 细粒度视觉细节：手里拿的是哪只杯子、左侧小标签、衣服局部图案；
+2. 不适合 summary 保留的低优先级细节；
+3. 多个相似事件中需要回看帧区分；
+4. summary 只保留事件锚点，不保留视觉可验证细节；
+5. summary 因长度限制合理丢失，而不是漏掉关键 facts。
+
+也就是说，先定义 compression policy，再判断丢失是否合法。不能为了 recall 数据而反向制造低质量 summary。
+
+8. Action minimality 不能只靠 keyword overlap
+
+v5 的伪代码用：
+
+keyword_overlap(obs, answer_keywords) > threshold
+
+判断 memory 是否已经能回答。这个会有很多误判。
+
+例如：
+
+问题：How much salt?
+答案：approximately one teaspoon
+summary：seasoning added from small white bowl
+
+这里有 “seasoning/salt” 相关词，但没有 amount，不能回答。
+
+反过来：
+
+问题：What heat setting?
+答案：dial 6
+summary：stove knob set to six
+
+没有完全相同关键词，但其实能回答。
+
+建议把 action minimality 改成三分类 answerability：
+
+answerability = judge_answerability(question, visible_context)
+
+# 返回：
+EXACT_ANSWER_AVAILABLE      → response
+PARTIAL_ANCHOR_ONLY         → recall
+NO_RELEVANT_INFO            → recall 或 uncertain
+CONFLICTING_INFO            → clarify / uncertain
+
+这个 judge 可以用规则 + 小模型/VLM verifier，而不是简单关键词。尤其是数量、OCR、别名、同义词、空间关系、顺序问题，关键词 overlap 不够可靠。
+
+9. recall_result 必须做“可答性验证”，不能只保证 support 在 rank 里
+
+v5 训练检索模拟是：
+
+70% oracle: 正确 evidence rank 1
+20% noisy: 正确 rank 2-4
+5% all-wrong
+5% failure
+
+这比之前好多了，但还差一步：正确 evidence 被返回，不代表目标模型能从返回结果中回答。
+
+尤其是 historical_frames 类型：
+
+"source": "historical_frames",
+"time": [28, 30],
+"frames": 4,
+"text_context": "[28-30] Chef sprinkles seasoning from small white bowl into pot."
+
+如果 text_context 没有 salt 和 1 teaspoon，而低分辨率帧也看不出量，那么 post-recall response 不应该说：
+
+approximately one teaspoon of salt
+
+否则 gold answer 实际仍来自 teacher_caption，而不是来自 recall_result。
+
+需要加：
+
+can_answer_from_recall_result(
+    question,
+    recall_result_text,
+    recalled_frames_at_target_resolution
+)
+
+只有这个通过，才允许 response 输出 gold answer。否则应该输出 uncertain：
+
+The retrieved frames show seasoning being added, but they do not make the exact amount clear.
+10. post-recall observation 会污染时间线
+
+v5 follow-up 样本输出：
+
+<observation>Retrieved frames show chef adding white granular seasoning...</observation>
+
+这条 observation 如果后续存入 memory，可能会被当作当前 t=44 的观察，而不是历史 t=28-30 的观察。虽然 §9.2 说 recalled frames 要有 source/time 标注，但 output observation 本身没有标注，仍然可能污染时间线。
+
+建议 post-recall 输出格式改成：
+
+<observation>Current window shows basil being handled near the pot.</observation>
+<evidence source="recall" time="28-30">
+Retrieved frames show seasoning added from a small white bowl.
+</evidence>
+<action>response</action>
+<response>...</response>
+
+或者如果不想新增 tag，就要求 observation 里必须显式带时间：
+
+At recalled time [28-30], chef adds seasoning...
+
+但更干净的是把 current observation 和 recalled evidence note 分开。否则 memory 里会混入“过去事实伪装成当前观察”。
+
+11. compress 样本里的 observation 仍然是元信息，不是视觉观察
+
+v5 的 compress 样本输出：
+
+<observation>System triggered memory compression.</observation>
+<action>compress</action>
+
+这违反了 observation 规范。你已经把 think 改成 observation，就是为了避免元推理和系统机制进入 memory，但这里又把系统事件写进 observation。
+
+建议改成两种之一。
+
+方案 A：compress 仍然伴随当前视觉 observation
+<observation>Chef places basil bunch beside the covered pot on the counter.</observation>
+<action>compress</action>
+<summary>...</summary>
+方案 B：compress 是纯 memory-management turn，不写 observation
+<action>compress</action>
+<summary>...</summary>
+
+如果坚持四动作都带 observation，那就用方案 A。不要让 System triggered... 进入 observation。
+
+12. pending question 的状态更新机制还没定义
+
+v5 说 memory block 里增加：
+
+<pending since="24">Tell me when the chef adds the basil.</pending>
+
+但没有定义 pending 是谁写入和删除的。这里有两种系统设计：
+
+方案 A：外部系统自动管理 pending
+
+用户说 “Tell me when...” 后，系统解析出 pending task，加入 memory。模型只负责根据 pending 判断是否回答。
+
+这种简单，但就不是训练模型“生成 pending 状态”。
+
+方案 B：模型负责更新 pending
+
+那 action 协议里需要增加状态更新字段，例如：
+
+<action>silent</action>
+<pending_update>{"add":"Tell me when basil is added"}</pending_update>
+
+事件发生后：
+
+<action>response</action>
+<response>...</response>
+<pending_update>{"resolve": "basil_added"}</pending_update>
+
+目前 v5 只有四动作，没有 pending_update。所以实现时一定要明确：pending 是外部 memory manager 维护，还是模型输出维护。否则 S3/S4 训练会断链。
+
+13. recall / response / compress 同时触发时缺少优先级规则
+
+真实流式推理中可能出现：
+
+当前 recent_observations 满足压缩条件；
+同时用户来了一个问题；
+同时 pending trigger 也满足了；
+或者当前问题需要 recall。
+
+四动作协议每步只能输出一个 action。那 gold action 应该选哪个？
+
+建议定义固定优先级：
+
+1. 用户当前问题可直接回答 → response
+2. 用户当前问题需要 recall → recall
+3. pending trigger 满足 → response
+4. pending trigger 未满足 → silent
+5. 没有用户/pending，且需要压缩 → compress
+6. 否则 → silent
+
+或者：
+
+compress 只能在无用户问题、无 pending response、无 recall_result 的 housekeeping turn 发生。
+
+没有这个优先级，模型会在“该压缩还是该回答”上学到噪声标签。
+
+14. question-blind compression 检查标准有点危险
+
+v5 里写：
+
+如果未来问盐的量，那么 question-blind summary 里特殊保留 1 teaspoon 可能是未来污染。
+
+这个判断方向是对的，但容易误杀高质量压缩。因为如果通用压缩策略要求保留所有明显数量，那么保留 1 teaspoon 并不是泄漏，而是好 summary。
+
+更稳的判断不是“有没有保留未来答案”，而是：
+
+是否符合预先定义的通用 compression policy。
+
+比如先定义：
+
+通用必须保留：
+- 显式数量：4 tomatoes, 3 cloves, 1 tsp, dial 6
+- OCR
+- 人物身份和稳定属性
+- 用户问答
+- 状态变化
+- 罕见/关键物体
+
+可丢弃：
+- 背景装饰
+- 重复动作
+- 低价值空间细节
+- 不影响任务的微小姿态
+
+然后检查 summary 是否一致。如果其他数量都保留，salt 1 teaspoon 也保留，那不是泄漏；如果只有未来会问的 salt 被特殊保留，而其他同级数量都被丢掉，才是污染。
+
+15. 主动 recall 5% 需要重新审视
+
+v5 在 question-blind rollout 中保留了：
+
+主动 recall, ~5% 频率
+
+但无问题场景下主动 recall 的目标不清楚。模型看到“Person in red hat enters again”就 recall，这可能训练出工具过用：模型稍微觉得相似就调用 recall。
+
+除非你明确要训练“身份再识别 / 长程追踪”的主动记忆刷新，否则建议先去掉 question-blind 主动 recall，或者把它限制到非常明确的任务：
+
+1. pending tracking：用户要求持续监控某人/物；
+2. entity re-identification：当前画面出现疑似旧实体，且回答 pending 问题需要确认；
+3. explicit system request：<identity_check_trigger/>;
+4. anomaly check：当前事实与记忆冲突。
+
+否则 recall action 的语义会变宽，后面很难控制调用率。
+
+16. teacher evidence graph 也需要验证，不然 teacher 错了全链条都错
+
+v5 很重视 student observation grounding，但 teacher_caption 本身也可能错。阶段 1 让 397B 用当前 chunk + 前文 caption 生成 detailed evidence graph，这有助于实体一致性，但也容易产生“前文带来的幻觉延续”。
+
+需要在 teacher evidence 里区分：
+
+{
+  "fact": "...",
+  "support_level": "direct_current_frame | carried_from_previous | inferred",
+  "support_frames": [...],
+  "confidence": ...
+}
+
+造题和标准答案只能用：
+
+support_level = direct_current_frame
+confidence >= threshold
+target-resolution visible = true
+
+像人物身份可以继承，但当前帧不可见的属性不能拿来验证当前 observation。否则 teacher graph 会把上下文猜测当作视觉事实。
+
+17. 训练检索模拟和线上检索系统仍有分布差异
+
+v5 线上检索是 BM25 + CLIP + time bonus，训练时检索模拟是按 support evidence 人工安排 oracle/noisy/failure。这是合理的课程学习，但最终必须让真实 retriever 进训练闭环。
+
+否则训练时模型看到的是“漂亮的 recall_result”，上线时看到的是 BM25/CLIP 返回的真实混乱结果。
+
+建议分两阶段：
+
+Phase recall-curriculum:
+  用 oracle/noisy 模拟，保证模型先学会协议和失败处理。
+
+Phase retriever-in-loop:
+  用模型生成 query → 调真实 retriever → 得真实 recall_result → verifier 判断能否回答 → 生成 response/uncertain。
+
+最终评估也应该拆：
+
+oracle recall result 下的 response accuracy
+真实 retriever 下的 end-to-end accuracy
+query recall@k
+wrong-retrieval robustness
+18. query 的 time_range 也可能泄漏 support time
+
+query 防泄漏现在主要防答案值，比如 1 teaspoon。但还要防另一类泄漏：support time 泄漏。
+
+如果用户问：
+
+How much salt did the chef add?
+
+而当前可见 memory 里只说：
+
+[0-40] cooking preparation and seasoning occurred
+
+模型不应该神奇地输出：
+
+{"time_range":"28-30"}
+
+除非 visible memory 里有足够线索定位到 28-30。否则 query 的时间范围也来自 teacher evidence。
+
+建议加规则：
+
+query.time_range must be derivable from visible timestamps in memory.
+
+允许：
+
+{"time_range": "20-40"}
+
+不允许无依据地精确到：
+
+{"time_range": "28-30"}
+
+除非 [28-30] 的 anchor 在 recent_observations 或 summary 中可见。
+
+19. “observation 覆盖率”要拆成 answer coverage 和 anchor coverage
+
+v5 开放问题里说：如果 observation 漏掉关键细节，后续 recall 找不到，所以要用 teacher_caption 检查关键信息覆盖率。这个想法对，但要拆细。
+
+不是所有未来要问的答案都应该出现在 student_observation 里。否则 observation 会被迫变成长 caption。
+
+更合理的是：
+
+answer_coverage:
+  observation 是否直接包含答案。
+  用于 memory_response 任务。
+
+anchor_coverage:
+  observation 是否包含足够检索锚点。
+  用于 recall 任务。
+
+visual_recoverability:
+  historical frames 是否能恢复答案。
+  用于 frame recall 任务。
+
+例如：
+
+teacher fact: amount approximately 1 teaspoon
+student obs: chef sprinkles seasoning from small white bowl into pot
+
+它没有 answer coverage，但有 anchor coverage。这个样本可以做 frame recall，而不是判为 observation 不合格。
+
+20. 样本单位和 phase 分布还要重新定义
+
+v5 说分布按 episode-level 控制，不人工拉 turn-level 比例。但你现在训练格式已经变成 per-timestep 独立样本。这里“episode-level 分布”会变得不够清楚。
+
+建议明确三层统计：
+
+video-level:
+  视频长度、场景类型、是否含 OCR、是否含多人物。
+
+trajectory/fork-level:
+  是否包含 recall、compress、pending、unanswerable。
+
+sample-level:
+  实际送入 SFT 的 action 分布。
+
+最终训练时真正影响梯度的是 sample-level。如果一个长视频产生大量 silent 样本，而每个 recall fork 只有 1-2 条，模型还是会被 silent 淹没。你可以 episode-level 控制任务多样性，但还必须 sample-level 做采样权重。
+
+21. role 格式需要和真实 chat template 对齐
+
+v5 里的 input 结构是概念性的：
+
+"input": {
+  "system": "...",
+  "memory": {...},
+  "visual_window": {...},
+  "user_input": ...
+}
+
+但真实训练最终要过目标模型的 chat template。这里要明确：
+
+memory block 是 system message 还是 user message？
+visual window 是 user content 里的 video？
+recall_result 是 tool message、system message 还是 user message？
+compress_trigger 是 system message 还是 user message？
+pending 是 system 管理状态还是 user-visible text？
+
+不要把 <compress_trigger/>、recall_result、Continue following the protocol 都塞进 user role。否则模型会把系统工具事件当成用户自然语言，真实推理时 role 分布不一致。
+
+建议最终格式类似：
+
+system:
+  protocol
+
+system/state:
+  memory block + pending state
+
+user:
+  current video frames + user question
+
+tool:
+  recall_result / compress_trigger
+
+如果目标模型不支持 tool role，就也要用稳定的 special delimiters 模拟，而不是普通 user 文本。
+
+22. token 验证要放到最终 assembled samples 后，而不是阶段 2 后
+
+v5 写阶段 2 产出后抽 100 条做 tokenizer 统计。但最终 token 长度最大的问题往往来自：
+
+pending question
+recall_result frames
+adaptive summary up to 250 tokens
+多个 compressed segments
+post-recall input
+long user question
+negative distractors
+
+这些是在阶段 4/5 才出现的。所以 token 验证应该在最终样本完成后做：
+
+per phase p50 / p90 / p99
+per action type p50 / p90 / p99
+recall samples p99
+compress samples p99
+pending samples p99
+long-video samples p99
+
+只测阶段 2 会低估长度。
+
+23. 示例里仍有被禁止的非视觉信息
+
+v5 规范禁止声音、气味、情绪、意图，但示例里仍有：
+
+sizzling
+sizzling sound
+aromatic visible from steam
+
+这些应该全部清掉。尤其 “aromatic visible” 是典型不可见属性。v5 说会做 grounding blacklist，但示例如果保留，会给实现者错误信号。
+
+建议把所有示例也改到完全合规，因为实现时很多人会按示例写 prompt。
+
+我建议补上的关键结构
+
+我会在 v5.1 里新增一个明确的状态机，而不是只写 pipeline。
+
+state = {
+    "context_memory": {
+        "compressed_segments": [...],
+        "recent_observations": [...],
+        "pending_tasks": [...]
+    },
+    "retrieval_archive": {
+        "all_observations": [...],
+        "all_summaries": [...],
+        "historical_frames": [...]
+    },
+    "visual_window": [...],
+    "last_tool_result": None
+}
+
+然后定义每个 action 对 state 的影响：
+
+silent:
+  append current observation to recent_observations
+
+response:
+  append current observation
+  if answers pending task: resolve pending
+
+recall:
+  append current observation
+  emit query
+  no response yet
+  system writes recall_result into next sample
+
+post-recall response:
+  append current observation
+  optionally append recalled_evidence with source/time
+  answer original pending/current question
+
+compress:
+  summarize eligible recent_observations
+  move them from recent_observations to compressed_segments
+  archive raw observations remains retrievable or explicitly deleted
+
+并定义 action priority：
+
+current user response/recall > recall_result response > pending trigger response > compress > silent
+
+这会让整个系统从“数据构造方案”变成一个可执行的 agent 状态机。
+
+优先级最高的 8 个修改
+修 post-recall 样本：必须带原始 user question 或 pending question。
+拆 recall 多步输出：recall turn 和 post-recall response 必须是独立 per-timestep 样本。
+修示例时间窗口：support 在 current visual_window 内时不能标 recall。
+明确 context_memory vs retrieval_archive：压缩删除的是上下文，不一定删除检索库。
+补 compressed_segments 上限/合并策略：否则 token 预算仍然会失控。
+把 compress observation 从系统元信息改成视觉 observation 或取消 observation。
+用 answerability verifier 替代 keyword overlap：判断 response/recall/uncertain。
+加 can_answer_from_recall_result 检查：post-recall response 只能基于 recall_result 可见信息回答。
+
+总体来说，v5.0 已经从“可能训练错方向”进化到“方向正确但需要状态机落地”。如果把上面这几个点补掉，这个方案就比较接近可执行版本了。

@@ -1,0 +1,635 @@
+
+
+data_construction_zh.md
+文件
+这是现在的数据构造设计文档，是否存在问题
+
+Thought for 7m 45s
+存在问题。整体框架比普通“整段视频对话式 SFT”更合理，尤其是 per-timestep 独立样本、teacher/student 文本隔离、action minimality、visibility matrix 这些方向是对的。但当前文档里有几类问题会直接导致 训练标签错误、信息泄漏、recall 行为学歪、压缩策略不一致。我建议先修下面这些。
+
+最严重的问题：会直接污染训练数据
+1. §5.1 的 recall 示例与 visual window 自相矛盾
+示例里：
+
+"visual_window": {"video_start": 20, "video_end": 44, "frames": 24},
+"user_input": "How much salt did the chef add?"
+同时 metadata 说 evidence 在：
+
+"evidence_time": [28, 30]
+如果 visual window 是 20-44 秒，那 28-30 秒的帧就在当前输入里。根据你自己的 Action Minimality 规则：
+
+答案在当前视觉窗口中可见 → gold_action 应该是 response
+
+所以这条不应该是 recall，应该是 response，除非满足下面某个条件：
+
+visual_window 实际没有包含 28-30 秒的帧；
+
+28-30 秒虽然在窗口时间范围内，但采样帧没有采到关键画面；
+
+训练时 response 不允许看整个 visual window，只允许看当前 2s chunk；
+
+ask_time 应该改到 54 秒以后，让 28-30 秒离开 24s visual window。
+
+否则这类样本会教坏模型：明明画面就在输入里，却还去 recall。
+
+建议把 visibility 判断改成基于实际帧列表，而不是只写时间范围：
+
+"visual_window": {
+  "chunks": [[32,34], [34,36], ..., [54,56]],
+  "sampled_frames": [
+    {"time": 32.2, "frame_id": "..."},
+    {"time": 33.8, "frame_id": "..."}
+  ]
+}
+并且 action minimality 必须判断：
+
+support_frames ∩ actual_visible_frames != empty
+而不是只看 visual_window_range。
+
+2. timestep 的 memory snapshot 可能包含了当前步的 observation，造成泄漏
+§3.2 里说：
+
+snapshots[chunk_idx] = {
+    "compressed_segments": copy(compressed),
+    "recent_observations": copy(recent_obs),
+    "visual_window_range": (window_start, chunk_idx),
+}
+但没有说明这个 snapshot 是 当前 step 输出前 还是 输出后 的状态。
+
+§5.1 的例子里，ask time 是 t=44，recent observations 里已经有：
+
+[42-44] Chef retrieves basil from refrigerator.
+而 output 又要生成当前步的 observation：
+
+<observation>Basil being torn over pot...</observation>
+这里时间边界很危险。如果 t=44 的输入里已经包含 [42-44] observation，那模型可能在输入中直接看到本该自己输出的当前观察，形成 teacher forcing 泄漏。
+
+建议明确两套 snapshot：
+
+pre_action_snapshot[t]   # 输入给模型，只包含 t 之前的 memory
+post_action_snapshot[t]  # 模型输出 observation/action 后更新得到
+训练样本必须使用：
+
+input.memory = pre_action_snapshot[t]
+input.visual_window = frames_up_to_t_including_current_chunk
+output.observation = observation_for_current_chunk
+也就是：
+
+memory: up to [40-42]
+visual: includes [42-44]
+output: writes [42-44] observation
+不能让 [42-44] observation 同时出现在 input 和 output。
+
+3. recall 后的 follow-up 样本缺少原始问题，会让模型凭空回答
+§5.2 的 recall follow-up 样本：
+
+"user_input": "Continue following the protocol to respond."
+input 里有 recall_result，但没有原始问题：
+
+How much salt did the chef add?
+可是 output 却回答：
+
+<response>The chef added approximately one teaspoon of salt...</response>
+这会导致模型在训练时看到的输入不足：它不知道自己应该回答哪个问题。尤其当 recall_result 里有多个对象、多段历史帧、多条候选证据时，模型无法知道用户真正问的是颜色、数量、顺序、人物还是动作。
+
+建议在 recall 后样本中加入 pending question / recall context：
+
+"memory": {
+  "pending": {
+    "question": "How much salt did the chef add?",
+    "since": 44,
+    "last_action": "recall",
+    "query": {"query": "salt seasoning amount pot", "time_range": "20-40"}
+  }
+}
+或者：
+
+<pending since="44" type="answer_after_recall">
+  <question>How much salt did the chef add?</question>
+  <recall_query>{"query":"salt seasoning amount pot","time_range":"20-40"}</recall_query>
+</pending>
+否则 post-recall response 样本不是一个合法的 per-timestep 独立样本。
+
+4. recall 任务格式在 §3.4 和 §5.2 之间不一致
+§3.4 里 generate_recall_output 返回：
+
+return {
+    "recall_turn": "...",
+    "result_turn": recall_result,
+    "response_turn": "..."
+}
+这看起来像一个多轮样本。
+
+但 §1.1 又明确说：
+
+不再使用完整多轮对话作为单条 SFT 样本
+每个 timestep 构造为独立训练样本
+
+所以 recall 应该拆成至少两条样本：
+
+第一条，模型发起 recall：
+
+{
+  "input": {
+    "memory": "pre_action_snapshot_at_t",
+    "visual_window": "...",
+    "user_input": "How much salt did the chef add?"
+  },
+  "output": "<observation>...</observation><action>recall</action><query>...</query>"
+}
+第二条，系统返回 recall_result 后，模型回答：
+
+{
+  "input": {
+    "memory": {
+      "...": "...",
+      "pending": {
+        "question": "How much salt did the chef add?",
+        "query": "salt seasoning amount pot"
+      }
+    },
+    "visual_window": "...",
+    "recalled_frames": "...",
+    "recall_result": "..."
+  },
+  "output": "<observation>...</observation><action>response</action><response>...</response>"
+}
+不要在一个 output 里混入 result_turn，因为 recall_result 是系统注入，不是 assistant 生成的内容。
+
+5. observation 定义被 compress / recall 样本破坏了
+§1.4 定义 observation 是：
+
+当前 2s 帧中的增量可观察事实
+禁止声音/气味/情绪/意图/推理/元认知
+
+但 §5.3 compress 样本输出：
+
+<observation>System triggered memory compression.</observation>
+这不是视觉 observation，是元信息。
+
+§5.2 post-recall 样本输出：
+
+<observation>Retrieved frames show chef adding white granular seasoning...</observation>
+这也不是“当前 2s 帧”的 observation，而是 recalled frames 的观察。
+
+这会让模型混淆：observation 到底是当前视频观察、检索证据观察，还是系统状态描述？
+
+建议拆分语义。可以采用：
+
+<observation>当前 2s 画面观察</observation>
+对于 recall 后：
+
+<retrieved_observation>Retrieved frames show...</retrieved_observation>
+<action>response</action>
+对于 compress trigger，如果没有新视觉输入，可以允许空 observation：
+
+<observation></observation><action>compress</action>...
+或者新增：
+
+<state_note>Compression triggered by memory length.</state_note>
+不要把系统动作塞进 observation。
+
+6. 文档禁止声音，但示例里出现了声音信息
+§1.4 禁止声音，§9.7 blacklist 也禁止：
+
+"sound", "smell", "aroma", ...
+但 §5.3 的 recent observations 里有：
+
+[22-24] Minced garlic added to oil, sizzling.
+sizzling 是声音，除非画面中有可见气泡/油花，否则不应该写成 observation。应该改成：
+
+[22-24] Minced garlic added to oil; small bubbles appear around garlic pieces.
+这个问题虽然看起来小，但会破坏 grounding verifier 的一致性。
+
+7. recall_result 可能泄漏 teacher_caption 信息
+文档反复强调：
+
+recall_result 不能包含 teacher_caption 信息
+
+但 §5.2 的 recall_result：
+
+"text_context": "[28-30] Chef sprinkles seasoning from small white bowl into pot."
+output 里却回答：
+
+approximately one teaspoon of salt
+这里有两个风险：
+
+第一，text_context 里没有 “approximately one teaspoon”，模型却回答出了这个数量。如果不是从 recalled frames 视觉判断出来的，那就是 teacher answer 泄漏。
+
+第二，画面只显示 white granular seasoning，不一定能确定是 salt。除非视频中有 OCR、包装、字幕、用户上下文，或者前文已经明确是 salt，否则标准答案不应写成 “salt”，而应该是：
+
+The chef added a small amount of white granular seasoning, roughly a teaspoon.
+或者：
+
+It looks like about a teaspoon of white seasoning, but I cannot confirm it is salt from the frames alone.
+建议 gold_answer 增加两个字段：
+
+{
+  "answer": "approximately one teaspoon",
+  "object_label": "white granular seasoning",
+  "semantic_label_supported": false,
+  "unsafe_aliases": ["salt"]
+}
+如果 semantic_label_supported=false，response 不能直接说 salt。
+
+需要尽快修的结构性问题
+8. 压缩触发条件和 visual window 约束冲突
+§2.3 说：
+
+len(recent_observations) >= 10 触发压缩
+必须是过去内容，不能包含视觉窗口内的新 observations
+
+但 visual window 是最近 12 chunks。每 2s 一个 chunk，recent observations 到 10 条时，正好全部都在最近 20s 内，也就是仍然在 visual window 里。
+
+换句话说：
+
+COMPRESS_THRESHOLD = 10
+VISUAL_WINDOW_CHUNKS = 12
+如果“不压缩 visual window 内 observations”是硬约束，那么 earliest 10 条通常不合法。
+
+解决办法有两个方向。
+
+方案一：允许压缩仍在 visual window 内的 observations，因为对应帧还在 visual input 中可见。这样要改掉 §2.3 的约束。
+
+方案二：只压缩已经滑出 visual window 的 observations。那触发条件应类似：
+
+COMPRESS_THRESHOLD = VISUAL_WINDOW_CHUNKS + COMPRESS_RANGE
+比如：
+
+VISUAL_WINDOW_CHUNKS = 12
+COMPRESS_RANGE = 10
+COMPRESS_THRESHOLD = 22
+压缩时只压缩：
+
+recent_observations[:10]
+并保证这些 observations 对应的 chunks 已经不在 visual window。
+
+当前版本这部分是矛盾的。
+
+9. “raw historical observations” 到底还在不在，文档前后矛盾
+§2.1 说压缩后：
+
+recent_observations[:10] → compressed_summary
+recent_observations = recent_observations[10:]  # 真正移除
+这表示旧 observations 被替换掉了。
+
+但 §3.4 的 recall_result 来源又包括：
+
+student observation | 学生自己写过的 obs 文本
+§3.4 伪代码还写：
+
+simulate_retrieval(
+    student_observations=all_past_observations,
+    ...
+)
+而 §9.3 的线上检索系统只检索：
+
+memory_state["recent_observations"] + compressed_segments
+没有 raw old observations。
+
+所以现在有三种可能，但文档没有选定：
+
+设计	含义	后果
+raw old observations 完全删除	recall 不能检索旧 observation，只能检索 summary 或 historical frames	压缩是真的替换
+raw old observations 存在检索库里	recall 可以找回旧 observation	压缩不是完全替换，只是从上下文移除
+raw old observations 只用于训练模拟	训练/推理不一致	会产生分布偏移
+建议明确线上状态：
+
+memory_state: 当前上下文可见文本
+retrieval_store: 可被 recall 检索的历史 observation/frame archive
+如果保留 raw observation archive，§2.1 不应写“真正移除”，而应写：
+
+从 active context 移除，但保留在 retrieval store 中。
+如果不保留 raw observation archive，那么 recall_result 不能来自 old student observations，只能来自 compressed summary 或 historical frames。
+
+10. unanswerable 被当成 gold_action，但协议里没有这个 action
+§3.3 里：
+
+return "unanswerable"
+§3.4 里：
+
+elif task["gold_action"] == "unanswerable":
+    output = generate_uncertain_output(task)
+但 §1.3 的四动作协议只有：
+
+silent / response / recall / compress
+§4.1 又说：
+
+response (uncertain)
+所以 unanswerable 应该是 task_type 或 answerability，不是 action。
+
+建议改成：
+
+{
+  "gold_action": "response",
+  "answerability": "unanswerable",
+  "response_style": "uncertain"
+}
+否则 action classifier 和评估指标会混乱。
+
+11. action minimality 不能用 keyword_overlap 做核心判断
+§3.3 里：
+
+if keyword_overlap(obs, answer_keywords) > threshold:
+    return "response"
+这个太脆弱。会被这些情况误伤：
+
+答案: "red apron"
+memory: "chef wearing apron"        # 少了 red，但可能视觉帧里可见
+memory: "not the red bowl"          # 有 red，但不是答案
+memory: "seasoning added"           # 与 "1 teaspoon salt" 部分相关但不能回答数量
+memory: "person picked up basil"    # 能回答是否拿 basil，但不能回答何时加入
+建议 action minimality 改成三段式：
+
+can_answer_from_visible_frames = vlm_entailment(question, visible_frames, gold_answer)
+can_answer_from_memory_text = llm_entailment(question, memory_text, gold_answer)
+can_answer_from_retrieval = retriever_has_support(...)
+metadata 里不要只存布尔值，最好存 support span：
+
+"answer_support_in_memory": {
+  "status": "partial",
+  "span": "seasoning added from small white bowl",
+  "missing": ["amount"]
+}
+这样才能区分：
+
+summary 提到 salt，但没提 amount → recall
+summary 提到 salt 和 approximate amount → response
+12. compression summary 的 question-blind 检查规则不够可执行
+§6.2 说：
+
+如果其他类似动作没有保留数量，则保留 “1 teaspoon” 可能是未来问题污染
+
+这个思路对，但需要形式化，否则很难自动验证。
+
+建议把压缩策略先固定成显式 policy，例如：
+
+默认保留：
+- 主要实体
+- 动作顺序
+- 状态变化
+- OCR
+- 明确可见数量
+- 罕见/唯一物体属性
+- 与 pending question 相关的实体
+然后验证时检查 summary 是否符合 policy，而不是事后判断“像不像被未来问题污染”。
+
+否则 397B 很容易因为看到 task planning 里的 gold answer，在 fork 阶段无意中把 summary 改得过于有利。
+
+中等问题：不一定立刻炸，但会造成数据质量不稳定
+13. observation 40-60 tokens 与大量示例不一致
+文档要求：
+
+observation 40-60 tokens
+但示例大多是 10-20 个英文词左右：
+
+Chef sprinkles seasoning from small white bowl into pot on right burner.
+这远不到 40-60 tokens。
+
+如果强制每 2 秒写 40-60 tokens，模型可能学会啰嗦、重复、填充无用细节。对于简单画面，20 tokens 可能已经够了。
+
+建议改成：
+
+默认 15-60 tokens
+复杂场景 40-80 tokens
+空/低变化画面 5-25 tokens
+或者保留 40-60，但需要所有示例同步改长，并明确“不允许为了凑长度编造”。
+
+14. teacher evidence 的输入描述和并发估算不一致
+§3.1 说 teacher evidence graph 输入是：
+
+当前 chunk 的 2 帧 + 前面所有 chunk 的 caption
+但并发估算里写：
+
+每请求: 24帧 + text context = ~38K input
+这是两个不同设计：
+
+设计	输入
+per-chunk evidence	当前 2 帧 + 历史 caption
+sliding-window evidence	当前 24 帧 + 历史 caption
+需要选一个。否则成本、上下文长度、teacher 可见性都会不同。
+
+如果 evidence graph 只看当前 2 帧，可能缺少短期动作上下文。
+如果看 24 帧，teacher_caption 可能不再是“当前 chunk 原子事实”，需要避免把前后帧信息写进当前 chunk。
+
+15. compressed segments 数量上限与 60 chunks 视频不匹配
+§2.4 写：
+
+压缩段 ≤5 × 150
+但配置里每 10 条 observation 压缩一次。60 chunks 理论上会产生 6 个 compressed segments。
+
+如果视频超过 120 秒，会更多。
+
+需要补一个策略：
+
+方案 A: 允许 segments 数量随视频增长，直到 context budget
+方案 B: 二级压缩，把多个 compressed segments 再压成 higher-level summary
+方案 C: segment eviction，只保留最近 N 个，其余只能通过 recall 检索
+否则 token budget 表里的 ≤5 个压缩段不成立。
+
+16. pending question 的状态更新机制还不完整
+§9.1 设计了：
+
+<pending since="24">Tell me when the chef adds the basil.</pending>
+这是必要的，但还缺少状态机：
+
+用户提出 pending question 后，谁把 <pending> 写进 memory？
+
+模型 silent 时，pending 是否持续保留？
+
+模型 response 后，pending 何时删除？
+
+多个 pending question 如何表示？
+
+pending question 被压缩时如何处理？
+
+用户取消、改问、纠正时如何处理？
+
+建议加一个显式 external state manager：
+
+if user_question_is_event_watch:
+    pending.add(question)
+
+if model_action == "response" and response_resolves_pending:
+    pending.remove(question_id)
+
+if compress:
+    pending is never compressed into summary; it remains a separate state field
+不要让 pending 混在普通 observations 里。
+
+17. pending-aware compression 与 canonical earliest-10 compression 冲突
+§9.6 说：
+
+如果某条 obs 含 basil 或相关实体 → 保留为未压缩，不压缩它
+
+但 §2.3 又说：
+
+Phase C1 canonical 范围是最早 10 条
+
+如果 earliest 10 里有 pending 相关 observation，到底压不压？
+
+建议定义 range selector：
+
+def choose_compress_range(recent_observations, pending):
+    candidates = contiguous_old_segments_excluding_pending_related_obs(...)
+    choose earliest segment with enough token gain
+如果必须压缩连续 10 条，就不能同时做到“跳过 basil 相关 obs”。
+如果允许非连续压缩，summary 的时间范围和重建顺序会变复杂。
+
+18. “salt” 这类不可直接视觉确认的语义标签需要单独规则
+文档里多次出现：
+
+white granular seasoning → salt
+这在 cooking video 里很常见，但从纯视觉上未必可证。你们的 observation 又禁止推理和声音，所以要谨慎。
+
+建议加入语义标签等级：
+
+"entity_label_confidence": {
+  "visual_category": "white granular seasoning",
+  "semantic_name": "salt",
+  "support": "package OCR / user narration / prior context / teacher inference",
+  "allowed_in_student_response": false
+}
+如果没有 OCR 或明确上下文，student response 应该避免确定说 “salt”。
+
+19. 训练语言策略没有定义
+文档和任务说明是中文，但训练样本、system prompt、observation、response 示例都是英文。
+
+需要明确：
+
+observation 固定英文？
+response 跟随用户语言？
+query 用英文还是用户语言？
+compressed_summary 用英文还是原语言？
+如果目标用户会中文提问，而 memory 全英文，模型要学会跨语言 grounding。这个可以做，但必须设计采样比例，例如：
+
+70% English questions
+20% Chinese questions with English memory
+10% mixed-language
+否则上线时中文问题可能无法稳定触发正确 recall query。
+
+20. recall query 生成函数不应该把 gold_answer 作为输入
+§3.4：
+
+query = generate_query(task["question"], task["gold_answer"])
+validate_no_answer_in_query(query, task["gold_answer"])
+即使用 validator 检查，生成器看到 gold_answer 仍然容易泄漏，尤其是同义词泄漏。
+
+例如答案是：
+
+red apron
+query 可能写成：
+
+{"query": "chef red clothing apron"}
+虽然没有完全复制 “red apron”，但已经泄漏了关键答案。
+
+建议：
+
+query = generate_query(question, visible_context_only)
+validate_no_answer_or_synonym(query, gold_answer)
+gold_answer 只给 validator，不给 generator。
+
+较小但建议修的文档问题
+21. 文档日期可能不一致
+文档写：
+
+日期: 2026-04-21
+当前是 2026-04-20。如果这是预发布版本没问题；如果不是，建议改成实际发布日期，避免版本记录混乱。
+
+22. compression 样本里的 summary 可能包含 observation 不允许的信息
+§5.3 summary 里有：
+
+garlic sauteed golden
+如果 golden 可见，没问题。
+但原 observation 有：
+
+sizzling
+summary 如果继承声音信息，也会违反规则。
+
+建议 compression validator 加一条：
+
+summary 不仅要 entailed by observations，还要满足 observation 的 modality blacklist。
+也就是说，即便原 observation 错写了声音，summary 也不能继续传播错误。
+
+23. confidence < 0.5 不适合做任务 和 §6.3 confidence >= 0.7 标准不一致
+§3.1 写：
+
+confidence < 0.5 的 fact 不适合做任务
+§6.3 写：
+
+只有 confidence >= 0.7 的 fact 才能用来造任务
+建议统一。可以设成：
+
+confidence >= 0.7: 可做普通任务
+0.5 <= confidence < 0.7: 只能做 uncertain / approximate 任务
+confidence < 0.5: 不造任务
+24. QA-after-compress 与 compression policy 要绑定
+§7.2 有：
+
+QA-after-compress accuracy
+但如果压缩本来 question-blind，不应该要求所有未来细节都能答。否则会逼模型过度保留细节，压缩失败。
+
+建议评估拆成两类：
+
+policy-retained QA: 根据压缩策略应该保留的信息，必须答对
+policy-dropped QA: 被合理丢弃的信息，应该触发 recall 或 uncertain
+这样才能正确评估压缩，而不是惩罚合理压缩。
+
+我建议优先修改的顺序
+第一优先级，先修 数据标签合法性：
+
+明确 pre-action / post-action snapshot。
+
+修正 §5.1 visual window 包含 evidence 却标 recall 的问题。
+
+把 recall 多轮拆成 per-timestep 独立样本。
+
+post-recall input 加 pending question 和 recall query。
+
+统一 unanswerable：action 仍然是 response，answerability 才是 unanswerable。
+
+第二优先级，修 信息流和检索一致性：
+
+明确 raw historical observations 是否进入 retrieval store。
+
+限制 all_past_observations 和 available_frames 只能包含 ask_time 之前的信息。
+
+recall_result 的文本只能来自 student memory 或独立 VLM 对 recalled frames 的描述，不能来自 teacher_caption。
+
+query generator 不接收 gold_answer。
+
+第三优先级，修 压缩策略：
+
+解决 COMPRESS_THRESHOLD=10 和 VISUAL_WINDOW_CHUNKS=12 的冲突。
+
+定义 pending-aware compression 的 range selector。
+
+增加二级压缩或 segment overflow 策略。
+
+把 question-blind compression policy 形式化。
+
+第四优先级，修 格式和示例：
+
+observation 长度要求和示例对齐。
+
+compress trigger 不再写成 observation。
+
+去掉 sizzling 等声音描述。
+
+明确训练语言策略。
+
+统一 confidence 阈值。
+
+总体判断
+这份设计的核心方向是可行的，但现在还不能直接按文档造数据。最大风险不是 pipeline 太复杂，而是 visibility / memory / recall 三者的边界还没有完全闭合。
+
+最关键的一句话是：
+
+每条 SFT 样本的 output 必须只能依赖该样本 input 中真实可见的信息；如果 answer 不在 input 或 recall_result 中，就不能用 teacher gold_answer 强行生成 response。
+
+只要围绕这条原则把 §5 的样例、snapshot 时序、recall follow-up、压缩触发条件修掉，这个方案会稳很多。
+
+
+
+
+
