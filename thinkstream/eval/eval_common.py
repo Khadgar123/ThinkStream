@@ -259,6 +259,11 @@ def add_common_args(parser):
         default=MAX_PIXELS,
         help="Maximum number of pixels for video processing.",
     )
+    parser.add_argument(
+        "--agent_model",
+        action="store_true",
+        help="Use 3-action agent protocol (think+action{silent|response|recall}).",
+    )
     return parser
 
 
@@ -295,6 +300,7 @@ def mcq_predict_streaming(
     slack_time: float = 3.0,
     min_pixels: int = MIN_PIXELS,
     max_pixels: int = MAX_PIXELS,
+    agent_model: bool = False,
 ):
     """
     Generic streaming MCQ prediction.
@@ -316,18 +322,55 @@ def mcq_predict_streaming(
     response_token_id = processor.tokenizer.convert_tokens_to_ids("<response>")
     eos_token_id = processor.tokenizer.convert_tokens_to_ids("<|im_end|>")
 
-    _base_sample_kwargs = {
-        "think_end_token_id": think_end_token_id,
-        "max_think_tokens": think_budget,
-        "eos_token_id": eos_token_id,
-        "silent_token_id": silent_token_id,
-        "response_token_id": response_token_id,
-    }
-    # We only use one sample function with restricted token ids.
-    # The logic in streaming_video_chat/think_budget_sample_restricted will handle:
-    # - is_query_window=False (Observation) -> Silent output
-    # - is_query_window=True (Answer) -> Constrained output using restricted_token_ids
-    sample_kwargs = {**_base_sample_kwargs, "restricted_token_ids": strict_option_ids}
+    if agent_model:
+        from thinkstream.model.inference import think_budget_sample_agent
+        from thinkstream.data.stream_data_processor import AGENT_SYSTEM_PROMPT_EN
+
+        # Resolve agent-specific token IDs
+        action_start_id = processor.tokenizer.convert_tokens_to_ids("<action>")
+        action_end_id = processor.tokenizer.convert_tokens_to_ids("</action>")
+        response_end_id = processor.tokenizer.convert_tokens_to_ids("</response>")
+        query_start_id = processor.tokenizer.convert_tokens_to_ids("<query>")
+        query_end_id = processor.tokenizer.convert_tokens_to_ids("</query>")
+        # Action word token IDs (first subword of each)
+        silent_word_ids = processor.tokenizer("silent", add_special_tokens=False).input_ids
+        response_word_ids = processor.tokenizer("response", add_special_tokens=False).input_ids
+        recall_word_ids = processor.tokenizer("recall", add_special_tokens=False).input_ids
+
+        sample_fn = think_budget_sample_agent
+        eval_system_prompt = AGENT_SYSTEM_PROMPT_EN
+        sample_kwargs = {
+            "think_end_token_id": think_end_token_id,
+            "max_think_tokens": think_budget,
+            "eos_token_id": eos_token_id,
+            "action_start_token_id": action_start_id,
+            "action_end_token_id": action_end_id,
+            "response_start_token_id": response_token_id,
+            "response_end_token_id": response_end_id,
+            "query_start_token_id": query_start_id,
+            "query_end_token_id": query_end_id,
+            "restricted_token_ids": strict_option_ids,
+            "allow_recall": False,  # No recall during eval
+            "silent_first_token_id": silent_word_ids[0],
+            "response_first_token_id": response_word_ids[0],
+            "recall_first_token_id": recall_word_ids[0],
+            "silent_token_ids": silent_word_ids,
+            "response_word_token_ids": response_word_ids,
+            "recall_token_ids": recall_word_ids,
+        }
+        # For agent answer extraction: <response> token appears after </action>
+        agent_response_start_id = response_token_id
+    else:
+        sample_fn = think_budget_sample_restricted
+        eval_system_prompt = SYSTEM_PROMPT
+        _base_sample_kwargs = {
+            "think_end_token_id": think_end_token_id,
+            "max_think_tokens": think_budget,
+            "eos_token_id": eos_token_id,
+            "silent_token_id": silent_token_id,
+            "response_token_id": response_token_id,
+        }
+        sample_kwargs = {**_base_sample_kwargs, "restricted_token_ids": strict_option_ids}
 
     dataset = MCQDataset(
         benchmark_path,
@@ -426,9 +469,9 @@ def mcq_predict_streaming(
                 min_pixels=min_pixels,
                 max_pixels=max_pixels,
                 max_new_tokens=max_new_tokens,
-                system_prompt=SYSTEM_PROMPT,
+                system_prompt=eval_system_prompt,
                 chat_template_wo_system=QWEN_TEMPLATE_WO_SYSTEM,
-                sample=think_budget_sample_restricted,
+                sample=sample_fn,
                 sample_kwargs=sample_kwargs,
                 model_type=model_type,
                 preloaded_video=preloaded,

@@ -315,6 +315,11 @@ def init_processor(
         lmm_processor.tokenizer.add_tokens(
             ["<silent>", "<response>", "<think>", "</think>"]
         )
+    # Agent protocol tokens (3-action format with recall)
+    lmm_processor.tokenizer.add_tokens(
+        ["<action>", "</action>", "<query>", "</query>",
+         "<recall_result>", "</recall_result>"]
+    )
     return ctx.set(processor, lmm_processor)
 
 
