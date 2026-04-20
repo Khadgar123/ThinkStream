@@ -1,6 +1,10 @@
 # 流视频 Agent 数据构造方案
 
-> 版本: v2.0 | 日期: 2026-04-20
+> 版本: v3.0 | 日期: 2026-04-20
+>
+> 更新日志:
+> - v3.0: 修复 6 个数据质量 bug（think 泄漏、query 答案泄漏、因果违规、格式正则、recall 噪声、过滤检查）。新增结构化视频内容格式。SFT 侧新增历史 think 剥离。详见 §11。
+> - v2.0: 初始三动作协议 pipeline。
 
 ## 1. 目标
 
@@ -220,18 +224,25 @@ Step 6:  按配比采样 + 最终组装                    [CPU, <1s]
 | S4_R4 | 默认（延迟路径） | silent... → 提问 → 监控 silent → response |
 
 关键设计决策:
-- Silent think: 使用 segment `action` 描述（标注文本），最长 50 字符
+- **结构化视频内容** (v3.0): 用户消息使用 `[{"type":"video","video_start":t,"video_end":t+2}, {"type":"text","text":question}]`，而非 `<video>` 字符串占位符。保留显式时间戳，支持 RC7 非连续时间段。
+- **通用 silent think** (v3.0): silent chunk 使用 `"Observing the current scene."`，不再使用 segment `action` 文本。避免因果违规：4s segment 标注可能描述第二个 2s 内的事件，泄漏未来信息。
+- **Recall 结果噪声注入** (v3.0): `_build_recall_result` 注入真实检索噪声（70% oracle, 20% top-3, 5% 干扰, 5% 失败），不再总是完美 oracle。
+- **Query 关键词提取** (v3.0): `query_candidates` 为空时回退使用 `_extract_query_keywords(question)`，而非 `expected_answer`，防止答案泄漏到 query。
 - S3_R2/S4_R4 等待 silent: "User asked about this, but the event hasn't occurred yet. Waiting."
-- RC7 间隔截断: 每个关键事件前后只保留 3 个 silent chunk（避免 30+ 个填充 silent）
-- `answer_type` 优先使用 397B 输出，回退到启发式（yes/no → yesno, 数字 → number）
+- RC7 间隔截断: 每个关键事件前后只保留 3 个 silent chunk
+- `answer_type` 优先使用 397B 输出，回退到启发式
 - 未参与 triplet binding 的 recall 任务（RC7）自动标记为 `sample_type=recall_positive`
 
 输出: `sft_episodes_raw.jsonl`
 
 **Step 5: 过滤**
-- 硬规则: ≥3 条消息，所有 assistant 消息匹配格式正则，答案非空
-- 格式正则: `<think>.*</think><action>(silent|response|recall)</action>(<response>.*</response>|<query>{.*}</query>)?`
-- 输出: `sft_episodes_filtered.jsonl`
+- 硬规则: ≥3 条消息，答案非空
+- **严格格式正则** (v3.0): 三个互斥分支，`^...$` 锚定：
+  - `<think>.*</think><action>silent</action>`（无后续内容）
+  - `<think>.*</think><action>response</action><response>.*</response>`（必须有 response）
+  - `<think>.*</think><action>recall</action><query>{.*}</query>`（必须有 query）
+- **Query 泄漏检查** (v3.0): `_check_query_leakage` 拒绝 `<query>` 内含 `expected_answer` 的 episode
+- 输出: 过滤后传入 Step 6
 
 **Step 6: 采样 + 最终组装**
 
@@ -273,10 +284,12 @@ Step 6:  按配比采样 + 最终组装                    [CPU, <1s]
 | ffprobe/ffmpeg 对某视频失败 | 跳过该视频，记日志，继续 |
 | 397B 返回纯文本（无 JSON） | 用原始文本作为 `action`，其他字段为空 |
 | 397B 返回 JSON 后有多余文本 | 平衡括号匹配提取（不用贪婪正则） |
-| `query_candidates` 为 null | 回退到用 expected_answer 构造默认 query |
+| `query_candidates` 为 null | **v3.0**: 回退到 `_extract_query_keywords(question)`（不再用 `expected_answer`） |
 | 任务校验失败 | 拒绝该任务，记录数量 |
 | vLLM 请求失败 | 指数退避重试 3 次（1s → 2s → 4s） |
 | 所有视频都失败 | `print_statistics` 优雅处理空列表 |
+| Recall 噪声 → 未找到证据 | 调整 post-recall think: "Retrieval did not return useful evidence" |
+| Query 包含 expected answer | **v3.0**: 被 `_check_query_leakage` 在 Step 5 拒绝 |
 
 ## 8. 训练计划
 
@@ -296,7 +309,102 @@ RL-A （action 校准）: datasets=rl_pool, lr=2e-7, 基于 SFT-B ckpt
 | Recall precision | ≥ 70% |
 | Recall specificity | ≥ 85% |
 
-## 10. 使用方法
+## 10. SFT 消费侧保护措施 (v3.0)
+
+SFT 数据处理器 (`thinkstream/data/stream_data_processor.py`) 在消费 pipeline 输出时施加额外保护：
+
+### 10.1 历史 Think 剥离
+
+**问题**: 多轮 episode 中，模型能看到所有历史 assistant 的 `<think>` 内容。如果 chunk 0 有 `<think>那个人穿着红色围裙</think>`，chunk 10 的 recall 任务问"围裙什么颜色"就变成从文本读答案——不需要视觉检索。
+
+**修复**: `_build_agent_messages` 剥离所有历史 assistant 消息的 `<think>` 内容，替换为空的 `<think></think>`。只有最后一个 assistant 消息（当前训练目标）保留完整 think。
+
+### 10.2 逐 Chunk 视频加载
+
+**问题**: RC7 episode 有非连续时间段（base Q&A 在 t=12s，follow-up 在 t=60s）。加载连续区间 [12, 62] 会包含不该可见的间隔帧。
+
+**修复**: `preprocess_qwen_visual_agent` 通过 ghost message 对每个 chunk 独立调用 `process_vision_info` 加载。时间范围从结构化内容的 `video_start`/`video_end` 读取。
+
+### 10.3 Loss 掩码（LlamaFactory Agentic 模式）
+
+遵循 LlamaFactory agentic 模式：
+- **计算 Loss**: assistant turn（think + action + response/query）
+- **不计算 Loss**: user turn（视频 chunk、问题、`<recall_result>` 注入）
+
+通过 `find_assistant_spans` 定位 `assistant`...`<|im_end|>` token 区间实现。
+
+### 10.4 CE Weight 混合数据适配
+
+`<silent>` 特殊 token 在冷启动数据中出现，但在 3-action agent 数据中不出现（用的是 `<action>silent</action>` 文本）。当 `n_silent == 0` 时跳过 CE weight 重加权，避免 `<response>` 被错误降权。
+
+## 11. 数据质量分析 (v3.0)
+
+### 11.1 已修复的 Bug
+
+| # | Bug | 严重度 | 根本原因 | 修复 |
+|---|-----|--------|----------|------|
+| 1 | 历史 `<think>` 泄漏视觉细节到后续 chunk | **致命** | 多轮 SFT 能看到所有历史 assistant 推理 | SFT 消费侧剥离历史 think |
+| 2 | Query 回退使用 `expected_answer` | **致命** | `task.get("expected_answer")` 作为 query | 改为 `_extract_query_keywords(question)` |
+| 3 | 4s segment 标注泄漏到 2s chunk | **严重** | silent think 用 `seg.get("action")[:50]` | 改为通用占位符 `"Observing the current scene."` |
+| 4 | 格式正则允许无效组合 | **严重** | 可选尾部 `(response\|query)?` | 拆为三个互斥锚定分支 |
+| 5 | Recall 结果总是 oracle | **中等** | 内联完美 support segment | `_build_recall_result` 70/20/5/5 噪声分布 |
+| 6 | 过滤器遗漏 query-answer 泄漏 | **中等** | `filter_episode` 无泄漏检查 | `_check_query_leakage` 拒绝受污染 episode |
+| 7 | RC7 `video_end` 未 clamp | **中等** | `t + AGENT_CHUNK_SEC` 无 `min(…, duration)` | 加 `min()` 限制 |
+| 8 | CE weight 不匹配 3-action 格式 | **中等** | `<silent>` token 缺失，`<response>` 被降权到 0.5x | 缺失类别时跳过重加权 |
+| 9 | `fps` 列表处理脆弱 | **低** | 标量/列表未统一处理 | 统一 `[fps_val] * N` |
+
+### 11.2 剩余设计考量（非 Bug）
+
+**1. Recall 失败时仍训练正确答案**
+
+`_build_recall_result` 返回 `found_correct=False`（10% 概率）时，think 说"未检索到有用证据"，但 response 仍给正确答案。可能训练模型在无证据时仍自信回答。缓解方案：RL 阶段用 `unsupported_answer_penalty` 惩罚。
+
+**2. Action 分布按 episode 采样**
+
+`assemble_final` 按 episode 类型采样，不同类型展开后 chunk 数差异大（R1: ~14 chunk, S3_R2: ~20+ chunk）。实际分布可能偏离 58/30/12 目标。`print_statistics` 已按 message 级别统计，可据此经验调整。
+
+**3. Triplet 顺序：think 先于 triplet 生成**
+
+Step 2d 为 recall 任务生成 `think_at_ask`，然后 Step 3 创建 control/false_negative 并硬编码覆盖 think。理想情况下每个变体应独立生成 teacher think。当前可接受，因为 control 和 false_negative 的 think 已被显式覆写。
+
+### 11.3 数据格式 (v3.0 结构化内容)
+
+用户视频消息：
+```json
+{"role": "user", "content": [
+  {"type": "video", "video_start": 36.0, "video_end": 38.0},
+  {"type": "text", "text": "围裙是什么颜色？"}
+]}
+```
+
+Recall 结果消息（纯文本字符串）：
+```json
+{"role": "user", "content": "<recall_result>\n<item rank=\"1\" start=\"8.0\" end=\"12.0\">caption: ... ocr: none</item>\n</recall_result>\nContinue following the protocol to respond."}
+```
+
+### 11.4 Recall 结果噪声分布
+
+| 结果 | 概率 | 说明 |
+|------|------|------|
+| Oracle top-1 | 70% | 正确 support segment 在 rank 1 |
+| 正确在 top-3 | 20% | 正确在随机 rank 1-3，带 2 个干扰 segment |
+| 仅干扰 | 5% | 3 个随机非 support segment |
+| 检索失败 | 5% | `<item>Not found</item>` |
+
+### 11.5 测试覆盖
+
+`tests/test_agent_sft.py` — 64 个测试用例，10 个测试类：
+
+| 类 | 测试数 | 覆盖 |
+|----|--------|------|
+| TestDataFormat | 7 | 结构化内容、无 question 标签、格式合规、JSON 序列化 |
+| TestVideoTimeRanges | 5 | 递增、连续、RC7 间隔、duration 限制、2s chunk |
+| TestAgenticActions | 9 | 各任务类型 action 序列、recall_result user role |
+| TestTriplets | 5 | triplet 生成、RC7 排除、false-negative 措辞 |
+| TestFiltering | 5 | 有效/无效 episode、所有任务类型通过 |
+| TestP0Fixes | 13 | think 剥离、query 泄漏、因果违规、正则严格性、recall 噪声 |
+
+## 12. 使用方法
 
 ```bash
 # 1. 在 AMD 节点启动 vLLM（见第 2 节）
@@ -313,4 +421,11 @@ python -m scripts.agent_data_pipeline.generate_data run \
     --output_dir data/agent \
     --max_concurrent 32 \
     --num_videos 200
+
+# 4. 运行测试
+python -m pytest tests/test_agent_sft.py -v
+
+# 5. SFT 训练（两阶段）
+STAGE=a bash scripts/sft_agent.sh                                    # Stage A
+STAGE=b LLM=./output/agent-sft-a/checkpoint-best bash scripts/sft_agent.sh  # Stage B
 ```

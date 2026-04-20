@@ -1,6 +1,10 @@
 # Streaming Video Agent Data Construction
 
-> Version: v2.0 | Date: 2026-04-20
+> Version: v3.0 | Date: 2026-04-20
+> 
+> Changelog:
+> - v3.0: Fix 6 data-quality bugs (think leakage, query answer leakage, causal violation, format regex, recall noise, filter check). Add structured video content format. Add SFT consumer-side think stripping. See §11 for full analysis.
+> - v2.0: Initial 3-action protocol pipeline.
 
 ## 1. Goal
 
@@ -215,7 +219,10 @@ Dispatched by task type:
 | S4_R4 | default (delayed path) | silent... → question → monitoring silents → response |
 
 Key design decisions:
-- Silent think: segment `action` description (annotation text), max 50 chars
+- **Structured video content** (v3.0): User messages use `[{"type": "video", "video_start": t, "video_end": t+2}, {"type": "text", "text": question}]` instead of `<video>` string placeholder. This preserves explicit time ranges for non-contiguous episodes (RC7).
+- **Generic silent think** (v3.0): Silent chunks use `"Observing the current scene."` instead of segment `action` text. This prevents causal violation: 4s segment annotations may describe events in the second 2s half, leaking future info to the first chunk.
+- **Recall result noise** (v3.0): `_build_recall_result` injects realistic retrieval noise (70% oracle, 20% top-3, 5% distractor, 5% failure) instead of always-perfect oracle.
+- **Query keyword extraction** (v3.0): When `query_candidates` is empty, fallback uses `_extract_query_keywords(question)` instead of `expected_answer`, preventing answer leakage into the model's query.
 - S3_R2/S4_R4 waiting silents: "User asked about this, but the event hasn't occurred yet. Waiting."
 - RC7 gap truncation: only 3 silent chunks around each event (avoids 30+ filler silents)
 - `answer_type` from 397B output, fallback to heuristic (yes/no → yesno, digit → number)
@@ -224,9 +231,13 @@ Key design decisions:
 Output: `sft_episodes_raw.jsonl`
 
 **Step 5: Filtering**
-- Hard rules: ≥3 messages, all assistant messages match format regex, non-empty answer
-- Format regex: `<think>.*</think><action>(silent|response|recall)</action>(<response>.*</response>|<query>{.*}</query>)?`
-- Output: `sft_episodes_filtered.jsonl`
+- Hard rules: ≥3 messages, non-empty answer
+- **Strict format regex** (v3.0): Three mutually exclusive patterns with `^...$` anchoring:
+  - `<think>.*</think><action>silent</action>` (no trailing content)
+  - `<think>.*</think><action>response</action><response>.*</response>` (response required)
+  - `<think>.*</think><action>recall</action><query>{.*}</query>` (query required)
+- **Query leakage check** (v3.0): `_check_query_leakage` rejects episodes where `<query>` text contains `expected_answer`
+- Output: filtered episodes passed to Step 6
 
 **Step 6: Sampling + Final Assembly**
 
@@ -268,10 +279,12 @@ All prompts are in English. Key design choices:
 | ffprobe/ffmpeg fails for a video | Skip video, log warning, continue |
 | 397B returns no JSON (plain text) | Use raw text as `action`, other fields empty |
 | 397B returns JSON with trailing text | Balanced-bracket extraction (not greedy regex) |
-| `query_candidates` is null | Fallback to default query from expected_answer |
+| `query_candidates` is null | **v3.0**: Fallback to `_extract_query_keywords(question)` (not `expected_answer`) |
 | Task validation fails | Reject task, log count |
 | vLLM request fails | Retry 3× with exponential backoff (1s→2s→4s) |
 | All videos fail | `print_statistics` handles empty list gracefully |
+| Recall result noise → no evidence found | Post-recall think adapted: "Retrieval did not return useful evidence" |
+| Query contains expected answer | **v3.0**: Rejected by `_check_query_leakage` in Step 5 |
 
 ## 8. Training Plan
 
@@ -291,7 +304,134 @@ RL-A  (action calibration):  datasets=rl_pool, lr=2e-7, from SFT-B ckpt
 | Recall precision | ≥ 70% |
 | Recall specificity | ≥ 85% |
 
-## 10. Usage
+## 10. SFT Consumer-Side Protections (v3.0)
+
+The SFT data processor (`thinkstream/data/stream_data_processor.py`) applies additional protections when consuming pipeline output:
+
+### 10.1 Historical Think Stripping
+
+**Problem**: In multi-turn episodes, the model sees all prior assistant `<think>` content. If chunk 0 has `<think>The person wears a red apron</think>`, a recall task at chunk 10 asking "what color apron?" becomes trivially solvable from text — no visual recall needed.
+
+**Fix**: `_build_agent_messages` strips `<think>` content from all historical assistant messages, replacing `<think>detailed observation</think>` with `<think></think>`. Only the LAST assistant message (current training target) keeps its full think content.
+
+**Implementation**: `_strip_think_content()` uses `re.sub(r'<think>.*?</think>', '<think></think>', text)`. A `last_asst_idx` is computed before the message loop; only `msg_idx >= last_asst_idx` retains original think.
+
+### 10.2 Per-Chunk Video Loading
+
+**Problem**: RC7 episodes have non-contiguous time ranges (base Q&A at t=12s, follow-up at t=60s). Loading a single contiguous video range [12, 62] includes gap frames that shouldn't be visible.
+
+**Fix**: `preprocess_qwen_visual_agent` loads each video chunk independently via ghost messages to `process_vision_info`. Time ranges are read from the structured content (`video_start`/`video_end` per user message).
+
+### 10.3 Loss Masking (LlamaFactory Agentic Convention)
+
+Following the LlamaFactory agentic mode:
+- **Loss ON**: assistant turns (think + action + response/query)
+- **Loss OFF**: user turns (video chunks, questions, `<recall_result>` injection)
+
+Implemented by `find_assistant_spans` which locates `assistant`...`<|im_end|>` token spans.
+
+### 10.4 CE Weight for Mixed Data
+
+The `<silent>` special token appears in cold-start data but NOT in 3-action agent data (which uses `<action>silent</action>` text). CE weight rebalancing is skipped when `n_silent == 0` to avoid downweighting `<response>`.
+
+## 11. Data Quality Analysis (v3.0)
+
+### 11.1 Bugs Fixed
+
+| # | Bug | Severity | Root Cause | Fix |
+|---|-----|----------|------------|-----|
+| 1 | Historical `<think>` leaks visual details to future chunks | **Critical** | Multi-turn SFT sees all prior assistant reasoning | Strip historical think in SFT consumer |
+| 2 | Query fallback uses `expected_answer` | **Critical** | Line 920: `task.get("expected_answer")` as query | Replace with `_extract_query_keywords(question)` |
+| 3 | 4s segment annotation leaks to 2s chunk | **High** | Silent think uses `seg.get("action")[:50]` | Replace with generic `"Observing the current scene."` |
+| 4 | Format regex allows invalid combinations | **High** | Optional trailing group `(response|query)?` | Split into 3 mutually exclusive anchored patterns |
+| 5 | Recall result always oracle | **Medium** | Inline perfect support segment | `_build_recall_result` with 70/20/5/5 noise distribution |
+| 6 | Filter misses query-answer leakage | **Medium** | No leakage check in `filter_episode` | `_check_query_leakage` rejects contaminated episodes |
+| 7 | RC7 `video_end` not clamped | **Medium** | `t + AGENT_CHUNK_SEC` without `min(…, duration)` | Add `min()` clamp |
+| 8 | CE weight mismatches 3-action format | **Medium** | `<silent>` token absent, `<response>` gets 0.5x weight | Skip reweighting when one class is absent |
+| 9 | `fps` list handling fragile | **Low** | Scalar vs list not handled uniformly | Unified `[fps_val] * N` |
+
+### 11.2 Remaining Design Considerations (Not Bugs)
+
+**1. Recall failure still trains correct answer**
+
+When `_build_recall_result` returns `found_correct=False` (10% of cases), the think says "no useful evidence" but the response still gives the correct answer. This may teach the model to hallucinate when recall fails. Mitigation: address in RL phase with `unsupported_answer_penalty`.
+
+**2. Action distribution sampled at episode level**
+
+`assemble_final` samples by episode type, not by chunk-level action counts. Different episode types have very different chunk counts (R1: ~14 chunks, S3_R2: ~20+ chunks). The actual action distribution may deviate from the 58/30/12 target. Mitigation: `print_statistics` reports per-message distribution; adjust episode type ratios empirically.
+
+**3. Triplet ordering: think generated before triplet binding**
+
+Step 2d generates `think_at_ask` for recall tasks, then Step 3 creates control/false_negative variants with hardcoded think overrides. Ideally, each variant would get its own teacher-generated think. Current approach is acceptable because:
+- Control think is overwritten: "The answer is visible in the current window, responding directly."
+- False-negative think is overwritten: "Although the user said 'earlier', the evidence is in the current window."
+- Only `think_at_ask` is reused, but it's specific to the ask-time decision point.
+
+**4. `validate_task` timing fix may not update segment**
+
+When `fixed_ask` is computed to push ask forward, the `for s in segments` loop searches for a matching segment. If no segment contains `fixed_ask` (shouldn't happen with contiguous segments), `ask_segment` retains its old value. Low risk since segments are contiguous.
+
+### 11.3 Data Format (v3.0 Structured Content)
+
+User messages with video now use structured content:
+
+```json
+{
+  "role": "user",
+  "content": [
+    {"type": "video", "video_start": 36.0, "video_end": 38.0},
+    {"type": "text", "text": "What color was the apron?"}
+  ]
+}
+```
+
+Recall result messages remain plain strings:
+
+```json
+{
+  "role": "user",
+  "content": "<recall_result>\n<item rank=\"1\" start=\"8.0\" end=\"12.0\">caption: ... ocr: none</item>\n</recall_result>\nContinue following the protocol to respond."
+}
+```
+
+Assistant messages are strings in the 3-action format:
+
+```json
+{
+  "role": "assistant",
+  "content": "<think>Cannot find evidence in current window.</think><action>recall</action><query>{\"query\":\"apron color beginning\",\"time_bias\":\"past_far\",\"target\":\"entity\",\"topk\":3}</query>"
+}
+```
+
+### 11.4 Recall Result Noise Distribution
+
+| Outcome | Probability | Description |
+|---------|-------------|-------------|
+| Oracle top-1 | 70% | Correct support segment at rank 1, single item |
+| Correct in top-3 | 20% | Correct segment at random rank 1-3, with 2 distractor segments |
+| Distractor only | 5% | 3 random non-support segments, no correct item |
+| Retrieval failure | 5% | `<item>Not found</item>` |
+
+When `found_correct=False`, the post-recall think is adapted to "Retrieval did not return useful evidence. Answering based on available context."
+
+### 11.5 Test Coverage
+
+`tests/test_agent_sft.py` — 64 test cases across 10 test classes:
+
+| Class | Tests | Coverage |
+|-------|-------|----------|
+| TestDataFormat | 7 | Structured content, no `<question>` tags, format compliance, JSON serialization |
+| TestVideoTimeRanges | 5 | Ascending, contiguous, RC7 gap, duration clamp, 2s chunk width |
+| TestAgenticActions | 9 | R1/RC1/S3_R2/R3/RC7 action sequences, recall_result user role |
+| TestTriplets | 5 | Triplet generation, RC7 exclusion, false-negative phrasing |
+| TestFiltering | 5 | Valid/invalid episodes, all task types pass |
+| TestActionDistribution | 1 | All 3 actions present, silent dominates |
+| TestBuildAgentMessages | 6 | Structured passthrough, legacy compat, recall_result string, video_meta |
+| TestFindAssistantSpans | 3 | Span detection, multiple spans, no spans |
+| TestEdgeCases | 4 | Short video, t=0 ask, near-end answer |
+| TestP0Fixes | 13 | Think stripping, query leakage, causal violation, regex strictness, recall noise |
+
+## 12. Usage
 
 ```bash
 # 1. Start vLLM on AMD node (see Section 2)
@@ -308,4 +448,11 @@ python -m scripts.agent_data_pipeline.generate_data run \
     --output_dir data/agent \
     --max_concurrent 32 \
     --num_videos 200
+
+# 4. Run tests
+python -m pytest tests/test_agent_sft.py -v
+
+# 5. SFT training (two-stage)
+STAGE=a bash scripts/sft_agent.sh                                    # Stage A
+STAGE=b LLM=./output/agent-sft-a/checkpoint-best bash scripts/sft_agent.sh  # Stage B
 ```

@@ -648,98 +648,176 @@ def _build_messages(
 
 AGENT_CHUNK_SEC = 2.0  # Fixed 2s chunk for agent data
 
+import re as _re
+
+_THINK_RE = _re.compile(r"<think>.*?</think>", _re.DOTALL)
+
+
+def _strip_think_content(text: str) -> str:
+    """Replace ``<think>...</think>`` with empty ``<think></think>``.
+
+    Used to prevent historical assistant reasoning from leaking visual
+    details (colors, numbers, actions) to subsequent chunks.  The model
+    should learn to *recall* distant evidence, not read it from its own
+    prior text.
+    """
+    return _THINK_RE.sub("<think></think>", text)
+
 
 def _build_agent_messages(
     item: Dict[str, Any], base_path: Path, remaining_video_chunks: int = 3
 ) -> Dict[str, Any]:
     """Build chat messages from a Stage 6 agent sft_final sample.
 
-    Unlike ``_build_messages`` which constructs content from raw
-    conversations + thoughts, this function reads pre-assembled messages
-    from the pipeline's Stage 6 output (which already contain the correct
-    ``<think>...<action>...<response>/<query>`` format).
+    Handles two data formats (LlamaFactory-style agentic approach):
 
-    The video is loaded using the ``videos`` field (recent buffer clip)
-    and optionally ``images`` (recall keyframes).
+    **New format (structured content)** – user messages carry a list with
+    ``{"type": "video", "video_start": ..., "video_end": ...}`` entries
+    and optional ``{"type": "text", "text": ...}`` for questions.
+    This preserves explicit, possibly non-contiguous time ranges (RC7).
 
-    The assistant messages already have correct loss semantics:
-      - assistant (recall/response): model learns to generate → loss ON
-      - user (recall_result): oracle injection        → loss OFF (auto)
+    **Legacy format (string placeholder)** – user messages contain the
+    ``<video>`` text marker.  Timing is computed sequentially from chunk
+    count (backward compatibility only; does not support time gaps).
+
+    Loss semantics follow the LlamaFactory agentic convention:
+      - assistant turns (think + action + response/query) → loss ON
+      - user turns (video chunks, questions, recall_result) → loss OFF
     """
-    # The sample from Stage 6 already has pre-built messages.
-    # We just need to:
-    # 1. Resolve video paths to absolute paths
-    # 2. Build video_meta for the frame loading pipeline
-
     pre_messages = item.get("messages", [])
     if not pre_messages:
         raise ValueError("Agent sample has no messages")
 
-    # Get video path from the sample's videos field
-    videos = item.get("videos", [])
-    video_path = videos[0] if videos else item.get("video_path", "")
+    video_path = item.get("video_path", "")
+    if not video_path:
+        # Fallback: try "videos" list (legacy)
+        videos = item.get("videos", [])
+        video_path = videos[0] if videos else ""
     if not video_path:
         raise ValueError("Agent sample has no video path")
 
     abs_video_path = str(_make_abs_paths(base_path, video_path))
-
-    # Determine video duration and chunk size
     video_duration = _get_duration(abs_video_path)
     video_chunk_size = AGENT_CHUNK_SEC
 
-    # Count video chunks in the messages (each user turn with <video> = 1 chunk)
+    messages: List[Dict[str, Any]] = []
     video_chunks_count = 0
-    messages = []
-    for msg in pre_messages:
-        content = msg.get("content", "")
-        role = msg.get("role", "")
+    video_start_min = float("inf")
+    video_end_max = 0.0
 
-        if role == "user":
-            # Check if this user message contains a video reference
-            if isinstance(content, str) and "<video>" in content:
-                # Convert text-based <video> placeholder to structured content
+    # Index of the last assistant message — only THIS one keeps full
+    # <think> content; all earlier ones are stripped to prevent the
+    # model from reading historical visual details instead of recalling.
+    last_asst_idx = max(
+        (i for i, m in enumerate(pre_messages) if m.get("role") == "assistant"),
+        default=-1,
+    )
+
+    for msg_idx, msg in enumerate(pre_messages):
+        role = msg.get("role", "")
+        content = msg.get("content", "")
+
+        if role == "system":
+            messages.append(msg)
+
+        elif role == "user":
+            if isinstance(content, list):
+                # ── New structured format ──
+                new_content: List[Dict] = []
+                for part in content:
+                    if part.get("type") == "video":
+                        vs = float(
+                            part.get(
+                                "video_start",
+                                video_chunks_count * video_chunk_size,
+                            )
+                        )
+                        ve = float(
+                            part.get("video_end", vs + video_chunk_size)
+                        )
+                        ve = min(ve, video_duration)
+                        new_content.append(
+                            {
+                                "type": "video",
+                                "video": abs_video_path,
+                                "video_start": vs,
+                                "video_end": ve,
+                                "nframes": FRAMES_PER_CHUNK,
+                            }
+                        )
+                        video_chunks_count += 1
+                        video_start_min = min(video_start_min, vs)
+                        video_end_max = max(video_end_max, ve)
+                    elif part.get("type") == "text":
+                        new_content.append(
+                            {"type": "text", "text": "\n" + part["text"]}
+                        )
+                    else:
+                        new_content.append(part)
+                messages.append({"role": "user", "content": new_content})
+
+            elif isinstance(content, str) and "<video>" in content:
+                # ── Legacy string format (backward compat) ──
                 text_part = content.replace("<video>", "").strip()
-                user_content = [
+                # Strip legacy <question> tags if present
+                text_part = (
+                    text_part.replace("<question>", "")
+                    .replace("</question>", "")
+                    .strip()
+                )
+                vs = video_chunks_count * video_chunk_size
+                ve = min(vs + video_chunk_size, video_duration)
+                user_content: List[Dict] = [
                     {
                         "type": "video",
                         "video": abs_video_path,
-                        "video_start": video_chunks_count * video_chunk_size,
-                        "video_end": min(
-                            (video_chunks_count + 1) * video_chunk_size,
-                            video_duration,
-                        ),
-                    },
+                        "video_start": vs,
+                        "video_end": ve,
+                        "nframes": FRAMES_PER_CHUNK,
+                    }
                 ]
                 if text_part:
-                    user_content.append({"type": "text", "text": "\n" + text_part})
+                    user_content.append(
+                        {"type": "text", "text": "\n" + text_part}
+                    )
                 messages.append({"role": "user", "content": user_content})
                 video_chunks_count += 1
-            elif isinstance(content, str) and "<recall_result>" in content:
-                # Recall result injection — keep as plain text user message
-                # No video in this turn, model sees text only
+                video_start_min = min(video_start_min, vs)
+                video_end_max = max(video_end_max, ve)
+
+            else:
+                # Plain text (recall result injection, etc.)
                 messages.append({"role": "user", "content": content})
-            else:
-                messages.append(msg)
+
         elif role == "assistant":
-            # Assistant content is already in 3-action format
+            # Strip <think> from historical turns to prevent leaking
+            # visual details (colors, OCR, actions) that would make
+            # recall tasks trivially solvable from prior text.
             if isinstance(content, str):
-                messages.append({
-                    "role": "assistant",
-                    "content": [{"type": "text", "text": content}],
-                })
+                text = (
+                    content
+                    if msg_idx >= last_asst_idx
+                    else _strip_think_content(content)
+                )
+                messages.append(
+                    {
+                        "role": "assistant",
+                        "content": [{"type": "text", "text": text}],
+                    }
+                )
             else:
                 messages.append(msg)
-        elif role == "system":
-            messages.append(msg)
         else:
             messages.append(msg)
 
-    total_covered_duration = min(video_chunks_count * video_chunk_size, video_duration)
+    if video_start_min == float("inf"):
+        video_start_min = 0.0
+    total_covered = min(video_end_max, video_duration)
 
     video_meta = build_video_meta(
         abs_path=abs_video_path,
-        total_start=0.0,
-        total_end=total_covered_duration,
+        total_start=video_start_min,
+        total_end=total_covered,
         num_chunks=video_chunks_count,
     )
 
@@ -982,11 +1060,19 @@ def preprocess_qwen_visual(sources, processor, model_type: str) -> Dict:
 
 
 def preprocess_qwen_visual_agent(sources, processor, model_type: str) -> Dict:
-    """Preprocess a 3-action agent sample (Stage 6 sft_final format).
+    """Preprocess a 3-action agent sample (LlamaFactory-style agentic SFT).
 
-    Uses ``_build_agent_messages`` instead of ``_build_messages``.
-    Labels are computed identically: only assistant spans get gradient.
-    Recall result (user) spans are automatically IGNORE_INDEX.
+    Key differences from the cold-start preprocessor:
+
+    1. **Per-chunk video loading** – each video entry in the structured
+       messages is loaded independently via ``process_vision_info``.
+       This correctly handles non-contiguous time ranges (e.g. RC7
+       episodes with a gap between base Q&A and follow-up).
+
+    2. **Loss masking** follows the LlamaFactory agentic convention:
+       - assistant turns (think + action + response/query) → loss ON
+       - user turns (video, question, recall_result) → loss OFF
+       - ``find_assistant_spans`` achieves this automatically.
     """
     if len(sources) != 1:
         raise ValueError(f"Expected 1 source, got {len(sources)}")
@@ -998,6 +1084,85 @@ def preprocess_qwen_visual_agent(sources, processor, model_type: str) -> Dict:
     video_meta = build_result["video_meta"]
     video_chunk_size = build_result["video_chunk_size"]
 
+    is_qwen3vl = model_type == "qwen3vl"
+    min_pixels, max_pixels = _get_video_pixels(processor)
+    vit_patch_size = _resolve_vit_patch_size(processor)
+
+    # ── Collect time ranges from structured messages ──
+    time_ranges: List[Tuple[float, float]] = []
+    for msg in messages:
+        if msg["role"] == "user" and isinstance(msg.get("content"), list):
+            for part in msg["content"]:
+                if part.get("type") == "video":
+                    vs = part.get("video_start")
+                    ve = part.get("video_end")
+                    if vs is None or ve is None:
+                        raise ValueError(
+                            f"Video entry missing video_start/video_end: {part}"
+                        )
+                    time_ranges.append((float(vs), float(ve)))
+
+    if not time_ranges:
+        raise ValueError(
+            "Agent sample has no video chunks in messages — "
+            "check that user messages contain structured video content."
+        )
+
+    # ── Per-chunk video loading via ghost messages ──
+    # Each 2s chunk is loaded independently so non-contiguous ranges
+    # (RC7 episodes) are handled correctly.
+    split_videos: List[torch.Tensor] = []
+    chunk_metadatas_list: List[dict] = []
+    first_video_kwargs: Optional[dict] = None
+
+    pvi_base = dict(return_video_kwargs=True)
+    pvi_base["image_patch_size"] = vit_patch_size
+    if is_qwen3vl:
+        pvi_base["return_video_metadata"] = True
+
+    for vs, ve in time_ranges:
+        ghost = [
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "video",
+                        "video": video_meta["abs_path"],
+                        "video_start": vs,
+                        "video_end": ve,
+                        "nframes": FRAMES_PER_CHUNK,
+                        "min_pixels": min_pixels,
+                        "max_pixels": max_pixels,
+                    }
+                ],
+            }
+        ]
+        _, vid_list, vkw = process_vision_info(ghost, **pvi_base)
+
+        if is_qwen3vl:
+            tensor, meta = vid_list[0]
+            split_videos.append(tensor)
+            chunk_metadatas_list.append(meta)
+        else:
+            split_videos.append(vid_list[0])
+
+        if first_video_kwargs is None:
+            first_video_kwargs = vkw
+
+    # Build video_kwargs with fps list matching number of chunks
+    video_kwargs = first_video_kwargs or {}
+    if "fps" in video_kwargs:
+        fps_val = video_kwargs["fps"]
+        if isinstance(fps_val, list):
+            # Each ghost returns [fps]; replicate to match chunk count
+            video_kwargs["fps"] = [fps_val[0]] * len(time_ranges)
+        else:
+            video_kwargs["fps"] = [fps_val] * len(time_ranges)
+
+    chunk_metadatas = chunk_metadatas_list if is_qwen3vl else None
+    preloaded = (split_videos, video_kwargs, chunk_metadatas)
+
+    # ── Tokenise via the shared pipeline ──
     full_result = process_messages_to_model_inputs(
         messages=messages,
         video_meta=video_meta,
@@ -1005,13 +1170,16 @@ def preprocess_qwen_visual_agent(sources, processor, model_type: str) -> Dict:
         processor=processor,
         model_type=model_type,
         add_generation_prompt=False,
+        preloaded_frames=preloaded,
     )
 
-    # SFT labels: only train on assistant turns
-    # recall_result turns are "user" role → auto IGNORE_INDEX
+    # ── SFT labels: only train on assistant turns ──
+    # recall_result user turns are automatically IGNORE_INDEX
     input_ids = full_result["input_ids"]
     labels = torch.full_like(input_ids, IGNORE_INDEX)
-    for start, end in find_assistant_spans(input_ids[0].tolist(), processor.tokenizer):
+    for start, end in find_assistant_spans(
+        input_ids[0].tolist(), processor.tokenizer
+    ):
         labels[0, start:end] = input_ids[0, start:end]
 
     full_result["labels"] = labels
@@ -1085,22 +1253,40 @@ class LazySupervisedDataset(Dataset):
         length_list = []
         for sample in self.list_data_dict:
             img_tokens = 128 if "image" in sample else 0
-            length_list.append(
-                sum(len(conv["value"].split()) for conv in sample["conversations"])
-                + img_tokens
-            )
+            # Agent 3-action data uses "messages", not "conversations"
+            if "conversations" in sample:
+                text_len = sum(
+                    len(conv["value"].split()) for conv in sample["conversations"]
+                )
+            elif "messages" in sample:
+                text_len = sum(
+                    len(str(m.get("content", "")).split())
+                    for m in sample["messages"]
+                )
+            else:
+                text_len = 0
+            length_list.append(text_len + img_tokens)
         return length_list
 
     @property
     def modality_lengths(self):
         length_list = []
         for sample in self.list_data_dict:
-            cur_len = sum(
-                len(conv["value"].split()) for conv in sample["conversations"]
+            if "conversations" in sample:
+                cur_len = sum(
+                    len(conv["value"].split()) for conv in sample["conversations"]
+                )
+            elif "messages" in sample:
+                cur_len = sum(
+                    len(str(m.get("content", "")).split())
+                    for m in sample["messages"]
+                )
+            else:
+                cur_len = 0
+            has_visual = ("image" in sample) or ("video" in sample) or (
+                sample.get("protocol_version") == "3action"
             )
-            cur_len = (
-                cur_len if ("image" in sample) or ("video" in sample) else -cur_len
-            )
+            cur_len = cur_len if has_visual else -cur_len
             length_list.append(cur_len)
         return length_list
 
@@ -1271,18 +1457,31 @@ class DataCollatorForSupervisedDataset:
         batch["video_grid_thw"] = video_grid_thw
         batch["position_ids"] = position_ids
 
-        # CE Weight
+        # CE Weight — balance <silent> vs <response> token frequencies.
+        #
+        # Cold-start format:  <think>...<silent>  or  <think>...<response>text
+        #   → both tokens appear in labels, reweighting is useful.
+        #
+        # Agent 3-action format: <action>silent</action>  (text word, NOT <silent> token)
+        #   → <silent> token never appears, n_silent == 0.
+        #   → Skip reweighting to avoid harmful downweighting of <response>.
         response_id = self.tokenizer.convert_tokens_to_ids(["<response>"])[0]
         silent_id = self.tokenizer.convert_tokens_to_ids(["<silent>"])[0]
         n_response = (batch["labels"] == response_id).sum()
         n_silent = (batch["labels"] == silent_id).sum()
-        total_n = n_response + n_silent
         ce_weight = torch.ones(self.vocab_size)
-        eps = 1e-3
-        ce_weight[silent_id] = total_n / (2 * n_silent + eps)
-        ce_weight[response_id] = total_n / (2 * n_response + eps)
-        batch["ce_weight"] = torch.clamp(ce_weight, 0, 20)
-        print(input_ids.shape, batch["ce_weight"][[silent_id, response_id]])
+        if n_silent > 0 and n_response > 0:
+            # Both classes present (cold-start data) — apply balanced weighting
+            total_n = n_response + n_silent
+            ce_weight[silent_id] = total_n / (2 * n_silent)
+            ce_weight[response_id] = total_n / (2 * n_response)
+            ce_weight = torch.clamp(ce_weight, 0.1, 10)
+        batch["ce_weight"] = ce_weight
+        rank0_print(
+            f"[CE] shape={input_ids.shape} "
+            f"n_silent={n_silent} n_response={n_response} "
+            f"w=[{ce_weight[silent_id]:.2f}, {ce_weight[response_id]:.2f}]"
+        )
         return batch
 
 

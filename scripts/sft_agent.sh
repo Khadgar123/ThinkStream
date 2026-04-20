@@ -42,8 +42,8 @@ else
     exit 1
 fi
 
-batch_size=8
-grad_accum_steps=1
+batch_size=${BSZ:-4}
+grad_accum_steps=${GRAD_ACCUM:-2}
 entry_file=thinkstream/train.py
 output_dir=./output/${run_name}
 

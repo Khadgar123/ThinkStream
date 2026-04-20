@@ -286,7 +286,8 @@ def configure_model_gradients(
         p.requires_grad = True
     for n, p in model.model.language_model.named_parameters():
         p.requires_grad = True
-    model.lm_head.requires_grad = True
+    for p in model.lm_head.parameters():
+        p.requires_grad = True
     model.config.use_cache = False
     if hasattr(model, "enable_input_require_grads"):
         model.enable_input_require_grads()
@@ -306,6 +307,7 @@ def init_processor(
     *,
     model_name_or_path: Auto[str],
     model_type: Auto[str],
+    model: Auto[PreTrainedModel],
     processor: Ref[Any],
 ) -> Context:
     lmm_processor = AutoProcessor.from_pretrained(model_name_or_path)
@@ -316,10 +318,26 @@ def init_processor(
             ["<silent>", "<response>", "<think>", "</think>"]
         )
     # Agent protocol tokens (3-action format with recall)
+    # NOTE: </response> is needed because the model must generate it to
+    # close <response>answer text</response>.
     lmm_processor.tokenizer.add_tokens(
         ["<action>", "</action>", "<query>", "</query>",
+         "</response>",
          "<recall_result>", "</recall_result>"]
     )
+
+    # Resize model embeddings to match the expanded tokenizer.
+    # Without this, new token IDs cause IndexError in the embedding layer.
+    num_new = len(lmm_processor.tokenizer) - model.config.vocab_size
+    if num_new > 0:
+        model.resize_token_embeddings(len(lmm_processor.tokenizer))
+        logger.warning(
+            "Resized model embeddings: %d → %d (+%d new tokens)",
+            model.config.vocab_size - num_new,
+            len(lmm_processor.tokenizer),
+            num_new,
+        )
+
     return ctx.set(processor, lmm_processor)
 
 
@@ -371,10 +389,15 @@ def init_dataset(
 
     from thinkstream.data.stream_data_processor import make_supervised_data_module
 
+    # Use tokenizer vocab_size (post-expansion) rather than model config
+    # vocab_size, which may not be updated by resize_token_embeddings for
+    # models with nested text_config (e.g., Qwen2.5-VL).
+    actual_vocab_size = len(processor.tokenizer)
+
     data_module = make_supervised_data_module(
         processor,
         data_args=data_args,
-        vocab_size=vocab_size,
+        vocab_size=actual_vocab_size,
     )
     return ctx.update(
         {

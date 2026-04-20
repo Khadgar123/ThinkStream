@@ -151,6 +151,26 @@ Write your internal reasoning in 15-48 tokens. Do not write an action. Output En
 
 RECALL_PHRASING = ["earlier", "before", "previously", "a while ago", "at the beginning"]
 
+_QUERY_STOP_WORDS = frozenset(
+    "what which where when how who is was were are do does did the a an "
+    "in at of to for on by with from can could will would should it its "
+    "this that these those be been being have has had you your".split()
+)
+
+
+def _extract_query_keywords(question: str, max_words: int = 6) -> str:
+    """Extract searchable keywords from a question for recall query.
+
+    Removes stop words and punctuation, returns at most *max_words* content
+    words.  Never returns the answer itself — only question-derived clues.
+    """
+    words = re.sub(r"[^\w\s]", "", question.lower()).split()
+    keywords = [w for w in words if w not in _QUERY_STOP_WORDS and len(w) > 1]
+    if not keywords:
+        # Fallback: first 3 non-trivial words from original
+        keywords = [w for w in words if len(w) > 2][:3]
+    return " ".join(keywords[:max_words])
+
 # ---------------------------------------------------------------------------
 # Per-step concurrency & token config (based on GPU memory analysis)
 # 8× MI300X 192GB, Qwen3.5-397B-A17B-FP8
@@ -860,6 +880,95 @@ def generate_triplets(tasks: List[Dict]) -> List[Dict]:
 
 
 # ===================================================================
+# Recall-result construction (with noise injection)
+# ===================================================================
+
+
+def _format_recall_item(
+    seg: Dict, rank: int, *, extra: str = "",
+) -> str:
+    """Format one ``<item>`` inside ``<recall_result>``."""
+    caption = seg.get("action", "")
+    ocr = seg.get("ocr", "none")
+    body = f"caption: {caption} ocr: {ocr}"
+    if extra:
+        body += f" {extra}"
+    return (
+        f'<item rank="{rank}" start="{seg["start_sec"]:.1f}" '
+        f'end="{seg["end_sec"]:.1f}">{body}</item>'
+    )
+
+
+def _build_recall_result(
+    support_seg: Optional[Dict],
+    segments: List[Dict],
+    task: Dict,
+) -> Tuple[str, bool]:
+    """Build a recall_result string with realistic noise.
+
+    Returns ``(recall_text, found_correct)`` where *found_correct* is
+    ``False`` when the oracle support segment is NOT in the result
+    (distractor-only or failure cases).
+
+    Distribution: 70% oracle top-1, 20% correct in top-3,
+    5% distractor-only, 5% retrieval failure.
+    """
+    if support_seg is None:
+        return (
+            "<recall_result>\n<item>Not found</item>\n"
+            "</recall_result>\nContinue following the protocol to respond.",
+            False,
+        )
+
+    # Distractors = other segments (exclude support)
+    other_segs = [
+        s for s in segments
+        if s["segment_id"] != support_seg["segment_id"]
+    ]
+
+    roll = random.random()
+
+    if roll < 0.70:
+        # Oracle top-1
+        items = [_format_recall_item(support_seg, 1)]
+        found = True
+    elif roll < 0.90:
+        # Correct in top-3 (but not necessarily top-1)
+        rank = random.randint(1, 3)
+        distractors = random.sample(other_segs, min(2, len(other_segs)))
+        items = []
+        d_idx = 0
+        for r in range(1, 4):
+            if r == rank:
+                items.append(_format_recall_item(support_seg, r))
+            elif d_idx < len(distractors):
+                items.append(_format_recall_item(distractors[d_idx], r))
+                d_idx += 1
+        found = True
+    elif roll < 0.95:
+        # Distractor-only
+        distractors = random.sample(other_segs, min(3, len(other_segs)))
+        items = [
+            _format_recall_item(d, i + 1) for i, d in enumerate(distractors)
+        ]
+        found = False
+    else:
+        # Retrieval failure
+        return (
+            "<recall_result>\n<item>Not found</item>\n"
+            "</recall_result>\nContinue following the protocol to respond.",
+            False,
+        )
+
+    body = "\n".join(items)
+    return (
+        f"<recall_result>\n{body}\n"
+        f"</recall_result>\nContinue following the protocol to respond.",
+        found,
+    )
+
+
+# ===================================================================
 # Step 4: Chunk-Level Assembly
 # ===================================================================
 
@@ -904,10 +1013,10 @@ def assemble_episode(
                 seg = s
                 break
 
-        # User message
-        user_content = "<video>"
+        # User message (structured content with explicit time range)
+        user_content = [{"type": "video", "video_start": t, "video_end": chunk_end}]
         if is_ask_chunk:
-            user_content += f"\n<question>\n{task['question']}\n</question>"
+            user_content.append({"type": "text", "text": task["question"]})
 
         messages.append({"role": "user", "content": user_content})
 
@@ -917,7 +1026,7 @@ def assemble_episode(
             think = task.get("think_at_ask", "Cannot find the answer in the current window, need to recall.")
             candidates = task.get("query_candidates") or []
             query = candidates[0] if candidates else {
-                "query": task.get("expected_answer", ""),
+                "query": _extract_query_keywords(task.get("question", "")),
                 "time_bias": "past_far",
                 "target": "entity",
                 "topk": 3,
@@ -931,29 +1040,22 @@ def assemble_episode(
                 ),
             })
 
-            # Recall result (user injection)
+            # Recall result (user injection — with realistic noise)
             support_seg = None
             for s in segments:
                 if s["segment_id"] == task.get("support_segment"):
                     support_seg = s
                     break
-            if support_seg:
-                recall_text = (
-                    f"<recall_result>\n"
-                    f'<item rank="1" start="{support_seg["start_sec"]:.1f}" '
-                    f'end="{support_seg["end_sec"]:.1f}">'
-                    f'caption: {support_seg.get("action", "")} '
-                    f'ocr: {support_seg.get("ocr", "none")}'
-                    f'</item>\n'
-                    f"</recall_result>\nContinue following the protocol to respond."
-                )
-            else:
-                recall_text = "<recall_result>\n<item>Not found</item>\n</recall_result>\nContinue following the protocol to respond."
-
+            recall_text, found_correct = _build_recall_result(
+                support_seg, segments, task,
+            )
             messages.append({"role": "user", "content": recall_text})
 
             # Post-recall response
-            think_after = task.get("think_after_recall", "Retrieved relevant information, can now answer.")
+            if found_correct:
+                think_after = task.get("think_after_recall", "Retrieved relevant information, can now answer.")
+            else:
+                think_after = "Retrieval did not return useful evidence. Answering based on available context."
             messages.append({
                 "role": "assistant",
                 "content": (
@@ -985,11 +1087,12 @@ def assemble_episode(
                 and ask_time <= t < answer_time
             )
             if is_waiting:
-                think = f"User asked about this, but the event hasn't occurred yet. Waiting."
-            elif seg:
-                think = seg.get("action", "Scene in progress.")[:50]
+                think = "User asked about this, but the event hasn't occurred yet. Waiting."
             else:
-                think = "Continuing to observe."
+                # Use generic placeholder to avoid causal violation:
+                # 4s segment annotations may describe events in the second
+                # half of the segment, leaking future info to the first chunk.
+                think = "Observing the current scene."
             messages.append({
                 "role": "assistant",
                 "content": f"<think>{think}</think><action>silent</action>",
@@ -1068,10 +1171,10 @@ def _assemble_r3(
                 seg = s
                 break
 
-        # User message
-        user_content = "<video>"
+        # User message (structured content with explicit time range)
+        user_content = [{"type": "video", "video_start": t, "video_end": chunk_end}]
         if is_ask_chunk:
-            user_content += f"\n<question>\n{task['question']}\n</question>"
+            user_content.append({"type": "text", "text": task["question"]})
             question_asked = True
         messages.append({"role": "user", "content": user_content})
 
@@ -1106,11 +1209,11 @@ def _assemble_r3(
                 "content": f"<think>{think}</think><action>silent</action>",
             })
         else:
-            # Before question
-            think = seg.get("action", "Scene in progress.")[:50] if seg else "Continuing to observe."
+            # Before question — generic placeholder (no segment annotation
+            # to avoid causal violation from 4s→2s granularity mismatch)
             messages.append({
                 "role": "assistant",
-                "content": f"<think>{think}</think><action>silent</action>",
+                "content": "<think>Observing the current scene.</think><action>silent</action>",
             })
 
         t = chunk_end
@@ -1154,7 +1257,7 @@ def _assemble_rc7(
     base_done = False
 
     for t in chunk_times:
-        chunk_end = t + AGENT_CHUNK_SEC
+        chunk_end = min(t + AGENT_CHUNK_SEC, duration_sec)
         is_base_ask = (t <= base_ask_time < chunk_end) and not base_done
         is_followup_ask = (t <= ask_time < chunk_end) and base_done
 
@@ -1164,12 +1267,12 @@ def _assemble_rc7(
                 seg = s
                 break
 
-        # User message
-        user_content = "<video>"
+        # User message (structured content with explicit time range)
+        user_content = [{"type": "video", "video_start": t, "video_end": chunk_end}]
         if is_base_ask:
-            user_content += f"\n<question>\n{task.get('base_question', '')}\n</question>"
+            user_content.append({"type": "text", "text": task.get("base_question", "")})
         elif is_followup_ask:
-            user_content += f"\n<question>\n{task['question']}\n</question>"
+            user_content.append({"type": "text", "text": task["question"]})
         messages.append({"role": "user", "content": user_content})
 
         # Assistant message
@@ -1188,7 +1291,7 @@ def _assemble_rc7(
             think = task.get("think_at_ask", "The earlier conversation is outside my window, need to recall.")
             candidates = task.get("query_candidates") or []
             query = candidates[0] if candidates else {
-                "query": task.get("base_question", ""),
+                "query": _extract_query_keywords(task.get("base_question", "")),
                 "time_bias": "past_far",
                 "target": "dialogue",
                 "topk": 3,
@@ -1202,30 +1305,29 @@ def _assemble_rc7(
                 ),
             })
 
-            # Recall result
+            # Recall result (with realistic noise)
             support_seg = None
             for s in segments:
                 if s["segment_id"] == task.get("support_segment"):
                     support_seg = s
                     break
-            base_q = task.get("base_question", "")
-            base_a = task.get("base_answer", "")
+            # For RC7, enrich the support item with the base Q&A dialogue
             if support_seg:
-                recall_text = (
-                    f"<recall_result>\n"
-                    f'<item rank="1" start="{support_seg["start_sec"]:.1f}" '
-                    f'end="{support_seg["end_sec"]:.1f}">'
-                    f'caption: {support_seg.get("action", "")} '
-                    f'Q: {base_q} A: {base_a}'
-                    f'</item>\n'
-                    f"</recall_result>\nContinue following the protocol to respond."
-                )
-            else:
-                recall_text = "<recall_result>\n<item>Not found</item>\n</recall_result>\nContinue following the protocol to respond."
-
+                base_q = task.get("base_question", "")
+                base_a = task.get("base_answer", "")
+                support_seg = {
+                    **support_seg,
+                    "action": f'{support_seg.get("action", "")} Q: {base_q} A: {base_a}',
+                }
+            recall_text, found_correct = _build_recall_result(
+                support_seg, segments, task,
+            )
             messages.append({"role": "user", "content": recall_text})
 
-            think_after = task.get("think_after_recall", "Retrieved the earlier conversation, can now answer the follow-up.")
+            if found_correct:
+                think_after = task.get("think_after_recall", "Retrieved the earlier conversation, can now answer the follow-up.")
+            else:
+                think_after = "Retrieval did not return useful evidence. Answering based on available context."
             messages.append({
                 "role": "assistant",
                 "content": (
@@ -1237,13 +1339,9 @@ def _assemble_rc7(
             break
 
         else:
-            if seg:
-                think = seg.get("action", "Scene in progress.")[:50]
-            else:
-                think = "Continuing to observe."
             messages.append({
                 "role": "assistant",
-                "content": f"<think>{think}</think><action>silent</action>",
+                "content": "<think>Observing the current scene.</think><action>silent</action>",
             })
 
     return _make_episode(task, messages, video_path)
@@ -1255,10 +1353,35 @@ def _assemble_rc7(
 
 
 _FORMAT_RE = re.compile(
-    r"<think>.*?</think><action>(?:silent|response|recall)</action>"
-    r"(?:<response>.*?</response>|<query>\{.*?\}</query>)?",
+    r"^<think>.*?</think>(?:"
+    r"<action>silent</action>"
+    r"|<action>response</action><response>.*?</response>"
+    r"|<action>recall</action><query>\{.*?\}</query>"
+    r")\s*$",
     re.DOTALL,
 )
+
+
+def _check_query_leakage(episode: Dict) -> bool:
+    """Return True if any recall query contains the expected answer."""
+    answer = (
+        episode.get("canonical_answer", {})
+        .get("value", {})
+        .get("answer", "")
+        .lower()
+        .strip()
+    )
+    if not answer or len(answer) < 2:
+        return False
+    for msg in episode.get("messages", []):
+        if msg["role"] == "assistant":
+            content = msg.get("content", "")
+            if not isinstance(content, str):
+                continue
+            m = re.search(r"<query>(.*?)</query>", content, re.DOTALL)
+            if m and answer in m.group(1).lower():
+                return True
+    return False
 
 
 def filter_episode(episode: Dict) -> Tuple[bool, str]:
@@ -1274,16 +1397,14 @@ def filter_episode(episode: Dict) -> Tuple[bool, str]:
             if not _FORMAT_RE.search(content):
                 return False, f"format_mismatch: {content[:80]}"
 
-    # Check recall timing
-    if episode.get("need_recall"):
-        task_id = episode.get("task_id", "")
-        # Timing is already validated in Step 2c
-        pass
-
     # Check non-empty answer
     ca = episode.get("canonical_answer", {})
     if not ca.get("value", {}).get("answer"):
         return False, "empty_answer"
+
+    # Check recall query does not leak the answer
+    if _check_query_leakage(episode):
+        return False, "query_contains_answer"
 
     return True, "ok"
 
