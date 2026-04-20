@@ -648,22 +648,6 @@ def _build_messages(
 
 AGENT_CHUNK_SEC = 2.0  # Fixed 2s chunk for agent data
 
-import re as _re
-
-_THINK_RE = _re.compile(r"<think>.*?</think>", _re.DOTALL)
-
-
-def _strip_think_content(text: str) -> str:
-    """Replace ``<think>...</think>`` with empty ``<think></think>``.
-
-    Used to prevent historical assistant reasoning from leaking visual
-    details (colors, numbers, actions) to subsequent chunks.  The model
-    should learn to *recall* distant evidence, not read it from its own
-    prior text.
-    """
-    return _THINK_RE.sub("<think></think>", text)
-
-
 def _build_agent_messages(
     item: Dict[str, Any], base_path: Path, remaining_video_chunks: int = 3
 ) -> Dict[str, Any]:
@@ -705,15 +689,14 @@ def _build_agent_messages(
     video_start_min = float("inf")
     video_end_max = 0.0
 
-    # Index of the last assistant message — only THIS one keeps full
-    # <think> content; all earlier ones are stripped to prevent the
-    # model from reading historical visual details instead of recalling.
-    last_asst_idx = max(
-        (i for i, m in enumerate(pre_messages) if m.get("role") == "assistant"),
-        default=-1,
-    )
+    # Historical <think> content is KEPT (not stripped).
+    # Rationale: the model sees its own prior thinks during inference
+    # (autoregressive), so training must match.  Visual-detail leakage
+    # from silent chunks is already prevented by the causal fix in the
+    # pipeline (generic "Observing the current scene." placeholder).
+    # Ask/answer thinks describe the CURRENT window and are legitimate.
 
-    for msg_idx, msg in enumerate(pre_messages):
+    for msg in pre_messages:
         role = msg.get("role", "")
         content = msg.get("content", "")
 
@@ -790,19 +773,11 @@ def _build_agent_messages(
                 messages.append({"role": "user", "content": content})
 
         elif role == "assistant":
-            # Strip <think> from historical turns to prevent leaking
-            # visual details (colors, OCR, actions) that would make
-            # recall tasks trivially solvable from prior text.
             if isinstance(content, str):
-                text = (
-                    content
-                    if msg_idx >= last_asst_idx
-                    else _strip_think_content(content)
-                )
                 messages.append(
                     {
                         "role": "assistant",
-                        "content": [{"type": "text", "text": text}],
+                        "content": [{"type": "text", "text": content}],
                     }
                 )
             else:

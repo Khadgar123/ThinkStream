@@ -1011,58 +1011,11 @@ class TestRegressions:
 class TestP0Fixes:
     """Regression tests for P0 bug fixes."""
 
-    # ── P0-1: Historical think stripping ──
-
-    def test_historical_think_stripped(self):
-        """Historical assistant <think> should be stripped in SFT input."""
-        if not _HAS_SFT_PROCESSOR:
-            pytest.skip("ML deps not available")
-
-        item = {
-            "video_path": "/test/video.mp4",
-            "messages": [
-                {"role": "system", "content": "sys"},
-                {"role": "user", "content": [
-                    {"type": "video", "video_start": 0, "video_end": 2},
-                ]},
-                {"role": "assistant",
-                 "content": "<think>The person wears a RED apron.</think><action>silent</action>"},
-                {"role": "user", "content": [
-                    {"type": "video", "video_start": 2, "video_end": 4},
-                ]},
-                {"role": "assistant",
-                 "content": "<think>Price tag shows 29.99.</think><action>silent</action>"},
-                {"role": "user", "content": [
-                    {"type": "video", "video_start": 4, "video_end": 6},
-                ]},
-                {"role": "assistant",
-                 "content": "<think>Need to recall the apron color.</think><action>recall</action>"
-                            '<query>{"query":"apron color"}</query>'},
-            ],
-        }
-        with patch(
-            "thinkstream.data.stream_data_processor._get_duration",
-            return_value=80.0,
-        ), patch(
-            "thinkstream.data.stream_data_processor._make_abs_paths",
-            side_effect=lambda base, f: f,
-        ):
-            result = _build_agent_messages(item, Path("."))
-
-        msgs = result["messages"]
-        asst_msgs = [m for m in msgs if m["role"] == "assistant"]
-        assert len(asst_msgs) == 3
-
-        # First two (historical) should have empty thinks
-        for m in asst_msgs[:2]:
-            text = m["content"][0]["text"]
-            assert "<think></think>" in text, f"Historical think not stripped: {text}"
-            assert "RED apron" not in text
-            assert "29.99" not in text
-
-        # Last one (current target) keeps full think
-        last_text = asst_msgs[2]["content"][0]["text"]
-        assert "Need to recall" in last_text
+    # ── P0-1: Historical think preserved (not stripped) ──
+    # Think content is kept to support incremental text memory and match
+    # inference behavior (autoregressive model sees its own prior output).
+    # Visual detail leakage is prevented at the pipeline level via the
+    # causal fix: silent thinks are generic placeholders, not segment annotations.
 
     # ── P0-2: Query answer leakage ──
 
