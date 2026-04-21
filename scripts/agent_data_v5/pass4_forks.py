@@ -29,6 +29,74 @@ logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------
+# Frame Path Helpers
+# ---------------------------------------------------------------------------
+
+
+def get_visual_frame_info(
+    chunk_idx: int,
+    frame_paths: List[str],
+    window_start: Optional[int] = None,
+) -> Dict:
+    """Compute visual window metadata WITH real frame paths.
+
+    At 1fps with 2 frames per chunk, frame indices = chunk_idx * 2, chunk_idx * 2 + 1.
+    """
+    if window_start is None:
+        window_start = max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1)
+
+    chunk_indices = list(range(window_start, chunk_idx + 1))
+    frame_indices = []
+    paths = []
+    for c in chunk_indices:
+        for f_offset in range(2):  # 2 frames per chunk
+            idx = c * 2 + f_offset
+            frame_indices.append(idx)
+            if frame_paths and idx < len(frame_paths):
+                paths.append(frame_paths[idx])
+
+    meta = {
+        "video_start": window_start * AGENT_CHUNK_SEC,
+        "video_end": (chunk_idx + 1) * AGENT_CHUNK_SEC,
+        "frames": len(frame_indices),
+        "chunk_indices": chunk_indices,
+        "frame_indices": frame_indices,
+    }
+    if paths:
+        meta["frame_paths"] = paths
+    return meta
+
+
+def get_recalled_frame_info(
+    evidence_chunks: List[int],
+    frame_paths: List[str],
+    source: str = "historical_frames",
+) -> Dict:
+    """Compute recalled frame metadata with real frame paths."""
+    frame_indices = []
+    paths = []
+    for c in evidence_chunks:
+        for f_offset in range(2):
+            idx = c * 2 + f_offset
+            frame_indices.append(idx)
+            if frame_paths and idx < len(frame_paths):
+                paths.append(frame_paths[idx])
+
+    t_start = evidence_chunks[0] * AGENT_CHUNK_SEC if evidence_chunks else 0
+    t_end = (evidence_chunks[-1] + 1) * AGENT_CHUNK_SEC if evidence_chunks else 0
+
+    info = {
+        "time_range": [int(t_start), int(t_end)],
+        "n_frames": len(frame_indices),
+        "source": source,
+        "frame_indices": frame_indices,
+    }
+    if paths:
+        info["frame_paths"] = paths
+    return info
+
+
+# ---------------------------------------------------------------------------
 # Sample Construction
 # ---------------------------------------------------------------------------
 
@@ -39,17 +107,32 @@ def build_sample_input(snapshot: Dict, user_input: str, visual_window_meta: Dict
     Matches §2.2 of the design doc exactly.
     """
     # Memory block
+    recent = snapshot.get("recent_thinks", snapshot.get("recent_observations", []))
     memory = {
         "compressed": snapshot["compressed_segments"],
-        "recent_observations": [
-            f'[{item["time"]}] {item["obs"]}'
-            for item in snapshot["recent_observations"]
+        "recent_thinks": [
+            f'[{item["time"]}] {item.get("text", item.get("obs", ""))}'
+            for item in recent
         ],
     }
 
-    # Pending questions
+    # Pending questions (includes recall-awaiting questions)
     if snapshot.get("pending_questions"):
-        memory["pending"] = snapshot["pending_questions"]
+        pending_list = []
+        for pq in snapshot["pending_questions"]:
+            item = {
+                "question": pq["question"],
+                "since": pq.get("since_chunk", 0) * AGENT_CHUNK_SEC,
+                "type": "awaiting_recall_response"
+                if pq.get("last_action") == "recall"
+                else "event_watch",
+            }
+            if pq.get("query"):
+                item["query"] = pq["query"]
+            pending_list.append(item)
+        memory["pending"] = [
+            item for item in pending_list
+        ]
 
     return {
         "system": SYSTEM_PROMPT,
@@ -66,15 +149,10 @@ def build_silent_sample(
     frame_paths: List[str],
 ) -> Dict:
     """Build a training sample for a silent timestep."""
-    window_start = max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1)
-    visual_meta = {
-        "video_start": window_start * AGENT_CHUNK_SEC,
-        "video_end": (chunk_idx + 1) * AGENT_CHUNK_SEC,
-        "frames": (chunk_idx - window_start + 1) * 2,
-    }
+    visual_meta = get_visual_frame_info(chunk_idx, frame_paths)
 
     sample_input = build_sample_input(snapshot, user_input="", visual_window_meta=visual_meta)
-    output = f"<observation>{observation}</observation><action>silent</action>"
+    output = f"<think>{observation}</think><action>silent</action>"
 
     return {
         "sample_type": "silent",
@@ -89,21 +167,30 @@ def build_compress_sample(
     observation: str,
     snapshot: Dict,
     compression_event: Dict,
+    frame_paths: Optional[List[str]] = None,
 ) -> Dict:
-    """Build a training sample for a compression timestep."""
-    window_start = max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1)
-    visual_meta = {
-        "video_start": window_start * AGENT_CHUNK_SEC,
-        "video_end": (chunk_idx + 1) * AGENT_CHUNK_SEC,
-        "frames": (chunk_idx - window_start + 1) * 2,
-    }
+    """Build a C1 training sample for compression.
+
+    C1: System triggers + specifies the gold range (teacher-chosen optimal).
+    The model learns the compress behavior: given a trigger with range,
+    produce a faithful summary.
+
+    C2 (future): No trigger; model decides when and what to compress.
+    """
+    visual_meta = get_visual_frame_info(chunk_idx, frame_paths or [])
+    summary = compression_event["summary"]
+    time_range = summary.get("time_range", [0, 0])
+
+    # C1: system trigger includes the specified range
+    # IMPORTANT: use pre-action snapshot (without current think).
+    # Compress range only covers thinks in the INPUT, not the current output think.
+    trigger = f'<compress_trigger range="{time_range[0]}-{time_range[1]}"/>'
 
     sample_input = build_sample_input(
-        snapshot, user_input="<compress_trigger/>", visual_window_meta=visual_meta
+        snapshot, user_input=trigger, visual_window_meta=visual_meta
     )
-    summary = compression_event["summary"]
     output = (
-        f"<observation>{observation}</observation>"
+        f"<think>{observation}</think>"
         f"<action>compress</action>"
         f'<summary>{json.dumps(summary, ensure_ascii=False)}</summary>'
     )
@@ -115,7 +202,102 @@ def build_compress_sample(
         "output": output,
         "metadata": {
             "gold_action": "compress",
-            "compressed_range": summary.get("time_range"),
+            "compressed_range": time_range,
+            "compressed_chunks": compression_event.get("compressed_thinks_chunks", []),
+            "phase": "C1",
+        },
+    }
+
+
+def build_compress_sample_c2(
+    chunk_idx: int,
+    observation: str,
+    snapshot: Dict,
+    compression_event: Dict,
+    frame_paths: Optional[List[str]] = None,
+) -> Dict:
+    """Build a C2 training sample for compression.
+
+    C2: System triggers (no range specified), model self-selects the range.
+    Gold range comes from teacher policy (same as C1) but the model must learn
+    to choose it autonomously.
+    """
+    visual_meta = get_visual_frame_info(chunk_idx, frame_paths or [])
+    summary = compression_event["summary"]
+    time_range = summary.get("time_range", [0, 0])
+
+    # C2: trigger WITHOUT range — model decides what to compress
+    trigger = "<compress_trigger/>"
+
+    sample_input = build_sample_input(
+        snapshot, user_input=trigger, visual_window_meta=visual_meta
+    )
+    output = (
+        f"<think>{observation}</think>"
+        f"<action>compress</action>"
+        f'<summary>{json.dumps(summary, ensure_ascii=False)}</summary>'
+    )
+
+    return {
+        "sample_type": "compress",
+        "chunk_idx": chunk_idx,
+        "input": sample_input,
+        "output": output,
+        "metadata": {
+            "gold_action": "compress",
+            "compressed_range": time_range,
+            "compressed_chunks": compression_event.get("compressed_thinks_chunks", []),
+            "phase": "C2",
+        },
+    }
+
+
+def build_merge_compress_sample(
+    snapshot: Dict,
+    seg_a: Dict,
+    seg_b: Dict,
+    merged_text: str,
+    chunk_idx: int,
+    observation: str,
+    frame_paths: Optional[List[str]] = None,
+) -> Dict:
+    """Build a training sample for second-level compression (summary of summaries).
+
+    When compressed_segments exceed MAX_COMPRESSED_SEGMENTS, the system merges
+    the two oldest segments. This sample teaches the model to do that merge.
+    """
+    visual_meta = get_visual_frame_info(chunk_idx, frame_paths or [])
+
+    tr_a = seg_a["time_range"]
+    tr_b = seg_b["time_range"]
+    trigger = f'<merge_compress_trigger segments="{tr_a[0]}-{tr_a[1]},{tr_b[0]}-{tr_b[1]}"/>'
+
+    sample_input = build_sample_input(
+        snapshot, user_input=trigger, visual_window_meta=visual_meta
+    )
+
+    merged_summary = {
+        "time_range": [tr_a[0], tr_b[1]],
+        "text": merged_text,
+        "source_segments": [tr_a, tr_b],
+    }
+
+    output = (
+        f"<think>{observation}</think>"
+        f"<action>compress</action>"
+        f'<summary>{json.dumps(merged_summary, ensure_ascii=False)}</summary>'
+    )
+
+    return {
+        "sample_type": "compress",
+        "chunk_idx": chunk_idx,
+        "input": sample_input,
+        "output": output,
+        "metadata": {
+            "gold_action": "compress",
+            "compressed_range": [tr_a[0], tr_b[1]],
+            "phase": "C1",
+            "task_type": "merge_compress",
         },
     }
 
@@ -126,28 +308,25 @@ async def build_response_sample(
     observations: List[Dict],
     client,
     video_id: str,
+    frame_paths: Optional[List[str]] = None,
 ) -> Optional[Dict]:
     """Build a training sample for a response action.
 
     Uses 397B to generate the natural response text, constrained by gold_answer.
     """
     ask_chunk = task["ask_chunk"]
+    visual_meta = get_visual_frame_info(ask_chunk, frame_paths or [])
     window_start = max(0, ask_chunk - VISUAL_WINDOW_CHUNKS + 1)
-    visual_meta = {
-        "video_start": window_start * AGENT_CHUNK_SEC,
-        "video_end": (ask_chunk + 1) * AGENT_CHUNK_SEC,
-        "frames": (ask_chunk - window_start + 1) * 2,
-    }
-
     # Determine evidence available to student
     evidence_text = ""
     reason = task.get("action_reason", "")
     if "visual_window" in reason:
         evidence_text = "Visible in current frames."
-    elif "recent_observations" in reason:
-        for item in snapshot["recent_observations"]:
-            if task.get("fact", "").lower()[:20] in item["obs"].lower():
-                evidence_text = item["obs"]
+    elif "recent_think" in reason:
+        for item in snapshot.get("recent_thinks", snapshot.get("recent_observations", [])):
+            text = item.get("text", item.get("obs", ""))
+            if task.get("fact", "").lower()[:20] in text.lower():
+                evidence_text = text
                 break
     elif "compressed" in reason:
         for seg in snapshot["compressed_segments"]:
@@ -184,16 +363,16 @@ async def build_response_sample(
     if not raw:
         return None
 
-    response_text = raw.strip().strip('"')
+    response_text = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip().strip('"')
 
     # Build current observation (at ask time)
-    current_obs = observations[ask_chunk]["observation"] if ask_chunk < len(observations) else ""
+    current_obs = observations[ask_chunk]["think"] if ask_chunk < len(observations) else ""
 
     sample_input = build_sample_input(
         snapshot, user_input=task.get("question", ""), visual_window_meta=visual_meta
     )
     output = (
-        f"<observation>{current_obs}</observation>"
+        f"<think>{current_obs}</think>"
         f"<action>response</action>"
         f"<response>{response_text}</response>"
     )
@@ -220,6 +399,7 @@ async def build_recall_sample(
     observations: List[Dict],
     client,
     video_id: str,
+    frame_paths: Optional[List[str]] = None,
 ) -> Optional[List[Dict]]:
     """Build training samples for a recall action (2 samples: query + response).
 
@@ -230,22 +410,31 @@ async def build_recall_sample(
     recall_result uses ONLY student-accessible content (observations/summaries/frames).
     """
     ask_chunk = task["ask_chunk"]
-    window_start = max(0, ask_chunk - VISUAL_WINDOW_CHUNKS + 1)
-    visual_meta = {
-        "video_start": window_start * AGENT_CHUNK_SEC,
-        "video_end": (ask_chunk + 1) * AGENT_CHUNK_SEC,
-        "frames": (ask_chunk - window_start + 1) * 2,
-    }
-
+    _fp = frame_paths or []
+    visual_meta = get_visual_frame_info(ask_chunk, _fp)
     # --- Generate recall query ---
-    evidence_time = task["evidence_chunks"][0] * AGENT_CHUNK_SEC if task["evidence_chunks"] else 0
-    answer_topic = " ".join(task.get("fact", "").split()[:5])  # First 5 words as topic
+    # Build visible context from snapshot (what the student can actually see)
+    visible_parts = []
+    for seg in snapshot.get("compressed_segments", []):
+        tr = seg["time_range"]
+        visible_parts.append(f"[{tr[0]}-{tr[1]}] {seg['text'][:80]}")
+    for obs_item in snapshot.get("recent_thinks", snapshot.get("recent_observations", [])):
+        visible_parts.append(f"[{obs_item['time']}] {obs_item.get('text', obs_item.get('obs', ''))}")
+    visible_context = "\n".join(visible_parts[-10:]) if visible_parts else "(minimal context)"
+
+    # Derive time_range from visible memory timestamps (not from teacher evidence)
+    all_times = []
+    for seg in snapshot.get("compressed_segments", []):
+        all_times.extend(seg["time_range"])
+    for obs_item in snapshot.get("recent_thinks", snapshot.get("recent_observations", [])):
+        parts = obs_item["time"].split("-")
+        all_times.extend(int(p) for p in parts)
+    time_range_str = f"0-{max(all_times)}" if all_times else "0-60"
 
     query_prompt = RECALL_QUERY_PROMPT.format(
         question=task.get("question", ""),
-        answer_topic=answer_topic,
-        evidence_time=int(evidence_time),
-        time_range=f"{int(max(0, evidence_time-4))}-{int(evidence_time+4)}",
+        visible_context=visible_context,
+        time_range=time_range_str,
     )
 
     query_raw = await client._call_one(
@@ -273,25 +462,58 @@ async def build_recall_sample(
         else:
             return None
 
-    # --- Leakage check: query must not contain answer ---
-    answer_keywords = set(task.get("gold_answer", "").lower().split())
-    query_keywords = set(query_json.get("query", "").lower().split())
-    if answer_keywords & query_keywords - {"the", "a", "is", "was", "in", "on", "at"}:
-        # Potential leakage — try to fix by removing answer words
-        clean_query = " ".join(w for w in query_json["query"].split()
-                               if w.lower() not in answer_keywords)
+    # --- Leakage check: query must not contain answer or near-synonyms ---
+    stop_words = {"the", "a", "an", "is", "was", "in", "on", "at", "to", "of", "and"}
+    answer_keywords = set(
+        w for w in re.findall(r'\b[a-zA-Z0-9]+\b', task.get("gold_answer", "").lower())
+        if w not in stop_words and len(w) > 2
+    )
+    query_text = query_json.get("query", "")
+    query_keywords = set(
+        w for w in re.findall(r'\b[a-zA-Z0-9]+\b', query_text.lower())
+        if w not in stop_words and len(w) > 2
+    )
+    leaked = answer_keywords & query_keywords
+    if leaked:
+        # Remove leaked words from query
+        clean_query = " ".join(
+            w for w in query_json["query"].split()
+            if w.lower() not in leaked
+        )
+        if not clean_query.strip():
+            # All query words were answer words — cannot salvage, discard sample
+            return None
         query_json["query"] = clean_query
+        # Re-check after cleanup
+        remaining_leaked = answer_keywords & set(
+            re.findall(r'\b[a-zA-Z0-9]+\b', clean_query.lower())
+        )
+        if remaining_leaked:
+            return None  # Still leaking after cleanup
 
     # --- Simulate recall result (student-accessible content only) ---
-    recall_result = simulate_recall_result(task, snapshot, observations)
+    recall_result = simulate_recall_result(task, snapshot, observations, ask_chunk, query_json)
+
+    # --- Handle recall failure/distractor: no gold_answer for response ---
+    is_failed_recall = recall_result.get("noise_level") in ("distractor", "failure")
+
+    if is_failed_recall:
+        # Recall failed — generate uncertain response, NOT gold answer
+        effective_answer = "I could not find enough evidence in the recalled results to answer confidently."
+        effective_answer_type = "uncertain"
+        effective_length = "20-60 tokens"
+    else:
+        effective_answer = task.get("gold_answer", "")
+        effective_answer_type = task.get("answer_type", "factoid")
+        effective_length = "5-40 tokens" if effective_answer_type == "factoid" else "20-80 tokens"
 
     # --- Generate post-recall response ---
     resp_prompt = RESPONSE_PROMPT.format(
         question=task.get("question", ""),
         evidence=recall_result.get("text_content", ""),
-        answer_type=task.get("answer_type", "factoid"),
-        gold_answer=task.get("gold_answer", ""),
-        length_guide="5-40 tokens" if task.get("answer_type") == "factoid" else "20-80 tokens",
+        answer_type=effective_answer_type,
+        gold_answer=effective_answer,
+        length_guide=effective_length,
     )
 
     resp_raw = await client._call_one(
@@ -304,15 +526,15 @@ async def build_recall_sample(
     if not resp_raw:
         return None
 
-    response_text = resp_raw.strip().strip('"')
-    current_obs = observations[ask_chunk]["observation"] if ask_chunk < len(observations) else ""
+    response_text = re.sub(r'<think>.*?</think>', '', resp_raw, flags=re.DOTALL).strip().strip('"')
+    current_obs = observations[ask_chunk]["think"] if ask_chunk < len(observations) else ""
 
     # --- Sample 1: Recall query ---
     sample1_input = build_sample_input(
         snapshot, user_input=task.get("question", ""), visual_window_meta=visual_meta
     )
     sample1_output = (
-        f"<observation>{current_obs}</observation>"
+        f"<think>{current_obs}</think>"
         f"<action>recall</action>"
         f'<query>{json.dumps(query_json, ensure_ascii=False)}</query>'
     )
@@ -329,29 +551,48 @@ async def build_recall_sample(
             "visibility": task.get("visibility", {}),
             "question": task.get("question", ""),
             "leakage_checks": {
-                "query_contains_answer": bool(answer_keywords & query_keywords),
+                "query_contains_answer": bool(
+                    set(re.findall(r'\b[a-zA-Z0-9]+\b', query_json.get("query", "").lower()))
+                    & answer_keywords
+                ),
             },
         },
     }
 
     # --- Sample 2: Post-recall response ---
+    # Inject original question as pending so the model knows what to answer
+    snapshot_with_pending = dict(snapshot)
+    snapshot_with_pending["pending_questions"] = [{
+        "question": task.get("question", ""),
+        "since_chunk": ask_chunk,
+        "last_action": "recall",
+        "query": query_json,
+    }]
+
+    # Use returned_chunks (not evidence_chunks) — failure/distractor get different frames
+    returned_chunks = recall_result.get("returned_chunks", [])
+    if returned_chunks and recall_result.get("source") == "historical_frames":
+        recalled_info = get_recalled_frame_info(
+            returned_chunks, _fp, source="historical_frames"
+        )
+    else:
+        recalled_info = None  # No frames for text-only recall or failure
+
+    recall_visual = {**visual_meta}
+    if recalled_info:
+        recall_visual["recalled_frames"] = recalled_info
     sample2_input = build_sample_input(
-        snapshot,
+        snapshot_with_pending,
         user_input="Continue following the protocol to respond.",
-        visual_window_meta={
-            **visual_meta,
-            "recalled_frames": {
-                "time": recall_result.get("time"),
-                "n_frames": RECALL_RETURN_FRAMES,
-                "source": recall_result.get("source", "historical_frames"),
-            },
-        },
+        visual_window_meta=recall_visual,
     )
     # Add recall_result to input
     sample2_input["recall_result"] = recall_result
 
+    # Use actual visual observation for current chunk, not meta-description
+    # Post-recall turn: no new observation (observation was already emitted in sample1
+    # for this chunk_idx; re-emitting would duplicate it in memory at runtime).
     sample2_output = (
-        f"<observation>Retrieved evidence from t={recall_result.get('time', '?')}.</observation>"
         f"<action>response</action>"
         f"<response>{response_text}</response>"
     )
@@ -373,6 +614,141 @@ async def build_recall_sample(
 
 
 # ---------------------------------------------------------------------------
+# Pending / Event-watch Samples
+# ---------------------------------------------------------------------------
+
+
+async def build_pending_samples(
+    task: Dict,
+    snapshots: Dict,
+    observations: List[Dict],
+    client,
+    video_id: str,
+    frame_paths: Optional[List[str]] = None,
+) -> Optional[List[Dict]]:
+    """Build training samples for a pending/event-watch task (3 samples).
+
+    Sample 0: User requests event-watch → model outputs silent (pending starts).
+    Sample 1: Silent with pending question (mid-point, event not yet happened).
+    Sample 2: Response when the event is observed (at trigger_chunk).
+    """
+    ask_chunk = task["ask_chunk"]
+    trigger_chunk = task["trigger_chunk"]
+    mid_chunk = task.get("mid_chunk", (ask_chunk + trigger_chunk) // 2)
+    _fp = frame_paths or []
+    samples = []
+
+    # --- Sample 0: Pending start (user asks, model stays silent) ---
+    ask_snapshot = snapshots.get(ask_chunk, snapshots.get(str(ask_chunk)))
+    if ask_snapshot is not None and ask_chunk < len(observations):
+        start_visual = get_visual_frame_info(ask_chunk, _fp)
+        ask_obs = observations[ask_chunk]["think"]
+        # User input is the event-watch question; model should NOT answer yet
+        start_input = build_sample_input(
+            ask_snapshot, user_input=task.get("question", ""),
+            visual_window_meta=start_visual,
+        )
+        start_output = f"<think>{ask_obs}</think><action>silent</action>"
+        samples.append({
+            "sample_type": "silent",
+            "chunk_idx": ask_chunk,
+            "input": start_input,
+            "output": start_output,
+            "metadata": {
+                "task_type": "pending_start",
+                "has_pending": False,  # pending is created AFTER this output
+                "pending_question": task.get("question", ""),
+            },
+        })
+
+    # --- Sample 1: Silent with pending (mid-point) ---
+    mid_snapshot = snapshots.get(mid_chunk, snapshots.get(str(mid_chunk)))
+    if mid_snapshot is None:
+        return samples or None
+
+    mid_snapshot_with_pending = dict(mid_snapshot)
+    mid_snapshot_with_pending["pending_questions"] = [{
+        "question": task.get("question", ""),
+        "since_chunk": ask_chunk,
+    }]
+
+    mid_visual = get_visual_frame_info(mid_chunk, _fp)
+
+    mid_obs = observations[mid_chunk]["think"] if mid_chunk < len(observations) else ""
+    sample1_input = build_sample_input(mid_snapshot_with_pending, user_input="", visual_window_meta=mid_visual)
+    sample1_output = f"<think>{mid_obs}</think><action>silent</action>"
+
+    samples.append({
+        "sample_type": "silent",
+        "chunk_idx": mid_chunk,
+        "input": sample1_input,
+        "output": sample1_output,
+        "metadata": {
+            "task_type": "pending_silent",
+            "has_pending": True,
+            "pending_question": task.get("question", ""),
+        },
+    })
+
+    # --- Sample 2: Response at trigger ---
+    trigger_snapshot = snapshots.get(trigger_chunk, snapshots.get(str(trigger_chunk)))
+    if trigger_snapshot is None:
+        return samples
+
+    trigger_snapshot_with_pending = dict(trigger_snapshot)
+    trigger_snapshot_with_pending["pending_questions"] = [{
+        "question": task.get("question", ""),
+        "since_chunk": ask_chunk,
+    }]
+
+    trigger_visual = get_visual_frame_info(trigger_chunk, _fp)
+
+    trigger_obs = observations[trigger_chunk]["think"] if trigger_chunk < len(observations) else ""
+
+    # Generate response via 397B
+    resp_prompt = RESPONSE_PROMPT.format(
+        question=task.get("question", ""),
+        evidence=f"Current observation: {trigger_obs}. Event: {task.get('event', '')}",
+        answer_type="factoid",
+        gold_answer=task.get("event", ""),
+        length_guide="20-60 tokens",
+    )
+    resp_raw = await client._call_one(
+        messages=[{"role": "user", "content": resp_prompt}],
+        max_tokens=256,
+        temperature=0.3,
+        request_id=f"{video_id}_pending_resp_{trigger_chunk}",
+    )
+    response_text = (
+        re.sub(r'<think>.*?</think>', '', resp_raw, flags=re.DOTALL).strip().strip('"')
+        if resp_raw else task.get("event", "Event observed.")
+    )
+
+    sample2_input = build_sample_input(trigger_snapshot_with_pending, user_input="", visual_window_meta=trigger_visual)
+    sample2_output = (
+        f"<think>{trigger_obs}</think>"
+        f"<action>response</action>"
+        f"<response>{response_text}</response>"
+    )
+
+    samples.append({
+        "sample_type": "response",
+        "chunk_idx": trigger_chunk,
+        "input": sample2_input,
+        "output": sample2_output,
+        "metadata": {
+            "task_type": "pending_response",
+            "gold_action": "response",
+            "action_reason": "pending_trigger_satisfied",
+            "pending_question": task.get("question", ""),
+            "event": task.get("event", ""),
+        },
+    })
+
+    return samples
+
+
+# ---------------------------------------------------------------------------
 # Recall Result Simulation
 # ---------------------------------------------------------------------------
 
@@ -381,48 +757,55 @@ def simulate_recall_result(
     task: Dict,
     snapshot: Dict,
     observations: List[Dict],
+    ask_chunk: int = 0,
+    query_json: Optional[Dict] = None,
 ) -> Dict:
     """Simulate what the retrieval system would return.
 
-    ONLY uses student-accessible content:
-    - Student's own observations (past)
-    - Student's compressed summaries
-    - Historical video frames (referenced by time)
-
-    Never uses teacher_caption.
+    ONLY uses student-accessible content from BEFORE ask_chunk.
+    Returns returned_chunks so caller knows which frames to attach.
     """
     noise = random.random()
     evidence_chunks = task.get("evidence_chunks", [])
+    noise_level = (
+        "oracle" if noise < 0.70 else
+        "noisy" if noise < 0.90 else
+        "distractor" if noise < 0.95 else
+        "failure"
+    )
 
-    if noise < 0.70:
-        # Oracle: correct evidence
-        source, content = _get_correct_result(evidence_chunks, snapshot, observations)
-    elif noise < 0.90:
-        # Noisy: correct in top-4 but not rank 1
-        source, content = _get_correct_result(evidence_chunks, snapshot, observations)
-        # Prepend a distractor
-        distractor = _get_distractor(evidence_chunks, snapshot, observations)
+    returned_chunks = []  # Actual chunks the retrieval "found"
+
+    if noise_level == "oracle":
+        source, content = _get_correct_result(evidence_chunks, snapshot, observations, ask_chunk)
+        returned_chunks = [c for c in evidence_chunks if c < ask_chunk]
+    elif noise_level == "noisy":
+        source, content = _get_correct_result(evidence_chunks, snapshot, observations, ask_chunk)
+        distractor = _get_distractor(evidence_chunks, observations, ask_chunk)
         content = f"{distractor}\n---\n{content}"
-    elif noise < 0.95:
-        # All distractors
+        returned_chunks = [c for c in evidence_chunks if c < ask_chunk]
+    elif noise_level == "distractor":
         source = "distractor"
-        content = _get_distractor(evidence_chunks, snapshot, observations)
-    else:
-        # Failure
+        content, dist_chunk = _get_distractor_with_chunk(evidence_chunks, observations, ask_chunk)
+        if dist_chunk is not None:
+            returned_chunks = [dist_chunk]
+    else:  # failure
         source = "failure"
         content = "No matching results found."
+        returned_chunks = []
 
     time_range = ""
-    if evidence_chunks:
-        t_start = evidence_chunks[0] * AGENT_CHUNK_SEC
-        t_end = (evidence_chunks[-1] + 1) * AGENT_CHUNK_SEC
+    if returned_chunks:
+        t_start = returned_chunks[0] * AGENT_CHUNK_SEC
+        t_end = (returned_chunks[-1] + 1) * AGENT_CHUNK_SEC
         time_range = f"{int(t_start)}-{int(t_end)}"
 
     return {
         "source": source,
         "time": time_range,
         "text_content": content,
-        "noise_level": "oracle" if noise < 0.70 else "noisy" if noise < 0.90 else "distractor" if noise < 0.95 else "failure",
+        "noise_level": noise_level,
+        "returned_chunks": returned_chunks,
     }
 
 
@@ -430,11 +813,11 @@ def _get_correct_result(
     evidence_chunks: List[int],
     snapshot: Dict,
     observations: List[Dict],
+    ask_chunk: int = 0,
 ) -> tuple:
     """Get the correct recall result from student-accessible sources.
 
-    For recall tasks, the evidence is NOT in current visibility.
-    Priority: historical frames > student past observation > compressed segment containing evidence.
+    Only uses observations from BEFORE ask_chunk (no future leakage).
     """
     if not evidence_chunks:
         return "failure", "No matching results found."
@@ -442,42 +825,47 @@ def _get_correct_result(
     evidence_time_start = evidence_chunks[0] * AGENT_CHUNK_SEC
     evidence_time_end = (evidence_chunks[-1] + 1) * AGENT_CHUNK_SEC
 
-    # Priority 1: Return historical frames (most useful for visual detail recall)
-    # This is a reference — actual frames get added to visual window during inference
     frame_text = f"Retrieved frames from t={int(evidence_time_start)}-{int(evidence_time_end)}s."
-    # Also include the student's original observation for that time as text context
     obs_context = ""
     for ec in evidence_chunks:
-        if ec < len(observations):
-            obs_context += f" [{ec*AGENT_CHUNK_SEC}-{(ec+1)*AGENT_CHUNK_SEC}] {observations[ec]['observation']}"
+        if ec < ask_chunk and ec < len(observations):  # Only past observations
+            obs_context += f" [{ec*AGENT_CHUNK_SEC}-{(ec+1)*AGENT_CHUNK_SEC}] {observations[ec]['think']}"
 
     if obs_context:
         return "historical_frames", f"{frame_text}\nText memory:{obs_context.strip()}"
 
-    # Priority 2: Find relevant compressed segment (matching time range)
     for seg in snapshot["compressed_segments"]:
         seg_start, seg_end = seg["time_range"]
         if seg_start <= evidence_time_start and seg_end >= evidence_time_end:
             return "compressed_summary", seg["text"]
 
-    # Fallback: frame reference only
     return "historical_frames", frame_text
 
 
 def _get_distractor(
     evidence_chunks: List[int],
-    snapshot: Dict,
     observations: List[Dict],
+    ask_chunk: int = 0,
 ) -> str:
-    """Get a distractor (similar time, different content)."""
-    # Pick a random observation NOT from evidence chunks
+    """Get a distractor text (similar time, different content, past only)."""
+    text, _ = _get_distractor_with_chunk(evidence_chunks, observations, ask_chunk)
+    return text
+
+
+def _get_distractor_with_chunk(
+    evidence_chunks: List[int],
+    observations: List[Dict],
+    ask_chunk: int = 0,
+) -> tuple:
+    """Get a distractor with its chunk_idx. Returns (text, chunk_idx)."""
     available = [
         obs for obs in observations
         if obs["chunk_idx"] not in evidence_chunks
+        and obs["chunk_idx"] < ask_chunk
     ]
     if available:
         pick = random.choice(available)
         t = f"{pick['chunk_idx'] * AGENT_CHUNK_SEC}-{(pick['chunk_idx']+1) * AGENT_CHUNK_SEC}"
-        return f"[{t}] {pick['observation']}"
+        return f"[{t}] {pick['think']}", pick["chunk_idx"]
 
-    return "Unrelated observation from a different time."
+    return "Unrelated observation from a different time.", None

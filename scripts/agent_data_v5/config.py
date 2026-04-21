@@ -1,8 +1,8 @@
 """
-Configuration for Agent Data Pipeline v5.0.
+Configuration for Agent Data Pipeline v5.4.
 
 All constants, prompts, and schema definitions.
-Matches docs/data_construction_zh.md v5.0 exactly.
+Matches docs/data_construction_zh.md v5.4 exactly.
 """
 
 from pathlib import Path
@@ -34,17 +34,45 @@ VISUAL_WINDOW_CHUNKS = 12    # 视觉窗口 = 最近 12 chunks (24s)
 VISUAL_WINDOW_FRAMES = VISUAL_WINDOW_CHUNKS * FRAMES_PER_CHUNK  # 24 帧
 
 # ---------------------------------------------------------------------------
-# 3. Observation & memory parameters
+# 3. Think & memory parameters
 # ---------------------------------------------------------------------------
 
-OBSERVATION_TOKENS = (40, 60)       # student observation 长度
-COMPRESS_THRESHOLD = 10             # recent_observations 达到 10 条触发压缩
-COMPRESS_RANGE = 10                 # 每次压缩最早的 10 条
-SUMMARY_TOKENS_MIN = 100            # summary 最短 (match doc §8)
-SUMMARY_TOKENS_MAX = 180            # summary 最长 (match doc §8)
-COMPRESSION_RATIO_MIN = 2.5        # 最小压缩比 (doc: >=2:1, target 3.5:1)
+THINK_TOKENS = (40, 60)             # student think 长度范围
+THINK_TOKEN_AVG = 50                # think 平均 token 数（用于估算）
+
+# Token-based compression trigger
+RECENT_THINKS_TOKEN_BUDGET = 600    # recent_thinks 总 token 预算
+COMPRESS_TRIGGER_RATIO = 0.8        # 达到预算 80% 时系统触发压缩
+COMPRESS_TOKEN_THRESHOLD = int(RECENT_THINKS_TOKEN_BUDGET * COMPRESS_TRIGGER_RATIO)  # = 480
+
+# Student model tokenizer (用于精确计算 token 数)
+# 造数据时加载一次，全局复用
+STUDENT_MODEL = "Qwen/Qwen3-VL-8B"  # 学生模型
+_tokenizer = None
+
+def get_tokenizer():
+    """Lazy-load student model tokenizer for precise token counting."""
+    global _tokenizer
+    if _tokenizer is None:
+        try:
+            from transformers import AutoTokenizer
+            _tokenizer = AutoTokenizer.from_pretrained(STUDENT_MODEL, trust_remote_code=True)
+        except Exception:
+            _tokenizer = "unavailable"
+    return _tokenizer if _tokenizer != "unavailable" else None
+
+COMPRESS_RANGE_MIN = 4              # 每次最少压缩 4 条
+COMPRESS_RANGE_MAX = 8              # 每次最多压缩 8 条
+SUMMARY_TOKENS_MIN = 100            # summary 最短
+SUMMARY_TOKENS_MAX = 180            # summary 最长
+COMPRESSION_RATIO_MIN = 2.5        # 最小压缩比
 RECALL_RETURN_FRAMES = 4           # recall 返回 4 帧 (4s at 1fps)
-MAX_COMPRESSED_SEGMENTS = 5        # 最多保留 5 段压缩 (doc §2.4: <=5×150=750 tok)
+MAX_COMPRESSED_SEGMENTS = 5        # 最多保留 5 段压缩
+
+# Backward compat aliases (deprecated — use token-based constants above)
+OBSERVATION_TOKENS = THINK_TOKENS  # deprecated alias
+COMPRESS_THRESHOLD = 10  # deprecated: item-count fallback, prefer COMPRESS_TOKEN_THRESHOLD
+COMPRESS_RANGE = COMPRESS_RANGE_MAX  # deprecated alias
 
 # ---------------------------------------------------------------------------
 # 4. Token budgets (草算，需用 tokenizer 实测)
@@ -117,6 +145,8 @@ VLLM_MODEL = "Qwen/Qwen3.5-397B-A17B-FP8"
 VLLM_MAX_MODEL_LEN = 65536
 
 PASS_CONFIG = {
+    # Vision passes: 16 concurrent × ~3,800 tok/request ≈ 60K total.
+    # Fits in VLLM_MAX_MODEL_LEN=65K but tight. If OOM, reduce to 12.
     "pass1_evidence": {
         "max_tokens": 1024,
         "temperature": 0.3,
@@ -151,19 +181,19 @@ PASS_CONFIG = {
 SYSTEM_PROMPT = (
     "You are a streaming video agent. You observe video chunks and maintain memory.\n\n"
     "Each turn, output exactly ONE of:\n"
-    "1) <observation>...</observation><action>silent</action>\n"
-    "2) <observation>...</observation><action>response</action><response>...</response>\n"
-    "3) <observation>...</observation><action>recall</action>"
+    "1) <think>...</think><action>silent</action>\n"
+    "2) <think>...</think><action>response</action><response>...</response>\n"
+    "3) <think>...</think><action>recall</action>"
     '<query>{"query":"...","time_range":"..."}</query>\n'
-    "4) <observation>...</observation><action>compress</action>"
+    "4) <think>...</think><action>compress</action>"
     '<summary>{"time_range":[s,e],"text":"..."}</summary>\n\n'
     "Rules:\n"
-    "- observation: 40-60 tokens, describe ONLY what is newly visible. "
-    "No reasoning, no sound/smell/emotion.\n"
+    "- think: 40-60 tokens, describe ONLY what is newly visible in the current chunk. "
+    "No meta-reasoning, no sound/smell/emotion.\n"
     "- response: answer based on currently visible information only.\n"
     "- recall: only when answer is NOT in visual window, NOT in text memory, "
     "NOT in compressed summaries.\n"
-    "- compress: when system triggers, compress oldest observations.\n"
+    "- compress: when system triggers with a range, summarize the specified thinks.\n"
     "- If a pending question exists, respond when the answer becomes visible."
 )
 
@@ -185,7 +215,12 @@ Output a STRICT JSON object with these fields:
     {{"id": "entity_name", "attributes": ["attr1", "attr2"], "action": "what doing", "position": "where"}}
   ],
   "atomic_facts": [
-    {{"fact": "precise observable statement", "confidence": 0.0-1.0}}
+    {{
+      "fact": "precise observable statement",
+      "confidence": 0.0-1.0,
+      "support_level": "direct_current_chunk | carried_from_previous | inferred",
+      "target_resolution_visible": true
+    }}
   ],
   "state_changes": ["what changed from previous chunk"],
   "ocr": ["exact text if visible"],
@@ -194,21 +229,26 @@ Output a STRICT JSON object with these fields:
 }}
 
 Rules:
-- Only include what is VISIBLE in the frames
+- Only include what is VISIBLE in the current chunk frames (t={start}-{end}s)
+- support_level: "direct_current_chunk" = visible in current 2s frames;
+  "carried_from_previous" = entity/attribute inherited from prior context;
+  "inferred" = not directly visible, deduced from context
+- target_resolution_visible: false if the detail would be too small/blurry at training resolution
 - confidence < 0.7 for uncertain observations (small text, fast motion, partial occlusion)
 - not_observable: list anything you'd normally say but can't actually SEE
 - Maintain consistent entity IDs across chunks (chef_1, pot_1, etc.)
+- Do NOT attribute facts from prior chunks to the current chunk
 
 Output JSON only:"""
 
 OBSERVATION_PROMPT = """/no_think
 
-You are a streaming video agent generating a memory observation.
+You are a streaming video agent generating a think (incremental visual memory note).
 
 Compressed memory:
 {compressed_memory}
 
-Recent observations:
+Recent thinks:
 {recent_observations}
 
 Visual window: t={window_start}-{window_end}s (frames above).
@@ -219,7 +259,7 @@ Rules:
 - Only observable visual facts
 - Maintain entity names from memory (e.g., keep "chef_1" consistent)
 - Focus: entities+attributes, actions, state changes, OCR, spatial
-- NO reasoning, NO "I notice", NO sounds/smells/emotions
+- NO meta-reasoning, NO "I notice", NO sounds/smells/emotions
 - If nothing new: brief ongoing state
 
 Output (one paragraph, 40-60 tokens):"""
@@ -249,25 +289,26 @@ Fact: {fact}
 Time: t={time}s
 
 Generate ONE specific, answerable question about this visual detail.
-The answer must be: {answer}
+The full fact is: {answer}
 
 Requirements:
 - Natural conversational question
 - Answerable from visual observation alone
 - Do not include the answer in the question
+- "concise_answer" must be a SHORT answer (1-10 words), not the full fact sentence
 
-Output JSON: {{"question": "...", "answer_type": "factoid|procedural|summary"}}"""
+Output JSON: {{"question": "...", "concise_answer": "...", "answer_type": "factoid|procedural|summary"}}"""
 
 RECALL_QUERY_PROMPT = """/no_think
 
 Generate a retrieval query for this scenario:
 - Question: "{question}"
-- The answer is about: {answer_topic} (DO NOT include the exact answer value)
-- Evidence was observed around t={evidence_time}s
+- Visible memory context: {visible_context}
 
-Query must be 3-5 discriminative keywords.
+Based ONLY on the question and the visible memory context, generate 3-5 discriminative
+keywords that would help locate the relevant past observation.
 NO answer values, NO pronouns, NO articles.
-Include entity names + action/attribute anchors.
+Include entity names + action/attribute anchors from the question and context.
 
 Output JSON (one line): {{"query": "keyword1 keyword2 keyword3", "time_range": "{time_range}"}}"""
 

@@ -1,12 +1,14 @@
 """
 Pass 5: Verify + Filter
 
-Five categories of validation:
+Seven categories of validation:
 1. Information flow legality (no future leakage)
 2. Action minimality (correct gold_action)
 3. Grounding (observation supported by frames)
 4. Format & length
 5. Difficulty labeling
+6. Summary provenance (summary only references compressed thinks)
+7. Compression ratio & token length
 
 Each sample gets a pass/fail verdict with reasons.
 """
@@ -17,8 +19,10 @@ import re
 from typing import Dict, List, Tuple
 
 from .config import (
+    COMPRESSION_RATIO_MIN,
     LEAKAGE_OVERLAP_THRESHOLD,
-    OBSERVATION_TOKENS,
+    THINK_TOKENS,
+    get_tokenizer,
 )
 from .pass3_tasks import extract_keywords, keyword_overlap
 
@@ -35,24 +39,40 @@ def verify_information_flow(sample: Dict) -> Tuple[bool, str]:
 
     1. response doesn't use info not in current visible sources
     2. recall query doesn't contain answer value
-    3. compression summary wasn't optimized for future questions
+    3. recall_response after failure must be uncertain
+    4. compression summary wasn't optimized for future questions
     """
     metadata = sample.get("metadata", {})
     output = sample.get("output", "")
+    sample_type = sample.get("sample_type", "")
 
     # Check query doesn't contain answer
     if metadata.get("leakage_checks", {}).get("query_contains_answer"):
         return False, "query_contains_answer_value"
 
     # Check response doesn't hallucinate beyond evidence
-    # (Heuristic: response should not contain keywords absent from input)
     if "<response>" in output:
         response_match = re.search(r'<response>(.*?)</response>', output, re.DOTALL)
         if response_match:
             response_text = response_match.group(1)
-            # Very basic check: response shouldn't be empty
             if len(response_text.strip()) < 3:
                 return False, "empty_response"
+
+    # Check: recall_response after failure/distractor must show uncertainty
+    if sample_type == "recall_response":
+        recall_result = sample.get("input", {}).get("recall_result", {})
+        noise_level = recall_result.get("noise_level", "oracle")
+        if noise_level in ("distractor", "failure"):
+            response_match = re.search(r'<response>(.*?)</response>', output, re.DOTALL)
+            if response_match:
+                resp = response_match.group(1).lower()
+                uncertain_markers = [
+                    "cannot", "could not", "not sure", "unable",
+                    "uncertain", "don't see", "not enough", "unclear",
+                    "not confirm", "insufficient",
+                ]
+                if not any(m in resp for m in uncertain_markers):
+                    return False, "confident_response_after_failed_recall"
 
     return True, "pass"
 
@@ -93,29 +113,39 @@ def verify_grounding(sample: Dict) -> Tuple[bool, str]:
     """Check: observation is grounded in visual facts.
 
     No sounds, smells, emotions, intentions, speculations.
+    recall_response has no observation (already emitted in recall_query turn).
     """
     output = sample.get("output", "")
+    sample_type = sample.get("sample_type", "")
 
-    # Extract observation text
-    obs_match = re.search(r'<observation>(.*?)</observation>', output, re.DOTALL)
-    if not obs_match:
-        return False, "no_observation_tag"
+    # recall_response intentionally omits observation — check response instead
+    if sample_type == "recall_response":
+        # Verify response doesn't contain non-visual claims
+        resp_match = re.search(r'<response>(.*?)</response>', output, re.DOTALL)
+        if not resp_match:
+            return True, "pass"  # No response to check
+        check_text = resp_match.group(1).lower()
+    else:
+        obs_match = re.search(r'<think>(.*?)</think>', output, re.DOTALL)
+        if not obs_match:
+            return False, "no_think_tag"
+        check_text = obs_match.group(1).lower()
 
-    obs_text = obs_match.group(1).lower()
-
-    # Blacklisted phrases
+    # Blacklisted phrases (non-visual or meta-cognitive)
     blacklist_phrases = [
-        "sound", "hear", "listen", "noise",
-        "smell", "aroma", "scent", "fragrant",
+        "sound", "hear", "listen", "noise", "sizzle", "sizzling",
+        "music", "speech", "said", "talking", "voice",
+        "smell", "aroma", "scent", "fragrant", "aromatic",
         "feels", "feeling", "emotion", "happy", "sad", "angry",
         "probably", "likely", "seems to want", "intend",
         "i think", "i notice", "i need", "i should", "i can see",
         "the user wants", "the video shows",
+        "system triggered", "memory compression", "retrieved evidence",
     ]
 
     for phrase in blacklist_phrases:
-        if phrase in obs_text:
-            return False, f"observation_contains_non_visual: '{phrase}'"
+        if phrase in check_text:
+            return False, f"think_contains_non_visual: '{phrase}'"
 
     return True, "pass"
 
@@ -124,16 +154,18 @@ def verify_format(sample: Dict) -> Tuple[bool, str]:
     """Check: output format and length constraints."""
     output = sample.get("output", "")
 
-    # Must have observation tag
-    if "<observation>" not in output or "</observation>" not in output:
-        return False, "missing_observation_tags"
+    # Must have observation tag (except recall_response which omits it to avoid duplication)
+    sample_type = sample.get("sample_type", "")
+    if sample_type != "recall_response":
+        if "<think>" not in output or "</think>" not in output:
+            return False, "missing_think_tags"
 
     # Must have action tag
     if "<action>" not in output or "</action>" not in output:
         return False, "missing_action_tags"
 
     # Extract observation and check length (rough char-based, needs tokenizer for exact)
-    obs_match = re.search(r'<observation>(.*?)</observation>', output, re.DOTALL)
+    obs_match = re.search(r'<think>(.*?)</think>', output, re.DOTALL)
     if obs_match:
         obs_text = obs_match.group(1)
         estimated_words = len(obs_text.split())
@@ -142,9 +174,9 @@ def verify_format(sample: Dict) -> Tuple[bool, str]:
         action_type = action_match_inner.group(1) if action_match_inner else ""
         min_words = 3 if action_type in ("compress", "recall") else 5
         if estimated_words < min_words:
-            return False, f"observation_too_short ({estimated_words} words)"
+            return False, f"think_too_short ({estimated_words} words)"
         if estimated_words > 100:
-            return False, f"observation_too_long ({estimated_words} words)"
+            return False, f"think_too_long ({estimated_words} words)"
 
     # Check action is valid
     action_match = re.search(r'<action>(.*?)</action>', output, re.DOTALL)
@@ -153,6 +185,14 @@ def verify_format(sample: Dict) -> Tuple[bool, str]:
         valid_actions = {"silent", "response", "recall", "compress"}
         if action not in valid_actions:
             return False, f"invalid_action: {action}"
+
+    # Action/tag consistency: recall must have query, compress must have summary
+    if action_match:
+        action = action_match.group(1)
+        if action == "recall" and "<query>" not in output:
+            return False, "recall_action_without_query"
+        if action == "compress" and "<summary>" not in output:
+            return False, "compress_action_without_summary"
 
     # If recall, check query is valid JSON
     if "<query>" in output:
@@ -185,6 +225,150 @@ def verify_format(sample: Dict) -> Tuple[bool, str]:
     return True, "pass"
 
 
+def _count_tokens(text: str) -> int:
+    """Count tokens using student tokenizer, fallback to chars/4."""
+    tokenizer = get_tokenizer()
+    if tokenizer:
+        return len(tokenizer.encode(text, add_special_tokens=False))
+    return len(text) // 4
+
+
+def verify_think_token_length(sample: Dict) -> Tuple[bool, str]:
+    """Check: think is within 40-60 token range.
+
+    Uses student tokenizer for precise counting.
+    Allows ±10 token tolerance for edge cases.
+    """
+    output = sample.get("output", "")
+    sample_type = sample.get("sample_type", "")
+
+    # recall_response has no think — skip
+    if sample_type == "recall_response":
+        return True, "pass"
+
+    obs_match = re.search(r'<think>(.*?)</think>', output, re.DOTALL)
+    if not obs_match:
+        return True, "pass"  # format check catches missing tags
+
+    think_text = obs_match.group(1).strip()
+    if not think_text:
+        return True, "pass"
+
+    tok_count = _count_tokens(think_text)
+    min_tok = THINK_TOKENS[0] - 10  # 30 (tolerance)
+    max_tok = THINK_TOKENS[1] + 15  # 75 (tolerance)
+
+    if tok_count < min_tok:
+        return False, f"think_tokens_too_few ({tok_count} < {min_tok})"
+    if tok_count > max_tok:
+        return False, f"think_tokens_too_many ({tok_count} > {max_tok})"
+
+    return True, "pass"
+
+
+def verify_compression_ratio(sample: Dict) -> Tuple[bool, str]:
+    """Check: compression summary achieves minimum compression ratio.
+
+    Only applies to compress samples. Ratio = input_tokens / summary_tokens >= 2.5.
+    """
+    sample_type = sample.get("sample_type", "")
+    if sample_type != "compress":
+        return True, "pass"
+
+    output = sample.get("output", "")
+    summary_match = re.search(r'<summary>(.*?)</summary>', output, re.DOTALL)
+    if not summary_match:
+        return True, "pass"  # format check catches this
+
+    try:
+        summary_json = json.loads(summary_match.group(1))
+        summary_text = summary_json.get("text", "")
+    except (json.JSONDecodeError, ValueError):
+        return True, "pass"  # format check catches this
+
+    if not summary_text:
+        return False, "empty_compression_summary"
+
+    # Get input thinks that were compressed
+    input_data = sample.get("input", {})
+    recent_thinks = input_data.get("memory", {}).get("recent_thinks", [])
+    if not recent_thinks:
+        return True, "pass"
+
+    input_text = " ".join(recent_thinks) if isinstance(recent_thinks[0], str) else \
+        " ".join(t.get("text", t.get("obs", "")) if isinstance(t, dict) else str(t)
+                 for t in recent_thinks)
+
+    input_tokens = _count_tokens(input_text)
+    summary_tokens = _count_tokens(summary_text)
+
+    if summary_tokens == 0:
+        return False, "empty_compression_summary"
+
+    ratio = input_tokens / summary_tokens
+    if ratio < COMPRESSION_RATIO_MIN:
+        return False, f"compression_ratio_too_low ({ratio:.1f} < {COMPRESSION_RATIO_MIN})"
+
+    return True, "pass"
+
+
+def verify_summary_provenance(sample: Dict) -> Tuple[bool, str]:
+    """Check: compression summary only references content from compressed thinks.
+
+    Core constraint #6: summary cannot introduce facts not present in the
+    thinks being compressed. This prevents "peeking" at visual frames during
+    compression to add details the thinks didn't capture.
+
+    Uses entity extraction: every capitalized entity/noun in the summary must
+    appear in at least one of the compressed thinks.
+    """
+    sample_type = sample.get("sample_type", "")
+    if sample_type != "compress":
+        return True, "pass"
+
+    output = sample.get("output", "")
+    summary_match = re.search(r'<summary>(.*?)</summary>', output, re.DOTALL)
+    if not summary_match:
+        return True, "pass"
+
+    try:
+        summary_json = json.loads(summary_match.group(1))
+        summary_text = summary_json.get("text", "")
+    except (json.JSONDecodeError, ValueError):
+        return True, "pass"
+
+    if not summary_text:
+        return True, "pass"
+
+    # Collect all content words from compressed thinks (the source)
+    input_data = sample.get("input", {})
+    recent_thinks = input_data.get("memory", {}).get("recent_thinks", [])
+    source_words = set()
+    for t in recent_thinks:
+        text = t if isinstance(t, str) else t.get("text", t.get("obs", "")) if isinstance(t, dict) else str(t)
+        # Include underscore in word pattern to match entity IDs like Chef_1
+        source_words.update(w.lower() for w in re.findall(r'\b[a-zA-Z0-9_]+\b', text))
+
+    # Extract entity-like words from summary (capitalized or with underscore)
+    summary_words = re.findall(r'\b[a-zA-Z0-9_]+\b', summary_text)
+    entity_words = [
+        w for w in summary_words
+        if len(w) > 2 and (w[0].isupper() or "_" in w)
+    ]
+
+    if not entity_words:
+        return True, "pass"
+
+    # Check: entity words in summary must have at least partial overlap with source
+    unsupported = [w for w in entity_words if w.lower() not in source_words]
+    # Allow up to 20% unsupported (for rephrasing / normalization tolerance)
+    if entity_words and len(unsupported) / len(entity_words) > 0.2:
+        examples = unsupported[:3]
+        return False, f"summary_provenance_violation: {examples} not in source thinks"
+
+    return True, "pass"
+
+
 def label_difficulty(sample: Dict) -> str:
     """Label sample difficulty for phase assignment."""
     sample_type = sample.get("sample_type", "")
@@ -196,7 +380,7 @@ def label_difficulty(sample: Dict) -> str:
         reason = metadata.get("action_reason", "")
         if "visual_window" in reason:
             return "easy"
-        elif "recent_observations" in reason:
+        elif "recent_think" in reason:
             return "medium"
         elif "compressed" in reason:
             return "medium"
@@ -238,6 +422,15 @@ def verify_sample(sample: Dict) -> Dict:
 
     passed, reason = verify_format(sample)
     checks["format"] = {"passed": passed, "reason": reason}
+
+    passed, reason = verify_think_token_length(sample)
+    checks["think_token_length"] = {"passed": passed, "reason": reason}
+
+    passed, reason = verify_compression_ratio(sample)
+    checks["compression_ratio"] = {"passed": passed, "reason": reason}
+
+    passed, reason = verify_summary_provenance(sample)
+    checks["summary_provenance"] = {"passed": passed, "reason": reason}
 
     # Difficulty labeling
     difficulty = label_difficulty(sample)

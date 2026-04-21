@@ -20,6 +20,7 @@ from pathlib import Path
 from typing import Dict, List
 
 from .config import (
+    AGENT_CHUNK_SEC,
     ALL_DIRS,
     DATA_ROOT,
     EVIDENCE_DIR,
@@ -45,6 +46,11 @@ def assign_phase(sample: Dict) -> str:
     """Assign training phase based on sample type and task complexity."""
     sample_type = sample.get("sample_type", "")
     task_type = sample.get("metadata", {}).get("task_type", "")
+    phase_override = sample.get("metadata", {}).get("phase", "")
+
+    # Explicit phase from metadata (e.g., C2 compress samples)
+    if phase_override in ("C1", "C2"):
+        return phase_override
 
     if sample_type == "silent":
         return "1"  # Phase 1: protocol alignment
@@ -53,8 +59,14 @@ def assign_phase(sample: Dict) -> str:
             return "C1"  # Phase C1: response from compressed memory
         elif "unanswerable" in task_type:
             return "2"  # Phase 2
-        return "1"  # Phase 1: basic response
+        elif "response_from_memory" in task_type:
+            return "2"  # Phase 2: memory-based response
+        elif "pending" in task_type:
+            return "2"  # Phase 2: pending event response
+        return "1"  # Phase 1: basic response (from frames)
     elif sample_type == "compress":
+        if "merge_compress" in task_type:
+            return "C1"  # Phase C1: second-level compression
         return "C1"  # Phase C1: compression training
     elif sample_type in ("recall_query", "recall_response"):
         if "compress_recall" in task_type:
@@ -112,11 +124,40 @@ def select_videos(
                 "duration_sec": duration,
             })
 
-    # Sort by duration (prefer longer videos), take top N
+    # Stratified sampling: group by parent directory (dataset source), then
+    # take proportionally from each group, preferring longer videos within group.
+    # This avoids all selected videos coming from the longest-duration dataset.
+    from collections import defaultdict
+    groups = defaultdict(list)
+    for v in videos:
+        parent = Path(v["video_path"]).parent.name
+        groups[parent].append(v)
+
+    # Sort each group by duration descending
+    for g in groups.values():
+        g.sort(key=lambda x: x["duration_sec"], reverse=True)
+
+    # Round-robin proportional selection
     random.seed(seed)
-    random.shuffle(videos)
-    videos.sort(key=lambda x: x["duration_sec"], reverse=True)
-    selected = videos[:num_videos]
+    group_keys = sorted(groups.keys())
+    random.shuffle(group_keys)
+    selected = []
+    remaining = num_videos
+    per_group = max(1, num_videos // max(len(group_keys), 1))
+    for key in group_keys:
+        take = min(per_group, len(groups[key]), remaining)
+        selected.extend(groups[key][:take])
+        remaining -= take
+        if remaining <= 0:
+            break
+    # Fill remaining from largest groups
+    if remaining > 0:
+        all_remaining = [v for g in group_keys for v in groups[g] if v not in selected]
+        all_remaining.sort(key=lambda x: x["duration_sec"], reverse=True)
+        selected.extend(all_remaining[:remaining])
+
+    random.shuffle(selected)
+    selected = selected[:num_videos]
 
     # Save registry
     registry_path.parent.mkdir(parents=True, exist_ok=True)
@@ -174,6 +215,8 @@ async def run_pipeline(
     skip_pass: List[int] = None,
 ):
     """Run the full 5-pass pipeline."""
+    random.seed(seed)  # Seed early for reproducibility across all passes
+
     from scripts.agent_data_pipeline.vllm_client import VLLMClient
 
     ensure_dirs()
@@ -226,7 +269,7 @@ async def run_pipeline(
             async with semaphore:
                 captions = await run_pass1_single_video(
                     video_id=vid,
-                    frame_paths=video_frames[vid],
+                    frame_paths=video_frames.get(vid, []),
                     num_chunks=video["num_chunks"],
                     client=client,
                 )
@@ -267,13 +310,13 @@ async def run_pipeline(
             async with semaphore:
                 rollout = await run_pass2_single_video(
                     video_id=vid,
-                    frame_paths=video_frames[vid],
+                    frame_paths=video_frames.get(vid, []),
                     num_chunks=video["num_chunks"],
                     client=client,
                 )
                 save_rollout(vid, rollout)
                 logger.info(
-                    f"  [{vid}] Rollout complete: {len(rollout['observations'])} obs, "
+                    f"  [{vid}] Rollout complete: {len(rollout['thinks'])} thinks, "
                     f"{len(rollout['compression_events'])} compressions"
                 )
                 return vid, rollout
@@ -299,17 +342,20 @@ async def run_pipeline(
         logger.info("PASS 3: Task Planning")
         logger.info("=" * 60)
 
-        all_tasks = {}
-        for v in videos:
-            vid = v["video_id"]
+        semaphore = asyncio.Semaphore(PASS_CONFIG["pass3_tasks"]["concurrent"])
+
+        async def process_video_pass3(video):
+            vid = video["video_id"]
             if vid not in evidence_map or vid not in rollout_map:
-                continue
+                return vid, None
+            async with semaphore:
+                tasks = await run_pass3(vid, evidence_map[vid], rollout_map[vid], client)
+                total = sum(len(t) for t in tasks.values())
+                logger.info(f"  [{vid}] Tasks mined: {total}")
+                return vid, tasks
 
-            tasks = await run_pass3(vid, evidence_map[vid], rollout_map[vid], client)
-            all_tasks[vid] = tasks
-
-            total = sum(len(t) for t in tasks.values())
-            logger.info(f"  [{vid}] Tasks mined: {total}")
+        results = await asyncio.gather(*[process_video_pass3(v) for v in videos])
+        all_tasks = {vid: tasks for vid, tasks in results if tasks is not None}
 
         # Save tasks
         tasks_path = TASKS_DIR / "all_tasks.json"
@@ -329,6 +375,9 @@ async def run_pipeline(
     if 4 not in skip_pass:
         from .pass4_forks import (
             build_compress_sample,
+            build_compress_sample_c2,
+            build_merge_compress_sample,
+            build_pending_samples,
             build_recall_sample,
             build_response_sample,
             build_silent_sample,
@@ -347,39 +396,95 @@ async def run_pipeline(
 
             rollout = rollout_map[vid]
             tasks = all_tasks[vid]
-            observations = rollout["observations"]
+            observations = rollout.get("thinks", rollout.get("observations", []))
             snapshots = rollout["snapshots"]
+
+            # --- Action priority enforcement (constraint #8) ---
+            # Collect chunks that have user-interaction tasks so we can
+            # skip compress/silent at those chunks. Priority order:
+            #   post-recall > user response/recall > pending > compress > silent
+            interaction_chunks = set()
+            for task_type_key in ["response_from_frames", "response_from_memory",
+                                   "compress_response", "unanswerable",
+                                   "recall", "compress_recall"]:
+                for task in tasks.get(task_type_key, []):
+                    if task.get("question"):
+                        interaction_chunks.add(task.get("ask_chunk"))
+            for task in tasks.get("pending", []):
+                if task.get("question"):
+                    interaction_chunks.add(task.get("ask_chunk"))
+                    # trigger_chunk also gets a response
+                    interaction_chunks.add(task.get("trigger_chunk"))
 
             # 4a: Silent samples (subset, not all chunks)
             # Sample ~20% of silent chunks for training
-            silent_chunks = list(range(rollout["num_chunks"]))
+            # Skip chunks that have user-interaction tasks (priority rule)
+            silent_eligible = [c for c in range(rollout["num_chunks"])
+                               if c not in interaction_chunks]
             selected_silent = random.sample(
-                silent_chunks, min(len(silent_chunks) // 5, 15)
-            )
+                silent_eligible, min(len(silent_eligible) // 5, 15)
+            ) if silent_eligible else []
             for chunk_idx in selected_silent:
                 snapshot = snapshots.get(chunk_idx, snapshots.get(str(chunk_idx)))
                 if snapshot and chunk_idx < len(observations):
                     sample = build_silent_sample(
-                        chunk_idx, observations[chunk_idx]["observation"],
+                        chunk_idx, observations[chunk_idx]["think"],
                         snapshot, video_frames.get(vid, []),
                     )
                     sample["video_id"] = vid
                     all_samples.append(sample)
 
-            # 4b: Compress samples
+            # 4b: Compress samples (C1 + C2)
+            # Skip chunks that have user-interaction tasks (user > compress)
             for event in rollout["compression_events"]:
                 chunk_idx = event["trigger_chunk"]
+                if chunk_idx in interaction_chunks:
+                    continue  # User interaction takes priority over compress
                 snapshot = snapshots.get(chunk_idx, snapshots.get(str(chunk_idx)))
                 if snapshot and chunk_idx < len(observations):
-                    sample = build_compress_sample(
-                        chunk_idx, observations[chunk_idx]["observation"],
-                        snapshot, event,
+                    # C1: system-specified range
+                    sample_c1 = build_compress_sample(
+                        chunk_idx, observations[chunk_idx]["think"],
+                        snapshot, event, frame_paths=video_frames.get(vid, []),
                     )
-                    sample["video_id"] = vid
-                    all_samples.append(sample)
+                    sample_c1["video_id"] = vid
+                    all_samples.append(sample_c1)
+
+                    # C2: no range specified, model self-selects
+                    sample_c2 = build_compress_sample_c2(
+                        chunk_idx, observations[chunk_idx]["think"],
+                        snapshot, event, frame_paths=video_frames.get(vid, []),
+                    )
+                    sample_c2["video_id"] = vid
+                    all_samples.append(sample_c2)
+
+            # 4b2: Merge-compress samples (second-level compression)
+            # Generate from rollout when compressed_segments would exceed limit
+            final_mem = rollout.get("final_memory", {})
+            comp_segs = final_mem.get("compressed_segments", [])
+            if len(comp_segs) >= 2:
+                # Create merge samples from adjacent segment pairs
+                for seg_idx in range(len(comp_segs) - 1):
+                    seg_a = comp_segs[seg_idx]
+                    seg_b = comp_segs[seg_idx + 1]
+                    # Use a chunk near the midpoint of the video
+                    merge_chunk = min(rollout["num_chunks"] - 1,
+                                      seg_b["time_range"][1] // AGENT_CHUNK_SEC)
+                    merge_snapshot = snapshots.get(merge_chunk, snapshots.get(str(merge_chunk)))
+                    if merge_snapshot and merge_chunk < len(observations):
+                        combined = f'{seg_a["text"]} {seg_b["text"]}'
+                        words = combined.split()
+                        merged_text = " ".join(words[:200]) if len(words) > 200 else combined
+                        merge_sample = build_merge_compress_sample(
+                            merge_snapshot, seg_a, seg_b, merged_text,
+                            merge_chunk, observations[merge_chunk]["think"],
+                            frame_paths=video_frames.get(vid, []),
+                        )
+                        merge_sample["video_id"] = vid
+                        all_samples.append(merge_sample)
 
             # 4c: Response samples
-            for task_type in ["response_from_frames", "compress_response", "unanswerable"]:
+            for task_type in ["response_from_frames", "response_from_memory", "compress_response", "unanswerable"]:
                 for task in tasks.get(task_type, []):
                     if not task.get("question"):
                         continue
@@ -387,13 +492,27 @@ async def run_pipeline(
                     snapshot = snapshots.get(ask_chunk, snapshots.get(str(ask_chunk)))
                     if snapshot:
                         sample = await build_response_sample(
-                            task, snapshot, observations, client, vid
+                            task, snapshot, observations, client, vid,
+                            frame_paths=video_frames.get(vid, []),
                         )
                         if sample:
                             sample["video_id"] = vid
                             all_samples.append(sample)
 
-            # 4d: Recall samples
+            # 4d: Pending/event-watch samples
+            for task in tasks.get("pending", []):
+                if not task.get("question"):
+                    continue
+                samples = await build_pending_samples(
+                    task, snapshots, observations, client, vid,
+                    frame_paths=video_frames.get(vid, []),
+                )
+                if samples:
+                    for s in samples:
+                        s["video_id"] = vid
+                    all_samples.extend(samples)
+
+            # 4e: Recall samples
             for task_type in ["recall", "compress_recall"]:
                 for task in tasks.get(task_type, []):
                     if not task.get("question"):
@@ -402,7 +521,8 @@ async def run_pipeline(
                     snapshot = snapshots.get(ask_chunk, snapshots.get(str(ask_chunk)))
                     if snapshot:
                         samples = await build_recall_sample(
-                            task, snapshot, observations, client, vid
+                            task, snapshot, observations, client, vid,
+                            frame_paths=video_frames.get(vid, []),
                         )
                         if samples:
                             for s in samples:

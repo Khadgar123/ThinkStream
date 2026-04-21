@@ -1,13 +1,14 @@
 # 流视频 Agent 数据构造方案
 
-> 版本: v5.0 | 日期: 2026-04-21
+> 版本: v5.4 | 日期: 2026-04-21
 >
-> 基于 v4.1 的全面重构。核心变更：
-> - 训练格式改为 per-timestep 独立样本（方案 A）
-> - 三层文本严格分离（teacher_caption / student_observation / compressed_summary）
-> - 5 阶段 pipeline（Evidence Graph → Rollout → Task Plan → Fork → Verify）
-> - Think 改名 observation，压缩到 40-60 tokens
-> - 引入 visibility matrix 和 action minimality 验证
+> 核心设计：
+> - Per-timestep 独立样本，三层文本隔离（teacher / think / summary）
+> - `<think>` 每步立即入文本记忆，文本记忆覆盖时间 > 视觉滑动窗口
+> - 80% token 预算触发压缩，teacher 多维评分选最优范围
+> - C1 系统指定范围 → C2 模型自选范围 → C3 模型自主触发（渐进训练）
+> - Action 优先级：用户交互 > pending > compress > silent
+> - Summary 只能引用 thinks 内容，不能偷看视觉帧补充细节
 
 ---
 
@@ -25,7 +26,7 @@
 ```
 单条训练样本 = {
     input:  [system] + [memory_state] + [visual_window] + [user_input]
-    output: <observation>...</observation><action>X</action>[附加]
+    output: <think>...</think><action>X</action>[附加]
 }
 ```
 
@@ -38,12 +39,12 @@ A. teacher_caption (隐藏，不进 SFT):
    397B 的详细结构化事实，用于造题、验证、生成标准答案。
    学生模型永远看不到这层。
 
-B. student_observation (进 SFT 的 output):
-   学生模型需要生成的 40-60 token 简短记忆。
-   后续存入 memory，可被压缩。
+B. student_think (进 SFT 的 output):
+   学生模型每个 timestep 生成的 40-60 token 增量视觉记忆。
+   立即存入 memory，可被压缩。
 
 C. compressed_summary (进 SFT):
-   学生模型生成的压缩摘要，替换旧 observations。
+   学生模型生成的压缩摘要，替换旧 thinks。
 ```
 
 **三者不能混**：
@@ -54,23 +55,24 @@ C. compressed_summary (进 SFT):
 ### 1.3 四动作协议
 
 ```
-1) <observation>...</observation><action>silent</action>
-2) <observation>...</observation><action>response</action><response>...</response>
-3) <observation>...</observation><action>recall</action><query>{"query":"...","time_range":"..."}</query>
-4) <observation>...</observation><action>compress</action><summary>{"time_range":[s,e],"text":"..."}</summary>
+1) <think>...</think><action>silent</action>
+2) <think>...</think><action>response</action><response>...</response>
+3) <think>...</think><action>recall</action><query>{"query":"...","time_range":"..."}</query>
+4) <think>...</think><action>compress</action><summary>{"time_range":[s,e],"text":"..."}</summary>
 ```
 
-**observation（原 think）改名原因**：
-- "think" 暗示推理/元认知，容易诱导 "I need to recall..." 这种输出
-- "observation" 明确是可观察事实的记录
+post-recall response 是特殊情况：**不输出 think**（因为同一 chunk 的 think 已在 recall query turn 输出），只输出：
+```
+<action>response</action><response>...</response>
+```
 
-### 1.4 Observation 规范
+### 1.4 Think 规范
 
 | 参数 | 值 |
 |------|------|
 | 长度 | **40-60 tokens** |
 | 内容 | 当前 2s 帧中的增量可观察事实 |
-| 禁止 | 声音/气味/情绪/意图/推理/元认知 |
+| 禁止 | 声音/气味/情绪/意图/元推理（如 "I need to recall..."） |
 | 允许 | 实体+属性、动作、状态变化、OCR、空间关系 |
 
 **正确**: `Chef places 4 Roma tomatoes on wooden board, deep red, medium sized.`
@@ -89,18 +91,63 @@ C. compressed_summary (进 SFT):
 
 ## 2. 记忆架构
 
-### 2.1 单层替换
+### 2.1 记忆状态（单层，模型视角）
+
+每个 timestep，系统从外部拼装一份完整 input 给模型。模型只看到这一层：
 
 ```
-推理时每个 timestep 的记忆状态:
-  compressed_segments: [summary_0, summary_1, ...]   ← 替换了原始 observations
-  recent_observations: [obs_20, obs_21, ..., obs_N]  ← 未被压缩的
+模型看到的记忆状态:
+  compressed_segments: [summary_0, summary_1, ...]   ← 最多 5 段
+  recent_thinks: [think_0, think_1, ..., think_N]    ← 未被压缩的
+  pending_questions: [...]                            ← 用户待回答的问题（如有）
   visual_window: [最近 12 chunks 的帧]                ← FIFO
-
-压缩发生时:
-  recent_observations[:10] → compressed_summary → 加入 compressed_segments
-  recent_observations = recent_observations[10:]      ← 真正移除
 ```
+
+**核心设计：文本记忆覆盖时间 > 视觉窗口**。
+
+Think 每步生成后**立即进入** `recent_thinks`，不需要等到 chunk 离开视觉窗口。
+这意味着 `recent_thinks` 和 `visual_window` 在近期 chunks 上有**重叠**——近期 chunks
+同时有视觉帧（在 visual_window）和文本记忆（在 recent_thinks），而更早的 chunks
+只有文本记忆（压缩段或 recent_thinks），视觉帧已滑出。
+
+```
+时间线:  [=== compressed ===][=== recent_thinks ===]
+                              [== visual_window ==]
+         ↑ 最早               ↑ 重叠区域          ↑ 当前
+```
+
+这是**正确的**：
+- 视觉窗口提供近期的原始帧细节
+- 文本记忆提供更长时间的语义摘要
+- 两者互补，不是互斥
+
+**压缩状态更新顺序**（不可违反）：
+
+```
+模型输入 = pre-action snapshot（不含当前 think）
+模型输出 = <think>X</think><action>compress</action><summary>Y</summary>
+系统执行：
+  1. 对 INPUT 中的 recent_thinks 指定 range 做替换（Y 替换选中段）
+  2. 再 append 当前 think X 到 recent_thinks
+```
+
+**关键约束**：compress range 只能覆盖 INPUT 中已存在的 recent_thinks，
+不能覆盖当前输出的 think。这确保模型只能基于它看到的信息做压缩决策。
+
+**compressed_segments 超过 5 段时**：系统合并最老的两段（截断到 200 词），保持 ≤5 段。
+
+**Recall = 系统侧检索**。模型输出 `recall` 后，系统从历史存储中查找相关内容
+（包括已被压缩移除的原始 thinks、压缩摘要、历史视频帧），将结果注入下一步 input。
+
+**Summary provenance 约束**：compressed_summary 只能引用被压缩的 recent_thinks 中的信息。
+即使视觉帧仍在 visual_window 中，summary 也不能偷看帧补充 thinks 中没有的细节。
+否则 summary 变成"重新看视频写摘要"，破坏三层隔离。
+
+**Action 优先级**（同一步多条件同时满足时）：
+```
+post-recall response > 用户当前问题 response/recall > pending trigger response > compress > silent
+```
+用户交互优先，compress 可延后一帧。训练数据构造时按此优先级确定 gold_action。
 
 ### 2.2 单条训练样本的 input 结构
 
@@ -109,28 +156,61 @@ C. compressed_summary (进 SFT):
 [Memory block:]
   <compressed time="0-20">summary_0</compressed>         ← 压缩段
   <compressed time="20-40">summary_1</compressed>
-  [40-42] observation at t=40-42                         ← 未压缩的 observation
-  [42-44] observation at t=42-44
-  ...
+  [40-42] think at t=40-42                               ← 未压缩的 think
+  [42-44] think at t=42-44
+  ...（recent_thinks 可能和 visual_window 重叠）
 [Visual window: 最近 12 chunks 的视频帧, ~1536 vision tok]
 [User input: 当前问题 / compress_trigger / recall_result / 空]
 ```
 
-这是学生模型**真实能看到的全部信息**。
+这是学生模型**真实能看到的全部信息**。注意 recent_thinks 和 visual_window 在时间上可能重叠。
 
-### 2.3 压缩触发与合法候选
+### 2.3 压缩触发与范围选择
 
-**触发条件**: `len(recent_observations) >= 10`
+**触发条件**: `recent_thinks 总 token ≥ RECENT_THINKS_TOKEN_BUDGET × 80%`（~480 tok）
 
-**合法压缩范围约束**：
-1. 必须是过去内容，不能包含视觉窗口内的新 observations
-2. 尽量是事件边界完整段（不切断进行中的动作）
-3. 不能切断 pending question / unresolved trigger
+具体行为取决于 think 长度：
+- 长 think（~60 tok/条）→ ~8 条就触发（早）
+- 中等 think（~50 tok/条）→ ~10 条触发
+- 短 think（~40 tok/条）→ 12 条才触发（由 item 硬上限兜底）
+
+造数据时直接加载学生模型 tokenizer 精确计算 token 数（`get_tokenizer()` 自动加载）。
+若 tokenizer 不可用则降级为 `chars/4` 估算。
+
+**注意**：think 立即进入 recent_thinks，最早的 thinks 可能仍有对应帧在 visual_window 中。
+这不是问题——压缩只操作文本记忆，视频帧由 FIFO 独立管理。
+
+**范围选择（C1: teacher 多维评分）**：
+系统触发后，评估所有合法的连续范围（4-8 条），选择**综合得分最低**的范围。
+不是简单"信息损失最小"，而是多维度打分：
+
+```python
+score(window) =
+  + importance_lost          # 实体数、OCR/数字（丢了多少重要信息）
+  + pending_overlap_penalty  # 覆盖 pending 相关内容 → 重罚
+  + event_boundary_penalty   # 打断进行中的事件 → 罚
+  - token_saving_gain        # 省的 token 越多越好
+  - reconstructability_bonus # 内容重复/简单 → 容易压缩 → 加分
+
+best_range = argmin(score)   # 综合最优
+```
+
+目标不是"丢最少信息"，而是**最大化未来可回答性 / 最小化记忆 regret**。
+
+**合法范围约束**：
+1. 连续 4-8 条 `recent_thinks`
+2. 尽量是事件边界完整段
+3. 不能包含 pending question 强相关的 thinks
 4. 压缩后 token gain 足够
-5. summary 能保留关键实体、OCR、数量、交互
+5. summary 能保留关键实体、OCR、数量
 
-**Phase C1**: 系统指定 canonical 范围（最早 10 条）
-**Phase C2**: 模型从合法候选集中选择（训练 gold 来自规则化 policy）
+**三阶段训练计划**：
+
+| 阶段 | 触发方式 | 范围选择 | 目标 |
+|------|---------|---------|------|
+| **C1** | 系统触发 `<compress_trigger range="X-Y"/>` | teacher 指定最优范围 | 学会压缩行为 + 压缩后记忆推理 |
+| **C2** | 系统触发（无指定范围） | 模型自选（gold = teacher policy） | 学会选择压缩窗口 |
+| **C3**（未来） | 模型自主判断 | 模型自选 | 完整记忆管理 |
 
 ### 2.4 Token 预算
 
@@ -138,13 +218,15 @@ C. compressed_summary (进 SFT):
 |------|--------|------|
 | System prompt | ~150 | |
 | 压缩段 (≤5 × 150) | ≤750 | |
-| 未压缩 observations (≤10 × 50) | ≤500 | |
+| 未压缩 thinks (≤12 × 50) | ≤600 | 容量 12 条，80% 触发压缩 |
 | Visual window (12 chunks) | ~1536 | min_pixels=100352 |
 | User input (问题/trigger/result) | ~100 | |
 | Recall result (含 4帧) | ~356 | 256 vision + 100 text |
 | **输入总计** | **~3400** | |
-| 输出 (observation + action) | ~80 | |
-| **单样本总计** | **~3500** | 远在 16K 内 |
+| 输出: think + action | ~80 | silent/recall 时 |
+| 输出: think + action + response | ~80-280 | factoid 5-40 / procedural 40-120 / summary 80-200 |
+| 输出: think + action + summary | ~230 | compress ��（summary 100-180 tok） |
+| **单样本总计** | **~3500-3700** | 远在 16K 内 |
 
 **注**：需用目标 tokenizer/processor 实测验证。上述为草算。
 
@@ -164,7 +246,9 @@ C. compressed_summary (进 SFT):
 
 **目标**: 为每个 2s chunk 生成详细结构化事实图。这是**隐藏教师信息**，不进入 SFT。
 
-**397B 输入**: 当前 chunk 的 2 帧 + 前面所有 chunk 的 caption（保持上下文一致性）
+**397B 输入**: 最近 12 chunks 的 24 帧滑窗 + 前面所有 chunk 的 caption 文本（保持上下文一致性）
+
+> 注：使用 24 帧滑窗（而非仅当前 2 帧），与推理模型的视觉窗口一致，确保 teacher 看到的上下文不少于 student。
 
 **397B 输出** (per chunk):
 ```json
@@ -177,9 +261,11 @@ C. compressed_summary (进 SFT):
   ],
   "atomic_facts": [
     {"fact": "chef sprinkles white granular seasoning from small bowl into pot", 
-     "confidence": 0.88},
+     "confidence": 0.88, "support_level": "direct_current_chunk",
+     "target_resolution_visible": true},
     {"fact": "amount approximately one teaspoon", 
-     "confidence": 0.55, "uncertainty": "visual estimate"}
+     "confidence": 0.55, "support_level": "direct_current_chunk",
+     "target_resolution_visible": false, "uncertainty": "visual estimate"}
   ],
   "state_changes": ["seasoning added to sauce"],
   "ocr": [],
@@ -192,7 +278,7 @@ C. compressed_summary (进 SFT):
 **用途**：
 - 造任务（知道哪里有可问的细节）
 - 生成标准答案（来自 atomic_facts）
-- 验证 student observation 是否遗漏关键信息
+- 验证 student think 是否遗漏关键信息
 - 验证 compressed_summary 是否保留必要内容
 - 生成 hard negatives / distractors
 - 目标分辨率可见性检查（confidence < 0.5 的 fact 不适合做任务）
@@ -208,49 +294,49 @@ C. compressed_summary (进 SFT):
 ### 3.2 阶段 2: Question-blind Streaming Rollout
 
 **目标**: 模拟学生模型的真实流式体验（无问题介入），产出：
-- 每个 timestep 的 student observation (40-60 tok)
+- 每个 timestep 的 student think (40-60 tok)
 - 压缩决策和 summary
 - 主动 recall 事件
 - **每个 timestep 的 memory state snapshot**
 
-**核心原则**: Question-blind。不知道未来会有什么问题。不能为未来问题优化 observation 或 summary。
+**核心原则**: Question-blind。不知道未来会有什么问题。不能为未来问题优化 think 或 summary。
 
 **397B 输入** (每个 timestep):
 ```
-[压缩段] + [recent_observations] + [24帧视觉窗口] + prompt
+[压缩段] + [recent_thinks] + [24帧视觉窗口] + prompt
 ```
 
-**397B 输出**:
-```json
-{"observation": "Chef sprinkles seasoning from small white bowl into pot on right burner.",
- "action": "silent"}
-```
+**Rollout 产出数据结构**（与代码完全对齐）:
 
-或（主动 recall, ~5% 频率）:
-```json
-{"observation": "Person in red hat enters again, similar to earlier.",
- "action": "recall",
- "query": {"query": "red hat person store", "time_range": "0-20"}}
-```
-
-或（压缩, 当 recent_observations >= 10）:
-```json
-{"observation": "...",
- "action": "compress",
- "compress_range": [0, 20],
- "summary": {"time_range": [0, 20], "text": "..."}}
-```
-
-**关键**: 压缩的 summary 是基于**当前 observations**（不是 teacher caption），且不知道未来问题。
-
-**每个 timestep 缓存 memory snapshot**:
 ```python
+# 每步产出的 think（存入 thinks 列表）
+thinks[chunk_idx] = {
+    "chunk_idx": 14,
+    "time": [28, 30],
+    "think": "Chef sprinkles seasoning from small white bowl into pot on right burner."
+}
+
+# 压缩事件（当 80% token 预算触发时）
+compression_events.append({
+    "trigger_chunk": 22,
+    "summary": {"time_range": [0, 16], "text": "..."},
+    "compressed_thinks_chunks": [0, 1, 2, 3, 4, 5],  # 被压缩的 chunk 列表
+})
+
+# 每步 pre-action snapshot（不含当前 think）
 snapshots[chunk_idx] = {
-    "compressed_segments": copy(compressed),
-    "recent_observations": copy(recent_obs),
-    "visual_window_range": (window_start, chunk_idx),
+    "chunk_idx": 14,
+    "compressed_segments": [...],
+    "recent_thinks": [...],
+    "pending_questions": [...],
+    "visual_window_start": 3,
 }
 ```
+
+**关键**:
+- 压缩 summary 基于**当前 thinks**（不是 teacher caption），且不知道未来问题
+- 压缩范围由 `choose_optimal_compress_range(pre_action_thinks)` 从 pre-action snapshot 中选出
+- 压缩事件中 `compressed_thinks_chunks` 记录的是真实被压缩的 chunk 列表（不依赖模型输出的 time_range）
 
 **并发配置**:
 ```
@@ -266,7 +352,7 @@ snapshots[chunk_idx] = {
 
 **输入**:
 - Teacher evidence graph (全部 atomic_facts)
-- Student rollout (所有 observations + summaries + memory snapshots)
+- Student rollout (所有 thinks + summaries + memory snapshots)
 - 视觉帧（验证可见性）
 
 **对每种任务模式，独立挖掘**:
@@ -284,8 +370,8 @@ def determine_gold_action(task, snapshot_at_ask_time):
     if answer_visible_in_frames(task, snapshot_at_ask_time["visual_window_range"]):
         return "response"  # 直接回答
     
-    # 2. 答案在 recent_observations 中？
-    for obs in snapshot_at_ask_time["recent_observations"]:
+    # 2. 答案在 recent_thinks 中？
+    for obs in snapshot_at_ask_time["recent_thinks"]:
         if keyword_overlap(obs, answer_keywords) > threshold:
             return "response"  # 从文本记忆直接回答
     
@@ -296,11 +382,11 @@ def determine_gold_action(task, snapshot_at_ask_time):
     
     # 4. 答案不在任何当前可见信息中 → 需要 recall
     # 但 recall 只能检索学生自己的 memory 或历史帧
-    if answer_in_historical_observations_or_frames(task):
+    if answer_in_historical_thinks_or_frames(task):
         return "recall"
     
-    # 5. 答案完全不可得
-    return "unanswerable"
+    # 5. 答案完全不可得 → action 仍是 response（uncertain 类型）
+    return "response"  # answerability = "unanswerable"
 ```
 
 **这解决了关键问题**：如果 compressed_summary 已经包含答案（如 "added salt ~1tsp"），gold_action 应该是 response 而不是 recall。
@@ -328,7 +414,7 @@ visibility = {
     "student_can_see": {
         "visual_frames": ["36-38", "38-40", "40-42", "42-44"],
         "compressed_summaries": ["[0-20] ...", "[20-40] ..."],
-        "recent_observations": ["[40-42] ...", "[42-44] ..."],
+        "recent_thinks": ["[40-42] ...", "[42-44] ..."],
     },
     "answer_location": "compressed_summary_1",  # 或 "not_visible" 需要 recall
     "gold_action": "response",  # 因为 summary 中有答案
@@ -366,59 +452,79 @@ def generate_fork(task, snapshots, teacher_evidence):
     sample_input = build_input(
         system_prompt=SYSTEM_PROMPT,
         compressed=memory_state["compressed_segments"],
-        recent_obs=memory_state["recent_observations"],
+        recent_thinks=memory_state["recent_thinks"],
         visual_window=get_frames(memory_state["visual_window_range"]),
         user_input=task["question"],
     )
     
     # 构造训练样本的 output（受标准答案约束）
     if task["gold_action"] == "response":
+        # 包括 uncertain 类型（answerability="unanswerable" 时生成不确定回答）
         output = generate_response_output(task, memory_state)
     elif task["gold_action"] == "recall":
         output = generate_recall_output(task, memory_state)
-    elif task["gold_action"] == "unanswerable":
-        output = generate_uncertain_output(task)
     
     return {"input": sample_input, "output": output, "metadata": task}
 ```
 
-**对于 recall 任务**:
+**对于 recall 任务**（拆为 2 条独立 per-timestep 样本）:
 
 ```python
-def generate_recall_output(task, memory_state):
-    # Step 1: 生成 recall query（约束：不能包含答案）
-    query = generate_query(task["question"], task["gold_answer"])
+def generate_recall_samples(task, memory_state):
+    # Step 1: 生成 recall query
+    # 注意: query generator 只接收问题 + 可见 memory context，不接收 gold_answer
+    query = generate_query(task["question"], visible_context=memory_state)
     validate_no_answer_in_query(query, task["gold_answer"])
     
     # Step 2: 模拟检索结果（只用学生可访问的信息）
+    # 注意：retrieval archive 是系统侧维护的，不在模型可见的 snapshot 中
     recall_result = simulate_retrieval(
         query=query,
-        student_observations=all_past_observations,
+        all_past_thinks=thinks_up_to_ask_time,  # 系统侧历史
         student_summaries=memory_state["compressed_segments"],
         historical_frames=available_frames,
         noise_level=sample_noise(),  # 70/20/5/5 分布
     )
     
     # Step 3: 基于检索结果生成 response
-    # 注意: response 只能依赖 recall_result 中的信息，不能用 teacher caption
     post_recall_response = generate_response_from_result(
         question=task["question"],
         recall_result=recall_result,
-        gold_answer=task["gold_answer"],  # 作为约束，不作为输入
+        gold_answer=task["gold_answer"],  # 仅作为约束，不作为生成输入
     )
     
-    return {
-        "recall_turn": f'<observation>...</observation><action>recall</action><query>{query}</query>',
-        "result_turn": recall_result,  # 系统注入
-        "response_turn": f'<observation>...</observation><action>response</action><response>{post_recall_response}</response>',
+    # 样本 1: recall query（模型发起检索）
+    sample1 = {
+        "input": build_input(memory_state, user_input=task["question"]),
+        "output": f'<think>当前视觉obs</think><action>recall</action><query>{query}</query>',
     }
+    
+    # 样本 2: post-recall response（系统返回结果后模型回答）
+    # 关键: pending question 必须出现在 input 中
+    memory_with_pending = add_pending(memory_state, task["question"], "recall")
+    sample2 = {
+        "input": build_input(memory_with_pending, 
+                            user_input="Continue following the protocol to respond.",
+                            recall_result=recall_result),
+        "output": f'<action>response</action><response>{post_recall_response}</response>',
+    }
+    
+    return [sample1, sample2]
 ```
+
+**重要变更（相对 v5.0）**：
+- recall 必须拆为 2 条独立样本，不能打包成一个 output
+- `recall_result` 是系统注入的 input，不出现在模型 output 中
+- post-recall sample 的 input 必须包含 `pending question`（原始问题 + recall query）
+- post-recall sample **不输出 think**（避免与 sample1 重复写入 memory）
+- query generator 不接收 gold_answer，只用问题 + 可见 memory context 生成 query
+- recall failure / distractor 时不给 gold_answer，生成 uncertain response
 
 **Recall Result 的三种来源**（只用学生可访问内容）:
 
 | 来源 | 内容 | 适用 |
 |------|------|------|
-| student observation | 学生自己写过的 obs 文本 | 文本细节 recall |
+| student think | 学生自己写过的 think 文本 | 文本细节 recall |
 | compressed summary | 学生自己写的压缩摘要 | 压缩记忆 recall |
 | historical frames | 4s 的原始视频帧 | 视觉细节 recall |
 
@@ -447,15 +553,15 @@ def generate_recall_output(task, memory_state):
 
 **第三类：Grounding**
 ```
-✓ observation 是否被当前帧支持
-✓ summary 是否只含原始 observations 中的信息
+✓ think 是否被当前帧支持
+✓ summary 是否只含原始 thinks 中的信息
 ✓ response 是否被 support evidence 支持
 ✓ 无声音/气味/情绪/意图推断
 ```
 
 **第四类：格式与长度**
 ```
-✓ observation 40-60 tokens
+✓ think 40-60 tokens
 ✓ response 长度匹配问题类型
 ✓ query JSON 合法，无答案泄漏
 ✓ summary JSON 合法，压缩比合理
@@ -475,20 +581,23 @@ def generate_recall_output(task, memory_state):
 
 | Gold Action | 触发条件 | 说明 |
 |-------------|---------|------|
-| **silent** | 无问题，正常观察 | 输出 observation |
+| **silent** | 无问题，正常观察 | 输出 think |
 | **response (from frames)** | 答案在当前视觉帧中 | 直接从画面回答 |
-| **response (from memory)** | 答案在 obs/summary 中 | 从文本记忆回答 |
+| **response (from memory)** | 答案在 recent_thinks 中（帧已滑出） | 从文本记忆回答 |
+| **response (from compressed)** | 答案在 compressed_summary 中 | 从压缩摘要回答（不需要 recall） |
 | **response (uncertain)** | 无可靠证据 | 回答"不确定" |
 | **recall** | 答案不在任何可见信息中 | 需要检索历史 |
-| **compress** | 系统触发 / 模型决策 | 压缩旧 observations |
+| **compress (C1)** | 系统触发 + 指定范围 | 按 teacher 指定范围压缩 |
+| **compress (C2)** | 系统触发，无指定范围 | 模型自选范围压缩 |
+| **merge_compress** | compressed_segments > 5 段 | 合并最老两段（摘要的摘要） |
 
 ### 4.2 Recall 的必要条件
 
 只有同时满足以下全部条件时，gold_action 才是 recall：
 1. 答案不在当前视觉帧中
-2. 答案不在 recent_observations 中
+2. 答案不在 recent_thinks 中
 3. 答案不在 compressed_summaries 中
-4. 答案存在于历史 observations / frames 中（可检索到）
+4. 答案存在于历史 thinks / frames 中（可检索到）
 
 **如果 compressed_summary 已包含答案 → response，不是 recall！**
 
@@ -522,10 +631,11 @@ def generate_recall_output(task, memory_state):
 
 ```json
 {
-  "sample_id": "vid001_t44_recall",
+  "sample_id": "vid001_t60_recall_query_42",
   "video_id": "vid001",
+  "sample_type": "recall_query",
+  "chunk_idx": 30,
   "phase": "C1",
-  "task_type": "recall_from_compressed",
   
   "input": {
     "system": "You are a streaming video agent...",
@@ -534,16 +644,22 @@ def generate_recall_output(task, memory_state):
         {"time_range": [0, 20], "text": "Chef(red apron) prepared workspace..."},
         {"time_range": [20, 40], "text": "Tomatoes diced, added to pot, seasoning added..."}
       ],
-      "recent_observations": [
+      "recent_thinks": [
         "[40-42] Sauce simmering, chef covers pot with glass lid.",
-        "[42-44] Chef retrieves basil from refrigerator."
+        "[42-44] Chef retrieves basil from refrigerator.",
+        "[44-46] Basil torn over pot, green leaves on sauce surface.",
+        "[46-48] Chef wipes hands on towel, steps back from stove."
       ]
     },
-    "visual_window": {"video_start": 20, "video_end": 44, "frames": 24},
+    "visual_window": {
+      "video_start": 36, "video_end": 60, "frames": 24,
+      "chunk_indices": [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
+      "frame_indices": [36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59]
+    },
     "user_input": "How much salt did the chef add?"
   },
   
-  "output": "<observation>Basil being torn over pot, green leaves on red sauce surface.</observation><action>recall</action><query>{\"query\":\"salt seasoning amount pot\",\"time_range\":\"20-40\"}</query>",
+  "output": "<think>Chef adjusting burner dial, checking sauce consistency through glass lid.</think><action>recall</action><query>{\"query\":\"seasoning amount pot cooking\",\"time_range\":\"0-48\"}</query>",
   
   "metadata": {
     "gold_answer": "Approximately 1 teaspoon",
@@ -552,7 +668,8 @@ def generate_recall_output(task, memory_state):
       "answer_in_frames": false,
       "answer_in_recent_obs": false,
       "answer_in_compressed": false,
-      "answer_in_historical": true
+      "answer_in_historical": true,
+      "note": "evidence at t=28-30 已离开 visual_window(36-60), summary 只写了 seasoning added 没写数量"
     },
     "visibility_matrix": {
       "compressed_mentions_salt": true,
@@ -572,27 +689,51 @@ def generate_recall_output(task, memory_state):
 }
 ```
 
+> **v5.0→v5.1 修正**: 将 ask_time 从 t=44 改为 t=60，确保 evidence(28-30) 已离开
+> visual_window(36-60)。query 不再包含 answer_topic，仅基于问题 + 可见 memory 生成。
+
 ### 5.2 Recall 后的 follow-up 样本
 
 ```json
 {
-  "sample_id": "vid001_t44_post_recall",
+  "sample_id": "vid001_t60_post_recall",
   "input": {
     "system": "...",
-    "memory": { "...same as above..." },
-    "visual_window": {"video_start": 20, "video_end": 44, "frames": 24},
+    "memory": {
+      "compressed": ["...same as above..."],
+      "recent_thinks": ["...same as above..."],
+      "pending": [
+        {
+          "question": "How much salt did the chef add?",
+          "since": 60,
+          "type": "awaiting_recall_response"
+        }
+      ]
+    },
+    "visual_window": {
+      "video_start": 36, "video_end": 60, "frames": 24,
+      "recalled_frames": {
+        "time_range": [28, 30], "n_frames": 4, "source": "historical_frames",
+        "frame_indices": [28, 29, 30, 31]
+      }
+    },
     "recall_result": {
       "source": "historical_frames",
-      "time": [28, 30],
-      "frames": 4,
-      "text_context": "[28-30] Chef sprinkles seasoning from small white bowl into pot."
+      "time": "28-30",
+      "text_content": "Retrieved frames from t=28-30s.\nText memory: [28-30] Chef sprinkles seasoning from small white bowl into pot."
     },
     "user_input": "Continue following the protocol to respond."
   },
   
-  "output": "<observation>Retrieved frames show chef adding white granular seasoning from small bowl, approximately one teaspoon amount visible.</observation><action>response</action><response>The chef added approximately one teaspoon of salt from a small white bowl.</response>"
+  "output": "<action>response</action><response>Based on the retrieved frames, the chef added approximately one teaspoon of white granular seasoning from a small bowl.</response>"
 }
 ```
+
+> **v5.0→v5.1→v5.2 修正**:
+> - input 必须包含 `pending` 字段，携带原始问题和 recall query
+> - post-recall response **不输出 think**（think 已在 recall_query 样本中输出，避免 runtime memory 重复写入）
+> - response 避免确定说 "salt"（仅可见 white granular seasoning），除非有 OCR/上下文支持
+> - recall failure / distractor 时，response 必须是 uncertain（不能用 gold_answer 强答）
 
 ### 5.3 Compress 样本
 
@@ -603,26 +744,31 @@ def generate_recall_output(task, memory_state):
     "system": "...",
     "memory": {
       "compressed": [{"time_range": [0, 20], "text": "..."}],
-      "recent_observations": [
-        "[20-22] Olive oil poured into pot.",
-        "[22-24] Minced garlic added to oil, sizzling.",
-        "[24-26] Garlic turning golden.",
-        "[26-28] Tomato quarters dumped into pot.",
-        "[28-30] Chef sprinkles seasoning from small bowl.",
-        "[30-32] Stirring with wooden spoon.",
-        "[32-34] Sauce bubbling gently.",
-        "[34-36] Chef covers pot with lid.",
-        "[36-38] Moves to refrigerator.",
-        "[38-40] Retrieves fresh basil bunch."
+      "recent_thinks": [
+        "[20-22] Olive oil poured into stainless pot on right burner.",
+        "[22-24] Minced garlic added to oil, small bubbles forming around garlic pieces.",
+        "[24-26] Garlic pieces turning golden brown in oil.",
+        "[26-28] Tomato quarters placed into pot from cutting board.",
+        "[28-30] Chef sprinkles white granular seasoning from small bowl into pot.",
+        "[30-32] Wooden spoon stirring contents in circular motion.",
+        "[32-34] Sauce surface showing gentle bubbling, reddish color.",
+        "[34-36] Chef places glass lid on pot.",
+        "[36-38] Chef walks toward refrigerator at left side.",
+        "[38-40] Chef pulls out fresh basil bunch from refrigerator shelf."
       ]
     },
     "visual_window": {"video_start": 20, "video_end": 44},
-    "user_input": "<compress_trigger/>"
+    "user_input": "<compress_trigger range=\"20-34\"/>"
   },
   
-  "output": "<observation>System triggered memory compression.</observation><action>compress</action><summary>{\"time_range\":[20,40],\"text\":\"[20-28] Oil heated, garlic sauteed golden, tomato quarters added to pot. [28-34] Seasoning added from small white bowl, stirred with wooden spoon, sauce bubbling. [34-40] Pot covered with lid, chef retrieved fresh basil from fridge. Entities: pot(stainless), garlic, tomatoes, wooden spoon, glass lid, basil.\"}</summary>"
+  "output": "<think>Chef tears basil leaves near covered pot, green fragments on counter surface.</think><action>compress</action><summary>{\"time_range\":[20,34],\"text\":\"[20-28] Oil heated in stainless pot, garlic browned, tomato quarters added. [28-34] White seasoning from small bowl added, stirred with wooden spoon, sauce reddish and bubbling. Entities: pot_1(stainless, right burner), wooden_spoon.\"}</summary>"
 }
 ```
+
+> **v5.0→v5.1 修正**:
+> - think 改为当前帧的视觉观察（不是 "System triggered memory compression."）
+> - 去掉 "sizzling"（声音），改为可见的 "small bubbles forming"
+> - thinks 增加至 40-60 tokens 长度，包含更多视觉细节
 
 ---
 
@@ -695,7 +841,7 @@ Student 训练分辨率: min_pixels=100352 (~317×317)
 ### 7.1 Student Rollout Augmentation (DAgger)
 
 第一轮 SFT 后，用训练后的 student 模型跑视频：
-- Student 生成的 observations 质量更低（短、漏信息）
+- Student 生成的 thinks 质量更低（短、漏信息）
 - 基于 student 的真实 memory 构造第二批 recall/compress 数据
 - 解决"训练时 memory 质量高，推理时质量低"的分布偏移
 
@@ -715,14 +861,19 @@ Student 训练分辨率: min_pixels=100352 (~317×317)
 ## 8. 配置常量
 
 ```python
-# 观察
-OBSERVATION_TOKENS = (40, 60)          # observation 长度
+# Think
+THINK_TOKENS = (40, 60)                # think 长度
 
 # 压缩
-COMPRESS_THRESHOLD = 10                 # 10 条 recent_obs 触发
-COMPRESS_RANGE = 10                     # 每次压缩 10 条
+RECENT_THINKS_TOKEN_BUDGET = 600        # recent_thinks 总 token 预算
+COMPRESS_TRIGGER_RATIO = 0.8            # 80% token 预算触发
+COMPRESS_TOKEN_THRESHOLD = 480          # = 600 × 0.8
+STUDENT_MODEL = "Qwen/Qwen3-VL-8B"     # 学生模型 tokenizer（精确计算 token）
+COMPRESS_RANGE_MIN = 4                  # C1 最少压缩 4 条
+COMPRESS_RANGE_MAX = 8                  # C1 最多压缩 8 条
+MAX_COMPRESSED_SEGMENTS = 5             # 最多 5 段，超限合并最老两段
 SUMMARY_TOKENS = (100, 180)             # summary 长度
-COMPRESSION_RATIO = 3.5                 # 500 tok → ~140 tok
+COMPRESSION_RATIO_MIN = 2.5             # 最低可接受压缩比（验证用），典型 ~3.5
 
 # 视觉
 VISUAL_WINDOW_CHUNKS = 12              # 24s, 24帧
@@ -746,6 +897,94 @@ MAX_TOKENS_COMPRESS = 512
 MAX_TOKENS_TASK = 2048
 ```
 
+### 8.1 vLLM 部署方案（两套配置）
+
+各 Pass 对 vLLM 的需求差异：
+
+| Pass | 输入类型 | Thinking | 输出上限 | 并发 | 单请求图片 |
+|------|---------|----------|---------|------|-----------|
+| **Pass 1** Evidence | 视觉 (24 帧) + 文本 | ON | 1024 | 16 | 24 帧 |
+| **Pass 2a** Observation | 视觉 (24 帧) + 记忆 | OFF (`/no_think`) | 128 | 16 | 24 帧 |
+| **Pass 2b** Compress | 纯文本 | OFF (`/no_think`) | 512 | 16 | 0 |
+| **Pass 3** Tasks | 纯文本 | ON | 2048 | 32 | 0 |
+| **Pass 4** Forks | 纯文本 | OFF (`/no_think`) | 512 | 32 | 0 |
+| **Pass 5** Verify | 规则检查，无 LLM | — | — | — | — |
+
+**关键差异**：视觉 Pass（1, 2a）每请求发送 24 帧 base64 图片（~1.2MB），需要多模态处理能力、
+更大 `max-model-len`、和更低并发；纯文本 Pass（2b, 3, 4）只有 ~1K token 输入，可以开更高并发。
+
+| 参数 | 视觉 Pass (1, 2a) | 文本 Pass (2b, 3, 4) |
+|------|-------------------|---------------------|
+| `--limit-mm-per-prompt` | `image=24`（必须） | 不需要 |
+| `--max-model-len` | `65536`（容纳帧 token） | `16384` 即可 |
+| `--gpu-memory-utilization` | `0.90`（图片占显存） | `0.95`（纯文本更高效） |
+| `--max-num-seqs` | `16`（图片大，限制并发） | `64`（文本小，可加大） |
+| `--enable-prefix-caching` | OFF（图片变化��，命中率低） | ON（system prompt 共��） |
+
+**方案 A：两套 vLLM 实例（推荐）**
+
+视觉 Pass 和文本 Pass 分别启动不同配置的 vLLM 实例，最大化各自吞吐。
+pipeline 按 pass 切换 `--api_base`。
+
+```bash
+# 实例 1: 视觉模式 (Pass 1 + Pass 2a)
+# 需要多模态支持，大 context，低并发
+vllm serve Qwen/Qwen3.5-397B-A17B-FP8 \
+  --tensor-parallel-size 8 \
+  --max-model-len 65536 \
+  --gpu-memory-utilization 0.90 \
+  --max-num-seqs 16 \
+  --limit-mm-per-prompt image=24 \
+  --enforce-eager \
+  --trust-remote-code \
+  --port 8000
+
+# 实例 2: 纯文本模式 (Pass 2b + Pass 3 + Pass 4)
+# 无需多模态，短 context，高并发
+vllm serve Qwen/Qwen3.5-397B-A17B-FP8 \
+  --tensor-parallel-size 8 \
+  --max-model-len 16384 \
+  --gpu-memory-utilization 0.95 \
+  --max-num-seqs 64 \
+  --enable-prefix-caching \
+  --trust-remote-code \
+  --port 8001
+```
+
+**方案 B：单实例（GPU 不足时）**
+
+用视觉模式配置跑所有 Pass。文本 Pass 吞吐受限但功能正常。
+
+```bash
+# 单实例: 视觉��式兼容所有 Pass
+vllm serve Qwen/Qwen3.5-397B-A17B-FP8 \
+  --tensor-parallel-size 8 \
+  --max-model-len 65536 \
+  --gpu-memory-utilization 0.90 \
+  --max-num-seqs 16 \
+  --limit-mm-per-prompt image=24 \
+  --enforce-eager \
+  --trust-remote-code \
+  --port 8000
+```
+
+**注意事项**:
+- 两套实例不能同时运行在同一组 GPU 上（显存冲突）。建议 Pass 1+2a 跑完后关闭实例 1，启动实例 2 跑 Pass 3+4。
+- `--enforce-eager` 在视觉模式下可能必需（避免 CUDA graph 与动态图片 shape 冲突）。
+- 如果 OOM，视觉 Pass 优先降 `--max-num-seqs` 到 12，再降到 8。
+- 纯文本 Pass 的 `--max-num-seqs 64` 可以更激进，因为每请求只用 ~1-3K token。
+- `/no_think` 前缀在 prompt 层控制，不需要改 vLLM 启动参数。Thinking ON/OFF 是请求级别控制。
+
+**各 Pass 上下文安全估算**：
+
+```
+Pass 1:  输入 ~2,736 tok + 输出 1,024 = ~3,760  × 16 并发 = 60K (vs 65K 上限 ⚠️)
+Pass 2a: 输入 ~3,136 tok + 输出 128   = ~3,264  × 16 并发 = 52K ✓
+Pass 2b: 输入 ~650 tok   + 输出 512   = ~1,162  无视觉 ✓
+Pass 3:  输入 ~1,300 tok + 输出 2,048 = ~3,348  × 32 并发 = 107K (文本 batch) ✓
+Pass 4:  输入 ~650 tok   + 输出 512   = ~1,162  × 32 并发 = 37K ✓
+```
+
 ---
 
 ## 9. 补充设计（解决已知缺口）
@@ -759,18 +998,23 @@ S3/S4 任务中，用户提问后模型需要在多个后续 timestep "记住在
 ```
 [Memory block:]
   <compressed time="0-20">...</compressed>
-  [20-22] observation...
-  [22-24] observation...
+  [20-22] think...
+  [22-24] think...
   <pending since="24">Tell me when the chef adds the basil.</pending>   ← 待解决问题
 [Visual window: ...]
 [User input: (无新问题，只有新视频)]
 ```
 
 模型输出：
-- 如果事件未发生：`<observation>Sauce still simmering, no basil yet.</observation><action>silent</action>`
-- 如果事件发生：`<observation>Chef tearing basil leaves over pot.</observation><action>response</action><response>The chef is now adding basil to the sauce.</response>`
+- 如果事件未发生：`<think>Sauce still simmering, no basil yet.</think><action>silent</action>`
+- 如果事件发生：`<think>Chef tearing basil leaves over pot.</think><action>response</action><response>The chef is now adding basil to the sauce.</response>`
 
-训练时 pending 字段从用户提问那个 timestep 开始出现，直到被回答后消失。
+**pending 状态生命周期**：
+1. **pending_start**：用户提出 event-watch 请求时，模型输出 `silent`（不要马上答）。系统在该 output 后将问题加入 pending。
+2. **pending_silent**：后续 timestep 中，pending 字段出现在 input 里，事件未发生时模型继续 `silent`。
+3. **pending_response**：事件发生时，模型输出 `response` 回答 pending 问题。系统删除已解决的 pending。
+
+训练数据为每个 pending 任务生成 3 条样本（start + mid-silent + trigger-response）。
 
 ### 9.2 Recalled Frames 的精确训练格式
 
@@ -798,7 +1042,7 @@ def retrieve(query, memory_state, historical_frames_db):
     # 路径 1: 文本记忆检索 (BM25)
     text_candidates = bm25_search(
         query["query"], 
-        corpus=memory_state["recent_observations"] + 
+        corpus=memory_state["recent_thinks"] + 
                [s["text"] for s in memory_state["compressed_segments"]]
     )
     
@@ -830,8 +1074,8 @@ def retrieve(query, memory_state, historical_frames_db):
 - 5% failure: 返回空
 
 **Distractor 来源**：
-- 同视频时间相近但内容不同的 observation/frame
-- 同视频中相似实体但不同时间的 observation
+- 同视频时间相近但内容不同的 think/frame
+- 同视频中相似实体但不同时间的 think
 - 文本相似但语义不同的片段
 
 ### 9.4 补充负样本任务
@@ -843,7 +1087,7 @@ def retrieve(query, memory_state, historical_frames_db):
 | **记忆与画面冲突** | 画面变了但记忆还是旧的 | response 基于当前画面（最新优先） | 2% |
 | **Recall 返回错误** | 检索结果不含答案 | response(uncertain): "The retrieved info doesn't show..." | 3% |
 | **用户纠正前一个回答** | "不对，我问的是另一个" | response: 基于新理解重新回答 | 2% |
-| **计数任务** | "出现了几次" | response: 基于 observations 中的出现次数 | 2% |
+| **计数任务** | "出现了几次" | response: 基于 thinks 中的出现次数 | 2% |
 
 ### 9.5 Compression 自适应长度
 
@@ -852,12 +1096,12 @@ def retrieve(query, memory_state, historical_frames_db):
 **解决**：根据输入内容复杂度自适应：
 
 ```python
-def determine_summary_length(observations_to_compress):
+def determine_summary_length(thinks_to_compress):
     """根据内容复杂度决定 summary 长度"""
-    n_entities = count_unique_entities(observations_to_compress)
-    has_ocr = any("ocr" in obs for obs in observations_to_compress)
-    has_interaction = any("Q:" in obs or "response" in obs for obs in observations_to_compress)
-    n_state_changes = count_state_changes(observations_to_compress)
+    n_entities = count_unique_entities(thinks_to_compress)
+    has_ocr = any("ocr" in obs for obs in thinks_to_compress)
+    has_interaction = any("Q:" in obs or "response" in obs for obs in thinks_to_compress)
+    n_state_changes = count_state_changes(thinks_to_compress)
     
     base = 80  # 最短
     base += n_entities * 10   # 每个实体 +10 tok
@@ -879,16 +1123,16 @@ def determine_summary_length(observations_to_compress):
 
 **场景 A: Question-blind compression**（用户还没问问题）
 ```
-[observations 0-20]    → compress → summary 按通用重要性保留
+[thinks 0-20]    → compress → summary 按通用重要性保留
 不知道未来问什么，所有类似动作用相同粒度压缩
 ```
 
 **场景 B: Pending-question-aware compression**（有未回答的问题）
 ```
 <pending>"Tell me when basil is added"</pending>
-[observations 20-40]   → compress → summary 必须保留 basil 相关信息
+[thinks 20-40]   → compress → summary 必须保留 basil 相关信息
 
-因为有 pending question，模型应该知道保留与 basil 相关的 observation。
+因为有 pending question，模型应该知道保留与 basil 相关的 think。
 如果某条 obs 含 "basil" 或相关实体 → 保留为未压缩，不压缩它。
 ```
 
@@ -899,22 +1143,22 @@ def determine_summary_length(observations_to_compress):
 ### 9.7 Grounding 验证具体方法
 
 ```python
-def verify_grounding(observation, frames, teacher_caption):
-    """检查 observation 是否被帧支持"""
+def verify_grounding(think_text, frames, teacher_caption):
+    """检查 think 是否被帧支持"""
     
     # 方法 1: 基于 teacher_caption 的覆盖检查
-    obs_entities = extract_entities(observation)
+    think_entities = extract_entities(think_text)
     caption_entities = teacher_caption["visible_entities"]
-    coverage = len(obs_entities & caption_entities) / max(len(obs_entities), 1)
+    coverage = len(think_entities & caption_entities) / max(len(think_entities), 1)
     
     # 方法 2: 用另一个 VLM (如 7B) 做 entailment 判断
     # "Given these frames, is this statement supported?"
-    entailment_score = small_vlm_verify(frames, observation)
+    entailment_score = small_vlm_verify(frames, think_text)
     
     # 方法 3: 黑名单关键词
     blacklist = ["sound", "smell", "aroma", "feels", "seems to", "probably", 
                  "likely", "intend", "want to", "emotion", "happy", "sad"]
-    has_blacklist = any(w in observation.lower() for w in blacklist)
+    has_blacklist = any(w in think_text.lower() for w in blacklist)
     
     return {
         "entity_coverage": coverage,       # >= 0.7 通过
@@ -923,7 +1167,7 @@ def verify_grounding(observation, frames, teacher_caption):
     }
 ```
 
-**执行时机**: 阶段 2 (Rollout) 产出的每条 observation 都验证。不通过的丢弃并重新生成。
+**执行时机**: 阶段 2 (Rollout) 产出的每条 think 都验证。不通过的丢弃并重新生成。
 
 ### 9.8 数据切分与 Token 验证
 
@@ -946,35 +1190,237 @@ def verify_grounding(observation, frames, teacher_caption):
 
 ---
 
-## 10. 已解决问题对照表
+## 10. 核心设计约束（不可违反）
 
-| 问题来源 | 编号 | 状态 | 对应章节 |
-|---------|------|------|---------|
-| 问题.txt | #1 loss 问题 | ✅ | §1.1 方案 A |
-| 问题.txt | #2 压缩替换 | ✅ | §2.1 |
-| 问题.txt | #3 格式对齐 | ✅ | §9.1 pending + §9.2 recalled frames |
-| 问题.txt | #4 Token 验证 | ✅ | §9.8 |
-| 问题.txt | #5 分布 | ✅ | §4.4 episode-level |
-| 问题.txt | #6-8 observation | ✅ | §1.3-1.4 |
-| 问题.txt | #9 response 长度 | ✅ | §1.5 |
-| 问题.txt | #10 query 泄漏 | ✅ | §6.1 |
-| 问题.txt | #11 检索方案 | ✅ | §9.3 |
-| 问题.txt | #12 负样本 | ✅ | §9.4 |
-| 问题.txt | #13 压缩比 | ✅ | §9.5 自适应 |
-| 问题.txt | #14 grounding | ✅ | §9.7 |
-| 问题.txt | #16 任务缺失 | ✅ | §9.4 |
-| 问题.txt | #17 格式验证 | ✅ | §9.8 tokenizer |
-| 问题.txt | #20 评估 | ✅ | §7.2 |
-| 修改.txt | #1 压缩合法候选 | ✅ | §2.3 |
-| 修改.txt | #12 pending compression | ✅ | §9.6 |
-| 修改.txt | #13 DAgger | ✅ | §7.1 |
-| 修改.txt | #14 provenance | ✅ | §6.4 |
+以下约束来自多轮迭代的核心决策，任何代码或文档修改都必须遵守：
+
+| # | 约束 | 对应���节 | 代码执行 |
+|---|------|---------|---------|
+| 1 | think 每步立即入文本记忆，不延迟 | §2.1 | `MemoryState.add_think()` |
+| 2 | 文本记忆覆盖时间 > 视觉窗口，两者重叠 | §2.1 | `snapshot()` 中 `visual_window_start` 独立于 `recent_thinks` |
+| 3 | 80% token 预算触发压缩（精确 tokenizer） | §2.3 | `should_compress()` + `count_recent_tokens()` |
+| 4 | compress range 只覆盖 INPUT ���的 recent_thinks，不含当前 think | §2.1 | `pre_action_thinks = snapshots[chunk_idx]["recent_thinks"]` |
+| 5 | 系���执行：先替换→再 append 当前 think | §2.1 | `memory.compress()` 后 think 已在 memory 中 |
+| 6 | summary 只能引用 thinks，不能偷看视觉帧 | §2.1 | `verify_summary_provenance()` |
+| 7 | C1 teacher 多维评分选最优范围，C2 模型自选 | §2.3 | `score_range_for_compression()` 5 维评分 |
+| 8 | action 优先���：用户交互 > pending > compress > silent | §2.1 | pipeline Pass 4 `interaction_chunks` 优先级过滤 |
+| 9 | recall_result 不含 teacher_caption、不含未来内容 | §3.4 | `_get_correct_result()` 只用 `observations[ec]['think']` |
+| 10 | recall failure/distractor 必须生成 uncertain response | §3.4 | `is_failed_recall` → uncertain answer + `verify_information_flow()` |
+| 11 | post-recall response 不输出 think（避免重复��入 memory） | §1.3 | `sample2_output` 无 `<think>` 标签 |
+| 12 | query generator 不接收 gold_answer | §6.1 | `RECALL_QUERY_PROMPT` 仅含 question + visible_context |
+| 13 | compressed_segments 超 5 段时合并最老两段（≤200 tok） | §2.1 | `MemoryState.compress()` + tokenizer 截断 |
+| 14 | merge_compress 有对应训练样本 | §9.5 | `build_merge_compress_sample()` |
+| 15 | 压缩比 ≥ 2.5:1 | §8 | `verify_compression_ratio()` |
 
 ---
 
-## 11. 开放问题（已缩减）
+## 11. 数据源分析与视频选择策略
+
+### 11.1 数据源总览
+
+数据审计（2026-04-20）基于 `video_catalog_30s_plus.csv`（≥30s 视频全量索引）。
+
+| 数据集 | ≥30s 视频数 | 中位时长 | ≥90s | ≥120s | 主要内容 |
+|--------|-----------|---------|------|-------|---------|
+| VideoMind-Dataset | 394,833 | 114s | 250,959 | 184,794 | 多来源混合（ActivityNet/cosmo_cap/internvid 等） |
+| LLaVA-Video-178K | 93,853 | 88s | 45,834 | 28,995 | 学术+YouTube，按时长分桶 |
+| Koala | 66,834 | 32s | 0 | 0 | 30s 切片段，多样性好 |
+| tarsier2_unzip | 51,602 | 51s | 16,990 | 13,603 | ActivityNet/VATEX/Charades 等 |
+| Koala_raw | 25,813 | 547s | 25,523 | 25,335 | 原始长视频（烹饪/手工/教学） |
+| how_to_step | 18,831 | 194s | 17,342 | 15,609 | 教程步骤视频 |
+| how_to_caption | 15,844 | 179s | 13,849 | 11,930 | 教程描述视频 |
+| **总计** | **667,611** | — | **370,498** | **280,267** | — |
+
+**时长分布（≥30s 全量）**：
+
+```
+  30-60s:  211,352 (31.7%)  ████████████████
+  60-90s:   85,761 (12.8%)  ██████
+ 90-120s:   90,231 (13.5%)  ███████
+120-180s:  166,373 (24.9%)  ████████████
+180-300s:   63,156 ( 9.5%)  █████
+   300s+:   50,738 ( 7.6%)  ████
+```
+
+**Streamo 已用视频标记**：`used_in_streamo=1` 共 192,342 条。这些视频已在先前项目中验证过质量，
+可优先复用。其中 Koala 占 6.7 万（全部 ~32s 短片段），LLaVA 5.4 万（中位 104s），
+VideoMind 3.7 万（中位 150s），how_to_* 3.5 万（中位 180s+）。
+
+### 11.2 Pipeline 时长门槛
+
+各训练任务对视频时长的硬性要求，由 pipeline 参数推导：
+
+```
+AGENT_CHUNK_SEC = 2s
+VISUAL_WINDOW_CHUNKS = 12  → 视觉窗口 = 24s
+首次压缩触发 ≈ COMPRESS_TOKEN_THRESHOLD / THINK_TOKEN_AVG ≈ 480/50 ≈ 10 chunks = 20s
+```
+
+| 任务类型 | 最低时长 | 推导 |
+|---------|---------|------|
+| silent + response(from_frames) | **24s** | 填满一个视觉窗口 |
+| compress（首次触发） | **20s** | ~10 thinks 达 80% token 预算 |
+| recall | **30s** | evidence 必须离开视觉窗口（12 chunks gap） |
+| response_from_memory | **30s** | think 在 recent_thinks 但帧已滑出 |
+| compress + recall | **50s** | 压缩后 + 窗口滑出 + recall gap |
+| 多次压缩 + compress_recall | **90s** | 2+ 压缩事件 + 压缩后 recall |
+| **全任务覆盖** | **≥120s** | 所有任务类型均可产出 |
+
+### 11.3 数据集三档划分
+
+**不可用（<24s）**：TGIF(5s), LSMDC(5s), SSV2(10s), Kinetics-700(10s), VATEX(10s),
+TREC-VTT(6s), Oops(15s), LLaVA_0_30s(15s) —— 约 37 万条。
+连一个完整视觉窗口都填不满，无法产出任何有效训练样本。
+
+**Phase 1/2 可用（30-89s）**：Koala(32s), Charades(32s), internvid_vtime(33s),
+vid_morp(34s), LLaVA_30_60s(45s), cosmo_cap 部分 —— 约 30 万条。
+可产出 silent、response(from_frames)、response(from_memory)、recall，
+但不能触发完整压缩链。适合 Phase 1（协议对齐）和 Phase 2（recall 学习）。
+
+**全 Phase 可用（≥90s）**：ActivityNet, cosmo_cap 长视频, LLaVA_1_2m/2_3m,
+how_to_step/caption, youcook2, Koala_raw, ego4d —— 约 37 万条。
+可产出所有任务类型，包括 compress + compress_recall 联合任务。
+是 C1/C2/Phase 5 训练的核心数据源。
+
+### 11.4 分阶段视频选择策略
+
+**原则**：
+1. 每个 phase 选用最匹配其任务需求的时长区间，不浪费长视频在简单任务上
+2. 优先用 `used_in_streamo=1` 的已验证视频
+3. 分层抽样保证数据集来源多样性（按 `dataset/subdataset` 分层）
+4. 同一视频的所有样本只出现在同一个 train/val/test split
+
+| Phase | 时长要求 | 选取数量 | 主要来源 | 选择逻辑 |
+|-------|---------|---------|---------|---------|
+| **Phase 1** | ≥30s | 200 视频 | Koala(32s), Charades, LLaVA_30_60s | 短视频池，最大化内容多样性 |
+| **Phase 2** | ≥60s | 200 视频 | cosmo_cap, LLaVA_1_2m, VideoMind(60-120s) | 中等时长，需要 recall gap |
+| **C1/C2** | ≥120s | 300 视频 | Koala_raw(547s), ActivityNet, how_to_*, LLaVA_2_3m | 长视频，多次压缩 + compress_recall |
+| **Phase 5** | ≥120s | 与 C1/C2 共享 | 同上 | 混合任务全覆盖 |
+
+**总计约 700 个视频**（有重叠：≥120s 的视频同时服务于 P2/C1/C2/P5）。
+
+**各 Phase 产出样本量估算**：
+
+```
+Phase 1: 200 视频 × 20 samples/video ≈ 4,000 samples
+         (silent ~2,600 + response ~1,200 + uncertain ~200)
+
+Phase 2: 200 视频 × 30 samples/video ≈ 6,000 samples
+         (silent ~3,000 + response ~1,200 + recall ~1,200 + special ~600)
+
+C1:      300 视频 × 50 samples/video ≈ 15,000 samples
+         (silent ~6,750 + response ~2,700 + recall ~2,250 + compress ~1,800 + special ~1,500)
+
+C2:      共享 C1 视频，每视频追加 ~10 C2 compress samples ≈ 3,000 samples
+
+Phase 5:  共享 C1 视频，按混合比例采样 ≈ 5,000 samples
+
+总计: ~33,000 samples
+```
+
+### 11.5 视频选择实现（`select_videos` 函数）
+
+```python
+def select_videos_by_phase(catalog_csv, phase, num_videos, seed=42):
+    """从 video_catalog_30s_plus.csv 按 phase 需求选择视频。
+
+    Args:
+        catalog_csv: video_catalog_30s_plus.csv 路径
+        phase: "P1" | "P2" | "C1" | "C2" | "P5"
+        num_videos: 目标数量
+        seed: 随机种子
+
+    选择逻辑:
+        1. 按 phase 过滤时长区间
+        2. 优先选 used_in_streamo=1 的视频（质量已验证）
+        3. 按 dataset/subdataset 分层抽样（避免单一来源）
+        4. 每层内按时长降序排列（更长 = 更多样本产出）
+    """
+    PHASE_DURATION = {
+        "P1": (30, 90),      # 30-89s：短视频，协议对齐
+        "P2": (60, 180),     # 60-179s：中等，recall 学习
+        "C1": (120, None),   # ≥120s：长视频，压缩训练
+        "C2": (120, None),   # ≥120s：同 C1
+        "P5": (120, None),   # ≥120s：混合全覆盖
+    }
+    min_dur, max_dur = PHASE_DURATION[phase]
+
+    # 1. 从 CSV 读取并过滤
+    candidates = []
+    for row in csv.DictReader(open(catalog_csv)):
+        dur = float(row["duration_sec"])
+        if dur < min_dur:
+            continue
+        if max_dur and dur >= max_dur:
+            continue
+        candidates.append(row)
+
+    # 2. 分为 streamo 优先 / 其他
+    streamo = [r for r in candidates if r.get("used_in_streamo") == "1"]
+    others = [r for r in candidates if r.get("used_in_streamo") != "1"]
+
+    # 3. 分层抽样（按 dataset/subdataset）
+    def stratified_sample(pool, n, seed):
+        groups = defaultdict(list)
+        for r in pool:
+            key = f'{r["dataset"]}/{r["subdataset"]}'
+            groups[key].append(r)
+        # 每组内按时长降序
+        for g in groups.values():
+            g.sort(key=lambda x: -float(x["duration_sec"]))
+        # Round-robin
+        random.seed(seed)
+        keys = sorted(groups.keys())
+        random.shuffle(keys)
+        selected = []
+        per_group = max(1, n // len(keys))
+        for key in keys:
+            take = min(per_group, len(groups[key]), n - len(selected))
+            selected.extend(groups[key][:take])
+            if len(selected) >= n:
+                break
+        # Fill remaining
+        if len(selected) < n:
+            remaining = [r for g in keys for r in groups[g] if r not in selected]
+            selected.extend(remaining[:n - len(selected)])
+        return selected[:n]
+
+    # 4. 先从 streamo 选，不足则从 others 补
+    target = num_videos
+    selected = stratified_sample(streamo, min(target, len(streamo)), seed)
+    if len(selected) < target:
+        extra = stratified_sample(others, target - len(selected), seed + 1)
+        selected.extend(extra)
+
+    return selected[:num_videos]
+```
+
+**选择结果验证清单**：
+- [ ] 每个 phase 的视频时长全部满足下限
+- [ ] 无单个 subdataset 占比超过 30%（多样性检查）
+- [ ] train/val/test 按 video_id 切分，同视频不跨 split
+- [ ] C1 视频平均产出 ≥2 次压缩事件
+- [ ] P2 视频平均产出 ≥3 个 recall 任务
+
+### 11.6 不可用数据集处理
+
+以下数据集不进入 pipeline，但可用于其他用途：
+
+| 数据集 | 原因 | 可替代用途 |
+|--------|------|-----------|
+| TGIF (~94K, 5s GIF) | 太短 | 视觉编码器预训练 |
+| Kinetics-700 (~50K, 10s) | 太短 | 动作识别预训练 |
+| SSV2 (~10K, 10s) | 太短 | 动作识别预训练 |
+| LSMDC (~108K, 5s) | 太短 | caption 预训练 |
+| VATEX (~22K, 10s) | 太短 | caption 预训练 |
+| WebVid-10M (解压中) | 多数 <15s | 预训练，不用于 agent 数据 |
+| Koala-36M | 仅元数据 | 不可用 |
+
+---
+
+## 12. 开放问题（已缩减）
 
 1. **Per-timestep vs 短序列**: 当前方案 A 每步独立。如果实验中发现模型缺少连续性，可改为 3-step 滑动窗口（loss 只在最后一步）。先用纯 per-timestep 做 baseline。
-2. **Observation 关键信息保留策略**: 如果 observation 漏了关键细节（如盐的量），后续 recall 就找不到。建议：阶段 2 产出后，用 teacher caption 检查 observations 的"关键信息覆盖率"。覆盖率 < 0.6 的重新生成。
+2. **Think 关键信息保留策略**: 如果 think 漏了关键细节（如盐的量），后续 recall 就找不到。建议：阶段 2 产出后，用 teacher caption 检查 thinks 的"关键信息覆盖率"。覆盖率 < 0.6 的重新生成。
 3. **Canonical compression range 选择 policy**: 当前规则：最早 10 条。进阶：按事件边界切分（检测 state_change 断点），选择最完整的事件段。
 4. **DAgger 执行计划**: Phase 1-2 完成后训练 v0 模型 → v0 跑 100 视频 → 基于 v0 memory 造 2000 条补充数据 → 混入 Phase C1 训练。

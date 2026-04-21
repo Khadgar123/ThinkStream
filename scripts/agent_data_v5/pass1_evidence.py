@@ -126,10 +126,16 @@ def parse_evidence_result(raw: Optional[str], meta: Dict) -> Dict:
             return default
 
     # Validate and normalize
+    raw_facts = parsed.get("atomic_facts", [])
+    normalized_facts = [_normalize_atomic_fact(f) for f in raw_facts]
+
+    raw_entities = parsed.get("visible_entities", [])
+    normalized_entities = [_normalize_entity(e) for e in raw_entities]
+
     result = {
         "time": parsed.get("time", meta["time"]),
-        "visible_entities": parsed.get("visible_entities", []),
-        "atomic_facts": parsed.get("atomic_facts", []),
+        "visible_entities": normalized_entities,
+        "atomic_facts": normalized_facts,
         "state_changes": parsed.get("state_changes", []),
         "ocr": parsed.get("ocr", []),
         "spatial": parsed.get("spatial", ""),
@@ -138,6 +144,45 @@ def parse_evidence_result(raw: Optional[str], meta: Dict) -> Dict:
     }
 
     return result
+
+
+def _normalize_atomic_fact(fact) -> dict:
+    """Normalize atomic_fact to ensure consistent schema.
+
+    Handles cases where 397B outputs a string instead of a dict.
+    """
+    if isinstance(fact, str):
+        return {
+            "fact": fact,
+            "confidence": 0.5,
+            "support_level": "unknown",
+            "target_resolution_visible": False,
+            "parse_repaired": True,
+        }
+    if not isinstance(fact, dict):
+        return {
+            "fact": str(fact),
+            "confidence": 0.0,
+            "support_level": "unknown",
+            "target_resolution_visible": False,
+            "parse_repaired": True,
+        }
+    # Ensure required fields with safe defaults
+    fact.setdefault("confidence", 0.5)
+    fact.setdefault("support_level", "unknown")
+    fact.setdefault("target_resolution_visible", True)
+    return fact
+
+
+def _normalize_entity(entity) -> dict:
+    """Normalize visible_entity to ensure consistent schema."""
+    if isinstance(entity, str):
+        return {"id": entity, "attributes": [], "action": "", "position": ""}
+    if not isinstance(entity, dict):
+        return {"id": str(entity), "attributes": [], "action": "", "position": ""}
+    entity.setdefault("id", "unknown")
+    entity.setdefault("attributes", [])
+    return entity
 
 
 async def run_pass1_single_video(
