@@ -610,7 +610,11 @@ def verify_sample(sample: Dict) -> Dict:
 
 
 def filter_samples(samples: List[Dict]) -> Tuple[List[Dict], Dict]:
-    """Filter samples and return statistics.
+    """Filter samples (per-timestep or multi-turn conversations).
+
+    Detects format automatically:
+    - If sample has "messages" key → multi-turn conversation → verify_conversation
+    - If sample has "output" key → per-timestep sample → verify_sample (legacy)
 
     Returns: (passed_samples, stats_dict)
     """
@@ -619,7 +623,13 @@ def filter_samples(samples: List[Dict]) -> Tuple[List[Dict], Dict]:
     fail_reasons_count = {}
 
     for sample in samples:
-        sample = verify_sample(sample)
+        if "messages" in sample:
+            # Multi-turn conversation format
+            sample = verify_conversation(sample)
+        else:
+            # Legacy per-timestep format
+            sample = verify_sample(sample)
+
         if sample["verification"]["passed"]:
             passed.append(sample)
         else:
@@ -634,11 +644,80 @@ def filter_samples(samples: List[Dict]) -> Tuple[List[Dict], Dict]:
         "failed": len(failed),
         "pass_rate": len(passed) / max(len(samples), 1),
         "fail_reasons": fail_reasons_count,
-        "difficulty_distribution": {},
+        "action_distribution": {},
     }
 
+    # Count action types across all conversations
     for sample in passed:
-        diff = sample["verification"]["difficulty"]
-        stats["difficulty_distribution"][diff] = stats["difficulty_distribution"].get(diff, 0) + 1
+        for action_type, count in sample.get("verification", {}).get("action_counts", {}).items():
+            stats["action_distribution"][action_type] = \
+                stats["action_distribution"].get(action_type, 0) + count
 
     return passed, stats
+
+
+def verify_conversation(conversation: Dict) -> Dict:
+    """Verify a multi-turn conversation (one video = one sample).
+
+    Checks each assistant turn for grounding, format, and then checks
+    conversation-level properties (action distribution, compression events).
+    """
+    messages = conversation.get("messages", [])
+    issues = []
+    action_counts = {"silent": 0, "response": 0, "recall": 0, "compress": 0}
+
+    for i, msg in enumerate(messages):
+        if msg.get("role") != "assistant":
+            continue
+
+        content = msg.get("content", "")
+        if not isinstance(content, str):
+            continue
+
+        # Check format: must have valid action
+        action_match = re.search(r'<action>(.*?)</action>', content, re.DOTALL)
+        if not action_match:
+            # Post-recall response may not have action tag in some formats
+            if "<response>" in content:
+                action_counts["response"] = action_counts.get("response", 0) + 1
+                continue
+            issues.append(f"turn_{i}: missing_action_tag")
+            continue
+
+        action = action_match.group(1)
+        if action not in ("silent", "response", "recall", "compress"):
+            issues.append(f"turn_{i}: invalid_action '{action}'")
+            continue
+
+        action_counts[action] = action_counts.get(action, 0) + 1
+
+        # Check think grounding (no sounds/smells/emotions)
+        think_match = re.search(r'<think>(.*?)</think>', content, re.DOTALL)
+        if think_match:
+            think_text = think_match.group(1).lower()
+            blacklist = ["sound", "hear", "sizzle", "sizzling", "smell", "aroma",
+                         "emotion", "happy", "sad", "i think", "i notice", "i need",
+                         "system triggered", "memory compression"]
+            for phrase in blacklist:
+                if phrase in think_text:
+                    issues.append(f"turn_{i}: think_non_visual '{phrase}'")
+                    break
+
+        # Check recall has query
+        if action == "recall" and "<query>" not in content:
+            issues.append(f"turn_{i}: recall_without_query")
+
+        # Check compress has summary
+        if action == "compress" and "<summary>" not in content:
+            issues.append(f"turn_{i}: compress_without_summary")
+
+    all_passed = len(issues) == 0
+
+    conversation["verification"] = {
+        "passed": all_passed,
+        "action_counts": action_counts,
+        "fail_reasons": issues,
+        "num_assistant_turns": sum(action_counts.values()),
+    }
+
+    return conversation

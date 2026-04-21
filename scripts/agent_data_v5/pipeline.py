@@ -417,19 +417,14 @@ async def run_pipeline(
     # PASS 4: Question-aware Forks
     # =================================================================
     if 4 not in skip_pass:
-        from .pass4_forks import (
-            build_compress_sample,
-            build_compress_sample_c2,
-            build_merge_compress_sample,
-            build_pending_samples,
-            build_recall_sample,
-            build_response_sample,
-            build_silent_sample,
-        )
+        from .pass4_forks import build_video_conversation
 
         logger.info("=" * 60)
-        logger.info("PASS 4: Question-aware Forks (Sample Generation)")
+        logger.info("PASS 4: Multi-turn Conversation Assembly")
         logger.info("=" * 60)
+        logger.info(
+            f"PASS 4 safe concurrency={safe_concurrency_for_pass('pass4_forks')}"
+        )
 
         all_samples = []
 
@@ -438,159 +433,31 @@ async def run_pipeline(
             if vid not in all_tasks or vid not in rollout_map:
                 continue
 
-            rollout = rollout_map[vid]
-            tasks = all_tasks[vid]
-            observations = rollout.get("thinks", rollout.get("observations", []))
-            snapshots = rollout["snapshots"]
-
-            # --- Action priority enforcement (constraint #8) ---
-            # Collect chunks that have user-interaction tasks so we can
-            # skip compress/silent at those chunks. Priority order:
-            #   post-recall > user response/recall > pending > compress > silent
-            interaction_chunks = set()
-            for task_type_key in ["response_from_frames", "response_from_memory",
-                                   "compress_response", "unanswerable",
-                                   "recall", "compress_recall"]:
-                for task in tasks.get(task_type_key, []):
-                    if task.get("question"):
-                        interaction_chunks.add(task.get("ask_chunk"))
-            for task in tasks.get("pending", []):
-                if task.get("question"):
-                    interaction_chunks.add(task.get("ask_chunk"))
-                    # trigger_chunk also gets a response
-                    interaction_chunks.add(task.get("trigger_chunk"))
-
-            # 4a: Silent samples (subset, not all chunks)
-            # Sample ~20% of silent chunks for training
-            # Skip chunks that have user-interaction tasks (priority rule)
-            silent_eligible = [c for c in range(rollout["num_chunks"])
-                               if c not in interaction_chunks]
-            selected_silent = random.sample(
-                silent_eligible, min(len(silent_eligible) // 5, 15)
-            ) if silent_eligible else []
-            for chunk_idx in selected_silent:
-                snapshot = snapshots.get(chunk_idx, snapshots.get(str(chunk_idx)))
-                if snapshot and chunk_idx < len(observations):
-                    sample = build_silent_sample(
-                        chunk_idx, observations[chunk_idx]["think"],
-                        snapshot, video_frames.get(vid, []),
-                    )
-                    sample["video_id"] = vid
-                    all_samples.append(sample)
-
-            # 4b: Compress samples (C1 + C2)
-            # Skip chunks that have user-interaction tasks (user > compress)
-            for event in rollout["compression_events"]:
-                chunk_idx = event["trigger_chunk"]
-                if chunk_idx in interaction_chunks:
-                    continue  # User interaction takes priority over compress
-                snapshot = snapshots.get(chunk_idx, snapshots.get(str(chunk_idx)))
-                if snapshot and chunk_idx < len(observations):
-                    # C1: system-specified range
-                    sample_c1 = build_compress_sample(
-                        chunk_idx, observations[chunk_idx]["think"],
-                        snapshot, event, frame_paths=video_frames.get(vid, []),
-                    )
-                    sample_c1["video_id"] = vid
-                    all_samples.append(sample_c1)
-
-                    # C2: no range specified, model self-selects
-                    sample_c2 = build_compress_sample_c2(
-                        chunk_idx, observations[chunk_idx]["think"],
-                        snapshot, event, frame_paths=video_frames.get(vid, []),
-                    )
-                    sample_c2["video_id"] = vid
-                    all_samples.append(sample_c2)
-
-            # 4b2: Merge-compress samples (second-level compression)
-            # Generate from rollout when compressed_segments would exceed limit
-            final_mem = rollout.get("final_memory", {})
-            comp_segs = final_mem.get("compressed_segments", [])
-            if len(comp_segs) >= 2:
-                # Create merge samples from adjacent segment pairs
-                for seg_idx in range(len(comp_segs) - 1):
-                    seg_a = comp_segs[seg_idx]
-                    seg_b = comp_segs[seg_idx + 1]
-                    # Use a chunk near the midpoint of the video
-                    merge_chunk = min(rollout["num_chunks"] - 1,
-                                      seg_b["time_range"][1] // AGENT_CHUNK_SEC)
-                    merge_snapshot = snapshots.get(merge_chunk, snapshots.get(str(merge_chunk)))
-                    if merge_snapshot and merge_chunk < len(observations):
-                        combined = f'{seg_a["text"]} {seg_b["text"]}'
-                        words = combined.split()
-                        merged_text = " ".join(words[:200]) if len(words) > 200 else combined
-                        merge_sample = build_merge_compress_sample(
-                            merge_snapshot, seg_a, seg_b, merged_text,
-                            merge_chunk, observations[merge_chunk]["think"],
-                            frame_paths=video_frames.get(vid, []),
-                        )
-                        merge_sample["video_id"] = vid
-                        all_samples.append(merge_sample)
-
-            # 4c: Response samples
-            for task_type in ["response_from_frames", "response_from_memory", "compress_response", "unanswerable"]:
-                for task in tasks.get(task_type, []):
-                    if not task.get("question"):
-                        continue
-                    ask_chunk = task["ask_chunk"]
-                    snapshot = snapshots.get(ask_chunk, snapshots.get(str(ask_chunk)))
-                    if snapshot:
-                        sample = await build_response_sample(
-                            task, snapshot, observations, client, vid,
-                            frame_paths=video_frames.get(vid, []),
-                        )
-                        if sample:
-                            sample["video_id"] = vid
-                            all_samples.append(sample)
-
-            # 4d: Pending/event-watch samples
-            for task in tasks.get("pending", []):
-                if not task.get("question"):
-                    continue
-                samples = await build_pending_samples(
-                    task, snapshots, observations, client, vid,
-                    frame_paths=video_frames.get(vid, []),
+            conversation = await build_video_conversation(
+                video_id=vid,
+                video_path=v.get("video_path", ""),
+                rollout=rollout_map[vid],
+                tasks=all_tasks[vid],
+                client=client,
+                frame_paths=video_frames.get(vid, []),
+            )
+            if conversation:
+                all_samples.append(conversation)
+                n_turns = len([m for m in conversation["messages"] if m["role"] == "assistant"])
+                logger.info(
+                    f"  [{vid}] Conversation: {n_turns} turns, "
+                    f"{conversation['num_compression_events']} compressions, "
+                    f"{conversation['num_tasks']} tasks"
                 )
-                if samples:
-                    for s in samples:
-                        s["video_id"] = vid
-                    all_samples.extend(samples)
 
-            # 4e: Recall samples
-            for task_type in ["recall", "compress_recall"]:
-                for task in tasks.get(task_type, []):
-                    if not task.get("question"):
-                        continue
-                    ask_chunk = task["ask_chunk"]
-                    snapshot = snapshots.get(ask_chunk, snapshots.get(str(ask_chunk)))
-                    if snapshot:
-                        samples = await build_recall_sample(
-                            task, snapshot, observations, client, vid,
-                            frame_paths=video_frames.get(vid, []),
-                        )
-                        if samples:
-                            for s in samples:
-                                s["video_id"] = vid
-                            all_samples.extend(samples)
-
-        # Assign sample_id, phase, and video_path to all samples
-        vid_path_map = {v["video_id"]: v.get("video_path", "") for v in videos}
-        for i, s in enumerate(all_samples):
-            vid = s.get("video_id", "unk")
-            chunk = s.get("chunk_idx", 0)
-            stype = s.get("sample_type", "unk")
-            s["sample_id"] = f"{vid}_t{chunk}_{stype}_{i}"
-            s["phase"] = assign_phase(s)
-            s["video_path"] = vid_path_map.get(vid, "")
-
-        # Save all samples
+        # Save all conversations (one per video)
         SAMPLES_DIR.mkdir(parents=True, exist_ok=True)
         samples_path = SAMPLES_DIR / "all_samples.jsonl"
         with open(samples_path, "w") as f:
             for s in all_samples:
                 f.write(json.dumps(s, ensure_ascii=False) + "\n")
 
-        logger.info(f"Pass 4 complete: {len(all_samples)} samples generated")
+        logger.info(f"Pass 4 complete: {len(all_samples)} video conversations")
     else:
         samples_path = SAMPLES_DIR / "all_samples.jsonl"
         all_samples = []

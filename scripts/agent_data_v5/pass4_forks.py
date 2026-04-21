@@ -871,3 +871,337 @@ def _get_distractor_with_chunk(
         return f"[{t}] {pick['think']}", pick["chunk_idx"]
 
     return "Unrelated observation from a different time.", None
+
+
+# ---------------------------------------------------------------------------
+# Multi-turn Conversation Builder (replaces per-timestep assembly)
+# ---------------------------------------------------------------------------
+
+
+async def build_video_conversation(
+    video_id: str,
+    video_path: str,
+    rollout: Dict,
+    tasks: Dict,
+    client,
+    frame_paths: Optional[List[str]] = None,
+) -> Optional[Dict]:
+    """Build one multi-turn conversation for an entire video.
+
+    This is the main output format for SFT training. Each video produces
+    ONE conversation sample with alternating user/assistant turns.
+
+    Format matches _build_agent_messages expectations:
+    - user: [{type: video, video_start, video_end}, {type: text, text: question}]
+    - assistant: "<think>...</think><action>X</action>..."
+
+    KV cache residual: after compression, old thinks remain in the conversation
+    history. This is CORRECT — it matches inference where KV cache retains
+    old thinks. The model learns to use summary as primary, old thinks as fallback.
+    """
+    observations = rollout.get("thinks", rollout.get("observations", []))
+    num_chunks = rollout["num_chunks"]
+    snapshots = rollout["snapshots"]
+    compression_events = rollout["compression_events"]
+
+    if not observations or num_chunks == 0:
+        return None
+
+    # --- Build lookup tables: what happens at each chunk? ---
+    compress_at = {}  # chunk_idx -> compression_event
+    for event in compression_events:
+        compress_at[event["trigger_chunk"]] = event
+
+    # Collect all tasks with ask_chunk, generate response/query text via 397B
+    task_at = {}  # chunk_idx -> task (with generated response/query)
+    recall_result_at = {}  # chunk_idx -> recall result (for post-recall turn)
+
+    for task_type, task_list in tasks.items():
+        if task_type.startswith("_") or not isinstance(task_list, list):
+            continue
+        for task in task_list:
+            ask_chunk = task.get("ask_chunk")
+            if ask_chunk is None or not task.get("question"):
+                continue
+            if ask_chunk in task_at:
+                continue  # First task wins at this chunk
+
+            # Generate response/query text via 397B
+            gold_action = task.get("gold_action", "response")
+
+            if gold_action == "response":
+                resp_text = await _generate_response_text(
+                    task, snapshots, observations, client, video_id
+                )
+                if resp_text:
+                    task["_generated_response"] = resp_text
+                    task_at[ask_chunk] = task
+
+            elif gold_action == "recall":
+                query_json, resp_text, recall_result = await _generate_recall_texts(
+                    task, snapshots, observations, client, video_id
+                )
+                if query_json:
+                    task["_generated_query"] = query_json
+                    task["_generated_response"] = resp_text
+                    task["_recall_result"] = recall_result
+                    task_at[ask_chunk] = task
+                    recall_result_at[ask_chunk] = recall_result
+
+    # --- Action priority: question > compress > silent ---
+    interaction_chunks = set(task_at.keys())
+
+    # Pending tasks: need special handling (ask_chunk=silent, trigger_chunk=response)
+    pending_tasks = []
+    for task in tasks.get("pending", []):
+        if task.get("question"):
+            pending_tasks.append(task)
+
+    pending_active = {}  # chunk_idx -> pending question text (active from ask to trigger)
+    for pt in pending_tasks:
+        ask = pt["ask_chunk"]
+        trigger = pt["trigger_chunk"]
+        for c in range(ask, trigger + 1):
+            pending_active[c] = pt
+
+    # --- Assemble multi-turn conversation ---
+    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+
+    for chunk_idx in range(num_chunks):
+        chunk_start = chunk_idx * AGENT_CHUNK_SEC
+        chunk_end = (chunk_idx + 1) * AGENT_CHUNK_SEC
+        think_text = observations[chunk_idx]["think"] if chunk_idx < len(observations) else ""
+
+        # ── User message ──
+        user_content = [{
+            "type": "video",
+            "video_start": chunk_start,
+            "video_end": chunk_end,
+            "nframes": 2,
+        }]
+
+        # Add compression trigger (if not preempted by user question)
+        has_compress = chunk_idx in compress_at and chunk_idx not in interaction_chunks
+        if has_compress:
+            event = compress_at[chunk_idx]
+            tr = event["summary"]["time_range"]
+            user_content.append({
+                "type": "text",
+                "text": f'<compress_trigger range="{tr[0]}-{tr[1]}"/>',
+            })
+
+        # Add user question
+        has_question = chunk_idx in task_at
+        if has_question:
+            user_content.append({
+                "type": "text",
+                "text": task_at[chunk_idx]["question"],
+            })
+
+        # Add pending question start (user asks, model should be silent for now)
+        if chunk_idx in pending_active and chunk_idx == pending_active[chunk_idx].get("ask_chunk"):
+            user_content.append({
+                "type": "text",
+                "text": pending_active[chunk_idx]["question"],
+            })
+
+        messages.append({"role": "user", "content": user_content})
+
+        # ── Assistant message ──
+        if has_question:
+            task = task_at[chunk_idx]
+            if task["gold_action"] == "response":
+                resp = task.get("_generated_response", "")
+                assistant_text = (
+                    f"<think>{think_text}</think>"
+                    f"<action>response</action>"
+                    f"<response>{resp}</response>"
+                )
+            elif task["gold_action"] == "recall":
+                query_json = task.get("_generated_query", {})
+                assistant_text = (
+                    f"<think>{think_text}</think>"
+                    f"<action>recall</action>"
+                    f'<query>{json.dumps(query_json, ensure_ascii=False)}</query>'
+                )
+        elif has_compress:
+            event = compress_at[chunk_idx]
+            summary_json = json.dumps(event["summary"], ensure_ascii=False)
+            assistant_text = (
+                f"<think>{think_text}</think>"
+                f"<action>compress</action>"
+                f"<summary>{summary_json}</summary>"
+            )
+        elif chunk_idx in pending_active and chunk_idx == pending_active[chunk_idx].get("trigger_chunk"):
+            # Pending trigger: event happened, respond
+            pt = pending_active[chunk_idx]
+            resp = pt.get("event", "Event observed.")
+            assistant_text = (
+                f"<think>{think_text}</think>"
+                f"<action>response</action>"
+                f"<response>{resp}</response>"
+            )
+        else:
+            assistant_text = f"<think>{think_text}</think><action>silent</action>"
+
+        messages.append({"role": "assistant", "content": assistant_text})
+
+        # ── Post-recall turn: inject recall result + response ──
+        if has_question and task_at[chunk_idx]["gold_action"] == "recall":
+            recall_result = task_at[chunk_idx].get("_recall_result", {})
+            recall_text = recall_result.get("text_content", "No results found.")
+
+            messages.append({
+                "role": "user",
+                "content": f"<recall_result>{recall_text}</recall_result>",
+            })
+
+            resp = task_at[chunk_idx].get("_generated_response", "")
+            is_failed = recall_result.get("noise_level") in ("distractor", "failure")
+            if is_failed:
+                resp = "I could not find enough evidence to answer confidently."
+
+            # Post-recall response: NO think (avoid double memory write)
+            messages.append({
+                "role": "assistant",
+                "content": f"<action>response</action><response>{resp}</response>",
+            })
+
+    return {
+        "video_id": video_id,
+        "video_path": video_path,
+        "messages": messages,
+        "num_chunks": num_chunks,
+        "num_compression_events": len(compression_events),
+        "num_tasks": len(task_at),
+        "metadata": {
+            "compression_events": [
+                {"trigger_chunk": e["trigger_chunk"], "time_range": e["summary"]["time_range"]}
+                for e in compression_events
+            ],
+            "task_chunks": list(task_at.keys()),
+        },
+    }
+
+
+async def _generate_response_text(task, snapshots, observations, client, video_id):
+    """Generate response text via 397B for a response task."""
+    ask_chunk = task["ask_chunk"]
+    snapshot = snapshots.get(ask_chunk, snapshots.get(str(ask_chunk)))
+    if not snapshot:
+        return None
+
+    evidence_text = "Based on available observations."
+    answer_type = task.get("answer_type", "factoid")
+    length_map = {"factoid": "5-40 tokens", "procedural": "40-120 tokens",
+                  "summary": "80-200 tokens", "uncertain": "20-60 tokens"}
+
+    prompt = RESPONSE_PROMPT.format(
+        question=task.get("question", ""),
+        evidence=evidence_text,
+        answer_type=answer_type,
+        gold_answer=task.get("gold_answer", ""),
+        length_guide=length_map.get(answer_type, "20-80 tokens"),
+    )
+    raw = await client._call_one(
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=PASS_CONFIG["pass4_forks"]["max_tokens"],
+        temperature=PASS_CONFIG["pass4_forks"]["temperature"],
+        request_id=f"{video_id}_resp_{ask_chunk}",
+    )
+    if not raw:
+        return None
+    return re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip().strip('"')
+
+
+async def _generate_recall_texts(task, snapshots, observations, client, video_id):
+    """Generate recall query + response texts via 397B."""
+    ask_chunk = task["ask_chunk"]
+    snapshot = snapshots.get(ask_chunk, snapshots.get(str(ask_chunk)))
+    if not snapshot:
+        return None, None, None
+
+    # Build visible context
+    visible_parts = []
+    for seg in snapshot.get("compressed_segments", []):
+        tr = seg["time_range"]
+        visible_parts.append(f"[{tr[0]}-{tr[1]}] {seg['text'][:80]}")
+    for obs_item in snapshot.get("recent_thinks", []):
+        visible_parts.append(f"[{obs_item['time']}] {obs_item.get('text', '')}")
+    visible_context = "\n".join(visible_parts[-10:]) or "(minimal)"
+
+    all_times = []
+    for seg in snapshot.get("compressed_segments", []):
+        all_times.extend(seg["time_range"])
+    for obs_item in snapshot.get("recent_thinks", []):
+        parts = obs_item["time"].split("-")
+        all_times.extend(int(p) for p in parts)
+    time_range_str = f"0-{max(all_times)}" if all_times else "0-60"
+
+    # Generate query
+    query_prompt = RECALL_QUERY_PROMPT.format(
+        question=task.get("question", ""),
+        visible_context=visible_context,
+        time_range=time_range_str,
+    )
+    query_raw = await client._call_one(
+        messages=[{"role": "user", "content": query_prompt}],
+        max_tokens=128, temperature=0.3,
+        request_id=f"{video_id}_query_{ask_chunk}",
+    )
+    if not query_raw:
+        return None, None, None
+
+    query_raw = re.sub(r'<think>.*?</think>', '', query_raw, flags=re.DOTALL).strip()
+    try:
+        query_json = json.loads(query_raw)
+    except (json.JSONDecodeError, ValueError):
+        start = query_raw.find("{")
+        end = query_raw.rfind("}")
+        if start >= 0 and end > start:
+            try:
+                query_json = json.loads(query_raw[start:end + 1])
+            except (json.JSONDecodeError, ValueError):
+                return None, None, None
+        else:
+            return None, None, None
+
+    # Leakage cleanup
+    stop = {"the", "a", "an", "is", "was", "in", "on", "at", "to", "of", "and"}
+    answer_kw = set(
+        w for w in re.findall(r'\b[a-zA-Z0-9]+\b', task.get("gold_answer", "").lower())
+        if w not in stop and len(w) > 2
+    )
+    query_text = query_json.get("query", "")
+    leaked = answer_kw & set(re.findall(r'\b[a-zA-Z0-9]+\b', query_text.lower()))
+    if leaked:
+        clean = " ".join(w for w in query_text.split() if w.lower() not in leaked)
+        if not clean.strip():
+            return None, None, None
+        query_json["query"] = clean
+
+    # Simulate recall result
+    recall_result = simulate_recall_result(task, snapshot, observations, ask_chunk, query_json)
+
+    # Generate response
+    is_failed = recall_result.get("noise_level") in ("distractor", "failure")
+    eff_answer = "I could not find enough evidence." if is_failed else task.get("gold_answer", "")
+    eff_type = "uncertain" if is_failed else task.get("answer_type", "factoid")
+
+    resp_prompt = RESPONSE_PROMPT.format(
+        question=task.get("question", ""),
+        evidence=recall_result.get("text_content", ""),
+        answer_type=eff_type,
+        gold_answer=eff_answer,
+        length_guide="20-60 tokens" if is_failed else "5-40 tokens",
+    )
+    resp_raw = await client._call_one(
+        messages=[{"role": "user", "content": resp_prompt}],
+        max_tokens=256, temperature=0.3,
+        request_id=f"{video_id}_postresp_{ask_chunk}",
+    )
+    resp_text = ""
+    if resp_raw:
+        resp_text = re.sub(r'<think>.*?</think>', '', resp_raw, flags=re.DOTALL).strip().strip('"')
+
+    return query_json, resp_text, recall_result

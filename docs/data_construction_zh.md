@@ -1,6 +1,6 @@
 # 流视频 Agent 数据构造方案
 
-> 版本: v5.8 | 日期: 2026-04-21
+> 版本: v6.0 | 日期: 2026-04-21
 >
 > 核心设计：
 > - Per-timestep 独立样本，三层文本隔离（teacher / think / summary）
@@ -24,23 +24,50 @@
 
 ## 1. 架构原则
 
-### 1.1 训练格式：Per-Timestep 独立样本（方案 A）
+### 1.1 训练格式：多轮流式对话（v6.0 修订）
 
-**不再使用完整多轮对话作为单条 SFT 样本**。原因：
-- 旧 chunk 没有视频输入，但如果对其 assistant 算 loss → 模型学会"无图编描述"
-- 压缩在 causal conversation 中无法真正替换（前文 token 仍可 attend）
-- 推理时 memory 是外部状态管理，不是 chat history
-
-**方案 A**：每个 timestep 构造为独立训练样本：
+**每个视频构造为一条完整的多轮对话样本。** 每个 2s chunk 对应一轮 user→assistant turn。
 
 ```
-单条训练样本 = {
-    input:  [system] + [memory_state] + [visual_window] + [user_input]
-    output: <think>...</think><action>X</action>[附加]
+单条训练样本 = 整个视频的多轮对话 {
+    messages: [
+        {role: system, content: protocol},
+        {role: user, content: [video_chunk_0]},
+        {role: assistant, content: "<think>...</think><action>silent</action>"},
+        {role: user, content: [video_chunk_1]},
+        {role: assistant, content: "<think>...</think><action>silent</action>"},
+        ...
+        {role: user, content: [video_chunk_N, "<compress_trigger range='...'>"]},
+        {role: assistant, content: "<think>...</think><action>compress</action><summary>...</summary>"},
+        ...
+        {role: user, content: [video_chunk_M, "What color is the apron?"]},
+        {role: assistant, content: "<think>...</think><action>response</action><response>Red.</response>"},
+    ]
 }
 ```
 
-只对 **当前这一步的 output** 计算 loss。历史信息作为 input context，不参与 loss。
+Loss 只在 assistant turn 上计算。视频帧由 `streaming_attention` 滑动窗口控制可见范围。
+
+**为什么用多轮对话而不是 per-timestep 独立样本**（v6.0 关键决策）：
+
+1. **推理时 KV cache 有残留**：推理用 KV cache 加速，压缩后旧 thinks 的 key/value 仍在 cache 中。
+   如果训练时旧 thinks 完全不可见（per-timestep），会造成训练-推理分布不匹配。
+2. **残留是特性，不是缺陷**：summary 作为"路由信号"，模型学会优先用 summary、旧 thinks 作为 fallback。
+   这比硬删除更鲁棒——summary 丢失细节时模型仍能从残留中部分恢复。
+3. **streaming_attention 已支持**：视频帧用滑动窗口（12 blocks），文本 token 因果 attention。
+   不需要外部拼装 memory block，memory 就是前文 chat history。
+4. **效率提升 ~10x**：一个视频一次 forward，而非 150 次独立 forward（共享 prefix 编码）。
+
+**压缩在多轮对话中的语义**：
+
+```
+[assistant turn 10]: <think>obs_10</think><action>compress</action><summary>{...}</summary>
+   ↑ summary 替换了前文中 thinks 0-5 的"语义权重"
+   ↑ 但前文 token 物理上仍在（KV cache 残留）
+   ↑ 模型学会: 看到 summary → 优先用 summary，不再依赖旧 thinks
+```
+
+这和推理时的行为一致：KV cache 中旧 thinks 残留，但新 input 不再显式包含它们。
 
 ### 1.2 三层文本严格分离
 

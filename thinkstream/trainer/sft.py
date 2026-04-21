@@ -317,13 +317,18 @@ def init_processor(
         lmm_processor.tokenizer.add_tokens(
             ["<silent>", "<response>", "<think>", "</think>"]
         )
-    # Agent protocol tokens (3-action format with recall)
+    # Agent protocol tokens (4-action format with recall + compress)
     # NOTE: </response> is needed because the model must generate it to
     # close <response>answer text</response>.
     lmm_processor.tokenizer.add_tokens(
         ["<action>", "</action>", "<query>", "</query>",
          "</response>",
-         "<recall_result>", "</recall_result>"]
+         "<recall_result>", "</recall_result>",
+         # Compression tokens (per-timestep memory format)
+         "<compressed>", "</compressed>",
+         "<pending>", "</pending>",
+         "<compress_trigger>", "</compress_trigger>",
+         "<summary>", "</summary>"]
     )
 
     # Resize model embeddings to match the expanded tokenizer.
