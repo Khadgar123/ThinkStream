@@ -108,7 +108,7 @@ PASS_CONTEXT_ESTIMATES = {
     "pass1_evidence": {"input": 10_000, "output": 8_192, "thinking": 2_000},
     "pass2_rollout":  {"input": 10_000, "output": 4_096, "thinking": 2_000},
     "pass3_tasks":    {"input": 4_000,  "output": 4_096, "thinking": 2_000},
-    "pass4_forks":    {"input": 2_000,  "output": 2_048, "thinking": 2_000},
+    "pass4_forks":    {"input": 2_000,  "output": 4_096, "thinking": 2_000},
 }
 
 
@@ -221,7 +221,7 @@ PASS_CONFIG = {
         "concurrent": 64,
     },
     "pass4_forks": {
-        "max_tokens": 2048,
+        "max_tokens": 4096,
         "temperature": 0.3,
         "thinking": True,
         "concurrent": 64,
@@ -316,8 +316,7 @@ Rules:
 
 Output JSON only:"""
 
-OBSERVATION_PROMPT = """
-You are a streaming video agent generating a think (incremental visual memory note).
+OBSERVATION_PROMPT = """You are a streaming video agent generating a think (incremental visual memory note).
 
 Compressed memory:
 {compressed_memory}
@@ -338,8 +337,7 @@ Rules:
 
 Output (one paragraph, 40-60 tokens):"""
 
-COMPRESS_PROMPT = """
-Compress these observations into a structured summary.
+COMPRESS_PROMPT = """Compress these observations into a structured summary.
 
 Observations to compress:
 {observations_text}
@@ -372,8 +370,7 @@ Requirements:
 
 Output JSON: {{"question": "...", "concise_answer": "...", "answer_type": "factoid|procedural|summary"}}"""
 
-RECALL_QUERY_PROMPT = """
-Generate a retrieval query for this scenario:
+RECALL_QUERY_PROMPT = """Generate a retrieval query for this scenario:
 - Question: "{question}"
 - Visible memory context: {visible_context}
 
@@ -384,8 +381,7 @@ Include entity names + action/attribute anchors from the question and context.
 
 Output JSON (one line): {{"query": "keyword1 keyword2 keyword3", "time_range": "{time_range}"}}"""
 
-RESPONSE_PROMPT = """
-Generate a response for this streaming video agent:
+RESPONSE_PROMPT = """Generate a response for this streaming video agent:
 - Question: "{question}"
 - Available evidence: {evidence}
 - Answer type: {answer_type}

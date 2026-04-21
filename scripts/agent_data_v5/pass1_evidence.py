@@ -98,30 +98,34 @@ def parse_evidence_result(raw: Optional[str], meta: Dict) -> Dict:
     # Strip thinking block if present
     raw = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip()
 
-    # Extract JSON
+    # Extract JSON — try direct parse first, then find LAST complete JSON object.
+    # "Last" because if thinking leaks into content, thinking text comes first
+    # and the actual JSON is at the end.
     try:
-        # Try direct parse
         parsed = json.loads(raw)
     except (json.JSONDecodeError, ValueError):
-        # Find balanced JSON object
-        start_idx = raw.find("{")
-        if start_idx < 0:
+        # Find all '{' positions, try from last to first
+        positions = [i for i, c in enumerate(raw) if c == '{']
+        if not positions:
             default["_raw"] = raw[:4000]
             return default
-        depth = 0
-        for i in range(start_idx, len(raw)):
-            if raw[i] == "{":
-                depth += 1
-            elif raw[i] == "}":
-                depth -= 1
-                if depth == 0:
-                    try:
-                        parsed = json.loads(raw[start_idx:i + 1])
-                    except (json.JSONDecodeError, ValueError):
-                        default["_raw"] = raw[:4000]
-                        return default
-                    break
-        else:
+        parsed = None
+        for start_idx in reversed(positions):
+            depth = 0
+            for i in range(start_idx, len(raw)):
+                if raw[i] == '{':
+                    depth += 1
+                elif raw[i] == '}':
+                    depth -= 1
+                    if depth == 0:
+                        try:
+                            parsed = json.loads(raw[start_idx:i + 1])
+                        except (json.JSONDecodeError, ValueError):
+                            pass
+                        break
+            if parsed is not None:
+                break
+        if parsed is None:
             default["_raw"] = raw[:4000]
             return default
 

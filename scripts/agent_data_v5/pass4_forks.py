@@ -529,7 +529,7 @@ async def build_recall_sample(
 
     query_raw = await client._call_one(
         messages=[{"role": "user", "content": query_prompt}],
-        max_tokens=128,
+        max_tokens=PASS_CONFIG["pass4_forks"]["max_tokens"],
         temperature=0.3,
         request_id=f"{video_id}_query_{ask_chunk}",
     )
@@ -608,7 +608,7 @@ async def build_recall_sample(
 
     resp_raw = await client._call_one(
         messages=[{"role": "user", "content": resp_prompt}],
-        max_tokens=256,
+        max_tokens=PASS_CONFIG["pass4_forks"]["max_tokens"],
         temperature=0.3,
         request_id=f"{video_id}_postresp_{ask_chunk}",
     )
@@ -805,7 +805,7 @@ async def build_pending_samples(
     )
     resp_raw = await client._call_one(
         messages=[{"role": "user", "content": resp_prompt}],
-        max_tokens=256,
+        max_tokens=PASS_CONFIG["pass4_forks"]["max_tokens"],
         temperature=0.3,
         request_id=f"{video_id}_pending_resp_{trigger_chunk}",
     )
@@ -1255,7 +1255,7 @@ async def _generate_recall_texts(task, snapshots, observations, client, video_id
     )
     query_raw = await client._call_one(
         messages=[{"role": "user", "content": query_prompt}],
-        max_tokens=128, temperature=0.3,
+        max_tokens=PASS_CONFIG["pass4_forks"]["max_tokens"], temperature=0.3,
         request_id=f"{video_id}_query_{ask_chunk}",
     )
     if not query_raw:
@@ -1306,7 +1306,7 @@ async def _generate_recall_texts(task, snapshots, observations, client, video_id
     )
     resp_raw = await client._call_one(
         messages=[{"role": "user", "content": resp_prompt}],
-        max_tokens=256, temperature=0.3,
+        max_tokens=PASS_CONFIG["pass4_forks"]["max_tokens"], temperature=0.3,
         request_id=f"{video_id}_postresp_{ask_chunk}",
     )
     resp_text = ""
