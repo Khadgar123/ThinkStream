@@ -217,13 +217,13 @@ PASS_CONFIG = {
         "concurrent_videos": 64,
     },
     "pass3_tasks": {
-        "max_tokens": 65536,
+        "max_tokens": 60000,  # max_model_len(65536) - input(~4K) - margin
         "temperature": 0.7,
         "thinking": True,
         "concurrent": 64,
     },
     "pass4_forks": {
-        "max_tokens": 65536,
+        "max_tokens": 60000,  # max_model_len(65536) - input(~2K) - margin
         "temperature": 0.3,
         "thinking": True,
         "concurrent": 64,
