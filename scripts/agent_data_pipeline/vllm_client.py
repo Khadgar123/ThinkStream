@@ -81,7 +81,7 @@ class VLLMClient:
         model: str = "",
         max_concurrent: int = 40,
         api_key: str = "placeholder",
-        timeout: float = 300.0,
+        timeout: float = 1800.0,  # 30 min: 8K tokens at 6.4 tok/s = 21 min worst case
     ):
         self.api_base = api_base
         self.model = model
