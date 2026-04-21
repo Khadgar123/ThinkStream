@@ -233,6 +233,71 @@ def _count_tokens(text: str) -> int:
     return len(text) // 4
 
 
+def _parse_time_range_from_memory_line(item) -> Tuple[int, int]:
+    """Parse [start-end] prefix from a recent_thinks memory line."""
+    text = item if isinstance(item, str) else item.get("time", "") if isinstance(item, dict) else str(item)
+    m = re.search(r'\[(\d+)-(\d+)\]', text)
+    if m:
+        return int(m.group(1)), int(m.group(2))
+    if isinstance(item, dict) and "time" in item and isinstance(item["time"], str):
+        m = re.search(r'(\d+)-(\d+)', item["time"])
+        if m:
+            return int(m.group(1)), int(m.group(2))
+    return -1, -1
+
+
+def _memory_item_text(item) -> str:
+    """Return textual content from a memory item or formatted memory line."""
+    if isinstance(item, str):
+        return item
+    if isinstance(item, dict):
+        return item.get("text", item.get("obs", str(item)))
+    return str(item)
+
+
+def _compressed_source_texts(sample: Dict) -> List[str]:
+    """Return only the source memory items actually selected for compression.
+
+    The verifier must not use all input recent_thinks as the provenance source
+    when the gold range is a subset. Otherwise a summary could illegally copy
+    facts from neighboring, uncompressed thinks and still pass provenance.
+    """
+    metadata = sample.get("metadata", {})
+    input_data = sample.get("input", {})
+    memory = input_data.get("memory", {})
+
+    # Summary-of-summaries merge: source is compressed segments, not recent_thinks.
+    if metadata.get("task_type") == "merge_compress":
+        compressed = memory.get("compressed", [])
+        return [
+            seg.get("text", str(seg)) if isinstance(seg, dict) else str(seg)
+            for seg in compressed
+        ]
+
+    recent_thinks = memory.get("recent_thinks", [])
+    if not recent_thinks:
+        return []
+
+    compressed_chunks = set(metadata.get("compressed_chunks", []) or [])
+    compressed_range = metadata.get("compressed_range", None)
+
+    selected = []
+    for item in recent_thinks:
+        start, end = _parse_time_range_from_memory_line(item)
+        chunk = start // 2 if start >= 0 else None
+        in_chunk_set = chunk in compressed_chunks if compressed_chunks else False
+        in_range = (
+            bool(compressed_range)
+            and start >= int(compressed_range[0])
+            and end <= int(compressed_range[1])
+        )
+        if in_chunk_set or in_range:
+            selected.append(_memory_item_text(item))
+
+    # Fallback for old artifacts that did not store compressed_chunks/range.
+    return selected if selected else [_memory_item_text(t) for t in recent_thinks]
+
+
 def verify_think_token_length(sample: Dict) -> Tuple[bool, str]:
     """Check: think is within 40-60 token range.
 
@@ -289,15 +354,12 @@ def verify_compression_ratio(sample: Dict) -> Tuple[bool, str]:
     if not summary_text:
         return False, "empty_compression_summary"
 
-    # Get input thinks that were compressed
-    input_data = sample.get("input", {})
-    recent_thinks = input_data.get("memory", {}).get("recent_thinks", [])
-    if not recent_thinks:
+    # Get ONLY the input thinks/segments that were actually compressed.
+    source_texts = _compressed_source_texts(sample)
+    if not source_texts:
         return True, "pass"
 
-    input_text = " ".join(recent_thinks) if isinstance(recent_thinks[0], str) else \
-        " ".join(t.get("text", t.get("obs", "")) if isinstance(t, dict) else str(t)
-                 for t in recent_thinks)
+    input_text = " ".join(source_texts)
 
     input_tokens = _count_tokens(input_text)
     summary_tokens = _count_tokens(summary_text)
@@ -340,12 +402,10 @@ def verify_summary_provenance(sample: Dict) -> Tuple[bool, str]:
     if not summary_text:
         return True, "pass"
 
-    # Collect all content words from compressed thinks (the source)
-    input_data = sample.get("input", {})
-    recent_thinks = input_data.get("memory", {}).get("recent_thinks", [])
+    # Collect content words from the exact compressed source range only.
+    source_texts = _compressed_source_texts(sample)
     source_words = set()
-    for t in recent_thinks:
-        text = t if isinstance(t, str) else t.get("text", t.get("obs", "")) if isinstance(t, dict) else str(t)
+    for text in source_texts:
         # Include underscore in word pattern to match entity IDs like Chef_1
         source_words.update(w.lower() for w in re.findall(r'\b[a-zA-Z0-9_]+\b', text))
 
@@ -365,6 +425,40 @@ def verify_summary_provenance(sample: Dict) -> Tuple[bool, str]:
     if entity_words and len(unsupported) / len(entity_words) > 0.2:
         examples = unsupported[:3]
         return False, f"summary_provenance_violation: {examples} not in source thinks"
+
+    return True, "pass"
+
+
+def verify_question_answer_leakage(sample: Dict) -> Tuple[bool, str]:
+    """Check that the user-facing question does not reveal the gold answer.
+
+    Two checks:
+    1. Exact substring: gold_answer (≥5 chars) appears verbatim in question
+    2. Keyword coverage: all meaningful answer keywords appear in question
+    """
+    metadata = sample.get("metadata", {})
+    question = metadata.get("question") or sample.get("input", {}).get("user_input", "")
+    answer = metadata.get("gold_answer", "")
+    if not question or not answer:
+        return True, "pass"
+
+    q_lower = question.lower()
+    a_lower = answer.lower().strip()
+
+    # Check 1: exact substring
+    if len(a_lower) >= 5 and a_lower in q_lower:
+        return False, "question_contains_gold_answer_string"
+
+    # Check 2: all meaningful answer keywords present in question
+    stop = {"the", "a", "an", "is", "was", "were", "in", "on", "at", "to",
+            "of", "and", "or", "with", "from", "into", "what", "which"}
+    q_words = set(re.findall(r'\b[a-zA-Z0-9]+\b', q_lower))
+    a_words = {
+        w for w in re.findall(r'\b[a-zA-Z0-9]+\b', a_lower)
+        if len(w) > 2 and w not in stop
+    }
+    if len(a_words) >= 2 and a_words.issubset(q_words):
+        return False, "question_contains_all_answer_keywords"
 
     return True, "pass"
 
@@ -431,6 +525,9 @@ def verify_sample(sample: Dict) -> Dict:
 
     passed, reason = verify_summary_provenance(sample)
     checks["summary_provenance"] = {"passed": passed, "reason": reason}
+
+    passed, reason = verify_question_answer_leakage(sample)
+    checks["question_answer_leakage"] = {"passed": passed, "reason": reason}
 
     # Difficulty labeling
     difficulty = label_difficulty(sample)

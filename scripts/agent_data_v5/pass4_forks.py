@@ -204,6 +204,7 @@ def build_compress_sample(
             "gold_action": "compress",
             "compressed_range": time_range,
             "compressed_chunks": compression_event.get("compressed_thinks_chunks", []),
+            "teacher_policy": compression_event.get("teacher_policy", {}),
             "phase": "C1",
         },
     }
@@ -247,6 +248,7 @@ def build_compress_sample_c2(
             "gold_action": "compress",
             "compressed_range": time_range,
             "compressed_chunks": compression_event.get("compressed_thinks_chunks", []),
+            "teacher_policy": compression_event.get("teacher_policy", {}),
             "phase": "C2",
         },
     }

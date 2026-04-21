@@ -25,6 +25,7 @@ from .config import (
     COMPRESS_RANGE_MAX,
     COMPRESS_RANGE_MIN,
     COMPRESS_TOKEN_THRESHOLD,
+    CONFIDENCE_THRESHOLD,
     OBSERVATION_PROMPT,
     RECENT_THINKS_TOKEN_BUDGET,
     get_tokenizer,
@@ -251,6 +252,11 @@ def build_compress_request(
     """Build compression request using teacher-chosen optimal range (legacy)."""
     to_compress = choose_optimal_compress_range(memory.recent_thinks, memory.pending_questions)
 
+    if not to_compress:
+        # Safety: should never happen if caller checks len >= COMPRESS_RANGE_MIN,
+        # but guard against IndexError on to_compress[0] / to_compress[-1].
+        return None
+
     # Format thinks text
     obs_lines = [f'[{item["time"]}] {item["text"]}' for item in to_compress]
     obs_text = "\n".join(obs_lines)
@@ -286,6 +292,7 @@ def build_compress_request_from_thinks(
     memory: MemoryState,
     video_id: str,
     chunk_idx: int,
+    evidence: Optional[List[Dict]] = None,
 ) -> Dict:
     """Build compression request using ONLY pre-action thinks.
 
@@ -294,7 +301,12 @@ def build_compress_request_from_thinks(
     that was just generated. This ensures the model can learn to compress
     based on what it actually saw.
     """
-    to_compress = choose_optimal_compress_range(pre_action_thinks, memory.pending_questions)
+    to_compress, policy_meta = choose_optimal_compress_range_with_meta(
+        pre_action_thinks, memory.pending_questions, evidence
+    )
+
+    if not to_compress:
+        return None
 
     obs_lines = [f'[{item["time"]}] {item.get("text", item.get("obs", ""))}' for item in to_compress]
     obs_text = "\n".join(obs_lines)
@@ -319,6 +331,7 @@ def build_compress_request_from_thinks(
         "_meta": {
             "time_range": [int(first_time), int(last_time)],
             "chunks": [item["chunk"] for item in to_compress],
+            "teacher_policy": policy_meta,
         },
     }
 
@@ -369,10 +382,49 @@ def parse_compress_result(raw: Optional[str], meta: Dict) -> Dict:
     return default
 
 
+# ---------------------------------------------------------------------------
+# Teacher Evidence Helpers (for greedy-regret range scoring)
+# ---------------------------------------------------------------------------
+
+
+def _evidence_by_chunk(evidence: Optional[List[Dict]]) -> Dict[int, Dict]:
+    """Index teacher evidence by chunk_idx for O(1) lookup."""
+    if not evidence:
+        return {}
+    return {cap.get("chunk_idx", i): cap for i, cap in enumerate(evidence)}
+
+
+def _teacher_fact_value(caption: Dict) -> float:
+    """Score how valuable a chunk's teacher facts are for future QA.
+
+    Higher = more important to keep (worse to compress away).
+    Only uses teacher-side info that never enters SFT samples.
+    """
+    if not caption or not caption.get("parse_success"):
+        return 0.0
+    score = 0.0
+    for fact in caption.get("atomic_facts", []):
+        conf = fact.get("confidence", 0.5)
+        if conf < CONFIDENCE_THRESHOLD:
+            continue
+        score += conf
+        # Bonus for facts with numbers/OCR (hard to reconstruct)
+        fact_text = fact.get("fact", "")
+        if any(c.isdigit() for c in fact_text):
+            score += 0.5
+    # Bonus for OCR content
+    if caption.get("ocr"):
+        score += 2.0
+    # Bonus for state changes (event boundaries)
+    score += len(caption.get("state_changes", [])) * 0.3
+    return score
+
+
 def score_range_for_compression(
     thinks: List[Dict],
     all_recent: List[Dict],
     pending_questions: Optional[List[Dict]] = None,
+    evidence: Optional[List[Dict]] = None,
 ) -> float:
     """Score a candidate range for compression. LOWER = better to compress.
 
@@ -438,37 +490,70 @@ def score_range_for_compression(
     unique_ratio = len(unique_words) / max(n_words, 1)
     reconstructability = -5.0 if unique_ratio < 0.5 else 0.0  # Low diversity = easy
 
-    score = importance + pending_penalty + boundary_penalty + token_saving + reconstructability
+    # --- teacher_future_value (optional, only when evidence provided) ---
+    teacher_value = 0.0
+    if evidence:
+        ev_index = _evidence_by_chunk(evidence)
+        for t in thinks:
+            cap = ev_index.get(t["chunk"])
+            if cap:
+                teacher_value += _teacher_fact_value(cap)
+
+    score = (importance + pending_penalty + boundary_penalty
+             + token_saving + reconstructability + teacher_value)
     return score
 
 
-def choose_optimal_compress_range(
+def choose_optimal_compress_range_with_meta(
     recent_thinks: List[Dict],
     pending_questions: Optional[List[Dict]] = None,
-) -> List[Dict]:
+    evidence: Optional[List[Dict]] = None,
+) -> Tuple[List[Dict], Dict]:
     """Choose the contiguous range that is BEST to compress (greedy optimal).
 
     Teacher-guided: evaluates all valid contiguous ranges, scores each by
-    multi-dimensional criteria (importance loss, pending overlap, event
-    boundary, token saving, reconstructability). Picks lowest score.
+    multi-dimensional criteria. Picks lowest score.
 
-    This is the gold range for C1 training.
+    Returns: (best_range, policy_meta) where policy_meta tracks scoring
+    details for debugging and audit.
     """
     n = len(recent_thinks)
     best_range = None
     best_score = float("inf")
+    best_start = 0
 
     for size in range(COMPRESS_RANGE_MIN, min(COMPRESS_RANGE_MAX + 1, n + 1)):
         for start in range(0, n - size + 1):
             candidate = recent_thinks[start:start + size]
             score = score_range_for_compression(
-                candidate, recent_thinks, pending_questions
+                candidate, recent_thinks, pending_questions, evidence
             )
             if score < best_score:
                 best_score = score
                 best_range = candidate
+                best_start = start
 
-    return best_range if best_range else recent_thinks[:COMPRESS_RANGE_MIN]
+    selected = best_range if best_range else recent_thinks[:COMPRESS_RANGE_MIN]
+    meta = {
+        "score": best_score,
+        "range_start_idx": best_start,
+        "range_size": len(selected),
+        "total_candidates": n,
+        "used_evidence": evidence is not None,
+    }
+    return selected, meta
+
+
+def choose_optimal_compress_range(
+    recent_thinks: List[Dict],
+    pending_questions: Optional[List[Dict]] = None,
+    evidence: Optional[List[Dict]] = None,
+) -> List[Dict]:
+    """Backward-compatible wrapper returning only the selected range."""
+    selected, _ = choose_optimal_compress_range_with_meta(
+        recent_thinks, pending_questions, evidence
+    )
+    return selected
 
 
 def estimate_summary_length(observations: List[Dict]) -> int:
@@ -496,12 +581,19 @@ async def run_pass2_single_video(
     frame_paths: List[str],
     num_chunks: int,
     client,
+    evidence: Optional[List[Dict]] = None,
 ) -> Dict:
     """Run question-blind streaming rollout for a single video.
 
-    Key: text memory (thinks) covers LONGER time than visual window.
-    Think is generated and enters memory IMMEDIATELY — no delay until
-    leaving the visual window.
+    Key design:
+    - Text memory (thinks) covers LONGER time than visual window.
+    - Compression trigger is evaluated on PRE-ACTION state (before current think).
+    - Execution order per timestep:
+        1. snapshot (pre-action)
+        2. evaluate should_compress on pre-action state
+        3. generate current think
+        4. if compress: replace selected INPUT range → append current think
+           else: just append current think
     """
     memory = MemoryState()
     thinks = []               # All thinks generated (full timeline)
@@ -510,8 +602,16 @@ async def run_pass2_single_video(
     proactive_recalls = []    # Proactive recall events
 
     for chunk_idx in range(num_chunks):
-        # --- 1. Snapshot BEFORE this step's think (pre-action state) ---
+        # --- 1. Snapshot BEFORE this step's think (true model input) ---
         snapshots[chunk_idx] = memory.snapshot(chunk_idx)
+        pre_action_thinks = snapshots[chunk_idx]["recent_thinks"]
+
+        # Compression triggered by pre-action state: if the previous turn's
+        # add_think pushed memory over 80%, THIS turn's input has compress_trigger.
+        should_compress_now = (
+            memory.should_compress()
+            and len(pre_action_thinks) >= COMPRESS_RANGE_MIN
+        )
 
         # --- 2. Generate think for current chunk ---
         request = build_observation_request(chunk_idx, frame_paths, memory, video_id)
@@ -528,18 +628,15 @@ async def run_pass2_single_video(
             "think": think_text,
         })
 
-        # --- 3. Think enters memory IMMEDIATELY (not delayed) ---
-        memory.add_think(chunk_idx, think_text)
-
-        # --- 4. Check compression trigger (80% of capacity) ---
-        if memory.should_compress():
-            # IMPORTANT: compress range must only cover thinks that were in
-            # the PRE-ACTION snapshot (i.e. before current think was added).
-            # We select range from pre-action thinks, not from current memory.
-            pre_action_thinks = snapshots[chunk_idx]["recent_thinks"]
+        # --- 3. Compress (if triggered) then append current think ---
+        if should_compress_now:
             comp_request = build_compress_request_from_thinks(
-                pre_action_thinks, memory, video_id, chunk_idx
+                pre_action_thinks, memory, video_id, chunk_idx, evidence=evidence
             )
+            if comp_request is None:
+                # Range selection returned empty — skip compression, just add think
+                memory.add_think(chunk_idx, think_text)
+                continue
             comp_raw = await client._call_one(
                 messages=comp_request["messages"],
                 max_tokens=comp_request["max_tokens"],
@@ -548,17 +645,23 @@ async def run_pass2_single_video(
             )
             summary = parse_compress_result(comp_raw, comp_request["_meta"])
             real_chunks = comp_request["_meta"]["chunks"]
+
+            # SFT-equivalent order: replace selected range → append current think
             memory.compress(summary, compressed_chunks=real_chunks)
+            memory.add_think(chunk_idx, think_text)
 
             compression_events.append({
                 "trigger_chunk": chunk_idx,
                 "summary": summary,
                 "compressed_thinks_chunks": real_chunks,
+                "teacher_policy": comp_request["_meta"].get("teacher_policy", {}),
             })
             logger.debug(f"  [{video_id}] Compress at chunk {chunk_idx}: {summary['time_range']}")
+        else:
+            # No compression — just append think to memory
+            memory.add_think(chunk_idx, think_text)
 
         # --- Proactive recall (low frequency, ~5%) ---
-        # Only after enough time has passed to have compressed memories
         if (memory.compressed_segments
                 and random.random() < PROACTIVE_RECALL_RATE
                 and chunk_idx > VISUAL_WINDOW_CHUNKS + 10):

@@ -28,6 +28,7 @@ from scripts.agent_data_v5.pass5_verify import (
     verify_think_token_length,
     verify_compression_ratio,
     verify_summary_provenance,
+    verify_question_answer_leakage,
     label_difficulty,
     filter_samples,
 )
@@ -884,6 +885,146 @@ class TestMineResponseFromMemory:
         # May or may not find tasks depending on keyword overlap
         # At minimum the function should not crash
         assert isinstance(tasks, list)
+
+
+# ---------------------------------------------------------------------------
+# v5.5 Tests: audit_task_coverage, question_answer_leakage, selected range provenance
+# ---------------------------------------------------------------------------
+
+
+class TestAuditTaskCoverage:
+    def test_expected_types_long_video(self):
+        from scripts.agent_data_v5.pass3_tasks import expected_task_types_for_rollout
+        rollout = {"num_chunks": 60, "compression_events": [{"trigger_chunk": 20}]}
+        expected = expected_task_types_for_rollout(rollout)
+        assert "response_from_frames" in expected
+        assert "recall" in expected
+        assert "compress" in expected
+        assert "compress_response" in expected
+        assert "pending" in expected
+
+    def test_expected_types_short_video(self):
+        from scripts.agent_data_v5.pass3_tasks import expected_task_types_for_rollout
+        rollout = {"num_chunks": 14, "compression_events": []}  # 28s
+        expected = expected_task_types_for_rollout(rollout)
+        assert "response_from_frames" in expected
+        # 28s < 30s threshold → no recall expected
+        assert "recall" not in expected
+        assert "compress" not in expected  # no compression events
+
+    def test_audit_detects_missing_types(self):
+        from scripts.agent_data_v5.pass3_tasks import audit_task_coverage
+        rollout = {"num_chunks": 60, "compression_events": [{"trigger_chunk": 20}]}
+        # Empty candidates — everything missing
+        result = audit_task_coverage("vid001", {}, rollout)
+        assert not result["passed"]
+        assert len(result["missing_expected_task_types"]) > 0
+
+    def test_audit_detects_leakage(self):
+        from scripts.agent_data_v5.pass3_tasks import audit_task_coverage
+        rollout = {"num_chunks": 15, "compression_events": []}
+        tasks = {
+            "response_from_frames": [{
+                # All answer keywords (red, apron) are in the question
+                "question": "What color is the red apron?",
+                "gold_answer": "red apron",
+                "gold_action": "response",
+            }],
+            "recall": [{"question": "test", "gold_answer": "x", "gold_action": "recall"}],
+            "unanswerable": [{"question": "q", "gold_answer": "a"}],
+            "response_from_memory": [{"question": "q", "gold_answer": "a"}],
+        }
+        result = audit_task_coverage("vid001", tasks, rollout)
+        assert len(result["question_answer_leakage"]) > 0
+
+
+class TestQuestionAnswerLeakage:
+    def test_exact_substring_detected(self):
+        sample = {
+            "metadata": {
+                "question": "What is the red apron color?",
+                "gold_answer": "red apron",
+            },
+        }
+        passed, reason = verify_question_answer_leakage(sample)
+        assert not passed
+        assert "string" in reason
+
+    def test_keyword_coverage_detected(self):
+        # All meaningful answer keywords (stainless, pot, right, burner) in question
+        sample = {
+            "metadata": {
+                "question": "What is on the right burner of the stainless pot?",
+                "gold_answer": "stainless pot on right burner",
+            },
+        }
+        passed, reason = verify_question_answer_leakage(sample)
+        assert not passed
+        assert "keyword" in reason
+
+    def test_normal_question_passes(self):
+        sample = {
+            "metadata": {
+                "question": "What did the chef add to the pot?",
+                "gold_answer": "approximately one teaspoon of salt",
+            },
+        }
+        passed, reason = verify_question_answer_leakage(sample)
+        assert passed
+
+    def test_no_question_passes(self):
+        sample = {"metadata": {}}
+        passed, _ = verify_question_answer_leakage(sample)
+        assert passed
+
+
+class TestCompressedSourceTexts:
+    def test_selected_range_only(self):
+        from scripts.agent_data_v5.pass5_verify import _compressed_source_texts
+        sample = {
+            "sample_type": "compress",
+            "input": {
+                "memory": {
+                    "recent_thinks": [
+                        "[0-2] Chef at counter.",
+                        "[2-4] Chef picks up knife.",
+                        "[4-6] Chef slices tomato.",
+                        "[6-8] Chef adds salt.",
+                    ],
+                },
+            },
+            "metadata": {
+                "compressed_range": [0, 4],  # Only first 2 thinks
+            },
+        }
+        texts = _compressed_source_texts(sample)
+        assert len(texts) == 2
+        assert "counter" in texts[0]
+        assert "knife" in texts[1]
+
+    def test_fallback_when_no_range(self):
+        from scripts.agent_data_v5.pass5_verify import _compressed_source_texts
+        sample = {
+            "sample_type": "compress",
+            "input": {
+                "memory": {
+                    "recent_thinks": ["[0-2] A.", "[2-4] B."],
+                },
+            },
+            "metadata": {},
+        }
+        texts = _compressed_source_texts(sample)
+        assert len(texts) == 2  # Falls back to all
+
+
+class TestSafeConcurrency:
+    def test_safe_concurrency_for_pass(self):
+        from scripts.agent_data_v5.config import safe_concurrency_for_pass
+        # Should return a positive integer <= the configured value
+        c1 = safe_concurrency_for_pass("pass1_evidence")
+        assert 1 <= c1 <= 8
+        c3 = safe_concurrency_for_pass("pass3_tasks")
+        assert 1 <= c3 <= 16
 
 
 if __name__ == "__main__":

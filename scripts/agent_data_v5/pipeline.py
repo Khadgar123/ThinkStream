@@ -22,6 +22,7 @@ from typing import Dict, List
 from .config import (
     AGENT_CHUNK_SEC,
     ALL_DIRS,
+    AUDIT_DIR,
     DATA_ROOT,
     EVIDENCE_DIR,
     FINAL_DIR,
@@ -31,6 +32,8 @@ from .config import (
     SAMPLES_DIR,
     TASKS_DIR,
     VLLM_MODEL,
+    estimated_request_tokens,
+    safe_concurrency_for_pass,
     ensure_dirs,
 )
 
@@ -223,10 +226,17 @@ async def run_pipeline(
     skip_pass = skip_pass or []
 
     # --- Setup ---
+    # Client cap = max safe concurrency across all passes; per-pass semaphores
+    # enforce tighter limits.
     client = VLLMClient(
         api_base=api_base,
         model=model,
-        max_concurrent=PASS_CONFIG["pass1_evidence"]["concurrent_videos"],
+        max_concurrent=max(
+            safe_concurrency_for_pass("pass1_evidence"),
+            safe_concurrency_for_pass("pass2_rollout"),
+            safe_concurrency_for_pass("pass3_tasks"),
+            safe_concurrency_for_pass("pass4_forks"),
+        ),
     )
 
     # --- Video selection ---
@@ -255,8 +265,9 @@ async def run_pipeline(
         logger.info("PASS 1: Teacher Evidence Graph")
         logger.info("=" * 60)
 
-        # Process videos in parallel (16 concurrent)
-        semaphore = asyncio.Semaphore(PASS_CONFIG["pass1_evidence"]["concurrent_videos"])
+        pass1_conc = safe_concurrency_for_pass("pass1_evidence")
+        logger.info(f"PASS 1 safe concurrency={pass1_conc}")
+        semaphore = asyncio.Semaphore(pass1_conc)
 
         async def process_video_pass1(video):
             vid = video["video_id"]
@@ -298,7 +309,9 @@ async def run_pipeline(
         logger.info("PASS 2: Question-blind Streaming Rollout")
         logger.info("=" * 60)
 
-        semaphore = asyncio.Semaphore(PASS_CONFIG["pass2_rollout"]["concurrent_videos"])
+        pass2_conc = safe_concurrency_for_pass("pass2_rollout")
+        logger.info(f"PASS 2 safe concurrency={pass2_conc}")
+        semaphore = asyncio.Semaphore(pass2_conc)
 
         async def process_video_pass2(video):
             vid = video["video_id"]
@@ -313,6 +326,7 @@ async def run_pipeline(
                     frame_paths=video_frames.get(vid, []),
                     num_chunks=video["num_chunks"],
                     client=client,
+                    evidence=evidence_map.get(vid),
                 )
                 save_rollout(vid, rollout)
                 logger.info(
@@ -336,13 +350,15 @@ async def run_pipeline(
     # PASS 3: Task Planning
     # =================================================================
     if 3 not in skip_pass:
-        from .pass3_tasks import run_pass3
+        from .pass3_tasks import audit_task_coverage, run_pass3
 
         logger.info("=" * 60)
         logger.info("PASS 3: Task Planning")
         logger.info("=" * 60)
 
-        semaphore = asyncio.Semaphore(PASS_CONFIG["pass3_tasks"]["concurrent"])
+        pass3_conc = safe_concurrency_for_pass("pass3_tasks")
+        logger.info(f"PASS 3 safe concurrency={pass3_conc}")
+        semaphore = asyncio.Semaphore(pass3_conc)
 
         async def process_video_pass3(video):
             vid = video["video_id"]
@@ -350,24 +366,52 @@ async def run_pipeline(
                 return vid, None
             async with semaphore:
                 tasks = await run_pass3(vid, evidence_map[vid], rollout_map[vid], client)
-                total = sum(len(t) for t in tasks.values())
+                audit = audit_task_coverage(vid, tasks, rollout_map[vid])
+                tasks["_coverage_audit"] = audit
+                total = sum(
+                    len(t) for k, t in tasks.items()
+                    if not k.startswith("_") and isinstance(t, list)
+                )
+                if not audit["passed"]:
+                    logger.warning(
+                        f"  [{vid}] Task audit issues: "
+                        f"missing={audit['missing_expected_task_types']}, "
+                        f"leakage={len(audit['question_answer_leakage'])}, "
+                        f"minimality={len(audit['action_minimality_risks'])}"
+                    )
                 logger.info(f"  [{vid}] Tasks mined: {total}")
                 return vid, tasks
 
         results = await asyncio.gather(*[process_video_pass3(v) for v in videos])
         all_tasks = {vid: tasks for vid, tasks in results if tasks is not None}
 
-        # Save tasks
+        # Save tasks and coverage audit
         tasks_path = TASKS_DIR / "all_tasks.json"
         TASKS_DIR.mkdir(parents=True, exist_ok=True)
         with open(tasks_path, "w") as f:
             json.dump(all_tasks, f, ensure_ascii=False)
 
-        logger.info(f"Pass 3 complete: {sum(sum(len(t) for t in v.values()) for v in all_tasks.values())} total tasks")
+        AUDIT_DIR.mkdir(parents=True, exist_ok=True)
+        audit_report = {
+            vid: tasks.get("_coverage_audit", {})
+            for vid, tasks in all_tasks.items()
+        }
+        with open(AUDIT_DIR / "task_coverage_report.json", "w") as f:
+            json.dump(audit_report, f, indent=2, ensure_ascii=False)
+
+        total_tasks = sum(
+            sum(len(t) for k, t in v.items() if not k.startswith("_") and isinstance(t, list))
+            for v in all_tasks.values()
+        )
+        logger.info(f"Pass 3 complete: {total_tasks} total tasks")
     else:
         tasks_path = TASKS_DIR / "all_tasks.json"
-        with open(tasks_path, "r") as f:
-            all_tasks = json.load(f)
+        if tasks_path.exists():
+            with open(tasks_path, "r") as f:
+                all_tasks = json.load(f)
+        else:
+            logger.warning(f"No cached tasks at {tasks_path}")
+            all_tasks = {}
 
     # =================================================================
     # PASS 4: Question-aware Forks
@@ -548,9 +592,12 @@ async def run_pipeline(
     else:
         samples_path = SAMPLES_DIR / "all_samples.jsonl"
         all_samples = []
-        with open(samples_path, "r") as f:
-            for line in f:
-                all_samples.append(json.loads(line))
+        if samples_path.exists():
+            with open(samples_path, "r") as f:
+                for line in f:
+                    all_samples.append(json.loads(line))
+        else:
+            logger.warning(f"No cached samples at {samples_path}, Pass 5 will run on empty set")
 
     # =================================================================
     # PASS 5: Verify + Filter

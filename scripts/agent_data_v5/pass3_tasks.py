@@ -873,3 +873,110 @@ async def generate_questions_batch(
         else:
             task["question"] = ""
             task["gold_answer"] = task.get("fact", "")
+
+
+# ---------------------------------------------------------------------------
+# Coverage / leakage audit
+# ---------------------------------------------------------------------------
+
+CORE_TASK_TYPES = [
+    "response_from_frames",
+    "response_from_memory",
+    "recall",
+    "compress",
+    "compress_response",
+    "compress_recall",
+    "unanswerable",
+    "pending",
+]
+
+
+def _answer_leaks_in_question(task: Dict) -> bool:
+    """Heuristic check: question should not reveal its concise answer."""
+    question = task.get("question", "") or task.get("question_preset", "")
+    answer = task.get("gold_answer", "")
+    if not question or not answer:
+        return False
+    q_words = set(re.findall(r'\b[a-zA-Z0-9]+\b', question.lower()))
+    a_words = {
+        w for w in re.findall(r'\b[a-zA-Z0-9]+\b', answer.lower())
+        if len(w) > 2 and w not in {"the", "and", "with", "from", "into"}
+    }
+    if not a_words:
+        return False
+    return a_words.issubset(q_words)
+
+
+def expected_task_types_for_rollout(rollout: Dict) -> List[str]:
+    """Compute which task types should be possible for this video's length/state."""
+    num_chunks = int(rollout.get("num_chunks", 0))
+    duration = num_chunks * AGENT_CHUNK_SEC
+    n_compressions = len(rollout.get("compression_events", []))
+
+    expected = []
+    if duration >= 24:
+        expected.append("response_from_frames")
+    if duration >= 30:
+        expected.extend(["response_from_memory", "recall", "unanswerable"])
+    if n_compressions > 0:
+        expected.append("compress")
+    if duration >= 50 and n_compressions > 0:
+        expected.extend(["compress_response", "compress_recall"])
+    if duration >= 60:
+        expected.append("pending")
+    return expected
+
+
+def audit_task_coverage(video_id: str, all_candidates: Dict, rollout: Dict) -> Dict:
+    """Audit whether task mining produced the expected task families.
+
+    This is the explicit guard for: "某一任务没造出来" and "提前看到答案".
+    It does not fail the pipeline by itself; downstream orchestration can decide
+    whether to resample videos, lower filters, or block export.
+    """
+    counts = {
+        task_type: len(all_candidates.get(task_type, []))
+        for task_type in CORE_TASK_TYPES
+    }
+    expected = expected_task_types_for_rollout(rollout)
+    missing = [t for t in expected if counts.get(t, 0) == 0]
+
+    leakage_tasks = []
+    action_minimality_risks = []
+    for task_type, tasks in all_candidates.items():
+        if task_type.startswith("_") or not isinstance(tasks, list):
+            continue
+        for idx, task in enumerate(tasks):
+            if _answer_leaks_in_question(task):
+                leakage_tasks.append({
+                    "task_type": task_type,
+                    "index": idx,
+                    "reason": "question_contains_gold_answer",
+                    "question": task.get("question", ""),
+                    "gold_answer": task.get("gold_answer", ""),
+                })
+            visibility = task.get("visibility", {})
+            if task.get("gold_action") == "recall" and (
+                visibility.get("evidence_in_window")
+                or visibility.get("answer_in_recent_obs")
+                or visibility.get("answer_in_compressed")
+            ):
+                action_minimality_risks.append({
+                    "task_type": task_type,
+                    "index": idx,
+                    "reason": "recall_selected_while_answer_visible",
+                    "visibility": visibility,
+                })
+
+    return {
+        "video_id": video_id,
+        "num_chunks": rollout.get("num_chunks", 0),
+        "duration_sec": int(rollout.get("num_chunks", 0)) * AGENT_CHUNK_SEC,
+        "num_compression_events": len(rollout.get("compression_events", [])),
+        "counts": counts,
+        "expected_task_types": expected,
+        "missing_expected_task_types": missing,
+        "question_answer_leakage": leakage_tasks,
+        "action_minimality_risks": action_minimality_risks,
+        "passed": not missing and not leakage_tasks and not action_minimality_risks,
+    }

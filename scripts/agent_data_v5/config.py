@@ -1,5 +1,5 @@
 """
-Configuration for Agent Data Pipeline v5.4.
+Configuration for Agent Data Pipeline v5.5.
 
 All constants, prompts, and schema definitions.
 Matches docs/data_construction_zh.md v5.4 exactly.
@@ -20,8 +20,12 @@ ROLLOUT_DIR = DATA_ROOT / "rollout"
 TASKS_DIR = DATA_ROOT / "tasks"
 SAMPLES_DIR = DATA_ROOT / "samples"
 FINAL_DIR = DATA_ROOT / "final"
+AUDIT_DIR = DATA_ROOT / "audits"
 
-ALL_DIRS = [DATA_ROOT, EVIDENCE_DIR, ROLLOUT_DIR, TASKS_DIR, SAMPLES_DIR, FINAL_DIR]
+ALL_DIRS = [
+    DATA_ROOT, EVIDENCE_DIR, ROLLOUT_DIR, TASKS_DIR,
+    SAMPLES_DIR, FINAL_DIR, AUDIT_DIR,
+]
 
 # ---------------------------------------------------------------------------
 # 2. Video & chunk parameters
@@ -87,6 +91,51 @@ RECALL_VISION_TOKENS = 256         # 4 帧 recalled
 MAX_SAMPLE_TOKENS = 4096           # 单样本上限 (远在 16K 内)
 
 # ---------------------------------------------------------------------------
+# 4b. 397B context / OOM guards
+# ---------------------------------------------------------------------------
+
+# Construction-time guards to prevent over-long or too-wide batches.
+VLLM_CONTEXT_SAFETY_RATIO = 0.85
+VLLM_PREFILL_BATCH_TOKEN_BUDGET = 240_000  # lower this first if 397B OOMs
+
+# Per-request token estimates (text + vision + output + thinking).
+# Vision passes: 24 frames × ~256 tok/frame (min_pixels=100352) ≈ 6K vision + ~2K text.
+# These are conservative upper bounds used ONLY to clamp concurrency.
+PASS_CONTEXT_ESTIMATES = {
+    "pass1_evidence": {"input": 10_000, "output": 1_024, "thinking": 4_096},
+    "pass2_rollout":  {"input": 10_000, "output": 512,   "thinking": 0},
+    "pass3_tasks":    {"input": 4_000,  "output": 2_048, "thinking": 4_096},
+    "pass4_forks":    {"input": 2_000,  "output": 512,   "thinking": 0},
+}
+
+
+def estimated_request_tokens(pass_name: str) -> int:
+    """Conservative per-request token estimate including output/thinking."""
+    est = PASS_CONTEXT_ESTIMATES.get(pass_name, {})
+    return int(est.get("input", 0) + est.get("output", 0) + est.get("thinking", 0))
+
+
+def max_safe_context_tokens() -> int:
+    """Safe request-level context ceiling under the configured 397B context."""
+    return int(VLLM_MAX_MODEL_LEN * VLLM_CONTEXT_SAFETY_RATIO)
+
+
+def safe_concurrency_for_pass(pass_name: str) -> int:
+    """Clamp configured concurrency by context length and batch-token budget.
+
+    Rule: data quality beats throughput. If the request estimate approaches
+    context limit or prefill batch budget, lower concurrency automatically.
+    """
+    cfg = PASS_CONFIG.get(pass_name, {})
+    requested = int(cfg.get("concurrent_videos", cfg.get("concurrent", 1)))
+    per_request = max(1, estimated_request_tokens(pass_name))
+    if per_request > max_safe_context_tokens():
+        return 1
+    by_batch = max(1, VLLM_PREFILL_BATCH_TOKEN_BUDGET // per_request)
+    return max(1, min(requested, by_batch))
+
+
+# ---------------------------------------------------------------------------
 # 5. Action distribution targets (episode-level)
 # ---------------------------------------------------------------------------
 
@@ -145,32 +194,32 @@ VLLM_MODEL = "Qwen/Qwen3.5-397B-A17B-FP8"
 VLLM_MAX_MODEL_LEN = 65536
 
 PASS_CONFIG = {
-    # Vision passes: 16 concurrent × ~3,800 tok/request ≈ 60K total.
-    # Fits in VLLM_MAX_MODEL_LEN=65K but tight. If OOM, reduce to 12.
+    # Vision passes: safe_concurrency_for_pass() clamps at runtime.
+    # Defaults below are conservative; the guard may lower further if needed.
     "pass1_evidence": {
         "max_tokens": 1024,
         "temperature": 0.3,
         "thinking": True,
-        "concurrent_videos": 16,
+        "concurrent_videos": 8,
     },
     "pass2_rollout": {
         "max_tokens_observation": 128,
         "max_tokens_compress": 512,
         "temperature": 0.3,
         "thinking": False,
-        "concurrent_videos": 16,
+        "concurrent_videos": 8,
     },
     "pass3_tasks": {
         "max_tokens": 2048,
         "temperature": 0.7,
         "thinking": True,
-        "concurrent": 32,
+        "concurrent": 16,
     },
     "pass4_forks": {
         "max_tokens": 512,
         "temperature": 0.3,
         "thinking": False,
-        "concurrent": 32,
+        "concurrent": 16,
     },
 }
 
