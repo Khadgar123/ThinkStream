@@ -44,10 +44,12 @@ VISUAL_WINDOW_FRAMES = VISUAL_WINDOW_CHUNKS * FRAMES_PER_CHUNK  # 24 帧
 THINK_TOKENS = (40, 60)             # student think 长度范围
 THINK_TOKEN_AVG = 50                # think 平均 token 数（用于估算）
 
-# Token-based compression trigger
+# Token-based compression trigger with hysteresis
 RECENT_THINKS_TOKEN_BUDGET = 600    # recent_thinks 总 token 预算
 COMPRESS_TRIGGER_RATIO = 0.8        # 达到预算 80% 时系统触发压缩
 COMPRESS_TOKEN_THRESHOLD = int(RECENT_THINKS_TOKEN_BUDGET * COMPRESS_TRIGGER_RATIO)  # = 480
+COMPRESS_HYSTERESIS_RATIO = 0.55    # 压缩后应降回 55% 以下，否则窗口太短
+COMPRESS_HYSTERESIS_THRESHOLD = int(RECENT_THINKS_TOKEN_BUDGET * COMPRESS_HYSTERESIS_RATIO)  # = 330
 
 # Student model tokenizer (用于精确计算 token 数)
 # 造数据时加载一次，全局复用

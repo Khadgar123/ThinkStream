@@ -819,6 +819,12 @@ def _get_correct_result(
 ) -> tuple:
     """Get the correct recall result from student-accessible sources.
 
+    Priority (most reliable → least reliable):
+    1. Original observations from _retrieval_archive (highest fidelity)
+    2. Low merge_level compressed segments (single compression)
+    3. High merge_level compressed segments (multiple compressions, lossy)
+    4. Historical frames only (no text, just frame pointers)
+
     Only uses observations from BEFORE ask_chunk (no future leakage).
     """
     if not evidence_chunks:
@@ -828,19 +834,33 @@ def _get_correct_result(
     evidence_time_end = (evidence_chunks[-1] + 1) * AGENT_CHUNK_SEC
 
     frame_text = f"Retrieved frames from t={int(evidence_time_start)}-{int(evidence_time_end)}s."
+
+    # Priority 1: Original observations (highest fidelity)
     obs_context = ""
     for ec in evidence_chunks:
-        if ec < ask_chunk and ec < len(observations):  # Only past observations
+        if ec < ask_chunk and ec < len(observations):
             obs_context += f" [{ec*AGENT_CHUNK_SEC}-{(ec+1)*AGENT_CHUNK_SEC}] {observations[ec]['think']}"
 
     if obs_context:
         return "historical_frames", f"{frame_text}\nText memory:{obs_context.strip()}"
 
+    # Priority 2-3: Compressed segments (prefer low merge_level)
+    matching_segs = []
     for seg in snapshot["compressed_segments"]:
         seg_start, seg_end = seg["time_range"]
         if seg_start <= evidence_time_start and seg_end >= evidence_time_end:
-            return "compressed_summary", seg["text"]
+            matching_segs.append(seg)
 
+    if matching_segs:
+        # Sort by merge_level ascending (prefer least-merged)
+        matching_segs.sort(key=lambda s: s.get("merge_level", 1))
+        best_seg = matching_segs[0]
+        source = "compressed_summary"
+        if best_seg.get("merge_level", 1) > 2:
+            source = "compressed_summary_high_merge"  # Flag for downstream quality awareness
+        return source, best_seg["text"]
+
+    # Priority 4: Frame pointers only
     return "historical_frames", frame_text
 
 
@@ -1070,6 +1090,7 @@ async def build_video_conversation(
     return {
         "video_id": video_id,
         "video_path": video_path,
+        "protocol_version": "3action",  # Routes to preprocess_qwen_visual_agent in SFT
         "messages": messages,
         "num_chunks": num_chunks,
         "num_compression_events": len(compression_events),

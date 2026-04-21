@@ -24,6 +24,7 @@ from .config import (
     COMPRESS_RANGE_MAX,
     COMPRESS_RANGE_MIN,
     COMPRESS_TOKEN_THRESHOLD,
+    COMPRESS_HYSTERESIS_THRESHOLD,
     CONFIDENCE_THRESHOLD,
     OBSERVATION_PROMPT,
     RECENT_THINKS_TOKEN_BUDGET,
@@ -532,9 +533,22 @@ def choose_optimal_compress_range_with_meta(
     best_score = float("inf")
     best_start = 0
 
+    # Hard constraint: identify thinks that overlap with pending questions
+    pending_protected_chunks = set()
+    if pending_questions:
+        for pq in pending_questions:
+            pq_words = set(pq.get("question", "").lower().split())
+            for t in recent_thinks:
+                t_words = set(t.get("text", "").lower().split())
+                if len(pq_words & t_words - {"the", "a", "on", "in", "at"}) >= 2:
+                    pending_protected_chunks.add(t["chunk"])
+
     for size in range(COMPRESS_RANGE_MIN, min(COMPRESS_RANGE_MAX + 1, n + 1)):
         for start in range(0, n - size + 1):
             candidate = recent_thinks[start:start + size]
+            # Hard filter: skip ranges overlapping pending-protected thinks
+            if any(t["chunk"] in pending_protected_chunks for t in candidate):
+                continue
             score = score_range_for_compression(
                 candidate, recent_thinks, pending_questions, evidence
             )
@@ -660,11 +674,22 @@ async def run_pass2_single_video(
             memory.compress(summary, compressed_chunks=real_chunks)
             memory.add_think(chunk_idx, think_text)
 
+            # Hysteresis check: after compression, memory should drop below 55%
+            post_compress_tokens = memory.count_recent_tokens()
+            hysteresis_ok = post_compress_tokens <= COMPRESS_HYSTERESIS_THRESHOLD
+            if not hysteresis_ok:
+                logger.warning(
+                    f"  [{video_id}] Compression hysteresis violated at chunk {chunk_idx}: "
+                    f"post-compress {post_compress_tokens} tok > {COMPRESS_HYSTERESIS_THRESHOLD} threshold"
+                )
+
             compression_events.append({
                 "trigger_chunk": chunk_idx,
                 "summary": summary,
                 "compressed_thinks_chunks": real_chunks,
                 "teacher_policy": comp_request["_meta"].get("teacher_policy", {}),
+                "hysteresis_ok": hysteresis_ok,
+                "post_compress_tokens": post_compress_tokens,
             })
             logger.debug(f"  [{video_id}] Compress at chunk {chunk_idx}: {summary['time_range']}")
         else:

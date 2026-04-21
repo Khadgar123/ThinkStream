@@ -429,6 +429,71 @@ def verify_summary_provenance(sample: Dict) -> Tuple[bool, str]:
     return True, "pass"
 
 
+def verify_summary_retention(sample: Dict) -> Tuple[bool, str]:
+    """Check: summary retains key information from source thinks.
+
+    Provenance checks "not too much" (no peeking). This checks "not too little":
+    - Named entities (capitalized words) in source should appear in summary
+    - Numbers/digits in source should appear in summary
+    - OCR-related content should be preserved
+
+    Threshold: ≥50% of source key items must appear in summary.
+    """
+    sample_type = sample.get("sample_type", "")
+    if sample_type != "compress":
+        return True, "pass"
+
+    output = sample.get("output", "")
+    summary_match = re.search(r'<summary>(.*?)</summary>', output, re.DOTALL)
+    if not summary_match:
+        return True, "pass"
+
+    try:
+        summary_json = json.loads(summary_match.group(1))
+        summary_text = summary_json.get("text", "")
+    except (json.JSONDecodeError, ValueError):
+        return True, "pass"
+
+    if not summary_text:
+        return True, "pass"
+
+    source_texts = _compressed_source_texts(sample)
+    if not source_texts:
+        return True, "pass"
+
+    source_combined = " ".join(source_texts)
+    summary_lower = summary_text.lower()
+
+    # Extract key items from source
+    key_items = []
+
+    # 1. Named entities (capitalized words >3 chars, with underscore)
+    for w in re.findall(r'\b[A-Z][a-zA-Z0-9_]{2,}\b', source_combined):
+        key_items.append(w.lower())
+
+    # 2. Numbers (digits in source)
+    for num in re.findall(r'\b\d+\.?\d*\b', source_combined):
+        key_items.append(num)
+
+    # 3. OCR indicators
+    for w in re.findall(r'\b[A-Z]{2,}\b', source_combined):  # ALL-CAPS words
+        key_items.append(w.lower())
+
+    if not key_items:
+        return True, "pass"
+
+    # Check retention
+    unique_items = list(set(key_items))
+    retained = sum(1 for item in unique_items if item in summary_lower)
+    retention_rate = retained / len(unique_items)
+
+    if retention_rate < 0.5:
+        missing = [item for item in unique_items if item not in summary_lower][:3]
+        return False, f"summary_retention_low ({retention_rate:.0%}): missing {missing}"
+
+    return True, "pass"
+
+
 def verify_summary_no_current_think_leak(sample: Dict) -> Tuple[bool, str]:
     """Check: compress summary does not contain facts from the current think.
 
@@ -587,6 +652,9 @@ def verify_sample(sample: Dict) -> Dict:
 
     passed, reason = verify_summary_no_current_think_leak(sample)
     checks["summary_current_think_leak"] = {"passed": passed, "reason": reason}
+
+    passed, reason = verify_summary_retention(sample)
+    checks["summary_retention"] = {"passed": passed, "reason": reason}
 
     passed, reason = verify_question_answer_leakage(sample)
     checks["question_answer_leakage"] = {"passed": passed, "reason": reason}
