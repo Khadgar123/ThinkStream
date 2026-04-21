@@ -280,5 +280,234 @@ def extract_json_from_raw(raw: str) -> Optional[dict]:
 
 ---
 
+## 8. 实时 API 采样：各场景原始输出
+
+> 以下为 2026-04-21 通过 streaming API 实时采集的 Qwen3.5-397B-A17B-FP8 原始输出。
+> 所有输出均未做任何后处理，完整保留模型返回的 content 字段。
+
+### 8.1 Evidence Graph Prompt（无 /no_think，max_tokens=1024）
+
+请求 prompt（简化版）：
+```
+You are annotating a streaming video chunk. Scene: A woman with blonde hair in a news studio.
+Output STRICT JSON: {"time": [0, 2], "visible_entities": [], ...}
+Output JSON only:
+```
+
+原始输出（3959 chars，163.3s，finish_reason=length，1024 tokens 全部用完）：
+```
+Thinking Process:
+
+1.  **Analyze the Request:**
+    *   Task: Annotate a streaming video chunk.
+    *   Scene Description: A woman with blonde hair in a news studio.
+    *   Output Format: STRICT JSON.
+    *   Specific Schema: `{"time": [0, 2], "visible_entities": [], "atomic_facts": [], "state_changes": [], "ocr": [], "spatial": "", "not_observable": []}`
+    *   Constraint: Output JSON only (no markdown, no explanations).
+
+2.  **Analyze the Scene:**
+    *   Subject: Woman.
+    *   Attribute: Blonde hair.
+    *   Location: News studio.
+    *   Timeframe: 0 to 2 seconds (based on the schema example provided in the prompt, though usually, this would depend on the actual video chunk duration. I will stick to the provided example structure `[0, 2]`).
+
+3.  **Drafting the Content:**
+    *   `time`: [0, 2] (as per prompt example).
+    *   `visible_entities`: ["woman", "blonde hair", "news studio", "desk", "background screens"] (inferring typical news studio elements).
+    *   `atomic_facts`: ["A woman is present", "The woman has blonde hair", "The setting is a news studio", "The woman is facing the camera"].
+    *   `state_changes`: [] (In a 2-second chunk, significant state changes are unlikely unless she moves dramatically, but usually static anchoring is assumed for this brief description).
+    *   `ocr`: [] (No specific text mentioned in the prompt, though news studios often have tickers. I will leave empty or add generic placeholder if needed. Better to leave empty if not specified).
+    *   `spatial`: "The woman is centered in the frame with the studio background behind her."
+    *   `not_observable`: ["Audio content", "Full body below the desk", "Specific news topic being discussed"].
+
+4.  **Refining for Strict JSON:**
+    *   Ensure no trailing commas.
+    *   Ensure double quotes.
+    *   Ensure no markdown code blocks (```json ... ```).
+
+5.  **Final Review:**
+    *   Does it match the schema exactly? Yes.
+    *   Is it valid JSON? Yes.
+    *   Is there any extra text? No.
+
+6.  **Constructing the JSON:**
+    ```json
+    {
+      "time": [0, 2],
+      "visible_entities": ["woman", "blonde hair", "news studio", "desk", "background monitors"],
+      "atomic_facts": ["A woman with blonde hair is visible", "The setting is a news studio", "The woman is positioned in front of a desk"],
+      "state_changes": [],
+      "ocr": [],
+      "spatial": "The woman is centered in the foreground with studio equipment and screens visible in the background",
+      "not_observable": ["Audio content", "Text on background screens", "Lower body movement"]
+    }
+    ```
+
+7.  **Final Polish:** Remove whitespace/newlines if necessary to ensure it's raw JSON, though pretty-printed JSON is still valid JSON. The prompt says "Output JSON only", usually implying raw text. I will provide compact or standard JSON. I'll stick to standard indentation for readability but ensure no markdown fences.
+
+    Wait, I need to make sure I don't add markdown fences. Just the raw JSON string.
+
+    Let's refine the content to be accurate to the *given* description ("A woman with blonde hair in a news studio") without over-hallucinating too much, but enough to fill the schema meaningfully.
+
+    *   `visible_entities`: ["woman", "blonde hair", "news studio"]
+    *   `atomic_facts`: ["A woman is present", "The woman has blonde hair", "The environment is a news studio"]
+    *   `state_changes`: [] (2 seconds is too short for major state changes usually)
+    *   `ocr`: [] (None specified)
+    *   `spatial`: "Woman centered in frame"
+    *   `not_observable`: ["Audio", "Content of news report"]
+
+    Let's assemble.
+
+    {"time": [0, 2], "visible_entities": ["woman", "blonde hair", "news studio"], "atomic_facts": ["A woman is visible", "The woman has blonde hair", "The setting is a news studio"], "state_changes": [], "ocr": [], "spatial": "The woman is centered in the frame with the studio background behind her", "not_observable": ["Audio
+```
+
+分析：
+- **1024 tokens 全部被 thinking 消耗**，JSON 在 thinking 的第 6 步中以 markdown code block 形式出现，但最终的"干净 JSON"输出被截断
+- thinking 包含 7 个编号步骤，含反复修改和自我纠正
+- 模型在 thinking 中构造了 JSON 草稿，但最终输出时 tokens 已耗尽
+
+### 8.2 Observation Prompt（/no_think 前缀，max_tokens=256）
+
+请求 prompt：
+```
+/no_think
+
+Describe what is NEW in the latest 2 seconds of a news broadcast in 40-60 tokens.
+Scene: anchor continues speaking, ticker updates to show stock prices.
+
+Output (one paragraph, 40-60 tokens):
+```
+
+原始输出（1080 chars，41.0s）：
+```
+Thinking Process:
+
+1.  **Analyze the Request:**
+    *   Task: Describe what is NEW in the latest 2 seconds of a news broadcast.
+    *   Constraint 1: Length must be between 40 and 60 tokens.
+    *   Constraint 2: Output must be one paragraph.
+    *   Scene details: Anchor continues speaking, ticker updates to show stock prices.
+    *   Constraint 3: "/no_think" (This usually means I should not output my thought process, just the final answer).
+
+2.  **Drafting Content:**
+    *   Focus on the *change* in the last 2 seconds.
+    *   Anchor: Continues speaking (so maybe a new sentence or gesture, ...
+```
+
+关键发现：**模型识别到了 `/no_think` 指令**（在 thinking 中说 "This usually means I should not output my thought process"），**但仍然输出了完整的 thinking**。
+
+### 8.3 Compress Prompt（/no_think 前缀，max_tokens=256）
+
+请求 prompt：
+```
+/no_think
+
+Compress these observations into a structured summary.
+[0-2] Woman anchor speaking in studio.
+[2-4] Ticker shows weather. Anchor gestures.
+[4-6] Camera shifts. Map graphic appears.
+
+Output JSON: {"time_range": [0, 6], "text": "..."}
+```
+
+原始输出（964 chars，40.9s）：
+```
+Thinking Process:
+
+1.  **Analyze the Request:**
+    *   Input: A list of observations with timestamps (e.g., [0-2] Woman anchor speaking in studio...).
+    *   Task: Compress these observations into a structured summary.
+    *   Constraint: Output JSON format `{"time_range": [start, end], "text": "..."}`.
+    *   Constraint: `/no_think` (This implies I should not output my internal thinking process, just the final result).
+
+2.  **Analyze the Input Data:**
+    *   [0-2] Woman anchor speaking in studio.
+    *   [2-4] Ticker shows weather. Anchor gestures.
+    *   [4-6] Camera shifts. Map graphic ...
+```
+
+### 8.4 Task Question Prompt（无 /no_think，max_tokens=512）
+
+原始输出（2035 chars，83.5s）：
+```
+Thinking Process:
+
+1.  **Analyze the Request:**
+    *   Input: Visual evidence description (Entity: anchor_1, Fact: Anchor gestures with right hand while explaining weather graphic).
+    *   Task: Generate a JSON object with specific fields: "question", "concise_answer", "answer_type".
+    *   Constraint: The output must be valid JSON.
+    *   Content: Based on the provided fact about the anchor's gesture.
+
+2.  **Analyze the Visual Evidence/Fact:**
+    *   Entity: anchor_1
+    *   Action: Gestures with right hand
+    *   Context: While explaining weather graphic
+
+3.  **Draft the Question:** ...
+```
+
+### 8.5 纯文本健康检查（max_tokens=32）
+
+请求：`"Say OK"`
+
+原始输出：
+```
+Thinking Process:
+
+1.  **Analyze the Request:**
+    *   Input: "Say OK"
+    *   Intent: The user wants
+```
+
+即使只给 32 tokens，模型也优先输出 thinking 而非回答。
+
+## 9. 综合结论
+
+### 9.1 Qwen3.5 输出格式规律
+
+| 特征 | 值 |
+|------|-----|
+| thinking 起始标记 | `"Thinking Process:\n\n1.  **Analyze the Request:**"` （固定模式） |
+| thinking 结束标记 | **无**（直接接 JSON 或最终回答，无分隔标签） |
+| `<think>` 标签 | **从不使用** |
+| `reasoning_content` 字段 | **始终为 null** |
+| `/no_think` 效果 | **无效** — 模型识别但不遵守 |
+| thinking 长度 | 约 500-3000 tokens（视任务复杂度） |
+| JSON 位置 | thinking 之后，通常在输出末尾 |
+| thinking 内部格式 | Markdown（编号列表、加粗、code block） |
+
+### 9.2 对 pipeline 各 Pass 的影响
+
+| Pass | Prompt 类型 | /no_think | thinking 影响 | 严重程度 |
+|------|-------------|-----------|---------------|----------|
+| Pass 1 Evidence | JSON 输出 | 无 | thinking 消耗大量 tokens，JSON 可能被截断 | **P0** |
+| Pass 2 Observation | 短文本输出 | 有（无效） | thinking 消耗 tokens，实际观察文本被截断 | **P0** |
+| Pass 2 Compress | JSON 输出 | 有（无效） | 同 Pass 1 | **P0** |
+| Pass 3 Task Question | JSON 输出 | 无 | thinking 消耗 tokens | **P1** |
+| Pass 3 Recall Query | JSON 输出 | 有（无效） | 同上 | **P1** |
+| Pass 3 Response | 文本输出 | 有（无效） | thinking 混入 response 文本 | **P1** |
+
+### 9.3 修复优先级
+
+1. **P0（立即）**：所有 parse 函数改为从 raw 中提取最后一个完整 JSON（方案 A）
+2. **P0（立即）**：`max_tokens` 需要大幅增加以容纳 thinking 开销（当前 1024 不够）
+3. **P0（立即）**：`_raw` 截断从 200 → 完整保留（至少 4000 chars）
+4. **P1（短期）**：研究 vLLM 配置是否能启用 `reasoning_content` 分离（需要 `--enable-reasoning` 参数？）
+5. **P1（短期）**：研究 Qwen3.5 的 chat_template 是否支持 `enable_thinking=False` 参数
+6. **P2（中期）**：考虑换用支持 thinking 分离的 vLLM 版本或配置
+
+### 9.4 thinking 文本的潜在利用价值
+
+虽然 thinking 导致了解析问题，但 thinking 内容本身包含有价值的信息：
+- 模型对场景的逐步分析
+- 实体识别和属性推理过程
+- 自我纠正和质量检查
+
+如果能正确分离 thinking 和 JSON，thinking 部分可以用于：
+- 数据质量审计（检查模型推理是否合理）
+- 训练数据增强（thinking 作为 CoT 样本）
+
+---
+
 *文档生成时间：2026-04-21*
-*数据来源：commit 33388aa (v5.5 pipeline test run)*
+*数据来源：commit 33388aa (v5.5 pipeline test run) + 实时 API 采样*
