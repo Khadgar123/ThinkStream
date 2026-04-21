@@ -1023,9 +1023,9 @@ class TestSafeConcurrency:
         from scripts.agent_data_v5.config import safe_concurrency_for_pass
         # Should return a positive integer <= the configured value
         c1 = safe_concurrency_for_pass("pass1_evidence")
-        assert 1 <= c1 <= 8
+        assert 1 <= c1 <= 16  # vision pass, limited by token budget
         c3 = safe_concurrency_for_pass("pass3_tasks")
-        assert 1 <= c3 <= 16
+        assert 1 <= c3 <= 64  # text pass, high concurrency
 
 
 if __name__ == "__main__":

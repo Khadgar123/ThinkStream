@@ -98,16 +98,17 @@ MAX_SAMPLE_TOKENS = 4096           # 单样本上限 (远在 16K 内)
 
 # Construction-time guards to prevent over-long or too-wide batches.
 VLLM_CONTEXT_SAFETY_RATIO = 0.85
-VLLM_PREFILL_BATCH_TOKEN_BUDGET = 240_000  # lower this first if 397B OOMs
+VLLM_PREFILL_BATCH_TOKEN_BUDGET = 600_000  # 8×ML300 has plenty of headroom
 
 # Per-request token estimates (text + vision + output + thinking).
-# Vision passes: 24 frames × ~256 tok/frame (min_pixels=100352) ≈ 6K vision + ~2K text.
-# These are conservative upper bounds used ONLY to clamp concurrency.
+# Vision passes: 24-28 frames (recall adds 4 recalled frames).
+# vLLM: --limit-mm-per-prompt '{"image":28}' to accommodate recall.
+# Thinking tokens estimated at ~2K per request (varies).
 PASS_CONTEXT_ESTIMATES = {
-    "pass1_evidence": {"input": 10_000, "output": 1_024, "thinking": 4_096},
-    "pass2_rollout":  {"input": 10_000, "output": 512,   "thinking": 0},
-    "pass3_tasks":    {"input": 4_000,  "output": 2_048, "thinking": 4_096},
-    "pass4_forks":    {"input": 2_000,  "output": 512,   "thinking": 0},
+    "pass1_evidence": {"input": 10_000, "output": 8_192, "thinking": 2_000},
+    "pass2_rollout":  {"input": 10_000, "output": 2_048, "thinking": 2_000},
+    "pass3_tasks":    {"input": 4_000,  "output": 4_096, "thinking": 2_000},
+    "pass4_forks":    {"input": 2_000,  "output": 2_048, "thinking": 2_000},
 }
 
 
@@ -217,13 +218,13 @@ PASS_CONFIG = {
         "max_tokens": 4096,
         "temperature": 0.7,
         "thinking": True,
-        "concurrent": 16,
+        "concurrent": 64,
     },
     "pass4_forks": {
         "max_tokens": 2048,
         "temperature": 0.3,
         "thinking": True,
-        "concurrent": 16,
+        "concurrent": 64,
     },
 }
 
