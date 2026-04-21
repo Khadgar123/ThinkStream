@@ -106,7 +106,7 @@ VLLM_PREFILL_BATCH_TOKEN_BUDGET = 600_000  # 8×ML300 has plenty of headroom
 # Thinking tokens estimated at ~2K per request (varies).
 PASS_CONTEXT_ESTIMATES = {
     "pass1_evidence": {"input": 10_000, "output": 8_192, "thinking": 2_000},
-    "pass2_rollout":  {"input": 10_000, "output": 2_048, "thinking": 2_000},
+    "pass2_rollout":  {"input": 10_000, "output": 4_096, "thinking": 2_000},
     "pass3_tasks":    {"input": 4_000,  "output": 4_096, "thinking": 2_000},
     "pass4_forks":    {"input": 2_000,  "output": 2_048, "thinking": 2_000},
 }
@@ -208,7 +208,7 @@ PASS_CONFIG = {
         "concurrent_videos": 8,
     },
     "pass2_rollout": {
-        "max_tokens_observation": 2048,
+        "max_tokens_observation": 4096,
         "max_tokens_compress": 4096,
         "temperature": 0.3,
         "thinking": True,

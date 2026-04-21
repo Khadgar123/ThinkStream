@@ -535,22 +535,36 @@ async def run_pipeline(
                     event = compress_at[chunk_idx]
                     summary = event["summary"]
                     tr = summary.get("time_range", [0, 0])
-                    # C1: system trigger with range
-                    trigger = f'<compress_trigger range="{tr[0]}-{tr[1]}"/>'
-                    output = (f"<think>{think_text}</think>"
-                              f"<action>compress</action>"
-                              f'<summary>{json.dumps(summary, ensure_ascii=False)}</summary>')
-                    sample = build_per_timestep_messages(
-                        snapshot, chunk_idx, vpath, output,
-                        user_text_suffix=trigger,
+                    compress_output = (f"<think>{think_text}</think>"
+                                       f"<action>compress</action>"
+                                       f'<summary>{json.dumps(summary, ensure_ascii=False)}</summary>')
+                    compress_meta_base = {
+                        "gold_action": "compress",
+                        "compressed_range": tr,
+                        "compressed_chunks": event.get("compressed_thinks_chunks", []),
+                    }
+
+                    # C1: system trigger with specified range
+                    c1_trigger = f'<compress_trigger range="{tr[0]}-{tr[1]}"/>'
+                    c1 = build_per_timestep_messages(
+                        snapshot, chunk_idx, vpath, compress_output,
+                        user_text_suffix=c1_trigger,
                     )
-                    sample["sample_type"] = "compress"
-                    sample["metadata"] = {"gold_action": "compress",
-                                          "compressed_range": tr,
-                                          "compressed_chunks": event.get("compressed_thinks_chunks", []),
-                                          "phase": "C1"}
-                    all_samples.append(sample)
-                    vid_sample_count += 1
+                    c1["sample_type"] = "compress"
+                    c1["metadata"] = {**compress_meta_base, "phase": "C1"}
+                    all_samples.append(c1)
+
+                    # C2: system trigger WITHOUT range (model self-selects)
+                    c2_trigger = "<compress_trigger/>"
+                    c2 = build_per_timestep_messages(
+                        snapshot, chunk_idx, vpath, compress_output,
+                        user_text_suffix=c2_trigger,
+                    )
+                    c2["sample_type"] = "compress"
+                    c2["metadata"] = {**compress_meta_base, "phase": "C2"}
+                    all_samples.append(c2)
+
+                    vid_sample_count += 2
 
                 else:
                     # Silent — subsample ~20%
