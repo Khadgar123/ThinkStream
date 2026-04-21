@@ -417,47 +417,169 @@ async def run_pipeline(
     # PASS 4: Question-aware Forks
     # =================================================================
     if 4 not in skip_pass:
-        from .pass4_forks import build_video_conversation
+        from .pass4_forks import (
+            build_per_timestep_messages,
+            simulate_recall_result,
+            _generate_response_text,
+            _generate_recall_texts,
+        )
 
         logger.info("=" * 60)
-        logger.info("PASS 4: Multi-turn Conversation Assembly")
+        logger.info("PASS 4: Per-Timestep Sample Generation (single-turn messages)")
         logger.info("=" * 60)
-        logger.info(
-            f"PASS 4 safe concurrency={safe_concurrency_for_pass('pass4_forks')}"
-        )
 
         all_samples = []
 
         for v in videos:
             vid = v["video_id"]
+            vpath = v.get("video_path", "")
             if vid not in all_tasks or vid not in rollout_map:
                 continue
 
-            conversation = await build_video_conversation(
-                video_id=vid,
-                video_path=v.get("video_path", ""),
-                rollout=rollout_map[vid],
-                tasks=all_tasks[vid],
-                client=client,
-                frame_paths=video_frames.get(vid, []),
-            )
-            if conversation:
-                all_samples.append(conversation)
-                n_turns = len([m for m in conversation["messages"] if m["role"] == "assistant"])
-                logger.info(
-                    f"  [{vid}] Conversation: {n_turns} turns, "
-                    f"{conversation['num_compression_events']} compressions, "
-                    f"{conversation['num_tasks']} tasks"
-                )
+            rollout = rollout_map[vid]
+            tasks = all_tasks[vid]
+            observations = rollout.get("thinks", rollout.get("observations", []))
+            snapshots = rollout["snapshots"]
+            compression_events = rollout["compression_events"]
 
-        # Save all conversations (one per video)
+            # --- Build task/compress lookup tables ---
+            compress_at = {e["trigger_chunk"]: e for e in compression_events}
+            task_at = {}  # chunk_idx -> (task_type, task)
+            for task_type_key in ["response_from_frames", "response_from_memory",
+                                   "compress_response", "unanswerable",
+                                   "recall", "compress_recall"]:
+                for task in tasks.get(task_type_key, []):
+                    if task.get("question") and task.get("ask_chunk") not in task_at:
+                        task_at[task["ask_chunk"]] = (task_type_key, task)
+
+            interaction_chunks = set(task_at.keys())
+            vid_sample_count = 0
+
+            for chunk_idx in range(rollout["num_chunks"]):
+                if chunk_idx >= len(observations):
+                    continue
+                snapshot = snapshots.get(chunk_idx, snapshots.get(str(chunk_idx)))
+                if not snapshot:
+                    continue
+
+                think_text = observations[chunk_idx]["think"]
+                has_question = chunk_idx in task_at
+                has_compress = chunk_idx in compress_at and chunk_idx not in interaction_chunks
+
+                # ── Determine action + build output + suffix ──
+                if has_question:
+                    task_type, task = task_at[chunk_idx]
+                    if task["gold_action"] == "response":
+                        resp = await _generate_response_text(task, snapshots, observations, client, vid)
+                        if not resp:
+                            continue
+                        output = (f"<think>{think_text}</think>"
+                                  f"<action>response</action><response>{resp}</response>")
+                        sample = build_per_timestep_messages(
+                            snapshot, chunk_idx, vpath, output,
+                            user_text_suffix=task["question"],
+                        )
+                        sample["sample_type"] = "response"
+                        sample["metadata"] = {"task_type": task_type, "gold_action": "response",
+                                              "gold_answer": task.get("gold_answer", "")}
+                        all_samples.append(sample)
+                        vid_sample_count += 1
+
+                    elif task["gold_action"] == "recall":
+                        query_json, resp, recall_result = await _generate_recall_texts(
+                            task, snapshots, observations, client, vid)
+                        if not query_json:
+                            continue
+                        # Sample 1: recall query
+                        output1 = (f"<think>{think_text}</think>"
+                                   f"<action>recall</action>"
+                                   f'<query>{json.dumps(query_json, ensure_ascii=False)}</query>')
+                        s1 = build_per_timestep_messages(
+                            snapshot, chunk_idx, vpath, output1,
+                            user_text_suffix=task["question"],
+                        )
+                        s1["sample_type"] = "recall_query"
+                        s1["metadata"] = {"task_type": task_type, "gold_action": "recall",
+                                          "gold_answer": task.get("gold_answer", "")}
+                        all_samples.append(s1)
+
+                        # Sample 2: post-recall response (no think)
+                        is_failed = recall_result.get("noise_level") in ("distractor", "failure")
+                        if is_failed:
+                            resp = "I could not find enough evidence to answer confidently."
+                        output2 = f"<action>response</action><response>{resp or ''}</response>"
+                        # Inject pending + recall_result into suffix
+                        recall_suffix = (
+                            f'<pending since="{chunk_idx * AGENT_CHUNK_SEC}">{task["question"]}</pending>\n'
+                            f'<recall_result>{recall_result.get("text_content", "")}</recall_result>'
+                        )
+                        recalled_frames = None
+                        if recall_result.get("returned_chunks"):
+                            rc = recall_result["returned_chunks"]
+                            recalled_frames = {
+                                "time_range": [rc[0] * AGENT_CHUNK_SEC, (rc[-1] + 1) * AGENT_CHUNK_SEC],
+                                "n_frames": len(rc) * 2,
+                            }
+                        s2 = build_per_timestep_messages(
+                            snapshot, chunk_idx, vpath, output2,
+                            user_text_suffix=recall_suffix,
+                            recalled_frames=recalled_frames,
+                        )
+                        s2["sample_type"] = "recall_response"
+                        s2["metadata"] = {"task_type": task_type, "gold_action": "response",
+                                          "recall_noise": recall_result.get("noise_level")}
+                        all_samples.append(s2)
+                        vid_sample_count += 2
+
+                elif has_compress:
+                    event = compress_at[chunk_idx]
+                    summary = event["summary"]
+                    tr = summary.get("time_range", [0, 0])
+                    # C1: system trigger with range
+                    trigger = f'<compress_trigger range="{tr[0]}-{tr[1]}"/>'
+                    output = (f"<think>{think_text}</think>"
+                              f"<action>compress</action>"
+                              f'<summary>{json.dumps(summary, ensure_ascii=False)}</summary>')
+                    sample = build_per_timestep_messages(
+                        snapshot, chunk_idx, vpath, output,
+                        user_text_suffix=trigger,
+                    )
+                    sample["sample_type"] = "compress"
+                    sample["metadata"] = {"gold_action": "compress",
+                                          "compressed_range": tr,
+                                          "compressed_chunks": event.get("compressed_thinks_chunks", []),
+                                          "phase": "C1"}
+                    all_samples.append(sample)
+                    vid_sample_count += 1
+
+                else:
+                    # Silent — subsample ~20%
+                    if random.random() > 0.2:
+                        continue
+                    output = f"<think>{think_text}</think><action>silent</action>"
+                    sample = build_per_timestep_messages(
+                        snapshot, chunk_idx, vpath, output,
+                    )
+                    sample["sample_type"] = "silent"
+                    all_samples.append(sample)
+                    vid_sample_count += 1
+
+            logger.info(f"  [{vid}] {vid_sample_count} samples")
+
+        # Assign sample_id and phase
+        for i, s in enumerate(all_samples):
+            stype = s.get("sample_type", "unk")
+            s["sample_id"] = f"{s.get('video_path', 'unk').split('/')[-1].replace('.mp4','')}_{stype}_{i}"
+            s["phase"] = assign_phase(s)
+
+        # Save
         SAMPLES_DIR.mkdir(parents=True, exist_ok=True)
         samples_path = SAMPLES_DIR / "all_samples.jsonl"
         with open(samples_path, "w") as f:
             for s in all_samples:
                 f.write(json.dumps(s, ensure_ascii=False) + "\n")
 
-        logger.info(f"Pass 4 complete: {len(all_samples)} video conversations")
+        logger.info(f"Pass 4 complete: {len(all_samples)} per-timestep samples")
     else:
         samples_path = SAMPLES_DIR / "all_samples.jsonl"
         all_samples = []
