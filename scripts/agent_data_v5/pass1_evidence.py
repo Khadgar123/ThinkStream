@@ -106,7 +106,7 @@ def parse_evidence_result(raw: Optional[str], meta: Dict) -> Dict:
         # Find balanced JSON object
         start_idx = raw.find("{")
         if start_idx < 0:
-            default["_raw"] = raw[:200]
+            default["_raw"] = raw[:4000]
             return default
         depth = 0
         for i in range(start_idx, len(raw)):
@@ -118,11 +118,11 @@ def parse_evidence_result(raw: Optional[str], meta: Dict) -> Dict:
                     try:
                         parsed = json.loads(raw[start_idx:i + 1])
                     except (json.JSONDecodeError, ValueError):
-                        default["_raw"] = raw[:200]
+                        default["_raw"] = raw[:4000]
                         return default
                     break
         else:
-            default["_raw"] = raw[:200]
+            default["_raw"] = raw[:4000]
             return default
 
     # Validate and normalize

@@ -196,31 +196,33 @@ VLLM_MODEL = "Qwen/Qwen3.5-397B-A17B-FP8"
 VLLM_MAX_MODEL_LEN = 65536
 
 PASS_CONFIG = {
-    # Vision passes: safe_concurrency_for_pass() clamps at runtime.
-    # Defaults below are conservative; the guard may lower further if needed.
+    # All passes: thinking enabled, --reasoning-parser qwen3 separates
+    # thinking into reasoning_content, content is clean output.
+    # max_tokens covers thinking + response total. Set generously
+    # to avoid truncation — data quality > token efficiency.
     "pass1_evidence": {
-        "max_tokens": 1024,
+        "max_tokens": 8192,
         "temperature": 0.3,
         "thinking": True,
         "concurrent_videos": 8,
     },
     "pass2_rollout": {
-        "max_tokens_observation": 128,
-        "max_tokens_compress": 512,
+        "max_tokens_observation": 2048,
+        "max_tokens_compress": 4096,
         "temperature": 0.3,
-        "thinking": False,
+        "thinking": True,
         "concurrent_videos": 8,
     },
     "pass3_tasks": {
-        "max_tokens": 2048,
+        "max_tokens": 4096,
         "temperature": 0.7,
         "thinking": True,
         "concurrent": 16,
     },
     "pass4_forks": {
-        "max_tokens": 512,
+        "max_tokens": 2048,
         "temperature": 0.3,
-        "thinking": False,
+        "thinking": True,
         "concurrent": 16,
     },
 }
@@ -313,8 +315,7 @@ Rules:
 
 Output JSON only:"""
 
-OBSERVATION_PROMPT = """/no_think
-
+OBSERVATION_PROMPT = """
 You are a streaming video agent generating a think (incremental visual memory note).
 
 Compressed memory:
@@ -336,8 +337,7 @@ Rules:
 
 Output (one paragraph, 40-60 tokens):"""
 
-COMPRESS_PROMPT = """/no_think
-
+COMPRESS_PROMPT = """
 Compress these observations into a structured summary.
 
 Observations to compress:
@@ -371,8 +371,7 @@ Requirements:
 
 Output JSON: {{"question": "...", "concise_answer": "...", "answer_type": "factoid|procedural|summary"}}"""
 
-RECALL_QUERY_PROMPT = """/no_think
-
+RECALL_QUERY_PROMPT = """
 Generate a retrieval query for this scenario:
 - Question: "{question}"
 - Visible memory context: {visible_context}
@@ -384,8 +383,7 @@ Include entity names + action/attribute anchors from the question and context.
 
 Output JSON (one line): {{"query": "keyword1 keyword2 keyword3", "time_range": "{time_range}"}}"""
 
-RESPONSE_PROMPT = """/no_think
-
+RESPONSE_PROMPT = """
 Generate a response for this streaming video agent:
 - Question: "{question}"
 - Available evidence: {evidence}

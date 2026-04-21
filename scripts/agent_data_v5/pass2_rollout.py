@@ -239,13 +239,15 @@ def parse_observation_result(raw: Optional[str]) -> str:
     if raw is None:
         return "Scene continues without notable changes."
 
-    # Strip think tags if present (shouldn't be with thinking=OFF, but safety)
+    # With --reasoning-parser qwen3, content should already be clean
+    # (thinking separated into reasoning_content). Strip <think> as fallback.
     raw = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip()
     # Remove quotes if wrapped
     raw = raw.strip('"').strip("'").strip()
-    # Truncate if too long (target 40-60 tokens ≈ 200-300 chars)
-    if len(raw) > 400:
-        raw = raw[:400].rsplit(" ", 1)[0]
+    # Soft truncate: observation target is 40-60 tokens (~200-400 chars)
+    # but allow up to 600 chars to avoid cutting useful content
+    if len(raw) > 600:
+        raw = raw[:600].rsplit(" ", 1)[0]
 
     return raw
 
@@ -389,7 +391,7 @@ def parse_compress_result(raw: Optional[str], meta: Dict) -> Dict:
                             pass
                         break
 
-    default["_raw"] = raw[:300]
+    default["_raw"] = raw[:4000]
     return default
 
 
