@@ -120,7 +120,7 @@ def determine_gold_action(
 
     Priority:
     1. answer in visual window frames → response(from_frames)
-    2. answer in recent_observations → response(from_memory)
+    2. answer in recent_thinks → response(from_memory)
     3. answer in compressed_summaries → response(from_compressed)
     4. answer in historical obs/frames → recall
     5. answer nowhere → response (uncertain)
@@ -132,8 +132,8 @@ def determine_gold_action(
     if evidence_in_window:
         return "response", "answer_in_visual_window"
 
-    # 2. Check recent_observations
-    for obs_item in snapshot.get("recent_thinks", snapshot.get("recent_observations", [])):
+    # 2. Check recent_thinks
+    for obs_item in snapshot.get("recent_thinks", snapshot.get("recent_thinks", [])):
         if keyword_overlap(obs_item.get("text", obs_item.get("obs", "")), answer_keywords) > LEAKAGE_OVERLAP_THRESHOLD:
             return "response", "answer_in_recent_thinks"
 
@@ -168,12 +168,12 @@ def build_visibility_matrix(
         "at_time": ask_chunk * AGENT_CHUNK_SEC,
         "visual_window": [window_start * AGENT_CHUNK_SEC, (window_end + 1) * AGENT_CHUNK_SEC],
         "n_compressed_segments": len(snapshot["compressed_segments"]),
-        "n_recent_observations": len(snapshot.get("recent_thinks", snapshot.get("recent_observations", []))),
+        "n_recent_thinks": len(snapshot.get("recent_thinks", snapshot.get("recent_thinks", []))),
         "evidence_chunks": evidence_chunks,
         "evidence_in_window": any(window_start <= c <= window_end for c in evidence_chunks),
         "answer_in_recent_obs": any(
             keyword_overlap(item.get("text", item.get("obs", "")), answer_keywords) > LEAKAGE_OVERLAP_THRESHOLD
-            for item in snapshot.get("recent_thinks", snapshot.get("recent_observations", []))
+            for item in snapshot.get("recent_thinks", snapshot.get("recent_thinks", []))
         ),
         "answer_in_compressed": any(
             keyword_overlap(seg["text"], answer_keywords) > LEAKAGE_OVERLAP_THRESHOLD
@@ -310,7 +310,7 @@ def mine_recall_tasks(
     """Mine recall tasks: answer NOT in any visible source.
 
     Finds facts that were observed earlier but are now outside the window
-    and NOT in recent_observations or compressed_summaries.
+    and NOT in recent_thinks or compressed_summaries.
     """
     candidates = []
     observations = rollout.get("thinks", rollout.get("observations", []))

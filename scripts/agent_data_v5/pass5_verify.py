@@ -429,6 +429,65 @@ def verify_summary_provenance(sample: Dict) -> Tuple[bool, str]:
     return True, "pass"
 
 
+def verify_summary_no_current_think_leak(sample: Dict) -> Tuple[bool, str]:
+    """Check: compress summary does not contain facts from the current think.
+
+    In autoregressive output, summary attends to the preceding <think>.
+    If summary contains entity words unique to the current think (not in the
+    compressed range), the model learned to "peek" at its own current output
+    to enrich the summary — which breaks provenance at inference time.
+    """
+    sample_type = sample.get("sample_type", "")
+    if sample_type != "compress":
+        return True, "pass"
+
+    output = sample.get("output", "")
+
+    # Extract current think text
+    think_match = re.search(r'<think>(.*?)</think>', output, re.DOTALL)
+    if not think_match:
+        return True, "pass"
+    think_text = think_match.group(1).strip()
+
+    # Extract summary text
+    summary_match = re.search(r'<summary>(.*?)</summary>', output, re.DOTALL)
+    if not summary_match:
+        return True, "pass"
+    try:
+        summary_json = json.loads(summary_match.group(1))
+        summary_text = summary_json.get("text", "")
+    except (json.JSONDecodeError, ValueError):
+        return True, "pass"
+
+    if not think_text or not summary_text:
+        return True, "pass"
+
+    # Get source range words (what the summary CAN reference)
+    source_texts = _compressed_source_texts(sample)
+    source_words = set()
+    for text in source_texts:
+        source_words.update(w.lower() for w in re.findall(r'\b[a-zA-Z0-9_]+\b', text))
+
+    # Find entity words in current think that are NOT in the compressed range
+    think_words = set(re.findall(r'\b[a-zA-Z0-9_]+\b', think_text))
+    think_unique = {
+        w for w in think_words
+        if len(w) > 3 and (w[0].isupper() or "_" in w) and w.lower() not in source_words
+    }
+
+    if not think_unique:
+        return True, "pass"
+
+    # Check if any of these unique-to-think entities leaked into summary
+    summary_words = set(w.lower() for w in re.findall(r'\b[a-zA-Z0-9_]+\b', summary_text))
+    leaked = {w for w in think_unique if w.lower() in summary_words}
+
+    if leaked:
+        return False, f"summary_contains_current_think_entities: {list(leaked)[:3]}"
+
+    return True, "pass"
+
+
 def verify_question_answer_leakage(sample: Dict) -> Tuple[bool, str]:
     """Check that the user-facing question does not reveal the gold answer.
 
@@ -525,6 +584,9 @@ def verify_sample(sample: Dict) -> Dict:
 
     passed, reason = verify_summary_provenance(sample)
     checks["summary_provenance"] = {"passed": passed, "reason": reason}
+
+    passed, reason = verify_summary_no_current_think_leak(sample)
+    checks["summary_current_think_leak"] = {"passed": passed, "reason": reason}
 
     passed, reason = verify_question_answer_leakage(sample)
     checks["question_answer_leakage"] = {"passed": passed, "reason": reason}

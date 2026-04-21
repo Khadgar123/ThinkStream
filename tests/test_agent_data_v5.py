@@ -110,7 +110,8 @@ class TestMemoryState:
         mem.add_think(10, "Recent obs")
 
         compressed_text, obs_text = mem.format_for_prompt()
-        assert 'time="0-20"' in compressed_text
+        assert "<compressed>" in compressed_text
+        assert '"time_range": [0, 20]' in compressed_text
         assert "Summary A" in compressed_text
         assert "[20-22]" in obs_text
         assert "Recent obs" in obs_text

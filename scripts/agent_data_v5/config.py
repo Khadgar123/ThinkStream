@@ -1,5 +1,5 @@
 """
-Configuration for Agent Data Pipeline v5.6.
+Configuration for Agent Data Pipeline v5.8.
 
 All constants, prompts, and schema definitions.
 Matches docs/data_construction_zh.md v5.4 exactly.
@@ -246,17 +246,25 @@ SYSTEM_PROMPT = (
     "- If a pending question exists, respond when the answer becomes visible."
 )
 
-# Special tokens required by SFT init_processor (see sft_engineering.md)
+# Special tokens required by SFT init_processor (see sft_engineering.md §6.2)
+# Approach B: exact-match tags, attributes as JSON inside tags.
 SPECIAL_TOKENS_BASE = [
     "<silent>", "<response>", "<think>", "</think>",
     "<action>", "</action>", "<query>", "</query>",
     "</response>", "<recall_result>", "</recall_result>",
 ]
 SPECIAL_TOKENS_PER_TIMESTEP = [
-    "<compressed>", "</compressed>",
-    "<pending>", "</pending>",
-    "<compress_trigger>", "</compress_trigger>",
-    "<summary>", "</summary>",
+    # Input structure tags
+    "<memory>", "</memory>",               # wraps entire memory block
+    "<compressed>", "</compressed>",       # memory block: compressed segment
+    "<pending>", "</pending>",             # memory block: pending question
+    "<visual_window>", "</visual_window>", # visual window header (JSON inside)
+    "<recalled_frames>", "</recalled_frames>",  # recalled frames header
+    "<user_input>", "</user_input>",       # wraps user input text
+    # Output payload tags
+    "<summary>", "</summary>",             # compress action payload
+    # User input trigger
+    "<compress_trigger>", "</compress_trigger>",  # system compress trigger
 ]
 
 # ---------------------------------------------------------------------------
@@ -311,7 +319,7 @@ Compressed memory:
 {compressed_memory}
 
 Recent thinks:
-{recent_observations}
+{recent_thinks}
 
 Visual window: t={window_start}-{window_end}s (frames above).
 

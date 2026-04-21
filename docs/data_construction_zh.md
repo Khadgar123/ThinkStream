@@ -1,6 +1,6 @@
 # 流视频 Agent 数据构造方案
 
-> 版本: v5.6 | 日期: 2026-04-21
+> 版本: v5.8 | 日期: 2026-04-21
 >
 > 核心设计：
 > - Per-timestep 独立样本，三层文本隔离（teacher / think / summary）
@@ -164,8 +164,8 @@ post-recall response > 用户当前问题 response/recall > pending trigger resp
 ```
 [System prompt: 协议说明, ~150 tok]
 [Memory block:]
-  <compressed time="0-20">summary_0</compressed>         ← 压缩段
-  <compressed time="20-40">summary_1</compressed>
+  <compressed>{"time_range":[0,20],"text":"summary_0"}</compressed>    ← 压缩段
+  <compressed>{"time_range":[20,40],"text":"summary_1"}</compressed>
   [40-42] think at t=40-42                               ← 未压缩的 think
   [42-44] think at t=42-44
   ...（recent_thinks 可能和 visual_window 重叠）
@@ -1020,7 +1020,7 @@ S3/S4 任务中，用户提问后模型需要在多个后续 timestep "记住在
 
 ```
 [Memory block:]
-  <compressed time="0-20">...</compressed>
+  <compressed>{"time_range":[0,20],"text":"..."}</compressed>
   [20-22] think...
   [22-24] think...
   <pending since="24">Tell me when the chef adds the basil.</pending>   ← 待解决问题
@@ -1234,6 +1234,13 @@ def verify_grounding(think_text, frames, teacher_caption):
 | 13 | compressed_segments 超 5 段时合并最老两段（≤200 tok） | §2.1 | `MemoryState.compress()` + tokenizer 截断 |
 | 14 | merge_compress 有对应训练样本 | §9.5 | `build_merge_compress_sample()` |
 | 15 | 压缩比 ≥ 2.5:1 | §8 | `verify_compression_ratio()` |
+| 16 | C1/C2 必须拆开训练，不合并 | §2.3 | C1 `range="X-Y"` / C2 `<compress_trigger/>` 独立样本 |
+| 17 | teacher 信息只用于选 gold，不进 student 可见路径 | §1.2 | evidence 仅在 `score_range_for_compression` 中使用 |
+| 18 | summary 不能包含当前 think 的独有事实 | §2.1 | `verify_summary_no_current_think_leak()` |
+| 19 | compressed tag 使用 JSON-inside-tag 格式，不用 XML attribute | §13.2 | `format_for_prompt()` 输出 `<compressed>{json}</compressed>` |
+| 20 | Pass2 必须 question-blind | §3.2 | 无 question/task/gold_answer 参数 |
+| 21 | 压缩触发基于 pre-action memory，不含当前 think | §2.1 | `should_compress` 在 `add_think` 之前评估 |
+| 22 | 每批数据必须跑 task coverage audit | §9.4 | `audit_task_coverage()` + `task_coverage_report.json` |
 
 ---
 
@@ -1504,6 +1511,28 @@ Pipeline Pass 4 产出的每条样本必须包含以下字段，SFT `PerTimestep
 }
 ```
 
+**Compress 样本的额外 metadata 字段（P1-1）**：
+
+```json
+{
+  "sample_type": "compress",
+  "metadata": {
+    "gold_action": "compress",
+    "compressed_chunks": [4, 5, 6, 7],
+    "compressed_range": [8, 16],
+    "compressed_source_texts": [
+      "[8-10] Oil heated in stainless pot.",
+      "[10-12] Garlic browned in oil.",
+      "[12-14] Tomato quarters placed into pot.",
+      "[14-16] White seasoning from small bowl added."
+    ]
+  }
+}
+```
+
+验证时 summary provenance 和 compression ratio 只使用 `compressed_source_texts`（被选中的 range），
+不使用 `input.memory.recent_thinks` 全量。这防止 summary 偷用未选中 thinks 的信息。
+
 **字段约束**：
 
 | 字段 | 必须 | 格式约束 |
@@ -1513,15 +1542,19 @@ Pipeline Pass 4 产出的每条样本必须包含以下字段，SFT `PerTimestep
 | `input.memory.pending` | 否 | 仅 recall_response / pending_response 类型有 |
 | `input.visual_window.video_start/end` | 是 | 秒，float |
 | `input.visual_window.frames` | 是 | 整数，= chunk_count × 2 |
-| `input.recalled_frames` | 否 | 仅 recall_response 类型有 |
+| `input.recalled_frames` | 否 | 仅 recall_response 类型有；**顶层字段，不嵌套在 visual_window 内** |
 | `input.recall_result` | 否 | 仅 recall_response 类型有 |
 | `input.user_input` | 否 | silent 类型无问题时可省略或为 `""` |
-| `output` | 是 | 严格匹配四动作格式之一 |
+| `output` | 是 | 严格匹配四动作格式之一（方案 B: JSON inside tags） |
 | `metadata.gold_action` | 是 | `silent \| response \| recall \| compress \| merge_compress` |
+| `metadata.compressed_source_texts` | 仅 compress | 被选中 range 的原始 thinks 列表 |
 
 ### 13.2 Special Token 对齐
 
-Pipeline 产出的 output 字段中使用以下 token，SFT 代码必须在 `init_processor` 中添加：
+Pipeline 产出的 output 字段中使用以下 token，SFT 代码必须在 `init_processor` 中添加。
+
+**方案 B（P0-7）**：所有 tag 是精确的 special token，属性数据以 JSON 放在 tag 内部。
+不使用 `<compressed time="0-20">` 这种 XML 属性写法（tokenizer 无法精确匹配）。
 
 ```
 基础 token（已有）：<think> </think> <silent> <response> </response>
@@ -1529,10 +1562,28 @@ Pipeline 产出的 output 字段中使用以下 token，SFT 代码必须在 `ini
                     <recall_result> </recall_result>
 
 新增 token（per-timestep 格式需要）：
-    <compressed> </compressed>       — memory block 中标记压缩段
-    <pending> </pending>             — memory block 中标记待解决问题
-    <compress_trigger> </compress_trigger> — 系统触发压缩的 user input
-    <summary> </summary>            — compress action 的 payload
+    Input 结构 tag:
+    <memory> </memory>                   — 包裹整个记忆块
+    <compressed> </compressed>           — memory 内：压缩段
+    <pending> </pending>                 — memory 内：待解决问题
+    <visual_window> </visual_window>     — 视觉窗口 header (JSON inside)
+    <recalled_frames> </recalled_frames> — 回忆帧 header
+    <user_input> </user_input>           — 包裹用户输入文本
+    
+    Output payload tag:
+    <summary> </summary>                — compress action 的 payload
+    
+    User input trigger:
+    <compress_trigger> </compress_trigger> — 系统触发压缩
+
+示例：
+    <memory>
+    <compressed>{"time_range":[0,20],"text":"Chef prepared workspace..."}</compressed>
+    [20-22] Oil heated in pot.
+    <pending>{"since":44,"question":"Tell me when basil added"}</pending>
+    </memory>
+    <visual_window>{"start":20,"end":44,"frames":24,"current_time":[42,44]}</visual_window>
+    <user_input><compress_trigger>{"range":[20,34]}</compress_trigger></user_input>
 ```
 
 ### 13.3 Visual Window 加载约定

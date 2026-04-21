@@ -21,7 +21,6 @@ from typing import Dict, List, Optional, Tuple
 from .config import (
     AGENT_CHUNK_SEC,
     COMPRESS_PROMPT,
-    COMPRESS_RANGE,
     COMPRESS_RANGE_MAX,
     COMPRESS_RANGE_MIN,
     COMPRESS_TOKEN_THRESHOLD,
@@ -136,7 +135,8 @@ class MemoryState:
             chunk_set = set(compressed_chunks)
             self.recent_thinks = [t for t in self.recent_thinks if t["chunk"] not in chunk_set]
         else:
-            self.recent_thinks = self.recent_thinks[COMPRESS_RANGE:]
+            # Fallback: remove first COMPRESS_RANGE_MIN items (legacy callers only)
+            self.recent_thinks = self.recent_thinks[COMPRESS_RANGE_MIN:]
         self.compressed_segments.append(summary)
         while len(self.compressed_segments) > MAX_COMPRESSED_SEGMENTS:
             seg_a = self.compressed_segments.pop(0)
@@ -164,11 +164,21 @@ class MemoryState:
             self.compressed_segments.insert(0, merged)
 
     def format_for_prompt(self) -> Tuple[str, str]:
-        """Format memory state for model input prompt."""
+        """Format memory state for model input prompt.
+
+        Compressed segments use JSON-inside-tag format:
+            <compressed>{"time_range":[0,20],"text":"..."}</compressed>
+        NOT XML attributes like <compressed time="0-20">.
+        This ensures tokenizer treats <compressed> as a single special token.
+        """
+        import json as _json
         compressed_text = ""
         for seg in self.compressed_segments:
-            tr = seg["time_range"]
-            compressed_text += f'<compressed time="{tr[0]}-{tr[1]}">{seg["text"]}</compressed>\n'
+            seg_json = _json.dumps(
+                {"time_range": seg["time_range"], "text": seg["text"]},
+                ensure_ascii=False,
+            )
+            compressed_text += f"<compressed>{seg_json}</compressed>\n"
 
         thinks_text = ""
         for item in self.recent_thinks:
@@ -203,7 +213,7 @@ def build_observation_request(
 
     prompt = OBSERVATION_PROMPT.format(
         compressed_memory=compressed_text or "(none)",
-        recent_observations=obs_text or "(none)",
+        recent_thinks=obs_text or "(none)",
         window_start=int(window_start * AGENT_CHUNK_SEC),
         window_end=int(end),
         start=int(start),
