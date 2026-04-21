@@ -1,6 +1,6 @@
 # 流视频 Agent 数据构造方案
 
-> 版本: v6.0 | 日期: 2026-04-21
+> 版本: v6.1 | 日期: 2026-04-21
 >
 > 核心设计：
 > - Per-timestep 独立样本，三层文本隔离（teacher / think / summary）
@@ -24,50 +24,34 @@
 
 ## 1. 架构原则
 
-### 1.1 训练格式：多轮流式对话（v6.0 修订）
+### 1.1 训练格式：Per-Timestep Re-render（v6.1 定稿）
 
-**每个视频构造为一条完整的多轮对话样本。** 每个 2s chunk 对应一轮 user→assistant turn。
+**每个 2s chunk 构造为独立训练样本**（单轮 messages）。推理时每步重新构造完整 input，不依赖跨步 KV cache。
 
 ```
-单条训练样本 = 整个视频的多轮对话 {
+单条训练样本 = 推理时一步的精确快照 {
     messages: [
-        {role: system, content: protocol},
-        {role: user, content: [video_chunk_0]},
-        {role: assistant, content: "<think>...</think><action>silent</action>"},
-        {role: user, content: [video_chunk_1]},
-        {role: assistant, content: "<think>...</think><action>silent</action>"},
-        ...
-        {role: user, content: [video_chunk_N, "<compress_trigger range='...'>"]},
-        {role: assistant, content: "<think>...</think><action>compress</action><summary>...</summary>"},
-        ...
-        {role: user, content: [video_chunk_M, "What color is the apron?"]},
-        {role: assistant, content: "<think>...</think><action>response</action><response>Red.</response>"},
+        {role: system, content: 4-action protocol},
+        {role: user, content: [
+            {type: video, video_start: 26, video_end: 50, nframes: 24},
+            {type: text, text: "<compressed>...</compressed>\n[40-42] think...\nQuestion?"}
+        ]},
+        {role: assistant, content: "<think>...</think><action>response</action><response>...</response>"}
     ]
 }
 ```
 
-Loss 只在 assistant turn 上计算。视频帧由 `streaming_attention` 滑动窗口控制可见范围。
+只对 assistant content 计算 loss。Memory block 作为 user text input 的一部分。
 
-**为什么用多轮对话而不是 per-timestep 独立样本**（v6.0 关键决策）：
+**为什么用 per-timestep 而不是多轮对话**（v6.1 关键决策）：
 
-1. **推理时 KV cache 有残留**：推理用 KV cache 加速，压缩后旧 thinks 的 key/value 仍在 cache 中。
-   如果训练时旧 thinks 完全不可见（per-timestep），会造成训练-推理分布不匹配。
-2. **残留是特性，不是缺陷**：summary 作为"路由信号"，模型学会优先用 summary、旧 thinks 作为 fallback。
-   这比硬删除更鲁棒——summary 丢失细节时模型仍能从残留中部分恢复。
-3. **streaming_attention 已支持**：视频帧用滑动窗口（12 blocks），文本 token 因果 attention。
-   不需要外部拼装 memory block，memory 就是前文 chat history。
-4. **效率提升 ~10x**：一个视频一次 forward，而非 150 次独立 forward（共享 prefix 编码）。
+1. **KV surgery 不可行**：多轮中压缩后旧 thinks 的 KV 仍在 cache，替换需要重算位置编码和后续所有 KV
+2. **Mask≠删除**：attention mask=0 只遮蔽不释放，模型无动力写好 summary（直接看旧 thinks 更详细）
+3. **KV 无限增长**：1小时视频 → ~1M tokens KV → 57GB，无法部署
+4. **Re-render 足够快**：H20 ~580ms/step, H100 ~200ms/step（ViT帧缓存后），远在 2s 实时预算内
+5. **压缩天然生效**：旧 thinks 不在 input 中，summary 是唯一信息源。模型被迫学会写好 summary
 
-**压缩在多轮对话中的语义**：
-
-```
-[assistant turn 10]: <think>obs_10</think><action>compress</action><summary>{...}</summary>
-   ↑ summary 替换了前文中 thinks 0-5 的"语义权重"
-   ↑ 但前文 token 物理上仍在（KV cache 残留）
-   ↑ 模型学会: 看到 summary → 优先用 summary，不再依赖旧 thinks
-```
-
-这和推理时的行为一致：KV cache 中旧 thinks 残留，但新 input 不再显式包含它们。
+详见 `sft_engineering.md` §0（推理状态机规范）。
 
 ### 1.2 三层文本严格分离
 

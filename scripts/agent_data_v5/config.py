@@ -1,5 +1,5 @@
 """
-Configuration for Agent Data Pipeline v6.0.
+Configuration for Agent Data Pipeline v6.1.
 
 All constants, prompts, and schema definitions.
 Matches docs/data_construction_zh.md v5.4 exactly.

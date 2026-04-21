@@ -1,98 +1,208 @@
 # 流视频 Agent SFT 工程设计
 
-> 版本: v1.1 | 日期: 2026-04-21
+> 版本: v2.0 | 日期: 2026-04-21
 >
-> 配套文档：`data_construction_zh.md`（数据构造方案 v5.6）
+> 配套文档：`data_construction_zh.md`（数据构造方案 v6.0）
 >
-> 本文档定义 **如何将 pipeline 产出的 per-timestep 训练样本转化为可训练的 SFT batch**，
-> 涵盖注意力掩码、数据加载、多模型兼容、训练课程等全部工程细节。
+> 本文档定义 **推理状态机 → SFT 训练格式 → 数据构造** 的完整链路。
+> 一切以 §0 推理状态机为源头，SFT 格式必须精确匹配推理行为。
+>
+> v2.0 变更（架构级）：
+> - 新增 §0 推理状态机规范（一切格式的源头定义）
+> - 确认 per-timestep re-render 方案：每步重新构造 input，不依赖 KV cache 跨步累积
+> - 推理时延分析：H100 ~200ms/step, H20 ~580ms/step（含 ViT 帧缓存），均在 2s 实时预算内
+> - 4-action protocol（加 compress），对齐 query 格式
+> - `protocol_version` 升级为 `"4action"`（区别于旧 `"3action"`）
 
 ---
 
-## 1. 为什么需要新的 SFT 方案
+## 0. 推理状态机规范（一切格式的源头）
 
-### 1.1 旧方案的问题
+> **核心原则：SFT 训练样本 = 推理时一步的精确快照。推理怎么构造 input，训练就怎么构造。**
 
-旧方案（`_build_messages` / `_build_agent_messages`）将完整视频的多轮对话作为一条训练样本：
+### 0.1 系统侧维护的状态（外部 Python 对象，非 KV cache）
 
-```
-[System] → [User: chunk0] → [Asst: think0] → [User: chunk1] → [Asst: think1] → ... → [User: chunkN] → [Asst: thinkN]
-```
-
-**三个根本性缺陷**：
-
-| 问题 | 描述 |
-|------|------|
-| **无图编描述** | 旧 chunk 的视觉帧已被滑动窗口淘汰，但 loss 仍覆盖其 assistant turn → 模型学会"没有图也能编" |
-| **压缩不可执行** | 在 causal attention 中，"用 summary 替换旧 thinks" 无法真正实现——旧 token 仍在序列中可 attend |
-| **训推不一致** | 训练时 memory 是 chat history；推理时 memory 是外部状态管理。gap 越大，性能越差 |
-
-### 1.2 新方案：Per-Timestep 独立样本
-
-每个 2s chunk 构造为**独立训练样本**：
-
-```
-单条样本 = {
-    input:  [System] + [Memory Block] + [Visual Window] + [User Input]
-    output: <think>...</think><action>X</action>[payload]
+```python
+memory_state = {
+    "compressed_segments": [             # ≤5 段，每段 ≤150 tok
+        {"time_range": [0, 20], "text": "Chef prepared workspace..."},
+    ],
+    "recent_thinks": [                   # ≤12 条，总 ≤600 tok
+        {"time": "40-42", "text": "Sauce simmering, chef covers pot."},
+        {"time": "42-44", "text": "Chef retrieves basil from fridge."},
+    ],
+    "pending_questions": [],             # 待解决的 event-watch 请求
+    "_retrieval_archive": [...],         # 系统侧全部历史 thinks（模型不可见）
 }
 ```
 
-**只对当前这一步的 output 计算 loss**。历史 memory 作为 input context，不参与梯度。
+### 0.2 每步推理流程
 
-这完美匹配推理时的信息流：模型每一步看到的就是 system prompt + 外部管理的 memory state + 当前视觉窗口 + 用户输入。
+```python
+def inference_step(chunk_idx, video_path, memory_state, user_question=None):
+    """一步推理 = 一条 SFT 训练样本。"""
+    
+    # ── 1. 构造文本（memory block + 触发 + 问题）──
+    text_parts = []
+    for seg in memory_state["compressed_segments"]:
+        text_parts.append(f'<compressed>{json.dumps(seg)}</compressed>')
+    for think in memory_state["recent_thinks"]:
+        text_parts.append(f'[{think["time"]}] {think["text"]}')
+    for pq in memory_state["pending_questions"]:
+        text_parts.append(f'<pending since="{pq["since"]}">{pq["question"]}</pending>')
+    
+    # 压缩触发（C1: 带 range; C2: 不带）
+    if should_compress(memory_state):
+        text_parts.append('<compress_trigger range="40-54"/>')
+    
+    if user_question:
+        text_parts.append(user_question)
+    
+    # 如果上一步是 recall，注入检索结果
+    if recall_result_pending:
+        text_parts.append(f'<recall_result>{recall_result}</recall_result>')
+    
+    memory_text = "\n".join(text_parts)
+    
+    # ── 2. 构造 messages（单轮）──
+    chunk_start = chunk_idx * 2.0
+    window_start = max(0.0, chunk_start - 22.0)
+    
+    messages = [
+        {"role": "system", "content": SYSTEM_PROMPT_4ACTION},
+        {"role": "user", "content": [
+            {"type": "video", "video": video_path,
+             "video_start": window_start, "video_end": chunk_start + 2.0,
+             "nframes": 24},
+            {"type": "text", "text": memory_text},
+        ]},
+    ]
+    
+    # ── 3. 模型 forward（每步独立，不复用 KV cache）──
+    output = model.generate(messages, max_new_tokens=128)
+    
+    # ── 4. 解析 output + 更新 memory_state ──
+    think = parse_think(output)
+    action = parse_action(output)
+    
+    if action == "compress":
+        summary = parse_summary(output)
+        memory_state = replace_range(memory_state, summary)  # 先替换
+        memory_state = append_think(memory_state, think)     # 再追加
+    elif action == "recall":
+        memory_state = append_think(memory_state, think)
+        # 系统异步检索，结果注入下一步的 user content
+    else:  # silent / response
+        memory_state = append_think(memory_state, think)
+    
+    return output, memory_state
+```
+
+### 0.3 为什么不用 KV cache 跨步累积
+
+| 方案 | 优势 | 问题 |
+|------|------|------|
+| **KV 累积（多轮对话）** | 增量编码快 | KV 无限增长；压缩需要 KV surgery（位置编码错乱、后续 KV 依赖旧前缀、视觉/文本混合幽灵状态）|
+| **Per-step re-render** | 内存恒定；压缩天然生效；训推完全一致 | 每步重新编码 |
+
+Per-step re-render 的时延在实时预算内：
+
+| 硬件 | 无帧缓存 | ViT帧缓存 | +Prefix cache | 2s 预算 |
+|------|---------|----------|--------------|---------|
+| H100 | 640ms | 451ms | ~300ms | ✅ 15% |
+| H20 | 2044ms | 781ms | ~580ms | ✅ 29% |
+
+### 0.4 SFT 样本 = 推理快照
+
+```
+推理构造的 messages  ==  SFT 样本的 messages
+推理模型的 output    ==  SFT 样本的 assistant content (gold)
+不多不少，完全一致。
+```
+
+---
+
+## 1. 为什么需要 Per-Timestep Re-render
+
+> 完整推理流程见 §0。本节解释为什么不用多轮对话。
+
+### 1.1 多轮对话的根本问题
+
+多轮方案（`_build_agent_messages`）将完整视频作为一条长对话。在 KV cache 中：
+
+| 问题 | 描述 |
+|------|------|
+| **KV surgery 不可行** | 压缩后旧 thinks 的 KV 仍在 cache。替换需要重算后续所有 KV（位置编码错乱、hidden state 依赖旧前缀）|
+| **KV cache 无限增长** | 1小时视频 → ~1M tokens KV → ~57GB 显存。即使 attention mask=0，KV 物理不释放 |
+| **Mask ≠ 删除** | attention mask=0 只是不 attend，KV 物理存在。模型无动力写好 summary（直接看旧 thinks 更详细）|
+| **训推不一致** | 训练时有 KV 残留，推理时（如果做 re-render）没有。分布偏移 |
+
+### 1.2 Per-Timestep Re-render
+
+每步重新构造完整 input（见 §0.2），不依赖跨步 KV cache：
+
+- **压缩天然生效**：旧 thinks 不在 input 中，summary 是唯一信息源
+- **内存恒定**：无论视频多长，每步 input ≤ 8K tokens
+- **训推完全一致**：§0.2 的 `inference_step` = 训练样本构造
+- **时延可控**：H20 ~580ms/step，H100 ~200ms/step（见 §0.3）
 
 ---
 
 ## 2. 训练样本结构
 
-### 2.1 Input 编码
+### 2.1 Input 编码（定稿排列）
+
+每条样本的 user content 按以下顺序拼装。每个 block 有明确的开闭 tag，属性以 JSON 放内部（方案 B）。
 
 ```
-┌─────────────────────────────────────────────────────┐
-│ [System Prompt]                          ~150 tok    │
-│ 协议说明 + 四动作格式                                  │
-├─────────────────────────────────────────────────────┤
-│ [Memory Block]                           ~600-1350 tok │
-│ <compressed>{"time_range":[0,20],"text":"..."}</compressed>  │
-│ <compressed>{"time_range":[20,40],"text":"..."}</compressed> │
-│ [40-42] Chef places tomatoes on board...             │
-│ [42-44] Salt sprinkled from small white bowl...      │
-│ <pending>{"since":44,"question":"Tell me when basil added"}</pending> │
-├─────────────────────────────────────────────────────┤
-│ [Visual Window Header]                   ~40 tok     │
-│ <visual_window start="20" end="44" current="42-44"> │
-│ Write <think> only for the current 2s chunk (42-44s).│
-│ Earlier frames are context only.                     │
-│ </visual_window>                                     │
-├─────────────────────────────────────────────────────┤
-│ [Visual Window Frames]                   ~1536 vision tok │
-│ 12 chunks × 2 frames = 24 frames                    │
-│ 使用 ghost message 统一加载                            │
-├─────────────────────────────────────────────────────┤
-│ [Recalled Frames] (可选, 仅 post-recall)  ~260 vision tok │
-│ 4 frames from historical time range                  │
-│ 前置文本: [Recalled frames from t=28-32s]            │
-├─────────────────────────────────────────────────────┤
-│ [Recall Result Text] (可选, 仅 post-recall) ~100 tok │
-│ <recall_result>{"source":"student_think","time":"28-32",│
-│  "text_content":"..."}</recall_result>               │
-├─────────────────────────────────────────────────────┤
-│ [User Input]                             ~50 tok     │
-│ 问题 / <compress_trigger>{"range":[20,34]}</compress_trigger> │
-│ / "Continue following the protocol to respond." / (空) │
-└─────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│ [System Prompt]                                      ~150 tok  │
+│ 协议说明 + 四动作格式                                            │
+├─────────────────────────────────────────────────────────────────┤
+│ <memory>                                             ~600-1350 │
+│   <compressed>{"time_range":[0,20],"text":"..."}</compressed>  │
+│   <compressed>{"time_range":[20,40],"text":"..."}</compressed> │
+│   [40-42] Chef places tomatoes on board...                     │
+│   [42-44] Salt sprinkled from small white bowl...              │
+│   <pending>{"since":24,"type":"awaiting_recall_response",      │
+│             "question":"Tell me when basil added"}</pending>   │
+│ </memory>                                                      │
+├─────────────────────────────────────────────────────────────────┤
+│ <visual_window>{"start":20,"end":44,"frames":24,    ~40 tok   │
+│   "current_time":[42,44]}</visual_window>                      │
+│ [VIDEO: 12 chunks × 2 frames = 24 frames]           ~1536 vis │
+├─────────────────────────────────────────────────────────────────┤
+│ (仅 recall_response 时)                                        │
+│ <recalled_frames>{"time_range":[2,6],                ~260 vis  │
+│   "source":"historical_frames","n_frames":4}                   │
+│ </recalled_frames>                                             │
+│ [VIDEO: 4 recalled frames]                                     │
+├─────────────────────────────────────────────────────────────────┤
+│ (仅 recall_response 时)                              ~100 tok  │
+│ <recall_result>{"source":"student_think","time":"2-6",         │
+│   "text":"Retrieved: [2-4] Chef in red apron..."}</recall_result>│
+├─────────────────────────────────────────────────────────────────┤
+│ <user_input>What color is the apron?</user_input>    ~50 tok   │
+│ 或 <user_input><compress_trigger>{"range":[20,34]}             │
+│    </compress_trigger></user_input>                            │
+│ 或 <user_input>Continue following the protocol.</user_input>   │
+│ 或 (silent 无问题时省略此 block)                                │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
-**关键顺序约定**（不可违反）：
-1. Memory block → Visual window header → Visual frames → Recalled frames → Recall result → User input
-2. `recall_result` 必须在 `user_input` 之前，否则 post-recall response 看不到检索结果（**P0-1**）
-3. `recalled_frames` 是 `input` 的顶层字段，不嵌套在 `visual_window` 内（**P0-2**）
-4. Visual window header 显式标注当前 chunk 时间，确保 think 只写当前 2s（**P0-3**）
+**关键约定**（不可违反）：
+
+| # | 约定 | 来源 |
+|---|------|------|
+| 1 | 顺序：`<memory>` → `<visual_window>` + 帧 → `<recalled_frames>` + 帧 → `<recall_result>` → `<user_input>` | 定稿 |
+| 2 | `recall_result` 必须在 `user_input` 之前 | P0-1 |
+| 3 | `recalled_frames` 是 `input` 顶层字段，不嵌套在 `visual_window` 内 | P0-2 |
+| 4 | `<visual_window>` JSON 含 `current_time` 字段，确保 think 只写当前 2s | P0-3 |
+| 5 | 视觉帧优先用 `frame_paths`/`frame_indices` 加载（见 §4.5） | P1-3 |
 
 ### 2.2 Output 编码
 
-根据 gold_action 有四种 output 格式：
+根据 gold_action 有四种 output 格式。所有结构化数据使用 **方案 B（P0-7）**：JSON 放在 special token 内部，special token 精确匹配。
 
 ```python
 # silent
@@ -101,12 +211,14 @@
 # response
 "<think>Answer visible in current frames...</think><action>response</action><response>The apron is red.</response>"
 
-# recall
+# recall — query 内容为 JSON
 "<think>Evidence not in window...</think><action>recall</action><query>{\"query\":\"apron color chef\",\"time_range\":\"0-20\"}</query>"
 
-# compress (C1: range 由 trigger 指定; C2: 模型自选)
+# compress — summary 内容为 JSON (C1: range 由 trigger 指定; C2: 模型自选)
 "<think>Current visual observation...</think><action>compress</action><summary>{\"time_range\":[20,34],\"text\":\"Oil heated, garlic browned...\"}</summary>"
 ```
+
+**方案 B 的好处**：`<compressed>`, `</compressed>`, `<pending>`, `</pending>`, `<summary>`, `</summary>` 等 tag 作为 special token 可被 tokenizer 精确匹配为单个 token。属性（如 `time_range`, `since`）以 JSON 形式放在 tag 内部，避免 `<compressed time="0-20">` 这种含属性的 opening tag 被 tokenizer 拆成多个 sub-token。
 
 **特殊情况 — post-recall response**（同一 chunk 内 recall 后的回答）：
 ```python
@@ -167,38 +279,65 @@ def sliding_window_mod(b, h, q_idx, kv_idx):
 - 新方案中，input 的 memory block 就是**压缩后的状态**——旧 thinks 已被 summary 替换，根本不在序列中
 - 视觉滑动窗口由 input 构造时就只包含最近 12 chunks，旧帧不在序列中
 
-因此，per-timestep 方案的 attention mask 是**标准 causal mask**，加上视觉滑动窗口：
+因此，per-timestep 方案**不能复用**旧的 `sliding_window_mod`，需要实现 `per_timestep_mask_mod`：
 
 ```python
 def per_timestep_mask_mod(b, h, q_idx, kv_idx):
+    """Per-timestep attention: causal + padding, 无视频滑动窗口。
+    
+    所有 video token（visual window + recalled frames）对所有后续 token 可见。
+    不使用 block_ids 滑动窗口约束——per-timestep 样本中只有一个"时间步"
+    的视频帧，不存在需要滑出的旧 block。
+    """
     is_valid   = attention_mask[b, kv_idx] > 0
     is_causal  = q_idx >= kv_idx
-    # 视觉窗口内的所有 video token 都可见（只有 12 chunks）
-    # text token 全部可见（memory block + system + user）
     return is_valid & is_causal
 ```
 
-**但仍需要 flex-attention** 的原因是 recalled frames：
-- Recalled frames 作为额外的 vision token 出现在 input 中
-- 它们来自不同时间范围，需要正确的 MROPE 时间编码
-- flex-attention 的 video_mask 区分 visual_window frames 和 recalled frames
+**P0-6：为什么不能复用旧 `sliding_window_mod`**
 
-### 3.3 Recalled Frames 的 Attention 处理
+旧 mask 按 `block_ids` 计算 `diff = q_block - k_block`，对 `diff >= window_size_n` 的 video token 遮蔽。
+Recalled frames 来自很早的时间点，它们的 block_id 远小于 output token 的 block_id，
+`diff` 会超过 `window_size_n`，导致 **output token 无法 attend to recalled frames**。
+
+Per-timestep 样本中，所有视频帧（包括 recalled）都应该对所有后续 token 可见。
+唯一需要的限制是 causal + padding，不需要视频滑动窗口。
+
+### 3.3 Recalled Frames 的 Attention 与 MROPE
 
 ```
 Token 序列:
 [system] [memory_text] [visual_window: 24 frames] [recalled: 4 frames] [user_input] [output]
-                       ├── video_mask = True ──┤   ├── recalled_mask ──┤
+                       ├────── video_mask = True ──────────────────────┤
 
 video_mask:     [0 0 ... 0  1 1 1 ... 1  1 1 1 1  0 0 ... 0  0 0 ... 0]
-recalled_mask:  [0 0 ... 0  0 0 0 ... 0  1 1 1 1  0 0 ... 0  0 0 ... 0]
 ```
 
-两组 vision token 都 attend to 所有位置（标准 causal），但 **MROPE 时间编码不同**：
+**注意**：visual_window 和 recalled frames 的 `video_mask` 都为 True。
+区分靠 **MROPE 时间编码**，不靠 attention mask：
 - visual_window frames: `second_per_grid_ts` 基于 video_chunk_size (2s)
-- recalled frames: `second_per_grid_ts` 基于 recalled time range
+- recalled frames: `second_per_grid_ts` 基于 recalled time range (如 4s)
 
-这确保模型知道 recalled frames 来自过去的不同时间点。
+### 3.4 验收测试（必须在训练前通过）
+
+```python
+def test_recalled_frames_attention():
+    """P0-6 验收：output token 必须能 attend to recalled frame token。"""
+    # 构造: visual_window (24 frames) + recalled (4 frames) + text output
+    # 检查: output 位置的 attention mask 对 recalled frame 位置为 True
+    video_mask = torch.zeros(1, 200)
+    video_mask[0, 50:170] = 1  # visual window
+    video_mask[0, 170:180] = 1  # recalled frames
+    attention_mask = torch.ones(1, 200)
+    
+    mask_mod = generate_per_timestep_mask_mod(video_mask, attention_mask)
+    # output token at position 195 应该能看到 recalled frame at position 175
+    assert mask_mod(0, 0, 195, 175) == True
+    # output token at position 195 应该能看到 visual window at position 100
+    assert mask_mod(0, 0, 195, 100) == True
+    # causal: 不能看到未来
+    assert mask_mod(0, 0, 100, 195) == False
+```
 
 ### 3.4 未来扩展：短序列滑动窗口方案
 
@@ -273,80 +412,69 @@ class PerTimestepDataset(Dataset):
 
 ### 4.2 Message 构建
 
-将 pipeline JSON 转为 chat template 可消费的 messages：
+将 pipeline JSON 转为 chat template 可消费的 messages。严格遵循 §2.1 定稿排列。
 
 ```python
 def _build_messages(self, sample):
     """Convert pipeline sample to chat messages.
     
-    顺序不可违反：memory → visual_header → visual_frames → recalled_frames
-    → recall_result → user_input。见 §2.1 关键顺序约定。
+    顺序（不可违反）：
+    <memory> → <visual_window> + 帧 → <recalled_frames> + 帧
+    → <recall_result> → <user_input>
     """
     inp = sample["input"]
     
     # System prompt
     messages = [{"role": "system", "content": AGENT_SYSTEM_PROMPT}]
     
-    # User message: memory + visual window + recall + user input
     user_content = []
     
-    # 1. Memory block (纯文本)
+    # ── 1. <memory> block ──
     memory_text = self._format_memory_block(inp["memory"])
-    user_content.append({"type": "text", "text": memory_text})
+    user_content.append({"type": "text", "text": f"<memory>\n{memory_text}\n</memory>"})
     
-    # 2. Visual window header — 告诉模型当前 chunk 是哪 2 秒 (P0-3)
+    # ── 2. <visual_window> header + frames ──
     vw = inp["visual_window"]
     chunk_idx = sample["chunk_idx"]
-    current_start = chunk_idx * 2  # AGENT_CHUNK_SEC = 2
-    current_end = current_start + 2
-    user_content.append({"type": "text", "text": (
-        f'\n<visual_window start="{vw["video_start"]}" end="{vw["video_end"]}" '
-        f'current="{current_start}-{current_end}">\n'
-        f'Write <think> only for the current 2s chunk ({current_start}-{current_end}s). '
-        f'Earlier frames are context only.\n</visual_window>'
-    )})
-    
-    # 3. Visual window frames: 12 chunks × 2 frames = 24 frames
-    user_content.append({
-        "type": "video",
-        "video": sample["video_path"],
-        "video_start": vw["video_start"],
-        "video_end": vw["video_end"],
-        "nframes": vw["frames"],
+    current_start = chunk_idx * AGENT_CHUNK_SEC
+    current_end = current_start + AGENT_CHUNK_SEC
+    vw_json = json.dumps({
+        "start": vw["video_start"], "end": vw["video_end"],
+        "frames": vw["frames"], "current_time": [current_start, current_end],
     })
+    user_content.append({"type": "text", "text": f"\n<visual_window>{vw_json}</visual_window>"})
     
-    # 4. Recalled frames (可选, 仅 post-recall; 顶层字段, 不嵌套在 visual_window 中, P0-2)
+    # 帧加载：优先 frame_paths，fallback 到 video_start/end（见 §4.5）
+    user_content.append(self._make_video_entry(sample, vw))
+    
+    # ── 3. <recalled_frames> + frames（仅 recall_response）──
     if "recalled_frames" in inp:
         rf = inp["recalled_frames"]
-        user_content.append({"type": "text", "text": (
-            f'\n[Recalled frames from t={rf["time_range"][0]}-{rf["time_range"][1]}s]'
-        )})
-        user_content.append({
-            "type": "video",
-            "video": sample["video_path"],
-            "video_start": rf["time_range"][0],
-            "video_end": rf["time_range"][1],
-            "nframes": rf["n_frames"],
+        rf_json = json.dumps({
+            "time_range": rf["time_range"],
+            "source": rf.get("source", "historical_frames"),
+            "n_frames": rf["n_frames"],
         })
+        user_content.append({"type": "text", "text": f"\n<recalled_frames>{rf_json}</recalled_frames>"})
+        user_content.append(self._make_recalled_video_entry(sample, rf))
     
-    # 5. Recall result text (可选, 仅 post-recall, P0-1)
-    #    必须在 user_input 之前，否则模型看不到检索结果
+    # ── 4. <recall_result>（仅 recall_response, P0-1: 必须在 user_input 之前）──
     if inp.get("recall_result"):
         rr = inp["recall_result"]
-        user_content.append({"type": "text", "text": (
-            f'\n<recall_result>'
-            f'{{"source":"{rr.get("source", "")}","time":"{rr.get("time", "")}",'
-            f'"text_content":"{rr.get("text_content", "")}"}}'
-            f'</recall_result>'
-        )})
+        rr_json = json.dumps({
+            "source": rr.get("source", ""),
+            "time": rr.get("time", ""),
+            "text": rr.get("text_content", ""),
+        }, ensure_ascii=False)
+        user_content.append({"type": "text", "text": f"\n<recall_result>{rr_json}</recall_result>"})
     
-    # 6. User input (question / compress_trigger / "Continue..." / empty)
+    # ── 5. <user_input>（问题 / compress_trigger / "Continue..." / 省略）──
     if inp.get("user_input"):
-        user_content.append({"type": "text", "text": "\n" + inp["user_input"]})
+        user_content.append({"type": "text", "text": f"\n<user_input>{inp['user_input']}</user_input>"})
     
     messages.append({"role": "user", "content": user_content})
     
-    # Assistant output (训练目标)
+    # Assistant output（训练目标）
     messages.append({"role": "assistant", "content": sample["output"]})
     
     return messages
@@ -401,6 +529,63 @@ def _build_labels(self, model_inputs):
 ```
 
 **与旧方案的区别**：旧方案多轮对话中有多个 assistant span，都计算 loss。新方案只有**一个** assistant span（当前 output），且这是正确的——历史 assistant turn 不在序列中。
+
+### 4.5 帧加载：优先 frame_paths（P1-3）
+
+SFT loader 从视频加载帧时，优先使用 Pass4 产出的 `frame_paths` / `frame_indices`，
+而非根据 `video_start/video_end/nframes` 重新采样视频。
+
+**问题**：重新采样可能因 fps rounding、ffmpeg 版本、视频编码差异导致帧不一致。
+如果 SFT 看到的帧和造 think / answer 时看到的帧不同，模型学到的 think 就和真实视觉输入对不上。
+
+```python
+def _make_video_entry(self, sample, vw):
+    """构造 visual window 的 video entry。优先用 frame_paths。"""
+    # 优先 1: frame_paths（Pass1 抽帧结果，jpg 文件列表）
+    if "frame_paths" in vw:
+        return {
+            "type": "video",
+            "video": vw["frame_paths"],  # List[str], 直接传图片路径列表
+        }
+    # 优先 2: frame_indices（在原始视频中的帧号）
+    if "frame_indices" in vw:
+        return {
+            "type": "video",
+            "video": sample["video_path"],
+            "video_start": vw["video_start"],
+            "video_end": vw["video_end"],
+            "nframes": len(vw["frame_indices"]),
+        }
+    # Fallback: 按时间范围重新采样（仅在 frame_paths 不可用时）
+    return {
+        "type": "video",
+        "video": sample["video_path"],
+        "video_start": vw["video_start"],
+        "video_end": vw["video_end"],
+        "nframes": vw["frames"],
+    }
+
+def _make_recalled_video_entry(self, sample, rf):
+    """构造 recalled frames 的 video entry。同样优先 frame_paths。"""
+    if "frame_paths" in rf:
+        return {"type": "video", "video": rf["frame_paths"]}
+    return {
+        "type": "video",
+        "video": sample["video_path"],
+        "video_start": rf["time_range"][0],
+        "video_end": rf["time_range"][1],
+        "nframes": rf["n_frames"],
+    }
+```
+
+**Pipeline 侧**：Pass4 的 `build_*_sample()` 函数必须把 `frame_paths` 写入样本：
+
+```python
+# pass4_forks.py 中
+sample["input"]["visual_window"]["frame_paths"] = [
+    frame_paths[i] for i in snapshot["visual_window_frame_indices"]
+]
+```
 
 ---
 
@@ -546,13 +731,22 @@ if model_type == "qwen3vl":
     processor.tokenizer.add_tokens(["<silent>", "<response>"])
 else:
     processor.tokenizer.add_tokens(["<silent>", "<response>", "<think>", "</think>"])
-# 四动作格式的额外 token（所有模型都需要）
+# 四动作格式 + per-timestep 结构 tag（方案 B: 精确匹配, JSON inside）
 processor.tokenizer.add_tokens([
+    # Action protocol
     "<action>", "</action>", "<query>", "</query>",
     "</response>", "<recall_result>", "</recall_result>",
-    "<compressed>", "</compressed>", "<pending>", "</pending>",
-    "<compress_trigger>", "</compress_trigger>",
+    # Input structure tags
+    "<memory>", "</memory>",
+    "<compressed>", "</compressed>",
+    "<pending>", "</pending>",
+    "<visual_window>", "</visual_window>",
+    "<recalled_frames>", "</recalled_frames>",
+    "<user_input>", "</user_input>",
+    # Output payload
     "<summary>", "</summary>",
+    # User input trigger
+    "<compress_trigger>", "</compress_trigger>",
 ])
 ```
 
@@ -600,11 +794,41 @@ if is_qwen3vl:
 | **Phase C2** 自选压缩 | C2: + compress(自选范围) | ~3,000 | 学会自选压缩窗口 | lr=2e-6, epochs=2, from C1 ckpt |
 | **Phase 5** 混合训练 | P5: 所有类型按比例混合 | ~5,000 | 综合能力对齐 | lr=2e-6, epochs=1, from C2 ckpt |
 
-### 7.2 数据集注册
+### 7.2 数据集文件与注册（P1-4）
+
+**Pipeline 同时输出两种文件**：
+
+```
+data/agent/final/
+├── train.jsonl              # 全量训练集（所有 phase 混合）
+├── val.jsonl                # 全量验证集
+├── test.jsonl               # 全量测试集
+├── phase1_train.jsonl       # 按 phase 拆分的训练集
+├── phase2_train.jsonl
+├── c1_train.jsonl
+├── c2_train.jsonl
+├── phase5_train.jsonl
+└── pipeline_stats.json      # 含每个 phase 的样本量统计
+```
+
+Pipeline Pass 5 结尾新增拆分逻辑：
 
 ```python
-# thinkstream/data/data_list.py 中添加：
+# pipeline.py Pass 5 结尾
+for phase in ["1", "2", "C1", "C2", "5"]:
+    phase_samples = [s for s in train_samples if s["phase"] == phase]
+    phase_name = {"1": "phase1", "2": "phase2", "C1": "c1", "C2": "c2", "5": "phase5"}[phase]
+    path = FINAL_DIR / f"{phase_name}_train.jsonl"
+    with open(path, "w") as f:
+        for s in phase_samples:
+            f.write(json.dumps(s, ensure_ascii=False) + "\n")
+    logger.info(f"  {phase_name}: {len(phase_samples)} samples → {path}")
+    stats[f"{phase_name}_count"] = len(phase_samples)
+```
 
+**SFT 数据集注册**（`data_list.py`）：
+
+```python
 STREAM_AGENT_P1 = {
     "annotation_path": ".../agent/final/phase1_train.jsonl",
     "data_path": "./",
@@ -625,7 +849,14 @@ STREAM_AGENT_P5 = {
     "annotation_path": ".../agent/final/phase5_train.jsonl",
     "data_path": "./",
 }
+# 全量（用于调试或混合训练）
+STREAM_AGENT_ALL = {
+    "annotation_path": ".../agent/final/train.jsonl",
+    "data_path": "./",
+}
 ```
+
+训练脚本直接 `--args.data.dataset_use stream_agent_p1`，不需要在代码中过滤 phase 字段。
 
 ### 7.3 训练脚本
 
@@ -831,7 +1062,30 @@ def init_per_timestep_dataset(ctx, /, *, processor, model_type, data_dataset_use
 
 ### 9.3 Model Forward Patch
 
-模型的 forward patch（`patch.py`）无需修改 — 已有的 `build_video_block_mask` 基于 `video_mask` 构建 flex-attention mask，per-timestep 样本的 `video_mask` 格式完全兼容。
+**需要新增 `per_timestep_mask_mod`**（见 §3.2）。不能复用旧的 `sliding_window_mod`，
+因为旧 mask 的 block_ids 滑动窗口会遮蔽 recalled frames（P0-6）。
+
+在 `streaming_attention.py` 中新增：
+```python
+def generate_per_timestep_mask_mod(video_mask, attention_mask):
+    """Per-timestep: causal + padding only, no video sliding window."""
+    B_limit = video_mask.shape[0]
+    L_limit = video_mask.shape[1]
+    
+    def per_timestep_mod(b, h, q_idx, kv_idx):
+        b_c = torch.clamp(b, 0, B_limit - 1)
+        q_c = torch.clamp(q_idx, 0, L_limit - 1)
+        k_c = torch.clamp(kv_idx, 0, L_limit - 1)
+        in_bounds = (b < B_limit) & (q_idx < L_limit) & (kv_idx < L_limit)
+        is_valid = attention_mask[b_c, k_c] > 0
+        is_causal = q_c >= k_c
+        return in_bounds & is_valid & is_causal
+    
+    return per_timestep_mod
+```
+
+在 `patch.py` 中，per-timestep SFT 的 forward 使用这个 mask_mod 替代 `sliding_window_mod`。
+通过 `model.config` 中的 flag（如 `per_timestep_mode=True`）分派。
 
 ---
 
@@ -883,6 +1137,82 @@ def evaluate_per_timestep(model, processor, val_dataset, model_type):
     return {k: np.mean(v) for k, v in metrics.items()}
 ```
 
+### 10.3 Smoke Test 验收标准（训练前必须通过）
+
+**最小验收**：随机抽 50 条样本（覆盖 silent / response / recall_query / recall_response / compress），
+手动或脚本确认 **模型实际 input 可见内容 = 推理时状态机可见内容**。
+
+```python
+def smoke_test(samples, processor, model_type, n=50):
+    """训练前验收：抽样检查 SFT input 和推理时状态机的一致性。"""
+    import random
+    random.seed(42)
+    
+    # 按 sample_type 分层抽样，确保覆盖所有类型
+    by_type = defaultdict(list)
+    for s in samples:
+        by_type[s["sample_type"]].append(s)
+    
+    selected = []
+    required = ["silent", "response", "recall_query", "recall_response", "compress"]
+    for st in required:
+        pool = by_type.get(st, [])
+        selected.extend(random.sample(pool, min(10, len(pool))))
+    
+    errors = []
+    for s in selected:
+        messages = build_messages(s)
+        
+        # 检查 1: recall_response 样本必须有 <recall_result> 在 user content 中
+        if s["sample_type"] == "recall_response":
+            user_text = str(messages[-2]["content"])  # user message
+            if "<recall_result>" not in user_text:
+                errors.append(f'{s["sample_id"]}: recall_response missing <recall_result>')
+            if s["input"].get("recalled_frames") and "<recalled_frames>" not in user_text:
+                errors.append(f'{s["sample_id"]}: recall_response missing <recalled_frames>')
+        
+        # 检查 2: visual_window 含 current_time
+        user_text = str(messages[-2]["content"])
+        if "<visual_window>" in user_text:
+            if "current_time" not in user_text:
+                errors.append(f'{s["sample_id"]}: visual_window missing current_time')
+        
+        # 检查 3: compress 样本的 output 含 <summary>
+        if s["sample_type"] == "compress":
+            if "<summary>" not in s["output"]:
+                errors.append(f'{s["sample_id"]}: compress output missing <summary>')
+        
+        # 检查 4: post-recall response 不含 <think>
+        if s["sample_type"] == "recall_response":
+            if "<think>" in s["output"]:
+                errors.append(f'{s["sample_id"]}: recall_response should not have <think>')
+        
+        # 检查 5: recalled_frames 不嵌套在 visual_window 内
+        if "recalled_frames" in s.get("input", {}).get("visual_window", {}):
+            errors.append(f'{s["sample_id"]}: recalled_frames nested in visual_window (P0-2)')
+        
+        # 检查 6: tokenize 后 labels 不全是 IGNORE_INDEX
+        model_inputs = process_per_timestep_inputs(messages, processor=processor, model_type=model_type)
+        labels = model_inputs["labels"]
+        n_valid = (labels != IGNORE_INDEX).sum().item()
+        if n_valid == 0:
+            errors.append(f'{s["sample_id"]}: all labels are IGNORE_INDEX, no training signal')
+        
+        # 检查 7: sample_type 和 output format 匹配
+        output = s["output"]
+        if s["sample_type"] == "silent" and "<action>silent</action>" not in output:
+            errors.append(f'{s["sample_id"]}: silent sample but output not silent action')
+    
+    if errors:
+        for e in errors:
+            logger.error(f"SMOKE TEST FAIL: {e}")
+        raise AssertionError(f"Smoke test failed with {len(errors)} errors")
+    
+    logger.info(f"Smoke test passed: {len(selected)} samples OK")
+```
+
+**通过标准**：0 errors。任何 error 都阻塞训练，必须修复数据或 SFT loader。
+
 ---
 
 ## 11. 从旧方案迁移
@@ -917,18 +1247,27 @@ def evaluate_per_timestep(model, processor, val_dataset, model_type):
 
 ## 12. 核心设计约束（SFT 专有）
 
-| # | 约束 | 原因 |
-|---|------|------|
-| 1 | 每条样本只有一个 assistant turn | per-timestep 定义：一个 chunk 一个 action |
-| 2 | Loss 只覆盖 output，input 全部 IGNORE_INDEX | 防止在无视觉帧的历史 memory 上学习 |
-| 3 | Memory block 是 input 的一部分，不是 chat history | 匹配推理时的外部 memory 管理 |
-| 4 | Visual window 帧通过 ghost message 加载 | 统一的视频加载路径 |
-| 5 | Recalled frames 与 window frames 使用不同的 MROPE 时间编码 | 区分"当前"和"历史回忆" |
-| 6 | post-recall response 无 `<think>` | 避免同一 chunk 两次写入 text memory |
-| 7 | Compress 样本的 think 是当前帧观察，不是 "Compressing memory..." | think = 增量视觉记忆，与 action 无关 |
-| 8 | max_length=16384 足够 | 单样本 ~3500 tok，4.7x 余量 |
-| 9 | 五阶段课程各 phase 的 ckpt 必须继承 | 不能从 base model 直接训 C1 |
-| 10 | 新旧方案通过 builder name 共存 | 不破坏旧实验的可复现性 |
+| # | 约束 | 原因 | 来源 |
+|---|------|------|------|
+| 1 | 每条样本只有一个 assistant turn | per-timestep 定义：一个 chunk 一个 action | 设计 |
+| 2 | Loss 只覆盖 output，input 全部 IGNORE_INDEX | 防止在无视觉帧的历史 memory 上学习 | 设计 |
+| 3 | Memory block 是 input 的一部分，不是 chat history | 匹配推理时的外部 memory 管理 | 设计 |
+| 4 | Visual window 帧通过 ghost message 加载 | 统一的视频加载路径 | 设计 |
+| 5 | Recalled frames 与 window frames 使用不同的 MROPE 时间编码 | 区分"当前"和"历史回忆" | 设计 |
+| 6 | post-recall response 无 `<think>` | 避免同一 chunk 两次写入 text memory | 设计 |
+| 7 | Compress 样本的 think 是当前帧观察，不是 "Compressing memory..." | think = 增量视觉记忆，与 action 无关 | 设计 |
+| 8 | 超长样本在 Dataset 预过滤，collator 不做截断 | 右截断砍 output labels | P0-4 |
+| 9 | 五阶段课程各 phase 的 ckpt 必须继承 | 不能从 base model 直接训 C1 | 设计 |
+| 10 | 新旧方案通过 builder name 共存 | 不破坏旧实验的可复现性 | 设计 |
+| 11 | recall_result 必须在 user_input 之前序列化进 input | 否则 post-recall response 看不到检索结果 | P0-1 |
+| 12 | recalled_frames 是 `input` 顶层字段，不嵌套在 visual_window 内 | 否则 SFT loader 读不到 | P0-2 |
+| 13 | Visual window header 显式标注当前 chunk 时间 | 否则 think 可能写整个 24s 描述 | P0-3 |
+| 14 | 使用 per_timestep_mask_mod，不复用 sliding_window_mod | sliding_window 会遮蔽 recalled frames | P0-6 |
+| 15 | Special token 使用方案 B（JSON inside tags） | XML 属性无法被 tokenizer 精确匹配 | P0-7 |
+| 16 | Per-sample scalar loss weight，不用 vocab CE weight | labels 是 token id 不能乘权重 | P0-5 |
+| 17 | 视觉帧优先用 frame_paths 加载，fallback 到 video 重采样 | 避免 fps/rounding 不一致 | P1-3 |
+| 18 | Pipeline 同时输出分 phase 文件 + 统一文件 | 训练脚本最简单 | P1-4 |
+| 19 | 训练前必须通过 50 条 smoke test | 验证 input 可见内容 = 推理时状态机 | 验收 |
 
 ---
 
