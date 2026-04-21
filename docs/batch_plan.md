@@ -1,3 +1,98 @@
+# 数据构造分批计划
+
+> 生成时间: 2026-04-21 | 总计 699 视频 | seed=42
+
+---
+
+## 批次总览
+
+| 批次 | 目标 | 视频数 | 预计样本 | 前置条件 |
+|------|------|-------|---------|---------|
+| **Batch 0** | 冒烟测试 | 15 | ~300 | 无 |
+| **Batch 1** | Phase 1 协议对齐 | 195 | ~4,000 | Batch 0 通过 |
+| **Batch 2** | Phase 2 Recall | 195 | ~6,000 | Batch 1 SFT 完成 |
+| **Batch 3** | Phase C1/C2 压缩 | 294 | ~15,000 | Batch 2 SFT 完成 |
+| **Batch 4** | DAgger | ~100 | ~3,000 | Batch 3 SFT 完成 |
+
+---
+
+## Batch 0: 冒烟测试 (15 视频)
+
+**目标**: 跑通 Pass 1-5 全流程，人工逐条检查关键样本类型。发现问题立即修 pipeline，不浪费 397B 算力。
+
+**视频数**: 15
+**总时长**: 0.8h | **预计帧数**: ~2,946 | **预计样本**: ~300-750
+
+**人工检查清单**:
+
+- [ ] C1 compress: summary 只引用 thinks，不偷看帧
+- [ ] compress_recall: recall 必要性正确（答案确实不在 summary 中）
+- [ ] recall_response (failed): 回答包含 uncertain 语言
+- [ ] response_from_compressed: 正确从 summary 回答（不触发 recall）
+- [ ] unanswerable: 合理拒答，不编造
+- [ ] pending: silent→mid_silent→trigger_response 三条链连贯
+- [ ] think: 40-60 tokens，仅视觉事实，无声音/情绪/元推理
+- [ ] action minimality: 没有在 summary 已有答案时触发 recall
+- [ ] question-answer leakage: 问题不包含 gold answer
+- [ ] compression range: 不包含 pending 相关 thinks
+
+**来源分布**:
+
+| 数据集 | 数量 |
+|--------|------|
+| how_to_step | 3 |
+| tarsier2_unzip | 3 |
+| VideoMind-Dataset | 3 |
+| LLaVA-Video-178K | 2 |
+| how_to_caption | 2 |
+| Koala | 1 |
+| Koala_raw | 1 |
+
+<details><summary>视频列表 (点击展开)</summary>
+
+```
+/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/j2sYXfQ0utQ.mp4
+/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_ncTkaZcDcTo.mp4
+/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala/8_Of_Our_Favorite_LA-Area_Restaurants___Legendary_Eats_Marathon___Insider_Food_segment_00-11-00-000_to_00-11-30-000.mp4
+/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/didemo/videos/47307891@N00_6929773787_6abd12b3e8.mp4
+/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/1_2_m_youtube_v0_1/liwei_youtube_videos/videos/youtube_video_2024/ytb_eCpt_xeC20Q.mp4
+/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/activitynet/videos/v_bFm6E4cz5tM.mp4
+/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/uwBq7MMY_xI.mp4
+/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/5ckUbxt13sc.mp4
+/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Como_hacer_un_pompon_con_forma_de_corazon.mp4
+/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/0B1k-bKncaw.mp4
+/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/3jMcuwnPU14.mp4
+/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/Se-ICW2eGL0.mp4
+/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/queryd/videos/xerx80SWgkA.mp4
+/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_youtube_v0_1/liwei_youtube_videos/videos/youtube_video_2024/ytb_evwO2cEpT5s.mp4
+/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/WYt3rTcbC_Q.mp4
+```
+</details>
+
+---
+
+## Batch 1: Phase 1 全量 — 协议对齐 (195 视频)
+
+**目标**: 训练 silent + response(from_frames) + uncertain。SFT 后验证 format accuracy 和 think grounding。
+
+**视频数**: 195
+**总时长**: 4.4h | **预计帧数**: ~15,828 | **预计样本**: ~3900-9750
+
+**来源分布**:
+
+| 数据集 | 数量 |
+|--------|------|
+| Koala_raw | 29 |
+| how_to_caption | 29 |
+| how_to_step | 28 |
+| Koala | 28 |
+| tarsier2_unzip | 27 |
+| VideoMind-Dataset | 27 |
+| LLaVA-Video-178K | 27 |
+
+<details><summary>视频列表 (点击展开)</summary>
+
+```
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/fz4-w8jx1J8.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/5_Cheese_Pizza.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala/The_Best_Mint_Tea_Recipe_segment_00-08-30-000_to_00-09-00-000.mp4
@@ -37,7 +132,6 @@
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Superfood_Snack_Roasted_Pumpkin_Seeds__Recipe_.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala/The_Try_Guys_Mystery_Box_Home-Cooking_Challenge_segment_00-15-00-000_to_00-15-30-000.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/B5NbCOCGQ_Q.mp4
-/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_ncTkaZcDcTo.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/didemo/videos/73489862@N00_3646142671_9aa2e7758b.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/1_2_m_youtube_v0_1/liwei_youtube_videos/videos/hdvila/P72xWOC3d8A.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/_FpIHTW5T0c.mp4
@@ -70,7 +164,6 @@
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/1_2_m_academic_v0_1/academic_source/NextQA/1011/2990407241.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/4Y2M4u_sFts.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Shrimp_Spring_Rolls_with_Peanut_Dipping_Sauce.mp4
-/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala/8_Of_Our_Favorite_LA-Area_Restaurants___Legendary_Eats_Marathon___Insider_Food_segment_00-11-00-000_to_00-11-30-000.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/fpPXl7OTdwU.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_8CAvjawFn3w.mkv
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/didemo/videos/47307891@N00_7132750869_b47fde200d.mp4
@@ -95,7 +188,6 @@
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/9b7lSTa9EEg.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_e0a1lp4ZWu8.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/didemo/videos/47307891@N00_6884820794_41a7173214.mp4
-/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/1_2_m_youtube_v0_1/liwei_youtube_videos/videos/youtube_video_2024/ytb_eCpt_xeC20Q.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/DJuPojsjvSs.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Siphoning_Gas_Out_of_My_Own_Car____WHY.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala/FabFitFun_Summer_Box_Unboxing_____I_sniff_products__segment_00-16-30-000_to_00-17-00-000.mp4
@@ -124,12 +216,10 @@
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/IhZOAJpxStc.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/didemo/videos/67801451@N00_7169836637_95a708d4aa.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/1_2_m_nextqa/NextQA/NExTVideo/1018/3987701863.mp4
-/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/j2sYXfQ0utQ.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Keto_Cheese_Meat_Loaf.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala/I_Made_This_Using_Toilet_Paper._segment_00-02-00-000_to_00-02-30-000.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/mcIyfHvFGU4.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/fiKJm0eavfw.mp4
-/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/didemo/videos/47307891@N00_6929773787_6abd12b3e8.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/1_2_m_youtube_v0_1/liwei_youtube_videos/videos/hdvila/81Onwufj78g.mkv
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/JSUKn0ut5jY.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Den_gibt_s_nur_einmal_Beradino___Motor_mobil.mp4
@@ -198,6 +288,32 @@
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/__How_To___Gluten-Free_Vegan_Cupcakes_.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala/18_to_21_inch_doll_blanket_and_adult_lap_quilt._segment_00-10-30-000_to_00-11-00-000.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/xv0Q6lnI-uo.mp4
+```
+</details>
+
+---
+
+## Batch 2: Phase 2 全量 — Recall 学习 (195 视频)
+
+**目标**: 在 P1 模型上继续训 recall 行为。SFT 后验证 recall necessity accuracy 和 query quality。
+
+**视频数**: 195
+**总时长**: 9.7h | **预计帧数**: ~34,851 | **预计样本**: ~3900-9750
+
+**来源分布**:
+
+| 数据集 | 数量 |
+|--------|------|
+| Koala_raw | 33 |
+| VideoMind-Dataset | 33 |
+| LLaVA-Video-178K | 33 |
+| how_to_step | 32 |
+| how_to_caption | 32 |
+| tarsier2_unzip | 32 |
+
+<details><summary>视频列表 (点击展开)</summary>
+
+```
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/How_to_Make_Worcestershire_Sauce.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/activitynet/videos/v_k_gAGeXhmHo.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/WyfBBl7HhTY.mp4
@@ -242,7 +358,6 @@
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/i8dELnCIfac.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Make_a_Dowel_Maker.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/activitynet/videos/v_fVzpG-QQ1n8.mp4
-/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/uwBq7MMY_xI.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_youtube_v0_1/liwei_youtube_videos/videos/youtube_video_2024/ytb_kzyNqD30vHs.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/8QNhDJbgvbo.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_DKnvOGEDUyQ.mp4
@@ -270,7 +385,6 @@
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_youtube_v0_1/liwei_youtube_videos/videos/youtube_video_2024/ytb_iwBteakKOdk.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/ogAvT6MSgqE.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/vgB-lSPOkbw.mp4
-/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Como_hacer_un_pompon_con_forma_de_corazon.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/coin/videos/qZaANzQOZp0.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/Ta5uMgOh3Sw.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_youtube_v0_1/liwei_youtube_videos/videos/youtube_video_2024/ytb_xojL9Ye3pnE.mp4
@@ -323,9 +437,7 @@
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/yweUoYP1v_o.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_youtube_v0_1/liwei_youtube_videos/videos/youtube_video_2024/ytb_dHoMK6mvDTM.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/IhvsheBAGHY.mp4
-/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/0B1k-bKncaw.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/GIY_Wrap_Bracelets_.mp4
-/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/activitynet/videos/v_bFm6E4cz5tM.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/GopSDxGlvs0.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_academic_v0_1/academic_source/activitynet/v_Mx-rOsiQTos.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/xyVJIAo9Ay4.mp4
@@ -376,7 +488,6 @@
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/coin/videos/4sPA6kkuuMw.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/7BSOhX_c7Iw.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_youtube_v0_1/liwei_youtube_videos/videos/youtube_video_2024/ytb_Bwr5mb8ZZVs.mp4
-/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/5ckUbxt13sc.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_AwoZxz8M8Jg.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Bacon_Bites_Recipe.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/activitynet/videos/v_XC6tvSBS0PA.mp4
@@ -398,6 +509,32 @@
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/O6guWwjne3I.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/The_Canyon_Nash.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/coin/videos/0lTeTyssCqA.mp4
+```
+</details>
+
+---
+
+## Batch 3: Phase C1 全量 — 压缩训练 (295 视频)
+
+**目标**: 在 P2 模型上训固定范围压缩 + 压缩后推理。同时生成 C2 样本备用。SFT 后验证 summary quality 和 QA-after-compress。
+
+**视频数**: 294
+**总时长**: 31.2h | **预计帧数**: ~112,094 | **预计样本**: ~5880-14700
+
+**来源分布**:
+
+| 数据集 | 数量 |
+|--------|------|
+| Koala_raw | 50 |
+| VideoMind-Dataset | 49 |
+| how_to_step | 49 |
+| LLaVA-Video-178K | 49 |
+| how_to_caption | 49 |
+| tarsier2_unzip | 48 |
+
+<details><summary>视频列表 (点击展开)</summary>
+
+```
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/activitynet/videos/v_aOzMA2rpWEw.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/2uqU3KW1alY.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/The_Art_of_Cold-Smoking_Salmon_Samaki_Smokehouse___food.curated.___Hooked_Up_Channel.mp4
@@ -533,7 +670,6 @@
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/queryd/videos/Ujg7vcIa7kM.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/kiFDcUmR6fE.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/__Making_a_Live_Edge_Chess_Board_from_a_Slab.mp4
-/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_youtube_v0_1/liwei_youtube_videos/videos/youtube_video_2024/ytb_evwO2cEpT5s.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/yraHdNU3NWc.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/6QcRPmZZVz4.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/queryd/videos/D4C6b1Yg_lA.mp4
@@ -566,7 +702,6 @@
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_youtube_v0_1/liwei_youtube_videos/videos/youtube_video_2024/ytb_sYb7ge_2_VU.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/TmD_E4EFKyE.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/rlm1Y6CcUBw.mp4
-/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/queryd/videos/xerx80SWgkA.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/BKKvmkqlTQU.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Bulgogi__Korean_BBQ_불고기_.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_youtube_v0_1/liwei_youtube_videos/videos/youtube_video_2024/ytb_liypQHa_dr8.mp4
@@ -636,7 +771,6 @@
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/bymcXkwhVqM.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Brioche_Cinnamon_Sugar_Donuts.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_youtube_v0_1/liwei_youtube_videos/videos/youtube_video_2024/ytb_Zu5Oo23G67w.mp4
-/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/Se-ICW2eGL0.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/DWgjKqvNkWQ.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/activitynet/videos/v_En9FemmDusk.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/JImkSIKlER0.mp4
@@ -645,7 +779,6 @@
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/vWMW5uBF-k8.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/VdFIqdmJvhw.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/queryd/videos/ARQFjZgH96Q.mp4
-/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/3jMcuwnPU14.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Pressure_King_Pro_-_Chilli_Con_Carne___Rice__Lazy_Chilli.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_youtube_v0_1/liwei_youtube_videos/videos/youtube_video_2024/ytb_XYh_82dDDsI.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/oydr94S-1XY.mp4
@@ -667,7 +800,6 @@
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Dimming_LED_lamps_with_ordinary_dimmers..mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_youtube_v0_1/liwei_youtube_videos/videos/youtube_video_2024/ytb_BVMk-iUifxg.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/7TllpGPLneQ.mp4
-/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/WYt3rTcbC_Q.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/queryd/videos/3yd_1z6OsrE.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/Wqomg4ZUFVI.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Milwaukee_M18_HD12.0_Battery_Pack_-_Watch_Before_You_Buy_.mp4
@@ -697,3 +829,32 @@
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Cars_for_Kids__FARM_AND_CITY_TRACK__Fun_Toy_Trains_for_Kids_with_Thomas_and_Friends_and_TOMICA.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_youtube_v0_1/liwei_youtube_videos/videos/youtube_video_2024/ytb_xpQArbmKE3o.mp4
 /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/ePk9BDGNl7E.mp4
+```
+</details>
+
+---
+
+## Batch 4: DAgger (计划)
+
+**目标**: 用 C1 训练后的 student 模型跑 100 个视频，基于 student 实际 memory 重新造数据。
+
+**视频来源**: 从 Batch 3 的 295 个视频中随机抽 100 个。
+
+**执行条件**: Batch 3 SFT 完成且 C1 模型 checkpoint 可用。
+
+---
+
+## 提帧命令
+
+所有 699 个视频一次性提帧（帧跨批次复用，~166K 帧 ~8GB）：
+
+```bash
+FRAME_DIR="/home/tione/notebook/gaozhenkun/hzh/data/agent_v5_frames"
+while IFS= read -r VIDEO_PATH; do
+    VIDEO_ID=$(basename "$VIDEO_PATH" .mp4)
+    OUT_DIR="$FRAME_DIR/$VIDEO_ID"
+    [ -d "$OUT_DIR" ] && [ "$(ls -A "$OUT_DIR" 2>/dev/null)" ] && continue
+    mkdir -p "$OUT_DIR"
+    ffmpeg -i "$VIDEO_PATH" -vf fps=1 -q:v 2 -y "$OUT_DIR/frame_%06d.jpg" 2>/dev/null
+done < data/selected_video_paths.txt
+```
