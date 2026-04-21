@@ -573,13 +573,15 @@ async def run_pipeline(
                                 s["video_id"] = vid
                             all_samples.extend(samples)
 
-        # Assign sample_id and phase to all samples
+        # Assign sample_id, phase, and video_path to all samples
+        vid_path_map = {v["video_id"]: v.get("video_path", "") for v in videos}
         for i, s in enumerate(all_samples):
             vid = s.get("video_id", "unk")
             chunk = s.get("chunk_idx", 0)
             stype = s.get("sample_type", "unk")
             s["sample_id"] = f"{vid}_t{chunk}_{stype}_{i}"
             s["phase"] = assign_phase(s)
+            s["video_path"] = vid_path_map.get(vid, "")
 
         # Save all samples
         SAMPLES_DIR.mkdir(parents=True, exist_ok=True)

@@ -1,5 +1,12 @@
 # ThinkStream 训练流程详解
 
+> **注意**：本文档描述的是旧版冷启动 SFT + GRPO 训练流程（多轮对话格式）。
+> 最新的 per-timestep 独立样本训练方案请参见：
+> - `sft_engineering.md` — SFT 工程设计（注意力掩码、数据加载、训练课程）
+> - `data_construction_zh.md` — 数据构造方案 v5.6
+>
+> 本文档保留供冷启动实验复现参考。
+
 本文档说明 ThinkStream 的完整训练流程，包括两阶段训练策略（SFT 冷启动 + RL 强化学习）、数据格式规范以及系统中的核心优化设计。
 
 ---

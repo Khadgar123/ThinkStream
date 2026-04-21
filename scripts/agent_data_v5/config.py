@@ -1,5 +1,5 @@
 """
-Configuration for Agent Data Pipeline v5.5.
+Configuration for Agent Data Pipeline v5.6.
 
 All constants, prompts, and schema definitions.
 Matches docs/data_construction_zh.md v5.4 exactly.
@@ -245,6 +245,19 @@ SYSTEM_PROMPT = (
     "- compress: when system triggers with a range, summarize the specified thinks.\n"
     "- If a pending question exists, respond when the answer becomes visible."
 )
+
+# Special tokens required by SFT init_processor (see sft_engineering.md)
+SPECIAL_TOKENS_BASE = [
+    "<silent>", "<response>", "<think>", "</think>",
+    "<action>", "</action>", "<query>", "</query>",
+    "</response>", "<recall_result>", "</recall_result>",
+]
+SPECIAL_TOKENS_PER_TIMESTEP = [
+    "<compressed>", "</compressed>",
+    "<pending>", "</pending>",
+    "<compress_trigger>", "</compress_trigger>",
+    "<summary>", "</summary>",
+]
 
 # ---------------------------------------------------------------------------
 # 9. Teacher prompts (397B, hidden from student)

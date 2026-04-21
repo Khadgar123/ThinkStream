@@ -1,6 +1,6 @@
 # 流视频 Agent 数据构造方案
 
-> 版本: v5.5 | 日期: 2026-04-21
+> 版本: v5.6 | 日期: 2026-04-21
 >
 > 核心设计：
 > - Per-timestep 独立样本，三层文本隔离（teacher / think / summary）
@@ -9,6 +9,16 @@
 > - C1 系统指定范围 → C2 模型自选范围 → C3 模型自主触发（渐进训练）
 > - Action 优先级：用户交互 > pending > compress > silent
 > - Summary 只能引用 thinks 内容，不能偷看视觉帧补充细节
+>
+> 配套文档：
+> - **`sft_engineering.md`**：SFT 训练工程设计（注意力掩码、数据加载、多模型兼容、训练课程）
+> - `TRAINING.md`：旧版冷启动训练说明（已过时，保留供参考）
+>
+> v5.6 变更：
+> - 新增 §13 SFT 工程集成要点（与 `sft_engineering.md` 的接口定义）
+> - 修正 §5.2 post-recall 样本的 pending 字段一致性说明
+> - 修正 §8 配置常量：补充压缩相关 special token 列表
+> - 删除 §12 开放问题 #3（已在 §2.3 合法范围约束中解决）
 
 ---
 
@@ -895,6 +905,19 @@ MAX_TOKENS_EVIDENCE = 1024
 MAX_TOKENS_OBSERVATION = 128
 MAX_TOKENS_COMPRESS = 512
 MAX_TOKENS_TASK = 2048
+
+# Special Tokens（SFT 代码 init_processor 中添加）
+SPECIAL_TOKENS_BASE = [
+    "<silent>", "<response>", "<think>", "</think>",
+    "<action>", "</action>", "<query>", "</query>",
+    "</response>", "<recall_result>", "</recall_result>",
+]
+SPECIAL_TOKENS_PER_TIMESTEP = [
+    "<compressed>", "</compressed>",
+    "<pending>", "</pending>",
+    "<compress_trigger>", "</compress_trigger>",
+    "<summary>", "</summary>",
+]
 ```
 
 ### 8.1 vLLM 部署方案（两套配置）
@@ -1420,7 +1443,115 @@ def select_videos_by_phase(catalog_csv, phase, num_videos, seed=42):
 
 ## 12. 开放问题（已缩减）
 
-1. **Per-timestep vs 短序列**: 当前方案 A 每步独立。如果实验中发现模型缺少连续性，可改为 3-step 滑动窗口（loss 只在最后一步）。先用纯 per-timestep 做 baseline。
+1. **Per-timestep vs 短序列**: 当前方案 A 每步独立。如果实验中发现模型缺少连续性，可改为 3-step 滑动窗口（loss 只在最后一步）。先用纯 per-timestep 做 baseline。详见 `sft_engineering.md` §3.4。
 2. **Think 关键信息保留策略**: 如果 think 漏了关键细节（如盐的量），后续 recall 就找不到。建议：阶段 2 产出后，用 teacher caption 检查 thinks 的"关键信息覆盖率"。覆盖率 < 0.6 的重新生成。
-3. **Canonical compression range 选择 policy**: 当前规则：最早 10 条。进阶：按事件边界切分（检测 state_change 断点），选择最完整的事件段。
-4. **DAgger 执行计划**: Phase 1-2 完成后训练 v0 模型 → v0 跑 100 视频 → 基于 v0 memory 造 2000 条补充数据 → 混入 Phase C1 训练。
+3. **DAgger 执行计划**: Phase 1-2 完成后训练 v0 模型 → v0 跑 100 视频 → 基于 v0 memory 造 2000 条补充数据 → 混入 Phase C1 训练。
+
+---
+
+## 13. SFT 工程集成要点
+
+> 完整设计见 `sft_engineering.md`。本节定义数据构造 pipeline 与 SFT 训练代码之间的接口。
+
+### 13.1 Pipeline 输出 → SFT 输入的契约
+
+Pipeline Pass 4 产出的每条样本必须包含以下字段，SFT `PerTimestepDataset` 依赖这些字段构建 model inputs：
+
+```json
+{
+  "sample_id": "vid001_t30_silent_42",
+  "video_id": "vid001",
+  "video_path": "path/to/video.mp4",
+  "sample_type": "silent | response | recall_query | recall_response | compress | merge_compress",
+  "chunk_idx": 15,
+  "phase": "1 | 2 | C1 | C2 | 5",
+  
+  "input": {
+    "system": "You are a streaming video agent...",
+    "memory": {
+      "compressed": [{"time_range": [0, 20], "text": "..."}],
+      "recent_thinks": ["[20-22] ...", "[22-24] ..."],
+      "pending": [{"question": "...", "since": 24, "type": "awaiting_recall_response"}]
+    },
+    "visual_window": {
+      "video_start": 8.0,
+      "video_end": 32.0,
+      "frames": 24,
+      "chunk_indices": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    },
+    "user_input": "What color is the apron?",
+    "recalled_frames": {
+      "time_range": [2, 6],
+      "n_frames": 4,
+      "source": "historical_frames"
+    },
+    "recall_result": {
+      "source": "student_think",
+      "time": "2-6",
+      "text_content": "Retrieved: [2-4] Chef in red apron enters kitchen..."
+    }
+  },
+  
+  "output": "<think>...</think><action>response</action><response>Red.</response>",
+  
+  "metadata": {
+    "gold_action": "response",
+    "gold_answer": {"answer": "Red", "source": "teacher_caption"},
+    "action_minimality": {"answer_in_frames": true},
+    "visibility_matrix": {...},
+    "leakage_checks": {"query_contains_answer": false}
+  }
+}
+```
+
+**字段约束**：
+
+| 字段 | 必须 | 格式约束 |
+|------|------|---------|
+| `input.memory.compressed` | 是 | 列表，可为空 `[]` |
+| `input.memory.recent_thinks` | 是 | 列表，可为空 `[]`，每条格式 `"[ts-te] text"` |
+| `input.memory.pending` | 否 | 仅 recall_response / pending_response 类型有 |
+| `input.visual_window.video_start/end` | 是 | 秒，float |
+| `input.visual_window.frames` | 是 | 整数，= chunk_count × 2 |
+| `input.recalled_frames` | 否 | 仅 recall_response 类型有 |
+| `input.recall_result` | 否 | 仅 recall_response 类型有 |
+| `input.user_input` | 否 | silent 类型无问题时可省略或为 `""` |
+| `output` | 是 | 严格匹配四动作格式之一 |
+| `metadata.gold_action` | 是 | `silent \| response \| recall \| compress \| merge_compress` |
+
+### 13.2 Special Token 对齐
+
+Pipeline 产出的 output 字段中使用以下 token，SFT 代码必须在 `init_processor` 中添加：
+
+```
+基础 token（已有）：<think> </think> <silent> <response> </response>
+                    <action> </action> <query> </query>
+                    <recall_result> </recall_result>
+
+新增 token（per-timestep 格式需要）：
+    <compressed> </compressed>       — memory block 中标记压缩段
+    <pending> </pending>             — memory block 中标记待解决问题
+    <compress_trigger> </compress_trigger> — 系统触发压缩的 user input
+    <summary> </summary>            — compress action 的 payload
+```
+
+### 13.3 Visual Window 加载约定
+
+SFT 代码通过 `load_video_frames()` 加载视觉帧。Pipeline 产出的 `visual_window` 字段遵循以下约定：
+
+- `video_start` / `video_end`：绝对秒数，SFT 代码直接传给 `load_video_frames`
+- `frames`：总帧数 = `VISUAL_WINDOW_CHUNKS × FRAMES_PER_CHUNK` = 12 × 2 = 24
+- 帧加载使用 ghost message 模式，一次调用 `process_vision_info` 加载全部 24 帧
+- Recalled frames 单独加载（另一次 `process_vision_info` 调用，4 帧）
+
+### 13.4 Phase 分配与数据集切分
+
+Pipeline Pass 5 输出 `train.jsonl` / `val.jsonl` / `test.jsonl`。
+SFT 训练时按 `phase` 字段过滤样本：
+
+```python
+# Phase 1 训练：只加载 phase="1" 的样本
+samples = [s for s in all_samples if s["phase"] == "1"]
+```
+
+各 Phase 的训练顺序、学习率、epoch 数等超参见 `sft_engineering.md` §7。

@@ -1,5 +1,10 @@
 # Streaming Video Agent Data Construction
 
+> **DEPRECATED**: This document describes the v3.0 multi-turn conversation format.
+> The current design uses **per-timestep independent samples** (v5.6+).
+> See `data_construction_zh.md` for the authoritative specification
+> and `sft_engineering.md` for the SFT training design.
+
 > Version: v3.0 | Date: 2026-04-20
 > 
 > Changelog:
