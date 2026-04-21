@@ -105,8 +105,8 @@ VLLM_PREFILL_BATCH_TOKEN_BUDGET = 2_000_000  # 8×ML300: KV only 5.6% at 64 conc
 # vLLM: --limit-mm-per-prompt '{"image":28}' to accommodate recall.
 # Thinking tokens estimated at ~2K per request (varies).
 PASS_CONTEXT_ESTIMATES = {
-    "pass1_evidence": {"input": 10_000, "output": 16_384, "thinking": 0},
-    "pass2_rollout":  {"input": 10_000, "output": 16_384, "thinking": 0},
+    "pass1_evidence": {"input": 10_000, "output": 5_000, "thinking": 0},
+    "pass2_rollout":  {"input": 10_000, "output": 5_000, "thinking": 0},
     # Text passes: max_tokens=65536 is ceiling, actual output ~2-5K.
     # Estimates use realistic values for concurrency clamping, not max_tokens.
     "pass3_tasks":    {"input": 4_000,  "output": 5_000, "thinking": 0},
@@ -207,14 +207,14 @@ PASS_CONFIG = {
         "max_tokens": 16384,
         "temperature": 0.3,
         "thinking": True,
-        "concurrent_videos": 8,
+        "concurrent_videos": 64,
     },
     "pass2_rollout": {
         "max_tokens_observation": 16384,
         "max_tokens_compress": 16384,
         "temperature": 0.3,
         "thinking": True,
-        "concurrent_videos": 8,
+        "concurrent_videos": 64,
     },
     "pass3_tasks": {
         "max_tokens": 65536,

@@ -1023,7 +1023,7 @@ class TestSafeConcurrency:
         from scripts.agent_data_v5.config import safe_concurrency_for_pass
         # Should return a positive integer <= the configured value
         c1 = safe_concurrency_for_pass("pass1_evidence")
-        assert 1 <= c1 <= 16  # vision pass, limited by token budget
+        assert 1 <= c1 <= 64  # all passes support up to 64 concurrent
         c3 = safe_concurrency_for_pass("pass3_tasks")
         assert 1 <= c3 <= 64  # text pass, high concurrency
 
