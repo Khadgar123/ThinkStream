@@ -217,10 +217,11 @@ class TestBuildMessages:
         msgs = build_per_timestep_messages(sample, Path("/data"))
 
         user_texts = [c["text"] for c in msgs[1]["content"] if c.get("type") == "text"]
-        memory_text = user_texts[0]
-        assert "<memory>" in memory_text
-        assert "</memory>" in memory_text
-        assert "[6-8] Chef places cutting board" in memory_text
+        # Memory is now AFTER visual_window (video-first layout v3.0)
+        memory_texts = [t for t in user_texts if "<memory>" in t]
+        assert len(memory_texts) == 1
+        assert "</memory>" in memory_texts[0]
+        assert "[6-8] Chef places cutting board" in memory_texts[0]
 
     def test_visual_window_header_has_current_time(self):
         """P0-3: visual_window must contain current_time."""
@@ -255,7 +256,7 @@ class TestBuildMessages:
         assert "What color" in user_input_texts[0]
 
     def test_recall_response_has_all_blocks(self):
-        """P0-1: recall_result before user_input. P0-2: recalled_frames top-level."""
+        """v3.0 ordering: visual_window → recalled_frames → memory → recall_result → user_input."""
         from thinkstream.sft.data_processor import build_per_timestep_messages
 
         sample = _make_recall_response_sample()
@@ -271,9 +272,15 @@ class TestBuildMessages:
         assert "<user_input>" in full_text
         assert "<pending>" in full_text
 
-        # recall_result must come before user_input
+        # v3.0 ordering: visual_window before memory, memory before user_input
+        vw_pos = full_text.index("<visual_window>")
+        rf_pos = full_text.index("<recalled_frames>")
+        mem_pos = full_text.index("<memory>")
         rr_pos = full_text.index("<recall_result>")
         ui_pos = full_text.index("<user_input>")
+        assert vw_pos < rf_pos, "visual_window must precede recalled_frames"
+        assert rf_pos < mem_pos, "recalled_frames must precede memory"
+        assert mem_pos < rr_pos, "memory must precede recall_result"
         assert rr_pos < ui_pos, "recall_result must precede user_input (P0-1)"
 
     def test_recall_response_has_two_video_entries(self):

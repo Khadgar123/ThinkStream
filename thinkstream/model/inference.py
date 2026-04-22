@@ -1653,6 +1653,13 @@ def streaming_video_chat(
     """
     High-level streaming video inference **generator**.
 
+    .. deprecated:: v3.0
+        This function uses multi-turn KV-cache streaming format (no ``<memory>``
+        tags, no explicit memory management) which does NOT match the per-timestep
+        SFT training format. For train/inference consistency, use
+        :class:`thinkstream.model.agent_loop.StreamingAgentLoop` instead.
+        Retained for backward compatibility with existing eval and GRPO code.
+
     Reads a video, splits it into temporal chunks, feeds each chunk through
     a :class:`StreamingWindowInferenceEngine`, and **yields** a result dict
     after every chunk.  Queries (user questions / prompts) are injected into

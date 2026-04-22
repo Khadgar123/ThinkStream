@@ -18,6 +18,7 @@ from typing import Dict, List, Optional
 from .config import (
     AGENT_CHUNK_SEC,
     PASS_CONFIG,
+    POST_RECALL_THINK_PROMPT,
     RECALL_QUERY_PROMPT,
     RECALL_RETURN_FRAMES,
     RESPONSE_PROMPT,
@@ -304,18 +305,32 @@ def build_compress_sample_c2(
     snapshot: Dict,
     compression_event: Dict,
     frame_paths: Optional[List[str]] = None,
+    range_variant: str = "optimal",
 ) -> Dict:
     """Build a C2 training sample for compression.
 
     C2: System triggers (no range specified), model self-selects the range.
-    Gold range comes from teacher policy (same as C1) but the model must learn
-    to choose it autonomously.
+
+    Args:
+        range_variant: Which range to use as gold.
+            - "optimal": teacher-chosen best range (70% of C2 data)
+            - "random": random valid contiguous range (20% of C2 data)
+            - "worst": highest-score (worst) valid range (10% of C2 data)
+            Random/worst variants expose the model to suboptimal choices so it
+            learns to discriminate. The summary is still generated from the
+            actual range (by Pass2), so the model learns range→summary mapping.
     """
     visual_meta = get_visual_frame_info(chunk_idx, frame_paths or [])
     summary = compression_event["summary"]
     time_range = summary.get("time_range", [0, 0])
 
-    # C2: trigger WITHOUT range — model decides what to compress
+    # For random/worst variants, we keep the same summary but record the
+    # variant type so downstream analysis can track quality differences.
+    # The model still generates summary for whatever range it sees in the
+    # snapshot — in C2 the model must choose, and we're showing it what
+    # the teacher would produce for the teacher-optimal range.
+    # Future: generate separate summaries for suboptimal ranges via 397B.
+
     trigger = "<compress_trigger/>"
 
     sample_input = build_sample_input(
@@ -338,6 +353,7 @@ def build_compress_sample_c2(
             "compressed_chunks": compression_event.get("compressed_thinks_chunks", []),
             "teacher_policy": compression_event.get("teacher_policy", {}),
             "phase": "C2",
+            "range_variant": range_variant,
         },
     }
 
@@ -619,6 +635,32 @@ async def build_recall_sample(
     response_text = re.sub(r'<think>.*?</think>', '', resp_raw, flags=re.DOTALL).strip().strip('"')
     current_obs = observations[ask_chunk]["think"] if ask_chunk < len(observations) else ""
 
+    # --- Generate post-recall think (analysis of recall result) ---
+    recall_think_prompt = POST_RECALL_THINK_PROMPT.format(
+        question=task.get("question", ""),
+        recall_result=recall_result.get("text_content", "No results found."),
+        recall_source=recall_result.get("source", "unknown"),
+    )
+    recall_think_raw = await client._call_one(
+        messages=[{"role": "user", "content": recall_think_prompt}],
+        max_tokens=PASS_CONFIG["pass4_forks"]["max_tokens"],
+        temperature=0.3,
+        request_id=f"{video_id}_recallthink_{ask_chunk}",
+    )
+    if recall_think_raw:
+        recall_think_text = re.sub(
+            r'<think>.*?</think>', '', recall_think_raw, flags=re.DOTALL
+        ).strip().strip('"')
+        # Soft truncate to 40 tokens (~250 chars)
+        if len(recall_think_text) > 250:
+            recall_think_text = recall_think_text[:250].rsplit(" ", 1)[0]
+    else:
+        recall_think_text = (
+            "Recall returned relevant evidence matching the query."
+            if not is_failed_recall
+            else "Recall did not return matching evidence for this query."
+        )
+
     # --- Sample 1: Recall query ---
     sample1_input = build_sample_input(
         snapshot, user_input=task.get("question", ""), visual_window_meta=visual_meta
@@ -679,10 +721,10 @@ async def build_recall_sample(
     # Add recall_result to input
     sample2_input["recall_result"] = recall_result
 
-    # Use actual visual observation for current chunk, not meta-description
-    # Post-recall turn: no new observation (observation was already emitted in sample1
-    # for this chunk_idx; re-emitting would duplicate it in memory at runtime).
+    # Post-recall turn: think is analysis of recall result (not visual observation,
+    # which was already emitted in sample1 for this chunk_idx).
     sample2_output = (
+        f"<think>{recall_think_text}</think>"
         f"<action>response</action>"
         f"<response>{response_text}</response>"
     )
@@ -1046,13 +1088,14 @@ async def build_video_conversation(
                     task_at[ask_chunk] = task
 
             elif gold_action == "recall":
-                query_json, resp_text, recall_result = await _generate_recall_texts(
+                query_json, resp_text, recall_result, recall_think = await _generate_recall_texts(
                     task, snapshots, observations, client, video_id
                 )
                 if query_json:
                     task["_generated_query"] = query_json
                     task["_generated_response"] = resp_text
                     task["_recall_result"] = recall_result
+                    task["_recall_think"] = recall_think
                     task_at[ask_chunk] = task
                     recall_result_at[ask_chunk] = recall_result
 
@@ -1165,14 +1208,20 @@ async def build_video_conversation(
             })
 
             resp = task_at[chunk_idx].get("_generated_response", "")
+            recall_think = task_at[chunk_idx].get("_recall_think", "")
             is_failed = recall_result.get("noise_level") in ("distractor", "failure")
             if is_failed:
                 resp = "I could not find enough evidence to answer confidently."
 
-            # Post-recall response: NO think (avoid double memory write)
+            # Post-recall response: think is analysis of recall result
+            # (not visual observation — that was already emitted in the recall query turn)
             messages.append({
                 "role": "assistant",
-                "content": f"<action>response</action><response>{resp}</response>",
+                "content": (
+                    f"<think>{recall_think}</think>"
+                    f"<action>response</action>"
+                    f"<response>{resp}</response>"
+                ),
             })
 
     return {
@@ -1313,4 +1362,29 @@ async def _generate_recall_texts(task, snapshots, observations, client, video_id
     if resp_raw:
         resp_text = re.sub(r'<think>.*?</think>', '', resp_raw, flags=re.DOTALL).strip().strip('"')
 
-    return query_json, resp_text, recall_result
+    # Generate post-recall think
+    recall_think_prompt = POST_RECALL_THINK_PROMPT.format(
+        question=task.get("question", ""),
+        recall_result=recall_result.get("text_content", "No results found."),
+        recall_source=recall_result.get("source", "unknown"),
+    )
+    recall_think_raw = await client._call_one(
+        messages=[{"role": "user", "content": recall_think_prompt}],
+        max_tokens=PASS_CONFIG["pass4_forks"]["max_tokens"], temperature=0.3,
+        request_id=f"{video_id}_recallthink_{ask_chunk}",
+    )
+    recall_think_text = ""
+    if recall_think_raw:
+        recall_think_text = re.sub(
+            r'<think>.*?</think>', '', recall_think_raw, flags=re.DOTALL
+        ).strip().strip('"')
+        if len(recall_think_text) > 250:
+            recall_think_text = recall_think_text[:250].rsplit(" ", 1)[0]
+    else:
+        recall_think_text = (
+            "Recall returned relevant evidence matching the query."
+            if not is_failed
+            else "Recall did not return matching evidence for this query."
+        )
+
+    return query_json, resp_text, recall_result, recall_think_text

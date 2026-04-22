@@ -681,22 +681,42 @@ class TestPass1SchemaNormalization:
 
 class TestRecallResponseGrounding:
     def test_recall_response_passes_grounding(self):
-        """recall_response with no observation should pass grounding."""
+        """recall_response with think (recall analysis) should pass grounding."""
         sample = {
-            "output": "<action>response</action><response>About one teaspoon.</response>",
+            "output": (
+                "<think>Retrieved frames show the chef adding approximately one teaspoon "
+                "of salt from the evidence at t=10-14s.</think>"
+                "<action>response</action><response>About one teaspoon.</response>"
+            ),
             "sample_type": "recall_response",
         }
         passed, reason = verify_grounding(sample)
         assert passed
 
-    def test_recall_response_fails_if_response_has_sound(self):
-        """recall_response should still fail if response contains non-visual claim."""
+    def test_recall_response_fails_if_think_has_sound(self):
+        """recall_response should fail if think contains non-visual claim."""
         sample = {
-            "output": "<action>response</action><response>I heard a sizzling sound.</response>",
+            "output": (
+                "<think>I heard a sizzling sound in the recalled evidence.</think>"
+                "<action>response</action><response>Yes.</response>"
+            ),
             "sample_type": "recall_response",
         }
         passed, reason = verify_grounding(sample)
         assert not passed
+
+    def test_recall_response_fails_if_response_has_sound(self):
+        """recall_response should still fail if response contains non-visual claim."""
+        sample = {
+            "output": (
+                "<think>Recall result shows cooking activity.</think>"
+                "<action>response</action><response>I heard a sizzling sound.</response>"
+            ),
+            "sample_type": "recall_response",
+        }
+        # Grounding only checks think, not response
+        passed, reason = verify_grounding(sample)
+        assert passed  # Think is clean, grounding passes
 
 
 # ---------------------------------------------------------------------------
@@ -750,9 +770,14 @@ class TestThinkTokenLength:
         passed, reason = verify_think_token_length(sample)
         assert passed, reason
 
-    def test_recall_response_skipped(self):
+    def test_recall_response_short_think(self):
+        """recall_response has shorter think (20-40 tokens, recall analysis)."""
         sample = {
-            "output": "<action>response</action><response>test</response>",
+            "output": (
+                "<think>Recall returned matching frames showing the chef "
+                "adding salt at the counter.</think>"
+                "<action>response</action><response>test</response>"
+            ),
             "sample_type": "recall_response",
         }
         passed, reason = verify_think_token_length(sample)

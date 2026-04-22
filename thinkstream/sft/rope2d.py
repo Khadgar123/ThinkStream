@@ -1,5 +1,5 @@
 import torch
-from typing import Dict, Optional, Sequence, List, Tuple
+from typing import Callable, Dict, Optional, Sequence, List, Tuple
 
 
 def get_rope_index_3(
@@ -331,3 +331,7 @@ def get_rope_index_25(
             )
 
         return position_ids, mrope_position_deltas
+
+
+# Re-export agent RoPE from shared module to avoid duplication.
+from thinkstream.data.rope2d import get_rope_index_agent  # noqa: E402, F401

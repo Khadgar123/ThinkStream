@@ -306,13 +306,18 @@ def build_compress_request_from_thinks(
     video_id: str,
     chunk_idx: int,
     evidence: Optional[List[Dict]] = None,
+    frame_paths: Optional[List[str]] = None,
 ) -> Dict:
-    """Build compression request using ONLY pre-action thinks.
+    """Build compression request using pre-action thinks + overlapping visual frames.
 
     Key constraint: compress range must only cover thinks that were in the
     model's INPUT (pre-action snapshot), not including the current think
-    that was just generated. This ensures the model can learn to compress
-    based on what it actually saw.
+    that was just generated.
+
+    Visual context: if the compressed range overlaps with the current visual
+    window, the overlapping frames are included so the 397B can write a more
+    precise summary (matching inference-time behavior where the model sees
+    both thinks and frames).
     """
     to_compress, policy_meta = choose_optimal_compress_range_with_meta(
         pre_action_thinks, memory.pending_questions, evidence
@@ -329,22 +334,51 @@ def build_compress_request_from_thinks(
 
     target_length = estimate_summary_length(to_compress)
 
+    # Compute overlapping frames: compress range ∩ visual window
+    window_start = max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1)
+    compress_chunks = [item["chunk"] for item in to_compress]
+    overlap_chunks = [c for c in compress_chunks if window_start <= c <= chunk_idx]
+
+    overlap_frame_paths = []
+    if frame_paths and overlap_chunks:
+        for c in overlap_chunks:
+            overlap_frame_paths.extend(get_chunk_frame_paths(frame_paths, c))
+
+    visual_context = ""
+    if overlap_frame_paths:
+        overlap_start = overlap_chunks[0] * AGENT_CHUNK_SEC
+        overlap_end = (overlap_chunks[-1] + 1) * AGENT_CHUNK_SEC
+        visual_context = (
+            f"\nVideo frames from t={int(overlap_start)}-{int(overlap_end)}s "
+            f"are provided above for reference ({len(overlap_frame_paths)} frames). "
+            f"Use them to verify entity details, counts, colors, and spatial positions.\n"
+        )
+
     prompt = COMPRESS_PROMPT.format(
         observations_text=obs_text,
+        visual_context=visual_context,
         target_length=target_length,
         start=int(first_time),
         end=int(last_time),
     )
 
+    # Build message content (with frames if available)
+    if overlap_frame_paths:
+        content = build_vision_content(prompt, overlap_frame_paths)
+    else:
+        content = prompt
+
     return {
-        "messages": [{"role": "user", "content": prompt}],
+        "messages": [{"role": "user", "content": content}],
         "max_tokens": PASS_CONFIG["pass2_rollout"]["max_tokens_compress"],
         "temperature": PASS_CONFIG["pass2_rollout"]["temperature"],
         "id": f"{video_id}_compress_{chunk_idx}",
         "_meta": {
             "time_range": [int(first_time), int(last_time)],
-            "chunks": [item["chunk"] for item in to_compress],
+            "chunks": compress_chunks,
             "teacher_policy": policy_meta,
+            "overlap_chunks": overlap_chunks,
+            "has_visual_context": bool(overlap_frame_paths),
         },
     }
 
@@ -657,7 +691,8 @@ async def run_pass2_single_video(
         # --- 3. Compress (if triggered) then append current think ---
         if should_compress_now:
             comp_request = build_compress_request_from_thinks(
-                pre_action_thinks, memory, video_id, chunk_idx, evidence=evidence
+                pre_action_thinks, memory, video_id, chunk_idx,
+                evidence=evidence, frame_paths=frame_paths,
             )
             if comp_request is None:
                 # Range selection returned empty — skip compression, just add think

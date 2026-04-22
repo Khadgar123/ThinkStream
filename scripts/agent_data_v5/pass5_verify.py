@@ -110,38 +110,46 @@ def verify_action_minimality(sample: Dict) -> Tuple[bool, str]:
 
 
 def verify_grounding(sample: Dict) -> Tuple[bool, str]:
-    """Check: observation is grounded in visual facts.
+    """Check: observation/think is grounded in facts.
 
-    No sounds, smells, emotions, intentions, speculations.
-    recall_response has no observation (already emitted in recall_query turn).
+    For most sample types: no sounds, smells, emotions, intentions, speculations.
+    For recall_response: think is analysis of recall result (not visual observation),
+    so we check both think and response for non-visual claims, but allow recall-analysis
+    phrases like "retrieved", "recall", "evidence".
     """
     output = sample.get("output", "")
     sample_type = sample.get("sample_type", "")
 
-    # recall_response intentionally omits observation — check response instead
-    if sample_type == "recall_response":
-        # Verify response doesn't contain non-visual claims
-        resp_match = re.search(r'<response>(.*?)</response>', output, re.DOTALL)
-        if not resp_match:
-            return True, "pass"  # No response to check
-        check_text = resp_match.group(1).lower()
-    else:
-        obs_match = re.search(r'<think>(.*?)</think>', output, re.DOTALL)
-        if not obs_match:
-            return False, "no_think_tag"
-        check_text = obs_match.group(1).lower()
+    obs_match = re.search(r'<think>(.*?)</think>', output, re.DOTALL)
+    if not obs_match:
+        return False, "no_think_tag"
+
+    check_text = obs_match.group(1).lower()
 
     # Blacklisted phrases (non-visual or meta-cognitive)
-    blacklist_phrases = [
-        "sound", "hear", "listen", "noise", "sizzle", "sizzling",
-        "music", "speech", "said", "talking", "voice",
-        "smell", "aroma", "scent", "fragrant", "aromatic",
-        "feels", "feeling", "emotion", "happy", "sad", "angry",
-        "probably", "likely", "seems to want", "intend",
-        "i think", "i notice", "i need", "i should", "i can see",
-        "the user wants", "the video shows",
-        "system triggered", "memory compression", "retrieved evidence",
-    ]
+    # recall_response think is about analyzing recall results, so it uses a
+    # relaxed blacklist (allow "evidence", "retrieved", etc.)
+    if sample_type == "recall_response":
+        blacklist_phrases = [
+            "sound", "hear", "listen", "noise", "sizzle", "sizzling",
+            "music", "speech", "said", "talking", "voice",
+            "smell", "aroma", "scent", "fragrant", "aromatic",
+            "feels", "feeling", "emotion", "happy", "sad", "angry",
+            "i think", "i notice", "i need", "i should",
+            "the user wants",
+            "system triggered", "memory compression",
+        ]
+    else:
+        blacklist_phrases = [
+            "sound", "hear", "listen", "noise", "sizzle", "sizzling",
+            "music", "speech", "said", "talking", "voice",
+            "smell", "aroma", "scent", "fragrant", "aromatic",
+            "feels", "feeling", "emotion", "happy", "sad", "angry",
+            "probably", "likely", "seems to want", "intend",
+            "i think", "i notice", "i need", "i should", "i can see",
+            "the user wants", "the video shows",
+            "system triggered", "memory compression", "retrieved evidence",
+        ]
 
     for phrase in blacklist_phrases:
         if phrase in check_text:
@@ -154,11 +162,10 @@ def verify_format(sample: Dict) -> Tuple[bool, str]:
     """Check: output format and length constraints."""
     output = sample.get("output", "")
 
-    # Must have observation tag (except recall_response which omits it to avoid duplication)
+    # ALL sample types must have think tags (protocol consistency)
     sample_type = sample.get("sample_type", "")
-    if sample_type != "recall_response":
-        if "<think>" not in output or "</think>" not in output:
-            return False, "missing_think_tags"
+    if "<think>" not in output or "</think>" not in output:
+        return False, "missing_think_tags"
 
     # Must have action tag
     if "<action>" not in output or "</action>" not in output:
@@ -299,17 +306,14 @@ def _compressed_source_texts(sample: Dict) -> List[str]:
 
 
 def verify_think_token_length(sample: Dict) -> Tuple[bool, str]:
-    """Check: think is within 40-60 token range.
+    """Check: think is within expected token range.
 
+    Visual observation thinks: 40-60 tokens (±10 tolerance).
+    recall_response thinks: 20-40 tokens (analysis of recall result, shorter).
     Uses student tokenizer for precise counting.
-    Allows ±10 token tolerance for edge cases.
     """
     output = sample.get("output", "")
     sample_type = sample.get("sample_type", "")
-
-    # recall_response has no think — skip
-    if sample_type == "recall_response":
-        return True, "pass"
 
     obs_match = re.search(r'<think>(.*?)</think>', output, re.DOTALL)
     if not obs_match:
@@ -320,8 +324,14 @@ def verify_think_token_length(sample: Dict) -> Tuple[bool, str]:
         return True, "pass"
 
     tok_count = _count_tokens(think_text)
-    min_tok = THINK_TOKENS[0] - 10  # 30 (tolerance)
-    max_tok = THINK_TOKENS[1] + 15  # 75 (tolerance)
+
+    # recall_response think is recall-result analysis (shorter than visual observation)
+    if sample_type == "recall_response":
+        min_tok = 10   # very short analysis is OK
+        max_tok = 50   # 40 target + 10 tolerance
+    else:
+        min_tok = THINK_TOKENS[0] - 10  # 30 (tolerance)
+        max_tok = THINK_TOKENS[1] + 15  # 75 (tolerance)
 
     if tok_count < min_tok:
         return False, f"think_tokens_too_few ({tok_count} < {min_tok})"
@@ -375,14 +385,16 @@ def verify_compression_ratio(sample: Dict) -> Tuple[bool, str]:
 
 
 def verify_summary_provenance(sample: Dict) -> Tuple[bool, str]:
-    """Check: compression summary only references content from compressed thinks.
+    """Check: compression summary references are grounded in available sources.
 
-    Core constraint #6: summary cannot introduce facts not present in the
-    thinks being compressed. This prevents "peeking" at visual frames during
-    compression to add details the thinks didn't capture.
+    The model can use both the compressed thinks AND visual frames that
+    overlap with the compressed range. Summary may refine details using
+    visible frames (e.g., correct colors, counts) but should not introduce
+    entirely new events not mentioned in any source.
 
-    Uses entity extraction: every capitalized entity/noun in the summary must
-    appear in at least one of the compressed thinks.
+    When visual context was available (has_visual_context=True in metadata),
+    we relax the threshold to 40% unsupported entities (frames may provide
+    details not captured in thinks text). Without visual context, 20% max.
     """
     sample_type = sample.get("sample_type", "")
     if sample_type != "compress":
@@ -402,14 +414,13 @@ def verify_summary_provenance(sample: Dict) -> Tuple[bool, str]:
     if not summary_text:
         return True, "pass"
 
-    # Collect content words from the exact compressed source range only.
+    # Collect content words from the compressed source range.
     source_texts = _compressed_source_texts(sample)
     source_words = set()
     for text in source_texts:
-        # Include underscore in word pattern to match entity IDs like Chef_1
         source_words.update(w.lower() for w in re.findall(r'\b[a-zA-Z0-9_]+\b', text))
 
-    # Extract entity-like words from summary (capitalized or with underscore)
+    # Extract entity-like words from summary
     summary_words = re.findall(r'\b[a-zA-Z0-9_]+\b', summary_text)
     entity_words = [
         w for w in summary_words
@@ -419,10 +430,13 @@ def verify_summary_provenance(sample: Dict) -> Tuple[bool, str]:
     if not entity_words:
         return True, "pass"
 
-    # Check: entity words in summary must have at least partial overlap with source
     unsupported = [w for w in entity_words if w.lower() not in source_words]
-    # Allow up to 20% unsupported (for rephrasing / normalization tolerance)
-    if entity_words and len(unsupported) / len(entity_words) > 0.2:
+
+    # Relax threshold when visual context was available during compression
+    has_visual = sample.get("metadata", {}).get("has_visual_context", False)
+    max_unsupported_ratio = 0.4 if has_visual else 0.2
+
+    if entity_words and len(unsupported) / len(entity_words) > max_unsupported_ratio:
         examples = unsupported[:3]
         return False, f"summary_provenance_violation: {examples} not in source thinks"
 

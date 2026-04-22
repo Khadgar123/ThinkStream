@@ -1,25 +1,21 @@
 # 流视频 Agent SFT 工程设计
 
-> 版本: v2.1 | 日期: 2026-04-22
+> 版本: v3.0 | 日期: 2026-04-22
 >
-> 配套文档：`data_construction_zh.md`（数据构造方案 v6.2）
+> 配套文档：`data_construction_zh.md` v7.0, `streaming_position_encoding.md` v1.0
 >
 > 本文档定义 **推理状态机 → SFT 训练格式 → 数据构造** 的完整链路。
 > 一切以 §0 推理状态机为源头，SFT 格式必须精确匹配推理行为。
 >
-> v2.1 变更：
-> - 对齐 `data_construction_zh.md` v6.1 + `config.py` 实际参数
-> - §7.1 修正 lr：C1 5e-6→3e-6, Phase 5 2e-6→1e-6（与 config.py PHASE_CONFIG 一致）
-> - §7.1 补充 compression hysteresis 机制说明
-> - §12 新增约束 #20-#22：recalled_frames 必须在 input 顶层、build_per_timestep_messages 死代码待清理、pipeline 所有 Pass thinking=True
-> - 标记 §9.3 已完成：`per_timestep_mask_mod` 设计已定稿
->
-> v2.0 变更（架构级）：
-> - 新增 §0 推理状态机规范（一切格式的源头定义）
-> - 确认 per-timestep re-render 方案：每步重新构造 input，不依赖 KV cache 跨步累积
-> - 推理时延分析：H100 ~200ms/step, H20 ~580ms/step（含 ViT 帧缓存），均在 2s 实时预算内
-> - 4-action protocol（加 compress），对齐 query 格式
-> - `protocol_version` 升级为 `"4action"`（区别于旧 `"3action"`）
+> 核心设计：
+> - Per-timestep re-render：每步重新构造完整 input，不依赖跨步 KV cache 累积
+> - 输入布局：**视频在前、文本在后**（`<visual_window>` → `<memory>` → `<user_input>`）
+>   - 视频区固定大小（~1536 tok），position 稳定，便于增量 KV cache 复用
+> - 时间对齐 MROPE：文本 think 的 temporal position 对齐到对应视频帧时间戳
+> - 4-action protocol：silent / response / recall / compress，`protocol_version: "4action"`
+> - 所有 action 输出统一为 `<think>...</think><action>...</action>` 格式（含 recall_response）
+> - 共享协议模块 `thinkstream/data/agent_protocol.py`：训练/推理共用输入构造代码
+> - 推理端 Agent Loop `thinkstream/model/agent_loop.py`：MemoryState + 压缩触发 + recall 编排
 
 ---
 
@@ -71,7 +67,10 @@ def inference_step(chunk_idx, video_path, memory_state, user_question=None):
     
     memory_text = "\n".join(text_parts)
     
-    # ── 2. 构造 messages（单轮）──
+    # ── 2. 构造 messages（单轮，视频在前、文本在后）──
+    # 布局: [system] [visual_window + 帧] [memory_text] [user_input]
+    # 理由: 视频区固定大小(~1536 tok)，放前面 position 稳定，便于 KV cache 复用
+    # 详见 streaming_position_encoding.md §1
     chunk_start = chunk_idx * 2.0
     window_start = max(0.0, chunk_start - 22.0)
     
@@ -80,8 +79,8 @@ def inference_step(chunk_idx, video_path, memory_state, user_question=None):
         {"role": "user", "content": [
             {"type": "video", "video": video_path,
              "video_start": window_start, "video_end": chunk_start + 2.0,
-             "nframes": 24},
-            {"type": "text", "text": memory_text},
+             "nframes": 24},                          # 视频在前（Zone B）
+            {"type": "text", "text": memory_text},    # 文本在后（Zone C）
         ]},
     ]
     
@@ -157,15 +156,27 @@ Per-step re-render 的时延在实时预算内：
 
 ## 2. 训练样本结构
 
-### 2.1 Input 编码（定稿排列）
+### 2.1 Input 编码（定稿排列 v3.0）
 
-每条样本的 user content 按以下顺序拼装。每个 block 有明确的开闭 tag，属性以 JSON 放内部（方案 B）。
+每条样本的 user content 按以下顺序拼装。**视频在前、文本在后**（v3.0 变更，详见 `streaming_position_encoding.md`）。每个 block 有明确的开闭 tag，属性以 JSON 放内部（方案 B）。
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│ [System Prompt]                                      ~150 tok  │
+│ Zone A: [System Prompt]                              ~150 tok  │
 │ 协议说明 + 四动作格式                                            │
 ├─────────────────────────────────────────────────────────────────┤
+│ Zone B: 视觉区（固定大小，position 稳定）                        │
+│ <visual_window>{"start":20,"end":44,"frames":24,    ~40 tok   │
+│   "current_time":[42,44]}</visual_window>                      │
+│ [VIDEO: 12 chunks × 2 frames = 24 frames]           ~1536 vis │
+│                                                                │
+│ (仅 recall_response 时追加)                                     │
+│ <recalled_frames>{"time_range":[2,6],                ~260 vis  │
+│   "source":"historical_frames","n_frames":4}                   │
+│ </recalled_frames>                                             │
+│ [VIDEO: 4 recalled frames]                                     │
+├─────────────────────────────────────────────────────────────────┤
+│ Zone C: 文本记忆区（可变大小，追加式增长）                        │
 │ <memory>                                             ~600-1350 │
 │   <compressed>{"time_range":[0,20],"text":"..."}</compressed>  │
 │   <compressed>{"time_range":[20,40],"text":"..."}</compressed> │
@@ -174,21 +185,12 @@ Per-step re-render 的时延在实时预算内：
 │   <pending>{"since":24,"type":"awaiting_recall_response",      │
 │             "question":"Tell me when basil added"}</pending>   │
 │ </memory>                                                      │
-├─────────────────────────────────────────────────────────────────┤
-│ <visual_window>{"start":20,"end":44,"frames":24,    ~40 tok   │
-│   "current_time":[42,44]}</visual_window>                      │
-│ [VIDEO: 12 chunks × 2 frames = 24 frames]           ~1536 vis │
-├─────────────────────────────────────────────────────────────────┤
-│ (仅 recall_response 时)                                        │
-│ <recalled_frames>{"time_range":[2,6],                ~260 vis  │
-│   "source":"historical_frames","n_frames":4}                   │
-│ </recalled_frames>                                             │
-│ [VIDEO: 4 recalled frames]                                     │
-├─────────────────────────────────────────────────────────────────┤
+│                                                                │
 │ (仅 recall_response 时)                              ~100 tok  │
 │ <recall_result>{"source":"student_think","time":"2-6",         │
 │   "text":"Retrieved: [2-4] Chef in red apron..."}</recall_result>│
 ├─────────────────────────────────────────────────────────────────┤
+│ Zone D: 用户输入区（每步变化）                                   │
 │ <user_input>What color is the apron?</user_input>    ~50 tok   │
 │ 或 <user_input><compress_trigger>{"range":[20,34]}             │
 │    </compress_trigger></user_input>                            │
@@ -201,11 +203,13 @@ Per-step re-render 的时延在实时预算内：
 
 | # | 约定 | 来源 |
 |---|------|------|
-| 1 | 顺序：`<memory>` → `<visual_window>` + 帧 → `<recalled_frames>` + 帧 → `<recall_result>` → `<user_input>` | 定稿 |
-| 2 | `recall_result` 必须在 `user_input` 之前 | P0-1 |
-| 3 | `recalled_frames` 是 `input` 顶层字段，不嵌套在 `visual_window` 内 | P0-2 |
-| 4 | `<visual_window>` JSON 含 `current_time` 字段，确保 think 只写当前 2s | P0-3 |
-| 5 | 视觉帧优先用 `frame_paths`/`frame_indices` 加载（见 §4.5） | P1-3 |
+| 1 | 顺序：`<visual_window>` + 帧 → `<recalled_frames>` + 帧 → `<memory>` → `<recall_result>` → `<user_input>` | v3.0 定稿 |
+| 2 | 视频在前、文本在后：视频区(Zone B)固定大小，position 稳定，便于 KV cache 增量复用 | `streaming_position_encoding.md` §1 |
+| 3 | `recalled_frames` 在 `visual_window` 之后、`memory` 之前（视觉区内部追加） | P0-2 |
+| 4 | `recall_result` 必须在 `user_input` 之前 | P0-1 |
+| 5 | `<visual_window>` JSON 含 `current_time` 字段，确保 think 只写当前 2s | P0-3 |
+| 6 | 文本 think 的 MROPE temporal position 对齐到对应帧的时间戳（见 `streaming_position_encoding.md` §4） | v3.0 |
+| 7 | 视觉帧优先用 `frame_paths`/`frame_indices` 加载（见 §4.5） | P1-3 |
 
 ### 2.2 Output 编码
 
@@ -310,38 +314,49 @@ Recalled frames 来自很早的时间点，它们的 block_id 远小于 output t
 Per-timestep 样本中，所有视频帧（包括 recalled）都应该对所有后续 token 可见。
 唯一需要的限制是 causal + padding，不需要视频滑动窗口。
 
-### 3.3 Recalled Frames 的 Attention 与 MROPE
+### 3.3 Token 序列、Attention 与 MROPE（v3.0 新布局）
 
 ```
-Token 序列:
-[system] [memory_text] [visual_window: 24 frames] [recalled: 4 frames] [user_input] [output]
-                       ├────── video_mask = True ──────────────────────┤
+Token 序列 (v3.0 视频在前):
+[system] [visual_window: 24 frames] [recalled: 4 frames] [memory_text] [user_input] [output]
+         ├────── video_mask = True ──────────────────────┤
 
-video_mask:     [0 0 ... 0  1 1 1 ... 1  1 1 1 1  0 0 ... 0  0 0 ... 0]
+video_mask:     [0 0 ... 0  1 1 1 ... 1  1 1 1 1  0 0 ... 0  0 0 ... 0  0 ...]
 ```
 
-**注意**：visual_window 和 recalled frames 的 `video_mask` 都为 True。
+**视频区(Zone B)在前、文本区(Zone C)在后。** 视频区固定大小，position 稳定。
+
+visual_window 和 recalled frames 的 `video_mask` 都为 True。
 区分靠 **MROPE 时间编码**，不靠 attention mask：
 - visual_window frames: `second_per_grid_ts` 基于 video_chunk_size (2s)
 - recalled frames: `second_per_grid_ts` 基于 recalled time range (如 4s)
+
+**MROPE 时间对齐** (详见 `streaming_position_encoding.md` §4, §8)：
+- 文本 think 的 temporal position = 对应帧的时间戳（如 think about t=10s → temporal_pos = encode(10)）
+- 帧已 evict 但 think 仍在时：think 保留原始时间戳，正确表达"这是旧信息"
+- recall 帧回来时：recalled frames 和 old think 的 temporal position 重新对齐
+- h/w 维度区分模态：视频用空间网格(0,1,2..)，文本用递增序号(远离视频区间)
 
 ### 3.4 验收测试（必须在训练前通过）
 
 ```python
 def test_recalled_frames_attention():
-    """P0-6 验收：output token 必须能 attend to recalled frame token。"""
-    # 构造: visual_window (24 frames) + recalled (4 frames) + text output
-    # 检查: output 位置的 attention mask 对 recalled frame 位置为 True
+    """P0-6 验收：output token 必须能 attend to recalled frame token。
+    
+    v3.0 布局: [system ~50] [visual_window ~120] [recalled ~10] [memory_text ~15] [output ~5]
+    """
     video_mask = torch.zeros(1, 200)
-    video_mask[0, 50:170] = 1  # visual window
-    video_mask[0, 170:180] = 1  # recalled frames
+    video_mask[0, 50:170] = 1  # visual window (Zone B start)
+    video_mask[0, 170:180] = 1  # recalled frames (Zone B end)
     attention_mask = torch.ones(1, 200)
     
     mask_mod = generate_per_timestep_mask_mod(video_mask, attention_mask)
-    # output token at position 195 应该能看到 recalled frame at position 175
+    # output token (pos 195) attend to recalled frame (pos 175) ✅
     assert mask_mod(0, 0, 195, 175) == True
-    # output token at position 195 应该能看到 visual window at position 100
+    # output token (pos 195) attend to visual window (pos 100) ✅
     assert mask_mod(0, 0, 195, 100) == True
+    # memory text (pos 185) attend to visual window (pos 100) ✅
+    assert mask_mod(0, 0, 185, 100) == True
     # causal: 不能看到未来
     assert mask_mod(0, 0, 100, 195) == False
 ```
@@ -352,7 +367,7 @@ def test_recalled_frames_attention():
 
 ```
 训练样本 = {
-    input:  [System] + [Memory_at_t-2] + [Visual_window_at_t-2]
+    input:  [System] + [Visual_window_at_t-2] + [Memory_at_t-2]
     turn 1: [User: chunk_t-2] → [Asst: think_t-2]  (loss OFF)
     turn 2: [User: chunk_t-1] → [Asst: think_t-1]  (loss OFF)
     turn 3: [User: chunk_t]   → [Asst: think_t]    (loss ON, 只在最后一步)
@@ -419,15 +434,17 @@ class PerTimestepDataset(Dataset):
 
 ### 4.2 Message 构建
 
-将 pipeline JSON 转为 chat template 可消费的 messages。严格遵循 §2.1 定稿排列。
+将 pipeline JSON 转为 chat template 可消费的 messages。严格遵循 §2.1 定稿排列（v3.0: 视频在前）。
+
+实现代码位于 `thinkstream/data/agent_protocol.py`（共享协议模块），训练和推理共用。
 
 ```python
 def _build_messages(self, sample):
     """Convert pipeline sample to chat messages.
     
-    顺序（不可违反）：
-    <memory> → <visual_window> + 帧 → <recalled_frames> + 帧
-    → <recall_result> → <user_input>
+    顺序（不可违反，v3.0）：
+    <visual_window> + 帧 → <recalled_frames> + 帧
+    → <memory> → <recall_result> → <user_input>
     """
     inp = sample["input"]
     
@@ -436,7 +453,9 @@ def _build_messages(self, sample):
     
     user_content = []
     
-    # ── 1. <memory> block ──
+    # ── 1. <visual_window> + 视频帧 (Zone B, 固定大小) ──
+    # ── 2. <recalled_frames> (如有) ──
+    # ── 3. <memory> block (Zone C, 可变大小) ──
     memory_text = self._format_memory_block(inp["memory"])
     user_content.append({"type": "text", "text": f"<memory>\n{memory_text}\n</memory>"})
     

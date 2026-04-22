@@ -1,0 +1,523 @@
+"""Streaming Agent Loop for inference.
+
+Single-step inference loop that mirrors the data construction pipeline exactly:
+- Maintains MemoryState (compressed_segments, recent_thinks, pending_questions)
+- System-triggered compression (token-count threshold)
+- Recall orchestration (parse query → retrieve → second generate)
+- Constructs per-timestep input matching SFT training format
+
+Each step is an independent single-turn inference (no KV cache reuse across steps).
+This guarantees train/inference format identity.
+"""
+
+import json
+import logging
+from copy import deepcopy
+from typing import Callable, Dict, List, Optional
+
+from thinkstream.data.agent_protocol import (
+    AGENT_CHUNK_SEC,
+    FRAMES_PER_CHUNK,
+    SYSTEM_PROMPT,
+    VISUAL_WINDOW_CHUNKS,
+    build_user_content,
+    format_memory_block,
+    parse_agent_output,
+)
+
+logger = logging.getLogger(__name__)
+
+# Token-based compression trigger (matches data construction config.py)
+RECENT_THINKS_TOKEN_BUDGET = 600
+COMPRESS_TRIGGER_RATIO = 0.8
+COMPRESS_TOKEN_THRESHOLD = int(RECENT_THINKS_TOKEN_BUDGET * COMPRESS_TRIGGER_RATIO)  # 480
+COMPRESS_RANGE_MIN = 4
+
+
+# ---------------------------------------------------------------------------
+# Memory State (mirrors pass2_rollout.py:MemoryState)
+# ---------------------------------------------------------------------------
+
+
+class MemoryState:
+    """Tracks the agent's text memory at each timestep.
+
+    Mirrors scripts/agent_data_v5/pass2_rollout.py:MemoryState exactly.
+    Text memory covers LONGER time than visual window.
+    """
+
+    def __init__(self, tokenizer=None):
+        self.compressed_segments: List[Dict] = []
+        self.recent_thinks: List[Dict] = []
+        self.pending_questions: List[Dict] = []
+        self._retrieval_archive: List[Dict] = []
+        self._tokenizer = tokenizer
+
+    @property
+    def retrieval_archive(self) -> List[Dict]:
+        return self._retrieval_archive
+
+    def snapshot(self, chunk_idx: int) -> Dict:
+        """Snapshot of what the model sees (no archive)."""
+        return {
+            "chunk_idx": chunk_idx,
+            "compressed_segments": deepcopy(self.compressed_segments),
+            "recent_thinks": deepcopy(self.recent_thinks),
+            "pending_questions": deepcopy(self.pending_questions),
+            "visual_window_start": max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1),
+        }
+
+    def add_think(self, chunk_idx: int, think_text: str):
+        """Add think to memory immediately."""
+        time_start = chunk_idx * AGENT_CHUNK_SEC
+        time_end = time_start + AGENT_CHUNK_SEC
+        item = {
+            "chunk": chunk_idx,
+            "time": f"{int(time_start)}-{int(time_end)}",
+            "text": think_text,
+        }
+        self.recent_thinks.append(item)
+        self._retrieval_archive.append(item)
+
+    def count_recent_tokens(self) -> int:
+        """Count total tokens in recent_thinks."""
+        total = 0
+        for item in self.recent_thinks:
+            text = item.get("text", "")
+            if self._tokenizer:
+                total += len(self._tokenizer.encode(text, add_special_tokens=False))
+            else:
+                total += len(text) // 4
+        return total
+
+    def should_compress(self) -> bool:
+        """Trigger compression when recent_thinks reach 80% of token budget."""
+        return (
+            self.count_recent_tokens() >= COMPRESS_TOKEN_THRESHOLD
+            and len(self.recent_thinks) >= COMPRESS_RANGE_MIN
+        )
+
+    def compress(self, summary: Dict, compressed_chunks: Optional[List[int]] = None):
+        """Replace specified thinks with summary in model context.
+
+        Raw thinks stay in _retrieval_archive for recall.
+        """
+        if compressed_chunks is not None:
+            chunk_set = set(compressed_chunks)
+            self.recent_thinks = [
+                t for t in self.recent_thinks if t["chunk"] not in chunk_set
+            ]
+        else:
+            self.recent_thinks = self.recent_thinks[COMPRESS_RANGE_MIN:]
+        self.compressed_segments.append(summary)
+        # Merge oldest two if over limit (MAX_COMPRESSED_SEGMENTS=5)
+        while len(self.compressed_segments) > 5:
+            seg_a = self.compressed_segments.pop(0)
+            seg_b = self.compressed_segments.pop(0)
+            combined = f'{seg_a["text"]} {seg_b["text"]}'
+            if self._tokenizer:
+                ids = self._tokenizer.encode(combined, add_special_tokens=False)
+                if len(ids) > 200:
+                    combined = self._tokenizer.decode(ids[:200])
+            merged = {
+                "time_range": [seg_a["time_range"][0], seg_b["time_range"][1]],
+                "text": combined,
+                "merged": True,
+                "merge_level": max(
+                    seg_a.get("merge_level", 1), seg_b.get("merge_level", 1)
+                ) + 1,
+            }
+            self.compressed_segments.insert(0, merged)
+
+    def add_pending(self, question: str, since_chunk: int):
+        self.pending_questions.append({
+            "question": question,
+            "since_chunk": since_chunk,
+        })
+
+    def resolve_pending(self, question: str):
+        """Remove a pending question after it's been answered."""
+        self.pending_questions = [
+            pq for pq in self.pending_questions if pq["question"] != question
+        ]
+
+
+# format_memory_block, build_user_content, parse_agent_output are imported
+# from thinkstream.data.agent_protocol (single source of truth).
+
+
+def build_single_step_messages(
+    snapshot: Dict,
+    chunk_idx: int,
+    video_path: str,
+    *,
+    user_input: str = "",
+    recalled_frames: Optional[Dict] = None,
+    recall_result: Optional[Dict] = None,
+    min_pixels: int = 100352,
+    max_pixels: int = 150528,
+) -> List[Dict]:
+    """Build single-step chat messages matching training format.
+
+    Delegates text formatting to shared agent_protocol.build_user_content.
+    """
+    memory_text = format_memory_block(snapshot)
+    user_content = build_user_content(
+        memory_text,
+        chunk_idx,
+        video_path,
+        user_input=user_input,
+        recalled_frames=recalled_frames,
+        recall_result=recall_result,
+        min_pixels=min_pixels,
+        max_pixels=max_pixels,
+    )
+
+    return [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "user", "content": user_content},
+    ]
+
+
+# ---------------------------------------------------------------------------
+# Simple Retrieval (for recall action)
+# ---------------------------------------------------------------------------
+
+
+def bm25_retrieve(
+    query: Dict,
+    archive: List[Dict],
+    max_results: int = 4,
+) -> Dict:
+    """BM25-based retrieval from archive.
+
+    Uses rank_bm25 if available, falls back to keyword overlap.
+    Returns recall_result dict with text_content and returned_chunks.
+    """
+    query_text = query.get("query", "")
+    if not query_text.strip() or not archive:
+        return {
+            "source": "failure",
+            "time": "",
+            "text_content": "No matching results found.",
+            "returned_chunks": [],
+        }
+
+    texts = [item.get("text", "") for item in archive]
+
+    try:
+        from rank_bm25 import BM25Okapi
+        tokenized = [t.lower().split() for t in texts]
+        bm25 = BM25Okapi(tokenized)
+        scores = bm25.get_scores(query_text.lower().split())
+        top_indices = sorted(range(len(scores)), key=lambda i: -scores[i])[:max_results]
+        top_indices = [i for i in top_indices if scores[i] > 0]
+    except ImportError:
+        # Fallback: keyword overlap scoring
+        query_words = set(query_text.lower().split())
+        scored = []
+        for i, text in enumerate(texts):
+            text_words = set(text.lower().split())
+            overlap = len(query_words & text_words)
+            if overlap > 0:
+                scored.append((overlap, i))
+        scored.sort(key=lambda x: -x[0])
+        top_indices = [i for _, i in scored[:max_results]]
+
+    if not top_indices:
+        return {
+            "source": "failure",
+            "time": "",
+            "text_content": "No matching results found.",
+            "returned_chunks": [],
+        }
+
+    top_items = [archive[i] for i in top_indices]
+    returned_chunks = [item["chunk"] for item in top_items]
+    text_parts = [f'[{item["time"]}] {item["text"]}' for item in top_items]
+
+    t_start = returned_chunks[0] * AGENT_CHUNK_SEC
+    t_end = (returned_chunks[-1] + 1) * AGENT_CHUNK_SEC
+
+    return {
+        "source": "historical_frames",
+        "time": f"{int(t_start)}-{int(t_end)}",
+        "text_content": "\n".join(text_parts),
+        "returned_chunks": sorted(returned_chunks),
+    }
+
+
+# Backward compat alias
+simple_retrieve = bm25_retrieve
+
+
+# ---------------------------------------------------------------------------
+# Generate Function Adapter
+# ---------------------------------------------------------------------------
+
+
+def make_generate_fn(
+    model,
+    processor,
+    model_type: str = "qwen3vl",
+    device: str = "cuda",
+):
+    """Create a generate_fn compatible with StreamingAgentLoop.
+
+    Wraps a HuggingFace model (Qwen2.5-VL / Qwen3-VL) into a callable:
+        generate_fn(messages, processor, max_new_tokens, **kwargs) -> str
+
+    This uses standard HF generate (no CUDA graph / StreamingInferenceEngine).
+    For production, replace with vLLM or StreamingInferenceEngine adapter.
+    """
+    import torch
+    from thinkstream.data.stream_data_processor import compute_position_ids
+
+    @torch.inference_mode()
+    def generate_fn(
+        messages,
+        processor,
+        max_new_tokens=256,
+        **kwargs,
+    ) -> str:
+        # 1. Apply chat template
+        text_prompt = processor.apply_chat_template(
+            messages, tokenize=False, add_generation_prompt=True,
+        )
+
+        # 2. Process with vision
+        inputs = processor(
+            text=[text_prompt],
+            return_tensors="pt",
+        )
+
+        # 3. Compute position IDs
+        inputs_for_rope = dict(inputs)
+        inputs_for_rope["video_chunk_size"] = 2.0  # AGENT_CHUNK_SEC
+        inputs["position_ids"] = compute_position_ids(
+            inputs_for_rope, processor, model_type,
+        )
+
+        inputs = inputs.to(device)
+
+        # 4. Generate
+        output_ids = model.generate(
+            **inputs,
+            max_new_tokens=max_new_tokens,
+            do_sample=True,
+            temperature=kwargs.get("temperature", 0.7),
+            top_k=kwargs.get("top_k", 50),
+            top_p=kwargs.get("top_p", 0.95),
+        )
+
+        # 5. Decode (only new tokens)
+        input_len = inputs["input_ids"].shape[1]
+        new_ids = output_ids[0, input_len:]
+        return processor.tokenizer.decode(new_ids, skip_special_tokens=False)
+
+    return generate_fn
+
+
+# ---------------------------------------------------------------------------
+# Streaming Agent Loop
+# ---------------------------------------------------------------------------
+
+
+class StreamingAgentLoop:
+    """Single-step inference loop matching training data format exactly.
+
+    Each step constructs a complete single-turn input (memory + visual_window
+    + user_input) and runs a fresh forward pass. No KV cache reuse across steps.
+
+    Usage::
+
+        loop = StreamingAgentLoop(generate_fn, tokenizer, processor)
+        for chunk_idx in range(num_chunks):
+            result = loop.step(
+                chunk_idx=chunk_idx,
+                video_path=video_path,
+                user_question=question if chunk_idx == ask_chunk else None,
+            )
+            if result["action"] == "response":
+                print(result["payload"]["response"])
+                break
+    """
+
+    def __init__(
+        self,
+        generate_fn: Callable,
+        tokenizer,
+        processor,
+        *,
+        model_type: str = "qwen3vl",
+        min_pixels: int = 100352,
+        max_pixels: int = 150528,
+        max_new_tokens: int = 256,
+        retrieve_fn: Optional[Callable] = None,
+    ):
+        """
+        Args:
+            generate_fn: Callable that takes (messages, processor, **kwargs)
+                         and returns generated text string.
+            tokenizer: Tokenizer for token counting.
+            processor: HuggingFace processor for tokenization + vision.
+            model_type: "qwen2.5vl" or "qwen3vl".
+            retrieve_fn: Optional custom retrieval function. Defaults to
+                         simple_retrieve using the memory archive.
+        """
+        self.generate_fn = generate_fn
+        self.processor = processor
+        self.model_type = model_type
+        self.min_pixels = min_pixels
+        self.max_pixels = max_pixels
+        self.max_new_tokens = max_new_tokens
+        self.retrieve_fn = retrieve_fn or simple_retrieve
+        self.memory = MemoryState(tokenizer=tokenizer)
+
+    def reset(self):
+        """Reset for a new video."""
+        self.memory = MemoryState(tokenizer=self.memory._tokenizer)
+
+    def step(
+        self,
+        chunk_idx: int,
+        video_path: str,
+        user_question: Optional[str] = None,
+        **generate_kwargs,
+    ) -> Dict:
+        """Execute one agent step (one chunk).
+
+        Returns parsed output dict with keys: think, action, payload.
+        Handles compression trigger and recall orchestration internally.
+        """
+        # 1. Snapshot BEFORE this step
+        snapshot = self.memory.snapshot(chunk_idx)
+
+        # 2. Check compression trigger (system-triggered, not model-triggered)
+        compress_trigger = ""
+        if self.memory.should_compress():
+            compress_trigger = "<compress_trigger/>"
+
+        # 3. Determine user_input
+        user_input = ""
+        if compress_trigger and not user_question:
+            # Compression takes priority when no user question
+            user_input = compress_trigger
+        elif user_question:
+            user_input = user_question
+
+        # 4. Build single-step messages (matching training format)
+        messages = build_single_step_messages(
+            snapshot,
+            chunk_idx,
+            video_path,
+            user_input=user_input,
+            min_pixels=self.min_pixels,
+            max_pixels=self.max_pixels,
+        )
+
+        # 5. Generate
+        output_text = self.generate_fn(
+            messages=messages,
+            processor=self.processor,
+            max_new_tokens=self.max_new_tokens,
+            **generate_kwargs,
+        )
+
+        # 6. Parse output
+        parsed = parse_agent_output(output_text)
+
+        # 7. Update memory state based on action
+        if parsed["think"]:
+            self.memory.add_think(chunk_idx, parsed["think"])
+
+        if parsed["action"] == "compress":
+            summary = parsed["payload"].get("summary", {})
+            if summary and "time_range" in summary:
+                # Determine which chunks were compressed from time_range
+                tr = summary["time_range"]
+                compressed_chunks = []
+                for t in self.memory.recent_thinks:
+                    chunk_start = t["chunk"] * AGENT_CHUNK_SEC
+                    chunk_end = chunk_start + AGENT_CHUNK_SEC
+                    if chunk_start >= tr[0] and chunk_end <= tr[1]:
+                        compressed_chunks.append(t["chunk"])
+                self.memory.compress(summary, compressed_chunks=compressed_chunks)
+
+        elif parsed["action"] == "recall":
+            # Orchestrate recall: retrieve → build recall_response input → second generate
+            query = parsed["payload"].get("query", {})
+            if query:
+                recall_result = self.retrieve_fn(
+                    query, self.memory.retrieval_archive
+                )
+                returned_chunks = recall_result.get("returned_chunks", [])
+
+                # Build recalled_frames info
+                recalled_frames = None
+                if returned_chunks and recall_result.get("source") == "historical_frames":
+                    t_start = returned_chunks[0] * AGENT_CHUNK_SEC
+                    t_end = (returned_chunks[-1] + 1) * AGENT_CHUNK_SEC
+                    recalled_frames = {
+                        "time_range": [int(t_start), int(t_end)],
+                        "n_frames": len(returned_chunks) * FRAMES_PER_CHUNK,
+                        "source": "historical_frames",
+                    }
+
+                # Update snapshot with pending question
+                snapshot_with_pending = deepcopy(snapshot)
+                if user_question:
+                    snapshot_with_pending["pending_questions"] = [{
+                        "question": user_question,
+                        "since_chunk": chunk_idx,
+                        "last_action": "recall",
+                        "query": query,
+                    }]
+
+                # Build recall_response input
+                recall_messages = build_single_step_messages(
+                    snapshot_with_pending,
+                    chunk_idx,
+                    video_path,
+                    user_input="Continue following the protocol to respond.",
+                    recalled_frames=recalled_frames,
+                    recall_result=recall_result,
+                    min_pixels=self.min_pixels,
+                    max_pixels=self.max_pixels,
+                )
+
+                # Second generate (allow_recall=False to prevent infinite loop)
+                recall_gen_kwargs = dict(generate_kwargs)
+                recall_gen_kwargs["allow_recall"] = False
+                recall_output_text = self.generate_fn(
+                    messages=recall_messages,
+                    processor=self.processor,
+                    max_new_tokens=self.max_new_tokens,
+                    **recall_gen_kwargs,
+                )
+
+                recall_parsed = parse_agent_output(recall_output_text)
+                # Add recall think to memory (this is the recall-result analysis)
+                if recall_parsed["think"]:
+                    # Don't double-add: recall_response think goes to archive
+                    # but not to recent_thinks (same chunk already has a think)
+                    self.memory._retrieval_archive.append({
+                        "chunk": chunk_idx,
+                        "time": f"{chunk_idx * AGENT_CHUNK_SEC}-{(chunk_idx + 1) * AGENT_CHUNK_SEC}",
+                        "text": recall_parsed["think"],
+                    })
+
+                # Merge recall results into parsed output
+                parsed["recall_step2"] = recall_parsed
+                parsed["recall_result"] = recall_result
+                # Override action to the final action (response or silent)
+                if recall_parsed["action"] in ("response", "silent"):
+                    parsed["final_action"] = recall_parsed["action"]
+                    parsed["final_payload"] = recall_parsed["payload"]
+
+        elif parsed["action"] == "response":
+            # Resolve any pending question
+            if user_question:
+                self.memory.resolve_pending(user_question)
+
+        return parsed

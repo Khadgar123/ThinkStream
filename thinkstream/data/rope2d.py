@@ -373,7 +373,75 @@ def get_rope_index_25(
         return position_ids, mrope_position_deltas
 
 
+def get_rope_index_agent(
+    spatial_merge_size: Optional[int] = 2,
+    input_ids: Optional[torch.LongTensor] = None,
+    image_grid_thw: Optional[torch.LongTensor] = None,
+    video_grid_thw: Optional[torch.LongTensor] = None,
+    second_per_grid_ts: Optional[torch.Tensor] = None,
+    attention_mask: Optional[torch.Tensor] = None,
+    text_temporal_positions: Optional[list] = None,
+    base_model_type: str = "qwen2.5vl",
+) -> Tuple[torch.Tensor, torch.Tensor]:
+    """Agent-specific MROPE with temporal alignment for text tokens.
+
+    Wraps the base model's RoPE function and then overrides the temporal
+    dimension (dim=0) for specified text token spans so that text thinks
+    share the same temporal position as their corresponding video frames.
+
+    Args:
+        text_temporal_positions: Per-batch list of span annotations.
+            Each entry is a list of (token_start, token_end, timestamp_sec)
+            tuples. timestamp_sec is converted to the same temporal scale
+            as video frame positions.
+            Example: [[(150, 200, 10.0), (200, 250, 12.0)]]
+            means tokens 150-200 get temporal_pos matching t=10s video frames.
+        base_model_type: "qwen2.5vl" or "qwen3vl", selects base RoPE function.
+
+    Returns:
+        position_ids: (3, B, L) tensor with temporal dim aligned.
+        mrope_position_deltas: (B, 1) tensor.
+    """
+    base_fn = get_rope_index_25 if base_model_type == "qwen2.5vl" else get_rope_index_3
+
+    position_ids, deltas = base_fn(
+        spatial_merge_size=spatial_merge_size,
+        input_ids=input_ids,
+        image_grid_thw=image_grid_thw,
+        video_grid_thw=video_grid_thw,
+        second_per_grid_ts=second_per_grid_ts,
+        attention_mask=attention_mask,
+    )
+
+    if text_temporal_positions is None or position_ids.ndim != 3:
+        return position_ids, deltas
+
+    # Override temporal dimension for annotated text spans.
+    # Video temporal encoding in Qwen2.5-VL: temporal_pos = frame_idx * second_per_grid_t * 2
+    # For text alignment we use: temporal_pos = timestamp_sec * 2 (matching the scale)
+    # For Qwen3-VL (temporal always 0), this override has minimal effect but
+    # still provides a relative temporal signal between text spans.
+    for batch_idx, spans in enumerate(text_temporal_positions):
+        if spans is None:
+            continue
+        for (tok_start, tok_end, timestamp_sec) in spans:
+            if tok_start >= position_ids.shape[2] or tok_end > position_ids.shape[2]:
+                continue
+            temporal_pos = int(timestamp_sec * 2)
+            # Only override dim=0 (temporal). dim=1 (height) and dim=2 (width)
+            # keep their original incremental values to distinguish modality.
+            position_ids[0, batch_idx, tok_start:tok_end] = temporal_pos
+
+    return position_ids, deltas
+
+
 ROPE_INDEX_FN: Dict[str, Callable] = {
     "qwen2.5vl": get_rope_index_25,
     "qwen3vl": get_rope_index_3,
+}
+
+# Agent-specific RoPE with temporal alignment (used by SFT data_processor)
+ROPE_INDEX_FN_AGENT: Dict[str, Callable] = {
+    "qwen2.5vl": lambda **kw: get_rope_index_agent(base_model_type="qwen2.5vl", **kw),
+    "qwen3vl": lambda **kw: get_rope_index_agent(base_model_type="qwen3vl", **kw),
 }

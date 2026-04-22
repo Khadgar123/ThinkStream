@@ -534,6 +534,103 @@ def mcq_predict_streaming(
         return np.array(predictions), datums, 0
 
 
+# ─── Agent Loop Eval (v3.0: single-step format, matching training) ───────────
+
+
+def mcq_predict_agent_loop(
+    model,
+    processor,
+    dataset,
+    model_type: str,
+    *,
+    max_new_tokens: int = MAX_NEW_TOKENS,
+    min_pixels: int = MIN_PIXELS,
+    max_pixels: int = MAX_PIXELS,
+    frames_per_chunk: int = FRAMES_PER_CHUNK,
+    question_prefix: str = "",
+    question_postfix: str = "\nAnswer with a single letter.",
+    rank: int = 0,
+    world_size: int = 1,
+):
+    """MCQ prediction using StreamingAgentLoop (v3.0 single-step format).
+
+    This ensures eval uses EXACTLY the same input format as SFT training:
+    video-first layout, <memory> tags, <visual_window> tags, etc.
+
+    Falls back to mcq_predict_streaming if agent_loop dependencies unavailable.
+    """
+    from thinkstream.model.agent_loop import (
+        StreamingAgentLoop,
+        make_generate_fn,
+        AGENT_CHUNK_SEC,
+    )
+    from thinkstream.data.agent_protocol import parse_agent_output
+
+    tokenizer = processor.tokenizer
+    generate_fn = make_generate_fn(model, processor, model_type=model_type)
+
+    predictions = []
+    datums = []
+
+    sampler = NoPadDistributedSampler(dataset, world_size, rank)
+    for idx in tqdm.tqdm(sampler, desc="AgentLoop eval", disable=(rank != 0)):
+        datum = dataset.data[idx]
+        video_path = os.path.join(dataset.data_dir, datum["video"])
+
+        if "options" in datum and datum["options"]:
+            query = question_prefix + datum["question"] + "\n" + "\n".join(datum["options"]) + question_postfix
+        else:
+            query = datum["question"]
+
+        # Determine timing
+        video_end = datum.get("video_end")
+        video_start = datum.get("video_start", 0.0)
+        if video_end is None:
+            continue
+
+        query_ts = video_end
+        num_chunks = int((video_end - video_start) / AGENT_CHUNK_SEC)
+        ask_chunk = max(0, num_chunks - 1)
+
+        # Run agent loop
+        loop = StreamingAgentLoop(
+            generate_fn=generate_fn,
+            tokenizer=tokenizer,
+            processor=processor,
+            model_type=model_type,
+            min_pixels=min_pixels,
+            max_pixels=max_pixels,
+            max_new_tokens=max_new_tokens,
+        )
+
+        answer_text = ""
+        for chunk_idx in range(num_chunks):
+            q = query if chunk_idx == ask_chunk else None
+            result = loop.step(chunk_idx=chunk_idx, video_path=video_path, user_question=q)
+
+            if result["action"] == "response":
+                answer_text = result["payload"].get("response", "")
+                break
+            elif result["action"] == "recall" and result.get("final_action") == "response":
+                answer_text = result.get("final_payload", {}).get("response", "")
+                break
+
+        # Map answer to option index
+        options = datum.get("options", [])
+        pred_idx = 0
+        if options and answer_text:
+            answer_upper = answer_text.strip().upper()
+            for i, opt in enumerate(options):
+                if opt.startswith(answer_upper[:1]) or answer_upper[:1] == chr(65 + i):
+                    pred_idx = i
+                    break
+
+        predictions.append(pred_idx)
+        datums.append(datum)
+
+    return np.array(predictions), datums, 0
+
+
 # ─── Results I/O ─────────────────────────────────────────────────────────────
 
 

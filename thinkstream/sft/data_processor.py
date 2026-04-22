@@ -137,36 +137,28 @@ def register_special_tokens(processor, model_type: str):
 # Message construction (pipeline JSON → Qwen chat messages)
 # ---------------------------------------------------------------------------
 
+# Import shared protocol for memory formatting.
+# The canonical format_memory_block lives in agent_protocol to guarantee
+# train/inference identity. This wrapper handles the pipeline JSON structure.
+from thinkstream.data.agent_protocol import format_memory_block as _shared_format_memory
+
+
 def _format_memory_block(memory: Dict) -> str:
-    """Format memory state as text. Approach B: JSON inside tags."""
-    parts = []
-
-    for seg in memory.get("compressed", []):
-        seg_json = json.dumps(
-            {"time_range": seg["time_range"], "text": seg["text"]},
-            ensure_ascii=False,
-        )
-        parts.append(f"<compressed>{seg_json}</compressed>")
-
-    for think in memory.get("recent_thinks", []):
-        parts.append(think)
-
-    for pq in memory.get("pending", []):
-        pq_json = json.dumps(
-            {"since": pq["since"], "question": pq["question"]},
-            ensure_ascii=False,
-        )
-        parts.append(f"<pending>{pq_json}</pending>")
-
-    return "\n".join(parts)
+    """Format memory state as text. Delegates to shared agent_protocol."""
+    return _shared_format_memory(memory)
 
 
 def build_per_timestep_messages(sample: Dict, base_path: Path) -> List[Dict]:
     """Convert pipeline JSON sample to Qwen chat messages.
 
-    Ordering (sft_engineering.md §2.1, must not violate):
-    <memory> → <visual_window> + frames → <recalled_frames> + frames
+    Ordering (sft_engineering.md v3.0 §2.1, must not violate):
+    <visual_window> + frames → <recalled_frames> + frames → <memory>
     → <recall_result> → <user_input>
+
+    NOTE: This function handles pipeline-specific concerns (frame_paths vs
+    video_path resolution, base_path joining) that the shared agent_protocol
+    doesn't need to know about. The TEXT format (tags, JSON structure) is
+    delegated to agent_protocol to guarantee train/inference identity.
     """
     inp = sample["input"]
     chunk_idx = sample["chunk_idx"]
@@ -175,17 +167,10 @@ def build_per_timestep_messages(sample: Dict, base_path: Path) -> List[Dict]:
     # ── System prompt ──
     messages = [{"role": "system", "content": inp["system"]}]
 
-    # ── User content ──
+    # ── User content (视频在前、文本在后，匹配 agent_protocol.build_user_content) ──
     user_content = []
 
-    # 1. Memory block
-    memory_text = _format_memory_block(inp["memory"])
-    user_content.append({
-        "type": "text",
-        "text": f"<memory>\n{memory_text}\n</memory>",
-    })
-
-    # 2. Visual window header + video frames
+    # ── Zone B: Visual window + video frames ──
     vw = inp["visual_window"]
     current_start = chunk_idx * chunk_sec
     current_end = current_start + chunk_sec
@@ -197,10 +182,9 @@ def build_per_timestep_messages(sample: Dict, base_path: Path) -> List[Dict]:
     })
     user_content.append({
         "type": "text",
-        "text": f"\n<visual_window>{vw_header}</visual_window>",
+        "text": f"<visual_window>{vw_header}</visual_window>",
     })
 
-    # Video entry: prefer frame_paths (P1-3), fallback to video path
     video_path = sample.get("video_path", "")
     if video_path and not Path(video_path).is_absolute():
         video_path = str(base_path / video_path)
@@ -210,7 +194,6 @@ def build_per_timestep_messages(sample: Dict, base_path: Path) -> List[Dict]:
                  for p in vw["frame_paths"]]
         user_content.append({"type": "video", "video": paths})
     elif "frame_indices" in vw and video_path:
-        # Fallback: load video with time range (less reliable than frame_paths)
         logging.warning(
             f"Sample {sample.get('sample_id', '?')}: no frame_paths, "
             f"using video_start/end fallback"
@@ -227,7 +210,7 @@ def build_per_timestep_messages(sample: Dict, base_path: Path) -> List[Dict]:
             f"frame_paths nor frame_indices. Cannot load video frames."
         )
 
-    # 3. Recalled frames (recall_response only, top-level in input, P0-2)
+    # ── Zone B continued: Recalled frames (recall_response only) ──
     if "recalled_frames" in inp:
         rf = inp["recalled_frames"]
         rf_header = json.dumps({
@@ -244,7 +227,6 @@ def build_per_timestep_messages(sample: Dict, base_path: Path) -> List[Dict]:
                      for p in rf["frame_paths"]]
             user_content.append({"type": "video", "video": paths})
         elif video_path:
-            # Fallback: load recalled time range from video
             logging.warning(
                 f"Sample {sample.get('sample_id', '?')}: recalled_frames missing "
                 f"frame_paths, using time range fallback"
@@ -261,7 +243,14 @@ def build_per_timestep_messages(sample: Dict, base_path: Path) -> List[Dict]:
                 f"neither frame_paths nor video_path."
             )
 
-    # 4. Recall result (recall_response only, must precede user_input P0-1)
+    # ── Zone C: Memory block ──
+    memory_text = _format_memory_block(inp["memory"])
+    user_content.append({
+        "type": "text",
+        "text": f"\n<memory>\n{memory_text}\n</memory>",
+    })
+
+    # ── Zone C continued: Recall result (recall_response only) ──
     if inp.get("recall_result"):
         rr = inp["recall_result"]
         rr_json = json.dumps({
@@ -274,7 +263,7 @@ def build_per_timestep_messages(sample: Dict, base_path: Path) -> List[Dict]:
             "text": f"\n<recall_result>{rr_json}</recall_result>",
         })
 
-    # 5. User input (question / compress_trigger / "Continue..." / empty)
+    # ── Zone D: User input ──
     if inp.get("user_input"):
         user_content.append({
             "type": "text",

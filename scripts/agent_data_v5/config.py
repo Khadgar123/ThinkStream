@@ -343,7 +343,7 @@ COMPRESS_PROMPT = """Compress these observations into a structured summary.
 
 Observations to compress:
 {observations_text}
-
+{visual_context}
 Rules:
 - Use coarse time sub-ranges: [X-Y]
 - Keep ALL named entities with visual attributes
@@ -351,7 +351,8 @@ Rules:
 - Keep state changes as before→after
 - Keep user interaction summaries if any
 - Target length: {target_length} tokens
-- DO NOT add information not in the observations
+- Base the summary primarily on the observation text
+- If video frames are provided, use them to verify and refine details (correct entity counts, colors, spatial positions), but do not introduce entirely new events not mentioned in the observations
 
 Output JSON: {{"time_range": [{start}, {end}], "text": "..."}}"""
 
@@ -382,6 +383,20 @@ NO answer values, NO pronouns, NO articles.
 Include entity names + action/attribute anchors from the question and context.
 
 Output JSON (one line): {{"query": "keyword1 keyword2 keyword3", "time_range": "{time_range}"}}"""
+
+POST_RECALL_THINK_PROMPT = """You are a streaming video agent that just received recall results.
+
+Question: "{question}"
+Recall result: {recall_result}
+Recall source: {recall_source}
+
+Write a brief analysis (20-40 tokens) of the recall result in relation to the question.
+- If results are relevant: note what was found and how it relates to the question.
+- If results are irrelevant/empty: note the recall failed to find matching evidence.
+- NO meta-reasoning ("I think", "I notice"), NO sounds/smells/emotions.
+- Focus on factual assessment of the retrieved content.
+
+Output the analysis text only (20-40 tokens):"""
 
 RESPONSE_PROMPT = """Generate a response for this streaming video agent:
 - Question: "{question}"

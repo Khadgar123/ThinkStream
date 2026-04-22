@@ -442,6 +442,14 @@ def rollout(
     (generated tokens, chunk metadata, raw sample) in ``rollout_data`` for
     downstream reward computation and loss calculation.
 
+    MIGRATION NOTE (v3.0): This currently uses the legacy ``streaming_video_chat``
+    multi-turn KV-cache format, which does NOT match the per-timestep SFT training
+    format (no <memory> tags, no explicit memory management). For full consistency,
+    migrate to ``StreamingAgentLoop.step()`` from ``thinkstream.model.agent_loop``.
+    The agent_loop approach generates one step at a time with explicit memory state,
+    matching the training input format exactly. The ``_build_messages_from_chunks``
+    helper below also uses the legacy format.
+
     NOTE: This node should be wrapped with ``unwrap_model_for_generation``
     which handles ZeRO-3 parameter gathering and inference engine cleanup.
     """
