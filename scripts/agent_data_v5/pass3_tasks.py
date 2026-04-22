@@ -745,6 +745,7 @@ async def run_pass3(
     evidence: List[Dict],
     rollout: Dict,
     client,
+    frame_paths: Optional[List[str]] = None,
 ) -> Dict:
     """Run task mining for a single video.
 
@@ -810,7 +811,8 @@ async def run_pass3(
                 tasks_needing_questions.append(task)
 
     if tasks_needing_questions:
-        await generate_questions_batch(tasks_needing_questions, evidence, client, video_id)
+        await generate_questions_batch(tasks_needing_questions, evidence, client, video_id,
+                                       frame_paths=frame_paths)
 
     return all_candidates
 
@@ -820,8 +822,15 @@ async def generate_questions_batch(
     evidence: List[Dict],
     client,
     video_id: str,
+    frame_paths: Optional[List[str]] = None,
 ):
-    """Generate questions and answers for candidate tasks via 397B."""
+    """Generate questions and answers for candidate tasks via 397B.
+
+    When frame_paths is provided, includes the evidence chunk's frames
+    in the prompt so the 397B can generate more grounded questions.
+    """
+    from .pass1_evidence import build_vision_content, get_chunk_frame_paths
+
     for task in tasks:
         evidence_chunk = task["evidence_chunks"][0] if task["evidence_chunks"] else 0
         caption = evidence[evidence_chunk] if evidence_chunk < len(evidence) else {}
@@ -839,8 +848,15 @@ async def generate_questions_batch(
             answer=task.get("fact", ""),
         )
 
+        # Build message content with frames if available
+        if frame_paths:
+            chunk_frames = get_chunk_frame_paths(frame_paths, evidence_chunk)
+            content = build_vision_content(prompt, chunk_frames)
+        else:
+            content = prompt
+
         raw = await client._call_one(
-            messages=[{"role": "user", "content": prompt}],
+            messages=[{"role": "user", "content": content}],
             max_tokens=PASS_CONFIG["pass3_tasks"]["max_tokens"],
             temperature=PASS_CONFIG["pass3_tasks"]["temperature"],
             request_id=f"{video_id}_q_{task.get('ask_chunk', 0)}",

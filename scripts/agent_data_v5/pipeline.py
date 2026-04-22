@@ -365,7 +365,8 @@ async def run_pipeline(
             if vid not in evidence_map or vid not in rollout_map:
                 return vid, None
             async with semaphore:
-                tasks = await run_pass3(vid, evidence_map[vid], rollout_map[vid], client)
+                tasks = await run_pass3(vid, evidence_map[vid], rollout_map[vid], client,
+                                        frame_paths=video_frames.get(vid))
                 audit = audit_task_coverage(vid, tasks, rollout_map[vid])
                 tasks["_coverage_audit"] = audit
                 total = sum(
@@ -488,8 +489,10 @@ async def run_pipeline(
                 # ── Determine action + build output + suffix ──
                 if has_question:
                     task_type, task = task_at[chunk_idx]
+                    vid_frames = video_frames.get(vid)
                     if task["gold_action"] == "response":
-                        resp = await _generate_response_text(task, snapshots, observations, client, vid)
+                        resp = await _generate_response_text(task, snapshots, observations, client, vid,
+                                                              frame_paths=vid_frames)
                         if not resp:
                             continue
                         output = (f"<think>{think_text}</think>"
@@ -507,7 +510,8 @@ async def run_pipeline(
 
                     elif task["gold_action"] == "recall":
                         query_json, resp, recall_result = await _generate_recall_texts(
-                            task, snapshots, observations, client, vid)
+                            task, snapshots, observations, client, vid,
+                            frame_paths=vid_frames)
                         if not query_json:
                             continue
                         # Sample 1: recall query

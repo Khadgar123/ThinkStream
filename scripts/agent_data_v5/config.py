@@ -107,10 +107,10 @@ VLLM_PREFILL_BATCH_TOKEN_BUDGET = 2_000_000  # 8×ML300: KV only 5.6% at 64 conc
 PASS_CONTEXT_ESTIMATES = {
     "pass1_evidence": {"input": 10_000, "output": 5_000, "thinking": 0},
     "pass2_rollout":  {"input": 10_000, "output": 5_000, "thinking": 0},
-    # Text passes: max_tokens=60000 (留 input 余量). Actual output ~2-5K.
-    # Estimates use realistic values for concurrency clamping.
-    "pass3_tasks":    {"input": 4_000,  "output": 5_000, "thinking": 0},
-    "pass4_forks":    {"input": 2_000,  "output": 5_000, "thinking": 0},
+    # Pass3/4: now include video frames (~2-4 frames per request).
+    # max_tokens=16384 bounds thinking time.
+    "pass3_tasks":    {"input": 6_000,  "output": 5_000, "thinking": 0},
+    "pass4_forks":    {"input": 4_000,  "output": 5_000, "thinking": 0},
 }
 
 
@@ -217,13 +217,13 @@ PASS_CONFIG = {
         "concurrent_videos": 64,
     },
     "pass3_tasks": {
-        "max_tokens": 60000,  # max_model_len(65536) - input(~4K) - margin
+        "max_tokens": 16384,  # text+vision; reduced from 60K to bound thinking time
         "temperature": 0.7,
         "thinking": True,
         "concurrent": 64,
     },
     "pass4_forks": {
-        "max_tokens": 60000,  # max_model_len(65536) - input(~2K) - margin
+        "max_tokens": 16384,  # text+vision; reduced from 60K to bound thinking time
         "temperature": 0.3,
         "thinking": True,
         "concurrent": 64,

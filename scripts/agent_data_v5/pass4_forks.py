@@ -1210,8 +1210,11 @@ async def build_video_conversation(
     }
 
 
-async def _generate_response_text(task, snapshots, observations, client, video_id):
+async def _generate_response_text(task, snapshots, observations, client, video_id,
+                                   frame_paths=None):
     """Generate response text via 397B for a response task."""
+    from .pass1_evidence import build_vision_content, get_chunk_frame_paths
+
     ask_chunk = task["ask_chunk"]
     snapshot = snapshots.get(ask_chunk, snapshots.get(str(ask_chunk)))
     if not snapshot:
@@ -1229,8 +1232,21 @@ async def _generate_response_text(task, snapshots, observations, client, video_i
         gold_answer=task.get("gold_answer", ""),
         length_guide=length_map.get(answer_type, "20-80 tokens"),
     )
+
+    # Include evidence chunk frames for grounded response generation
+    evidence_chunks = task.get("evidence_chunks", [])
+    chunk_frames = []
+    if frame_paths and evidence_chunks:
+        for ec in evidence_chunks[:2]:  # max 2 chunks (4 frames)
+            chunk_frames.extend(get_chunk_frame_paths(frame_paths, ec))
+
+    if chunk_frames:
+        content = build_vision_content(prompt, chunk_frames)
+    else:
+        content = prompt
+
     raw = await client._call_one(
-        messages=[{"role": "user", "content": prompt}],
+        messages=[{"role": "user", "content": content}],
         max_tokens=PASS_CONFIG["pass4_forks"]["max_tokens"],
         temperature=PASS_CONFIG["pass4_forks"]["temperature"],
         request_id=f"{video_id}_resp_{ask_chunk}",
@@ -1240,8 +1256,10 @@ async def _generate_response_text(task, snapshots, observations, client, video_i
     return re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip().strip('"')
 
 
-async def _generate_recall_texts(task, snapshots, observations, client, video_id):
+async def _generate_recall_texts(task, snapshots, observations, client, video_id,
+                                  frame_paths=None):
     """Generate recall query + response texts via 397B."""
+    from .pass1_evidence import build_vision_content, get_chunk_frame_paths
     ask_chunk = task["ask_chunk"]
     snapshot = snapshots.get(ask_chunk, snapshots.get(str(ask_chunk)))
     if not snapshot:
@@ -1321,8 +1339,21 @@ async def _generate_recall_texts(task, snapshots, observations, client, video_id
         gold_answer=eff_answer,
         length_guide="20-60 tokens" if is_failed else "5-40 tokens",
     )
+
+    # Include recalled evidence chunk frames for grounded response
+    evidence_chunks = task.get("evidence_chunks", [])
+    recall_frames = []
+    if frame_paths and evidence_chunks and not is_failed:
+        for ec in evidence_chunks[:2]:
+            recall_frames.extend(get_chunk_frame_paths(frame_paths, ec))
+
+    if recall_frames:
+        resp_content = build_vision_content(resp_prompt, recall_frames)
+    else:
+        resp_content = resp_prompt
+
     resp_raw = await client._call_one(
-        messages=[{"role": "user", "content": resp_prompt}],
+        messages=[{"role": "user", "content": resp_content}],
         max_tokens=PASS_CONFIG["pass4_forks"]["max_tokens"], temperature=0.3,
         request_id=f"{video_id}_postresp_{ask_chunk}",
     )
