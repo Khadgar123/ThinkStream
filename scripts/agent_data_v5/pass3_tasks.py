@@ -809,8 +809,11 @@ async def run_pass3(
             continue
         for task in tasks:
             if not task.get("question") and "question_preset" not in task:
-                fact_key = task.get("fact", "")
-                if fact_key:
+                # Key by fact + evidence_chunk: same fact at different times
+                # may refer to different events (e.g. "chef adds salt" twice)
+                evidence_chunk = task["evidence_chunks"][0] if task.get("evidence_chunks") else 0
+                fact_key = f"{evidence_chunk}:{task.get('fact', '')}"
+                if task.get("fact"):
                     fact_to_tasks.setdefault(fact_key, []).append(task)
 
     # Only generate question once per unique fact
