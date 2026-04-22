@@ -574,7 +574,7 @@ def mcq_predict_agent_loop(
 
     sampler = NoPadDistributedSampler(dataset, world_size, rank)
     for idx in tqdm.tqdm(sampler, desc="AgentLoop eval", disable=(rank != 0)):
-        datum = dataset.data[idx]
+        datum = dataset.datums[idx]
         video_path = os.path.join(dataset.data_dir, datum["video"])
 
         if "options" in datum and datum["options"]:

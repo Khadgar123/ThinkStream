@@ -133,7 +133,7 @@ def determine_gold_action(
         return "response", "answer_in_visual_window"
 
     # 2. Check recent_thinks
-    for obs_item in snapshot.get("recent_thinks", snapshot.get("recent_thinks", [])):
+    for obs_item in snapshot.get("recent_thinks", []):
         if keyword_overlap(obs_item.get("text", obs_item.get("obs", "")), answer_keywords) > LEAKAGE_OVERLAP_THRESHOLD:
             return "response", "answer_in_recent_thinks"
 
@@ -168,12 +168,12 @@ def build_visibility_matrix(
         "at_time": ask_chunk * AGENT_CHUNK_SEC,
         "visual_window": [window_start * AGENT_CHUNK_SEC, (window_end + 1) * AGENT_CHUNK_SEC],
         "n_compressed_segments": len(snapshot["compressed_segments"]),
-        "n_recent_thinks": len(snapshot.get("recent_thinks", snapshot.get("recent_thinks", []))),
+        "n_recent_thinks": len(snapshot.get("recent_thinks", [])),
         "evidence_chunks": evidence_chunks,
         "evidence_in_window": any(window_start <= c <= window_end for c in evidence_chunks),
         "answer_in_recent_obs": any(
             keyword_overlap(item.get("text", item.get("obs", "")), answer_keywords) > LEAKAGE_OVERLAP_THRESHOLD
-            for item in snapshot.get("recent_thinks", snapshot.get("recent_thinks", []))
+            for item in snapshot.get("recent_thinks", [])
         ),
         "answer_in_compressed": any(
             keyword_overlap(seg["text"], answer_keywords) > LEAKAGE_OVERLAP_THRESHOLD

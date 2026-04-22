@@ -1055,7 +1055,8 @@ async def build_video_conversation(
 
             if gold_action == "response":
                 resp_text = await _generate_response_text(
-                    task, snapshots, observations, client, video_id
+                    task, snapshots, observations, client, video_id,
+                    frame_paths=frame_paths,
                 )
                 if resp_text:
                     task["_generated_response"] = resp_text
@@ -1063,7 +1064,8 @@ async def build_video_conversation(
 
             elif gold_action == "recall":
                 query_json, resp_text, recall_result = await _generate_recall_texts(
-                    task, snapshots, observations, client, video_id
+                    task, snapshots, observations, client, video_id,
+                    frame_paths=frame_paths,
                 )
                 if query_json:
                     task["_generated_query"] = query_json

@@ -283,6 +283,7 @@ def build_compress_request(
 
     prompt = COMPRESS_PROMPT.format(
         observations_text=obs_text,
+        visual_context="",
         target_length=target_length,
         start=int(first_time),
         end=int(last_time),
