@@ -680,7 +680,11 @@ def _build_agent_messages(
     if not video_path:
         raise ValueError("Agent sample has no video path")
 
-    abs_video_path = str(_make_abs_paths(base_path, video_path))
+    # If video_path is already absolute, use it directly; otherwise join with base_path
+    if Path(video_path).is_absolute():
+        abs_video_path = video_path
+    else:
+        abs_video_path = str(_make_abs_paths(base_path, video_path))
     video_duration = _get_duration(abs_video_path)
     video_chunk_size = AGENT_CHUNK_SEC
 

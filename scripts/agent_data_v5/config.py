@@ -2,7 +2,7 @@
 Configuration for Agent Data Pipeline v6.1.
 
 All constants, prompts, and schema definitions.
-Matches docs/data_construction_zh.md v5.4 exactly.
+Matches docs/data_construction_zh.md v6.2.
 """
 
 from pathlib import Path

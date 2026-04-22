@@ -668,14 +668,14 @@ async def build_recall_sample(
     else:
         recalled_info = None  # No frames for text-only recall or failure
 
-    recall_visual = {**visual_meta}
-    if recalled_info:
-        recall_visual["recalled_frames"] = recalled_info
     sample2_input = build_sample_input(
         snapshot_with_pending,
         user_input="Continue following the protocol to respond.",
-        visual_window_meta=recall_visual,
+        visual_window_meta=visual_meta,
     )
+    # recalled_frames at input top-level, NOT nested in visual_window (P0-2)
+    if recalled_info:
+        sample2_input["recalled_frames"] = recalled_info
     # Add recall_result to input
     sample2_input["recall_result"] = recall_result
 

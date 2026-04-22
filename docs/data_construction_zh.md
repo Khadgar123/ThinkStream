@@ -1,6 +1,6 @@
 # 流视频 Agent 数据构造方案
 
-> 版本: v6.1 | 日期: 2026-04-21
+> 版本: v6.2 | 日期: 2026-04-22
 >
 > 核心设计：
 > - Per-timestep 独立样本，三层文本隔离（teacher / think / summary）
@@ -13,6 +13,13 @@
 > 配套文档：
 > - **`sft_engineering.md`**：SFT 训练工程设计（注意力掩码、数据加载、多模型兼容、训练课程）
 > - `TRAINING.md`：旧版冷启动训练说明（已过时，保留供参考）
+>
+> v6.2 变更：
+> - 修正 §5.2 `recalled_frames` 位置：从 `visual_window` 内部移至 `input` 顶层（与 §13.1 契约一致）
+> - 修正 §8 配置常量：并发 16/32→64，max_tokens 对齐 config.py 实际值，thinking 统一为 ON
+> - 修正 §8.1 vLLM 部署表：补充 Qwen3.5 `/no_think` 无效说明
+> - 补充 §2.3 compression hysteresis 机制（COMPRESS_HYSTERESIS_RATIO=0.55）
+> - 修正 §3.1/§3.2 内联并发估算
 >
 > v5.6 变更：
 > - 新增 §13 SFT 工程集成要点（与 `sft_engineering.md` 的接口定义）
@@ -195,6 +202,10 @@ post-recall response > 用户当前问题 response/recall > pending trigger resp
 - 中等 think（~50 tok/条）→ ~10 条触发
 - 短 think（~40 tok/条）→ 12 条才触发（由 item 硬上限兜底）
 
+**Hysteresis 机制**：压缩后 recent_thinks 总 token 须降至 `RECENT_THINKS_TOKEN_BUDGET × 55%`（~330 tok）以下。
+如果压缩一次不够（窗口太短），系统会扩大范围或连续触发。这防止频繁触发压缩导致 summary 质量下降。
+见 config.py `COMPRESS_HYSTERESIS_RATIO = 0.55` / `COMPRESS_HYSTERESIS_THRESHOLD = 330`。
+
 造数据时直接加载学生模型 tokenizer 精确计算 token 数（`get_tokenizer()` 自动加载）。
 若 tokenizer 不可用则降级为 `chars/4` 估算。
 
@@ -306,10 +317,10 @@ best_range = argmin(score)   # 综合最优
 
 **并发**:
 ```
-视频内串行（需要前文 context）, 视频间并行 16 路
-每请求: 24帧 + text context = ~38K input, max_tokens=1024, thinking=ON
+视频内串行（需要前文 context）, 视频间并行 64 路
+每请求: 24帧 + text context = ~10K input, max_tokens=16384, thinking=ON
 每视频: 60 chunks × 15s = 900s = 15 min
-300 视频 ÷ 16 = ~280 min ≈ 4.7h
+300 视频 ÷ 64 ≈ 70 min ≈ 1.2h
 ```
 
 ### 3.2 阶段 2: Question-blind Streaming Rollout
@@ -361,10 +372,10 @@ snapshots[chunk_idx] = {
 
 **并发配置**:
 ```
-视频内串行, 视频间 16 并行
-每请求: ~38K input (24帧 + memory), max_tokens=256, thinking=OFF
+视频内串行, 视频间 64 并行
+每请求: ~10K input (24帧 + memory), max_tokens=16384, thinking=ON
 每视频: 60×12s + 4×15s(compress) = 780s ≈ 13 min
-300 视频 ÷ 16 = ~244 min ≈ 4h
+300 视频 ÷ 64 ≈ 61 min ≈ 1h
 ```
 
 ### 3.3 阶段 3: Task Planning
@@ -732,11 +743,11 @@ def generate_recall_samples(task, memory_state):
       ]
     },
     "visual_window": {
-      "video_start": 36, "video_end": 60, "frames": 24,
-      "recalled_frames": {
-        "time_range": [28, 30], "n_frames": 4, "source": "historical_frames",
-        "frame_indices": [28, 29, 30, 31]
-      }
+      "video_start": 36, "video_end": 60, "frames": 24
+    },
+    "recalled_frames": {
+      "time_range": [28, 30], "n_frames": 4, "source": "historical_frames",
+      "frame_indices": [28, 29, 30, 31]
     },
     "recall_result": {
       "source": "historical_frames",
@@ -903,19 +914,18 @@ RECALL_RETURN_FRAMES = 4               # 4s 历史帧
 # 上下文
 MAX_LENGTH = 16384                     # 训练 max_length (但单样本 ~3500 tok)
 
-# 并发
-PASS1_CONCURRENT = 16                  # Evidence Graph
-PASS2_CONCURRENT = 16                  # Rollout
-PASS3_CONCURRENT = 32                  # Task Planning (文本为主)
-PASS4_CONCURRENT = 32                  # Forks (文本为主)
+# 并发（所有 Pass 统一 64 路，由 safe_concurrency_for_pass() 动态 clamp）
+PASS1_CONCURRENT = 64                  # Evidence Graph
+PASS2_CONCURRENT = 64                  # Rollout
+PASS3_CONCURRENT = 64                  # Task Planning (文本为主)
+PASS4_CONCURRENT = 64                  # Forks (文本为主)
 
-# 397B
-THINKING_ON = ["pass1_evidence", "pass3_task_plan"]
-THINKING_OFF = ["pass2_rollout", "pass4_forks"]
-MAX_TOKENS_EVIDENCE = 1024
-MAX_TOKENS_OBSERVATION = 128
-MAX_TOKENS_COMPRESS = 512
-MAX_TOKENS_TASK = 2048
+# 397B（Qwen3.5 /no_think 无效，所有 Pass 均 thinking=True）
+# max_tokens = thinking + content 总预算，防止 thinking 阶段截断导致无有效输出
+# 任务实际输出远小于此值（evidence ~1K, obs ~128, summary ~512, tasks ~2K, forks ~512）
+THINKING = True                        # 所有 Pass（见 qwen35_output_format_analysis.md）
+MAX_TOKENS_VISION_PASSES = 16384       # Pass 1/2: 视觉 Pass，受 GPU KV cache 限制
+MAX_TOKENS_TEXT_PASSES = 60000         # Pass 3/4: 纯文本 Pass (= max_model_len 65536 - input ~4K - margin)
 
 # Special Tokens（SFT 代码 init_processor 中添加）
 SPECIAL_TOKENS_BASE = [
@@ -935,14 +945,23 @@ SPECIAL_TOKENS_PER_TIMESTEP = [
 
 各 Pass 对 vLLM 的需求差异：
 
-| Pass | 输入类型 | Thinking | 输出上限 | 并发 | 单请求图片 |
-|------|---------|----------|---------|------|-----------|
-| **Pass 1** Evidence | 视觉 (24 帧) + 文本 | ON | 1024 | 16 | 24 帧 |
-| **Pass 2a** Observation | 视觉 (24 帧) + 记忆 | OFF (`/no_think`) | 128 | 16 | 24 帧 |
-| **Pass 2b** Compress | 纯文本 | OFF (`/no_think`) | 512 | 16 | 0 |
-| **Pass 3** Tasks | 纯文本 | ON | 2048 | 32 | 0 |
-| **Pass 4** Forks | 纯文本 | OFF (`/no_think`) | 512 | 32 | 0 |
-| **Pass 5** Verify | 规则检查，无 LLM | — | — | — | — |
+| Pass | 输入类型 | Thinking | max_tokens（含 thinking） | 任务实际��出 | 并发 | 单请���图片 |
+|------|---------|----------|--------------------------|-------------|------|-----------|
+| **Pass 1** Evidence | 视觉 (24 帧) + 文本 | ON | 16384 | ~1K (JSON) | 64 | 24 帧 |
+| **Pass 2a** Observation | ���觉 (24 帧) + 记忆 | ON | 16384 | ~128 (think) | 64 | 24 帧 |
+| **Pass 2b** Compress | 纯文本 | ON | 16384 | ~512 (summary) | 64 | 0 |
+| **Pass 3** Tasks | 纯文本 | ON | 60000 | ~2K (tasks JSON) | 64 | 0 |
+| **Pass 4** Forks | 纯文本 | ON | 60000 | ~512 (output) | 64 | 0 |
+| **Pass 5** Verify | 规则检查，无 LLM | — | — | — | — | — |
+
+> **注**：Qwen3.5 �� `/no_think` 前缀实测无效（thinking 内容混入 content），
+> 因此所有 Pass 统一 thinking=True，由 `--reasoning-parser qwen3` 在 vLLM 侧分离
+> thinking 到 `reasoning_content`，`content` 为干净输出。
+>
+> **max_tokens 与任务输出的区别**：`max_tokens` 是 vLLM 生成上限，包含 thinking token + content token 总量。
+> Qwen3.5 的 thinking 可达数千到数万 token，因此 max_tokens 必须远大于任务实际输出，
+> 否则会在 thinking 阶段就截断，导致无法产出有效 content。
+> 视觉 Pass 设 16384（受 GPU KV cache 限制），纯文本 Pass 设 60000（= max_model_len 65536 - 输入 ~4K - margin）���
 
 **关键差异**：视觉 Pass（1, 2a）每请求发送 24 帧 base64 图片（~1.2MB），需要多模态处理能力、
 更大 `max-model-len`、和更低并发；纯文本 Pass（2b, 3, 4）只有 ~1K token 输入，可以开更高并发。
@@ -1009,14 +1028,19 @@ vllm serve Qwen/Qwen3.5-397B-A17B-FP8 \
 - 纯文本 Pass 的 `--max-num-seqs 64` 可以更激进，因为每请求只用 ~1-3K token。
 - `/no_think` 前缀在 prompt 层控制，不需要改 vLLM 启动参数。Thinking ON/OFF 是请求级别控制。
 
-**各 Pass 上下文安全估算**：
+**各 Pass 上下文安全估算**（input + thinking + content，区分 thinking 与有效输出）：
 
 ```
-Pass 1:  输入 ~2,736 tok + 输出 1,024 = ~3,760  × 16 并发 = 60K (vs 65K 上限 ⚠️)
-Pass 2a: 输入 ~3,136 tok + 输出 128   = ~3,264  × 16 并发 = 52K ✓
-Pass 2b: 输入 ~650 tok   + 输出 512   = ~1,162  无视觉 ✓
-Pass 3:  输入 ~1,300 tok + 输出 2,048 = ~3,348  × 32 并发 = 107K (文本 batch) ✓
-Pass 4:  输入 ~650 tok   + 输出 512   = ~1,162  × 32 并发 = 37K ✓
+                输入        thinking(估计)  有效输出     单请求合计
+Pass 1:        ~10K tok    ~2-5K           ~1K         ~15K     × 64 并发
+Pass 2a:       ~10K tok    ~2-5K           ~128        ~15K     × 64 并发
+Pass 2b:       ~650 tok    ~2-5K           ~512        ~6K      × 64 并发
+Pass 3:        ~4K tok     ~2-10K          ~2K         ~16K     × 64 并发
+Pass 4:        ~2K tok     ~2-5K           ~512        ~8K      × 64 并发
+
+由 safe_concurrency_for_pass() 根据 batch_token_budget (2M) 动态 clamp 并发数。
+Thinking 长度变化大（2K-10K+），估算取保守值。
+max_tokens 必须覆盖 thinking + content 总量，否则 thinking 截断后无有效输出。
 ```
 
 ---

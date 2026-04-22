@@ -1,11 +1,18 @@
 # 流视频 Agent SFT 工程设计
 
-> 版本: v2.0 | 日期: 2026-04-21
+> 版本: v2.1 | 日期: 2026-04-22
 >
-> 配套文档：`data_construction_zh.md`（数据构造方案 v6.0）
+> 配套文档：`data_construction_zh.md`（数据构造方案 v6.2）
 >
 > 本文档定义 **推理状态机 → SFT 训练格式 → 数据构造** 的完整链路。
 > 一切以 §0 推理状态机为源头，SFT 格式必须精确匹配推理行为。
+>
+> v2.1 变更：
+> - 对齐 `data_construction_zh.md` v6.1 + `config.py` 实际参数
+> - §7.1 修正 lr：C1 5e-6→3e-6, Phase 5 2e-6→1e-6（与 config.py PHASE_CONFIG 一致）
+> - §7.1 补充 compression hysteresis 机制说明
+> - §12 新增约束 #20-#22：recalled_frames 必须在 input 顶层、build_per_timestep_messages 死代码待清理、pipeline 所有 Pass thinking=True
+> - 标记 §9.3 已完成：`per_timestep_mask_mod` 设计已定稿
 >
 > v2.0 变更（架构级）：
 > - 新增 §0 推理状态机规范（一切格式的源头定义）
@@ -790,9 +797,9 @@ if is_qwen3vl:
 |------|--------|--------|---------|------|
 | **Phase 1** 协议对齐 | P1: silent + response(from_frames) | ~4,000 | 学会 think + action 格式 | lr=1e-5, epochs=3 |
 | **Phase 2** Recall 学习 | P2: + recall + pending + uncertain | ~6,000 | 学会判断 recall 时机 | lr=5e-6, epochs=3, from P1 ckpt |
-| **Phase C1** 压缩行为 | C1: + compress(system指定) + compress_recall | ~15,000 | 学会按指定范围压缩 | lr=5e-6, epochs=2, from P2 ckpt |
+| **Phase C1** 压缩行为 | C1: + compress(system指定) + compress_recall | ~15,000 | 学会按指定范围压缩 | lr=3e-6, epochs=2, from P2 ckpt |
 | **Phase C2** 自选压缩 | C2: + compress(自选范围) | ~3,000 | 学会自选压缩窗口 | lr=2e-6, epochs=2, from C1 ckpt |
-| **Phase 5** 混合训练 | P5: 所有类型按比例混合 | ~5,000 | 综合能力对齐 | lr=2e-6, epochs=1, from C2 ckpt |
+| **Phase 5** 混合训练 | P5: 所有类型按比例混合 | ~5,000 | 综合能力对齐 | lr=1e-6, epochs=1, from C2 ckpt |
 
 ### 7.2 数据集文件与注册（P1-4）
 
@@ -886,7 +893,7 @@ case $PHASE in
     C1)
         llm=${LLM:?'Set LLM to Phase 2 checkpoint'}
         datasets=stream_agent_c1
-        lr=5e-6; epochs=2
+        lr=3e-6; epochs=2
         run_name="agent-c1"
         ;;
     C2)
@@ -898,7 +905,7 @@ case $PHASE in
     5)
         llm=${LLM:?'Set LLM to C2 checkpoint'}
         datasets=stream_agent_p5
-        lr=2e-6; epochs=1
+        lr=1e-6; epochs=1
         run_name="agent-phase5"
         ;;
 esac
@@ -1268,6 +1275,10 @@ def smoke_test(samples, processor, model_type, n=50):
 | 17 | 视觉帧优先用 frame_paths 加载，fallback 到 video 重采样 | 避免 fps/rounding 不一致 | P1-3 |
 | 18 | Pipeline 同时输出分 phase 文件 + 统一文件 | 训练脚本最简单 | P1-4 |
 | 19 | 训练前必须通过 50 条 smoke test | 验证 input 可见内容 = 推理时状态机 | 验收 |
+| 20 | `recalled_frames` 必须在 `input` 顶层，pipeline 代码需修复嵌套 bug | pass4_forks.py 当前错误嵌套在 `visual_window` 内 | v2.1 审计 |
+| 21 | `build_per_timestep_messages` 为死代码，`build_sample_input` 是唯一正确路径 | pass4_forks.py 中定义但从未调用 | v2.1 审计 |
+| 22 | Pipeline 所有 Pass 均为 thinking=True（Qwen3.5 `/no_think` 无效） | 实测确认，见 `qwen35_output_format_analysis.md` | v2.1 审计 |
+| 23 | 压缩触发使用 hysteresis：触发阈值 80%，压缩后须降至 55% 以下 | 防止频繁触发/窗口过短。见 config.py `COMPRESS_HYSTERESIS_RATIO` | v2.1 |
 
 ---
 
