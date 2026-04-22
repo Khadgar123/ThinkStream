@@ -800,19 +800,40 @@ async def run_pass3(
     logger.info(f"  [{video_id}] Pending/event-watch candidates: {len(pending_tasks)}")
 
     # --- Generate questions and answers via 397B ---
-    # Skip compress (no question), preset questions, and pending (already has question)
+    # Deduplicate by fact: same fact across different task types shares one question.
+    # This reduces 397B calls from O(candidates) to O(unique_facts).
     skip_types = {"compress", "pending"}
-    tasks_needing_questions = []
+    fact_to_tasks: Dict[str, List[Dict]] = {}
     for task_type, tasks in all_candidates.items():
         if task_type in skip_types:
             continue
         for task in tasks:
             if not task.get("question") and "question_preset" not in task:
-                tasks_needing_questions.append(task)
+                fact_key = task.get("fact", "")
+                if fact_key:
+                    fact_to_tasks.setdefault(fact_key, []).append(task)
 
-    if tasks_needing_questions:
-        await generate_questions_batch(tasks_needing_questions, evidence, client, video_id,
+    # Only generate question once per unique fact
+    unique_tasks = []
+    for fact_key, task_group in fact_to_tasks.items():
+        unique_tasks.append(task_group[0])  # representative task
+
+    if unique_tasks:
+        await generate_questions_batch(unique_tasks, evidence, client, video_id,
                                        frame_paths=frame_paths)
+        # Propagate question/answer to all tasks sharing the same fact
+        for fact_key, task_group in fact_to_tasks.items():
+            source = task_group[0]
+            for task in task_group[1:]:
+                task["question"] = source.get("question", "")
+                task["gold_answer"] = source.get("gold_answer", "")
+                task["answer_type"] = source.get("answer_type", "factoid")
+                task["support_fact"] = source.get("support_fact", "")
+
+    logger.info(
+        f"  [{video_id}] Question generation: {len(unique_tasks)} unique facts "
+        f"(from {sum(len(g) for g in fact_to_tasks.values())} candidates)"
+    )
 
     return all_candidates
 
