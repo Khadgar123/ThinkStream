@@ -442,15 +442,28 @@ async def run_pipeline(
             snapshots = rollout["snapshots"]
             compression_events = rollout["compression_events"]
 
-            # --- Build task/compress lookup tables ---
+            # --- Build task/compress/pending lookup tables ---
             compress_at = {e["trigger_chunk"]: e for e in compression_events}
             task_at = {}  # chunk_idx -> (task_type, task)
-            for task_type_key in ["response_from_frames", "response_from_memory",
-                                   "compress_response", "unanswerable",
-                                   "recall", "compress_recall"]:
-                for task in tasks.get(task_type_key, []):
+            skip_task_keys = {"_", "compress", "pending"}  # handled separately
+            for task_type_key, task_list in tasks.items():
+                if not isinstance(task_list, list):
+                    continue
+                if any(task_type_key.startswith(s) for s in skip_task_keys):
+                    continue
+                for task in task_list:
                     if task.get("question") and task.get("ask_chunk") not in task_at:
                         task_at[task["ask_chunk"]] = (task_type_key, task)
+
+            # Pending tasks: active from ask_chunk to trigger_chunk
+            pending_active = {}  # chunk_idx -> pending task
+            for pt in tasks.get("pending", []):
+                if pt.get("question") and pt.get("ask_chunk") is not None:
+                    ask = pt["ask_chunk"]
+                    trigger = pt["trigger_chunk"]
+                    for c in range(ask, trigger + 1):
+                        if c not in pending_active:
+                            pending_active[c] = pt
 
             interaction_chunks = set(task_at.keys())
             vid_sample_count = 0
@@ -465,6 +478,12 @@ async def run_pipeline(
                 think_text = observations[chunk_idx]["think"]
                 has_question = chunk_idx in task_at
                 has_compress = chunk_idx in compress_at and chunk_idx not in interaction_chunks
+                is_pending_start = (chunk_idx in pending_active
+                                    and chunk_idx == pending_active[chunk_idx].get("ask_chunk"))
+                is_pending_trigger = (chunk_idx in pending_active
+                                      and chunk_idx == pending_active[chunk_idx].get("trigger_chunk"))
+                is_pending_mid = (chunk_idx in pending_active
+                                  and not is_pending_start and not is_pending_trigger)
 
                 # ── Determine action + build output + suffix ──
                 if has_question:
@@ -480,6 +499,7 @@ async def run_pipeline(
                             user_text_suffix=task["question"],
                         )
                         sample["sample_type"] = "response"
+                        sample["video_id"] = vid
                         sample["metadata"] = {"task_type": task_type, "gold_action": "response",
                                               "gold_answer": task.get("gold_answer", "")}
                         all_samples.append(sample)
@@ -499,6 +519,7 @@ async def run_pipeline(
                             user_text_suffix=task["question"],
                         )
                         s1["sample_type"] = "recall_query"
+                        s1["video_id"] = vid
                         s1["metadata"] = {"task_type": task_type, "gold_action": "recall",
                                           "gold_answer": task.get("gold_answer", "")}
                         all_samples.append(s1)
@@ -508,7 +529,6 @@ async def run_pipeline(
                         if is_failed:
                             resp = "I could not find enough evidence to answer confidently."
                         output2 = f"<action>response</action><response>{resp or ''}</response>"
-                        # Inject pending + recall_result into suffix
                         recall_suffix = (
                             f'<pending since="{chunk_idx * AGENT_CHUNK_SEC}">{task["question"]}</pending>\n'
                             f'<recall_result>{recall_result.get("text_content", "")}</recall_result>'
@@ -526,10 +546,70 @@ async def run_pipeline(
                             recalled_frames=recalled_frames,
                         )
                         s2["sample_type"] = "recall_response"
+                        s2["video_id"] = vid
                         s2["metadata"] = {"task_type": task_type, "gold_action": "response",
                                           "recall_noise": recall_result.get("noise_level")}
                         all_samples.append(s2)
                         vid_sample_count += 2
+
+                elif is_pending_start:
+                    # User asks event-watch question → model outputs silent
+                    pt = pending_active[chunk_idx]
+                    output = f"<think>{think_text}</think><action>silent</action>"
+                    sample = build_per_timestep_messages(
+                        snapshot, chunk_idx, vpath, output,
+                        user_text_suffix=pt["question"],
+                    )
+                    sample["sample_type"] = "silent"
+                    sample["video_id"] = vid
+                    sample["metadata"] = {"task_type": "pending_start",
+                                          "pending_question": pt["question"]}
+                    all_samples.append(sample)
+                    vid_sample_count += 1
+
+                elif is_pending_trigger:
+                    # Event happened → model responds to pending question
+                    pt = pending_active[chunk_idx]
+                    resp_text = pt.get("event", "Event observed.")
+                    # Inject pending into snapshot so model sees it
+                    snap_with_pending = dict(snapshot)
+                    snap_with_pending["pending_questions"] = [{
+                        "question": pt["question"],
+                        "since_chunk": pt["ask_chunk"],
+                    }]
+                    output = (f"<think>{think_text}</think>"
+                              f"<action>response</action>"
+                              f"<response>{resp_text}</response>")
+                    sample = build_per_timestep_messages(
+                        snap_with_pending, chunk_idx, vpath, output,
+                    )
+                    sample["sample_type"] = "response"
+                    sample["video_id"] = vid
+                    sample["metadata"] = {"task_type": "pending_response",
+                                          "gold_action": "response",
+                                          "pending_question": pt["question"],
+                                          "event": pt.get("event", "")}
+                    all_samples.append(sample)
+                    vid_sample_count += 1
+
+                elif is_pending_mid and chunk_idx == pending_active[chunk_idx].get("mid_chunk"):
+                    # Mid-point silent with pending visible
+                    pt = pending_active[chunk_idx]
+                    snap_with_pending = dict(snapshot)
+                    snap_with_pending["pending_questions"] = [{
+                        "question": pt["question"],
+                        "since_chunk": pt["ask_chunk"],
+                    }]
+                    output = f"<think>{think_text}</think><action>silent</action>"
+                    sample = build_per_timestep_messages(
+                        snap_with_pending, chunk_idx, vpath, output,
+                    )
+                    sample["sample_type"] = "silent"
+                    sample["video_id"] = vid
+                    sample["metadata"] = {"task_type": "pending_silent",
+                                          "pending_question": pt["question"]}
+                    all_samples.append(sample)
+                    vid_sample_count += 1
 
                 elif has_compress:
                     event = compress_at[chunk_idx]
@@ -542,6 +622,7 @@ async def run_pipeline(
                         "gold_action": "compress",
                         "compressed_range": tr,
                         "compressed_chunks": event.get("compressed_thinks_chunks", []),
+                        "has_visual_context": event.get("has_visual_context", False),
                     }
 
                     # C1: system trigger with specified range
@@ -551,16 +632,18 @@ async def run_pipeline(
                         user_text_suffix=c1_trigger,
                     )
                     c1["sample_type"] = "compress"
+                    c1["video_id"] = vid
                     c1["metadata"] = {**compress_meta_base, "phase": "C1"}
                     all_samples.append(c1)
 
-                    # C2: system trigger WITHOUT range (model self-selects)
+                    # C2: system trigger WITHOUT range
                     c2_trigger = "<compress_trigger/>"
                     c2 = build_per_timestep_messages(
                         snapshot, chunk_idx, vpath, compress_output,
                         user_text_suffix=c2_trigger,
                     )
                     c2["sample_type"] = "compress"
+                    c2["video_id"] = vid
                     c2["metadata"] = {**compress_meta_base, "phase": "C2"}
                     all_samples.append(c2)
 
@@ -575,6 +658,7 @@ async def run_pipeline(
                         snapshot, chunk_idx, vpath, output,
                     )
                     sample["sample_type"] = "silent"
+                    sample["video_id"] = vid
                     all_samples.append(sample)
                     vid_sample_count += 1
 
@@ -616,13 +700,13 @@ async def run_pipeline(
     passed_samples, stats = filter_samples(all_samples)
     logger.info(f"Verification: {stats['passed']}/{stats['total']} passed ({stats['pass_rate']:.1%})")
     logger.info(f"Fail reasons: {stats['fail_reasons']}")
-    logger.info(f"Difficulty distribution: {stats['difficulty_distribution']}")
 
-    # --- Final output: split by phase ---
+    # --- Final output ---
     FINAL_DIR.mkdir(parents=True, exist_ok=True)
 
-    # Split by video for train/val/test
+    # Split by video for train/val/test (80/10/10)
     video_ids = list(set(s.get("video_id", "") for s in passed_samples))
+    video_ids = [v for v in video_ids if v]  # remove empty
     random.seed(seed)
     random.shuffle(video_ids)
     n = len(video_ids)
@@ -634,7 +718,7 @@ async def run_pipeline(
     val_samples = [s for s in passed_samples if s.get("video_id") in val_vids]
     test_samples = [s for s in passed_samples if s.get("video_id") in test_vids]
 
-    # Save
+    # Save all-in-one splits
     for split_name, split_data in [("train", train_samples), ("val", val_samples), ("test", test_samples)]:
         path = FINAL_DIR / f"{split_name}.jsonl"
         with open(path, "w") as f:
@@ -642,11 +726,30 @@ async def run_pipeline(
                 f.write(json.dumps(s, ensure_ascii=False) + "\n")
         logger.info(f"  {split_name}: {len(split_data)} samples → {path}")
 
+    # Save phase-specific train files (for SFT data_list.py)
+    phase_map = {
+        "1": "phase1_train.jsonl",
+        "2": "phase2_train.jsonl",
+        "C1": "c1_train.jsonl",
+        "C2": "c2_train.jsonl",
+        "5": "phase5_train.jsonl",
+    }
+    phase_counts = {}
+    for phase_key, filename in phase_map.items():
+        phase_data = [s for s in train_samples if s.get("phase") == phase_key]
+        path = FINAL_DIR / filename
+        with open(path, "w") as f:
+            for s in phase_data:
+                f.write(json.dumps(s, ensure_ascii=False) + "\n")
+        phase_counts[phase_key] = len(phase_data)
+        logger.info(f"  phase {phase_key}: {len(phase_data)} train samples → {path}")
+
     # Save stats
     stats_path = FINAL_DIR / "pipeline_stats.json"
     stats["train_count"] = len(train_samples)
     stats["val_count"] = len(val_samples)
     stats["test_count"] = len(test_samples)
+    stats["phase_counts"] = phase_counts
     stats["split_by_video"] = True
     with open(stats_path, "w") as f:
         json.dump(stats, f, indent=2)
