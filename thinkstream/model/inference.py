@@ -1439,6 +1439,7 @@ def think_budget_sample_agent(
     allow_recall: bool = False,
     is_query_window: bool = True,
     allow_deferral: bool = False,
+    skip_think: bool = False,
     silent_first_token_id: int = 0,
     response_first_token_id: int = 0,
     recall_first_token_id: int = 0,
@@ -1456,34 +1457,55 @@ def think_budget_sample_agent(
           response: → <response> → argmax(restricted) → </response> → <|im_end|>
           recall:   → <query> → free JSON → </query> → <|im_end|>
 
-    When ``allow_recall=False`` (eval), recall never fires.
+    When ``skip_think=True`` (post-recall step), output starts directly with
+    ``<action>`` — no ``<think>...</think>`` prefix. This is because the think
+    (visual observation) was already emitted in the recall_query step for the
+    same chunk. The state machine becomes::
+
+        <action> → {response|silent} → </action> → ...
+
+    When ``allow_recall=False`` (eval or post-recall), recall never fires.
     """
-    # Phase 1: enforce thinking budget
-    next_token = think_budget_sample(
-        next_token=next_token,
-        logits=logits,
-        step=step,
-        generated_tokens=generated_tokens,
-        generated_length=generated_length,
-        think_end_token_id=think_end_token_id,
-        max_think_tokens=max_think_tokens,
-    )
+    if skip_think:
+        # Post-recall: skip think entirely, force <action> at step 0
+        if step == 0:
+            return torch.full_like(next_token, action_start_token_id)
+        # Pretend </think> was at step -1 so tokens_after = step
+        # Reuse the post-</think> state machine below with synthetic think_pos
+        device = next_token.device
+        B = next_token.size(0)
+        has_think = torch.ones(B, dtype=torch.bool, device=device)
+        think_pos = torch.full((B,), -1, dtype=torch.long, device=device)
+        tokens_after = torch.full((B,), step, dtype=torch.long, device=device)
+    else:
+        # Phase 1: enforce thinking budget
+        next_token = think_budget_sample(
+            next_token=next_token,
+            logits=logits,
+            step=step,
+            generated_tokens=generated_tokens,
+            generated_length=generated_length,
+            think_end_token_id=think_end_token_id,
+            max_think_tokens=max_think_tokens,
+        )
 
-    if step == 0:
+    if step == 0 and not skip_think:
         return next_token
 
-    device = next_token.device
-    B = next_token.size(0)
-    history = generated_tokens[:, :step]
+    if not skip_think:
+        device = next_token.device
+        B = next_token.size(0)
+        history = generated_tokens[:, :step]
 
-    # Locate first </think>
-    think_mask = history == think_end_token_id
-    has_think = think_mask.any(dim=1)
-    if not has_think.any():
-        return next_token
+        # Locate first </think>
+        think_mask = history == think_end_token_id
+        has_think = think_mask.any(dim=1)
+        if not has_think.any():
+            return next_token
 
-    think_pos = think_mask.to(torch.long).argmax(dim=1)
-    tokens_after = (step - think_pos - 1) * has_think.long()
+        think_pos = think_mask.to(torch.long).argmax(dim=1)
+        tokens_after = (step - think_pos - 1) * has_think.long()
+    # else: has_think, think_pos, tokens_after already set in skip_think block above
 
     # Defaults for action word token sequences
     if silent_token_ids is None:

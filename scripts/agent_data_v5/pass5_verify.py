@@ -110,46 +110,37 @@ def verify_action_minimality(sample: Dict) -> Tuple[bool, str]:
 
 
 def verify_grounding(sample: Dict) -> Tuple[bool, str]:
-    """Check: observation/think is grounded in facts.
+    """Check: observation is grounded in visual facts.
 
-    For most sample types: no sounds, smells, emotions, intentions, speculations.
-    For recall_response: think is analysis of recall result (not visual observation),
-    so we check both think and response for non-visual claims, but allow recall-analysis
-    phrases like "retrieved", "recall", "evidence".
+    No sounds, smells, emotions, intentions, speculations.
+    recall_response has no think (observation was emitted in recall_query turn),
+    so we check the response text instead.
     """
     output = sample.get("output", "")
     sample_type = sample.get("sample_type", "")
 
-    obs_match = re.search(r'<think>(.*?)</think>', output, re.DOTALL)
-    if not obs_match:
-        return False, "no_think_tag"
-
-    check_text = obs_match.group(1).lower()
-
-    # Blacklisted phrases (non-visual or meta-cognitive)
-    # recall_response think is about analyzing recall results, so it uses a
-    # relaxed blacklist (allow "evidence", "retrieved", etc.)
+    # recall_response intentionally has no think — check response instead
     if sample_type == "recall_response":
-        blacklist_phrases = [
-            "sound", "hear", "listen", "noise", "sizzle", "sizzling",
-            "music", "speech", "said", "talking", "voice",
-            "smell", "aroma", "scent", "fragrant", "aromatic",
-            "feels", "feeling", "emotion", "happy", "sad", "angry",
-            "i think", "i notice", "i need", "i should",
-            "the user wants",
-            "system triggered", "memory compression",
-        ]
+        resp_match = re.search(r'<response>(.*?)</response>', output, re.DOTALL)
+        if not resp_match:
+            return True, "pass"
+        check_text = resp_match.group(1).lower()
     else:
-        blacklist_phrases = [
-            "sound", "hear", "listen", "noise", "sizzle", "sizzling",
-            "music", "speech", "said", "talking", "voice",
-            "smell", "aroma", "scent", "fragrant", "aromatic",
-            "feels", "feeling", "emotion", "happy", "sad", "angry",
-            "probably", "likely", "seems to want", "intend",
-            "i think", "i notice", "i need", "i should", "i can see",
-            "the user wants", "the video shows",
-            "system triggered", "memory compression", "retrieved evidence",
-        ]
+        obs_match = re.search(r'<think>(.*?)</think>', output, re.DOTALL)
+        if not obs_match:
+            return False, "no_think_tag"
+        check_text = obs_match.group(1).lower()
+
+    blacklist_phrases = [
+        "sound", "hear", "listen", "noise", "sizzle", "sizzling",
+        "music", "speech", "said", "talking", "voice",
+        "smell", "aroma", "scent", "fragrant", "aromatic",
+        "feels", "feeling", "emotion", "happy", "sad", "angry",
+        "probably", "likely", "seems to want", "intend",
+        "i think", "i notice", "i need", "i should", "i can see",
+        "the user wants", "the video shows",
+        "system triggered", "memory compression", "retrieved evidence",
+    ]
 
     for phrase in blacklist_phrases:
         if phrase in check_text:
@@ -162,10 +153,13 @@ def verify_format(sample: Dict) -> Tuple[bool, str]:
     """Check: output format and length constraints."""
     output = sample.get("output", "")
 
-    # ALL sample types must have think tags (protocol consistency)
+    # All sample types must have think tags EXCEPT recall_response
+    # (recall_response is the post-recall step within the same chunk;
+    # the think was already output in the recall_query step)
     sample_type = sample.get("sample_type", "")
-    if "<think>" not in output or "</think>" not in output:
-        return False, "missing_think_tags"
+    if sample_type != "recall_response":
+        if "<think>" not in output or "</think>" not in output:
+            return False, "missing_think_tags"
 
     # Must have action tag
     if "<action>" not in output or "</action>" not in output:
@@ -306,14 +300,18 @@ def _compressed_source_texts(sample: Dict) -> List[str]:
 
 
 def verify_think_token_length(sample: Dict) -> Tuple[bool, str]:
-    """Check: think is within expected token range.
+    """Check: think is within 40-60 token range.
 
-    Visual observation thinks: 40-60 tokens (±10 tolerance).
-    recall_response thinks: 20-40 tokens (analysis of recall result, shorter).
     Uses student tokenizer for precise counting.
+    Allows ±10 token tolerance for edge cases.
+    recall_response has no think — skip.
     """
     output = sample.get("output", "")
     sample_type = sample.get("sample_type", "")
+
+    # recall_response has no think (emitted in recall_query step)
+    if sample_type == "recall_response":
+        return True, "pass"
 
     obs_match = re.search(r'<think>(.*?)</think>', output, re.DOTALL)
     if not obs_match:
@@ -324,14 +322,8 @@ def verify_think_token_length(sample: Dict) -> Tuple[bool, str]:
         return True, "pass"
 
     tok_count = _count_tokens(think_text)
-
-    # recall_response think is recall-result analysis (shorter than visual observation)
-    if sample_type == "recall_response":
-        min_tok = 10   # very short analysis is OK
-        max_tok = 50   # 40 target + 10 tolerance
-    else:
-        min_tok = THINK_TOKENS[0] - 10  # 30 (tolerance)
-        max_tok = THINK_TOKENS[1] + 15  # 75 (tolerance)
+    min_tok = THINK_TOKENS[0] - 10  # 30 (tolerance)
+    max_tok = THINK_TOKENS[1] + 15  # 75 (tolerance)
 
     if tok_count < min_tok:
         return False, f"think_tokens_too_few ({tok_count} < {min_tok})"

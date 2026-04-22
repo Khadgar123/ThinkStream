@@ -18,7 +18,6 @@ from typing import Dict, List, Optional
 from .config import (
     AGENT_CHUNK_SEC,
     PASS_CONFIG,
-    POST_RECALL_THINK_PROMPT,
     RECALL_QUERY_PROMPT,
     RECALL_RETURN_FRAMES,
     RESPONSE_PROMPT,
@@ -635,32 +634,6 @@ async def build_recall_sample(
     response_text = re.sub(r'<think>.*?</think>', '', resp_raw, flags=re.DOTALL).strip().strip('"')
     current_obs = observations[ask_chunk]["think"] if ask_chunk < len(observations) else ""
 
-    # --- Generate post-recall think (analysis of recall result) ---
-    recall_think_prompt = POST_RECALL_THINK_PROMPT.format(
-        question=task.get("question", ""),
-        recall_result=recall_result.get("text_content", "No results found."),
-        recall_source=recall_result.get("source", "unknown"),
-    )
-    recall_think_raw = await client._call_one(
-        messages=[{"role": "user", "content": recall_think_prompt}],
-        max_tokens=PASS_CONFIG["pass4_forks"]["max_tokens"],
-        temperature=0.3,
-        request_id=f"{video_id}_recallthink_{ask_chunk}",
-    )
-    if recall_think_raw:
-        recall_think_text = re.sub(
-            r'<think>.*?</think>', '', recall_think_raw, flags=re.DOTALL
-        ).strip().strip('"')
-        # Soft truncate to 40 tokens (~250 chars)
-        if len(recall_think_text) > 250:
-            recall_think_text = recall_think_text[:250].rsplit(" ", 1)[0]
-    else:
-        recall_think_text = (
-            "Recall returned relevant evidence matching the query."
-            if not is_failed_recall
-            else "Recall did not return matching evidence for this query."
-        )
-
     # --- Sample 1: Recall query ---
     sample1_input = build_sample_input(
         snapshot, user_input=task.get("question", ""), visual_window_meta=visual_meta
@@ -721,10 +694,11 @@ async def build_recall_sample(
     # Add recall_result to input
     sample2_input["recall_result"] = recall_result
 
-    # Post-recall turn: think is analysis of recall result (not visual observation,
-    # which was already emitted in sample1 for this chunk_idx).
+    # Post-recall response: NO think. The visual observation for this chunk was
+    # already emitted in sample1 (recall_query). Emitting another think would
+    # duplicate it in memory. recall_response is the only action type without
+    # think — this is intentional, not a format inconsistency.
     sample2_output = (
-        f"<think>{recall_think_text}</think>"
         f"<action>response</action>"
         f"<response>{response_text}</response>"
     )
@@ -1088,14 +1062,13 @@ async def build_video_conversation(
                     task_at[ask_chunk] = task
 
             elif gold_action == "recall":
-                query_json, resp_text, recall_result, recall_think = await _generate_recall_texts(
+                query_json, resp_text, recall_result = await _generate_recall_texts(
                     task, snapshots, observations, client, video_id
                 )
                 if query_json:
                     task["_generated_query"] = query_json
                     task["_generated_response"] = resp_text
                     task["_recall_result"] = recall_result
-                    task["_recall_think"] = recall_think
                     task_at[ask_chunk] = task
                     recall_result_at[ask_chunk] = recall_result
 
@@ -1208,20 +1181,15 @@ async def build_video_conversation(
             })
 
             resp = task_at[chunk_idx].get("_generated_response", "")
-            recall_think = task_at[chunk_idx].get("_recall_think", "")
             is_failed = recall_result.get("noise_level") in ("distractor", "failure")
             if is_failed:
                 resp = "I could not find enough evidence to answer confidently."
 
-            # Post-recall response: think is analysis of recall result
-            # (not visual observation — that was already emitted in the recall query turn)
+            # Post-recall response: NO think (visual observation already
+            # emitted in the recall query turn for this same chunk)
             messages.append({
                 "role": "assistant",
-                "content": (
-                    f"<think>{recall_think}</think>"
-                    f"<action>response</action>"
-                    f"<response>{resp}</response>"
-                ),
+                "content": f"<action>response</action><response>{resp}</response>",
             })
 
     return {
@@ -1362,29 +1330,4 @@ async def _generate_recall_texts(task, snapshots, observations, client, video_id
     if resp_raw:
         resp_text = re.sub(r'<think>.*?</think>', '', resp_raw, flags=re.DOTALL).strip().strip('"')
 
-    # Generate post-recall think
-    recall_think_prompt = POST_RECALL_THINK_PROMPT.format(
-        question=task.get("question", ""),
-        recall_result=recall_result.get("text_content", "No results found."),
-        recall_source=recall_result.get("source", "unknown"),
-    )
-    recall_think_raw = await client._call_one(
-        messages=[{"role": "user", "content": recall_think_prompt}],
-        max_tokens=PASS_CONFIG["pass4_forks"]["max_tokens"], temperature=0.3,
-        request_id=f"{video_id}_recallthink_{ask_chunk}",
-    )
-    recall_think_text = ""
-    if recall_think_raw:
-        recall_think_text = re.sub(
-            r'<think>.*?</think>', '', recall_think_raw, flags=re.DOTALL
-        ).strip().strip('"')
-        if len(recall_think_text) > 250:
-            recall_think_text = recall_think_text[:250].rsplit(" ", 1)[0]
-    else:
-        recall_think_text = (
-            "Recall returned relevant evidence matching the query."
-            if not is_failed
-            else "Recall did not return matching evidence for this query."
-        )
-
-    return query_json, resp_text, recall_result, recall_think_text
+    return query_json, resp_text, recall_result

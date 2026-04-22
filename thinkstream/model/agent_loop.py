@@ -497,15 +497,8 @@ class StreamingAgentLoop:
                 )
 
                 recall_parsed = parse_agent_output(recall_output_text)
-                # Add recall think to memory (this is the recall-result analysis)
-                if recall_parsed["think"]:
-                    # Don't double-add: recall_response think goes to archive
-                    # but not to recent_thinks (same chunk already has a think)
-                    self.memory._retrieval_archive.append({
-                        "chunk": chunk_idx,
-                        "time": f"{chunk_idx * AGENT_CHUNK_SEC}-{(chunk_idx + 1) * AGENT_CHUNK_SEC}",
-                        "text": recall_parsed["think"],
-                    })
+                # recall_response has NO think (observation was already
+                # emitted in sample1 for this same chunk_idx).
 
                 # Merge recall results into parsed output
                 parsed["recall_step2"] = recall_parsed
