@@ -335,7 +335,7 @@ async def run_pipeline(
     # PASS 1-A: Independent Chunk Annotation
     # =================================================================
     if 1 not in skip_pass:
-        from .pass1a_evidence import load_1a, run_pass1a, save_1a
+        from .pass1a_evidence import load_1a, run_pass1a, save_1a, init_progress
 
         logger.info("=" * 60)
         logger.info("PASS 1-A: Independent Chunk Annotation")
@@ -343,8 +343,12 @@ async def run_pipeline(
 
         pass1a_conc = safe_concurrency_for_pass("pass1a")
         chunk_semaphore = asyncio.Semaphore(pass1a_conc)
-        total_chunks = sum(v["num_chunks"] for v in videos)
-        logger.info(f"PASS 1-A: {total_chunks} chunks, concurrency={pass1a_conc}")
+        total_chunks = sum(v["num_chunks"] for v in videos
+                           if not load_1a(v["video_id"]))  # exclude cached
+        stream_path = AUDIT_DIR / "pass1a_stream.jsonl"
+        logger.info(f"PASS 1-A: {total_chunks} new chunks, concurrency={pass1a_conc}")
+        logger.info(f"PASS 1-A: real-time results → tail -f {stream_path}")
+        init_progress(total_chunks, stream_path=stream_path)
 
         async def process_video_1a(video):
             vid = video["video_id"]
