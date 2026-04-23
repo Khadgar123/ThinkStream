@@ -646,54 +646,117 @@ descriptive:
 
 397B 在生成 card 时标注 visibility_type，3-B 据此过滤不合法的 availability。
 
-#### 生成流程：opportunity 筛选 + 分批 call
+#### 生成流程：结构化筛选 + 分组 397B call
 
-**Step 1: 程序预筛选（无 397B）**
+**Step 1: 从 evidence 结构化字段筛选（纯程序，不做关键词匹配）**
+
+不从 fact 文本猜 family——直接用 evidence 的结构化字段：
 
 ```python
-def scan_opportunities(evidence):
-    """标记每个 chunk 可供哪些 family 使用"""
-    opp = {}
+def classify_chunks(evidence):
+    """
+    按 evidence 的结构化字段分组，不做关键词匹配。
+    输出: family_chunks = {family: [chunk_indices]}
+    """
+    family_chunks = {f: [] for f in ["F1","F2","F3","F4","E1","E2","P1","C1","R1","S1","M1"]}
+    
     for cap in evidence:
         idx = cap["chunk_idx"]
-        families = []
-        for fact in cap.get("atomic_facts", []):
-            if fact.get("confidence", 0) < 0.7:
-                continue
-            text = fact["fact"].lower()
-            if cap.get("ocr") or any(c.isdigit() for c in text):
-                families.append("F1")
-            if has_visual_attribute(text):
-                families.append("F2")
-            if has_count_pattern(text):
-                families.append("F3")
-        if len(cap.get("visible_entities", [])) >= 2:
-            families.append("F4")
-        if cap.get("atomic_facts"):
-            families.append("E1")
+        entities = cap.get("visible_entities", [])
+        facts = [f for f in cap.get("atomic_facts", []) if f.get("confidence", 0) >= 0.7]
+        
+        # F1: 有 OCR 字段 或 facts 含数字
+        if cap.get("ocr"):
+            family_chunks["F1"].append(idx)
+        elif any(any(c.isdigit() for c in f["fact"]) for f in facts):
+            family_chunks["F1"].append(idx)
+        
+        # F2/F4: 有实体 → F2 (属性问题); 有 ≥2 实体 → F4 (空间关系)
+        if entities:
+            family_chunks["F2"].append(idx)
+        if len(entities) >= 2:
+            family_chunks["F4"].append(idx)
+        
+        # F3: facts 含数字（和 F1 重叠，但 F3 问的是"几个"不是"多少钱"）
+        if any(any(c.isdigit() for c in f["fact"]) for f in facts):
+            family_chunks["F3"].append(idx)
+        
+        # E2: 有 state_changes（来自 1-B）
         if cap.get("state_changes"):
-            families.append("E2")
-        if len(cap.get("visible_entities", [])) >= 3:
-            families.append("S1")
-        opp[idx] = list(set(families))
-    # 跨 chunk: P1(连续 state_changes ≥ 3), C1(同实体不同状态), R1(实体消失重现)
-    add_cross_chunk_opportunities(evidence, opp)
-    return opp
+            family_chunks["E2"].append(idx)
+    
+    # E1: 从全部 chunks 中均匀采样（几乎所有 chunk 都可以问"在做什么"）
+    all_chunks = [cap["chunk_idx"] for cap in evidence if cap.get("atomic_facts")]
+    family_chunks["E1"] = all_chunks[::3]  # 每 3 个取 1 个，避免全选
+    
+    # S1: 实体 ≥ 3 的 chunk（场景丰富，适合描述）
+    family_chunks["S1"] = [cap["chunk_idx"] for cap in evidence 
+                           if len(cap.get("visible_entities", [])) >= 3]
+    
+    # P1: 连续 ≥ 3 个有 state_changes 的 chunk
+    consecutive = []
+    for cap in evidence:
+        if cap.get("state_changes"):
+            consecutive.append(cap["chunk_idx"])
+        else:
+            if len(consecutive) >= 3:
+                family_chunks["P1"].extend(consecutive)
+            consecutive = []
+    if len(consecutive) >= 3:
+        family_chunks["P1"].extend(consecutive)
+    
+    # C1/R1: 需要跨 chunk 实体追踪（用 1-B 的 entity_id hint）
+    entity_appearances = {}  # entity_id → [chunk_indices]
+    for cap in evidence:
+        for e in cap.get("visible_entities", []):
+            eid = e.get("id", e.get("desc", ""))
+            if eid and eid != "unknown":
+                entity_appearances.setdefault(eid, []).append(cap["chunk_idx"])
+    
+    for eid, chunks in entity_appearances.items():
+        # C1: 同实体在不同 chunk 有 state_change
+        state_chunks = [c for c in chunks if evidence[c].get("state_changes")]
+        if len(state_chunks) >= 2:
+            family_chunks["C1"].extend(state_chunks[-2:])  # 取最后两个变化点
+        # R1: 实体消失后重现（gap ≥ 5 chunks）
+        for i in range(1, len(chunks)):
+            if chunks[i] - chunks[i-1] >= 5:
+                family_chunks["R1"].append(chunks[i])
+    
+    # M1: 需要全视频视角（哪些内容适合持续解说）→ 给全视频摘要
+    family_chunks["M1"] = None  # 特殊：不按 chunk 筛选，给全视频
+    
+    return family_chunks
 ```
 
-**Step 2: 按 family 分批 397B call（每 family 一次 call）**
+**Step 2: 按分组调 397B（每组一次 call）**
 
-不再一次 call 生成全部 25 cards（thinking 会爆）。按 family 分批，每次只给相关 chunks：
+每组只发相关 chunks 的 evidence，不发全部 60 个：
 
+```python
+for family, chunk_list in family_chunks.items():
+    if not chunk_list and family != "M1":
+        continue  # 这个 family 无候选 chunk
+    
+    # 准备输入：只取相关 chunks 的 evidence 摘要
+    if family == "M1":
+        # M1 需要全视频摘要才能设计持续解说问题
+        input_evidence = summarize_full_video(evidence)
+    else:
+        input_evidence = [evidence[c] for c in chunk_list[:10]]  # 限制最多 10 个 chunk
+    
+    target_n = FAMILY_TARGETS[family]
+    
+    # 397B call: 只生成这个 family 的 cards
+    cards = await call_397b_for_family(family, input_evidence, target_n, client)
+    all_cards.extend(cards)
 ```
-F1 call: 只输入含 OCR/数字的 ~5 chunks → 输出 3 个 F1 cards
-F2 call: 只输入含视觉属性的 ~8 chunks → 输出 4 个 F2 cards
-E2 call: 只输入有 state_changes 的 ~6 chunks → 输出 2 个 E2 cards
-M1 call: 给全视频摘要 → 输出 2 个 M1 cards（需要看整体才知道怎么做连续解说）
-...
-```
 
-每次 call 输入短（~500-1000 tokens）、输出短（~300 tokens）、任务单一、thinking 可控。
+每组 call 的输入 ~500-1000 tokens（5-10 个 chunk 摘要），输出 ~200-300 tokens（2-4 cards）。
+thinking 可控，不会爆炸。
+
+**跳过无候选的 family**：如果视频没有 OCR → F1 call 跳过。如果没有 state_changes → E2 跳过。
+实际每视频 ~6-8 次 call（不是全部 11 个 family 都有候选）。
 
 **每 family 的 prompt 明确指定 answer_form + 怎么造选项**：
 
