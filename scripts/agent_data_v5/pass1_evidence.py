@@ -1,21 +1,22 @@
 """
 Pass 1: Teacher Evidence Graph
 
-1-A: Independent per-chunk annotation (2 frames, no context).
-1-B: Post-processing (entity linking + state_changes derivation).
+1-A: Independent per-chunk annotation (2 frames, no context, fully parallel).
+1-B: Post-processing (change detection via action word-set comparison).
 
 This is TEACHER-ONLY information — never enters SFT training data.
 
 Input: Video frames (2 frames per chunk)
-Output: Per-chunk structured JSON with entities, facts, OCR.
-        + cross-chunk entity IDs and state_changes (from 1-B).
+Output: Per-chunk structured JSON with entities (desc), facts, OCR, spatial.
+        + state_changes derived by 1-B (not from 397B).
 
-Processing: Fully parallel within and across videos (1-A).
-            Sequential post-processing (1-B, pure computation).
+Processing: All chunks from all videos fully parallel (shared semaphore).
 """
 
+import asyncio
 import json
 import logging
+import re
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -30,15 +31,20 @@ from .config import (
 logger = logging.getLogger(__name__)
 
 
+# ---------------------------------------------------------------------------
+# 1-A: Independent Chunk Annotation
+# ---------------------------------------------------------------------------
+
+
 def build_evidence_request(
     chunk_idx: int,
     frame_paths: List[str],
     video_id: str,
 ) -> Dict:
-    """Build evidence graph request for one chunk (independent, 2 frames only).
+    """Build evidence request for one chunk (independent, 2 frames only).
 
     No sliding window, no previous captions. Each chunk is self-contained.
-    Entity consistency handled in post-processing (pass1b).
+    Entities described by appearance (desc), not by ID.
     """
     start = chunk_idx * AGENT_CHUNK_SEC
     end = start + AGENT_CHUNK_SEC
@@ -48,7 +54,6 @@ def build_evidence_request(
         end=int(end),
     )
 
-    # Only current chunk's 2 frames
     chunk_frame_paths = get_chunk_frame_paths(frame_paths, chunk_idx)
 
     return {
@@ -63,19 +68,15 @@ def build_evidence_request(
 def parse_evidence_result(raw: Optional[str], meta: Dict) -> Dict:
     """Parse 397B evidence graph output.
 
-    Handles thinking mode: strips <think>...</think> if present.
-    Falls back gracefully on parse failure.
+    Expected fields from 397B: visible_entities, atomic_facts, ocr, spatial.
+    NOT expected: state_changes (derived in 1-B), not_observable (removed).
     """
-    import re
-
     default = {
         "time": meta["time"],
         "visible_entities": [],
         "atomic_facts": [],
-        "state_changes": [],
         "ocr": [],
         "spatial": "",
-        "not_observable": [],
         "parse_success": False,
     }
 
@@ -86,12 +87,9 @@ def parse_evidence_result(raw: Optional[str], meta: Dict) -> Dict:
     raw = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip()
 
     # Extract JSON — try direct parse first, then find LAST complete JSON object.
-    # "Last" because if thinking leaks into content, thinking text comes first
-    # and the actual JSON is at the end.
     try:
         parsed = json.loads(raw)
     except (json.JSONDecodeError, ValueError):
-        # Find all '{' positions, try from last to first
         positions = [i for i, c in enumerate(raw) if c == '{']
         if not positions:
             default["_raw"] = raw[:4000]
@@ -116,37 +114,32 @@ def parse_evidence_result(raw: Optional[str], meta: Dict) -> Dict:
             default["_raw"] = raw[:4000]
             return default
 
-    # Validate and normalize
+    # Normalize
     raw_facts = parsed.get("atomic_facts", [])
     normalized_facts = [_normalize_atomic_fact(f) for f in raw_facts]
 
     raw_entities = parsed.get("visible_entities", [])
     normalized_entities = [_normalize_entity(e) for e in raw_entities]
 
-    result = {
+    return {
         "time": parsed.get("time", meta["time"]),
         "visible_entities": normalized_entities,
         "atomic_facts": normalized_facts,
-        "state_changes": parsed.get("state_changes", []),
         "ocr": parsed.get("ocr", []),
         "spatial": parsed.get("spatial", ""),
-        "not_observable": parsed.get("not_observable", []),
         "parse_success": True,
     }
-
-    return result
 
 
 def _normalize_atomic_fact(fact) -> dict:
     """Normalize atomic_fact to ensure consistent schema.
 
-    Handles cases where 397B outputs a string instead of a dict.
+    v8.0: no support_level (each chunk is independent, all facts are direct).
     """
     if isinstance(fact, str):
         return {
             "fact": fact,
             "confidence": 0.5,
-            "support_level": "unknown",
             "target_resolution_visible": False,
             "parse_repaired": True,
         }
@@ -154,13 +147,10 @@ def _normalize_atomic_fact(fact) -> dict:
         return {
             "fact": str(fact),
             "confidence": 0.0,
-            "support_level": "unknown",
             "target_resolution_visible": False,
             "parse_repaired": True,
         }
-    # Ensure required fields with safe defaults
     fact.setdefault("confidence", 0.5)
-    fact.setdefault("support_level", "unknown")
     fact.setdefault("target_resolution_visible", True)
     return fact
 
@@ -175,60 +165,14 @@ def _normalize_entity(entity) -> dict:
         return {"desc": entity, "action": "", "position": ""}
     if not isinstance(entity, dict):
         return {"desc": str(entity), "action": "", "position": ""}
-    # Accept both 'desc' (new) and 'id' (old) as entity identifier
     if "desc" not in entity and "id" in entity:
         entity["desc"] = entity["id"]
     entity.setdefault("desc", "unknown")
     return entity
 
 
-async def run_pass1_single_video(
-    video_id: str,
-    frame_paths: List[str],
-    num_chunks: int,
-    client,  # VLLMClient
-) -> List[Dict]:
-    """Run evidence graph generation for a single video.
-
-    1-A: All chunks annotated in parallel (independent, 2 frames each).
-    1-B: Post-processing — entity linking + state_changes derivation.
-    """
-    import asyncio
-
-    # --- 1-A: Parallel chunk annotation ---
-    async def annotate_chunk(chunk_idx):
-        request = build_evidence_request(
-            chunk_idx=chunk_idx,
-            frame_paths=frame_paths,
-            video_id=video_id,
-        )
-        result = await client._call_one(
-            messages=request["messages"],
-            max_tokens=request["max_tokens"],
-            temperature=request["temperature"],
-            request_id=request["id"],
-        )
-        caption = parse_evidence_result(result, request["_meta"])
-        caption["chunk_idx"] = chunk_idx
-        caption["video_id"] = video_id
-        return caption
-
-    tasks = [annotate_chunk(i) for i in range(num_chunks)]
-    captions = await asyncio.gather(*tasks)
-    captions = sorted(captions, key=lambda c: c["chunk_idx"])
-
-    logger.info(f"  [{video_id}] Evidence 1-A: {num_chunks} chunks annotated (parallel)")
-
-    # --- 1-B: Post-processing (change detection, no entity linking in v1) ---
-    detect_chunk_changes(captions)
-
-    logger.info(f"  [{video_id}] Evidence 1-B: change detection done")
-
-    return captions
-
-
 # ---------------------------------------------------------------------------
-# 1-B: Post-processing
+# 1-B: Post-processing (change detection)
 # ---------------------------------------------------------------------------
 
 
@@ -236,12 +180,9 @@ def detect_chunk_changes(evidence: List[Dict]):
     """Detect changes between adjacent chunks via action word-set comparison.
 
     Does NOT require entity linking — compares the set of action keywords
-    across all entities in adjacent chunks. This is more robust than
-    per-entity action string comparison (immune to paraphrase like
-    "stirring sauce" vs "stirring the pot").
+    across all entities in adjacent chunks.
 
-    Outputs: evidence[i]["state_changes"] = ["action_changed"] or []
-    Sufficient for: Pass 2 scoring (len), Pass 3-A E2/P1 detection (bool).
+    Outputs: evidence[i]["state_changes"] = ["action_changed", ...] or []
     """
     _stop = {"the", "a", "an", "is", "in", "on", "at", "to", "of", "with", "and"}
 
@@ -261,12 +202,10 @@ def detect_chunk_changes(evidence: List[Dict]):
         prev_actions = _action_words(evidence[i - 1])
         curr_actions = _action_words(evidence[i])
 
-        # Entity count change
         prev_n = len(evidence[i - 1].get("visible_entities", []))
         curr_n = len(evidence[i].get("visible_entities", []))
         entity_count_changed = abs(prev_n - curr_n) >= 1
 
-        # Action word-set change
         if not prev_actions and not curr_actions:
             action_changed = False
         elif not prev_actions or not curr_actions:
@@ -284,6 +223,70 @@ def detect_chunk_changes(evidence: List[Dict]):
             changes.append("entity_count_changed")
 
         evidence[i]["state_changes"] = changes
+
+
+# ---------------------------------------------------------------------------
+# Main Entry Points
+# ---------------------------------------------------------------------------
+
+
+async def run_pass1_single_video(
+    video_id: str,
+    frame_paths: List[str],
+    num_chunks: int,
+    client,
+    semaphore: Optional[asyncio.Semaphore] = None,
+) -> List[Dict]:
+    """Run evidence graph generation for a single video.
+
+    1-A: All chunks annotated in parallel (shared semaphore controls concurrency).
+    1-B: Post-processing — change detection.
+
+    Args:
+        semaphore: Shared across all videos. If None, no concurrency limit.
+    """
+    async def annotate_chunk(chunk_idx):
+        request = build_evidence_request(
+            chunk_idx=chunk_idx,
+            frame_paths=frame_paths,
+            video_id=video_id,
+        )
+        if semaphore:
+            async with semaphore:
+                result = await client._call_one(
+                    messages=request["messages"],
+                    max_tokens=request["max_tokens"],
+                    temperature=request["temperature"],
+                    request_id=request["id"],
+                )
+        else:
+            result = await client._call_one(
+                messages=request["messages"],
+                max_tokens=request["max_tokens"],
+                temperature=request["temperature"],
+                request_id=request["id"],
+            )
+        caption = parse_evidence_result(result, request["_meta"])
+        caption["chunk_idx"] = chunk_idx
+        caption["video_id"] = video_id
+        return caption
+
+    # 1-A: Launch all chunks (semaphore controls actual concurrency)
+    tasks = [annotate_chunk(i) for i in range(num_chunks)]
+    captions = await asyncio.gather(*tasks)
+    captions = sorted(captions, key=lambda c: c["chunk_idx"])
+
+    logger.info(f"  [{video_id}] Evidence 1-A: {num_chunks} chunks done")
+
+    # 1-B: Change detection (pure computation)
+    detect_chunk_changes(captions)
+
+    return captions
+
+
+# ---------------------------------------------------------------------------
+# IO
+# ---------------------------------------------------------------------------
 
 
 def save_evidence(video_id: str, captions: List[Dict], output_dir: Path = EVIDENCE_DIR):
@@ -304,7 +307,7 @@ def load_evidence(video_id: str, evidence_dir: Path = EVIDENCE_DIR) -> Optional[
 
 
 # ---------------------------------------------------------------------------
-# Helpers
+# Helpers (used by other passes too)
 # ---------------------------------------------------------------------------
 
 

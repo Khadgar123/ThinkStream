@@ -335,35 +335,39 @@ async def run_pipeline(
         from .pass1_evidence import load_evidence, run_pass1_single_video, save_evidence
 
         logger.info("=" * 60)
-        logger.info("PASS 1: Teacher Evidence Graph")
+        logger.info("PASS 1: Teacher Evidence Graph (chunk-parallel)")
         logger.info("=" * 60)
 
+        # Shared semaphore across ALL chunks from ALL videos.
+        # Each chunk = 2 frames (~1.5K tokens), so 1024 concurrent is safe.
         pass1_conc = safe_concurrency_for_pass("pass1_evidence")
-        logger.info(f"PASS 1 safe concurrency={pass1_conc}")
-        semaphore = asyncio.Semaphore(pass1_conc)
+        logger.info(f"PASS 1 chunk-level concurrency={pass1_conc}")
+        chunk_semaphore = asyncio.Semaphore(pass1_conc)
+
+        total_chunks = sum(v["num_chunks"] for v in videos)
+        logger.info(f"PASS 1 total chunks to annotate: {total_chunks}")
 
         async def process_video_pass1(video):
             vid = video["video_id"]
-            # Check cache
             cached = load_evidence(vid)
             if cached:
                 logger.info(f"  [{vid}] Using cached evidence ({len(cached)} chunks)")
                 return vid, cached
 
-            async with semaphore:
-                captions = await run_pass1_single_video(
-                    video_id=vid,
-                    frame_paths=video_frames.get(vid, []),
-                    num_chunks=video["num_chunks"],
-                    client=client,
-                )
-                save_evidence(vid, captions)
-                logger.info(f"  [{vid}] Evidence complete: {len(captions)} chunks")
-                return vid, captions
+            # All chunks share the same semaphore — no per-video bottleneck
+            captions = await run_pass1_single_video(
+                video_id=vid,
+                frame_paths=video_frames.get(vid, []),
+                num_chunks=video["num_chunks"],
+                client=client,
+                semaphore=chunk_semaphore,
+            )
+            save_evidence(vid, captions)
+            return vid, captions
 
         results = await asyncio.gather(*[process_video_pass1(v) for v in videos])
         evidence_map = {vid: caps for vid, caps in results}
-        logger.info(f"Pass 1 complete: {len(evidence_map)} videos")
+        logger.info(f"Pass 1 complete: {len(evidence_map)} videos, {total_chunks} chunks")
     else:
         from .pass1_evidence import load_evidence
         evidence_map = {}

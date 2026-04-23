@@ -224,7 +224,7 @@ PASS_CONFIG = {
         "max_tokens": 16384,
         "temperature": 0.3,
         "thinking": True,
-        "concurrent_videos": 1024,
+        "concurrent": 1024,  # chunk-level (not video-level), 2 frames per request
     },
     "pass2_rollout": {
         "max_tokens_observation": 16384,
