@@ -288,6 +288,21 @@ best_range = argmin(score)   # 综合最优
 
 **397B 输入**: 仅当前 chunk 的 2 帧，无前文 caption、无滑窗。
 
+**每个 chunk 只输出当前 2 帧的静态快照——"画面里有什么"，不输出"相比之前变了什么"。**
+
+独立 2 帧能生成 vs 不能生成：
+
+| 字段 | 能否独立生成 | 说明 |
+|------|------------|------|
+| `visible_entities` | **能** | 看 2 帧就知道画面里有什么 |
+| `atomic_facts` | **能** | 2 帧中可观察的事实 |
+| `ocr` | **能** | 2 帧里的文字 |
+| `spatial` | **能** | 当前帧空间布局 |
+| `confidence` | **能** | 画面清不清楚是当前帧的事 |
+| ~~`state_changes`~~ | **不能** | "变化"需要前一个 chunk 做对比——独立 chunk 没有 |
+| ~~`support_level`~~ | **不能** | `carried_from_previous` 需要前文 |
+| ~~`relation_to_previous`~~ | **不能** | 需要前文 |
+
 **397B 输出** (per chunk):
 ```json
 {
@@ -303,23 +318,12 @@ best_range = argmin(score)   # 综合最优
     {"fact": "amount approximately one teaspoon",
      "confidence": 0.55, "target_resolution_visible": false}
   ],
-  "state_changes": ["seasoning added to pot"],
   "ocr": [],
   "spatial": "person center, pot on right burner"
 }
 ```
 
-**与旧方案的区别**：
-
-| | 旧方案 | 新方案 |
-|--|--------|--------|
-| 视觉输入 | 24 帧滑窗 | **2 帧**（当前 chunk） |
-| 文本 context | 前 30 个 chunk 的 caption | **无** |
-| 实体标识 | `"id": "chef_1"` (依赖前文) | `"desc": "person wearing red apron"` (自描述) |
-| `support_level` | `direct_current_chunk / carried_from_previous / inferred` | **删除** — 每 chunk 独立，只有 direct |
-| `relation_to_previous` | 有 | **删除** |
-| 视频内并发 | 串行（依赖前文） | **全并行** |
-| 每请求 token | ~10K (24帧 + text context) | **~1.5K** (2帧) |
+**不再输出 `state_changes`、`support_level`、`relation_to_previous`。**
 
 **简化后的 prompt**:
 
@@ -330,22 +334,32 @@ best_range = argmin(score)   # 综合最优
 {{
   "time": [{start}, {end}],
   "visible_entities": [
-    {{"desc": "外观描述（穿着/颜色/材质/大小）", "action": "动作", "position": "位置"}}
+    {{"desc": "外观描述（穿着/颜色/材质/大小）", "action": "正在做什么", "position": "画面位置"}}
   ],
   "atomic_facts": [
     {{"fact": "可观察的事实陈述", "confidence": 0.0-1.0, "target_resolution_visible": true/false}}
   ],
-  "state_changes": ["相比静态场景的变化"],
   "ocr": ["画面中可见的文字"],
   "spatial": "简要空间布局"
 }}
 
 规则:
-- 只描述这 2 帧中可见的内容
+- 只描述这 2 帧中可见的内容（不需要和其他片段比较）
 - 用外观描述实体（不要编号，不要假设身份）
 - confidence < 0.7: 模糊/快速运动/部分遮挡
 - target_resolution_visible: 小字/远处细节在训练分辨率下不可读时为 false
 ```
+
+**与旧方案的区别**：
+
+| | 旧方案 | 新方案 |
+|--|--------|--------|
+| 视觉输入 | 24 帧滑窗 | **2 帧** |
+| 文本 context | 前 30 个 chunk 的 caption | **无** |
+| 实体标识 | `"id": "chef_1"` (依赖前文) | `"desc": "person wearing red apron"` (自描述) |
+| state_changes | 397B 生成（依赖前文） | **后处理推导**（见 1-B） |
+| 视频内并发 | 串行 | **全并行** |
+| 每请求 token | ~10K | **~1.5K** |
 
 **并发**:
 ```
@@ -355,61 +369,44 @@ best_range = argmin(score)   # 综合最优
 300 视频 ÷ 64 ≈ ~5 min（vs 旧方案 ~70 min）
 ```
 
-#### 1-B: 实体链接（轻量后处理）
+#### 1-B: 后处理（实体链接 + state_changes 推导）
 
-chunk 独立标注后，同一实体在不同 chunk 的 `desc` 可能措辞不同（"person in red apron" vs "chef wearing red"）。需要统一。
+1-A 输出的是每个 chunk 的**静态快照**——"画面里有什么"。
+1-B 做两件跨 chunk 后处理，全部是纯程序，不调 397B：
+
+##### 1-B-1: 实体链接
+
+同一实体在不同 chunk 的 `desc` 可能措辞不同（"person in red apron" vs "chef wearing red"），需要统一。
 
 **谁需要跨 chunk 实体一致性？**
 
 | 消费者 | 是否需要 | 原因 |
 |--------|---------|------|
-| Pass 2 压缩评分 | **不需要** | 只看单 chunk 内 fact 重要性（数字/OCR/state_changes 数量） |
-| Pass 3-A 单 chunk 分析 | **不需要** | 只看 entity 数量、有无 OCR/state_change |
-| Pass 3-A 跨 chunk: P1 步骤序列 | **需要** | 同实体在多 chunk 的 state_changes |
-| Pass 3-A 跨 chunk: C1 比较 | **需要** | 同实体不同时间的状态差异 |
-| Pass 3-A 跨 chunk: R1 再识别 | **需要** | 实体消失后重现 |
-| Pass 3-A 问题生成 | 弱需要 | 问题文本中引用实体 |
+| Pass 2 压缩评分 | **不需要** | 只看单 chunk 内 entity 数量 |
+| Pass 3-A 单 chunk 分析 | **不需要** | 只看有无 OCR、entity 数量 |
+| Pass 3-A 跨 chunk: P1/C1/R1 | **需要** | 追踪同一实体跨时间的变化 |
+| Pass 3-A 问题生成 | 弱需要 | 问题文本中引用实体名 |
 
-**只有 3 个跨 chunk 分析场景需要实体一致性，且都在 Pass 3-A。**
-
-**实体链接方案：基于属性聚类，一次 397B 调用**
+**方案：基于词重叠的贪心聚类**
 
 ```python
 def link_entities(evidence: List[Dict]) -> Dict[str, str]:
     """
-    从所有 chunk 的 visible_entities 提取 desc，聚类为统一实体。
+    收集所有 chunk 的 entity desc，按词重叠聚类，分配统一 ID。
     
-    输出: desc_to_id 映射，如 {"person wearing red apron": "person_1", 
-                              "chef in red": "person_1",
-                              "stainless steel pot": "pot_1"}
+    "person wearing red apron" 和 "person in red apron"
+    → 词重叠 > 50% → 同一实体 → 都映射到 "person_1"
+    
+    输出: desc_to_id 映射
     """
-    # 1. 收集所有唯一 desc（去重）
     all_descs = set()
     for cap in evidence:
         for entity in cap.get("visible_entities", []):
             all_descs.add(entity["desc"])
     
-    # 2. 如果实体数 < 20，用规则聚类（无需 397B）
-    if len(all_descs) < 20:
-        return rule_based_clustering(all_descs)
-    
-    # 3. 否则一次 397B 调用做聚类
-    return await llm_entity_clustering(all_descs)
-```
-
-**规则聚类**（大多数视频 < 20 个唯一 desc，不需要 397B）：
-
-```python
-def rule_based_clustering(descs: Set[str]) -> Dict[str, str]:
-    """
-    基于词重叠的贪心聚类。
-    
-    "person wearing red apron" 和 "person in red apron"
-    → 词重叠 > 60% → 同一实体 → 都映射到 "person_1"
-    """
-    clusters = []  # [(canonical_desc, [desc1, desc2, ...])]
-    
-    for desc in sorted(descs, key=len, reverse=True):  # 长描述优先
+    # 贪心聚类（长描述优先匹配）
+    clusters = []
+    for desc in sorted(all_descs, key=len, reverse=True):
         words = set(desc.lower().split())
         merged = False
         for canonical, members in clusters:
@@ -422,34 +419,92 @@ def rule_based_clustering(descs: Set[str]) -> Dict[str, str]:
         if not merged:
             clusters.append((desc, [desc]))
     
-    # 分配 ID
+    # 分配 ID: person_1, pot_1, bowl_1, ...
     desc_to_id = {}
     type_counters = {}
     for canonical, members in clusters:
-        # 从描述推断类型前缀
-        prefix = _infer_type_prefix(canonical)  # "person" / "pot" / "bowl" / "object"
+        prefix = _infer_type_prefix(canonical)
         type_counters[prefix] = type_counters.get(prefix, 0) + 1
         entity_id = f"{prefix}_{type_counters[prefix]}"
-        for desc in members:
-            desc_to_id[desc] = entity_id
+        for d in members:
+            desc_to_id[d] = entity_id
+    
+    # 写回 evidence
+    for cap in evidence:
+        for entity in cap.get("visible_entities", []):
+            entity["id"] = desc_to_id.get(entity["desc"], "unknown")
     
     return desc_to_id
 ```
 
-**链接后，写回 evidence**：
+大多数视频唯一 desc < 20 个，纯规则聚类，零 397B 调用。
+
+##### 1-B-2: state_changes 推导
+
+独立 chunk 无法生成"相比之前变了什么"——但通过比较相邻 chunk 的快照可以推导：
 
 ```python
-def apply_entity_links(evidence: List[Dict], desc_to_id: Dict[str, str]):
-    """将 entity_id 写入每个 chunk 的 visible_entities"""
-    for cap in evidence:
-        for entity in cap.get("visible_entities", []):
-            entity["id"] = desc_to_id.get(entity["desc"], "unknown")
+def derive_state_changes(evidence: List[Dict]):
+    """
+    比较相邻 chunk 的 visible_entities，推导 state_changes。
+    
+    检测三种变化：
+    1. 实体出现/消失（chunk N 有但 N-1 没有，或反过来）
+    2. 同一实体的 action 变化（"stirring" → "pouring"）
+    3. 同一实体的 attribute 变化（从 desc 提取）
+    """
+    for i in range(1, len(evidence)):
+        prev = evidence[i - 1]
+        curr = evidence[i]
+        changes = []
+        
+        prev_entities = {e.get("id", e["desc"]): e for e in prev.get("visible_entities", [])}
+        curr_entities = {e.get("id", e["desc"]): e for e in curr.get("visible_entities", [])}
+        
+        # 新出现的实体
+        for eid in curr_entities:
+            if eid not in prev_entities:
+                changes.append(f"{eid} appeared")
+        
+        # 消失的实体
+        for eid in prev_entities:
+            if eid not in curr_entities:
+                changes.append(f"{eid} disappeared")
+        
+        # action 变化
+        for eid in curr_entities:
+            if eid in prev_entities:
+                prev_action = prev_entities[eid].get("action", "")
+                curr_action = curr_entities[eid].get("action", "")
+                if prev_action and curr_action and prev_action != curr_action:
+                    changes.append(f"{eid}: {prev_action} → {curr_action}")
+        
+        curr["state_changes"] = changes
+    
+    # 第一个 chunk 没有前文比较
+    if evidence:
+        evidence[0]["state_changes"] = []
 ```
 
-**开销**：
-- 规则聚类：~0.1ms/视频，零 397B
-- 回退到 397B：1 call/视频（仅当唯一 desc > 20 时）
-- 大多数视频（烹饪/教程）唯一实体 < 10 个，规则聚类完全够用
+**state_changes 的下游消费者**：
+
+| 消费者 | 用什么 | 推导后能正常工作 |
+|--------|-------|---------------|
+| Pass 2 `_teacher_fact_value` | `len(state_changes)` 作为事件边界加分 | **能** — len() 不关心文本来源 |
+| Pass 3-A `scan_opportunities` E2 | 有无 state_changes | **能** — 推导的 changes 也是列表 |
+| Pass 3-A `_add_comparison_opportunities` | 同实体跨 chunk 的 state_change | **能** — 依赖 1-B-1 的 entity ID |
+
+**开销**：O(chunks × entities_per_chunk)，纯 dict 查找，~1ms/视频。
+
+##### 1-B 执行顺序
+
+```
+1-B-1 实体链接（给每个 entity 分配 id）
+  ↓
+1-B-2 state_changes 推导（用 entity id 比较相邻 chunk）
+```
+
+**1-B 总开销**：~1ms/视频，零 397B 调用。
 
 **用途**（不变）：
 - 造任务（知道哪里有可问的细节）

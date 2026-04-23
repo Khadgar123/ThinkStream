@@ -1,18 +1,21 @@
 """
 Pass 1: Teacher Evidence Graph
 
-Generates detailed structured captions for every 2s chunk.
+1-A: Independent per-chunk annotation (2 frames, no context).
+1-B: Post-processing (entity linking + state_changes derivation).
+
 This is TEACHER-ONLY information — never enters SFT training data.
 
-Input: Video frames (24-frame sliding window + text context)
-Output: Per-chunk structured JSON with entities, facts, OCR, state changes.
+Input: Video frames (2 frames per chunk)
+Output: Per-chunk structured JSON with entities, facts, OCR.
+        + cross-chunk entity IDs and state_changes (from 1-B).
 
-Processing: Sequential per video (needs prior context), parallel across videos.
+Processing: Fully parallel within and across videos (1-A).
+            Sequential post-processing (1-B, pure computation).
 """
 
 import json
 import logging
-from copy import deepcopy
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -22,7 +25,6 @@ from .config import (
     EVIDENCE_GRAPH_PROMPT,
     FRAMES_PER_CHUNK,
     PASS_CONFIG,
-    VISUAL_WINDOW_CHUNKS,
 )
 
 logger = logging.getLogger(__name__)
@@ -31,41 +33,26 @@ logger = logging.getLogger(__name__)
 def build_evidence_request(
     chunk_idx: int,
     frame_paths: List[str],
-    previous_captions: List[Dict],
     video_id: str,
 ) -> Dict:
-    """Build a single evidence graph request for one chunk.
+    """Build evidence graph request for one chunk (independent, 2 frames only).
 
-    397B sees: 24-frame sliding window + all previous captions as text context.
-    This matches the inference model's visual window for consistency.
+    No sliding window, no previous captions. Each chunk is self-contained.
+    Entity consistency handled in post-processing (pass1b).
     """
     start = chunk_idx * AGENT_CHUNK_SEC
     end = start + AGENT_CHUNK_SEC
 
-    # Format previous captions as context (text only, for entity consistency)
-    caption_lines = []
-    for cap in previous_captions[-30:]:  # limit context to last 30 for token budget
-        t = cap["time"]
-        entities = [e["id"] for e in cap.get("visible_entities", [])]
-        caption_lines.append(f"[{t[0]}-{t[1]}] entities: {entities}")
-
-    previous_text = "\n".join(caption_lines) if caption_lines else "(first chunk)"
-
     prompt = EVIDENCE_GRAPH_PROMPT.format(
-        previous_captions=previous_text,
         start=int(start),
         end=int(end),
     )
 
-    # Visual input: sliding window of up to 24 frames
-    window_start_chunk = max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1)
-    window_frame_paths = []
-    for c in range(window_start_chunk, chunk_idx + 1):
-        chunk_frames = get_chunk_frame_paths(frame_paths, c)
-        window_frame_paths.extend(chunk_frames)
+    # Only current chunk's 2 frames
+    chunk_frame_paths = get_chunk_frame_paths(frame_paths, chunk_idx)
 
     return {
-        "messages": [{"role": "user", "content": build_vision_content(prompt, window_frame_paths)}],
+        "messages": [{"role": "user", "content": build_vision_content(prompt, chunk_frame_paths)}],
         "max_tokens": PASS_CONFIG["pass1_evidence"]["max_tokens"],
         "temperature": PASS_CONFIG["pass1_evidence"]["temperature"],
         "id": f"{video_id}_evidence_{chunk_idx}",
@@ -195,37 +182,160 @@ async def run_pass1_single_video(
     num_chunks: int,
     client,  # VLLMClient
 ) -> List[Dict]:
-    """Run evidence graph generation for a single video (sequential).
+    """Run evidence graph generation for a single video.
 
-    Each chunk depends on previous captions for entity consistency.
+    1-A: All chunks annotated in parallel (independent, 2 frames each).
+    1-B: Post-processing — entity linking + state_changes derivation.
     """
-    captions = []
+    import asyncio
 
-    for chunk_idx in range(num_chunks):
+    # --- 1-A: Parallel chunk annotation ---
+    async def annotate_chunk(chunk_idx):
         request = build_evidence_request(
             chunk_idx=chunk_idx,
             frame_paths=frame_paths,
-            previous_captions=captions,
             video_id=video_id,
         )
-
-        # Single call (sequential within video)
         result = await client._call_one(
             messages=request["messages"],
             max_tokens=request["max_tokens"],
             temperature=request["temperature"],
             request_id=request["id"],
         )
-
         caption = parse_evidence_result(result, request["_meta"])
         caption["chunk_idx"] = chunk_idx
         caption["video_id"] = video_id
-        captions.append(caption)
+        return caption
 
-        if (chunk_idx + 1) % 10 == 0:
-            logger.info(f"  [{video_id}] Evidence: {chunk_idx+1}/{num_chunks} chunks")
+    tasks = [annotate_chunk(i) for i in range(num_chunks)]
+    captions = await asyncio.gather(*tasks)
+    captions = sorted(captions, key=lambda c: c["chunk_idx"])
+
+    logger.info(f"  [{video_id}] Evidence 1-A: {num_chunks} chunks annotated (parallel)")
+
+    # --- 1-B: Post-processing ---
+    link_entities(captions)
+    derive_state_changes(captions)
+
+    logger.info(f"  [{video_id}] Evidence 1-B: entity linking + state_changes done")
 
     return captions
+
+
+# ---------------------------------------------------------------------------
+# 1-B: Post-processing
+# ---------------------------------------------------------------------------
+
+
+def link_entities(evidence: List[Dict]):
+    """Link entity descriptions across chunks via word-overlap clustering.
+
+    Assigns consistent IDs (person_1, pot_1, ...) to visible_entities
+    based on appearance description similarity.
+    """
+    # Collect all unique descs
+    all_descs = set()
+    for cap in evidence:
+        for entity in cap.get("visible_entities", []):
+            desc = entity.get("desc", entity.get("id", ""))
+            if desc:
+                all_descs.add(desc)
+
+    if not all_descs:
+        return
+
+    # Greedy clustering by word overlap (longest desc first)
+    stop = {"the", "a", "an", "is", "in", "on", "at", "of", "with", "and"}
+    clusters = []  # [(canonical_desc, [desc1, desc2, ...])]
+
+    for desc in sorted(all_descs, key=len, reverse=True):
+        words = set(desc.lower().split()) - stop
+        if not words:
+            continue
+        merged = False
+        for canonical, members in clusters:
+            canonical_words = set(canonical.lower().split()) - stop
+            overlap = len(words & canonical_words) / max(len(words | canonical_words), 1)
+            if overlap > 0.5:
+                members.append(desc)
+                merged = True
+                break
+        if not merged:
+            clusters.append((desc, [desc]))
+
+    # Assign IDs
+    desc_to_id = {}
+    type_counters = {}
+    for canonical, members in clusters:
+        prefix = _infer_type_prefix(canonical)
+        type_counters[prefix] = type_counters.get(prefix, 0) + 1
+        entity_id = f"{prefix}_{type_counters[prefix]}"
+        for d in members:
+            desc_to_id[d] = entity_id
+
+    # Write back
+    for cap in evidence:
+        for entity in cap.get("visible_entities", []):
+            desc = entity.get("desc", entity.get("id", ""))
+            entity["id"] = desc_to_id.get(desc, "unknown")
+
+
+def _infer_type_prefix(desc: str) -> str:
+    """Infer entity type prefix from description text."""
+    dl = desc.lower()
+    for keyword, prefix in [
+        ("person", "person"), ("man", "person"), ("woman", "person"),
+        ("chef", "person"), ("hand", "person"), ("child", "person"),
+        ("pot", "pot"), ("pan", "pan"), ("bowl", "bowl"), ("plate", "plate"),
+        ("knife", "tool"), ("spoon", "tool"), ("fork", "tool"),
+        ("bottle", "container"), ("cup", "container"), ("glass", "container"),
+        ("screen", "screen"), ("monitor", "screen"), ("phone", "screen"),
+    ]:
+        if keyword in dl:
+            return prefix
+    return "object"
+
+
+def derive_state_changes(evidence: List[Dict]):
+    """Derive state_changes by comparing adjacent chunks' entities.
+
+    Detects: entity appeared/disappeared, action changed.
+    Must run AFTER link_entities (needs consistent IDs).
+    """
+    if not evidence:
+        return
+    evidence[0]["state_changes"] = []
+
+    for i in range(1, len(evidence)):
+        prev_entities = {
+            e.get("id", e.get("desc", "")): e
+            for e in evidence[i - 1].get("visible_entities", [])
+        }
+        curr_entities = {
+            e.get("id", e.get("desc", "")): e
+            for e in evidence[i].get("visible_entities", [])
+        }
+        changes = []
+
+        # New entities
+        for eid in curr_entities:
+            if eid not in prev_entities and eid != "unknown":
+                changes.append(f"{eid} appeared")
+
+        # Disappeared entities
+        for eid in prev_entities:
+            if eid not in curr_entities and eid != "unknown":
+                changes.append(f"{eid} disappeared")
+
+        # Action changes
+        for eid in curr_entities:
+            if eid in prev_entities:
+                prev_action = prev_entities[eid].get("action", "")
+                curr_action = curr_entities[eid].get("action", "")
+                if prev_action and curr_action and prev_action != curr_action:
+                    changes.append(f"{eid}: {prev_action} -> {curr_action}")
+
+        evidence[i]["state_changes"] = changes
 
 
 def save_evidence(video_id: str, captions: List[Dict], output_dir: Path = EVIDENCE_DIR):

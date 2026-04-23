@@ -122,7 +122,7 @@ VLLM_PREFILL_BATCH_TOKEN_BUDGET = 32_000_000  # KV usage ~2.6% at 64 conc → 10
 # vLLM: --limit-mm-per-prompt '{"image":28}' to accommodate recall.
 # Thinking tokens estimated at ~2K per request (varies).
 PASS_CONTEXT_ESTIMATES = {
-    "pass1_evidence": {"input": 10_000, "output": 5_000, "thinking": 0},
+    "pass1_evidence": {"input": 1_500, "output": 5_000, "thinking": 0},  # 2 frames only
     "pass2_rollout":  {"input": 10_000, "output": 5_000, "thinking": 0},
     # Pass3/4: now include video frames (~2-4 frames per request).
     # max_tokens=16384 bounds thinking time.
@@ -295,43 +295,31 @@ SPECIAL_TOKENS_PER_TIMESTEP = [
 # 9. Teacher prompts (397B, hidden from student)
 # ---------------------------------------------------------------------------
 
-EVIDENCE_GRAPH_PROMPT = """You are annotating a streaming video chunk by chunk for training data construction.
+EVIDENCE_GRAPH_PROMPT = """You are annotating a 2-second video clip (t={start}-{end}s).
 
-Previous captions for context:
-{previous_captions}
-
-Current chunk: t={start}-{end}s (frames above).
-
-Output a STRICT JSON object with these fields:
+Based on the frames above, output a STRICT JSON object:
 {{
   "time": [{start}, {end}],
   "visible_entities": [
-    {{"id": "entity_name", "attributes": ["attr1", "attr2"], "action": "what doing", "position": "where"}}
+    {{"desc": "appearance description (clothing/color/material/size)", "action": "what doing", "position": "where in frame"}}
   ],
   "atomic_facts": [
     {{
       "fact": "precise observable statement",
       "confidence": 0.0-1.0,
-      "support_level": "direct_current_chunk | carried_from_previous | inferred",
       "target_resolution_visible": true
     }}
   ],
-  "state_changes": ["what changed from previous chunk"],
   "ocr": ["exact text if visible"],
-  "spatial": "brief spatial layout description",
-  "not_observable": ["any sounds/smells/emotions mentioned that are NOT visible"]
+  "spatial": "brief spatial layout description"
 }}
 
 Rules:
-- Only include what is VISIBLE in the current chunk frames (t={start}-{end}s)
-- support_level: "direct_current_chunk" = visible in current 2s frames;
-  "carried_from_previous" = entity/attribute inherited from prior context;
-  "inferred" = not directly visible, deduced from context
-- target_resolution_visible: false if the detail would be too small/blurry at training resolution
+- Only describe what is VISIBLE in these frames (no comparison to other clips)
+- Describe entities by appearance, not by ID or assumed identity
 - confidence < 0.7 for uncertain observations (small text, fast motion, partial occlusion)
-- not_observable: list anything you'd normally say but can't actually SEE
-- Maintain consistent entity IDs across chunks (chef_1, pot_1, etc.)
-- Do NOT attribute facts from prior chunks to the current chunk
+- target_resolution_visible: false if detail would be too small/blurry at training resolution
+- Do NOT include sounds, smells, emotions, or inferred intentions
 
 Output JSON only:"""
 
