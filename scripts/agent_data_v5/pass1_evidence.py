@@ -175,19 +175,29 @@ def _normalize_entity(entity) -> dict:
 # 1-B: Post-processing (change detection via 397B)
 # ---------------------------------------------------------------------------
 
-CHANGE_DETECTION_PROMPT = """Below is a per-chunk entity/action summary for a video.
-Identify meaningful state changes between adjacent chunks.
+PASS1B_PROMPT = """Below is a per-chunk entity/action summary for a video.
+Do TWO things:
+
+1. ENTITY GROUPS: Which descriptions across chunks refer to the SAME entity?
+   Group them by identity (same person/object across time, even if action differs).
+
+2. STATE CHANGES: Which chunks have meaningful state changes from the previous chunk?
+   Ignore paraphrase ("chopping" ≈ "cutting" = no change).
+   Focus on: new actions, entities appearing/disappearing, step transitions.
 
 {chunk_summary}
 
-Rules:
-- A state change = a NEW action starts, an entity appears/disappears, or a step transitions
-- Ignore paraphrase differences ("chopping vegetables" ≈ "cutting vegetables" = no change)
-- Ignore camera angle changes that don't reflect actual scene changes
-- Focus on: new actions, new entities, completed steps, object state changes
-
-Output JSON array (only chunks WITH changes, skip chunks without):
-[{{"chunk": 3, "change": "started pouring oil into pot"}}, ...]"""
+Output JSON:
+{{
+  "entity_groups": [
+    {{"id": "person_1", "descs": ["person wearing red apron, standing", "person in red apron, chopping", "hand stirring pot"]}},
+    {{"id": "pot_1", "descs": ["stainless steel pot", "pot with reddish sauce"]}}
+  ],
+  "state_changes": [
+    {{"chunk": 1, "change": "person started chopping vegetables"}},
+    {{"chunk": 3, "change": "person moved to stove, started pouring oil"}}
+  ]
+}}"""
 
 
 def _build_chunk_summary(evidence: List[Dict]) -> str:
@@ -209,21 +219,19 @@ def _build_chunk_summary(evidence: List[Dict]) -> str:
     return "\n".join(lines)
 
 
-async def detect_chunk_changes(evidence: List[Dict], client, video_id: str):
-    """Detect state changes between adjacent chunks via one 397B call.
+async def run_pass1b(evidence: List[Dict], client, video_id: str):
+    """Pass 1-B: Entity alignment + state change detection in one 397B call.
 
-    More reliable than rule-based word-overlap: 397B understands that
-    "chopping vegetables" → "cutting vegetables" is NOT a change, while
-    "chopping vegetables" → "pouring oil" IS a change.
+    One call per video. Same input for both tasks (chunk entity/action summary).
 
-    Input: ~50 tokens/chunk × 60 chunks = ~3K tokens
-    Output: ~500 tokens
-    One call per video.
+    Outputs written to evidence:
+    - evidence[i]["state_changes"] = ["change description", ...]
+    - evidence[i].visible_entities[j]["id"] = "person_1" (aligned across chunks)
+    - evidence metadata: "_entity_groups" for downstream use
     """
     if not evidence:
         return
 
-    # Initialize all chunks with empty state_changes
     for cap in evidence:
         cap["state_changes"] = []
 
@@ -231,44 +239,48 @@ async def detect_chunk_changes(evidence: List[Dict], client, video_id: str):
         return
 
     chunk_summary = _build_chunk_summary(evidence)
-    prompt = CHANGE_DETECTION_PROMPT.format(chunk_summary=chunk_summary)
+    prompt = PASS1B_PROMPT.format(chunk_summary=chunk_summary)
 
     raw = await client._call_one(
         messages=[{"role": "user", "content": prompt}],
         max_tokens=PASS_CONFIG["pass1_evidence"]["max_tokens"],
         temperature=0.3,
-        request_id=f"{video_id}_changes",
+        request_id=f"{video_id}_pass1b",
     )
 
     if not raw:
-        logger.warning(f"  [{video_id}] 1-B change detection: empty response, using fallback")
+        logger.warning(f"  [{video_id}] 1-B: empty response, using fallback")
         _detect_changes_fallback(evidence)
         return
 
-    # Parse response
     raw = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip()
-    try:
-        changes_list = json.loads(raw)
-    except (json.JSONDecodeError, ValueError):
-        # Try to extract JSON array
-        start = raw.find("[")
-        end = raw.rfind("]")
-        if start >= 0 and end > start:
-            try:
-                changes_list = json.loads(raw[start:end + 1])
-            except (json.JSONDecodeError, ValueError):
-                logger.warning(f"  [{video_id}] 1-B change detection: parse failed, using fallback")
-                _detect_changes_fallback(evidence)
-                return
-        else:
-            _detect_changes_fallback(evidence)
-            return
 
-    # Apply changes to evidence
-    if not isinstance(changes_list, list):
+    # Parse JSON object with entity_groups + state_changes
+    parsed = _parse_json_object(raw)
+    if parsed is None:
+        logger.warning(f"  [{video_id}] 1-B: parse failed, using fallback")
         _detect_changes_fallback(evidence)
         return
 
+    # --- Apply entity groups ---
+    entity_groups = parsed.get("entity_groups", [])
+    desc_to_id = {}
+    for group in entity_groups:
+        if not isinstance(group, dict):
+            continue
+        group_id = group.get("id", "unknown")
+        for desc in group.get("descs", []):
+            desc_to_id[desc] = group_id
+
+    if desc_to_id:
+        for cap in evidence:
+            for entity in cap.get("visible_entities", []):
+                desc = entity.get("desc", "")
+                if desc in desc_to_id:
+                    entity["id"] = desc_to_id[desc]
+
+    # --- Apply state changes ---
+    changes_list = parsed.get("state_changes", [])
     chunk_map = {cap.get("chunk_idx", i): cap for i, cap in enumerate(evidence)}
     for item in changes_list:
         if not isinstance(item, dict):
@@ -278,8 +290,35 @@ async def detect_chunk_changes(evidence: List[Dict], client, video_id: str):
         if chunk_idx is not None and chunk_idx in chunk_map:
             chunk_map[chunk_idx]["state_changes"].append(change)
 
+    n_groups = len(entity_groups)
     n_changes = sum(1 for cap in evidence if cap["state_changes"])
-    logger.info(f"  [{video_id}] 1-B: {n_changes}/{len(evidence)} chunks have state changes")
+    logger.info(
+        f"  [{video_id}] 1-B: {n_groups} entity groups, "
+        f"{n_changes}/{len(evidence)} chunks with state changes"
+    )
+
+
+def _parse_json_object(raw: str) -> Optional[Dict]:
+    """Extract a JSON object from raw text."""
+    try:
+        return json.loads(raw)
+    except (json.JSONDecodeError, ValueError):
+        pass
+    start = raw.find("{")
+    if start < 0:
+        return None
+    depth = 0
+    for i in range(start, len(raw)):
+        if raw[i] == '{':
+            depth += 1
+        elif raw[i] == '}':
+            depth -= 1
+            if depth == 0:
+                try:
+                    return json.loads(raw[start:i + 1])
+                except (json.JSONDecodeError, ValueError):
+                    return None
+    return None
 
 
 def _detect_changes_fallback(evidence: List[Dict]):
@@ -347,8 +386,8 @@ async def run_pass1_single_video(
 
     logger.info(f"  [{video_id}] Evidence 1-A: {num_chunks} chunks done")
 
-    # 1-B: Change detection (one 397B call per video)
-    await detect_chunk_changes(captions, client, video_id)
+    # 1-B: Entity alignment + change detection (one 397B call per video)
+    await run_pass1b(captions, client, video_id)
 
     return captions
 
