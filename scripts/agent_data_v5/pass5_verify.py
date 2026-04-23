@@ -24,7 +24,8 @@ from .config import (
     THINK_TOKENS,
     get_tokenizer,
 )
-from .pass3_tasks import extract_keywords, keyword_overlap
+from .pass3a_cards import extract_keywords
+from .pass3b_placement import _keyword_overlap as keyword_overlap
 
 logger = logging.getLogger(__name__)
 

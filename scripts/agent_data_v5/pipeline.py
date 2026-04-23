@@ -308,7 +308,7 @@ async def run_pipeline(
             safe_concurrency_for_pass("pass1a"),
             safe_concurrency_for_pass("pass1b"),
             safe_concurrency_for_pass("pass2_rollout"),
-            safe_concurrency_for_pass("pass3_tasks"),
+            safe_concurrency_for_pass("pass3a"),
         ),
     )
 
@@ -475,520 +475,141 @@ async def run_pipeline(
                 rollout_map[v["video_id"]] = cached
 
     # =================================================================
-    # PASS 3: Task Planning
+    # PASS 3-A: Task Card Generation
     # =================================================================
     if 3 not in skip_pass:
-        from .pass3_tasks import audit_task_coverage, run_pass3
+        from .pass3a_cards import generate_cards, save_cards, load_cards
 
         logger.info("=" * 60)
-        logger.info("PASS 3: Task Planning")
+        logger.info("PASS 3-A: Task Card Generation")
         logger.info("=" * 60)
 
-        pass3_conc = safe_concurrency_for_pass("pass3_tasks")
-        logger.info(f"PASS 3 safe concurrency={pass3_conc}")
-        semaphore = asyncio.Semaphore(pass3_conc)
+        pass3a_conc = safe_concurrency_for_pass("pass3a")
+        semaphore_3a = asyncio.Semaphore(pass3a_conc)
 
-        async def process_video_pass3(video):
+        async def process_video_3a(video):
             vid = video["video_id"]
-            if vid not in evidence_map or vid not in rollout_map:
-                return vid, None
-            async with semaphore:
-                tasks = await run_pass3(vid, evidence_map[vid], rollout_map[vid], client,
-                                        frame_paths=video_frames.get(vid))
-                audit = audit_task_coverage(vid, tasks, rollout_map[vid])
-                tasks["_coverage_audit"] = audit
-                total = sum(
-                    len(t) for k, t in tasks.items()
-                    if not k.startswith("_") and isinstance(t, list)
-                )
-                if not audit["passed"]:
-                    logger.warning(
-                        f"  [{vid}] Task audit issues: "
-                        f"missing={audit['missing_expected_task_types']}, "
-                        f"leakage={len(audit['question_answer_leakage'])}, "
-                        f"minimality={len(audit['action_minimality_risks'])}"
-                    )
-                logger.info(f"  [{vid}] Tasks mined: {total}")
-                return vid, tasks
+            cached = load_cards(vid)
+            if cached:
+                logger.info(f"  [{vid}] 3-A cached ({len(cached)} cards)")
+                return vid, cached
+            if vid not in evidence_map:
+                return vid, []
+            async with semaphore_3a:
+                cards = await generate_cards(vid, evidence_map[vid], client)
+                save_cards(vid, cards)
+                return vid, cards
 
-        results = await asyncio.gather(*[process_video_pass3(v) for v in videos])
-        all_tasks = {vid: tasks for vid, tasks in results if tasks is not None}
-
-        # Save tasks and coverage audit
-        tasks_path = TASKS_DIR / "all_tasks.json"
-        TASKS_DIR.mkdir(parents=True, exist_ok=True)
-        with open(tasks_path, "w") as f:
-            json.dump(all_tasks, f, ensure_ascii=False)
-
-        AUDIT_DIR.mkdir(parents=True, exist_ok=True)
-        audit_report = {
-            vid: tasks.get("_coverage_audit", {})
-            for vid, tasks in all_tasks.items()
-        }
-        with open(AUDIT_DIR / "task_coverage_report.json", "w") as f:
-            json.dump(audit_report, f, indent=2, ensure_ascii=False)
-
-        total_tasks = sum(
-            sum(len(t) for k, t in v.items() if not k.startswith("_") and isinstance(t, list))
-            for v in all_tasks.values()
-        )
-        logger.info(f"Pass 3 complete: {total_tasks} total tasks")
+        results = await asyncio.gather(*[process_video_3a(v) for v in videos])
+        cards_map = {vid: cards for vid, cards in results}
+        total_cards = sum(len(c) for c in cards_map.values())
+        logger.info(f"Pass 3-A complete: {total_cards} cards across {len(cards_map)} videos")
     else:
-        tasks_path = TASKS_DIR / "all_tasks.json"
-        if tasks_path.exists():
-            with open(tasks_path, "r") as f:
-                all_tasks = json.load(f)
-        else:
-            logger.warning(f"No cached tasks at {tasks_path}")
-            all_tasks = {}
+        from .pass3a_cards import load_cards
+        cards_map = {}
+        for v in videos:
+            cached = load_cards(v["video_id"])
+            if cached:
+                cards_map[v["video_id"]] = cached
 
     # =================================================================
-    # PASS 4: Question-aware Forks
+    # PASS 3-B: Placement + Trajectory Planning
     # =================================================================
-    if 4 not in skip_pass:
-        from .pass4_forks import (
-            build_per_timestep_messages,
-            simulate_recall_result,
-            _generate_response_text,
-            _generate_recall_texts,
+    if 3 not in skip_pass:
+        from .pass3b_placement import (
+            compute_all_placements, plan_trajectories,
+            save_placements, load_placements,
         )
-        from .pass3_tasks import extract_keywords, keyword_overlap
 
         logger.info("=" * 60)
-        logger.info("PASS 4: Per-Timestep Sample Generation (single-turn messages)")
+        logger.info("PASS 3-B: Placement + Trajectory Planning")
+        logger.info("=" * 60)
+
+        trajectories_map = {}
+        for v in videos:
+            vid = v["video_id"]
+            cached = load_placements(vid)
+            if cached:
+                trajectories_map[vid] = cached
+                continue
+            if vid not in cards_map or vid not in rollout_map or vid not in evidence_map:
+                continue
+            placements = compute_all_placements(
+                cards_map[vid], rollout_map[vid], evidence_map[vid]
+            )
+            trajectories = plan_trajectories(placements)
+            data = {"placements": placements, "trajectories": trajectories}
+            save_placements(vid, data)
+            trajectories_map[vid] = data
+            logger.info(f"  [{vid}] 3-B: {len(placements)} placements → {len(trajectories)} trajectories")
+
+        logger.info(f"Pass 3-B complete: {sum(len(d.get('trajectories',[])) for d in trajectories_map.values())} trajectories")
+    else:
+        from .pass3b_placement import load_placements
+        trajectories_map = {}
+        for v in videos:
+            cached = load_placements(v["video_id"])
+            if cached:
+                trajectories_map[v["video_id"]] = cached
+
+    # =================================================================
+    # PASS 3-C: Trajectory Sample Generation
+    # =================================================================
+    if 3 not in skip_pass:
+        from .pass3c_samples import generate_trajectory_samples, save_samples
+
+        logger.info("=" * 60)
+        logger.info("PASS 3-C: Trajectory Sample Generation")
         logger.info("=" * 60)
 
         all_samples = []
 
         for v in videos:
             vid = v["video_id"]
-            vpath = v.get("video_path", "")
-            if vid not in all_tasks or vid not in rollout_map:
+            if vid not in trajectories_map or vid not in rollout_map or vid not in evidence_map:
+                continue
+            traj_data = trajectories_map[vid]
+            trajectories = traj_data.get("trajectories", [])
+            if not trajectories:
                 continue
 
-            rollout = rollout_map[vid]
-            tasks = all_tasks[vid]
-            observations = rollout.get("thinks", rollout.get("observations", []))
-            snapshots = rollout["snapshots"]
-            compression_events = rollout["compression_events"]
+            # Build card lookup
+            vid_cards = {c["card_id"]: c for c in cards_map.get(vid, [])}
+            vid_samples = []
 
-            # --- Build task/compress/pending lookup tables ---
-            compress_at = {e["trigger_chunk"]: e for e in compression_events}
-            task_at = {}  # chunk_idx -> (task_type, task)
-            skip_task_keys = {"_", "compress", "pending"}  # handled separately
-            # Shuffle task type iteration order to avoid bias when multiple
-            # types compete for the same chunk (first-come-first-served).
-            task_type_keys = [k for k in tasks if isinstance(tasks[k], list)
-                              and not any(k.startswith(s) for s in skip_task_keys)]
-            random.shuffle(task_type_keys)
-            for task_type_key in task_type_keys:
-                for task in tasks[task_type_key]:
-                    if task.get("question") and task.get("ask_chunk") not in task_at:
-                        task_at[task["ask_chunk"]] = (task_type_key, task)
+            for traj in trajectories:
+                samples = await generate_trajectory_samples(
+                    trajectory=traj,
+                    cards_map=vid_cards,
+                    rollout=rollout_map[vid],
+                    evidence=evidence_map[vid],
+                    client=client,
+                    video_id=vid,
+                )
+                vid_samples.extend(samples)
 
-            # Pending tasks: active from ask_chunk to trigger_chunk
-            pending_active = {}  # chunk_idx -> pending task
-            for pt in tasks.get("pending", []):
-                if pt.get("question") and pt.get("ask_chunk") is not None:
-                    ask = pt["ask_chunk"]
-                    trigger = pt["trigger_chunk"]
-                    for c in range(ask, trigger + 1):
-                        if c not in pending_active:
-                            pending_active[c] = pt
+            # Add video metadata
+            for s in vid_samples:
+                s["video_id"] = vid
+                s["video_path"] = v.get("video_path", "")
 
-            interaction_chunks = set(task_at.keys())
-            vid_samples = []  # collect all, then budget-downsample
-
-            for chunk_idx in range(rollout["num_chunks"]):
-                if chunk_idx >= len(observations):
-                    continue
-                snapshot = snapshots.get(chunk_idx, snapshots.get(str(chunk_idx)))
-                if not snapshot:
-                    continue
-
-                think_text = observations[chunk_idx]["think"]
-                has_question = chunk_idx in task_at
-                has_compress = chunk_idx in compress_at and chunk_idx not in interaction_chunks
-                is_pending_start = (chunk_idx in pending_active
-                                    and chunk_idx == pending_active[chunk_idx].get("ask_chunk"))
-                is_pending_trigger = (chunk_idx in pending_active
-                                      and chunk_idx == pending_active[chunk_idx].get("trigger_chunk"))
-                is_pending_mid = (chunk_idx in pending_active
-                                  and not is_pending_start and not is_pending_trigger)
-
-                # ── Determine action + build output + suffix ──
-                if has_question:
-                    task_type, task = task_at[chunk_idx]
-                    vid_frames = video_frames.get(vid)
-                    if task["gold_action"] == "response":
-                        resp = await _generate_response_text(task, snapshots, observations, client, vid,
-                                                              frame_paths=vid_frames)
-                        if not resp:
-                            continue
-                        output = (f"<think>{think_text}</think>"
-                                  f"<action>response</action><response>{resp}</response>")
-                        sample = build_per_timestep_messages(
-                            snapshot, chunk_idx, vpath, output,
-                            user_text_suffix=task["question"],
-                        )
-                        sample["sample_type"] = "response"
-                        sample["video_id"] = vid
-                        sample["metadata"] = {"task_type": task_type, "gold_action": "response",
-                                              "gold_answer": task.get("gold_answer", "")}
-                        vid_samples.append(sample)
-
-                    elif task["gold_action"] == "recall":
-                        query_json, resp, recall_result = await _generate_recall_texts(
-                            task, snapshots, observations, client, vid,
-                            frame_paths=vid_frames)
-                        if not query_json:
-                            continue
-                        # Sample 1: recall query
-                        output1 = (f"<think>{think_text}</think>"
-                                   f"<action>recall</action>"
-                                   f'<query>{json.dumps(query_json, ensure_ascii=False)}</query>')
-                        s1 = build_per_timestep_messages(
-                            snapshot, chunk_idx, vpath, output1,
-                            user_text_suffix=task["question"],
-                        )
-                        s1["sample_type"] = "recall_query"
-                        s1["video_id"] = vid
-                        s1["metadata"] = {"task_type": task_type, "gold_action": "recall",
-                                          "gold_answer": task.get("gold_answer", "")}
-                        vid_samples.append(s1)
-
-                        # Sample 2: post-recall response (no think)
-                        # The answer IS in the past (Pass3 verified), so model
-                        # should always attempt to respond:
-                        # - recall succeeded → confident response
-                        # - recall failed → uncertain response (answer exists
-                        #   but retrieval missed it)
-                        is_failed = recall_result.get("noise_level") in ("distractor", "failure")
-                        if is_failed:
-                            resp = "I could not find enough evidence to answer confidently."
-                        recall_suffix = (
-                            f'<pending since="{chunk_idx * AGENT_CHUNK_SEC}">{task["question"]}</pending>\n'
-                            f'<recall_result>{recall_result.get("text_content", "")}</recall_result>'
-                        )
-                        recalled_frames = None
-                        if recall_result.get("returned_chunks"):
-                            rc = recall_result["returned_chunks"]
-                            recalled_frames = {
-                                "time_range": [rc[0] * AGENT_CHUNK_SEC, (rc[-1] + 1) * AGENT_CHUNK_SEC],
-                                "n_frames": len(rc) * 2,
-                            }
-
-                        output2 = f"<action>response</action><response>{resp or ''}</response>"
-                        s2 = build_per_timestep_messages(
-                            snapshot, chunk_idx, vpath, output2,
-                            user_text_suffix=recall_suffix,
-                            recalled_frames=recalled_frames,
-                        )
-                        s2["sample_type"] = "recall_response"
-                        s2["video_id"] = vid
-                        s2["metadata"] = {"task_type": task_type, "gold_action": "response",
-                                          "recall_noise": recall_result.get("noise_level")}
-                        vid_samples.append(s2)
-
-                elif is_pending_start:
-                    # User asks event-watch question → model outputs silent
-                    pt = pending_active[chunk_idx]
-                    output = f"<think>{think_text}</think><action>silent</action>"
-                    sample = build_per_timestep_messages(
-                        snapshot, chunk_idx, vpath, output,
-                        user_text_suffix=pt["question"],
-                    )
-                    sample["sample_type"] = "silent"
-                    sample["video_id"] = vid
-                    sample["metadata"] = {"task_type": "pending_start",
-                                          "pending_question": pt["question"]}
-                    vid_samples.append(sample)
-
-                elif is_pending_trigger:
-                    # Event happened → model responds to pending question
-                    pt = pending_active[chunk_idx]
-                    resp_text = pt.get("event", "Event observed.")
-                    # Inject pending into snapshot so model sees it
-                    snap_with_pending = dict(snapshot)
-                    snap_with_pending["pending_questions"] = [{
-                        "question": pt["question"],
-                        "since_chunk": pt["ask_chunk"],
-                    }]
-                    output = (f"<think>{think_text}</think>"
-                              f"<action>response</action>"
-                              f"<response>{resp_text}</response>")
-                    sample = build_per_timestep_messages(
-                        snap_with_pending, chunk_idx, vpath, output,
-                    )
-                    sample["sample_type"] = "response"
-                    sample["video_id"] = vid
-                    sample["metadata"] = {"task_type": "pending_response",
-                                          "gold_action": "response",
-                                          "pending_question": pt["question"],
-                                          "event": pt.get("event", "")}
-                    vid_samples.append(sample)
-
-                elif is_pending_mid and chunk_idx == pending_active[chunk_idx].get("mid_chunk"):
-                    # Mid-point silent with pending visible
-                    pt = pending_active[chunk_idx]
-                    snap_with_pending = dict(snapshot)
-                    snap_with_pending["pending_questions"] = [{
-                        "question": pt["question"],
-                        "since_chunk": pt["ask_chunk"],
-                    }]
-                    output = f"<think>{think_text}</think><action>silent</action>"
-                    sample = build_per_timestep_messages(
-                        snap_with_pending, chunk_idx, vpath, output,
-                    )
-                    sample["sample_type"] = "silent"
-                    sample["video_id"] = vid
-                    sample["metadata"] = {"task_type": "pending_silent",
-                                          "pending_question": pt["question"]}
-                    vid_samples.append(sample)
-
-                elif has_compress:
-                    event = compress_at[chunk_idx]
-                    summary = event["summary"]
-                    tr = summary.get("time_range", [0, 0])
-                    compress_output = (f"<think>{think_text}</think>"
-                                       f"<action>compress</action>"
-                                       f'<summary>{json.dumps(summary, ensure_ascii=False)}</summary>')
-                    compress_meta_base = {
-                        "gold_action": "compress",
-                        "compressed_range": tr,
-                        "compressed_chunks": event.get("compressed_thinks_chunks", []),
-                        "has_visual_context": event.get("has_visual_context", False),
-                    }
-
-                    # C1: system trigger with specified range
-                    c1_trigger = f'<compress_trigger range="{tr[0]}-{tr[1]}"/>'
-                    c1 = build_per_timestep_messages(
-                        snapshot, chunk_idx, vpath, compress_output,
-                        user_text_suffix=c1_trigger,
-                    )
-                    c1["sample_type"] = "compress"
-                    c1["video_id"] = vid
-                    c1["metadata"] = {**compress_meta_base, "phase": "C1"}
-                    vid_samples.append(c1)
-
-                    # C2: system trigger WITHOUT range
-                    c2_trigger = "<compress_trigger/>"
-                    c2 = build_per_timestep_messages(
-                        snapshot, chunk_idx, vpath, compress_output,
-                        user_text_suffix=c2_trigger,
-                    )
-                    c2["sample_type"] = "compress"
-                    c2["video_id"] = vid
-                    c2["metadata"] = {**compress_meta_base, "phase": "C2"}
-                    vid_samples.append(c2)
-
-                    # Merge compress: if this compression would push segments
-                    # over MAX_COMPRESSED_SEGMENTS, the system merges the two
-                    # oldest. Generate a training sample for this merge.
-                    n_segs = len(snapshot.get("compressed_segments", []))
-                    if n_segs >= MAX_COMPRESSED_SEGMENTS:
-                        segs = snapshot["compressed_segments"]
-                        seg_a, seg_b = segs[0], segs[1]
-                        tr_a = seg_a.get("time_range", [0, 0])
-                        tr_b = seg_b.get("time_range", [0, 0])
-                        merged_text = f'{seg_a["text"]} {seg_b["text"]}'
-                        # Truncate merged text (same as rollout logic)
-                        words = merged_text.split()
-                        if len(words) > 60:
-                            merged_text = " ".join(words[:60])
-                        merged_summary = {
-                            "time_range": [tr_a[0], tr_b[1]],
-                            "text": merged_text,
-                        }
-                        merge_trigger = (
-                            f'<merge_compress_trigger segments='
-                            f'"{tr_a[0]}-{tr_a[1]},{tr_b[0]}-{tr_b[1]}"/>'
-                        )
-                        merge_output = (
-                            f"<think>{think_text}</think>"
-                            f"<action>compress</action>"
-                            f'<summary>{json.dumps(merged_summary, ensure_ascii=False)}</summary>'
-                        )
-                        mc = build_per_timestep_messages(
-                            snapshot, chunk_idx, vpath, merge_output,
-                            user_text_suffix=merge_trigger,
-                        )
-                        mc["sample_type"] = "compress"
-                        mc["video_id"] = vid
-                        mc["metadata"] = {
-                            "gold_action": "compress",
-                            "task_type": "merge_compress",
-                            "phase": "C1",
-                            "compressed_range": [tr_a[0], tr_b[1]],
-                            "source_segments": [tr_a, tr_b],
-                        }
-                        vid_samples.append(mc)
-
-
-                elif (not has_question and not has_compress
-                      and snapshot.get("compressed_segments")
-                      and chunk_idx > VISUAL_WINDOW_CHUNKS + 5):
-                    # Proactive recall: no user question, but current think
-                    # has keyword overlap with a compressed segment → model
-                    # should recall to reconnect with historical context.
-                    #
-                    # Trigger condition is VERIFIABLE (keyword overlap), not
-                    # random. Small volume (~few per video) seeds the behavior
-                    # so RL can refine timing; without this, RL would need to
-                    # discover proactive recall from scratch.
-                    think_kw = extract_keywords(think_text)
-                    best_seg = None
-                    best_overlap = 0.0
-                    for seg in snapshot["compressed_segments"]:
-                        ov = keyword_overlap(seg["text"], think_kw)
-                        if ov > best_overlap:
-                            best_overlap = ov
-                            best_seg = seg
-                    # Threshold: at least 30% keyword overlap to be meaningful
-                    if best_seg and best_overlap >= 0.3:
-                        target_range = best_seg.get("time_range", [0, 0])
-                        ev_start = int(target_range[0] // AGENT_CHUNK_SEC)
-                        ev_end = int(target_range[1] // AGENT_CHUNK_SEC)
-                        evidence_chunks = list(range(ev_start, ev_end))
-
-                        query_json = {
-                            "query": " ".join(think_kw[:5]),
-                            "time_range": f"{int(target_range[0])}-{int(target_range[1])}",
-                        }
-
-                        # Sample 1: proactive recall query
-                        output_pr = (f"<think>{think_text}</think>"
-                                     f"<action>recall</action>"
-                                     f'<query>{json.dumps(query_json, ensure_ascii=False)}</query>')
-                        s_pr = build_per_timestep_messages(
-                            snapshot, chunk_idx, vpath, output_pr,
-                        )
-                        s_pr["sample_type"] = "proactive_recall_query"
-                        s_pr["video_id"] = vid
-                        s_pr["metadata"] = {"task_type": "proactive_recall",
-                                            "gold_action": "recall",
-                                            "trigger": "keyword_overlap",
-                                            "overlap": round(best_overlap, 2),
-                                            "target_range": target_range}
-                        vid_samples.append(s_pr)
-
-                        # Sample 2: post-recall silent (no user to answer)
-                        recall_result = simulate_recall_result(
-                            {"ask_chunk": chunk_idx, "gold_answer": "",
-                             "evidence_chunks": evidence_chunks},
-                            snapshot, observations, chunk_idx, query_json,
-                        )
-                        recall_suffix = (
-                            f'<recall_result>{recall_result.get("text_content", "")}</recall_result>'
-                        )
-                        recalled_frames = None
-                        if recall_result.get("returned_chunks"):
-                            rc = recall_result["returned_chunks"]
-                            recalled_frames = {
-                                "time_range": [rc[0] * AGENT_CHUNK_SEC, (rc[-1] + 1) * AGENT_CHUNK_SEC],
-                                "n_frames": len(rc) * 2,
-                            }
-                        output_pr2 = "<action>silent</action>"
-                        s_pr2 = build_per_timestep_messages(
-                            snapshot, chunk_idx, vpath, output_pr2,
-                            user_text_suffix=recall_suffix,
-                            recalled_frames=recalled_frames,
-                        )
-                        s_pr2["sample_type"] = "proactive_recall_silent"
-                        s_pr2["video_id"] = vid
-                        s_pr2["metadata"] = {"task_type": "proactive_recall",
-                                             "gold_action": "silent",
-                                             "recall_noise": recall_result.get("noise_level"),
-                                             "target_range": target_range}
-                        vid_samples.append(s_pr2)
-                    # else: overlap < 0.3, fall through to silent
-
-                else:
-                    # Silent — subsample ~20%
-                    if random.random() > 0.2:
-                        continue
-                    output = f"<think>{think_text}</think><action>silent</action>"
-                    sample = build_per_timestep_messages(
-                        snapshot, chunk_idx, vpath, output,
-                    )
-                    sample["sample_type"] = "silent"
-                    sample["video_id"] = vid
-                    vid_samples.append(sample)
-
-            # --- Per-video budgeted downsample ---
-            # Collect all, then cap with type-stratified selection so no
-            # single type (especially compress) dominates.
-            if len(vid_samples) > MAX_SAMPLES_PER_VIDEO:
-                from collections import defaultdict
-                by_type = defaultdict(list)
-                for s in vid_samples:
-                    by_type[s.get("sample_type", "unknown")].append(s)
-                n_types = max(len(by_type), 1)
-                per_type_budget = MAX_SAMPLES_PER_VIDEO // n_types
-                kept = set()  # track indices for O(1) lookup
-                kept_list = []
-                for stype, samples_of_type in by_type.items():
-                    take = min(len(samples_of_type), per_type_budget)
-                    if take < len(samples_of_type):
-                        # Evenly spaced selection across the list (timeline order)
-                        step = len(samples_of_type) / take
-                        indices = [int(i * step) for i in range(take)]
-                        selected = [samples_of_type[j] for j in indices]
-                    else:
-                        selected = samples_of_type
-                    for s in selected:
-                        kept.add(id(s))
-                        kept_list.append(s)
-                # Fill remaining budget
-                surplus = MAX_SAMPLES_PER_VIDEO - len(kept_list)
-                if surplus > 0:
-                    remaining = [s for s in vid_samples if id(s) not in kept]
-                    random.shuffle(remaining)
-                    kept_list.extend(remaining[:surplus])
-                vid_samples = kept_list
-                logger.info(f"  [{vid}] {len(vid_samples)} samples "
-                            f"(capped from {sum(len(v) for v in by_type.values())}, "
-                            f"{n_types} types)")
-            else:
-                logger.info(f"  [{vid}] {len(vid_samples)} samples")
+            save_samples(vid, vid_samples)
             all_samples.extend(vid_samples)
+            logger.info(f"  [{vid}] 3-C: {len(vid_samples)} samples from {len(trajectories)} trajectories")
 
-        # Assign sample_id, phase, and estimated token count
-        for i, s in enumerate(all_samples):
-            stype = s.get("sample_type", "unk")
-            s["sample_id"] = f"{s.get('video_path', 'unk').split('/')[-1].replace('.mp4','')}_{stype}_{i}"
-            s["phase"] = assign_phase(s)
-            # Estimate text token count (chars / 3.5 for mixed EN/CJK).
-            # Vision tokens are added by the processor and not counted here;
-            # this estimate is for the max_sample_tokens pre-filter in SFT.
-            text_len = 0
-            for msg in s.get("messages", []):
-                content = msg.get("content", "")
-                if isinstance(content, str):
-                    text_len += len(content)
-                elif isinstance(content, list):
-                    for item in content:
-                        if isinstance(item, dict) and item.get("type") == "text":
-                            text_len += len(item.get("text", ""))
-            s["num_tokens"] = int(text_len / 3.5)
-
-        # Save
-        SAMPLES_DIR.mkdir(parents=True, exist_ok=True)
-        samples_path = SAMPLES_DIR / "all_samples.jsonl"
-        with open(samples_path, "w") as f:
-            for s in all_samples:
-                f.write(json.dumps(s, ensure_ascii=False) + "\n")
-
-        logger.info(f"Pass 4 complete: {len(all_samples)} per-timestep samples")
+        logger.info(f"Pass 3-C complete: {len(all_samples)} total samples")
     else:
-        samples_path = SAMPLES_DIR / "all_samples.jsonl"
+        from .pass3c_samples import load_samples
         all_samples = []
-        if samples_path.exists():
-            with open(samples_path, "r") as f:
-                for line in f:
-                    all_samples.append(json.loads(line))
-        else:
-            logger.warning(f"No cached samples at {samples_path}, Pass 5 will run on empty set")
+        for v in videos:
+            cached = load_samples(v["video_id"])
+            if cached:
+                all_samples.extend(cached)
+
+    # Assign sample_id and phase
+    for i, s in enumerate(all_samples):
+        s["sample_id"] = f"{s.get('video_id', 'unk')}_{s.get('action', 'unk')}_{i}"
+        s["phase"] = assign_phase(s)
 
     # =================================================================
     # PASS 5: Verify + Filter

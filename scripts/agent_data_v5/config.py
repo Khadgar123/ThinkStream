@@ -129,8 +129,8 @@ PASS_CONTEXT_ESTIMATES = {
     "pass2_rollout":  {"input": 10_000, "output": 5_000, "thinking": 0},
     # Pass3/4: now include video frames (~2-4 frames per request).
     # max_tokens=16384 bounds thinking time.
-    "pass3_tasks":    {"input": 6_000,  "output": 5_000, "thinking": 0},
-    "pass4_forks":    {"input": 4_000,  "output": 5_000, "thinking": 0},
+    "pass3a": {"input": 1_000, "output": 5_000, "thinking": 0},  # per-family card gen
+    "pass3c": {"input": 2_000, "output": 5_000, "thinking": 0},  # response/query gen
 }
 
 
@@ -242,13 +242,13 @@ PASS_CONFIG = {
         "thinking": True,
         "concurrent_videos": 1024,
     },
-    "pass3_tasks": {
+    "pass3a": {
         "max_tokens": 16384,
         "temperature": 0.7,
         "thinking": True,
-        "concurrent": 1024,
+        "concurrent": 64,    # per-family calls, moderate concurrency
     },
-    "pass4_forks": {
+    "pass3c": {
         "max_tokens": 16384,
         "temperature": 0.3,
         "thinking": True,
