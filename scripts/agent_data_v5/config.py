@@ -267,7 +267,20 @@ SYSTEM_PROMPT = (
     "- recall: only when answer is NOT in visual window, NOT in text memory, "
     "NOT in compressed summaries.\n"
     "- compress: when system triggers with a range, summarize the specified thinks.\n"
-    "- If a pending question exists, respond when the answer becomes visible."
+    "- If a query exists in <queries>, respond when you see new relevant information."
+)
+
+# Post-recall prompt: model receives recall_result and can only silent or response.
+# think in this step = analysis of recall result (not visual observation, NOT stored in memory).
+SYSTEM_PROMPT_POST_RECALL = (
+    "You are a streaming video agent. You just received recall results.\n\n"
+    "Output exactly ONE of:\n"
+    "1) <think>...</think><action>silent</action>  (recall result not useful)\n"
+    "2) <think>...</think><action>response</action><response>...</response>  (answer the question)\n\n"
+    "Rules:\n"
+    "- think: 20-40 tokens, analyze whether the recall result answers the question.\n"
+    "- response: answer based on the recall result. If insufficient, say so.\n"
+    "- silent: recall result is irrelevant or empty, cannot answer."
 )
 
 # Special tokens required by SFT init_processor (see sft_engineering.md §6.2)

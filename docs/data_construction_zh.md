@@ -80,15 +80,27 @@ C. compressed_summary (进 SFT):
 4) <think>...</think><action>compress</action><summary>{"time_range":[s,e],"text":"..."}</summary>
 ```
 
-recall 拆为两个独立步骤，每步都有 think，格式统一：
-```
-step 1: <think>视觉观察</think><action>recall</action><query>...</query>
-step 2: <think>分析检索结果</think><action>response</action><response>...</response>
-```
-step 1 的 think = 当前帧的视觉观察 → **存入 memory**（和 silent/response 一样）。
-step 2 的 think = 对 recall_result 的分析 → **不存 memory**（非视觉观察，不应污染记忆）。
+recall 拆为两个独立步骤，**使用不同的 prompt**：
 
-**每个时间步只有一条 think 进入 memory。** step 2 的 think 是推理输出，不是视觉记忆。
+```
+step 1 (4-action prompt — 常规):
+  可选 action: silent / response / recall / compress
+  输出: <think>视觉观察</think><action>recall</action><query>...</query>
+
+step 2 (post-recall 2-action prompt — 限制):
+  可选 action: silent / response（不允许再 recall 或 compress）
+  输出: <think>分析检索结果</think><action>response</action><response>...</response>
+  或:   <think>检索结果不相关</think><action>silent</action>
+```
+
+**step 2 只能选 silent 或 response**：
+- response = 检索结果有用，回答用户
+- silent = 检索结果无用（recall 失败），不强答
+
+**memory 规则**：
+- step 1 的 think（视觉观察）→ **存入 memory**
+- step 2 的 think（检索分析）→ **不存 memory**（非视觉观察）
+- 每个时间步只有一条 think 进入 memory
 
 ### 1.4 Think 规范
 
