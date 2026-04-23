@@ -350,10 +350,9 @@ best_range = argmin(score)   # 综合最优
   └─ 1-B: 实体链接                     [规则 或 1 call/video]
 阶段 2: Question-blind Streaming Rollout [397B + 视频, ~4h]
 阶段 3: Task Mining + Sample Generation  [397B + 规则, ~2h]
-  ├─ 3-A: Task Card 生成               [397B, ~11 call/video (按 family 分批)]
-  ├─ 3-B: Placement 候选生成           [纯程序, 0 call]
-  ├─ 3-B2: 轨迹规划                    [纯程序, 0 call]
-  └─ 3-C: 轨迹样本生成                 [397B, ~60 call/video]
+  ├─ 3-A: Task Card 生成               [397B, ~6-8 call/video (按 family 分批)]
+  ├─ 3-B: Placement + 行为序列规划     [纯程序, 0 call]
+  └─ 3-C: 轨迹样本生成                 [397B, ~90 call/video]
 阶段 4: Verify + Filter                 [规则 + 小模型, ~30min]
 ```
 
@@ -781,242 +780,414 @@ thinking 可控，不会爆炸。
 
 **每视频 ~11 次 call（11 family），每次 ~500 tok input → 总 ~5.5K tokens。**
 
-### 3.4 阶段 3-B: Placement 候选生成
+### 3.4 阶段 3-B: Placement + 行为序列规划
 
-> 纯程序，零 397B。输出全部合法候选，不做选择（选择在轨迹规划做）。
+> 纯程序，零 397B。不只选"在哪问"，还规划"问了之后的完整行为序列"。
 
-**输入**: Task Cards + Rollout (snapshots, compression_events)
+**输入**: Task Cards + Rollout (snapshots, compression_events, evidence)
 
-**输出**: placements/{video_id}.json — 全部 (card, ask_chunk, availability) 候选
+**输出**: placements/{video_id}.json — 行为序列蓝图列表
 
-#### visibility_type 决定哪些 availability 合法
+#### 核心概念：行为序列
+
+一个问题从提出到完结，模型的行为不是单一 action，而是一条**行为序列**：
+
+| 序列类型 | 触发条件 | 行为链 | 样本数 |
+|---------|---------|--------|-------|
+| **immediate_response** | 答案在帧/memory/summary 中 | response → post_silent | 2 |
+| **recall_success** | 答案不在可见源，recall 返回有用结果 | recall → post_recall_response → post_silent | 3 |
+| **recall_fail_then_found** | recall 失败，但后续帧里出现答案 | recall → post_recall_silent → ... → response | 4+ |
+| **event_watch** | E2: 事件还没发生 | silent → ... → response (事件发生时) | 3+ |
+| **multi_response** | M1: 持续解说 | response → silent → response → ... | 4+ |
+
+#### availability → 行为序列类型映射
 
 ```python
-def compute_placements(card, rollout, evidence):
-    """
-    对一个 card，输出所有合法的 (ask_chunk, availability) 候选。
+def determine_sequence_type(card, availability):
+    """availability + family → 完整行为序列类型"""
     
-    visibility_type 决定哪些 availability 类型是合法的：
-    - persistent: 只有 in_visual（答案一直在帧里）
-    - transient:  in_visual + in_recent_thinks + in_compressed + in_history_only
-    """
-    candidates = []
-    support_end = max(card.support_chunks)
-    num_chunks = rollout["num_chunks"]
+    if card.family == "M1":
+        return "multi_response"
     
-    # ── in_visual: persistent 和 transient 都有 ──
-    # persistent: 答案在很长时间内都可见，visual 区间更宽
-    # transient:  答案只在 support_chunks 附近可见
-    if card.visibility_type == "persistent":
-        # 整个视频内任何时刻都可以问（答案一直在帧里）
-        # 但只选几个代表位置
-        for ask in [num_chunks // 4, num_chunks // 2, 3 * num_chunks // 4]:
-            if ask < num_chunks:
-                candidates.append({"ask_chunk": ask, "availability": "in_visual"})
-    else:
-        # transient: 只在 support_chunks 附近的视觉窗口内
-        visual_lo = support_end
-        visual_hi = min(num_chunks - 1, support_end + VISUAL_WINDOW_CHUNKS - 1)
-        if visual_lo <= visual_hi:
-            candidates.append({"ask_chunk": (visual_lo + visual_hi) // 2, "availability": "in_visual"})
+    if availability == "in_future":
+        return "event_watch"
     
-    # ── 以下只有 transient 才有 ──
-    if card.visibility_type == "transient":
-        bitmap = precompute_retention(card, rollout)
-        
-        # in_recent_thinks
-        exit_visual = support_end + VISUAL_WINDOW_CHUNKS
-        compressed_at = find_compression_for(support_end, rollout)
-        if compressed_at:
-            thinks_hi = compressed_at - 1
-        else:
-            thinks_hi = num_chunks - 1
-        if exit_visual <= thinks_hi and any(bitmap.thinks_retained.values()):
-            candidates.append({"ask_chunk": (exit_visual + thinks_hi) // 2, "availability": "in_recent_thinks"})
-        
-        # in_compressed
-        for idx, event in enumerate(rollout["compression_events"]):
-            if set(card.support_chunks) & set(event.get("compressed_thinks_chunks", [])):
-                if bitmap.summary_retained.get(idx, False):
-                    comp_lo = event["trigger_chunk"] + VISUAL_WINDOW_CHUNKS
-                    if comp_lo < num_chunks:
-                        candidates.append({"ask_chunk": comp_lo, "availability": "in_compressed"})
-                    break
-        
-        # in_history_only
-        history_lo = max(exit_visual, support_end + VISUAL_WINDOW_CHUNKS + 3)
-        if history_lo < num_chunks:
-            candidates.append({"ask_chunk": min(history_lo + 5, num_chunks - 1), "availability": "in_history_only"})
+    if availability in ("in_visual", "in_recent_thinks", "in_compressed"):
+        return "immediate_response"
     
-    # ── in_future: 仅 E2 ──
-    if card.family == "E2":
-        support_start = min(card.support_chunks)
-        if support_start >= 5:
-            candidates.append({"ask_chunk": max(0, support_start - 8), "availability": "in_future"})
-    
-    return candidates
+    if availability == "in_history_only":
+        # 70% recall 成功, 30% recall 失败后在后续帧找到
+        # 比例在轨迹规划时控制
+        return "recall_success"  # 或 "recall_fail_then_found"
 ```
 
-**输出全部候选，不做选择。后续轨迹规划从中挑选。**
-
-#### retention bitmap（仅 transient cards 需要）
-
-persistent cards 不需要 bitmap（答案一直可见）。transient cards 用 retention_class 控制匹配阈值（同之前设计）。
-
-### 3.5 阶段 3-B2: 轨迹规划
-
-> 纯程序。从全部 placement 候选中组合出合理的多问题轨迹。
-
-**输入**: 全部 placements + task cards
-
-**输出**: trajectories/{video_id}.json
+#### Placement 数据结构（行为序列蓝图）
 
 ```python
-def plan_trajectories(cards, placements, num_chunks, target_trajectories=30):
+Placement = {
+    "card_id": "vid001_F2_001",
+    "ask_chunk": 20,
+    "sequence_type": "recall_success",
+    
+    # 序列的关键时间点（3-C 据此逐 chunk 生成样本）
+    "key_chunks": {
+        "ask": 20,           # 问题到达 → SYSTEM_PROMPT → recall
+        "post_recall": 20,   # recall 返回 → POST_RECALL_PROMPT → response
+        "post_silent": 21,   # 答完后 → SYSTEM_PROMPT → silent
+    },
+}
+```
+
+```python
+Placement_event_watch = {
+    "card_id": "vid001_E2_001",
+    "ask_chunk": 30,
+    "sequence_type": "event_watch",
+    
+    "key_chunks": {
+        "ask": 30,                  # 问题到达 → silent（事件没发生）
+        "wait_silent": [32, 35],    # 等待中 → silent（采样 2 个代表）
+        "trigger": 40,              # 事件发生 → response
+        "post_silent": 41,          # 答完 → silent
+    },
+}
+```
+
+```python
+Placement_M1 = {
+    "card_id": "vid001_M1_001",
+    "ask_chunk": 10,
+    "sequence_type": "multi_response",
+    
+    "key_chunks": {
+        "ask": 10,                       # 首次回答 → response
+        "no_change_silent": [15, 18],    # 无新 state_change → silent
+        "followup_response": [25, 40],   # 有 state_change → 追加 response
+        "post_silent": 41,               # 最后一次回答后 → silent
+    },
+}
+```
+
+```python
+Placement_recall_fail = {
+    "card_id": "vid001_F1_001",
+    "ask_chunk": 45,
+    "sequence_type": "recall_fail_then_found",
+    
+    "key_chunks": {
+        "ask": 45,              # 问题到达 → recall
+        "post_recall": 45,      # recall 结果没用 → POST_RECALL → silent
+        "wait_silent": [46],    # query 未答完，继续观察 → silent
+        "found_response": 50,   # 答案出现在帧里 → response
+        "post_silent": 51,      # 答完 → silent
+    },
+}
+```
+
+#### 计算 key_chunks 的逻辑
+
+```python
+def compute_placement(card, ask_chunk, sequence_type, rollout, evidence):
+    """计算行为序列的关键时间点"""
+    num_chunks = rollout["num_chunks"]
+    key_chunks = {"ask": ask_chunk}
+    
+    if sequence_type == "immediate_response":
+        key_chunks["post_silent"] = min(ask_chunk + 1, num_chunks - 1)
+    
+    elif sequence_type == "recall_success":
+        key_chunks["post_recall"] = ask_chunk  # 同 chunk step2
+        key_chunks["post_silent"] = min(ask_chunk + 1, num_chunks - 1)
+    
+    elif sequence_type == "recall_fail_then_found":
+        key_chunks["post_recall"] = ask_chunk  # step2 → silent（recall 失败）
+        # 找后续帧里答案重新出现的 chunk
+        found = find_next_visible_chunk(card, ask_chunk, evidence)
+        if found and found < num_chunks:
+            key_chunks["wait_silent"] = [ask_chunk + 1]
+            key_chunks["found_response"] = found
+            key_chunks["post_silent"] = min(found + 1, num_chunks - 1)
+        else:
+            return None  # 后续帧里也没有 → 这个 placement 无效
+    
+    elif sequence_type == "event_watch":
+        trigger = min(card.support_chunks)  # 事件发生的 chunk
+        wait_chunks = list(range(ask_chunk + 2, trigger, max(1, (trigger - ask_chunk) // 3)))
+        key_chunks["wait_silent"] = wait_chunks[:2]  # 采样 2 个等待点
+        key_chunks["trigger"] = trigger
+        key_chunks["post_silent"] = min(trigger + 1, num_chunks - 1)
+    
+    elif sequence_type == "multi_response":
+        # M1: 在有 state_change 的 chunk 追加 response
+        followup_r = []
+        followup_s = []
+        for c in range(ask_chunk + 1, num_chunks):
+            cap = evidence[c] if c < len(evidence) else {}
+            if cap.get("state_changes"):
+                followup_r.append(c)
+            elif len(followup_s) < 2:
+                followup_s.append(c)
+        key_chunks["no_change_silent"] = followup_s[:2]
+        key_chunks["followup_response"] = followup_r[:5]  # 最多 5 次追加
+        if followup_r:
+            key_chunks["post_silent"] = min(followup_r[-1] + 1, num_chunks - 1)
+    
+    return {"card_id": card.card_id, "ask_chunk": ask_chunk,
+            "sequence_type": sequence_type, "key_chunks": key_chunks}
+```
+
+#### 轨迹规划：从 placements 组合多问题轨迹
+
+```python
+def plan_trajectories(placements, target=30):
     """
-    从 placement 候选中组合多问题轨迹。
-    
-    每条轨迹 = 1-3 个问题，分布在不同时间点。
-    同一条轨迹内的问题至少间隔 5 chunks（10s）。
-    
-    轨迹类型:
-    - 单问题轨迹: 1 个 card + 1 个 ask_time（大多数）
-    - 多问题轨迹: 2-3 个 card + 各自的 ask_time（更真实）
+    每条轨迹 = 1-3 个 placement（不同问题），共享同一 base rollout。
+    同一轨迹内的问题至少间隔 5 chunks。
+    不同轨迹可以用同一 card 的不同 ask_chunk。
     """
     trajectories = []
-    used_placements = set()
     
-    # 按 availability 多样性排序候选
-    all_placements = sorted(placements, key=lambda p: (p["availability"], p["ask_chunk"]))
+    # 按 sequence_type 分桶，保证多样性
+    by_type = group_by(placements, key=lambda p: p["sequence_type"])
     
-    # Phase 1: 单问题轨迹（保证每个 card 至少有一条）
-    for card in cards:
-        card_placements = [p for p in all_placements 
-                          if p["card_id"] == card.card_id and id(p) not in used_placements]
-        if card_placements:
-            best = card_placements[0]  # 取第一个（availability 优先排序）
+    # Phase 1: 每种 sequence_type 至少有代表轨迹
+    for seq_type, ps in by_type.items():
+        for p in ps[:3]:  # 每种类型最多 3 条单问题轨迹
             trajectories.append({
                 "trajectory_id": f"traj_{len(trajectories)}",
-                "questions": [{"card_id": card.card_id, **best}],
+                "placements": [p],
             })
-            used_placements.add(id(best))
     
-    # Phase 2: 多问题轨迹（更真实的交互）
-    remaining = [p for p in all_placements if id(p) not in used_placements]
-    # 按 ask_chunk 排序，贪心组合不冲突的 placements
+    # Phase 2: 组合多问题轨迹
+    remaining = [p for p in placements if not any(
+        p in t["placements"] for t in trajectories)]
     remaining.sort(key=lambda p: p["ask_chunk"])
     
-    current_traj_questions = []
+    group = []
     for p in remaining:
-        if len(trajectories) >= target_trajectories:
+        if len(trajectories) >= target:
             break
-        if not current_traj_questions:
-            current_traj_questions.append(p)
-        elif p["ask_chunk"] - current_traj_questions[-1]["ask_chunk"] >= 5:
-            current_traj_questions.append(p)
-            if len(current_traj_questions) >= 3:
+        if not group or p["ask_chunk"] - group[-1]["ask_chunk"] >= 5:
+            group.append(p)
+            if len(group) >= 3:
                 trajectories.append({
                     "trajectory_id": f"traj_{len(trajectories)}",
-                    "questions": [{"card_id": q.get("card_id", ""), **q} for q in current_traj_questions],
+                    "placements": group,
                 })
-                current_traj_questions = []
-        else:
-            # 冲突，跳过
-            continue
+                group = []
+    if group:
+        trajectories.append({
+            "trajectory_id": f"traj_{len(trajectories)}",
+            "placements": group,
+        })
     
     return trajectories
 ```
 
-### 3.6 阶段 3-C: 轨迹样本生成
+### 3.5 阶段 3-C: 轨迹样本生成
 
 > 397B 生成 response/recall 文本。只对选中的轨迹执行。
 
-**输入**: 选中的轨迹 + rollout + evidence
+**输入**: trajectories + rollout + evidence
 
 **输出**: fork_samples/{video_id}.json
 
-#### 每条轨迹生成哪些样本？
+#### 按行为序列逐 chunk 生成样本
 
+```python
+async def generate_trajectory_samples(trajectory, rollout, evidence, client):
+    """
+    遍历轨迹中所有 placement 的 key_chunks，逐个生成 SFT 样本。
+    
+    queries 区随轨迹演化：问题进入 → answer 追加 → 后续 chunk 都能看到。
+    """
+    samples = []
+    queries_state = []  # 模拟 queries 区的演化
+    
+    for placement in trajectory["placements"]:
+        card = get_card(placement["card_id"])
+        kc = placement["key_chunks"]
+        seq = placement["sequence_type"]
+        
+        # ── 问题到达 ──
+        ask = kc["ask"]
+        snapshot = rollout["snapshots"][ask]
+        think = rollout["thinks"][ask]["think"]
+        
+        if seq == "immediate_response":
+            # 397B 生成 response
+            response_text = await generate_response(card, snapshot, evidence, client)
+            samples.append(make_sample(
+                chunk=ask, prompt="SYSTEM_PROMPT", action="response",
+                think=think, response=response_text,
+                queries=queries_state, user_input=card.question,
+            ))
+            # 更新 queries 区
+            queries_state.append({"question": card.question, "answers": [response_text]})
+            # post_silent
+            samples.append(make_sample(
+                chunk=kc["post_silent"], prompt="SYSTEM_PROMPT", action="silent",
+                think=rollout["thinks"][kc["post_silent"]]["think"],
+                queries=queries_state,
+            ))
+        
+        elif seq == "recall_success":
+            # step1: recall
+            query_json = await generate_recall_query(card, snapshot, client)
+            samples.append(make_sample(
+                chunk=ask, prompt="SYSTEM_PROMPT", action="recall",
+                think=think, query=query_json,
+                queries=queries_state, user_input=card.question,
+            ))
+            # step2: post-recall response
+            recall_result = simulate_recall_result(card, rollout, ask)
+            response_text = await generate_response_from_recall(card, recall_result, client)
+            samples.append(make_sample(
+                chunk=ask, prompt="POST_RECALL_PROMPT", action="response",
+                think=f"Recall returned relevant result.", response=response_text,
+                queries=queries_state, recall_result=recall_result,
+            ))
+            queries_state.append({"question": card.question, "answers": [response_text]})
+            # post_silent
+            samples.append(make_sample(
+                chunk=kc["post_silent"], prompt="SYSTEM_PROMPT", action="silent",
+                think=rollout["thinks"][kc["post_silent"]]["think"],
+                queries=queries_state,
+            ))
+        
+        elif seq == "recall_fail_then_found":
+            # step1: recall
+            query_json = await generate_recall_query(card, snapshot, client)
+            samples.append(make_sample(
+                chunk=ask, prompt="SYSTEM_PROMPT", action="recall",
+                think=think, query=query_json,
+                queries=queries_state, user_input=card.question,
+            ))
+            # step2: recall 失败 → silent
+            recall_result = {"source": "failure", "text_content": "No matching results."}
+            samples.append(make_sample(
+                chunk=ask, prompt="POST_RECALL_PROMPT", action="silent",
+                think="Recall returned no relevant results.",
+                queries=queries_state, recall_result=recall_result,
+            ))
+            # query 进入 queries 区但无 answer（未答完）
+            queries_state.append({"question": card.question, "answers": []})
+            # wait_silent
+            for wc in kc.get("wait_silent", []):
+                samples.append(make_sample(
+                    chunk=wc, prompt="SYSTEM_PROMPT", action="silent",
+                    think=rollout["thinks"][wc]["think"],
+                    queries=queries_state,
+                ))
+            # found_response: 答案出现在帧里
+            found = kc["found_response"]
+            response_text = await generate_response(card, rollout["snapshots"][found], evidence, client)
+            samples.append(make_sample(
+                chunk=found, prompt="SYSTEM_PROMPT", action="response",
+                think=rollout["thinks"][found]["think"], response=response_text,
+                queries=queries_state,
+            ))
+            # 更新 queries 区
+            queries_state[-1]["answers"].append(response_text)
+        
+        elif seq == "event_watch":
+            # ask: silent（事件没发生）
+            queries_state.append({"question": card.question, "answers": []})
+            samples.append(make_sample(
+                chunk=ask, prompt="SYSTEM_PROMPT", action="silent",
+                think=think, queries=queries_state, user_input=card.question,
+            ))
+            # wait_silent
+            for wc in kc.get("wait_silent", []):
+                samples.append(make_sample(
+                    chunk=wc, prompt="SYSTEM_PROMPT", action="silent",
+                    think=rollout["thinks"][wc]["think"],
+                    queries=queries_state,
+                ))
+            # trigger: response
+            trigger = kc["trigger"]
+            response_text = await generate_response(card, rollout["snapshots"][trigger], evidence, client)
+            samples.append(make_sample(
+                chunk=trigger, prompt="SYSTEM_PROMPT", action="response",
+                think=rollout["thinks"][trigger]["think"], response=response_text,
+                queries=queries_state,
+            ))
+            queries_state[-1]["answers"].append(response_text)
+        
+        elif seq == "multi_response":
+            # 首次 response
+            response_text = await generate_response(card, snapshot, evidence, client)
+            samples.append(make_sample(
+                chunk=ask, prompt="SYSTEM_PROMPT", action="response",
+                think=think, response=response_text,
+                queries=queries_state, user_input=card.question,
+            ))
+            queries_state.append({"question": card.question, "answers": [response_text]})
+            # no_change_silent
+            for sc in kc.get("no_change_silent", []):
+                samples.append(make_sample(
+                    chunk=sc, prompt="SYSTEM_PROMPT", action="silent",
+                    think=rollout["thinks"][sc]["think"],
+                    queries=queries_state,
+                ))
+            # followup_response
+            for fc in kc.get("followup_response", []):
+                resp = await generate_response(card, rollout["snapshots"][fc], evidence, client)
+                samples.append(make_sample(
+                    chunk=fc, prompt="SYSTEM_PROMPT", action="response",
+                    think=rollout["thinks"][fc]["think"], response=resp,
+                    queries=queries_state,
+                ))
+                queries_state[-1]["answers"].append(resp)
+    
+    # ── Base samples: 无问题的 silent + compress（共享）──
+    # 从 base rollout 采样，所有轨迹共享
+    
+    return samples
 ```
-轨迹: [
-  {card: "围裙颜色?", ask_chunk: 15, availability: "in_visual"},
-  {card: "看到basil告诉我", ask_chunk: 30, availability: "in_future"},
-]
 
-需要生成的样本:
+#### 每条样本的完整结构
 
-chunk 15: 问题 1 到达
-  input: queries=[], user_input="围裙什么颜色?"
-  → 397B 生成 response → "Red"
-  样本: {type: "question_arrival", action: "response"}
-
-chunk 16: 问题 1 已答完
-  input: queries=[{q:"围裙颜色?", answers:["Red"]}], user_input=""
-  → silent（学会不重复回答）
-  样本: {type: "post_answer_silent"}
-
-chunk 30: 问题 2 到达
-  input: queries=[{q:"围裙颜色?", answers:["Red"]}], user_input="看到basil告诉我"
-  → silent（basil 还没出现）
-  样本: {type: "event_watch_silent"}
-
-chunk 35: basil 出现
-  input: queries=[{q:"围裙颜色?", answers:["Red"]}, {q:"basil?", answers:[]}]
-  → 397B 生成 response → "Basil is being torn"
-  样本: {type: "event_watch_trigger", action: "response"}
-
-chunk 36: event_watch 已答
-  input: queries=[..., {q:"basil?", answers:["Basil is being torn"]}]
-  → silent
-  样本: {type: "post_answer_silent"}
-```
-
-#### M1 多次回答
-
-```
-轨迹: [{card: "描述每步操作", ask_chunk: 10, availability: "in_visual", family: "M1"}]
-
-chunk 10: 问题到达 → response "正在切菜"
-chunk 15: queries 有答案，无新 state_change → silent
-chunk 25: state_change 出现（"开始炒菜"）→ response "开始炒菜"（追加回答）
-chunk 30: 无新 state_change → silent
-chunk 40: state_change 出现（"加调料"）→ response "加入调料"
-
-M1 response 时机 = queries 区有活跃 M1 问题 + 当前 chunk 有 state_change
-```
-
-#### recall 样本
-
-```
-轨迹: [{card: "加了多少盐?", ask_chunk: 45, availability: "in_history_only"}]
-
-chunk 45: 问题到达，答案不在任何可见源
-  step 1 (SYSTEM_PROMPT): <think>视觉观察</think><action>recall</action><query>...</query>
-  step 2 (SYSTEM_PROMPT_POST_RECALL): <think>分析结果</think><action>response</action><response>...</response>
-  
-  两个 step = 2 个样本（不同 prompt）
-```
-
-#### base samples（所有轨迹共享）
-
-```
-不带任何问题的 chunk = base rollout 的 silent 样本
-  从 60 chunks 中采样 ~20% = ~12 个 silent 样本
-  + compress 样本（从 compression_events 取，~3 个）
-  这些在所有轨迹间共享，不需要重复造
+```python
+def make_sample(chunk, prompt, action, think, queries,
+                response=None, query=None, recall_result=None, user_input=None):
+    """构造一条 SFT 训练样本"""
+    return {
+        "chunk_idx": chunk,
+        "prompt_type": prompt,  # "SYSTEM_PROMPT" / "POST_RECALL_PROMPT" / "COMPRESS_PROMPT"
+        "action": action,
+        
+        # input
+        "input": {
+            "visual_window": f"chunk {max(0, chunk-11)}-{chunk}",
+            "memory": "snapshot at chunk",
+            "queries": queries,           # queries 区当前状态
+            "user_input": user_input,     # 当前步新问题（或空）
+            "recall_result": recall_result,  # post-recall 时有
+        },
+        
+        # output
+        "output": {
+            "think": think,
+            "action": action,
+            "response": response,
+            "query": query,
+        },
+    }
 ```
 
 #### 397B 调用量
 
 ```
-每条轨迹:
-  - question_arrival 的 response: 1 call（生成 response 文本）
-  - recall 的 query + response: 2 calls
-  - M1 followup: 每次 1 call
-  平均 ~2 calls/轨迹
+每条轨迹 ~2-5 个 response/query 生成 call:
+  immediate_response: 1 call (response)
+  recall_success: 2 calls (query + response)
+  recall_fail_then_found: 3 calls (query + fail_response + found_response)
+  event_watch: 1 call (trigger response)
+  multi_response: 1 + N calls (首次 + 追加)
 
-30 轨迹 × 2 calls = ~60 calls/视频
-300 视频 = ~18,000 calls
+~30 轨迹 × ~3 calls = ~90 calls/视频
+300 视频 = ~27,000 calls
 ```
 
 ### 3.6 阶段 4: Verify + Filter
