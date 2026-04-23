@@ -1,3 +1,4 @@
+import json
 import os
 import re
 import types
@@ -43,19 +44,25 @@ _CHUNK_FORMAT_RE = re.compile(
     re.DOTALL,
 )
 
-# 3-action agent format regex
+# 4-action agent format regex (per-timestep)
 _CHUNK_FORMAT_RE_AGENT = re.compile(
     r"^<think>.*?</think>"
-    r"<action>(?:silent|response|recall)</action>"
-    r"(?:<response>.*?</response>|<query>\{.*?\}</query>)?"
+    r"<action>(?:silent|response|recall|compress)</action>"
+    r"(?:<response>.*?</response>"
+    r"|<query>\{.*?\}</query>"
+    r"|<summary>\{.*?\}</summary>)?"
     r"<\|im_end\|>$",
     re.DOTALL,
 )
 
-_ACTION_RE = re.compile(r"<action>(silent|response|recall)</action>")
+_ACTION_RE = re.compile(r"<action>(silent|response|recall|compress)</action>")
 
 _RESPONSE_RE_AGENT = re.compile(
     r"<action>response</action><response>(.*?)</response>", re.DOTALL
+)
+
+_SUMMARY_RE = re.compile(
+    r"<action>compress</action><summary>(.*?)</summary>", re.DOTALL
 )
 
 
@@ -66,7 +73,7 @@ def _check_chunk_format(text: str, agent_mode: bool = False) -> bool:
 
 
 def _extract_action(text: str) -> str:
-    """Extract action type from a generated chunk. Returns 'silent'/'response'/'recall'/'unknown'."""
+    """Extract action type from a generated chunk. Returns 'silent'/'response'/'recall'/'compress'/'unknown'."""
     m = _ACTION_RE.search(text)
     return m.group(1) if m else "unknown"
 
@@ -442,116 +449,189 @@ def rollout(
     (generated tokens, chunk metadata, raw sample) in ``rollout_data`` for
     downstream reward computation and loss calculation.
 
-    MIGRATION NOTE (v3.0): This currently uses the legacy ``streaming_video_chat``
-    multi-turn KV-cache format, which does NOT match the per-timestep SFT training
-    format (no <memory> tags, no explicit memory management). For full consistency,
-    migrate to ``StreamingAgentLoop.step()`` from ``thinkstream.model.agent_loop``.
-    The agent_loop approach generates one step at a time with explicit memory state,
-    matching the training input format exactly. The ``_build_messages_from_chunks``
-    helper below also uses the legacy format.
+    Uses ``StreamingAgentLoop.step()`` for per-timestep re-render rollout,
+    matching the SFT training format exactly (explicit memory management,
+    <memory>/<visual_window> tags, 4-action protocol).
+
+    For each raw sample, runs the agent loop from chunk 0 to max_chunks
+    with G=group_size independent rollouts. Each rollout maintains its own
+    memory state.
 
     NOTE: This node should be wrapped with ``unwrap_model_for_generation``
     which handles ZeRO-3 parameter gathering and inference engine cleanup.
     """
-    inference_engine_ = ctx.get(inference_engine, None)
-    if inference_engine_ is None:
-        video_token_id = tokenizer.convert_tokens_to_ids(["<|video_pad|>"])[0]
-        video_flex_window_size = getattr(
-            model_for_generation.config,
-            "video_flex_window_size",
-            DEFAULT_VIDEO_FLEX_WINDOW_SIZE,
-        )
-        model_for_generation.config.text_config._attn_implementation = (
-            "flash_attention_2_infer"
-        )
-        text_cfg = get_text_config(model_for_generation.config)
-        inference_engine_ = StreamingWindowInferenceEngine(
-            model_for_generation,
-            batch_size=group_size,
-            max_len=16384,
-            num_hidden_layers=text_cfg.num_hidden_layers,
-            num_key_value_heads=text_cfg.num_key_value_heads,
-            head_dim=text_cfg.hidden_size // text_cfg.num_attention_heads,
-            vocab_size=text_cfg.vocab_size,
-            pad_token_id=model_for_generation.generation_config.pad_token_id,
-            eos_token_ids=model_for_generation.generation_config.eos_token_id,
-            video_token_id=video_token_id,
-            video_flex_window_size=video_flex_window_size,
-        )
-        ctx = ctx.set(inference_engine, inference_engine_)
-
-    think_end_token_id = tokenizer.convert_tokens_to_ids("</think>")
-    sample_kwargs = {
-        "think_end_token_id": think_end_token_id,
-        "max_think_tokens": rollout_max_think_tokens,
-    }
+    from thinkstream.model.agent_loop import StreamingAgentLoop
 
     all_rollout_results: List[Dict[str, Any]] = []
     model_for_generation.eval()
+
+    def _generate_fn(messages, processor, max_new_tokens=256, **kwargs):
+        """Wrap model generation for StreamingAgentLoop."""
+        inputs = processor.apply_chat_template(
+            messages, tokenize=True, return_dict=True, return_tensors="pt",
+            add_generation_prompt=True,
+        )
+        inputs = {k: v.to(model_for_generation.device) if hasattr(v, 'to') else v
+                  for k, v in inputs.items()}
+        with torch.no_grad():
+            output_ids = model_for_generation.generate(
+                **inputs,
+                max_new_tokens=max_new_tokens,
+                temperature=rollout_temperature,
+                top_k=rollout_top_k,
+                top_p=rollout_top_p,
+                do_sample=True,
+            )
+        # Decode only the generated part
+        input_len = inputs["input_ids"].shape[1]
+        return tokenizer.decode(output_ids[0][input_len:], skip_special_tokens=False)
 
     for raw_sample in step_inputs:
         data_path = raw_sample.get("data_path", "")
         video_path = raw_sample.get("video_path", "")
         abs_video_path = str(_make_abs_paths(Path(data_path), video_path))
 
-        preloaded_video = raw_sample.pop("_preloaded_video", None)
+        # Extract task info
+        metadata = raw_sample.get("metadata", {})
+        ask_chunk = raw_sample.get("chunk_idx", rollout_max_chunks - 1)
 
-        user_convs = [
-            c for c in raw_sample.get("conversations", []) if c.get("role") == "user"
-        ]
-        queries = [
-            {
-                "content": c.get("content", ""),
-                "timestamp": float(c.get("timestamp", 0.0)),
+        # Extract user question (from messages or conversations)
+        user_question = None
+        if "messages" in raw_sample:
+            for msg in raw_sample["messages"]:
+                if msg.get("role") == "user":
+                    content = msg.get("content", "")
+                    if isinstance(content, list):
+                        for item in content:
+                            if isinstance(item, dict) and item.get("type") == "text":
+                                text = item.get("text", "")
+                                if "<user_input>" in text:
+                                    import re as _re
+                                    m = _re.search(r'<user_input>(.*?)</user_input>', text)
+                                    if m:
+                                        user_question = m.group(1)
+        elif "conversations" in raw_sample:
+            user_convs = [c for c in raw_sample["conversations"] if c.get("role") == "user"]
+            if user_convs:
+                user_question = user_convs[0].get("content", "")
+
+        # Run G independent rollouts
+        per_gen_results: List[List[Dict]] = []
+        for g in range(group_size):
+            loop = StreamingAgentLoop(
+                generate_fn=_generate_fn,
+                tokenizer=tokenizer,
+                processor=processor,
+                model_type=model_type,
+                min_pixels=rollout_min_pixels,
+                max_pixels=rollout_max_pixels,
+                max_new_tokens=rollout_max_new_tokens,
+            )
+
+            chunk_results_g: List[Dict[str, Any]] = []
+            num_chunks = min(ask_chunk + 5, rollout_max_chunks)  # run a few past ask
+            for chunk_idx in range(num_chunks):
+                q = user_question if chunk_idx == ask_chunk else None
+                result = loop.step(
+                    chunk_idx=chunk_idx,
+                    video_path=abs_video_path,
+                    user_question=q,
+                )
+                # Store result with generated tokens for reward/loss computation
+                chunk_results_g.append({
+                    "chunk_idx": chunk_idx,
+                    "action": result.get("action", "unknown"),
+                    "think": result.get("think", ""),
+                    "payload": result.get("payload", {}),
+                    "raw_output": result.get("raw_output", ""),
+                    "generated_tokens": tokenizer.encode(
+                        result.get("raw_output", ""), add_special_tokens=False,
+                    ),
+                    "window_start": chunk_idx * 2,
+                    "window_end": (chunk_idx + 1) * 2,
+                })
+                # Early stop if model responded
+                if result.get("action") == "response" and chunk_idx >= ask_chunk:
+                    break
+            per_gen_results.append(chunk_results_g)
+
+        # Merge into the expected format: chunk_results with generated_tokens[G]
+        max_chunks_seen = max(len(g) for g in per_gen_results)
+        merged_chunk_results = []
+        for ci in range(max_chunks_seen):
+            merged = {
+                "chunk_idx": ci,
+                "window_start": ci * 2,
+                "window_end": (ci + 1) * 2,
+                "generated_tokens": [],
             }
-            for c in user_convs
-        ]
+            for g in range(group_size):
+                if ci < len(per_gen_results[g]):
+                    merged["generated_tokens"].append(
+                        torch.tensor(per_gen_results[g][ci]["generated_tokens"])
+                    )
+                else:
+                    # Pad with empty if this gen finished early
+                    merged["generated_tokens"].append(torch.tensor([]))
+            merged_chunk_results.append(merged)
 
-        chunk_results: List[Dict[str, Any]] = []
-        for result in streaming_video_chat(
-            engine=inference_engine_,
-            processor=processor,
-            video_path=abs_video_path,
-            queries=queries,
-            num_generations=group_size,
-            system_prompt=SYSTEM_PROMPT,
-            chat_template_wo_system=QWEN_TEMPLATE_WO_SYSTEM,
-            max_new_tokens=rollout_max_new_tokens,
-            top_k=rollout_top_k,
-            top_p=rollout_top_p,
-            temperature=rollout_temperature,
-            frames_per_chunk=rollout_fpc,
-            max_chunks=rollout_max_chunks,
-            min_pixels=rollout_min_pixels,
-            max_pixels=rollout_max_pixels,
-            sample=think_budget_sample,
-            sample_kwargs=sample_kwargs,
-            reset_engine=True,
-            model_type=model_type,
-            preloaded_video=preloaded_video,
-            break_on_answer=False,
-        ):
-            chunk_results.append(result)
-
-        all_rollout_results.append(
-            {
-                "raw_sample": raw_sample,
-                "chunk_results": chunk_results,
-                "_preloaded_video": preloaded_video,
-            }
-        )
+        all_rollout_results.append({
+            "raw_sample": raw_sample,
+            "chunk_results": merged_chunk_results,
+        })
 
     model_for_generation.train()
     return ctx.set(rollout_data, all_rollout_results)
 
 
-REWARD_DICT_KEYS = ("format", "time", "correctness", "response_efficiency")
+REWARD_DICT_KEYS = ("format", "action", "correctness", "timing", "think_len", "compress")
 DEFAULT_REWARD_WEIGHTS = {
-    "format": 0.2,
-    "time": 0.2,
-    "correctness": 0.4,
-    "response_efficiency": 0.2,
+    "format": 0.15,
+    "action": 0.20,
+    "correctness": 0.30,
+    "timing": 0.15,
+    "think_len": 0.10,
+    "compress": 0.10,
 }
+
+
+def _compute_compress_reward(
+    chunk_texts: List[str],
+    compressed_segments: List[Dict],
+) -> float:
+    """Evaluate compression quality: entity retention in summary.
+
+    Checks how many entity names from the source compressed segments
+    appear in the model's generated summary.
+    """
+    # Find compress actions in generated text
+    summaries = []
+    for text in chunk_texts:
+        m = _SUMMARY_RE.search(text)
+        if m:
+            try:
+                s = json.loads(m.group(1))
+                summaries.append(s.get("text", ""))
+            except (json.JSONDecodeError, ValueError):
+                pass
+    if not summaries:
+        return 0.0  # no compress action taken
+
+    # Entity names from compressed segments (ground truth)
+    entity_words = set()
+    for seg in compressed_segments:
+        words = re.findall(r'\b[a-zA-Z_]+\d*\b', seg.get("text", ""))
+        entity_words.update(w.lower() for w in words if "_" in w or w[0].isupper())
+
+    if not entity_words:
+        return 1.0  # no entities to check, pass
+
+    # Check retention across all summaries
+    retained = 0
+    for summary_text in summaries:
+        summary_words = set(w.lower() for w in re.findall(r'\b[a-zA-Z_]+\d*\b', summary_text))
+        retained += len(entity_words & summary_words)
+    return min(1.0, retained / len(entity_words))
 
 
 @node
@@ -568,99 +648,112 @@ def calc_rewards(
     time_reward_slack: Auto[float],
     rollout_max_think_tokens: Auto[int],
 ) -> Context:
-    """Compute per-generation rewards (format + time + correctness + response efficiency).
+    """Compute per-generation rewards for 4-action per-timestep agent.
 
-    ``rollout_data`` is ``List[Dict]`` of length B (one per sample).  Each
-    element contains ``raw_sample`` and ``chunk_results``.  ``chunk_results``
-    is a list of dicts (one per temporal chunk) with key
-    ``generated_tokens: List[torch.Tensor]`` of length G.
+    Six reward components (see data_batch1_plan.md §5.3):
+    - format: think/action tag structure correct
+    - action: chose correct action type vs gold_action
+    - correctness: answer matches gold_answer
+    - timing: responded at the right chunk
+    - think_len: think length near target (40-60 tok)
+    - compress: entity retention in compression summaries
 
-    Response efficiency combines a think-length factor (near
-    ``rollout_max_think_tokens``) and a response-count decay.
-
-    Sets ``rewards`` (total, shape [B*G]) and ``rewards_dict``: dict of
-    component name -> tensor [B*G], e.g. {"format": ..., "time": ..., "correctness": ...}.
+    ``rollout_data`` is ``List[Dict]`` of length B (one per sample).
+    Sets ``rewards`` (shape [B*G]) and ``rewards_dict``.
     """
     weights = DEFAULT_REWARD_WEIGHTS
-    all_rewards, all_fmt, all_time, all_corr, all_response_eff = [], [], [], [], []
+    all_rewards = {k: [] for k in REWARD_DICT_KEYS}
 
     for sample_data in rollout_data:
         raw_sample = sample_data["raw_sample"]
         chunk_results: List[Dict[str, Any]] = sample_data["chunk_results"]
 
-        conversations = raw_sample["conversations"]
-        gt_msg = conversations[1]
-        gt_timestamp: float = float(gt_msg["timestamp"])
-        gt_content: str = gt_msg.get("content", "")
+        # Extract ground truth from raw sample
+        # Per-timestep format: gold info in metadata
+        metadata = raw_sample.get("metadata", {})
+        gold_action = metadata.get("gold_action", "")
+        gt_content = metadata.get("gold_answer", "")
+        need_recall = gold_action == "recall"
+        compressed_segments = raw_sample.get("compressed_segments",
+                              raw_sample.get("input", {}).get("compressed_segments", []))
 
-        if chunk_results:
-            time_per_chunk = (
-                chunk_results[0]["window_end"] - chunk_results[0]["window_start"]
-            )
-            video_start = chunk_results[0]["window_start"]
-        else:
-            time_per_chunk = 1.0
-            video_start = 0.0
+        # Timing: use ask_chunk from metadata
+        gt_chunk_idx = raw_sample.get("chunk_idx")
+        time_per_chunk = 2.0  # AGENT_CHUNK_SEC
 
-        if time_per_chunk > 0 and chunk_results:
-            gt_chunk_idx = int((gt_timestamp - video_start) / time_per_chunk)
-            gt_chunk_idx = max(0, min(gt_chunk_idx, len(chunk_results) - 1))
-        else:
-            gt_chunk_idx = None
+        # Legacy format fallback
+        if not gold_action and "conversations" in raw_sample:
+            conversations = raw_sample["conversations"]
+            gt_msg = conversations[1] if len(conversations) > 1 else {}
+            gt_content = gt_msg.get("content", "")
+            gt_timestamp = float(gt_msg.get("timestamp", 0.0))
+            if chunk_results:
+                time_per_chunk = chunk_results[0]["window_end"] - chunk_results[0]["window_start"]
+                video_start = chunk_results[0]["window_start"]
+                gt_chunk_idx = int((gt_timestamp - video_start) / time_per_chunk) if time_per_chunk > 0 else None
 
         for g in range(group_size):
             chunk_texts: List[str] = []
             for cr in chunk_results:
                 tokens = cr["generated_tokens"][g]
                 chunk_texts.append(tokenizer.decode(tokens, skip_special_tokens=False))
+
+            predicted_actions = [_extract_action(t) for t in chunk_texts]
             model_answer, response_chunk_idx, num_responses = (
                 _scan_responses_for_answer(chunk_results, g, tokenizer)
             )
 
-            fmt_r = _compute_format_reward(chunk_texts)
-            avg_think_len = _avg_think_len_for_generation(chunk_results, g, tokenizer)
-            think_len_rew = _compute_think_length_factor(
-                avg_think_len, rollout_max_think_tokens
-            )
-            num_response_rew = _compute_num_response_reward(num_responses)
-            response_eff_r = think_len_rew * num_response_rew
+            # R_format
+            fmt_r = _compute_format_reward(chunk_texts, agent_mode=True)
 
+            # R_action
+            action_r = _compute_action_reward(predicted_actions, need_recall)
+
+            # R_correctness
+            corr_r = _compute_correctness_reward(model_answer, gt_content)
+
+            # R_timing
             if gt_chunk_idx is not None:
                 slack_window_chunks = (
                     int(time_reward_slack / time_per_chunk) if time_per_chunk > 0 else 0
                 )
                 time_r = _compute_time_reward(
-                    response_chunk_idx,
-                    gt_chunk_idx,
-                    time_reward_window,
-                    slack_window_chunks,
+                    response_chunk_idx, gt_chunk_idx,
+                    time_reward_window, slack_window_chunks,
                 )
             else:
                 time_r = 0.0
 
-            corr_r = _compute_correctness_reward(model_answer, gt_content)
+            # R_think_len
+            avg_think_len = _avg_think_len_for_generation(chunk_results, g, tokenizer)
+            think_r = _compute_think_length_factor(avg_think_len, rollout_max_think_tokens)
 
-            total_r = (
-                weights["format"] * fmt_r
-                + weights["time"] * time_r
-                + weights["correctness"] * corr_r
-                + weights["response_efficiency"] * response_eff_r
+            # R_compress
+            compress_r = _compute_compress_reward(chunk_texts, compressed_segments)
+
+            total_r = sum(
+                weights[k] * v for k, v in zip(
+                    REWARD_DICT_KEYS,
+                    [fmt_r, action_r, corr_r, time_r, think_r, compress_r],
+                )
             )
 
-            all_rewards.append(total_r)
-            all_fmt.append(fmt_r)
-            all_time.append(time_r)
-            all_corr.append(corr_r)
-            all_response_eff.append(response_eff_r)
+            all_rewards["format"].append(fmt_r)
+            all_rewards["action"].append(action_r)
+            all_rewards["correctness"].append(corr_r)
+            all_rewards["timing"].append(time_r)
+            all_rewards["think_len"].append(think_r)
+            all_rewards["compress"].append(compress_r)
 
-    rewards_tensor = torch.tensor(all_rewards, dtype=torch.float32)
+    total_tensor = torch.tensor(
+        [sum(all_rewards[k][i] * weights[k] for k in REWARD_DICT_KEYS)
+         for i in range(len(all_rewards["format"]))],
+        dtype=torch.float32,
+    )
     rewards_dict_val = {
-        "format": torch.tensor(all_fmt, dtype=torch.float32),
-        "time": torch.tensor(all_time, dtype=torch.float32),
-        "correctness": torch.tensor(all_corr, dtype=torch.float32),
-        "response_efficiency": torch.tensor(all_response_eff, dtype=torch.float32),
+        k: torch.tensor(v, dtype=torch.float32) for k, v in all_rewards.items()
     }
-    return ctx.update({rewards: rewards_tensor, rewards_dict: rewards_dict_val})
+    return ctx.update({rewards: total_tensor, rewards_dict: rewards_dict_val})
 
 
 def _build_rollout_messages(

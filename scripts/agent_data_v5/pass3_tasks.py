@@ -109,6 +109,78 @@ def keyword_overlap(text: str, keywords: List[str]) -> float:
     return weighted_found / weighted_total
 
 
+# ---------------------------------------------------------------------------
+# Semantic similarity (embedding-based, with keyword fallback)
+# ---------------------------------------------------------------------------
+
+_embedding_model = None
+_embedding_available = None  # None = not checked, True/False = checked
+
+
+def _get_embedding_model():
+    """Lazy-load sentence embedding model. Returns None if unavailable."""
+    global _embedding_model, _embedding_available
+    if _embedding_available is False:
+        return None
+    if _embedding_model is not None:
+        return _embedding_model
+    try:
+        from sentence_transformers import SentenceTransformer
+        _embedding_model = SentenceTransformer(
+            "all-MiniLM-L6-v2", device="cpu",
+        )
+        _embedding_available = True
+        logger.info("Loaded embedding model: all-MiniLM-L6-v2")
+        return _embedding_model
+    except (ImportError, Exception) as e:
+        logger.warning(f"Embedding model unavailable ({e}), using keyword fallback")
+        _embedding_available = False
+        return None
+
+
+def semantic_overlap(text: str, keywords: List[str],
+                     threshold_boost: float = 0.15) -> float:
+    """Compute semantic similarity between text and keywords.
+
+    Uses sentence embedding cosine similarity as primary signal,
+    falls back to keyword_overlap if embeddings are unavailable.
+
+    Args:
+        text: The text to check (e.g., a compressed summary or think).
+        keywords: Keywords representing the answer/fact.
+        threshold_boost: Bonus added to keyword_overlap when embedding
+                         confirms semantic match (>0.5 cosine similarity).
+
+    Returns:
+        float in [0, 1]: combined overlap score.
+    """
+    # Always compute keyword overlap as baseline
+    kw_score = keyword_overlap(text, keywords)
+
+    model = _get_embedding_model()
+    if model is None:
+        return kw_score
+
+    # Compute embedding similarity
+    query = " ".join(keywords)
+    try:
+        embeddings = model.encode([query, text], convert_to_tensor=True)
+        import torch
+        cosine = torch.nn.functional.cosine_similarity(
+            embeddings[0].unsqueeze(0), embeddings[1].unsqueeze(0)
+        ).item()
+    except Exception:
+        return kw_score
+
+    # Combine: if embedding says >0.5 similar, boost keyword score
+    if cosine > 0.5:
+        return min(1.0, kw_score + threshold_boost)
+    # If embedding says <0.3, demote keyword score (possible false positive)
+    elif cosine < 0.3 and kw_score > 0:
+        return kw_score * 0.5
+    return kw_score
+
+
 def determine_gold_action(
     answer_keywords: List[str],
     snapshot: Dict,
@@ -133,21 +205,21 @@ def determine_gold_action(
     if evidence_in_window:
         return "response", "answer_in_visual_window"
 
-    # 2. Check recent_thinks
+    # 2. Check recent_thinks (semantic + keyword)
     for obs_item in snapshot.get("recent_thinks", []):
-        if keyword_overlap(obs_item.get("text", obs_item.get("obs", "")), answer_keywords) > LEAKAGE_OVERLAP_THRESHOLD:
+        if semantic_overlap(obs_item.get("text", obs_item.get("obs", "")), answer_keywords) > LEAKAGE_OVERLAP_THRESHOLD:
             return "response", "answer_in_recent_thinks"
 
-    # 3. Check compressed summaries
+    # 3. Check compressed summaries (semantic + keyword)
     for seg in snapshot["compressed_segments"]:
-        if keyword_overlap(seg["text"], answer_keywords) > LEAKAGE_OVERLAP_THRESHOLD:
+        if semantic_overlap(seg["text"], answer_keywords) > LEAKAGE_OVERLAP_THRESHOLD:
             return "response", "answer_in_compressed_summary"
 
     # 4. Check if answer exists in historical observations (outside current visibility)
     for eidx in evidence_chunks:
         if eidx < len(observations):
             obs_text = observations[eidx].get("think", observations[eidx].get("observation", ""))
-            if keyword_overlap(obs_text, answer_keywords) > LEAKAGE_OVERLAP_THRESHOLD:
+            if semantic_overlap(obs_text, answer_keywords) > LEAKAGE_OVERLAP_THRESHOLD:
                 return "recall", "answer_in_historical_observation"
 
     # 5. Answer not found anywhere accessible → still a response action (uncertain)
