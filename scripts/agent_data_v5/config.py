@@ -98,7 +98,7 @@ MAX_SAMPLE_TOKENS = 4096           # 单样本上限 (远在 16K 内)
 
 # Construction-time guards to prevent over-long or too-wide batches.
 VLLM_CONTEXT_SAFETY_RATIO = 0.85
-VLLM_PREFILL_BATCH_TOKEN_BUDGET = 2_000_000  # 8×ML300: KV only 5.6% at 64 conc, plenty of room
+VLLM_PREFILL_BATCH_TOKEN_BUDGET = 32_000_000  # KV usage ~2.6% at 64 conc → 1024 conc fits easily
 
 # Per-request token estimates (text + vision + output + thinking).
 # Vision passes: 24-28 frames (recall adds 4 recalled frames).
@@ -207,26 +207,26 @@ PASS_CONFIG = {
         "max_tokens": 16384,
         "temperature": 0.3,
         "thinking": True,
-        "concurrent_videos": 64,
+        "concurrent_videos": 1024,
     },
     "pass2_rollout": {
         "max_tokens_observation": 16384,
         "max_tokens_compress": 16384,
         "temperature": 0.3,
         "thinking": True,
-        "concurrent_videos": 64,
+        "concurrent_videos": 1024,
     },
     "pass3_tasks": {
-        "max_tokens": 16384,  # text+vision; reduced from 60K to bound thinking time
+        "max_tokens": 16384,
         "temperature": 0.7,
         "thinking": True,
-        "concurrent": 64,
+        "concurrent": 1024,
     },
     "pass4_forks": {
-        "max_tokens": 16384,  # text+vision; reduced from 60K to bound thinking time
+        "max_tokens": 16384,
         "temperature": 0.3,
         "thinking": True,
-        "concurrent": 64,
+        "concurrent": 1024,
     },
 }
 
