@@ -4,7 +4,7 @@
 >
 > 核心设计：
 > - Per-timestep 独立样本，每步重新构造完整 input，不依赖跨步 KV cache
-> - `<think>` 每步立即入文本记忆，文本记忆覆盖时间 > 视觉滑动窗口
+> - `<think>` 每步立即入文本记忆（recall step 2 的分析 think 除外），文本记忆覆盖时间 > 视觉滑动窗口
 > - 输入布局：**视频在前、文本在后**（`<visual_window>` → `<memory>` → `<user_input>`）
 > - 文本 think 的 MROPE temporal position 对齐到对应视频帧的时间戳
 > - 80% token 预算触发系统压缩，C1 系统指定范围 → C2 模型自选范围
@@ -85,8 +85,10 @@ recall 拆为两个独立步骤，每步都有 think，格式统一：
 step 1: <think>视觉观察</think><action>recall</action><query>...</query>
 step 2: <think>分析检索结果</think><action>response</action><response>...</response>
 ```
-step 1 的 think = 当前帧的视觉观察（和 silent/response 一样）。
-step 2 的 think = 对 recall_result 的分析（20-40 tokens，判断结果是否相关）。
+step 1 的 think = 当前帧的视觉观察 → **存入 memory**（和 silent/response 一样）。
+step 2 的 think = 对 recall_result 的分析 → **不存 memory**（非视觉观察，不应污染记忆）。
+
+**每个时间步只有一条 think 进入 memory。** step 2 的 think 是推理输出，不是视觉记忆。
 
 ### 1.4 Think 规范
 
@@ -217,8 +219,9 @@ post-recall response > 用户当前新问题 response/recall > query 触发 resp
 造数据时直接加载学生模型 tokenizer 精确计算 token 数（`get_tokenizer()` 自动加载）。
 若 tokenizer 不可用则降级为 `chars/4` 估算。
 
-**注意**：think 立即进入 recent_thinks，最早的 thinks 可能仍有对应帧在 visual_window 中。
-这不是问题——压缩只操作文本记忆，视频帧由 FIFO 独立管理。
+**注意**：
+- think 立即进入 recent_thinks，最早的 thinks 可能仍有对应帧在 visual_window 中。这不是问题——压缩只操作文本记忆，视频帧由 FIFO 独立管理。
+- **recall 的 step 2 think（检索结果分析）不存入 memory**。每个时间步只有一条视觉观察 think 进入 memory，保持"一步一 think"不变量。
 
 **范围选择（C1: teacher 多维评分）**：
 系统触发后，评估所有合法的连续范围（4-8 条），选择**综合得分最低**的范围。
@@ -2066,7 +2069,7 @@ def verify_grounding(think_text, frames, teacher_caption):
 
 | # | 约束 | 对应���节 | 代码执行 |
 |---|------|---------|---------|
-| 1 | think 每步立即入文本记忆，不延迟 | §2.1 | `MemoryState.add_think()` |
+| 1 | 视觉观察 think 每步立即入文本记忆（recall step2 分析 think 不存） | §2.1 | `MemoryState.add_think()` |
 | 2 | 文本记忆覆盖时间 > 视觉窗口，两者重叠 | §2.1 | `snapshot()` 中 `visual_window_start` 独立于 `recent_thinks` |
 | 3 | 80% token 预算触发压缩（精确 tokenizer） | §2.3 | `should_compress()` + `count_recent_tokens()` |
 | 4 | compress range 只覆盖 INPUT ���的 recent_thinks，不含当前 think | §2.1 | `pre_action_thinks = snapshots[chunk_idx]["recent_thinks"]` |
