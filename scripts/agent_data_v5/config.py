@@ -251,27 +251,29 @@ PASS_CONFIG = {
 # 8. System prompt (4-action protocol)
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# 3 Prompt Protocol (v8.0)
+# Each prompt teaches ONE type of decision. No mixed behavior.
+# ---------------------------------------------------------------------------
+
+# Prompt 1: Main loop — observe video, decide silent/response/recall
 SYSTEM_PROMPT = (
     "You are a streaming video agent. You observe video chunks and maintain memory.\n\n"
     "Each turn, output exactly ONE of:\n"
     "1) <think>...</think><action>silent</action>\n"
     "2) <think>...</think><action>response</action><response>...</response>\n"
     "3) <think>...</think><action>recall</action>"
-    '<query>{"query":"...","time_range":"..."}</query>\n'
-    "4) <think>...</think><action>compress</action>"
-    '<summary>{"time_range":[s,e],"text":"..."}</summary>\n\n'
+    '<query>{"query":"...","time_range":"..."}</query>\n\n'
     "Rules:\n"
     "- think: 40-60 tokens, describe ONLY what is newly visible in the current chunk. "
     "No meta-reasoning, no sound/smell/emotion.\n"
     "- response: answer based on currently visible information only.\n"
     "- recall: only when answer is NOT in visual window, NOT in text memory, "
     "NOT in compressed summaries.\n"
-    "- compress: when system triggers with a range, summarize the specified thinks.\n"
     "- If a query exists in <queries>, respond when you see new relevant information."
 )
 
-# Post-recall prompt: model receives recall_result and can only silent or response.
-# think in this step = analysis of recall result (not visual observation, NOT stored in memory).
+# Prompt 2: Post-recall — evaluate recall result, decide silent/response
 SYSTEM_PROMPT_POST_RECALL = (
     "You are a streaming video agent. You just received recall results.\n\n"
     "Output exactly ONE of:\n"
@@ -281,6 +283,20 @@ SYSTEM_PROMPT_POST_RECALL = (
     "- think: 20-40 tokens, analyze whether the recall result answers the question.\n"
     "- response: answer based on the recall result. If insufficient, say so.\n"
     "- silent: recall result is irrelevant or empty, cannot answer."
+)
+
+# Prompt 3: Compress — triggered by system between timesteps, only output summary
+SYSTEM_PROMPT_COMPRESS = (
+    "You are a streaming video agent. The system has triggered memory compression.\n\n"
+    "Below are recent observations that need to be compressed into a summary.\n"
+    "{compress_context}\n\n"
+    "Output a JSON summary:\n"
+    '{{"time_range": [start_sec, end_sec], "text": "compressed summary"}}\n\n'
+    "Rules:\n"
+    "- Keep all entities with their appearance descriptions\n"
+    "- Keep ALL OCR content verbatim\n"
+    "- Keep state changes as before→after\n"
+    "- Target length: {target_length} tokens"
 )
 
 # Special tokens required by SFT init_processor (see sft_engineering.md §6.2)
