@@ -393,7 +393,7 @@ best_range = argmin(score)   # 综合最优
 | Pass 3-A C1 比较 | 同实体跨时间的状态差异 | "entity X 在 t1 vs t2" | **需要** |
 | Pass 3-A R1 再识别 | 实体消失→重现模式 | "entity X 出现/消失时间线" | **需要** |
 
-**结论：大多数场景只需要"有没有变化"这个信号，不需要精确的实体 ID。只有 C1 和 R1 需要。**
+**结论：大多数场景只需要"有没有变化"这个信号，不需要精确的实体 ID。C1 和 R1 用 desc 描述实体即可（见下方），不需要跨 chunk 一致 ID。**
 
 ##### 1-B-1: 变化检测（所有视频必做，不需要实体 ID）
 
@@ -456,46 +456,33 @@ def _extract_action_words(cap: Dict) -> set:
 - P1 只看连续 chunk 有无变化 → bool 信号
 - action 词集合变化比逐实体比较 action 字符串更鲁棒（不怕 "stirring sauce" vs "stirring the pot" 的措辞差异）
 
-##### 1-B-2: 实体链接（仅 C1/R1 需要，可选）
+##### 1-B-2: C1/R1 不需要实体链接
 
-**只有 C1（跨时间比较）和 R1（再识别）需要跨 chunk 的实体 ID。**
+C1（跨时间比较）和 R1（再识别）**不需要跨 chunk 的实体 ID**。
+问题用外观描述（desc）引用实体，模型靠视觉理解匹配，比编号更自然：
 
-第一版可以用两种方案：
+```
+C1 问题用 desc：
+  ✅ "锅里的东西和刚才比有什么变化？"（用位置/外观描述）
+  ✅ "穿红围裙的人现在和之前做的事一样吗？"
+  ❌ "pot_1 和之前比有什么变化？"（需要知道 pot_1 是谁）
 
-**方案 A（一版推荐）：跳过 C1/R1，不做实体链接**
-
-C1 和 R1 对首批数据不是必需的（见 §4.1 family targets: C1 目标 2 个/视频, R1 目标 1 个/视频）。
-如果跳过这两个 family，1-B 只需要 1-B-1 变化检测，零实体链接开销。
-
-**方案 B（二版）：397B 一次调用做实体链接**
-
-规则聚类（词重叠）对不同 action/角度的同一实体失败率高。
-如果需要 C1/R1，正确的做法是用一次 397B 调用：
-
-```python
-ENTITY_LINK_PROMPT = """以下是同一视频中不同时间段出现的实体描述列表。
-请将描述同一实体的归为一组。
-
-{entity_descriptions}
-
-输出 JSON: [["desc1", "desc2"], ["desc3"], ...]"""
+R1 问题用 desc：
+  ✅ "之前那个小白碗还在画面里吗？"（用外观描述）
+  ❌ "bowl_1 还在画面里吗？"
 ```
 
-- 一次调用/视频，输入 ~20 个 desc（~500 tokens），输出分组
-- 比规则聚类可靠（397B 能理解 "person in red apron" 和 "chef holding knife" 是同一个人）
-- 但增加一次 397B 调用开销
+**Pass 3-A 的 `scan_opportunities` 自动检测 C1/R1 机会时**，也用 desc 词重叠而非 entity ID：
+- C1：相邻 chunk 的 state_changes 非空 + 有相似 desc 的实体 → 可问比较
+- R1：某个 desc 在视频前半段出现、中间消失、后半段重现 → 可问再识别
+
+397B 在生成 Task Card 时看到全视频的 evidence 摘要，直接判断哪些实体是"同一个"并生成比较/再识别问题，比程序做实体链接更可靠。
 
 ##### 1-B 执行流程
 
 ```
-一版（推荐）:
-  1-B-1 变化检测 → state_changes    （纯程序，~0.1ms/视频）
-  跳过 C1/R1 family
-
-二版:
-  1-B-1 变化检测 → state_changes    （纯程序）
-  1-B-2 实体链接 → entity IDs       （1 次 397B/视频）
-  启用 C1/R1 family
+1-B-1 变化检测 → state_changes    （纯程序，~0.1ms/视频）
+C1/R1 的实体匹配由 Pass 3-A 的 397B 直接处理（不需要 1-B 做实体链接）
 ```
 
 **用途**（不变）：
@@ -682,8 +669,8 @@ FAMILY_TARGETS = {
     "E1": 3,   # Local action — 主要做 response 对照
     "E2": 2,   # State change — event_watch + queries 持续追踪
     "P1": 2,   # Procedure — 优先 multiple_choice/number
-    "C1": 2,   # Comparison — 优先 binary（二版，依赖实体链接）
-    "R1": 1,   # Re-identification — 天然 binary（二版，依赖实体链接）
+    "C1": 2,   # Comparison — 优先 binary，用 desc 引用实体
+    "R1": 1,   # Re-identification — 天然 binary，用 desc 引用实体
     "S1": 2,   # Summary — 唯一允许 descriptive 的 family
     "M1": 2,   # Continuous commentary — 通过 queries 区持续回答
 }
