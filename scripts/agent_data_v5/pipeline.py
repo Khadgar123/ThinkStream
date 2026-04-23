@@ -454,6 +454,14 @@ async def run_pipeline(
         results = await asyncio.gather(*[process_video_pass2(v) for v in videos])
         rollout_map = {vid: roll for vid, roll in results}
         logger.info(f"Pass 2 complete: {len(rollout_map)} videos")
+
+        # --- Compression statistics ---
+        from .pass2_rollout import compute_compression_stats
+        comp_stats = compute_compression_stats(rollout_map)
+        AUDIT_DIR.mkdir(parents=True, exist_ok=True)
+        with open(AUDIT_DIR / "compression_stats.json", "w") as f:
+            json.dump(comp_stats, f, indent=2, ensure_ascii=False)
+        logger.info(f"Compression stats saved to {AUDIT_DIR / 'compression_stats.json'}")
     else:
         from .pass2_rollout import load_rollout
         rollout_map = {}

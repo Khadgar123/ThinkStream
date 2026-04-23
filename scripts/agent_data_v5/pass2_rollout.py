@@ -611,3 +611,112 @@ def load_rollout(video_id: str, rollout_dir: Path = ROLLOUT_DIR) -> Optional[Dic
     if "snapshots" in data:
         data["snapshots"] = {int(k): v for k, v in data["snapshots"].items()}
     return data
+
+
+# ---------------------------------------------------------------------------
+# Compression Statistics (run after all videos complete)
+# ---------------------------------------------------------------------------
+
+
+def compute_compression_stats(rollout_map: Dict[str, Dict]) -> Dict:
+    """Aggregate compression statistics across all videos.
+
+    Run after Pass 2 completes. Outputs report for tuning
+    COMPRESS_RANGE_MIN/MAX and diagnosing quality issues.
+
+    Args:
+        rollout_map: {video_id: rollout_dict}
+
+    Returns:
+        Stats dict (also logged). Save to audit dir.
+    """
+    all_range_sizes = []
+    all_durations = []
+    all_post_tokens = []
+    hysteresis_violations = 0
+    total_events = 0
+    parse_success = 0
+    parse_fail = 0
+    videos_with_no_compression = 0
+
+    for vid, rollout in rollout_map.items():
+        events = rollout.get("compression_events", [])
+        if not events:
+            videos_with_no_compression += 1
+            continue
+        for event in events:
+            total_events += 1
+            chunks = event.get("compressed_thinks_chunks", [])
+            all_range_sizes.append(len(chunks))
+            tr = event.get("summary", {}).get("time_range", [0, 0])
+            all_durations.append(tr[1] - tr[0])
+            all_post_tokens.append(event.get("post_compress_tokens", 0))
+            if not event.get("hysteresis_ok", True):
+                hysteresis_violations += 1
+            if event.get("summary", {}).get("parse_success", False):
+                parse_success += 1
+            else:
+                parse_fail += 1
+
+    def _percentiles(values, pcts=(25, 50, 75, 90)):
+        if not values:
+            return {}
+        s = sorted(values)
+        return {f"p{p}": s[min(len(s) - 1, int(len(s) * p / 100))] for p in pcts}
+
+    stats = {
+        "total_videos": len(rollout_map),
+        "videos_with_compression": len(rollout_map) - videos_with_no_compression,
+        "videos_without_compression": videos_with_no_compression,
+        "total_compression_events": total_events,
+        "avg_events_per_video": round(total_events / max(len(rollout_map), 1), 1),
+
+        "range_size": {
+            "min": min(all_range_sizes) if all_range_sizes else 0,
+            "max": max(all_range_sizes) if all_range_sizes else 0,
+            "mean": round(sum(all_range_sizes) / max(len(all_range_sizes), 1), 1),
+            **_percentiles(all_range_sizes),
+            "distribution": {
+                s: all_range_sizes.count(s) for s in range(
+                    COMPRESS_RANGE_MIN, COMPRESS_RANGE_MAX + 1
+                )
+            },
+        },
+
+        "duration_sec": {
+            "min": min(all_durations) if all_durations else 0,
+            "max": max(all_durations) if all_durations else 0,
+            "mean": round(sum(all_durations) / max(len(all_durations), 1), 1),
+            **_percentiles(all_durations),
+        },
+
+        "hysteresis": {
+            "violations": hysteresis_violations,
+            "total": total_events,
+            "violation_rate": round(hysteresis_violations / max(total_events, 1), 3),
+            "post_compress_tokens": _percentiles(all_post_tokens),
+        },
+
+        "summary_parse": {
+            "success": parse_success,
+            "fail": parse_fail,
+            "success_rate": round(parse_success / max(parse_success + parse_fail, 1), 3),
+        },
+    }
+
+    # Log summary
+    logger.info("=" * 50)
+    logger.info("COMPRESSION STATISTICS")
+    logger.info(f"  Events: {total_events} across {stats['videos_with_compression']} videos")
+    logger.info(f"  Range size: mean={stats['range_size']['mean']}, "
+                f"distribution={stats['range_size']['distribution']}")
+    logger.info(f"  Duration: mean={stats['duration_sec']['mean']}s, "
+                f"p50={stats['duration_sec'].get('p50', '?')}s, "
+                f"p90={stats['duration_sec'].get('p90', '?')}s")
+    logger.info(f"  Hysteresis violations: {hysteresis_violations}/{total_events} "
+                f"({stats['hysteresis']['violation_rate']:.1%})")
+    logger.info(f"  Summary parse: {parse_success}/{parse_success+parse_fail} "
+                f"({stats['summary_parse']['success_rate']:.1%})")
+    logger.info("=" * 50)
+
+    return stats
