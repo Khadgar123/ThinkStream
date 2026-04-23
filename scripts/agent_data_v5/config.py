@@ -234,14 +234,14 @@ PASS_CONFIG = {
         "max_tokens": 60000,  # text-only, needs headroom for thinking explosion
         "temperature": 0.3,
         "thinking": True,
-        "concurrent": 64,     # video-level, text-only, lower concurrency
+        "concurrent": 128,    # video-level, text-only
     },
     "pass2_rollout": {
         "max_tokens_observation": 16384,
         "max_tokens_compress": 16384,
         "temperature": 0.3,
         "thinking": True,
-        "concurrent_videos": 1024,
+        "concurrent_videos": 128,
     },
     "pass3a": {
         "max_tokens": 16384,
