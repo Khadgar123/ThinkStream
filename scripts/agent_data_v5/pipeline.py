@@ -86,13 +86,22 @@ def assign_phase(sample: Dict) -> str:
 def select_videos(
     video_root: str,
     num_videos: int = 300,
-    min_duration: int = 60,
+    min_duration: int = 120,
+    max_duration: int = 300,
     seed: int = 42,
+    catalog_csv: str = None,
 ) -> List[Dict]:
     """Select videos for data construction.
 
-    Prefers: >120s, diverse content, high annotation density.
-    Falls back to existing video_registry if available.
+    Selection criteria (quality-first):
+    - Duration 120-300s: enough for compression+recall, not too long
+    - Stratified by dataset source for diversity
+    - Prefer 150-200s videos (best compression/recall coverage)
+
+    Sources (in order of preference):
+    1. Existing registry file (cached from previous run)
+    2. CSV catalog (pre-scanned, fast)
+    3. Filesystem scan (slow fallback)
     """
     registry_path = DATA_ROOT / "video_registry.jsonl"
     if registry_path.exists():
@@ -103,44 +112,78 @@ def select_videos(
         logger.info(f"Loaded {len(videos)} videos from registry.")
         return videos[:num_videos]
 
-    # Scan video_root for .mp4 files
-    import subprocess
-    video_root = Path(video_root)
+    # --- Source: CSV catalog (fast) ---
+    if catalog_csv is None:
+        # Auto-detect catalog in project data dir
+        for candidate in [
+            DATA_ROOT.parent / "video_catalog_30s_plus.csv",
+            Path(video_root) / "video_catalog_30s_plus.csv",
+        ]:
+            if candidate.exists():
+                catalog_csv = str(candidate)
+                break
+
     videos = []
+    if catalog_csv and Path(catalog_csv).exists():
+        import csv
+        with open(catalog_csv, "r") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                duration = float(row["duration_sec"])
+                if min_duration <= duration <= max_duration:
+                    videos.append({
+                        "video_id": Path(row["video_path"]).stem,
+                        "video_path": row["video_path"],
+                        "duration_sec": duration,
+                        "dataset": row.get("dataset", "unknown"),
+                    })
+        logger.info(f"Loaded {len(videos)} videos from catalog (duration {min_duration}-{max_duration}s)")
+    else:
+        # --- Source: Filesystem scan (slow fallback) ---
+        import subprocess
+        video_root = Path(video_root)
+        for vpath in sorted(video_root.rglob("*.mp4")):
+            try:
+                result = subprocess.run(
+                    ["ffprobe", "-v", "quiet", "-show_entries",
+                     "format=duration", "-of", "csv=p=0", str(vpath)],
+                    capture_output=True, text=True, timeout=10,
+                )
+                duration = float(result.stdout.strip())
+            except (subprocess.TimeoutExpired, ValueError, FileNotFoundError):
+                continue
+            if min_duration <= duration <= max_duration:
+                videos.append({
+                    "video_id": vpath.stem,
+                    "video_path": str(vpath),
+                    "duration_sec": duration,
+                    "dataset": vpath.parent.name,
+                })
+        logger.info(f"Scanned {len(videos)} videos from {video_root}")
 
-    for vpath in sorted(video_root.rglob("*.mp4")):
-        # Get duration via ffprobe
-        try:
-            result = subprocess.run(
-                ["ffprobe", "-v", "quiet", "-show_entries",
-                 "format=duration", "-of", "csv=p=0", str(vpath)],
-                capture_output=True, text=True, timeout=10,
-            )
-            duration = float(result.stdout.strip())
-        except (subprocess.TimeoutExpired, ValueError, FileNotFoundError):
-            continue
+    if not videos:
+        logger.error(f"No videos found with duration {min_duration}-{max_duration}s")
+        return []
 
-        if duration >= min_duration:
-            videos.append({
-                "video_id": vpath.stem,
-                "video_path": str(vpath),
-                "duration_sec": duration,
-            })
-
-    # Stratified sampling: group by parent directory (dataset source), then
-    # take proportionally from each group, preferring longer videos within group.
-    # This avoids all selected videos coming from the longest-duration dataset.
+    # --- Stratified sampling by dataset source ---
     from collections import defaultdict
     groups = defaultdict(list)
     for v in videos:
-        parent = Path(v["video_path"]).parent.name
-        groups[parent].append(v)
+        groups[v.get("dataset", "unknown")].append(v)
 
-    # Sort each group by duration descending
+    # Within each group, prefer 150-200s (best compression/recall coverage)
+    def quality_score(v):
+        d = v["duration_sec"]
+        if 150 <= d <= 200:
+            return 0  # best
+        elif 120 <= d < 150 or 200 < d <= 250:
+            return 1  # good
+        else:
+            return 2  # acceptable
     for g in groups.values():
-        g.sort(key=lambda x: x["duration_sec"], reverse=True)
+        g.sort(key=lambda x: (quality_score(x), -x["duration_sec"]))
 
-    # Round-robin proportional selection
+    # Round-robin proportional selection across dataset sources
     random.seed(seed)
     group_keys = sorted(groups.keys())
     random.shuffle(group_keys)
@@ -153,10 +196,9 @@ def select_videos(
         remaining -= take
         if remaining <= 0:
             break
-    # Fill remaining from largest groups
     if remaining > 0:
         all_remaining = [v for g in group_keys for v in groups[g] if v not in selected]
-        all_remaining.sort(key=lambda x: x["duration_sec"], reverse=True)
+        all_remaining.sort(key=lambda x: (quality_score(x), -x["duration_sec"]))
         selected.extend(all_remaining[:remaining])
 
     random.shuffle(selected)
