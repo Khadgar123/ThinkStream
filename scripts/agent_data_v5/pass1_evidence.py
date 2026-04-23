@@ -172,57 +172,126 @@ def _normalize_entity(entity) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# 1-B: Post-processing (change detection)
+# 1-B: Post-processing (change detection via 397B)
 # ---------------------------------------------------------------------------
 
+CHANGE_DETECTION_PROMPT = """Below is a per-chunk entity/action summary for a video.
+Identify meaningful state changes between adjacent chunks.
 
-def detect_chunk_changes(evidence: List[Dict]):
-    """Detect changes between adjacent chunks via action word-set comparison.
+{chunk_summary}
 
-    Does NOT require entity linking — compares the set of action keywords
-    across all entities in adjacent chunks.
+Rules:
+- A state change = a NEW action starts, an entity appears/disappears, or a step transitions
+- Ignore paraphrase differences ("chopping vegetables" ≈ "cutting vegetables" = no change)
+- Ignore camera angle changes that don't reflect actual scene changes
+- Focus on: new actions, new entities, completed steps, object state changes
 
-    Outputs: evidence[i]["state_changes"] = ["action_changed", ...] or []
+Output JSON array (only chunks WITH changes, skip chunks without):
+[{{"chunk": 3, "change": "started pouring oil into pot"}}, ...]"""
+
+
+def _build_chunk_summary(evidence: List[Dict]) -> str:
+    """Build a condensed summary of all chunks for 397B change detection."""
+    lines = []
+    for cap in evidence:
+        idx = cap.get("chunk_idx", 0)
+        t = cap.get("time", [idx * AGENT_CHUNK_SEC, (idx + 1) * AGENT_CHUNK_SEC])
+        entities = []
+        for e in cap.get("visible_entities", []):
+            desc = e.get("desc", "unknown")
+            action = e.get("action", "")
+            if action:
+                entities.append(f"{desc} ({action})")
+            else:
+                entities.append(desc)
+        entity_str = ", ".join(entities) if entities else "(empty)"
+        lines.append(f"chunk {idx} [{t[0]}-{t[1]}s]: {entity_str}")
+    return "\n".join(lines)
+
+
+async def detect_chunk_changes(evidence: List[Dict], client, video_id: str):
+    """Detect state changes between adjacent chunks via one 397B call.
+
+    More reliable than rule-based word-overlap: 397B understands that
+    "chopping vegetables" → "cutting vegetables" is NOT a change, while
+    "chopping vegetables" → "pouring oil" IS a change.
+
+    Input: ~50 tokens/chunk × 60 chunks = ~3K tokens
+    Output: ~500 tokens
+    One call per video.
     """
-    _stop = {"the", "a", "an", "is", "in", "on", "at", "to", "of", "with", "and"}
-
-    def _action_words(cap: Dict) -> set:
-        words = set()
-        for entity in cap.get("visible_entities", []):
-            action = entity.get("action", "")
-            words |= {w.lower() for w in action.split()
-                       if w.lower() not in _stop and len(w) > 2}
-        return words
-
     if not evidence:
         return
-    evidence[0]["state_changes"] = []
 
+    # Initialize all chunks with empty state_changes
+    for cap in evidence:
+        cap["state_changes"] = []
+
+    if len(evidence) <= 1:
+        return
+
+    chunk_summary = _build_chunk_summary(evidence)
+    prompt = CHANGE_DETECTION_PROMPT.format(chunk_summary=chunk_summary)
+
+    raw = await client._call_one(
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=PASS_CONFIG["pass1_evidence"]["max_tokens"],
+        temperature=0.3,
+        request_id=f"{video_id}_changes",
+    )
+
+    if not raw:
+        logger.warning(f"  [{video_id}] 1-B change detection: empty response, using fallback")
+        _detect_changes_fallback(evidence)
+        return
+
+    # Parse response
+    raw = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip()
+    try:
+        changes_list = json.loads(raw)
+    except (json.JSONDecodeError, ValueError):
+        # Try to extract JSON array
+        start = raw.find("[")
+        end = raw.rfind("]")
+        if start >= 0 and end > start:
+            try:
+                changes_list = json.loads(raw[start:end + 1])
+            except (json.JSONDecodeError, ValueError):
+                logger.warning(f"  [{video_id}] 1-B change detection: parse failed, using fallback")
+                _detect_changes_fallback(evidence)
+                return
+        else:
+            _detect_changes_fallback(evidence)
+            return
+
+    # Apply changes to evidence
+    if not isinstance(changes_list, list):
+        _detect_changes_fallback(evidence)
+        return
+
+    chunk_map = {cap.get("chunk_idx", i): cap for i, cap in enumerate(evidence)}
+    for item in changes_list:
+        if not isinstance(item, dict):
+            continue
+        chunk_idx = item.get("chunk")
+        change = item.get("change", "state_changed")
+        if chunk_idx is not None and chunk_idx in chunk_map:
+            chunk_map[chunk_idx]["state_changes"].append(change)
+
+    n_changes = sum(1 for cap in evidence if cap["state_changes"])
+    logger.info(f"  [{video_id}] 1-B: {n_changes}/{len(evidence)} chunks have state changes")
+
+
+def _detect_changes_fallback(evidence: List[Dict]):
+    """Fallback change detection when 397B call fails.
+
+    Simple heuristic: entity count change between adjacent chunks.
+    """
     for i in range(1, len(evidence)):
-        prev_actions = _action_words(evidence[i - 1])
-        curr_actions = _action_words(evidence[i])
-
         prev_n = len(evidence[i - 1].get("visible_entities", []))
         curr_n = len(evidence[i].get("visible_entities", []))
-        entity_count_changed = abs(prev_n - curr_n) >= 1
-
-        if not prev_actions and not curr_actions:
-            action_changed = False
-        elif not prev_actions or not curr_actions:
-            action_changed = True
-        else:
-            overlap = len(prev_actions & curr_actions) / max(
-                len(prev_actions | curr_actions), 1
-            )
-            action_changed = overlap < 0.5
-
-        changes = []
-        if action_changed:
-            changes.append("action_changed")
-        if entity_count_changed:
-            changes.append("entity_count_changed")
-
-        evidence[i]["state_changes"] = changes
+        if abs(prev_n - curr_n) >= 2:
+            evidence[i]["state_changes"] = ["entity_count_changed"]
 
 
 # ---------------------------------------------------------------------------
@@ -278,8 +347,8 @@ async def run_pass1_single_video(
 
     logger.info(f"  [{video_id}] Evidence 1-A: {num_chunks} chunks done")
 
-    # 1-B: Change detection (pure computation)
-    detect_chunk_changes(captions)
+    # 1-B: Change detection (one 397B call per video)
+    await detect_chunk_changes(captions, client, video_id)
 
     return captions
 
