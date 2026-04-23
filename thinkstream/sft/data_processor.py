@@ -36,6 +36,9 @@ ACTION_WEIGHTS = {
     "response": 1.0,
     "recall_query": 1.5,
     "recall_response": 1.0,
+    "recall_silent": 1.5,              # recall failed → learned restraint
+    "proactive_recall_query": 1.5,     # model initiates recall without user question
+    "proactive_recall_silent": 1.0,    # post-proactive-recall: absorb result, stay silent
     "compress": 1.5,
     "merge_compress": 1.5,
 }
