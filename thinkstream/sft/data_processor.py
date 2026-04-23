@@ -44,7 +44,9 @@ ACTION_WEIGHTS = {
     "silent": 1.0,
     # Non-deterministic timing — teach mechanism, not timing
     "recall_query": 0.8,
-    "recall_response": 1.0,       # post-recall response is still deterministic
+    "recall_response": 1.0,              # post-recall response is still deterministic
+    "proactive_recall_query": 0.8,       # keyword-overlap triggered, mechanism seeding for RL
+    "proactive_recall_silent": 0.8,      # post-proactive-recall: absorb result
     "compress": 0.8,
     "merge_compress": 0.8,
 }

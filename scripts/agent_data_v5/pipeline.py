@@ -26,12 +26,14 @@ from .config import (
     DATA_ROOT,
     EVIDENCE_DIR,
     FINAL_DIR,
+    MAX_COMPRESSED_SEGMENTS,
     MAX_SAMPLES_PER_VIDEO,
     PASS_CONFIG,
     PHASE_CONFIG,
     ROLLOUT_DIR,
     SAMPLES_DIR,
     TASKS_DIR,
+    VISUAL_WINDOW_CHUNKS,
     VLLM_MODEL,
     estimated_request_tokens,
     safe_concurrency_for_pass,
@@ -72,7 +74,8 @@ def assign_phase(sample: Dict) -> str:
         if "merge_compress" in task_type:
             return "C1"  # Phase C1: second-level compression
         return "C1"  # Phase C1: compression training
-    elif sample_type in ("recall_query", "recall_response"):
+    elif sample_type in ("recall_query", "recall_response",
+                         "proactive_recall_query", "proactive_recall_silent"):
         if "compress_recall" in task_type:
             return "C1"  # Phase C1: recall from compressed
         return "2"  # Phase 2: recall training
@@ -494,6 +497,7 @@ async def run_pipeline(
             _generate_response_text,
             _generate_recall_texts,
         )
+        from .pass3_tasks import extract_keywords, keyword_overlap
 
         logger.info("=" * 60)
         logger.info("PASS 4: Per-Timestep Sample Generation (single-turn messages)")
@@ -723,11 +727,126 @@ async def run_pipeline(
                     c2["metadata"] = {**compress_meta_base, "phase": "C2"}
                     vid_samples.append(c2)
 
+                    # Merge compress: if this compression would push segments
+                    # over MAX_COMPRESSED_SEGMENTS, the system merges the two
+                    # oldest. Generate a training sample for this merge.
+                    n_segs = len(snapshot.get("compressed_segments", []))
+                    if n_segs >= MAX_COMPRESSED_SEGMENTS:
+                        segs = snapshot["compressed_segments"]
+                        seg_a, seg_b = segs[0], segs[1]
+                        tr_a = seg_a.get("time_range", [0, 0])
+                        tr_b = seg_b.get("time_range", [0, 0])
+                        merged_text = f'{seg_a["text"]} {seg_b["text"]}'
+                        # Truncate merged text (same as rollout logic)
+                        words = merged_text.split()
+                        if len(words) > 60:
+                            merged_text = " ".join(words[:60])
+                        merged_summary = {
+                            "time_range": [tr_a[0], tr_b[1]],
+                            "text": merged_text,
+                        }
+                        merge_trigger = (
+                            f'<merge_compress_trigger segments='
+                            f'"{tr_a[0]}-{tr_a[1]},{tr_b[0]}-{tr_b[1]}"/>'
+                        )
+                        merge_output = (
+                            f"<think>{think_text}</think>"
+                            f"<action>compress</action>"
+                            f'<summary>{json.dumps(merged_summary, ensure_ascii=False)}</summary>'
+                        )
+                        mc = build_per_timestep_messages(
+                            snapshot, chunk_idx, vpath, merge_output,
+                            user_text_suffix=merge_trigger,
+                        )
+                        mc["sample_type"] = "compress"
+                        mc["video_id"] = vid
+                        mc["metadata"] = {
+                            "gold_action": "compress",
+                            "task_type": "merge_compress",
+                            "phase": "C1",
+                            "compressed_range": [tr_a[0], tr_b[1]],
+                            "source_segments": [tr_a, tr_b],
+                        }
+                        vid_samples.append(mc)
 
-                # NOTE: proactive recall (model-initiated, no user question) is NOT
-                # trained in SFT — its timing is non-deterministic (Pass2 uses
-                # random 5% sampling, not real entity-connection detection).
-                # Proactive recall behavior is discovered through RL/GRPO.
+
+                elif (not has_question and not has_compress
+                      and snapshot.get("compressed_segments")
+                      and chunk_idx > VISUAL_WINDOW_CHUNKS + 5):
+                    # Proactive recall: no user question, but current think
+                    # has keyword overlap with a compressed segment → model
+                    # should recall to reconnect with historical context.
+                    #
+                    # Trigger condition is VERIFIABLE (keyword overlap), not
+                    # random. Small volume (~few per video) seeds the behavior
+                    # so RL can refine timing; without this, RL would need to
+                    # discover proactive recall from scratch.
+                    think_kw = extract_keywords(think_text)
+                    best_seg = None
+                    best_overlap = 0.0
+                    for seg in snapshot["compressed_segments"]:
+                        ov = keyword_overlap(seg["text"], think_kw)
+                        if ov > best_overlap:
+                            best_overlap = ov
+                            best_seg = seg
+                    # Threshold: at least 30% keyword overlap to be meaningful
+                    if best_seg and best_overlap >= 0.3:
+                        target_range = best_seg.get("time_range", [0, 0])
+                        ev_start = int(target_range[0] // AGENT_CHUNK_SEC)
+                        ev_end = int(target_range[1] // AGENT_CHUNK_SEC)
+                        evidence_chunks = list(range(ev_start, ev_end))
+
+                        query_json = {
+                            "query": " ".join(think_kw[:5]),
+                            "time_range": f"{int(target_range[0])}-{int(target_range[1])}",
+                        }
+
+                        # Sample 1: proactive recall query
+                        output_pr = (f"<think>{think_text}</think>"
+                                     f"<action>recall</action>"
+                                     f'<query>{json.dumps(query_json, ensure_ascii=False)}</query>')
+                        s_pr = build_per_timestep_messages(
+                            snapshot, chunk_idx, vpath, output_pr,
+                        )
+                        s_pr["sample_type"] = "proactive_recall_query"
+                        s_pr["video_id"] = vid
+                        s_pr["metadata"] = {"task_type": "proactive_recall",
+                                            "gold_action": "recall",
+                                            "trigger": "keyword_overlap",
+                                            "overlap": round(best_overlap, 2),
+                                            "target_range": target_range}
+                        vid_samples.append(s_pr)
+
+                        # Sample 2: post-recall silent (no user to answer)
+                        recall_result = simulate_recall_result(
+                            {"ask_chunk": chunk_idx, "gold_answer": "",
+                             "evidence_chunks": evidence_chunks},
+                            snapshot, observations, chunk_idx, query_json,
+                        )
+                        recall_suffix = (
+                            f'<recall_result>{recall_result.get("text_content", "")}</recall_result>'
+                        )
+                        recalled_frames = None
+                        if recall_result.get("returned_chunks"):
+                            rc = recall_result["returned_chunks"]
+                            recalled_frames = {
+                                "time_range": [rc[0] * AGENT_CHUNK_SEC, (rc[-1] + 1) * AGENT_CHUNK_SEC],
+                                "n_frames": len(rc) * 2,
+                            }
+                        output_pr2 = "<action>silent</action>"
+                        s_pr2 = build_per_timestep_messages(
+                            snapshot, chunk_idx, vpath, output_pr2,
+                            user_text_suffix=recall_suffix,
+                            recalled_frames=recalled_frames,
+                        )
+                        s_pr2["sample_type"] = "proactive_recall_silent"
+                        s_pr2["video_id"] = vid
+                        s_pr2["metadata"] = {"task_type": "proactive_recall",
+                                             "gold_action": "silent",
+                                             "recall_noise": recall_result.get("noise_level"),
+                                             "target_range": target_range}
+                        vid_samples.append(s_pr2)
+                    # else: overlap < 0.3, fall through to silent
 
                 else:
                     # Silent — subsample ~20%
@@ -860,7 +979,6 @@ async def run_pipeline(
         "2": "phase2_train.jsonl",
         "C1": "c1_train.jsonl",
         "C2": "c2_train.jsonl",
-        "5": "phase5_train.jsonl",
     }
     phase_counts = {}
     for phase_key, filename in phase_map.items():
@@ -871,6 +989,14 @@ async def run_pipeline(
                 f.write(json.dumps(s, ensure_ascii=False) + "\n")
         phase_counts[phase_key] = len(phase_data)
         logger.info(f"  phase {phase_key}: {len(phase_data)} train samples → {path}")
+
+    # Phase 5 = ALL train samples (mixed training, not a separate phase)
+    p5_path = FINAL_DIR / "phase5_train.jsonl"
+    with open(p5_path, "w") as f:
+        for s in train_samples:
+            f.write(json.dumps(s, ensure_ascii=False) + "\n")
+    phase_counts["5"] = len(train_samples)
+    logger.info(f"  phase 5 (mixed): {len(train_samples)} train samples → {p5_path}")
 
     # Save stats
     stats_path = FINAL_DIR / "pipeline_stats.json"

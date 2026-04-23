@@ -1189,7 +1189,14 @@ async def build_video_conversation(
 
 async def _generate_response_text(task, snapshots, observations, client, video_id,
                                    frame_paths=None):
-    """Generate response text via 397B for a response task."""
+    """Generate response text via 397B for a response task.
+
+    IMPORTANT: 397B only sees what the STUDENT model would see at ask_chunk.
+    - response_from_frames: evidence chunks are in visual window → frames OK
+    - response_from_memory: answer is in recent_thinks text → NO frames
+    - compress_response: answer is in compressed summary → NO frames
+    - unanswerable: answer not available → NO frames
+    """
     from .pass1_evidence import build_vision_content, get_chunk_frame_paths
 
     ask_chunk = task["ask_chunk"]
@@ -1197,10 +1204,28 @@ async def _generate_response_text(task, snapshots, observations, client, video_i
     if not snapshot:
         return None
 
-    evidence_text = "Based on available observations."
+    task_type = task.get("task_type", "")
     answer_type = task.get("answer_type", "factoid")
     length_map = {"factoid": "5-40 tokens", "procedural": "40-120 tokens",
                   "summary": "80-200 tokens", "uncertain": "20-60 tokens"}
+
+    # Build evidence text from student-visible sources only
+    action_reason = task.get("action_reason", "")
+    if "recent_think" in action_reason:
+        # Answer is in text memory — give 397B the relevant thinks
+        recent = snapshot.get("recent_thinks", [])
+        evidence_text = "\n".join(
+            f"[{item.get('time', '')}] {item.get('text', item.get('obs', ''))}"
+            for item in recent[-10:]
+        )
+    elif "compressed" in action_reason:
+        # Answer is in compressed summary — give 397B the summaries
+        evidence_text = "\n".join(
+            f"[{seg['time_range']}] {seg['text']}"
+            for seg in snapshot.get("compressed_segments", [])
+        )
+    else:
+        evidence_text = "Based on available observations."
 
     prompt = RESPONSE_PROMPT.format(
         question=task.get("question", ""),
@@ -1210,12 +1235,14 @@ async def _generate_response_text(task, snapshots, observations, client, video_i
         length_guide=length_map.get(answer_type, "20-80 tokens"),
     )
 
-    # Include evidence chunk frames for grounded response generation
-    evidence_chunks = task.get("evidence_chunks", [])
+    # Only include frames if the student can actually see them
+    # (response_from_frames: evidence is in visual window)
     chunk_frames = []
-    if frame_paths and evidence_chunks:
-        for ec in evidence_chunks[:2]:  # max 2 chunks (4 frames)
-            chunk_frames.extend(get_chunk_frame_paths(frame_paths, ec))
+    if "visual_window" in action_reason or "from_frames" in task_type:
+        evidence_chunks = task.get("evidence_chunks", [])
+        if frame_paths and evidence_chunks:
+            for ec in evidence_chunks[:2]:
+                chunk_frames.extend(get_chunk_frame_paths(frame_paths, ec))
 
     if chunk_frames:
         content = build_vision_content(prompt, chunk_frames)
@@ -1317,12 +1344,13 @@ async def _generate_recall_texts(task, snapshots, observations, client, video_id
         length_guide="20-60 tokens" if is_failed else "5-40 tokens",
     )
 
-    # Include recalled evidence chunk frames for grounded response
-    evidence_chunks = task.get("evidence_chunks", [])
+    # Include RETURNED chunks' frames (not evidence_chunks — student only
+    # sees what the retrieval system actually returned, not ground truth)
+    returned_chunks = recall_result.get("returned_chunks", [])
     recall_frames = []
-    if frame_paths and evidence_chunks and not is_failed:
-        for ec in evidence_chunks[:2]:
-            recall_frames.extend(get_chunk_frame_paths(frame_paths, ec))
+    if frame_paths and returned_chunks and not is_failed:
+        for rc in returned_chunks[:2]:
+            recall_frames.extend(get_chunk_frame_paths(frame_paths, rc))
 
     if recall_frames:
         resp_content = build_vision_content(resp_prompt, recall_frames)
