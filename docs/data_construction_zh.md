@@ -104,7 +104,8 @@ post-recall response 是特殊情况：**不输出 think**（因为同一 chunk 
 | Factoid (实体/颜色/数量) | 5-40 tokens | "Red apron." |
 | Procedural (步骤/顺序) | 40-120 tokens | "First oil, then garlic, then tomatoes." |
 | Summary (概括/描述) | 80-200 tokens | 详细描述 |
-| Uncertain (不确定) | 20-60 tokens | "I cannot confirm the exact amount..." |
+
+> v8.0: 删除 Uncertain 作为独立类型。模型信息不够时自然回答"无法确定"，这是 response 的内容，不是独立行为。
 
 ---
 
@@ -1114,7 +1115,7 @@ async def generate_response_sample(placed, rollout, client):
 - query generator 不接收 gold_answer
 - recall_result 只用学生可访问内容（student think / compressed summary / historical frames）
 - post-recall 不输出 think
-- recall failure / distractor → uncertain response
+- recall failure / distractor → response 内容表达"检索结果不足以确定"
 
 **Recall Result 来源**（不变）：
 
@@ -1366,7 +1367,7 @@ Compress 行为不在问题系统内，直接从 rollout 压缩事件继承。
 
 | Phase | Silent | Response | Recall | Compress | Special |
 |-------|--------|----------|--------|----------|---------|
-| 1 (协议) | 65% | 30% | 0% | 0% | 5% uncertain |
+| 1 (协议) | 65% | 35% | 0% | 0% | — |
 | 2 (Recall) | 50% | 20% | 20% | 0% | 10% |
 | C1 (压缩) | 45% | 18% | 15% | 12% | 10% |
 | C2 (自选) | 42% | 18% | 15% | 15% | 10% |
@@ -1481,7 +1482,7 @@ Compress 行为不在问题系统内，直接从 rollout 压缩事件继承。
 > - input 必须包含 `recall_context` 字段，携带原始问题和 recall query（v8.0: 替代旧 pending）
 > - post-recall response **不输出 think**（think 已在 recall_query 样本中输出，避免 runtime memory 重复写入）
 > - response 避免确定说 "salt"（仅可见 white granular seasoning），除非有 OCR/上下文支持
-> - recall failure / distractor 时，response 必须是 uncertain（不能用 gold_answer 强答）
+> - recall failure / distractor 时，response 内容应表达"信息不足"（不能用 gold_answer 强答）
 
 ### 5.3 Compress 样本
 
@@ -1973,7 +1974,7 @@ def retrieve(query, memory_state, historical_frames_db):
 | 类型 | 描述 | 正确行为 | 占比 | 一版是否包含 |
 |------|------|---------|------|------------|
 | **不存在内容** | 用户问视频中从未出现的事物 | response: "从画面中无法确定" | 2% | 是（少量模板） |
-| **Recall 返回错误** | 检索结果不含答案 | response(uncertain) | 3% | 是（recall 噪声模拟） |
+| **Recall 返回错误** | 检索结果不含答案 | response（内容表达信息不足） | 3% | 是（recall 噪声模拟） |
 | **记忆与画面冲突** | 画面变了但记忆还是旧的 | response 基于当前画面 | 2% | 是（天然产生） |
 | **多候选歧义** | "哪个人？"但有多个人 | response(clarify) | — | 否，二版 |
 | **用户纠正** | "不对，我问的是另一个" | response: 重新回答 | — | 否，二版 |
@@ -2084,7 +2085,7 @@ def verify_grounding(think_text, frames, teacher_caption):
 | 7 | C1 teacher 多维评分选最优范围，C2 模型自选 | §2.3 | `score_range_for_compression()` 5 维评分 |
 | 8 | action 优先���：用户交互 > query 触发 > compress > silent | §2.1 | pipeline Pass 3-C `interaction_chunks` 优先级过滤 |
 | 9 | recall_result 不含 teacher_caption、不含未来内容 | §3.5 | `_get_correct_result()` 只用 `observations[ec]['think']` |
-| 10 | recall failure/distractor 必须生成 uncertain response | §3.4 | `is_failed_recall` → uncertain answer + `verify_information_flow()` |
+| 10 | recall failure/distractor 时 response 内容表达信息不足，不用 gold_answer 强答 | §3.5 | `is_failed_recall` → "信息不足" response + `verify_information_flow()` |
 | 11 | post-recall response 不输出 think（避免重复��入 memory） | §1.3 | `sample2_output` 无 `<think>` 标签 |
 | 12 | query generator 不接收 gold_answer | §6.1 | `RECALL_QUERY_PROMPT` 仅含 question + visible_context |
 | 13 | compressed_segments 超 5 段时合并最老两段（≤200 tok） | §2.1 | `MemoryState.compress()` + tokenizer 截断 |
@@ -2189,7 +2190,7 @@ how_to_step/caption, youcook2, Koala_raw, ego4d —— 约 37 万条。
 
 ```
 Phase 1: 200 视频 × 20 samples/video ≈ 4,000 samples
-         (silent ~2,600 + response ~1,200 + uncertain ~200)
+         (silent ~2,600 + response ~1,400)
 
 Phase 2: 200 视频 × 30 samples/video ≈ 6,000 samples
          (silent ~3,000 + response ~1,200 + recall ~1,200 + special ~600)
