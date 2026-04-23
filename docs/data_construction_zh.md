@@ -80,10 +80,13 @@ C. compressed_summary (进 SFT):
 4) <think>...</think><action>compress</action><summary>{"time_range":[s,e],"text":"..."}</summary>
 ```
 
-post-recall response 是特殊情况：**不输出 think**（因为同一 chunk 的 think 已在 recall query turn 输出），只输出：
+recall 拆为两个独立步骤，每步都有 think，格式统一：
 ```
-<action>response</action><response>...</response>
+step 1: <think>视觉观察</think><action>recall</action><query>...</query>
+step 2: <think>分析检索结果</think><action>response</action><response>...</response>
 ```
+step 1 的 think = 当前帧的视觉观察（和 silent/response 一样）。
+step 2 的 think = 对 recall_result 的分析（20-40 tokens，判断结果是否相关）。
 
 ### 1.4 Think 规范
 
@@ -1101,7 +1104,7 @@ async def generate_response_sample(placed, rollout, client):
 - recall 拆为 2 条独立样本
 - query generator 不接收 gold_answer
 - recall_result 只用学生可访问内容（student think / compressed summary / historical frames）
-- post-recall 不输出 think
+- post-recall 输出 think（分析检索结果，20-40 tokens）
 - recall failure / distractor → response 内容表达"检索结果不足以确定"
 
 **Recall Result 来源**（不变）：
@@ -1461,13 +1464,13 @@ Compress 行为不在问题系统内，直接从 rollout 压缩事件继承。
     "user_input": "Continue following the protocol to respond."
   },
   
-  "output": "<action>response</action><response>Based on the retrieved frames, the chef added approximately one teaspoon of white granular seasoning from a small bowl.</response>"
+  "output": "<think>Retrieved frames show white granular seasoning from small bowl at t=28-30s, approximately one teaspoon quantity.</think><action>response</action><response>Based on the retrieved frames, the chef added approximately one teaspoon of white granular seasoning from a small bowl.</response>"
 }
 ```
 
 > **v5.0→v5.1→v5.2 修正**:
 > - input 必须包含 `recall_context` 字段，携带原始问题和 recall query（v8.0: 替代旧 pending）
-> - post-recall response **不输出 think**（think 已在 recall_query 样本中输出，避免 runtime memory 重复写入）
+> - post-recall response **输出 think**（分析检索结果，20-40 tokens），格式与其他 action 统一
 > - response 避免确定说 "salt"（仅可见 white granular seasoning），除非有 OCR/上下文支持
 > - recall failure / distractor 时，response 内容应表达"信息不足"（不能用 gold_answer 强答）
 
@@ -2073,7 +2076,7 @@ def verify_grounding(think_text, frames, teacher_caption):
 | 8 | action 优先���：用户交互 > query 触发 > compress > silent | §2.1 | pipeline Pass 3-C `interaction_chunks` 优先级过滤 |
 | 9 | recall_result 不含 teacher_caption、不含未来内容 | §3.5 | `_get_correct_result()` 只用 `observations[ec]['think']` |
 | 10 | recall failure/distractor 时 response 内容表达信息不足，不用 gold_answer 强答 | §3.5 | `is_failed_recall` → "信息不足" response + `verify_information_flow()` |
-| 11 | post-recall response 不输出 think（避免重复��入 memory） | §1.3 | `sample2_output` 无 `<think>` 标签 |
+| 11 | post-recall response 输出 think（分析检索结果），格式与所有 action 统一 | §1.3 | step2 有 `<think>` 标签 |
 | 12 | query generator 不接收 gold_answer | §6.1 | `RECALL_QUERY_PROMPT` 仅含 question + visible_context |
 | 13 | compressed_segments 超 5 段时合并最老两段（≤200 tok） | §2.1 | `MemoryState.compress()` + tokenizer 截断 |
 | 14 | merge_compress 有对应训练样本 | §9.5 | `build_merge_compress_sample()` |
