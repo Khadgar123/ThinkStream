@@ -166,13 +166,19 @@ def _normalize_atomic_fact(fact) -> dict:
 
 
 def _normalize_entity(entity) -> dict:
-    """Normalize visible_entity to ensure consistent schema."""
+    """Normalize visible_entity to ensure consistent schema.
+
+    Pass 1-A uses 'desc' (appearance description) not 'id'.
+    Falls back to 'id' for backward compat with old evidence files.
+    """
     if isinstance(entity, str):
-        return {"id": entity, "attributes": [], "action": "", "position": ""}
+        return {"desc": entity, "action": "", "position": ""}
     if not isinstance(entity, dict):
-        return {"id": str(entity), "attributes": [], "action": "", "position": ""}
-    entity.setdefault("id", "unknown")
-    entity.setdefault("attributes", [])
+        return {"desc": str(entity), "action": "", "position": ""}
+    # Accept both 'desc' (new) and 'id' (old) as entity identifier
+    if "desc" not in entity and "id" in entity:
+        entity["desc"] = entity["id"]
+    entity.setdefault("desc", "unknown")
     return entity
 
 

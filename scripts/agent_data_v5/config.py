@@ -337,7 +337,7 @@ Describe what is NEW or CHANGED in the latest 2 seconds (t={start}-{end}s) in 40
 
 Rules:
 - Only observable visual facts
-- Maintain entity names from memory (e.g., keep "chef_1" consistent)
+- Describe entities by appearance (clothing, color, material), not by ID
 - Focus: entities+attributes, actions, state changes, OCR, spatial
 - NO meta-reasoning, NO "I notice", NO sounds/smells/emotions
 - If nothing new: brief ongoing state
@@ -351,7 +351,7 @@ Observations to compress:
 {visual_context}
 Rules:
 - Use coarse time sub-ranges: [X-Y]
-- Keep ALL named entities with visual attributes
+- Keep ALL entities with their appearance descriptions
 - Keep ALL OCR content verbatim
 - Keep state changes as before→after
 - Keep user interaction summaries if any
@@ -385,7 +385,7 @@ RECALL_QUERY_PROMPT = """Generate a retrieval query for this scenario:
 Based ONLY on the question and the visible memory context, generate 3-5 discriminative
 keywords that would help locate the relevant past observation.
 NO answer values, NO pronouns, NO articles.
-Include entity names + action/attribute anchors from the question and context.
+Include entity descriptions + action/attribute anchors from the question and context.
 
 Output JSON (one line): {{"query": "keyword1 keyword2 keyword3", "time_range": "{time_range}"}}"""
 

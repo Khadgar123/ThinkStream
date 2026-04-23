@@ -574,7 +574,7 @@ TaskCard = {
     "support_facts": ["Chef wearing a red apron"],
     "retention_class": "low",           # high | medium | low
     "answer_keywords": ["red", "apron", "color"],
-    "entities_involved": ["chef_1"],
+    "entities_involved": ["person wearing red apron"],
 }
 ```
 
@@ -1500,7 +1500,7 @@ Compress 行为不在问题系统内，直接从 rollout 压缩事件继承。
     "user_input": "<compress_trigger range=\"20-34\"/>"
   },
   
-  "output": "<think>Chef tears basil leaves near covered pot, green fragments on counter surface.</think><action>compress</action><summary>{\"time_range\":[20,34],\"text\":\"[20-28] Oil heated in stainless pot, garlic browned, tomato quarters added. [28-34] White seasoning from small bowl added, stirred with wooden spoon, sauce reddish and bubbling. Entities: pot_1(stainless, right burner), wooden_spoon.\"}</summary>"
+  "output": "<think>Chef tears basil leaves near covered pot, green fragments on counter surface.</think><action>compress</action><summary>{\"time_range\":[20,34],\"text\":\"[20-28] Oil heated in stainless pot, garlic browned, tomato quarters added. [28-34] White seasoning from small bowl added, stirred with wooden spoon, sauce reddish and bubbling. Entities: stainless pot(right burner), wooden spoon.\"}</summary>"
 }
 ```
 
