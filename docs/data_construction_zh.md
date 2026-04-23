@@ -350,9 +350,10 @@ best_range = argmin(score)   # 综合最优
   └─ 1-B: 实体链接                     [规则 或 1 call/video]
 阶段 2: Question-blind Streaming Rollout [397B + 视频, ~4h]
 阶段 3: Task Mining + Sample Generation  [397B + 规则, ~2h]
-  ├─ 3-A: Task Card 生成               [397B, 1 call/video]
-  ├─ 3-B: Ask-Time 搜索               [纯程序, 0 call]
-  └─ 3-C: Action 映射 + SFT 样本生成   [397B, ~20 call/video]
+  ├─ 3-A: Task Card 生成               [397B, ~11 call/video (按 family 分批)]
+  ├─ 3-B: Placement 候选生成           [纯程序, 0 call]
+  ├─ 3-B2: 轨迹规划                    [纯程序, 0 call]
+  └─ 3-C: 轨迹样本生成                 [397B, ~60 call/video]
 阶段 4: Verify + Filter                 [规则 + 小模型, ~30min]
 ```
 
@@ -564,605 +565,343 @@ snapshots[chunk_idx] = {
 
 ### 3.3 阶段 3-A: Task Card 生成
 
-> v8.0 新设计：Teacher 只负责找"可问什么"，不决定 ask_time 和 action。
+> v8.0: Teacher 只负责找"可问什么"。不决定 ask_time 和 action。
+> 拆成 opportunity 筛选 + 按 family 分批 397B call。
 
-**目标**: 从 evidence graph 中提取所有"可问的内容"，生成 Task Card。每张 card 只定义问题本体，不带 ask_time。
+**目标**: 从 evidence 中提取"可问的内容"，生成 Task Card。
 
-**输入**: Teacher evidence graph（来自阶段 1）
+**输入**: evidence_1b（含 entity_id hint + state_changes）
 
-**输出**: Task Card 列表
+**输出**: task_cards/{video_id}.json
 
 #### Task Card 数据结构
 
 ```python
 TaskCard = {
-    "card_id": "vid001_F2_001",        # 唯一标识
-    "family": "F2",                     # 问题家族（见 §4.1）
-    "question": "What color is the chef's apron?",
-    "canonical_answer": "Red",          # 简短标准答案（1-15 words）
-    "answer_form": "short_exact",       # 答案形式（见 §4.2 验证等级）
-    "verifiable": true,                 # 是否可自动验证
-    "support_spans": [[5, 5]],          # 证据 chunk 区间 [(start, end), ...]
-    "support_facts": ["Chef wearing a red apron"],
-    "retention_class": "low",           # high | medium | low
-    "answer_keywords": ["red", "apron", "color"],
+    "card_id": "vid001_F2_001",
+    "family": "F2",
+    "question": "What color is the chef\'s apron?",
+    "canonical_answer": "Red",
+    "answer_form": "short_exact",         # V1-V6 验证等级
+    "choices": null,                       # multiple_choice 时为 ["Red","Blue","White","Green"]
+    "support_chunks": [5],                 # 397B 发现答案的 chunk（证据来源）
+    "support_facts": ["Person wearing red apron"],
+    "visibility_type": "persistent",       # persistent（实体一直在）/ transient（事件瞬时）
+    "retention_class": "low",              # high / medium / low
+    "answer_keywords": ["red", "apron"],
     "entities_involved": ["person wearing red apron"],
 }
 ```
 
-#### 两阶段生成
+**新增字段 `visibility_type`**：
 
-**阶段 1：程序预筛选（无 397B）**
+| 类型 | 含义 | 例子 | 3-B 怎么用 |
+|------|------|------|----------|
+| **persistent** | 实体/属性持续可见 | 围裙颜色、锅的位置 | 只选 in_visual 的 ask_time（答案一直在帧里，不可能 recall） |
+| **transient** | 事件/数字一闪而过 | 加了一勺盐、屏幕显示 $4.99 | 可选 in_visual + in_history_only（可造 response/recall 对照） |
 
-遍历 evidence_graph，标记每个 chunk 可供哪些问题家族使用：
+**397B 在生成 card 时告诉我们"这个答案是持续可见还是瞬时的"，3-B 据此决定哪些 availability 合法。**
+
+#### 生成流程：opportunity 筛选 + 分批 call
+
+**Step 1: 程序预筛选（无 397B）**
 
 ```python
 def scan_opportunities(evidence):
-    """返回 opportunity_map[chunk_idx] = [family_ids]"""
+    """标记每个 chunk 可供哪些 family 使用"""
     opp = {}
     for cap in evidence:
         idx = cap["chunk_idx"]
         families = []
         for fact in cap.get("atomic_facts", []):
-            if fact["confidence"] < 0.7 or fact["support_level"] != "direct_current_chunk":
+            if fact.get("confidence", 0) < 0.7:
                 continue
             text = fact["fact"].lower()
             if cap.get("ocr") or any(c.isdigit() for c in text):
-                families.append("F1")  # OCR/Number
+                families.append("F1")
             if has_visual_attribute(text):
-                families.append("F2")  # Fine-grained
+                families.append("F2")
             if has_count_pattern(text):
-                families.append("F3")  # Count
-        if len(cap.get("visible_entities", [])) >= 2 and cap.get("spatial"):
-            families.append("F4")  # Spatial
+                families.append("F3")
+        if len(cap.get("visible_entities", [])) >= 2:
+            families.append("F4")
         if cap.get("atomic_facts"):
-            families.append("E1")  # Local action
+            families.append("E1")
         if cap.get("state_changes"):
-            families.append("E2")  # State change
+            families.append("E2")
         if len(cap.get("visible_entities", [])) >= 3:
-            families.append("S1")  # Summary
+            families.append("S1")
         opp[idx] = list(set(families))
-    
-    # 跨 chunk 分析
-    add_procedural_opportunities(evidence, opp)    # P1: 连续 state_changes ≥ 3 步
-    add_comparison_opportunities(evidence, opp)    # C1: 同实体不同时间的 state_change 对
-    add_reidentification_opportunities(evidence, opp)  # R1: 实体消失后重现
+    # 跨 chunk: P1(连续 state_changes ≥ 3), C1(同实体不同状态), R1(实体消失重现)
+    add_cross_chunk_opportunities(evidence, opp)
     return opp
 ```
 
-**阶段 2：397B 批量生成 Task Cards**
+**Step 2: 按 family 分批 397B call（每 family 一次 call）**
 
-对预筛选出的 opportunity，**一次 397B 调用生成全视频的 task cards**（不再每 fact 单独调用）：
+不再一次 call 生成全部 25 cards（thinking 会爆）。按 family 分批，每次只给相关 chunks：
+
+```
+F1 call: 只输入含 OCR/数字的 ~5 chunks → 输出 3 个 F1 cards
+F2 call: 只输入含视觉属性的 ~8 chunks → 输出 4 个 F2 cards
+E2 call: 只输入有 state_changes 的 ~6 chunks → 输出 2 个 E2 cards
+M1 call: 给全视频摘要 → 输出 2 个 M1 cards（需要看整体才知道怎么做连续解说）
+...
+```
+
+每次 call 输入短（~500-1000 tokens）、输出短（~300 tokens）、任务单一、thinking 可控。
+
+**每 family 的 prompt 模板不同**：
+
+```
+F1 prompt: "根据以下含 OCR/数字的片段，生成 {n} 个关于精确数值的问题。
+            优先 binary/number 格式。输出 JSON 数组。"
+
+E2 prompt: "根据以下状态变化，生成 {n} 个关于事件边界的问题。
+            格式：event_watch（'看到X告诉我'）或 binary（'X是否已经开始？'）"
+
+M1 prompt: "根据以下视频步骤摘要，生成 {n} 个适合持续解说的问题。
+            格式：'描述每一步操作' / '告诉我接下来发生什么'"
+```
+
+**每视频 ~11 次 call（11 family），每次 ~500 tok input → 总 ~5.5K tokens。**
+
+### 3.4 阶段 3-B: Placement 候选生成
+
+> 纯程序，零 397B。输出全部合法候选，不做选择（选择在轨迹规划做）。
+
+**输入**: Task Cards + Rollout (snapshots, compression_events)
+
+**输出**: placements/{video_id}.json — 全部 (card, ask_chunk, availability) 候选
+
+#### visibility_type 决定哪些 availability 合法
 
 ```python
-TASK_CARD_PROMPT = """你是流视频 agent 训练数据构造器。
-
-以下是视频的 teacher 证据摘要：
-{evidence_summary}
-
-请为以下问题家族生成 Task Cards：
-{family_requirements}
-
-每个 Task Card 输出：
-{{
-  "family": "F1|F2|F3|F4|E1|E2|P1|C1|R1|S1",
-  "question": "自然语言问题",
-  "canonical_answer": "简短标准答案 (1-15 words)",
-  "answer_form": "见下方验证等级",
-  "support_chunks": [chunk_idx, ...],
-  "support_facts": ["原始 fact 文本"],
-  "retention_class": "high|medium|low",
-  "answer_keywords": ["keyword1", "keyword2"],
-  "entities_involved": ["entity_id"]
-}}
-
-answer_form 验证等级（优先生成 V1-V4）：
-- "binary":          是/否问题 — 自动验证
-- "multiple_choice":  选择题（附带选项）— 自动验证
-- "number":          数值/计数 — 自动验证（容差匹配）
-- "short_exact":     精确短答 1-3 词 — 自动验证（exact match）
-- "short_factual":   事实短答 1-10 词 — 半自动（keyword + LLM judge）
-- "descriptive":     描述性回答 — 需 LLM judge
-
-要求：
-- 优先生成可自动验证的问题（binary > multiple_choice > number > short_exact）
-- 每种 family 至少 60% 的问题必须是 V1-V4（可自动验证）
-- 不要在 question 里泄漏 answer
-- 一个 fact 只生成一个 task card
-
-输出 JSON 数组:"""
-```
-
-**每视频 family 目标数量**：
-
-```python
-FAMILY_TARGETS = {
-    "F1": 3,   # OCR/Number — 天然可验证 (number/short_exact)
-    "F2": 4,   # Fine-grained — 优先 binary/multiple_choice
-    "F3": 2,   # Count — 天然可验证 (number)
-    "F4": 2,   # Spatial — 优先 binary/multiple_choice
-    "E1": 3,   # Local action — 主要做 response 对照
-    "E2": 2,   # State change — event_watch + queries 持续追踪
-    "P1": 2,   # Procedure — 优先 multiple_choice/number
-    "C1": 2,   # Comparison — 优先 binary，用 desc 引用实体
-    "R1": 1,   # Re-identification — 天然 binary，用 desc 引用实体
-    "S1": 2,   # Summary — 唯一允许 descriptive 的 family
-    "M1": 2,   # Continuous commentary — 通过 queries 区持续回答
-}
-# 每视频目标 ~25 个 task cards
-```
-
-**397B 调用量**：~1 call/video（vs 旧方案 ~30 calls/video）
-
-### 3.4 阶段 3-B: Ask-Time 搜索
-
-> 纯程序，零 397B 调用。替代旧 Pass 3 的 8 个 mine_*() 函数。
-
-**目标**: 对每个 task card，高效判定每个候选 ask_chunk 的 availability，选择最优提问时间点。
-
-**输入**: Task Cards（来自 3-A）+ Rollout（来自阶段 2）
-
-**输出**: Placed Tasks（每张 card 绑定 1-3 个 ask_chunk）
-
-#### 为什么不能靠关键词逐 chunk 扫描
-
-旧方案对每个 (card, chunk) 组合都调 `semantic_overlap()` 做关键词/embedding 匹配，有三个根本问题：
-
-1. **O(cards × chunks²) 复杂度** — 23 cards × 60 chunks × 每次扫 recent_thinks(~10 条) = 上万次匹配
-2. **误判率高** — "red" 出现在无关 think 里是 false positive；paraphrase 不匹配是 false negative
-3. **多数判定不需要看内容** — `in_visual`、`in_future` 完全是结构位置关系；`in_recent_thinks` 主要取决于"think 还在不在窗口里"而不是"think 写了什么"
-
-#### 新方案：预计算 + 结构查表
-
-**核心思路：把昂贵的内容匹配做一次预计算，把逐 chunk 的 availability 判定变成 O(1) 查表。**
-
-```
-┌─────────────────────────────────────────────────────────┐
-│  Step 1: 预计算 retention bitmap（每个 card 做一次）      │
-│  ─────────────────────────────────────────                │
-│  对每个 card 的 support_chunks，检查：                     │
-│    thinks_retained[chunk_idx] = think 是否记住了答案      │
-│    summary_retained[comp_event_idx] = summary 是否保留了   │
-│                                                          │
-│  只做 O(cards × support_chunks) 次匹配                    │
-│  而不是 O(cards × all_chunks) 次                          │
-│                                                          │
-│  Step 2: 逐 chunk 查表（纯结构判定）                       │
-│  ──────────────────────────────                           │
-│  对每个 ask_chunk，用 rollout 的结构信息判定 availability   │
-│  全部是 index 比较和 bitmap lookup，零内容匹配              │
-└─────────────────────────────────────────────────────────┘
-```
-
-#### Step 1: 预计算 Retention Bitmap
-
-```python
-def precompute_retention(card, rollout):
+def compute_placements(card, rollout, evidence):
     """
-    对一个 task card，预计算其答案在 rollout 各处的留存状态。
+    对一个 card，输出所有合法的 (ask_chunk, availability) 候选。
     
-    只在 support_chunks 和 compression_events 上做内容匹配，
-    不遍历所有 chunk。复杂度: O(|support_chunks| + |compression_events|)
+    visibility_type 决定哪些 availability 类型是合法的：
+    - persistent: 只有 in_visual（答案一直在帧里）
+    - transient:  in_visual + in_recent_thinks + in_compressed + in_history_only
     """
-    observations = rollout.get("thinks", [])
-    compression_events = rollout["compression_events"]
-    
-    # ── 哪些 support chunk 的 think 记住了答案？ ──
-    thinks_retained = {}  # chunk_idx -> bool
-    for span_start, span_end in card.support_spans:
-        for chunk_idx in range(span_start, span_end + 1):
-            if chunk_idx < len(observations):
-                think_text = observations[chunk_idx]["think"]
-                # retention_class 作为先验：low retention 用更严格的阈值
-                threshold = {
-                    "low": 0.5,     # 精确数字/细粒度颜色 → 要求更强匹配才算记住
-                    "medium": 0.35,
-                    "high": 0.2,    # 粗粒度动作 → 低阈值就算记住
-                }[card.retention_class]
-                thinks_retained[chunk_idx] = (
-                    keyword_overlap(think_text, card.answer_keywords) > threshold
-                )
-            else:
-                thinks_retained[chunk_idx] = False
-    
-    # ── 哪些 compression summary 保留了答案？ ──
-    summary_retained = {}  # comp_event_idx -> bool
-    for idx, event in enumerate(compression_events):
-        compressed_chunks = event.get("compressed_thinks_chunks", [])
-        # 只检查包含 support_chunks 的压缩事件
-        if any(c in compressed_chunks for span in card.support_spans
-               for c in range(span[0], span[1] + 1)):
-            summary_text = event["summary"].get("text", "")
-            summary_retained[idx] = (
-                keyword_overlap(summary_text, card.answer_keywords) > 0.3
-            )
-    
-    return RetentionBitmap(
-        thinks_retained=thinks_retained,        # {5: True, 6: False}
-        summary_retained=summary_retained,      # {0: True, 2: False}
-        support_chunks=set(
-            c for s in card.support_spans for c in range(s[0], s[1] + 1)
-        ),
-    )
-```
-
-**关键：retention_class 作为匹配阈值的先验。**
-
-| retention_class | 含义 | threshold |
-|----------------|------|-----------|
-| **low** (F1 OCR, F2 细粒度) | think 大概率没记精确值 | 0.5（要求强匹配才算记住） |
-| **medium** (F4, P1, E2) | think 可能记了粗粒度 | 0.35 |
-| **high** (E1, S1) | think 几乎一定记住 | 0.2（弱匹配就算记住） |
-
-这样 low-retention 的问题（精确数字/颜色）更容易判定为 `in_history_only` → recall，
-高 retention 的问题更容易判定为 `in_recent_thinks` → response。
-**用 retention_class 替代了大量不可靠的逐 chunk 关键词匹配。**
-
-#### Step 2: 利用 snapshot 结构化字段做纯查表
-
-Pass 2 的 `MemoryState.snapshot()` 不是文本拼接，而是结构化 dict：
-
-```python
-snapshots[chunk_idx] = {
-    "chunk_idx": 25,
-    "visual_window_start": 14,                         # 纯数字
-    "compressed_segments": [                            # 结构化列表
-        {"time_range": [0, 16], "text": "...", "merge_level": 1}
-    ],
-    "recent_thinks": [                                  # 每条带 chunk 索引
-        {"chunk": 8,  "time": "16-18", "text": "..."},
-        {"chunk": 9,  "time": "18-20", "text": "..."},
-        # ...
-    ],
-}
-# queries 区独立于 snapshot，由系统单独管理（见 §9.1）
-```
-
-**关键：`recent_thinks` 每条都有 `chunk` 字段（int 索引），不需要解析文本。**
-所以判定 `in_recent_thinks` 只需要 set 交集：
-
-```python
-def classify_availability(card, ask_chunk, rollout, bitmap):
-    """
-    纯结构判定，零内容匹配。
-    
-    利用 snapshot 的结构化字段 + 预计算的 retention bitmap。
-    每次调用 O(1)（set lookup + index 比较）。
-    """
-    support_start = min(s[0] for s in card.support_spans)
-    support_end = max(s[1] for s in card.support_spans)
-    snapshot = rollout["snapshots"][ask_chunk]
-    
-    # ═══════════════════════════════════════════════════
-    # Case 1: in_future — 纯数字比较
-    # ═══════════════════════════════════════════════════
-    if support_start > ask_chunk:
-        return "in_future"
-    
-    # ═══════════════════════════════════════════════════
-    # Case 2: in_visual — 纯数字比较
-    # ═══════════════════════════════════════════════════
-    # visual_window_start 直接从 snapshot 取，不用算
-    window_start = snapshot["visual_window_start"]
-    window_end = snapshot["chunk_idx"]
-    if any(window_start <= c <= window_end for c in bitmap.support_chunks):
-        return "in_visual"
-    
-    # ═══════════════════════════════════════════════════
-    # Case 3: in_recent_thinks — set 交集 + bitmap lookup
-    # ═══════════════════════════════════════════════════
-    # snapshot["recent_thinks"] 每条自带 chunk 索引，直接提取
-    recent_chunks = {item["chunk"] for item in snapshot["recent_thinks"]}
-    
-    # support_chunk 还在 recent_thinks 里 且 think 记住了答案？
-    retained_and_present = bitmap.support_chunks & recent_chunks
-    if any(bitmap.thinks_retained.get(c, False) for c in retained_and_present):
-        return "in_recent_thinks"
-    
-    # ═══════════════════════════════════════════════════
-    # Case 4: in_compressed — 区间包含 + bitmap lookup
-    # ═══════════════════════════════════════════════════
-    # snapshot["compressed_segments"] 每段自带 time_range
-    # 但我们需要知道是哪个 compression_event → 用 bitmap.summary_retained
-    for idx, event in enumerate(rollout["compression_events"]):
-        if event["trigger_chunk"] > ask_chunk:
-            break  # 按时间顺序，后面的都没发生
-        compressed_chunks = set(event.get("compressed_thinks_chunks", []))
-        if bitmap.support_chunks & compressed_chunks:
-            if bitmap.summary_retained.get(idx, False):
-                return "in_compressed"
-    
-    # ═══════════════════════════════════════════════════
-    # Case 5: in_history_only — 证据在过去，但不在任何可见源中
-    # ═══════════════════════════════════════════════════
-    # 包含两种情况：
-    # a) think 在 recent_thinks 里但没记住答案（retained_and_present 非空但都是 False）
-    # b) think 已被压缩掉但 summary 也没保留
-    # 两种都需要 recall 回历史帧才能看到
-    if support_end < ask_chunk:
-        return "in_history_only"
-    
-    return "unavailable"
-```
-
-**整个函数不碰任何 `.text` 字段。** 数据流：
-
-```
-snapshot 结构化字段                          判定方式
-──────────────────                          ──────────
-chunk_idx, visual_window_start     ─────→   in_visual / in_future (数字比较)
-recent_thinks[*].chunk             ─────→   in_recent_thinks (set 交集)
-compressed_segments[*].time_range  ─────→   in_compressed (区间包含)
-                                            ↑
-预计算 retention_bitmap            ─────→   thinks_retained[c] / summary_retained[idx] (bool lookup)
-```
-
-#### 复杂度对比
-
-| | 旧方案 | 新方案 |
-|--|--------|--------|
-| **内容匹配次数** | O(cards × chunks × recent_thinks_size) ≈ 23 × 60 × 10 = **~13,800** | 预计算 O(cards × support_chunks + cards × comp_events) ≈ **~115**；逐 chunk **零** |
-| **匹配方法** | semantic_overlap（embedding + keyword） | keyword_overlap（仅预计算时） |
-| **逐 chunk 判定** | 每次调 semantic_overlap | set 交集 + bool lookup, **O(1)** |
-| **总耗时** | embedding 加载 + 万次匹配 | 百次 keyword 匹配 + 万次查表 |
-
-#### Ask-Time 选择策略
-
-同一张 card 不枚举所有 chunk，而是**从 rollout 结构直接计算各 availability 的区间边界**：
-
-```python
-def select_ask_times(card, rollout, bitmap):
-    """
-    直接计算每种 availability 的起止 chunk，各取一个代表。
-    
-    利用 rollout 的三个结构信息定位区间边界：
-    1. support_end + VISUAL_WINDOW_CHUNKS → support 离开视觉窗口的时刻
-    2. compression_events[*].compressed_thinks_chunks → support 的 think 被压缩的时刻
-    3. bitmap.thinks_retained / summary_retained → think/summary 有没有记住答案
-    """
-    support_start = min(s[0] for s in card.support_spans)
-    support_end = max(s[1] for s in card.support_spans)
+    candidates = []
+    support_end = max(card.support_chunks)
     num_chunks = rollout["num_chunks"]
-    selected = []
     
-    # ── in_visual 区间 ──
-    # support_chunk 在 ask_chunk 的视觉窗口内 ⟺ ask_chunk ∈ [support_end, support_end + 11]
-    visual_lo = support_end
-    visual_hi = min(num_chunks - 1, support_end + VISUAL_WINDOW_CHUNKS - 1)
-    if visual_lo <= visual_hi:
-        selected.append(PlacedTask(card, (visual_lo + visual_hi) // 2, "in_visual"))
-    
-    # ── in_recent_thinks 区间 ──
-    # support 离开视觉窗口后，think 仍在 recent_thinks 里，直到被压缩掉
-    # 压缩时刻从 compression_events 直接查：哪个事件的 compressed_thinks_chunks 包含 support_end？
-    exit_visual = support_end + VISUAL_WINDOW_CHUNKS
-    compressed_at = None
-    for event in rollout["compression_events"]:
-        if support_end in event.get("compressed_thinks_chunks", []):
-            compressed_at = event["trigger_chunk"]
-            break
-    
-    if compressed_at is not None:
-        thinks_lo, thinks_hi = exit_visual, compressed_at - 1
+    # ── in_visual: persistent 和 transient 都有 ──
+    # persistent: 答案在很长时间内都可见，visual 区间更宽
+    # transient:  答案只在 support_chunks 附近可见
+    if card.visibility_type == "persistent":
+        # 整个视频内任何时刻都可以问（答案一直在帧里）
+        # 但只选几个代表位置
+        for ask in [num_chunks // 4, num_chunks // 2, 3 * num_chunks // 4]:
+            if ask < num_chunks:
+                candidates.append({"ask_chunk": ask, "availability": "in_visual"})
     else:
-        thinks_lo, thinks_hi = exit_visual, num_chunks - 1  # 从未被压缩
+        # transient: 只在 support_chunks 附近的视觉窗口内
+        visual_lo = support_end
+        visual_hi = min(num_chunks - 1, support_end + VISUAL_WINDOW_CHUNKS - 1)
+        if visual_lo <= visual_hi:
+            candidates.append({"ask_chunk": (visual_lo + visual_hi) // 2, "availability": "in_visual"})
     
-    if thinks_lo <= thinks_hi:
-        # 前提：think 确实记住了答案（bitmap 预计算）
-        if any(bitmap.thinks_retained.get(c, False) for c in bitmap.support_chunks):
-            selected.append(PlacedTask(card, (thinks_lo + thinks_hi) // 2, "in_recent_thinks"))
-    
-    # ── in_compressed 区间 ──
-    # support 被压缩后，summary 保留了答案 → 从压缩发生到 summary 被 merge 掉
-    for idx, event in enumerate(rollout["compression_events"]):
-        compressed_chunks = set(event.get("compressed_thinks_chunks", []))
-        if bitmap.support_chunks & compressed_chunks and bitmap.summary_retained.get(idx, False):
-            comp_lo = event["trigger_chunk"] + VISUAL_WINDOW_CHUNKS
-            comp_hi = num_chunks - 1  # 简化：假设 summary 存活到视频结束
-            if comp_lo <= comp_hi:
-                selected.append(PlacedTask(card, (comp_lo + comp_hi) // 2, "in_compressed"))
-                break
-    
-    # ── in_history_only 区间 ──
-    # 所有可见源都没了
-    last_visible = max(
-        thinks_hi + 1 if thinks_lo <= thinks_hi else exit_visual,
-        support_end + VISUAL_WINDOW_CHUNKS + 3,
-    )
-    history_lo = last_visible
-    history_hi = min(num_chunks - 1, support_end + VISUAL_WINDOW_CHUNKS + 20)
-    if history_lo <= history_hi:
-        selected.append(PlacedTask(card, (history_lo + history_hi) // 2, "in_history_only"))
+    # ── 以下只有 transient 才有 ──
+    if card.visibility_type == "transient":
+        bitmap = precompute_retention(card, rollout)
+        
+        # in_recent_thinks
+        exit_visual = support_end + VISUAL_WINDOW_CHUNKS
+        compressed_at = find_compression_for(support_end, rollout)
+        if compressed_at:
+            thinks_hi = compressed_at - 1
+        else:
+            thinks_hi = num_chunks - 1
+        if exit_visual <= thinks_hi and any(bitmap.thinks_retained.values()):
+            candidates.append({"ask_chunk": (exit_visual + thinks_hi) // 2, "availability": "in_recent_thinks"})
+        
+        # in_compressed
+        for idx, event in enumerate(rollout["compression_events"]):
+            if set(card.support_chunks) & set(event.get("compressed_thinks_chunks", [])):
+                if bitmap.summary_retained.get(idx, False):
+                    comp_lo = event["trigger_chunk"] + VISUAL_WINDOW_CHUNKS
+                    if comp_lo < num_chunks:
+                        candidates.append({"ask_chunk": comp_lo, "availability": "in_compressed"})
+                    break
+        
+        # in_history_only
+        history_lo = max(exit_visual, support_end + VISUAL_WINDOW_CHUNKS + 3)
+        if history_lo < num_chunks:
+            candidates.append({"ask_chunk": min(history_lo + 5, num_chunks - 1), "availability": "in_history_only"})
     
     # ── in_future: 仅 E2 ──
-    if card.family == "E2" and support_start >= 5:
-        selected.append(PlacedTask(card, max(0, support_start - 8), "in_future"))
+    if card.family == "E2":
+        support_start = min(card.support_chunks)
+        if support_start >= 5:
+            candidates.append({"ask_chunk": max(0, support_start - 8), "availability": "in_future"})
     
-    return selected
+    return candidates
 ```
 
-**不枚举 chunk，不扫描 snapshot。** 区间边界全部从 rollout 的结构化字段直接算出：
+**输出全部候选，不做选择。后续轨迹规划从中挑选。**
 
-| 区间边界 | 数据来源 |
-|---------|---------|
-| support 离开视觉窗口 | `support_end + VISUAL_WINDOW_CHUNKS`（常量运算） |
-| think 被压缩的时刻 | `compression_events[*].compressed_thinks_chunks` 包含 support_end 的事件的 `trigger_chunk` |
-| summary 生效的区间 | 压缩事件的 `trigger_chunk` 到视频结束（或下一次 merge） |
+#### retention bitmap（仅 transient cards 需要）
 
-总复杂度：O(cards × compression_events)，一般 ~23 × 3 = ~69 次结构查找。
+persistent cards 不需要 bitmap（答案一直可见）。transient cards 用 retention_class 控制匹配阈值（同之前设计）。
 
+### 3.5 阶段 3-B2: 轨迹规划
 
-#### 对照样本自然产生
+> 纯程序。从全部 placement 候选中组合出合理的多问题轨迹。
 
-```
-Task Card: F2 "厨师围裙是什么颜色?" 
-  support_span=[5,5], retention_class=low
+**输入**: 全部 placements + task cards
 
-预计算: thinks_retained[5] = False (think 只写了 "chef in apron"，没写 red)
-        summary_retained = {} (还没被压缩过)
-
-直接计算区间:
-  in_visual:        ask ∈ [5, 16]   → 选 ask=10  → response
-  in_recent_thinks: 跳过 (thinks_retained[5]=False，think 没记住颜色)
-  in_compressed:    跳过 (没被压缩 或 summary 也没保留)
-  in_history_only:  ask ∈ [18, 25]  → 选 ask=21  → recall
-
-结果: 2 个样本（response + recall），无误判的 in_recent_thinks
-```
-
-```
-Task Card: E1 "厨师在做什么?"
-  support_span=[5,5], retention_class=high
-
-预计算: thinks_retained[5] = True (think 写了 "chef chopping tomatoes")
-        summary_retained[0] = True (summary 保留了 "chef chopped tomatoes")
-
-直接计算区间:
-  in_visual:        ask ∈ [5, 16]   → 选 ask=10  → response
-  in_recent_thinks: ask ∈ [17, 22]  → 选 ask=19  → response (from memory)
-  in_compressed:    ask ∈ [25, 40]  → 选 ask=32  → response (from summary)
-  in_history_only:  跳过 (summary 一直保留着)
-
-结果: 3 个 response 样本，覆盖三种 response 来源
-```
-
-**retention_class=low 的 F1/F2 问题自然倾向于产生 recall，
-retention_class=high 的 E1/S1 问题自然倾向于产生 response。
-不是靠不可靠的关键词匹配判断，而是靠预计算 + 结构位置。**
-
-#### Difficulty Margin
-
-每个 placed task 计算难度分数 [0, 1]，用于后续统计和难度梯度控制：
+**输出**: trajectories/{video_id}.json
 
 ```python
-base_difficulty = {
-    "in_visual": 0.1, "in_recent_thinks": 0.3, "in_compressed": 0.5,
-    "in_history_only": 0.8, "in_future": 0.2,
-}
-# + 时间衰减 (离证据越远越难)
-# + retention_class 调整 (low → +0.1, high → -0.1)
-# + 压缩次数惩罚
-```
-
-### 3.5 阶段 3-C: Action 映射 + SFT 样本生成
-
-> 合并旧阶段 3 的 action 判定 + 旧阶段 4 的样本生成。
-
-**目标**: availability → action 确定性映射，然后生成 SFT 训练样本。
-
-#### Action 映射（一行查表，替代旧 determine_gold_action）
-
-```python
-ACTION_MAP = {
-    "in_visual":        ("response", "evidence_visible_in_frames"),
-    "in_recent_thinks": ("response", "answer_in_text_memory"),
-    "in_compressed":    ("response", "answer_in_compressed_summary"),
-    "in_history_only":  ("recall",   "evidence_left_all_memory"),
-    "in_future":        ("silent",   "evidence_not_yet_occurred"),
-}
-
-def map_action(placed_task):
-    return ACTION_MAP[placed_task.availability]
-```
-
-**不再有优先级冲突**：availability 在 3-B 已确定，action 是确定性的。
-
-#### Visibility Matrix（保留，适配新结构）
-
-```python
-visibility = {
-    "at_chunk": 45,
-    "at_time": 90,
-    "availability": "in_history_only",     # 新增：来自 3-B
-    "visual_window": [68, 92],
-    "evidence_in_window": false,
-    "answer_in_recent_obs": false,
-    "answer_in_compressed": false,
-    "difficulty_margin": 0.82,             # 新增：来自 3-B
-}
-```
-
-#### SFT 样本生成
-
-**response 样本**：
-
-```python
-async def generate_response_sample(placed, rollout, client):
-    snapshot = rollout["snapshots"][placed.ask_chunk]
-    current_obs = rollout["thinks"][placed.ask_chunk]["think"]
+def plan_trajectories(cards, placements, num_chunks, target_trajectories=30):
+    """
+    从 placement 候选中组合多问题轨迹。
     
-    # 根据 availability 决定给 397B 什么证据
-    if placed.availability == "in_visual":
-        evidence = "Visible in current frames."  # + 附带帧
-    elif placed.availability == "in_recent_thinks":
-        evidence = get_matching_thinks(snapshot, placed.card.answer_keywords)
-    elif placed.availability == "in_compressed":
-        evidence = get_matching_compressed(snapshot, placed.card.answer_keywords)
+    每条轨迹 = 1-3 个问题，分布在不同时间点。
+    同一条轨迹内的问题至少间隔 5 chunks（10s）。
     
-    response_text = await call_397b_response(
-        question=placed.card.question,
-        evidence=evidence,
-        gold_answer=placed.card.canonical_answer,
-        answer_form=placed.card.answer_form,
-    )
+    轨迹类型:
+    - 单问题轨迹: 1 个 card + 1 个 ask_time（大多数）
+    - 多问题轨迹: 2-3 个 card + 各自的 ask_time（更真实）
+    """
+    trajectories = []
+    used_placements = set()
     
-    output = f"<think>{current_obs}</think><action>response</action><response>{response_text}</response>"
-    return build_sample(placed, snapshot, output)
+    # 按 availability 多样性排序候选
+    all_placements = sorted(placements, key=lambda p: (p["availability"], p["ask_chunk"]))
+    
+    # Phase 1: 单问题轨迹（保证每个 card 至少有一条）
+    for card in cards:
+        card_placements = [p for p in all_placements 
+                          if p["card_id"] == card.card_id and id(p) not in used_placements]
+        if card_placements:
+            best = card_placements[0]  # 取第一个（availability 优先排序）
+            trajectories.append({
+                "trajectory_id": f"traj_{len(trajectories)}",
+                "questions": [{"card_id": card.card_id, **best}],
+            })
+            used_placements.add(id(best))
+    
+    # Phase 2: 多问题轨迹（更真实的交互）
+    remaining = [p for p in all_placements if id(p) not in used_placements]
+    # 按 ask_chunk 排序，贪心组合不冲突的 placements
+    remaining.sort(key=lambda p: p["ask_chunk"])
+    
+    current_traj_questions = []
+    for p in remaining:
+        if len(trajectories) >= target_trajectories:
+            break
+        if not current_traj_questions:
+            current_traj_questions.append(p)
+        elif p["ask_chunk"] - current_traj_questions[-1]["ask_chunk"] >= 5:
+            current_traj_questions.append(p)
+            if len(current_traj_questions) >= 3:
+                trajectories.append({
+                    "trajectory_id": f"traj_{len(trajectories)}",
+                    "questions": [{"card_id": q.get("card_id", ""), **q} for q in current_traj_questions],
+                })
+                current_traj_questions = []
+        else:
+            # 冲突，跳过
+            continue
+    
+    return trajectories
 ```
 
-**recall 样本**（仍拆为 query + response 两条独立样本）：
+### 3.6 阶段 3-C: 轨迹样本生成
 
-与旧阶段 4 的 recall 生成逻辑相同（§5.2），关键约束不变：
-- recall 拆为 2 条独立样本
-- query generator 不接收 gold_answer
-- recall_result 只用学生可访问内容（student think / compressed summary / historical frames）
-- post-recall 输出 think（分析检索结果，20-40 tokens）
-- recall failure / distractor → response 内容表达"检索结果不足以确定"
+> 397B 生成 response/recall 文本。只对选中的轨迹执行。
 
-**Recall Result 来源**（不变）：
+**输入**: 选中的轨迹 + rollout + evidence
 
-| 来源 | 内容 | 适用 |
-|------|------|------|
-| student think | 学生自己写过的 think 文本 | 文本细节 recall |
-| compressed summary | 学生自己写的压缩摘要 | 压缩记忆 recall |
-| historical frames | 4s 的原始视频帧 | 视觉细节 recall |
+**输出**: fork_samples/{video_id}.json
 
-**绝不使用 teacher_caption 作为 recall_result**。
+#### 每条轨迹生成哪些样本？
 
-**event_watch 样本**（仅 E2 × in_future，简化版）：
+```
+轨迹: [
+  {card: "围裙颜色?", ask_chunk: 15, availability: "in_visual"},
+  {card: "看到basil告诉我", ask_chunk: 30, availability: "in_future"},
+]
 
-```python
-def generate_event_watch_samples(placed, rollout):
-    """只产生 2 个样本（不再有中间 pending_silent）"""
-    # Sample 1: silent at ask_time（事件还没发生）
-    ask_obs = rollout["thinks"][placed.ask_chunk]["think"]
-    sample1 = {
-        "output": f"<think>{ask_obs}</think><action>silent</action>",
-        "metadata": {"pending_question": placed.card.question},
-    }
-    
-    # Sample 2: response at trigger_time（事件发生了）
-    trigger_chunk = placed.card.support_spans[0][0]
-    trigger_obs = rollout["thinks"][trigger_chunk]["think"]
-    sample2 = {
-        "output": (f"<think>{trigger_obs}</think>"
-                   f"<action>response</action>"
-                   f"<response>{placed.card.canonical_answer}</response>"),
-    }
-    return [sample1, sample2]
+需要生成的样本:
+
+chunk 15: 问题 1 到达
+  input: queries=[], user_input="围裙什么颜色?"
+  → 397B 生成 response → "Red"
+  样本: {type: "question_arrival", action: "response"}
+
+chunk 16: 问题 1 已答完
+  input: queries=[{q:"围裙颜色?", answers:["Red"]}], user_input=""
+  → silent（学会不重复回答）
+  样本: {type: "post_answer_silent"}
+
+chunk 30: 问题 2 到达
+  input: queries=[{q:"围裙颜色?", answers:["Red"]}], user_input="看到basil告诉我"
+  → silent（basil 还没出现）
+  样本: {type: "event_watch_silent"}
+
+chunk 35: basil 出现
+  input: queries=[{q:"围裙颜色?", answers:["Red"]}, {q:"basil?", answers:[]}]
+  → 397B 生成 response → "Basil is being torn"
+  样本: {type: "event_watch_trigger", action: "response"}
+
+chunk 36: event_watch 已答
+  input: queries=[..., {q:"basil?", answers:["Basil is being torn"]}]
+  → silent
+  样本: {type: "post_answer_silent"}
 ```
 
-#### 标准答案来源（不变）
+#### M1 多次回答
 
-```python
-gold_answer = {
-    "answer": "Approximately 1 teaspoon",
-    "source": "teacher_caption",
-    "support_facts": ["chef sprinkles...approximately one teaspoon"],
-    "confidence": 0.55,
-    "answer_form": "short_factual",     # 验证等级
-    "verifiable": false,                # 非精确匹配
-}
+```
+轨迹: [{card: "描述每步操作", ask_chunk: 10, availability: "in_visual", family: "M1"}]
+
+chunk 10: 问题到达 → response "正在切菜"
+chunk 15: queries 有答案，无新 state_change → silent
+chunk 25: state_change 出现（"开始炒菜"）→ response "开始炒菜"（追加回答）
+chunk 30: 无新 state_change → silent
+chunk 40: state_change 出现（"加调料"）→ response "加入调料"
+
+M1 response 时机 = queries 区有活跃 M1 问题 + 当前 chunk 有 state_change
+```
+
+#### recall 样本
+
+```
+轨迹: [{card: "加了多少盐?", ask_chunk: 45, availability: "in_history_only"}]
+
+chunk 45: 问题到达，答案不在任何可见源
+  step 1 (SYSTEM_PROMPT): <think>视觉观察</think><action>recall</action><query>...</query>
+  step 2 (SYSTEM_PROMPT_POST_RECALL): <think>分析结果</think><action>response</action><response>...</response>
+  
+  两个 step = 2 个样本（不同 prompt）
+```
+
+#### base samples（所有轨迹共享）
+
+```
+不带任何问题的 chunk = base rollout 的 silent 样本
+  从 60 chunks 中采样 ~20% = ~12 个 silent 样本
+  + compress 样本（从 compression_events 取，~3 个）
+  这些在所有轨迹间共享，不需要重复造
+```
+
+#### 397B 调用量
+
+```
+每条轨迹:
+  - question_arrival 的 response: 1 call（生成 response 文本）
+  - recall 的 query + response: 2 calls
+  - M1 followup: 每次 1 call
+  平均 ~2 calls/轨迹
+
+30 轨迹 × 2 calls = ~60 calls/视频
+300 视频 = ~18,000 calls
 ```
 
 ### 3.6 阶段 4: Verify + Filter
