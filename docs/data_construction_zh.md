@@ -266,7 +266,9 @@ best_range = argmin(score)   # 综合最优
 > 核心变化：**"问什么"和"什么时候问"彻底分离**，action 由 ask_time × support_time × snapshot 机械推出。
 
 ```
-阶段 1: Teacher Evidence Graph          [397B + 视频, ~4h]
+阶段 1: Teacher Evidence Graph          [397B + 视频, ~5min]
+  ├─ 1-A: 独立 chunk 标注              [397B, 2帧/chunk, 全并行]
+  └─ 1-B: 实体链接                     [规则 或 1 call/video]
 阶段 2: Question-blind Streaming Rollout [397B + 视频, ~4h]
 阶段 3: Task Mining + Sample Generation  [397B + 规则, ~2h]
   ├─ 3-A: Task Card 生成               [397B, 1 call/video]
@@ -277,52 +279,184 @@ best_range = argmin(score)   # 综合最优
 
 ### 3.1 阶段 1: Teacher Evidence Graph
 
+> v8.0 重构：每个 2s chunk 独立标注（2 帧，无前文 context），视频内可全并行。
+> 实体一致性由轻量后处理解决，不再阻塞主流程。
+
 **目标**: 为每个 2s chunk 生成详细结构化事实图。这是**隐藏教师信息**，不进入 SFT。
 
-**397B 输入**: 最近 12 chunks 的 24 帧滑窗 + 前面所有 chunk 的 caption 文本（保持上下文一致性）
+#### 1-A: 独立 chunk 标注（可全并行）
 
-> 注：使用 24 帧滑窗（而非仅当前 2 帧），与推理模型的视觉窗口一致，确保 teacher 看到的上下文不少于 student。
+**397B 输入**: 仅当前 chunk 的 2 帧，无前文 caption、无滑窗。
 
 **397B 输出** (per chunk):
 ```json
 {
   "time": [28, 30],
   "visible_entities": [
-    {"id": "chef_1", "attributes": ["red apron", "short hair"], "action": "sprinkling seasoning"},
-    {"id": "bowl_1", "attributes": ["small", "white", "pinch bowl"], "held_by": "chef_1"},
-    {"id": "pot_1", "attributes": ["stainless", "front-right burner"]}
+    {"desc": "person wearing red apron, short hair", "action": "sprinkling seasoning", "position": "center"},
+    {"desc": "small white pinch bowl", "held_by": "person wearing red apron", "position": "center"},
+    {"desc": "stainless steel pot", "position": "front-right burner"}
   ],
   "atomic_facts": [
-    {"fact": "chef sprinkles white granular seasoning from small bowl into pot", 
-     "confidence": 0.88, "support_level": "direct_current_chunk",
-     "target_resolution_visible": true},
-    {"fact": "amount approximately one teaspoon", 
-     "confidence": 0.55, "support_level": "direct_current_chunk",
-     "target_resolution_visible": false, "uncertainty": "visual estimate"}
+    {"fact": "person sprinkles white granular seasoning from small bowl into pot",
+     "confidence": 0.88, "target_resolution_visible": true},
+    {"fact": "amount approximately one teaspoon",
+     "confidence": 0.55, "target_resolution_visible": false}
   ],
-  "state_changes": ["seasoning added to sauce"],
+  "state_changes": ["seasoning added to pot"],
   "ocr": [],
-  "spatial": "chef center, pot on right burner",
-  "not_observable": ["sizzling sound", "aroma"],
-  "relation_to_previous": "continuation of cooking sequence"
+  "spatial": "person center, pot on right burner"
 }
 ```
 
-**用途**：
+**与旧方案的区别**：
+
+| | 旧方案 | 新方案 |
+|--|--------|--------|
+| 视觉输入 | 24 帧滑窗 | **2 帧**（当前 chunk） |
+| 文本 context | 前 30 个 chunk 的 caption | **无** |
+| 实体标识 | `"id": "chef_1"` (依赖前文) | `"desc": "person wearing red apron"` (自描述) |
+| `support_level` | `direct_current_chunk / carried_from_previous / inferred` | **删除** — 每 chunk 独立，只有 direct |
+| `relation_to_previous` | 有 | **删除** |
+| 视频内并发 | 串行（依赖前文） | **全并行** |
+| 每请求 token | ~10K (24帧 + text context) | **~1.5K** (2帧) |
+
+**简化后的 prompt**:
+
+```
+你在标注一段 2 秒视频片段（t={start}-{end}s）。
+
+根据上方 2 帧画面，输出 JSON:
+{{
+  "time": [{start}, {end}],
+  "visible_entities": [
+    {{"desc": "外观描述（穿着/颜色/材质/大小）", "action": "动作", "position": "位置"}}
+  ],
+  "atomic_facts": [
+    {{"fact": "可观察的事实陈述", "confidence": 0.0-1.0, "target_resolution_visible": true/false}}
+  ],
+  "state_changes": ["相比静态场景的变化"],
+  "ocr": ["画面中可见的文字"],
+  "spatial": "简要空间布局"
+}}
+
+规则:
+- 只描述这 2 帧中可见的内容
+- 用外观描述实体（不要编号，不要假设身份）
+- confidence < 0.7: 模糊/快速运动/部分遮挡
+- target_resolution_visible: 小字/远处细节在训练分辨率下不可读时为 false
+```
+
+**并发**:
+```
+视频内全并行 + 视频间并行
+每请求: 2帧 + prompt = ~1.5K input, max_tokens=16384, thinking=ON
+每视频: 60 chunks × 1 call = 60 calls，全并行 → ~15s
+300 视频 ÷ 64 ≈ ~5 min（vs 旧方案 ~70 min）
+```
+
+#### 1-B: 实体链接（轻量后处理）
+
+chunk 独立标注后，同一实体在不同 chunk 的 `desc` 可能措辞不同（"person in red apron" vs "chef wearing red"）。需要统一。
+
+**谁需要跨 chunk 实体一致性？**
+
+| 消费者 | 是否需要 | 原因 |
+|--------|---------|------|
+| Pass 2 压缩评分 | **不需要** | 只看单 chunk 内 fact 重要性（数字/OCR/state_changes 数量） |
+| Pass 3-A 单 chunk 分析 | **不需要** | 只看 entity 数量、有无 OCR/state_change |
+| Pass 3-A 跨 chunk: P1 步骤序列 | **需要** | 同实体在多 chunk 的 state_changes |
+| Pass 3-A 跨 chunk: C1 比较 | **需要** | 同实体不同时间的状态差异 |
+| Pass 3-A 跨 chunk: R1 再识别 | **需要** | 实体消失后重现 |
+| Pass 3-A 问题生成 | 弱需要 | 问题文本中引用实体 |
+
+**只有 3 个跨 chunk 分析场景需要实体一致性，且都在 Pass 3-A。**
+
+**实体链接方案：基于属性聚类，一次 397B 调用**
+
+```python
+def link_entities(evidence: List[Dict]) -> Dict[str, str]:
+    """
+    从所有 chunk 的 visible_entities 提取 desc，聚类为统一实体。
+    
+    输出: desc_to_id 映射，如 {"person wearing red apron": "person_1", 
+                              "chef in red": "person_1",
+                              "stainless steel pot": "pot_1"}
+    """
+    # 1. 收集所有唯一 desc（去重）
+    all_descs = set()
+    for cap in evidence:
+        for entity in cap.get("visible_entities", []):
+            all_descs.add(entity["desc"])
+    
+    # 2. 如果实体数 < 20，用规则聚类（无需 397B）
+    if len(all_descs) < 20:
+        return rule_based_clustering(all_descs)
+    
+    # 3. 否则一次 397B 调用做聚类
+    return await llm_entity_clustering(all_descs)
+```
+
+**规则聚类**（大多数视频 < 20 个唯一 desc，不需要 397B）：
+
+```python
+def rule_based_clustering(descs: Set[str]) -> Dict[str, str]:
+    """
+    基于词重叠的贪心聚类。
+    
+    "person wearing red apron" 和 "person in red apron"
+    → 词重叠 > 60% → 同一实体 → 都映射到 "person_1"
+    """
+    clusters = []  # [(canonical_desc, [desc1, desc2, ...])]
+    
+    for desc in sorted(descs, key=len, reverse=True):  # 长描述优先
+        words = set(desc.lower().split())
+        merged = False
+        for canonical, members in clusters:
+            canonical_words = set(canonical.lower().split())
+            overlap = len(words & canonical_words) / max(len(words | canonical_words), 1)
+            if overlap > 0.5:
+                members.append(desc)
+                merged = True
+                break
+        if not merged:
+            clusters.append((desc, [desc]))
+    
+    # 分配 ID
+    desc_to_id = {}
+    type_counters = {}
+    for canonical, members in clusters:
+        # 从描述推断类型前缀
+        prefix = _infer_type_prefix(canonical)  # "person" / "pot" / "bowl" / "object"
+        type_counters[prefix] = type_counters.get(prefix, 0) + 1
+        entity_id = f"{prefix}_{type_counters[prefix]}"
+        for desc in members:
+            desc_to_id[desc] = entity_id
+    
+    return desc_to_id
+```
+
+**链接后，写回 evidence**：
+
+```python
+def apply_entity_links(evidence: List[Dict], desc_to_id: Dict[str, str]):
+    """将 entity_id 写入每个 chunk 的 visible_entities"""
+    for cap in evidence:
+        for entity in cap.get("visible_entities", []):
+            entity["id"] = desc_to_id.get(entity["desc"], "unknown")
+```
+
+**开销**：
+- 规则聚类：~0.1ms/视频，零 397B
+- 回退到 397B：1 call/视频（仅当唯一 desc > 20 时）
+- 大多数视频（烹饪/教程）唯一实体 < 10 个，规则聚类完全够用
+
+**用途**（不变）：
 - 造任务（知道哪里有可问的细节）
 - 生成标准答案（来自 atomic_facts）
 - 验证 student think 是否遗漏关键信息
 - 验证 compressed_summary 是否保留必要内容
-- 生成 hard negatives / distractors
 - 目标分辨率可见性检查（confidence < 0.5 的 fact 不适合做任务）
-
-**并发**:
-```
-视频内串行（需要前文 context）, 视频间并行 64 路
-每请求: 24帧 + text context = ~10K input, max_tokens=16384, thinking=ON
-每视频: 60 chunks × 15s = 900s = 15 min
-300 视频 ÷ 64 ≈ 70 min ≈ 1.2h
-```
 
 ### 3.2 阶段 2: Question-blind Streaming Rollout
 
@@ -1451,7 +1585,7 @@ RECALL_RETURN_FRAMES = 4               # 4s 历史帧
 MAX_LENGTH = 16384                     # 训练 max_length (但单样本 ~3500 tok)
 
 # 并发（所有 Pass 统一 64 路，由 safe_concurrency_for_pass() 动态 clamp）
-PASS1_CONCURRENT = 64                  # Evidence Graph
+PASS1_CONCURRENT = 1024                # Evidence Graph (chunk 全并行，2帧/请求)
 PASS2_CONCURRENT = 64                  # Rollout
 PASS3_CONCURRENT = 64                  # Task Mining + Sample Gen (3-A/B/C)
 
@@ -1482,7 +1616,8 @@ SPECIAL_TOKENS_PER_TIMESTEP = [
 
 | Pass | 输入类型 | Thinking | max_tokens（含 thinking） | 任务实际��出 | 并发 | 单请���图片 |
 |------|---------|----------|--------------------------|-------------|------|-----------|
-| **Pass 1** Evidence | 视觉 (24 帧) + 文本 | ON | 16384 | ~1K (JSON) | 64 | 24 帧 |
+| **Pass 1-A** Evidence | 视觉 (2 帧) | ON | 16384 | ~1K (JSON) | 1024 | 2 帧 |
+| **Pass 1-B** Entity Link | 纯文本（或规则） | — | — | — | — | 0 |
 | **Pass 2a** Observation | ���觉 (24 帧) + 记忆 | ON | 16384 | ~128 (think) | 64 | 24 帧 |
 | **Pass 2b** Compress | 纯文本 | ON | 16384 | ~512 (summary) | 64 | 0 |
 | **Pass 3-A** Cards | 纯文本 | ON | 60000 | ~2K (cards JSON) | 64 | 0 |
@@ -1499,12 +1634,12 @@ SPECIAL_TOKENS_PER_TIMESTEP = [
 > 否则会在 thinking 阶段就截断，导致无法产出有效 content。
 > 视觉 Pass 设 16384（受 GPU KV cache 限制），纯文本 Pass 设 60000（= max_model_len 65536 - 输入 ~4K - margin）���
 
-**关键差异**：视觉 Pass（1, 2a）每请求发送 24 帧 base64 图片（~1.2MB），需要多模态处理能力、
-更大 `max-model-len`、和更低并发；纯文本 Pass（2b, 3, 4）只有 ~1K token 输入，可以开更高并发。
+**关键差异**：视觉 Pass（1-A, 2a）需要多模态处理能力。Pass 1-A 每请求仅 2 帧（~100KB），可高并发；
+Pass 2a 每请求 24 帧（~1.2MB），需要更大 `max-model-len` 和更低并发；纯文本 Pass（2b, 3-A/C）只有 ~1K token 输入。
 
 | 参数 | 视觉 Pass (1, 2a) | 文本 Pass (2b, 3, 4) |
 |------|-------------------|---------------------|
-| `--limit-mm-per-prompt` | `image=24`（必须） | 不需要 |
+| `--limit-mm-per-prompt` | `image=24`（Pass 2a 需要；Pass 1-A 只用 2 帧） | 不需要 |
 | `--max-model-len` | `65536`（容纳帧 token） | `16384` 即可 |
 | `--gpu-memory-utilization` | `0.90`（图片占显存） | `0.95`（纯文本更高效） |
 | `--max-num-seqs` | `16`（图片大，限制并发） | `64`（文本小，可加大） |
@@ -1516,8 +1651,8 @@ SPECIAL_TOKENS_PER_TIMESTEP = [
 pipeline 按 pass 切换 `--api_base`。
 
 ```bash
-# 实例 1: 视觉模式 (Pass 1 + Pass 2a)
-# 需要多模态支持，大 context，低并发
+# 实例 1: 视觉模式 (Pass 1-A + Pass 2a)
+# 需要多模态支持；Pass 1-A 只需 2 帧/请求，可开高并发
 vllm serve Qwen/Qwen3.5-397B-A17B-FP8 \
   --tensor-parallel-size 8 \
   --max-model-len 65536 \
@@ -1568,7 +1703,7 @@ vllm serve Qwen/Qwen3.5-397B-A17B-FP8 \
 
 ```
                 输入        thinking(估计)  有效输出     单请求合计
-Pass 1:        ~10K tok    ~2-5K           ~1K         ~15K     × 64 并发
+Pass 1-A:      ~1.5K tok   ~2-5K           ~1K         ~8K      × 1024 并发 (chunk 全并行)
 Pass 2a:       ~10K tok    ~2-5K           ~128        ~15K     × 64 并发
 Pass 2b:       ~650 tok    ~2-5K           ~512        ~6K      × 64 并发
 Pass 3-A:      ~4K tok     ~2-10K          ~2K         ~16K     × 64 并发 (1 call/video)
