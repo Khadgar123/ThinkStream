@@ -168,13 +168,32 @@ async def run_pass1b(
 # ---------------------------------------------------------------------------
 
 
+MAX_MODEL_LEN = 65536
+INPUT_MARGIN = 1000  # safety margin for tokenizer differences
+
+
+def _safe_max_tokens(prompt: str, configured_max: int) -> int:
+    """Dynamically cap max_tokens so input + max_tokens <= MAX_MODEL_LEN.
+
+    For short inputs (~1K), max_tokens ≈ configured_max (60K).
+    For long inputs (~5K), max_tokens drops to ~59K.
+    Prevents 400 error on long videos.
+    """
+    # Estimate input tokens: ~1 token per 3.5 chars for mixed EN/CJK
+    estimated_input = len(prompt) // 3 + INPUT_MARGIN
+    available = MAX_MODEL_LEN - estimated_input
+    return max(8192, min(configured_max, available))  # floor 8K for thinking room
+
+
 async def _call_with_semaphore(client, prompt, max_tokens, temperature, request_id, semaphore,
                                max_retries: int = 2):
     """Call 397B with optional semaphore. Retries on empty response (thinking explosion).
 
+    Dynamically caps max_tokens based on input length to avoid 400 errors.
     When thinking consumes all max_tokens, content is empty.
     Retry with higher temperature (encourages shorter thinking) as fallback.
     """
+    max_tokens = _safe_max_tokens(prompt, max_tokens)
     for attempt in range(max_retries + 1):
         temp = temperature if attempt == 0 else min(temperature + 0.2 * attempt, 1.0)
         if semaphore:
