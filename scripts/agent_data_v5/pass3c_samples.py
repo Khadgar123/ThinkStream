@@ -158,11 +158,13 @@ def _simulate_recall_result(card: Dict, rollout: Dict, ask_chunk: int,
         return {"source": "failure", "text_content": "No results.", "returned_chunks": []}
 
     # oracle or noisy
+    obs_lookup = {o["chunk_idx"]: o for o in observations}
     parts = []
     returned = []
     for ec in support_chunks:
-        if ec < ask_chunk and ec < len(observations):
-            parts.append(f"[{observations[ec]['time']}] {observations[ec]['think']}")
+        obs = obs_lookup.get(ec)
+        if obs and ec < ask_chunk:
+            parts.append(f"[{obs['time']}] {obs['think']}")
             returned.append(ec)
 
     if noise_type == "noisy":
@@ -199,8 +201,19 @@ def _make_sample(
     elif action == "recall" and query:
         output_parts.append(f'<query>{json.dumps(query, ensure_ascii=False)}</query>')
 
+    # Derive sample_type for phase assignment and verification
+    if prompt_type == "POST_RECALL_PROMPT":
+        sample_type = "recall_response" if action == "response" else "recall_silent"
+    elif action == "recall":
+        sample_type = "recall_query"
+    elif action == "response":
+        sample_type = "response"
+    else:
+        sample_type = "silent"
+
     return {
         "chunk_idx": chunk_idx,
+        "sample_type": sample_type,
         "prompt_type": prompt_type,
         "trajectory_id": trajectory_id,
         "card_id": card_id,
@@ -233,11 +246,13 @@ async def generate_trajectory_samples(
     samples = []
     queries_state = []
     observations = rollout.get("thinks", [])
+    obs_by_idx = {o["chunk_idx"]: o for o in observations}
     traj_id = trajectory["trajectory_id"]
 
     def _get_think(chunk_idx):
-        if chunk_idx < len(observations):
-            return observations[chunk_idx].get("think", "")
+        obs = obs_by_idx.get(chunk_idx)
+        if obs:
+            return obs.get("think", "")
         return ""
 
     def _get_snapshot(chunk_idx):

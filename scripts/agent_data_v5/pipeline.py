@@ -43,37 +43,35 @@ logger = logging.getLogger(__name__)
 
 
 def assign_phase(sample: Dict) -> str:
-    """Assign training phase based on sample type and task complexity."""
-    sample_type = sample.get("sample_type", "")
-    task_type = sample.get("metadata", {}).get("task_type", "")
-    phase_override = sample.get("metadata", {}).get("phase", "")
+    """Assign training phase based on sample_type and sequence_type.
 
-    # Explicit phase from metadata (e.g., C2 compress samples)
-    if phase_override in ("C1", "C2"):
-        return phase_override
+    v8.0: uses sample_type (silent/response/recall_query/recall_response/recall_silent)
+    and sequence_type (immediate_response/recall_success/recall_fail_then_found/
+    event_watch/multi_response) instead of old task_type.
+    """
+    sample_type = sample.get("sample_type", "")
+    sequence_type = sample.get("sequence_type", "")
+    prompt_type = sample.get("prompt_type", "")
+
+    if sample_type == "compress":
+        return "C1"
+
+    if sample_type in ("recall_query", "recall_response", "recall_silent"):
+        return "2"  # Phase 2: recall training
 
     if sample_type == "silent":
-        return "1"  # Phase 1: protocol alignment
-    elif sample_type == "response":
-        if "compress" in task_type:
-            return "C1"  # Phase C1: response from compressed memory
-        elif "unanswerable" in task_type:
-            return "2"  # Phase 2
-        elif "response_from_memory" in task_type:
-            return "2"  # Phase 2: memory-based response
-        elif "pending" in task_type:
-            return "2"  # Phase 2: pending event response
-        return "1"  # Phase 1: basic response (from frames)
-    elif sample_type == "compress":
-        if "merge_compress" in task_type:
-            return "C1"  # Phase C1: second-level compression
-        return "C1"  # Phase C1: compression training
-    elif sample_type in ("recall_query", "recall_response",
-                         "proactive_recall_query", "proactive_recall_silent"):
-        if "compress_recall" in task_type:
-            return "C1"  # Phase C1: recall from compressed
-        return "2"  # Phase 2: recall training
-    return "5"  # Phase 5: mixed
+        if sequence_type in ("event_watch", "multi_response"):
+            return "2"  # Phase 2: query-aware silent
+        return "1"  # Phase 1: basic silent
+
+    if sample_type == "response":
+        if sequence_type in ("recall_fail_then_found",):
+            return "2"  # Phase 2: recovery after recall fail
+        if sequence_type in ("event_watch", "multi_response"):
+            return "2"  # Phase 2: query-triggered response
+        return "1"  # Phase 1: basic response
+
+    return "5"  # Phase 5: mixed / unclassified
 
 
 # ---------------------------------------------------------------------------

@@ -288,7 +288,7 @@ async def generate_cards(
 
         # Build evidence input
         if family == "M1":
-            ev_text = _format_evidence_for_prompt(evidence, list(range(len(evidence))))
+            ev_text = _format_evidence_for_prompt(evidence, [cap["chunk_idx"] for cap in evidence])
         else:
             ev_text = _format_evidence_for_prompt(evidence, chunk_list)
 
