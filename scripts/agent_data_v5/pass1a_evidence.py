@@ -136,88 +136,6 @@ def _normalize_entity(entity) -> dict:
 # ---------------------------------------------------------------------------
 
 
-class _Pass1aProgress:
-    """Shared progress counter + real-time JSONL log.
-
-    Two outputs (independent, don't affect each other):
-    1. Console log: progress counter every 50 chunks + warnings on failure
-    2. JSONL stream file: each chunk's result appended immediately on completion
-       → can tail -f to see real-time results while pipeline runs
-       → separate from final evidence_1a/{video_id}.json (which waits for all chunks)
-    """
-    def __init__(self, total: int, stream_path: Optional[Path] = None):
-        self.total = total
-        self.completed = 0
-        self.success = 0
-        self.empty = 0
-        self._lock = asyncio.Lock()
-        self._stream_path = stream_path
-        if stream_path:
-            stream_path.parent.mkdir(parents=True, exist_ok=True)
-            # Truncate on init (new run)
-            stream_path.write_text("")
-
-    async def record(self, video_id: str, chunk_idx: int, caption: Dict):
-        async with self._lock:
-            self.completed += 1
-            ok = caption.get("parse_success", False)
-            if ok:
-                self.success += 1
-            else:
-                self.empty += 1
-                logger.warning(
-                    f"  [{video_id}] chunk {chunk_idx}: parse_success=False "
-                    f"(content may be None)"
-                )
-
-            # Real-time JSONL stream: append each result immediately
-            if self._stream_path:
-                line = json.dumps({
-                    "video_id": video_id,
-                    "chunk_idx": chunk_idx,
-                    "parse_success": ok,
-                    "n_entities": len(caption.get("visible_entities", [])),
-                    "n_facts": len(caption.get("atomic_facts", [])),
-                    "ocr": caption.get("ocr", []),
-                    "spatial": caption.get("spatial", "")[:100],
-                }, ensure_ascii=False)
-                with open(self._stream_path, "a") as f:
-                    f.write(line + "\n")
-
-            # Console progress
-            if self.completed % 50 == 0 or self.completed == self.total:
-                logger.info(
-                    f"  [1-A progress] {self.completed}/{self.total} "
-                    f"(success={self.success}, empty={self.empty})"
-                )
-
-# Module-level progress tracker
-_progress: Optional[_Pass1aProgress] = None
-
-
-def init_progress(total_chunks: int, stream_path: Optional[Path] = None):
-    """Initialize progress tracker. Call before run_pass1a.
-
-    Args:
-        stream_path: If set, each chunk result is appended to this JSONL file
-                     in real-time. Use `tail -f <path>` to monitor.
-    """
-    global _progress
-    _progress = _Pass1aProgress(total_chunks, stream_path)
-
-
-def get_progress_stats() -> Dict:
-    """Return current progress stats."""
-    if _progress is None:
-        return {}
-    return {
-        "total": _progress.total,
-        "completed": _progress.completed,
-        "success": _progress.success,
-        "empty": _progress.empty,
-    }
-
-
 async def run_pass1a(
     video_id: str,
     frame_paths: List[str],
@@ -225,11 +143,7 @@ async def run_pass1a(
     client,
     semaphore: Optional[asyncio.Semaphore] = None,
 ) -> List[Dict]:
-    """Annotate all chunks in parallel. Returns sorted captions list.
-
-    Each chunk logs progress immediately on completion (not waiting for all).
-    Empty/failed results are logged as warnings in real-time.
-    """
+    """Annotate all chunks in parallel. Returns sorted captions list."""
 
     async def annotate_chunk(chunk_idx):
         request = build_evidence_request(chunk_idx, frame_paths, video_id)
@@ -251,11 +165,6 @@ async def run_pass1a(
         caption = parse_evidence_result(result, request["_meta"])
         caption["chunk_idx"] = chunk_idx
         caption["video_id"] = video_id
-
-        # Real-time progress tracking
-        if _progress is not None:
-            await _progress.record(video_id, chunk_idx, caption)
-
         return caption
 
     tasks = [annotate_chunk(i) for i in range(num_chunks)]

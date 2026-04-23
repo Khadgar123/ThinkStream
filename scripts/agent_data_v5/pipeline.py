@@ -19,6 +19,7 @@ import random
 from pathlib import Path
 from typing import Dict, List
 
+from .progress import ProgressTracker
 from .config import (
     AGENT_CHUNK_SEC,
     ALL_DIRS,
@@ -327,7 +328,7 @@ async def run_pipeline(
     # PASS 1-A: Independent Chunk Annotation
     # =================================================================
     if 1 not in skip_pass:
-        from .pass1a_evidence import load_1a, run_pass1a, save_1a, init_progress
+        from .pass1a_evidence import load_1a, run_pass1a, save_1a
 
         logger.info("=" * 60)
         logger.info("PASS 1-A: Independent Chunk Annotation")
@@ -335,18 +336,13 @@ async def run_pipeline(
 
         pass1a_conc = safe_concurrency_for_pass("pass1a")
         chunk_semaphore = asyncio.Semaphore(pass1a_conc)
-        total_chunks = sum(v["num_chunks"] for v in videos
-                           if not load_1a(v["video_id"]))  # exclude cached
-        stream_path = AUDIT_DIR / "pass1a_stream.jsonl"
-        logger.info(f"PASS 1-A: {total_chunks} new chunks, concurrency={pass1a_conc}")
-        logger.info(f"PASS 1-A: real-time results → tail -f {stream_path}")
-        init_progress(total_chunks, stream_path=stream_path)
+        uncached_1a = [v for v in videos if not load_1a(v["video_id"])]
+        tracker_1a = ProgressTracker("pass1a", len(uncached_1a), AUDIT_DIR)
 
         async def process_video_1a(video):
             vid = video["video_id"]
             cached = load_1a(vid)
             if cached:
-                logger.info(f"  [{vid}] 1-A cached ({len(cached)} chunks)")
                 return vid, cached
             captions = await run_pass1a(
                 video_id=vid,
@@ -356,11 +352,13 @@ async def run_pipeline(
                 semaphore=chunk_semaphore,
             )
             save_1a(vid, captions)
+            n_ok = sum(1 for c in captions if c.get("parse_success"))
+            await tracker_1a.record(success=n_ok > 0, video_id=vid, chunks=len(captions), parsed=n_ok)
             return vid, captions
 
         results = await asyncio.gather(*[process_video_1a(v) for v in videos])
         evidence_1a_map = {vid: caps for vid, caps in results}
-        logger.info(f"Pass 1-A complete: {len(evidence_1a_map)} videos")
+        tracker_1a.summary()
     else:
         from .pass1a_evidence import load_1a
         evidence_1a_map = {}
@@ -383,11 +381,13 @@ async def run_pipeline(
         pass1b_semaphore = asyncio.Semaphore(pass1b_conc)
         logger.info(f"PASS 1-B: {len(evidence_1a_map)} videos, concurrency={pass1b_conc}")
 
+        uncached_1b = [v for v in videos if not load_1b(v["video_id"]) and v["video_id"] in evidence_1a_map]
+        tracker_1b = ProgressTracker("pass1b", len(uncached_1b), AUDIT_DIR)
+
         async def process_video_1b(video):
             vid = video["video_id"]
             cached = load_1b(vid)
             if cached:
-                logger.info(f"  [{vid}] 1-B cached")
                 return vid, cached
             if vid not in evidence_1a_map:
                 return vid, None
@@ -398,11 +398,13 @@ async def run_pipeline(
                 semaphore=pass1b_semaphore,
             )
             save_1b(vid, enriched)
+            n_sc = sum(1 for c in enriched if c.get("state_changes"))
+            await tracker_1b.record(success=True, video_id=vid, state_changes=n_sc)
             return vid, enriched
 
         results = await asyncio.gather(*[process_video_1b(v) for v in videos])
         evidence_map = {vid: ev for vid, ev in results if ev is not None}
-        logger.info(f"Pass 1-B complete: {len(evidence_map)} videos")
+        tracker_1b.summary()
     else:
         from .pass1b_enrich import load_1b
         evidence_map = {}
@@ -425,11 +427,13 @@ async def run_pipeline(
         logger.info(f"PASS 2 safe concurrency={pass2_conc}")
         semaphore = asyncio.Semaphore(pass2_conc)
 
+        uncached_p2 = [v for v in videos if not load_rollout(v["video_id"])]
+        tracker_p2 = ProgressTracker("pass2", len(uncached_p2), AUDIT_DIR)
+
         async def process_video_pass2(video):
             vid = video["video_id"]
             cached = load_rollout(vid)
             if cached:
-                logger.info(f"  [{vid}] Using cached rollout")
                 return vid, cached
 
             async with semaphore:
@@ -441,15 +445,16 @@ async def run_pipeline(
                     evidence=evidence_map.get(vid),
                 )
                 save_rollout(vid, rollout)
-                logger.info(
-                    f"  [{vid}] Rollout complete: {len(rollout['thinks'])} thinks, "
-                    f"{len(rollout['compression_events'])} compressions"
+                await tracker_p2.record(
+                    success=True, video_id=vid,
+                    thinks=len(rollout["thinks"]),
+                    compressions=len(rollout["compression_events"]),
                 )
                 return vid, rollout
 
         results = await asyncio.gather(*[process_video_pass2(v) for v in videos])
         rollout_map = {vid: roll for vid, roll in results}
-        logger.info(f"Pass 2 complete: {len(rollout_map)} videos")
+        tracker_p2.summary()
 
         # --- Compression statistics ---
         from .pass2_rollout import compute_compression_stats
@@ -479,23 +484,25 @@ async def run_pipeline(
         pass3a_conc = safe_concurrency_for_pass("pass3a")
         semaphore_3a = asyncio.Semaphore(pass3a_conc)
 
+        uncached_3a = [v for v in videos if not load_cards(v["video_id"]) and v["video_id"] in evidence_map]
+        tracker_3a = ProgressTracker("pass3a", len(uncached_3a), AUDIT_DIR)
+
         async def process_video_3a(video):
             vid = video["video_id"]
             cached = load_cards(vid)
             if cached:
-                logger.info(f"  [{vid}] 3-A cached ({len(cached)} cards)")
                 return vid, cached
             if vid not in evidence_map:
                 return vid, []
             async with semaphore_3a:
                 cards = await generate_cards(vid, evidence_map[vid], client)
                 save_cards(vid, cards)
+                await tracker_3a.record(success=len(cards) > 0, video_id=vid, n_cards=len(cards))
                 return vid, cards
 
         results = await asyncio.gather(*[process_video_3a(v) for v in videos])
         cards_map = {vid: cards for vid, cards in results}
-        total_cards = sum(len(c) for c in cards_map.values())
-        logger.info(f"Pass 3-A complete: {total_cards} cards across {len(cards_map)} videos")
+        tracker_3a.summary()
     else:
         from .pass3a_cards import load_cards
         cards_map = {}
@@ -555,6 +562,8 @@ async def run_pipeline(
         logger.info("=" * 60)
 
         all_samples = []
+        uncached_3c = [v for v in videos if v["video_id"] in trajectories_map]
+        tracker_3c = ProgressTracker("pass3c", len(uncached_3c), AUDIT_DIR)
 
         for v in videos:
             vid = v["video_id"]
@@ -587,9 +596,9 @@ async def run_pipeline(
 
             save_samples(vid, vid_samples)
             all_samples.extend(vid_samples)
-            logger.info(f"  [{vid}] 3-C: {len(vid_samples)} samples from {len(trajectories)} trajectories")
+            await tracker_3c.record(success=len(vid_samples) > 0, video_id=vid, n_samples=len(vid_samples))
 
-        logger.info(f"Pass 3-C complete: {len(all_samples)} total samples")
+        tracker_3c.summary()
     else:
         from .pass3c_samples import load_samples
         all_samples = []
