@@ -946,7 +946,7 @@ async def generate_questions_batch(
     When frame_paths is provided, includes the evidence chunk's frames
     in the prompt so the 397B can generate more grounded questions.
     """
-    from .pass1_evidence import build_vision_content, get_chunk_frame_paths
+    from .pass1a_evidence import build_vision_content, get_chunk_frame_paths
 
     for task in tasks:
         evidence_chunk = task["evidence_chunks"][0] if task["evidence_chunks"] else 0

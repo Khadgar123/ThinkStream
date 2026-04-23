@@ -305,10 +305,10 @@ async def run_pipeline(
         api_base=api_base,
         model=model,
         max_concurrent=max(
-            safe_concurrency_for_pass("pass1_evidence"),
+            safe_concurrency_for_pass("pass1a"),
+            safe_concurrency_for_pass("pass1b"),
             safe_concurrency_for_pass("pass2_rollout"),
             safe_concurrency_for_pass("pass3_tasks"),
-            safe_concurrency_for_pass("pass4_forks"),
         ),
     )
 
@@ -331,48 +331,87 @@ async def run_pipeline(
     # =================================================================
     # PASS 1: Teacher Evidence Graph
     # =================================================================
+    # =================================================================
+    # PASS 1-A: Independent Chunk Annotation
+    # =================================================================
     if 1 not in skip_pass:
-        from .pass1_evidence import load_evidence, run_pass1_single_video, save_evidence
+        from .pass1a_evidence import load_1a, run_pass1a, save_1a
 
         logger.info("=" * 60)
-        logger.info("PASS 1: Teacher Evidence Graph (chunk-parallel)")
+        logger.info("PASS 1-A: Independent Chunk Annotation")
         logger.info("=" * 60)
 
-        # 1-A: chunk-level semaphore (2 frames per request, high concurrency)
-        pass1a_conc = safe_concurrency_for_pass("pass1_evidence")
-        logger.info(f"PASS 1-A chunk concurrency={pass1a_conc}")
+        pass1a_conc = safe_concurrency_for_pass("pass1a")
         chunk_semaphore = asyncio.Semaphore(pass1a_conc)
-
         total_chunks = sum(v["num_chunks"] for v in videos)
-        logger.info(f"PASS 1-A total chunks: {total_chunks}")
-        # 1-B runs sequentially after 1-A per video (2 text calls, low concurrency)
-        # Concurrency is naturally limited by asyncio.gather across videos
+        logger.info(f"PASS 1-A: {total_chunks} chunks, concurrency={pass1a_conc}")
 
-        async def process_video_pass1(video):
+        async def process_video_1a(video):
             vid = video["video_id"]
-            cached = load_evidence(vid)
+            cached = load_1a(vid)
             if cached:
-                logger.info(f"  [{vid}] Using cached evidence ({len(cached)} chunks)")
+                logger.info(f"  [{vid}] 1-A cached ({len(cached)} chunks)")
                 return vid, cached
-
-            captions = await run_pass1_single_video(
+            captions = await run_pass1a(
                 video_id=vid,
                 frame_paths=video_frames.get(vid, []),
                 num_chunks=video["num_chunks"],
                 client=client,
                 semaphore=chunk_semaphore,
             )
-            save_evidence(vid, captions)
+            save_1a(vid, captions)
             return vid, captions
 
-        results = await asyncio.gather(*[process_video_pass1(v) for v in videos])
-        evidence_map = {vid: caps for vid, caps in results}
-        logger.info(f"Pass 1 complete: {len(evidence_map)} videos, {total_chunks} chunks")
+        results = await asyncio.gather(*[process_video_1a(v) for v in videos])
+        evidence_1a_map = {vid: caps for vid, caps in results}
+        logger.info(f"Pass 1-A complete: {len(evidence_1a_map)} videos")
     else:
-        from .pass1_evidence import load_evidence
+        from .pass1a_evidence import load_1a
+        evidence_1a_map = {}
+        for v in videos:
+            cached = load_1a(v["video_id"])
+            if cached:
+                evidence_1a_map[v["video_id"]] = cached
+
+    # =================================================================
+    # PASS 1-B: Entity Alignment + State Change Detection
+    # =================================================================
+    if 1 not in skip_pass:
+        from .pass1b_enrich import load_1b, run_pass1b, save_1b
+
+        logger.info("=" * 60)
+        logger.info("PASS 1-B: Entity Alignment + State Changes")
+        logger.info("=" * 60)
+
+        pass1b_conc = safe_concurrency_for_pass("pass1b")
+        pass1b_semaphore = asyncio.Semaphore(pass1b_conc)
+        logger.info(f"PASS 1-B: {len(evidence_1a_map)} videos, concurrency={pass1b_conc}")
+
+        async def process_video_1b(video):
+            vid = video["video_id"]
+            cached = load_1b(vid)
+            if cached:
+                logger.info(f"  [{vid}] 1-B cached")
+                return vid, cached
+            if vid not in evidence_1a_map:
+                return vid, None
+            enriched = await run_pass1b(
+                evidence=evidence_1a_map[vid],
+                client=client,
+                video_id=vid,
+                semaphore=pass1b_semaphore,
+            )
+            save_1b(vid, enriched)
+            return vid, enriched
+
+        results = await asyncio.gather(*[process_video_1b(v) for v in videos])
+        evidence_map = {vid: ev for vid, ev in results if ev is not None}
+        logger.info(f"Pass 1-B complete: {len(evidence_map)} videos")
+    else:
+        from .pass1b_enrich import load_1b
         evidence_map = {}
         for v in videos:
-            cached = load_evidence(v["video_id"])
+            cached = load_1b(v["video_id"])
             if cached:
                 evidence_map[v["video_id"]] = cached
 

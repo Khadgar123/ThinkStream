@@ -1197,7 +1197,7 @@ async def _generate_response_text(task, snapshots, observations, client, video_i
     - compress_response: answer is in compressed summary → NO frames
     - unanswerable: answer not available → NO frames
     """
-    from .pass1_evidence import build_vision_content, get_chunk_frame_paths
+    from .pass1a_evidence import build_vision_content, get_chunk_frame_paths
 
     ask_chunk = task["ask_chunk"]
     snapshot = snapshots.get(ask_chunk, snapshots.get(str(ask_chunk)))
@@ -1263,7 +1263,7 @@ async def _generate_response_text(task, snapshots, observations, client, video_i
 async def _generate_recall_texts(task, snapshots, observations, client, video_id,
                                   frame_paths=None):
     """Generate recall query + response texts via 397B."""
-    from .pass1_evidence import build_vision_content, get_chunk_frame_paths
+    from .pass1a_evidence import build_vision_content, get_chunk_frame_paths
     ask_chunk = task["ask_chunk"]
     snapshot = snapshots.get(ask_chunk, snapshots.get(str(ask_chunk)))
     if not snapshot:

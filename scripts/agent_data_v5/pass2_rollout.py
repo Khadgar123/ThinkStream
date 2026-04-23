@@ -37,7 +37,7 @@ from .config import (
     SUMMARY_TOKENS_MIN,
     VISUAL_WINDOW_CHUNKS,
 )
-from .pass1_evidence import build_vision_content, get_chunk_frame_paths
+from .pass1a_evidence import build_vision_content, get_chunk_frame_paths
 
 logger = logging.getLogger(__name__)
 

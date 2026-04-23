@@ -15,7 +15,9 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]  # ThinkStream/
 DATA_ROOT = PROJECT_ROOT / "data" / "agent_v5"
 
 # Stage outputs
-EVIDENCE_DIR = DATA_ROOT / "evidence_graph"
+EVIDENCE_DIR = DATA_ROOT / "evidence_graph"     # legacy, used by old pass1_evidence.py
+EVIDENCE_1A_DIR = DATA_ROOT / "evidence_1a"     # 1-A raw per-chunk (no entity ID, no state_changes)
+EVIDENCE_1B_DIR = DATA_ROOT / "evidence_1b"     # 1-B enriched (entity ID hint + state_changes)
 ROLLOUT_DIR = DATA_ROOT / "rollout"
 TASKS_DIR = DATA_ROOT / "tasks"
 SAMPLES_DIR = DATA_ROOT / "samples"
@@ -23,7 +25,7 @@ FINAL_DIR = DATA_ROOT / "final"
 AUDIT_DIR = DATA_ROOT / "audits"
 
 ALL_DIRS = [
-    DATA_ROOT, EVIDENCE_DIR, ROLLOUT_DIR, TASKS_DIR,
+    DATA_ROOT, EVIDENCE_DIR, EVIDENCE_1A_DIR, EVIDENCE_1B_DIR, ROLLOUT_DIR, TASKS_DIR,
     SAMPLES_DIR, FINAL_DIR, AUDIT_DIR,
 ]
 
@@ -122,7 +124,8 @@ VLLM_PREFILL_BATCH_TOKEN_BUDGET = 32_000_000  # KV usage ~2.6% at 64 conc → 10
 # vLLM: --limit-mm-per-prompt '{"image":28}' to accommodate recall.
 # Thinking tokens estimated at ~2K per request (varies).
 PASS_CONTEXT_ESTIMATES = {
-    "pass1_evidence": {"input": 1_500, "output": 5_000, "thinking": 0},  # 2 frames only
+    "pass1a": {"input": 1_500, "output": 5_000, "thinking": 0},  # 2 frames per chunk
+    "pass1b": {"input": 3_000, "output": 5_000, "thinking": 0},  # text-only, full video summary
     "pass2_rollout":  {"input": 10_000, "output": 5_000, "thinking": 0},
     # Pass3/4: now include video frames (~2-4 frames per request).
     # max_tokens=16384 bounds thinking time.
@@ -220,11 +223,17 @@ PASS_CONFIG = {
     # thinking into reasoning_content, content is clean output.
     # max_tokens covers thinking + response total. Set generously
     # to avoid truncation — data quality > token efficiency.
-    "pass1_evidence": {
+    "pass1a": {
         "max_tokens": 16384,
         "temperature": 0.3,
         "thinking": True,
-        "concurrent": 1024,  # chunk-level (not video-level), 2 frames per request
+        "concurrent": 1024,   # chunk-level, 2 frames per request, high concurrency
+    },
+    "pass1b": {
+        "max_tokens": 16384,
+        "temperature": 0.3,
+        "thinking": True,
+        "concurrent": 64,     # video-level, text-only, lower concurrency
     },
     "pass2_rollout": {
         "max_tokens_observation": 16384,
