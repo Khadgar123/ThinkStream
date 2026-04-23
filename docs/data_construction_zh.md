@@ -448,110 +448,56 @@ best_range = argmin(score)   # 综合最优
 300 视频 ÷ 64 ≈ ~5 min（vs 旧方案 ~70 min）
 ```
 
-#### 1-B: 后处理（变化检测 + 可选实体链接）
+#### 1-B: 后处理（两次 397B 调用：实体对齐 + 变化检测）
 
-1-A 输出的是每个 chunk 的**静态快照**。1-B 做跨 chunk 后处理，全部纯程序。
+1-A 输出的是每个 chunk 的**静态快照**。1-B 做跨 chunk 分析，拆为两次 397B 调用（避免单次 thinking 爆炸）。
 
-##### 下游到底需要什么？
-
-| 消费者 | 用法 | 真正需要的信号 | 需要实体一致 ID？ |
-|--------|------|-------------|----------------|
-| Pass 2 `_teacher_fact_value` | `len(state_changes) * 0.3` | "这个 chunk 有没有变化" (bool/count) | **不需要** |
-| Pass 3-A E2 检测 | `if cap.get("state_changes")` | "这个 chunk 有变化吗" (bool) | **不需要** |
-| Pass 3-A P1 步骤序列 | 连续 ≥3 个有变化的 chunk | "连续变化的区间" | **不需要** |
-| Pass 3-A C1 比较 | 同实体跨时间的状态差异 | "entity X 在 t1 vs t2" | **需要** |
-| Pass 3-A R1 再识别 | 实体消失→重现模式 | "entity X 出现/消失时间线" | **需要** |
-
-**结论：大多数场景只需要"有没有变化"这个信号，不需要精确的实体 ID。C1 和 R1 用 desc 描述实体即可（见下方），不需要跨 chunk 一致 ID。**
-
-##### 1-B-1: 变化检测（所有视频必做，不需要实体 ID）
-
-不依赖实体链接，直接比较相邻 chunk 的 **action 词集合** 变化：
-
-```python
-def detect_chunk_changes(evidence: List[Dict]):
-    """
-    比较相邻 chunk 的 action 词集合，检测变化。
-    
-    不做实体链接——只看"这个 chunk 的动作词集合和上一个 chunk 是否不同"。
-    输出: evidence[i]["state_changes"] = ["action changed"] 或 []
-    
-    这足以满足 Pass 2 评分和 Pass 3-A 的 E2/P1 检测。
-    """
-    if not evidence:
-        return
-    evidence[0]["state_changes"] = []
-    
-    for i in range(1, len(evidence)):
-        prev_actions = _extract_action_words(evidence[i - 1])
-        curr_actions = _extract_action_words(evidence[i])
-        
-        # 实体数量变化
-        prev_n = len(evidence[i - 1].get("visible_entities", []))
-        curr_n = len(evidence[i].get("visible_entities", []))
-        entity_count_changed = abs(prev_n - curr_n) >= 1
-        
-        # action 词集合变化
-        if not prev_actions and not curr_actions:
-            action_changed = False
-        elif not prev_actions or not curr_actions:
-            action_changed = True
-        else:
-            overlap = len(prev_actions & curr_actions) / max(len(prev_actions | curr_actions), 1)
-            action_changed = overlap < 0.5  # 动作词重叠 < 50% → 认为有变化
-        
-        changes = []
-        if action_changed:
-            changes.append("action_changed")
-        if entity_count_changed:
-            changes.append("entity_count_changed")
-        
-        evidence[i]["state_changes"] = changes
-
-
-def _extract_action_words(cap: Dict) -> set:
-    """提取一个 chunk 中所有 entity 的 action 关键词"""
-    stop = {"the", "a", "an", "is", "in", "on", "at", "to", "of", "with", "and"}
-    words = set()
-    for entity in cap.get("visible_entities", []):
-        action = entity.get("action", "")
-        words |= {w.lower() for w in action.split() if w.lower() not in stop and len(w) > 2}
-    return words
-```
-
-**为什么不依赖实体 ID**：
-- Pass 2 压缩评分只看 `len(state_changes)` → 有几项变化，不关心谁变了
-- E2 只看 `if cap.get("state_changes")` → 有没有变化
-- P1 只看连续 chunk 有无变化 → bool 信号
-- action 词集合变化比逐实体比较 action 字符串更鲁棒（不怕 "stirring sauce" vs "stirring the pot" 的措辞差异）
-
-##### 1-B-2: C1/R1 不需要实体链接
-
-C1（跨时间比较）和 R1（再识别）**不需要跨 chunk 的实体 ID**。
-问题用外观描述（desc）引用实体，模型靠视觉理解匹配，比编号更自然：
+##### 两次调用设计
 
 ```
-C1 问题用 desc：
-  ✅ "锅里的东西和刚才比有什么变化？"（用位置/外观描述）
-  ✅ "穿红围裙的人现在和之前做的事一样吗？"
-  ❌ "pot_1 和之前比有什么变化？"（需要知道 pot_1 是谁）
+Call 1: 实体对齐
+  输入: ~1K tokens（unique desc 列表，~20-40 项，纯文本）
+  输出: entity groups [{id: "person_1", descs: [...]}]
+  → 写回 entity["id"]（粗筛 hint）
 
-R1 问题用 desc：
-  ✅ "之前那个小白碗还在画面里吗？"（用外观描述）
-  ❌ "bowl_1 还在画面里吗？"
+Call 2: 变化检测
+  输入: ~3K tokens（chunk entity/action 摘要，纯文本）
+  输出: state changes [{chunk: 3, change: "started pouring oil"}]
+  → 写回 cap["state_changes"]
 ```
 
-**Pass 3-A 的 `scan_opportunities` 自动检测 C1/R1 机会时**，也用 desc 词重叠而非 entity ID：
-- C1：相邻 chunk 的 state_changes 非空 + 有相似 desc 的实体 → 可问比较
-- R1：某个 desc 在视频前半段出现、中间消失、后半段重现 → 可问再识别
+**两次都是纯文本输入，不发视频帧。**
+1-A 已经用 2 帧详细描述了每个实体的外观/动作，1-B 基于这些文本描述做跨 chunk 推理足够。
+如果未来发现纯文本不够（歧义场景），可以为 Call 1 附加少量代表帧（每个 unique desc 一帧）。
 
-397B 在生成 Task Card 时看到全视频的 evidence 摘要，直接判断哪些实体是"同一个"并生成比较/再识别问题，比程序做实体链接更可靠。
+##### entity_id 是粗筛 hint，不是 ground truth
 
-##### 1-B 执行流程
+实体对齐即使用 397B 也可能出错（"hand stirring" 是 person_1 还是 person_2 的手？）。因此：
+
+| 用途 | 怎么用 entity_id | 出错的影响 |
+|------|-----------------|----------|
+| `scan_opportunities` C1/R1 粗筛 | "同 id 在不同 chunk 出现 → 标记为候选" | 多标/漏标几个候选，无害 |
+| Pass 3-A 397B 生成 Task Card | **不用 entity_id** — 397B 看完整 evidence 自己判断 | 不受影响 |
+| Task Card 问题文本 | **必须用 desc 描述**，不用 id | 不受影响 |
 
 ```
-1-B-1 变化检测 → state_changes    （纯程序，~0.1ms/视频）
-C1/R1 的实体匹配由 Pass 3-A 的 397B 直接处理（不需要 1-B 做实体链接）
+问题文本：
+  ✅ "穿红围裙的人现在和之前做的事一样吗？"（desc）
+  ✅ "之前那个小白碗还在画面里吗？"（desc）
+  ❌ "person_1 和之前比有什么变化？"（id）
+  ❌ "bowl_1 还在画面里吗？"（id）
+```
+
+**模型在推理时看到的是视觉帧和 desc 文本，不是 id。训练数据的问题也必须用 desc。**
+
+##### 并发与 context 控制
+
+```
+1-B 每视频 2 次纯文本 397B call
+  300 videos × 2 calls = 600 calls
+  每 call: ~1-3K input, max_tokens=16384 (含 thinking)
+  并发: 由 asyncio.gather 自然控制（~300 video 并发）
+  总耗时: ~15-30s
 ```
 
 **用途**（不变）：
