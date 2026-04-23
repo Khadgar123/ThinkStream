@@ -333,7 +333,7 @@ def build_compress_request_from_thinks(
     first_time = to_compress[0]["chunk"] * AGENT_CHUNK_SEC
     last_time = to_compress[-1]["chunk"] * AGENT_CHUNK_SEC + AGENT_CHUNK_SEC
 
-    target_length = estimate_summary_length(to_compress)
+    target_length = estimate_summary_length(to_compress, evidence=evidence)
 
     # Compute overlapping frames: compress range ∩ visual window
     window_start = max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1)
@@ -489,7 +489,20 @@ def score_range_for_compression(
 
     # --- importance_lost ---
     unique_words = set(w.lower() for w in words)
-    n_entities = sum(1 for w in set(words) if w and (w[0].isupper() or "_" in w))
+    # Entity count: use teacher evidence when available (reliable),
+    # fall back to noun-phrase heuristic (not uppercase — uppercase is
+    # unreliable for non-English and lowercase entity mentions).
+    n_entities = 0
+    if evidence:
+        ev_index = _evidence_by_chunk(evidence)
+        for t in thinks:
+            cap = ev_index.get(t["chunk"])
+            if cap:
+                n_entities += len(cap.get("visible_entities", []))
+    else:
+        # Fallback: count unique multi-word noun phrases as proxy.
+        # Better than uppercase heuristic which misses "pot", "apron", etc.
+        n_entities = len(set(words)) // 5  # rough: ~1 entity per 5 unique words
     has_numbers = any(c.isdigit() for c in text)
     has_ocr = any(kw in text.lower() for kw in ["ocr", "text", "label", "sign", "read", "display"])
     importance = n_entities * 2.0 + (8.0 if has_numbers else 0) + (8.0 if has_ocr else 0)
@@ -617,13 +630,32 @@ def choose_optimal_compress_range(
     return selected
 
 
-def estimate_summary_length(observations: List[Dict]) -> int:
-    """Estimate appropriate summary length based on content complexity."""
+def estimate_summary_length(
+    observations: List[Dict],
+    evidence: Optional[List[Dict]] = None,
+) -> int:
+    """Estimate appropriate summary length based on content complexity.
+
+    Uses teacher evidence entity count when available (reliable).
+    Falls back to unique-word ratio (not uppercase heuristic).
+    """
     text = " ".join(item.get("text", item.get("obs", "")) for item in observations)
-    # Count unique entity-like words (capitalized or specific patterns)
-    words = set(w for w in text.split() if len(w) > 0)
-    n_entities = sum(1 for w in words if len(w) > 0 and (w[0].isupper() or "_" in w))
     has_numbers = any(c.isdigit() for c in text)
+
+    # Entity count from evidence (preferred)
+    n_entities = 0
+    if evidence:
+        ev_index = _evidence_by_chunk(evidence)
+        for obs in observations:
+            cap = ev_index.get(obs.get("chunk", -1))
+            if cap:
+                n_entities += len(cap.get("visible_entities", []))
+        # Deduplicate: same entity across chunks counts once
+        n_entities = min(n_entities, 15)  # cap for sanity
+    else:
+        # Fallback: unique words as complexity proxy
+        words = set(w for w in text.split() if len(w) > 2)
+        n_entities = len(words) // 5
 
     base = SUMMARY_TOKENS_MIN  # 100
     base += min(n_entities * 8, 60)
