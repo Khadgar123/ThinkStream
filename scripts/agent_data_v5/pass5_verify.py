@@ -683,12 +683,48 @@ def verify_sample(sample: Dict) -> Dict:
     return sample
 
 
-def filter_samples(samples: List[Dict]) -> Tuple[List[Dict], Dict]:
-    """Filter samples (per-timestep or multi-turn conversations).
+def _normalize_messages_sample(sample: Dict) -> Dict:
+    """Extract 'output' from messages-format sample so verify_sample() works.
 
-    Detects format automatically:
-    - If sample has "messages" key → multi-turn conversation → verify_conversation
-    - If sample has "output" key → per-timestep sample → verify_sample (legacy)
+    Pipeline v5 stores the assistant turn inside sample["messages"].
+    verify_sample() reads sample["output"]. This bridges the two.
+    Also maps metadata["recall_noise"] -> input.recall_result.noise_level
+    for verify_information_flow().
+    """
+    if "output" in sample:
+        return sample  # already has output, nothing to do
+
+    messages = sample.get("messages", [])
+    for msg in reversed(messages):
+        if msg.get("role") == "assistant":
+            content = msg.get("content", "")
+            if isinstance(content, list):
+                # Extract text from content list
+                content = " ".join(
+                    item.get("text", "") for item in content
+                    if isinstance(item, dict) and item.get("type") == "text"
+                )
+            sample["output"] = content
+            break
+    else:
+        sample["output"] = ""
+
+    # Bridge recall_noise from metadata to input.recall_result for
+    # verify_information_flow() which reads sample["input"]["recall_result"]
+    metadata = sample.get("metadata", {})
+    if metadata.get("recall_noise") and "input" not in sample:
+        sample["input"] = {
+            "recall_result": {"noise_level": metadata["recall_noise"]}
+        }
+
+    return sample
+
+
+def filter_samples(samples: List[Dict]) -> Tuple[List[Dict], Dict]:
+    """Filter samples through full verification.
+
+    Both messages-format (pipeline v5) and legacy input/output samples
+    go through verify_sample() for deep quality checks.
 
     Returns: (passed_samples, stats_dict)
     """
@@ -697,12 +733,9 @@ def filter_samples(samples: List[Dict]) -> Tuple[List[Dict], Dict]:
     fail_reasons_count = {}
 
     for sample in samples:
-        if "messages" in sample:
-            # Multi-turn conversation format
-            sample = verify_conversation(sample)
-        else:
-            # Legacy per-timestep format
-            sample = verify_sample(sample)
+        # Normalize messages-format so verify_sample can read sample["output"]
+        sample = _normalize_messages_sample(sample)
+        sample = verify_sample(sample)
 
         if sample["verification"]["passed"]:
             passed.append(sample)
@@ -721,11 +754,11 @@ def filter_samples(samples: List[Dict]) -> Tuple[List[Dict], Dict]:
         "action_distribution": {},
     }
 
-    # Count action types across all conversations
+    # Count action types in passed samples
     for sample in passed:
-        for action_type, count in sample.get("verification", {}).get("action_counts", {}).items():
-            stats["action_distribution"][action_type] = \
-                stats["action_distribution"].get(action_type, 0) + count
+        sample_type = sample.get("sample_type", "unknown")
+        stats["action_distribution"][sample_type] = \
+            stats["action_distribution"].get(sample_type, 0) + 1
 
     return passed, stats
 

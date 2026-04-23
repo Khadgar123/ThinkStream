@@ -88,6 +88,10 @@ MAX_CANDIDATES_PER_VIDEO = {
     # "compress" is not limited — determined by actual compression events
 }
 
+# Per-video FINAL sample cap (applied after Pass4 generation).
+# Candidates limit controls API cost; this controls training set balance.
+MAX_SAMPLES_PER_VIDEO = 50
+
 # Backward compat aliases (deprecated — use token-based constants above)
 OBSERVATION_TOKENS = THINK_TOKENS  # deprecated alias
 COMPRESS_THRESHOLD = 10  # deprecated: item-count fallback, prefer COMPRESS_TOKEN_THRESHOLD

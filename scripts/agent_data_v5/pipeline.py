@@ -26,6 +26,7 @@ from .config import (
     DATA_ROOT,
     EVIDENCE_DIR,
     FINAL_DIR,
+    MAX_SAMPLES_PER_VIDEO,
     PASS_CONFIG,
     PHASE_CONFIG,
     ROLLOUT_DIR,
@@ -111,8 +112,18 @@ def select_videos(
         with open(registry_path, "r") as f:
             for line in f:
                 videos.append(json.loads(line))
-        logger.info(f"Loaded {len(videos)} videos from registry.")
-        return videos[:num_videos]
+        # Validate registry against current parameters
+        valid = [v for v in videos
+                 if min_duration <= v.get("duration_sec", 0) <= max_duration]
+        if len(valid) >= num_videos:
+            logger.info(f"Loaded {len(valid)} videos from registry "
+                        f"({len(videos) - len(valid)} filtered by duration).")
+            return valid[:num_videos]
+        else:
+            logger.warning(
+                f"Registry has {len(valid)} valid videos (need {num_videos}), "
+                f"re-selecting from catalog."
+            )
 
     # --- Source: CSV catalog (fast) ---
     if catalog_csv is None:
@@ -506,12 +517,13 @@ async def run_pipeline(
             compress_at = {e["trigger_chunk"]: e for e in compression_events}
             task_at = {}  # chunk_idx -> (task_type, task)
             skip_task_keys = {"_", "compress", "pending"}  # handled separately
-            for task_type_key, task_list in tasks.items():
-                if not isinstance(task_list, list):
-                    continue
-                if any(task_type_key.startswith(s) for s in skip_task_keys):
-                    continue
-                for task in task_list:
+            # Shuffle task type iteration order to avoid bias when multiple
+            # types compete for the same chunk (first-come-first-served).
+            task_type_keys = [k for k in tasks if isinstance(tasks[k], list)
+                              and not any(k.startswith(s) for s in skip_task_keys)]
+            random.shuffle(task_type_keys)
+            for task_type_key in task_type_keys:
+                for task in tasks[task_type_key]:
                     if task.get("question") and task.get("ask_chunk") not in task_at:
                         task_at[task["ask_chunk"]] = (task_type_key, task)
 
@@ -526,7 +538,7 @@ async def run_pipeline(
                             pending_active[c] = pt
 
             interaction_chunks = set(task_at.keys())
-            vid_sample_count = 0
+            vid_samples = []  # collect all, then budget-downsample
 
             for chunk_idx in range(rollout["num_chunks"]):
                 if chunk_idx >= len(observations):
@@ -564,8 +576,7 @@ async def run_pipeline(
                         sample["video_id"] = vid
                         sample["metadata"] = {"task_type": task_type, "gold_action": "response",
                                               "gold_answer": task.get("gold_answer", "")}
-                        all_samples.append(sample)
-                        vid_sample_count += 1
+                        vid_samples.append(sample)
 
                     elif task["gold_action"] == "recall":
                         query_json, resp, recall_result = await _generate_recall_texts(
@@ -585,7 +596,7 @@ async def run_pipeline(
                         s1["video_id"] = vid
                         s1["metadata"] = {"task_type": task_type, "gold_action": "recall",
                                           "gold_answer": task.get("gold_answer", "")}
-                        all_samples.append(s1)
+                        vid_samples.append(s1)
 
                         # Sample 2: post-recall response (no think)
                         is_failed = recall_result.get("noise_level") in ("distractor", "failure")
@@ -612,8 +623,7 @@ async def run_pipeline(
                         s2["video_id"] = vid
                         s2["metadata"] = {"task_type": task_type, "gold_action": "response",
                                           "recall_noise": recall_result.get("noise_level")}
-                        all_samples.append(s2)
-                        vid_sample_count += 2
+                        vid_samples.append(s2)
 
                 elif is_pending_start:
                     # User asks event-watch question → model outputs silent
@@ -627,8 +637,7 @@ async def run_pipeline(
                     sample["video_id"] = vid
                     sample["metadata"] = {"task_type": "pending_start",
                                           "pending_question": pt["question"]}
-                    all_samples.append(sample)
-                    vid_sample_count += 1
+                    vid_samples.append(sample)
 
                 elif is_pending_trigger:
                     # Event happened → model responds to pending question
@@ -652,8 +661,7 @@ async def run_pipeline(
                                           "gold_action": "response",
                                           "pending_question": pt["question"],
                                           "event": pt.get("event", "")}
-                    all_samples.append(sample)
-                    vid_sample_count += 1
+                    vid_samples.append(sample)
 
                 elif is_pending_mid and chunk_idx == pending_active[chunk_idx].get("mid_chunk"):
                     # Mid-point silent with pending visible
@@ -671,8 +679,7 @@ async def run_pipeline(
                     sample["video_id"] = vid
                     sample["metadata"] = {"task_type": "pending_silent",
                                           "pending_question": pt["question"]}
-                    all_samples.append(sample)
-                    vid_sample_count += 1
+                    vid_samples.append(sample)
 
                 elif has_compress:
                     event = compress_at[chunk_idx]
@@ -697,7 +704,7 @@ async def run_pipeline(
                     c1["sample_type"] = "compress"
                     c1["video_id"] = vid
                     c1["metadata"] = {**compress_meta_base, "phase": "C1"}
-                    all_samples.append(c1)
+                    vid_samples.append(c1)
 
                     # C2: system trigger WITHOUT range
                     c2_trigger = "<compress_trigger/>"
@@ -708,9 +715,8 @@ async def run_pipeline(
                     c2["sample_type"] = "compress"
                     c2["video_id"] = vid
                     c2["metadata"] = {**compress_meta_base, "phase": "C2"}
-                    all_samples.append(c2)
+                    vid_samples.append(c2)
 
-                    vid_sample_count += 2
 
                 else:
                     # Silent — subsample ~20%
@@ -722,16 +728,64 @@ async def run_pipeline(
                     )
                     sample["sample_type"] = "silent"
                     sample["video_id"] = vid
-                    all_samples.append(sample)
-                    vid_sample_count += 1
+                    vid_samples.append(sample)
 
-            logger.info(f"  [{vid}] {vid_sample_count} samples")
+            # --- Per-video budgeted downsample ---
+            # Collect all, then cap with type-stratified selection so no
+            # single type (especially compress) dominates.
+            if len(vid_samples) > MAX_SAMPLES_PER_VIDEO:
+                from collections import defaultdict
+                by_type = defaultdict(list)
+                for s in vid_samples:
+                    by_type[s.get("sample_type", "unknown")].append(s)
+                n_types = max(len(by_type), 1)
+                per_type_budget = MAX_SAMPLES_PER_VIDEO // n_types
+                kept = set()  # track indices for O(1) lookup
+                kept_list = []
+                for stype, samples_of_type in by_type.items():
+                    take = min(len(samples_of_type), per_type_budget)
+                    if take < len(samples_of_type):
+                        # Evenly spaced selection across the list (timeline order)
+                        step = len(samples_of_type) / take
+                        indices = [int(i * step) for i in range(take)]
+                        selected = [samples_of_type[j] for j in indices]
+                    else:
+                        selected = samples_of_type
+                    for s in selected:
+                        kept.add(id(s))
+                        kept_list.append(s)
+                # Fill remaining budget
+                surplus = MAX_SAMPLES_PER_VIDEO - len(kept_list)
+                if surplus > 0:
+                    remaining = [s for s in vid_samples if id(s) not in kept]
+                    random.shuffle(remaining)
+                    kept_list.extend(remaining[:surplus])
+                vid_samples = kept_list
+                logger.info(f"  [{vid}] {len(vid_samples)} samples "
+                            f"(capped from {sum(len(v) for v in by_type.values())}, "
+                            f"{n_types} types)")
+            else:
+                logger.info(f"  [{vid}] {len(vid_samples)} samples")
+            all_samples.extend(vid_samples)
 
-        # Assign sample_id and phase
+        # Assign sample_id, phase, and estimated token count
         for i, s in enumerate(all_samples):
             stype = s.get("sample_type", "unk")
             s["sample_id"] = f"{s.get('video_path', 'unk').split('/')[-1].replace('.mp4','')}_{stype}_{i}"
             s["phase"] = assign_phase(s)
+            # Estimate text token count (chars / 3.5 for mixed EN/CJK).
+            # Vision tokens are added by the processor and not counted here;
+            # this estimate is for the max_sample_tokens pre-filter in SFT.
+            text_len = 0
+            for msg in s.get("messages", []):
+                content = msg.get("content", "")
+                if isinstance(content, str):
+                    text_len += len(content)
+                elif isinstance(content, list):
+                    for item in content:
+                        if isinstance(item, dict) and item.get("type") == "text":
+                            text_len += len(item.get("text", ""))
+            s["num_tokens"] = int(text_len / 3.5)
 
         # Save
         SAMPLES_DIR.mkdir(parents=True, exist_ok=True)

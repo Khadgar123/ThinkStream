@@ -1,12 +1,13 @@
-# Batch 1 视频选取记录（320 条）
+# Batch 1 视频选取记录（319 条）
 
 > 生成时间: 2026-04-23 | seed=42 | 从 video_catalog_30s_plus.csv 分层采样
+> 注: 原 320 条，移除 1 条坏记录（截断的 how_to_captio 条目）
 
 ## 总览
 
 | 指标 | 值 |
 |------|-----|
-| 视频总数 | 320 |
+| 视频总数 | 319 |
 | 总时长 | 14.1h |
 | 平均时长 | 158s |
 | 最短 | 60s |
@@ -334,7 +335,7 @@
 | 296 | How_to_Replace_Side_View_Mirror_97-05_Chevy_Ventur | Koala_raw | 378 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/How_to_Replace_Side_View_Mirror_97-05_Chevy_Venture.mp4 |
 | 297 | nkSC_iv_ZB0_00:02:30:500_00:03:17:600 | VideoMind-Dataset | 291 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/nkSC_iv_ZB0_00:02:30:500_00:03:17:600.mp4 |
 | 298 | GAOAqFSR4bc_00:04:03:100_00:05:09:500 | VideoMind-Dataset | 322 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/GAOAqFSR4bc_00:04:03:100_00:05:09:500.mp4 |
-| 299 | -x2EjZ8SS1s | VideoMind-Dataset | 313 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/hirest/videos_3fps_480_noaudio/-x2EjZ8SS1s.mp4 |
+| 299 | -x2EjZ8SS1s | VideoMind-Dataset | 312 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/hirest/videos_3fps_480_noaudio/-x2EjZ8SS1s.mp4 |
 | 300 | EMDPOwMsOe4_00:03:00:000_00:03:51:700 | VideoMind-Dataset | 363 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/EMDPOwMsOe4_00:03:00:000_00:03:51:700.mp4 |
 | 301 | ef2AEHGFUbU | how_to_step | 263 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/ef2AEHGFUbU.mp4 |
 | 302 | KXI8oTrtvys | how_to_step | 299 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/KXI8oTrtvys.mp4 |
@@ -344,15 +345,14 @@
 | 306 | kis1ZoJ1IaA | how_to_caption | 260 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/kis1ZoJ1IaA.mp4 |
 | 307 | hiIX8xFWTL4 | how_to_caption | 270 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/hiIX8xFWTL4.mp4 |
 | 308 | HQPTzGAX6DE | how_to_caption | 290 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/HQPTzGAX6DE.mp4 |
-| 309 | how_to_captio | how_to_captio.mp4 | 247 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_captio.mp4 |
-| 310 | ytb_OW26COjM-m4 | LLaVA-Video-178K | 264 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_youtube_v0_1/liwei_youtube_videos/videos/youtube_video_2024/ytb_OW26COjM-m4.mp4 |
-| 311 | l5WUzgU_65g | how_to_caption | 251 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/l5WUzgU_65g.mp4 |
-| 312 | EemDf1ceNOY | how_to_step | 261 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/EemDf1ceNOY.mp4 |
+| 309 | ytb_OW26COjM-m4 | LLaVA-Video-178K | 264 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_youtube_v0_1/liwei_youtube_videos/videos/youtube_video_2024/ytb_OW26COjM-m4.mp4 |
+| 310 | l5WUzgU_65g | how_to_caption | 251 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/l5WUzgU_65g.mp4 |
+| 311 | EemDf1ceNOY | how_to_step | 261 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/EemDf1ceNOY.mp4 |
 | 313 | sROlLnn4cNY | how_to_step | 263 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/sROlLnn4cNY.mp4 |
-| 314 | surveil_112 | VideoMind-Dataset | 317 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/mlvu/video/6_anomaly_reco/surveil_112.mp4 |
-| 315 | 3u3RqQpOXwU_00:03:37:100_00:03:57:300 | VideoMind-Dataset | 284 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/3u3RqQpOXwU_00:03:37:100_00:03:57:300.mp4 |
-| 316 | 3qpbj8Lybgs_00:00:00:000_00:00:59:400 | VideoMind-Dataset | 311 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/3qpbj8Lybgs_00:00:00:000_00:00:59:400.mp4 |
+| 313 | surveil_112 | VideoMind-Dataset | 316 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/mlvu/video/6_anomaly_reco/surveil_112.mp4 |
+| 314 | 3u3RqQpOXwU_00:03:37:100_00:03:57:300 | VideoMind-Dataset | 284 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/3u3RqQpOXwU_00:03:37:100_00:03:57:300.mp4 |
+| 315 | 3qpbj8Lybgs_00:00:00:000_00:00:59:400 | VideoMind-Dataset | 311 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/3qpbj8Lybgs_00:00:00:000_00:00:59:400.mp4 |
 | 317 | WVdvOCqRsF4 | how_to_step | 263 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/WVdvOCqRsF4.mp4 |
-| 318 | Homemade_baby_food_Make_Instant_Khichdi_Cereal__Da | Koala_raw | 256 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Homemade_baby_food_Make_Instant_Khichdi_Cereal__Dal_Rice_Cereal__6_-_9_months_.mp4 |
-| 319 | Hhwg5NtHv3k | VideoMind-Dataset | 332 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/hirest/videos_3fps_480_noaudio/Hhwg5NtHv3k.mp4 |
-| 320 | How_to_Replace__Front_Wheel_Hub_Bearings__or_Rear_ | Koala_raw | 361 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/How_to_Replace__Front_Wheel_Hub_Bearings__or_Rear__MINI_Cooper.mp4 |
+| 317 | Homemade_baby_food_Make_Instant_Khichdi_Cereal__Da | Koala_raw | 256 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Homemade_baby_food_Make_Instant_Khichdi_Cereal__Dal_Rice_Cereal__6_-_9_months_.mp4 |
+| 318 | Hhwg5NtHv3k | VideoMind-Dataset | 332 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/hirest/videos_3fps_480_noaudio/Hhwg5NtHv3k.mp4 |
+| 319 | How_to_Replace__Front_Wheel_Hub_Bearings__or_Rear_ | Koala_raw | 361 | /home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/How_to_Replace__Front_Wheel_Hub_Bearings__or_Rear__MINI_Cooper.mp4 |

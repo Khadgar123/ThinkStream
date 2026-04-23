@@ -24,6 +24,11 @@ from .config import (
     SYSTEM_PROMPT,
     VISUAL_WINDOW_CHUNKS,
 )
+from thinkstream.data.agent_protocol import (
+    format_memory_block as protocol_format_memory,
+    build_user_content as protocol_build_user_content,
+    SYSTEM_PROMPT as PROTOCOL_SYSTEM_PROMPT,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -109,84 +114,54 @@ def build_per_timestep_messages(
     user_text_suffix: str = "",
     recalled_frames: Optional[Dict] = None,
 ) -> Dict:
-    """Build a single-turn messages sample matching inference_step() exactly.
+    """Build a single-turn messages sample via the shared agent protocol.
 
-    This is the canonical output format for SFT training.
-    Each sample = one inference step snapshot.
+    Delegates to agent_protocol.format_memory_block() + build_user_content()
+    to guarantee train/inference format identity.
 
     Args:
         snapshot: Pre-action memory state (compressed_segments + recent_thinks + pending)
         chunk_idx: Current chunk index
         video_path: Absolute path to video file
         assistant_output: The gold output string (think + action + payload)
-        user_text_suffix: Additional text after memory block (question, compress_trigger, recall_result)
+        user_text_suffix: Additional text (question, compress_trigger, etc.)
+                          Mapped to user_input in protocol.
         recalled_frames: Optional recalled frame info for recall_response samples
     """
-    # ── Memory text block (matches inference_step §0.2) ──
-    text_parts = []
+    # ── Memory text via shared protocol (identical to inference) ──
+    memory_text = protocol_format_memory(snapshot)
 
-    # Compressed segments
-    for seg in snapshot.get("compressed_segments", []):
-        seg_json = json.dumps(
-            {"time_range": seg["time_range"], "text": seg["text"]},
-            ensure_ascii=False,
-        )
-        text_parts.append(f"<compressed>{seg_json}</compressed>")
-
-    # Recent thinks
-    for item in snapshot.get("recent_thinks", snapshot.get("recent_observations", [])):
-        time_str = item.get("time", f"{item.get('chunk', 0)*2}-{item.get('chunk', 0)*2+2}")
-        text = item.get("text", item.get("obs", ""))
-        text_parts.append(f"[{time_str}] {text}")
-
-    # Pending questions
-    for pq in snapshot.get("pending_questions", []):
-        since = pq.get("since_chunk", 0) * AGENT_CHUNK_SEC
-        text_parts.append(f'<pending since="{int(since)}">{pq["question"]}</pending>')
-
-    # User text suffix (question / compress_trigger / recall_result)
-    if user_text_suffix:
-        text_parts.append(user_text_suffix)
-
-    memory_text = "\n".join(text_parts)
-
-    # ── Visual window ──
-    window_start = max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1)
-    video_start = window_start * AGENT_CHUNK_SEC
-    video_end = (chunk_idx + 1) * AGENT_CHUNK_SEC
-
-    user_content = [
-        {
-            "type": "video",
-            "video_start": video_start,
-            "video_end": video_end,
-            "nframes": VISUAL_WINDOW_CHUNKS * 2,  # 24 frames
-        },
-    ]
-
-    # Recalled frames (recall_response only)
-    if recalled_frames:
-        user_content.append({
-            "type": "video",
-            "video_start": recalled_frames["time_range"][0],
-            "video_end": recalled_frames["time_range"][1],
-            "nframes": recalled_frames.get("n_frames", 4),
-        })
-
-    user_content.append({"type": "text", "text": memory_text})
+    # ── User content via shared protocol ──
+    user_content = protocol_build_user_content(
+        memory_text=memory_text,
+        chunk_idx=chunk_idx,
+        video_path=video_path,
+        user_input=user_text_suffix,
+        recalled_frames=recalled_frames,
+    )
 
     # ── Assemble messages ──
     messages = [
-        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "system", "content": PROTOCOL_SYSTEM_PROMPT},
         {"role": "user", "content": user_content},
         {"role": "assistant", "content": assistant_output},
     ]
 
-    return {
+    sample = {
         "video_path": video_path,
+        "chunk_idx": chunk_idx,
         "protocol_version": "4action",
         "messages": messages,
     }
+
+    # Stash recalled_frames metadata for RoPE computation in SFT
+    if recalled_frames:
+        sample["recalled_frames_meta"] = {
+            "time_range": recalled_frames["time_range"],
+            "n_frames": recalled_frames.get("n_frames", 4),
+        }
+
+    return sample
 
 
 def build_sample_input(snapshot: Dict, user_input: str, visual_window_meta: Dict) -> Dict:

@@ -285,14 +285,43 @@ def build_per_timestep_messages(sample: Dict, base_path: Path) -> List[Dict]:
 # Preprocessing: messages → model inputs with label masking
 # ---------------------------------------------------------------------------
 
+def _resolve_video_paths(messages: List[Dict], base_path: Path) -> List[Dict]:
+    """Resolve relative video paths in messages to absolute paths."""
+    resolved = []
+    for msg in messages:
+        content = msg.get("content")
+        if isinstance(content, list):
+            new_content = []
+            for item in content:
+                if isinstance(item, dict) and item.get("type") == "video":
+                    item = dict(item)
+                    vp = item.get("video", "")
+                    if isinstance(vp, str) and vp and not Path(vp).is_absolute():
+                        item["video"] = str(base_path / vp)
+                new_content.append(item)
+            msg = {**msg, "content": new_content}
+        resolved.append(msg)
+    return resolved
+
+
 def preprocess_per_timestep(sample: Dict, processor) -> Dict:
     """Tokenize a per-timestep sample and mask labels.
 
     Only the assistant turn (output) contributes to loss.
     Uses processor.apply_chat_template for unified tokenization + vision.
+
+    Accepts two formats:
+    - Messages format (pipeline v5): sample["messages"] used directly
+    - Legacy format: sample["input"]/["output"] built via build_per_timestep_messages()
     """
     base_path = Path(sample.get("data_path", "."))
-    messages = build_per_timestep_messages(sample, base_path)
+
+    if "messages" in sample:
+        # Pipeline v5: messages already constructed, resolve paths and use directly
+        messages = _resolve_video_paths(sample["messages"], base_path)
+    else:
+        # Legacy: build messages from input/output structure
+        messages = build_per_timestep_messages(sample, base_path)
 
     # Tokenize with vision processing
     full_result = processor.apply_chat_template(
@@ -464,11 +493,13 @@ class PerTimestepDataset(Dataset):
                 / self.processor.video_processor.fps
             )
             n_video_entries = len(video_grid_thw)
-            if n_video_entries == 2 and "recalled_frames" in sample.get("input", {}):
+            # Check recalled_frames in both messages format and legacy format
+            rf_meta = sample.get("recalled_frames_meta") or \
+                (sample.get("input", {}).get("recalled_frames"))
+            if n_video_entries == 2 and rf_meta:
                 # First entry = visual window, second = recalled frames
-                rf = sample["input"]["recalled_frames"]
-                rf_duration = rf["time_range"][1] - rf["time_range"][0]
-                rf_n_frames = rf.get("n_frames", 4)
+                rf_duration = rf_meta["time_range"][1] - rf_meta["time_range"][0]
+                rf_n_frames = rf_meta.get("n_frames", 4)
                 rf_spg = rf_duration / max(rf_n_frames, 1)
                 second_per_grid_ts = [default_spg, rf_spg]
             else:
