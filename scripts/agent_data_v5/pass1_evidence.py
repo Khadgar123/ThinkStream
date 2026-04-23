@@ -213,11 +213,10 @@ async def run_pass1_single_video(
 
     logger.info(f"  [{video_id}] Evidence 1-A: {num_chunks} chunks annotated (parallel)")
 
-    # --- 1-B: Post-processing ---
-    link_entities(captions)
-    derive_state_changes(captions)
+    # --- 1-B: Post-processing (change detection, no entity linking in v1) ---
+    detect_chunk_changes(captions)
 
-    logger.info(f"  [{video_id}] Evidence 1-B: entity linking + state_changes done")
+    logger.info(f"  [{video_id}] Evidence 1-B: change detection done")
 
     return captions
 
@@ -227,113 +226,56 @@ async def run_pass1_single_video(
 # ---------------------------------------------------------------------------
 
 
-def link_entities(evidence: List[Dict]):
-    """Link entity descriptions across chunks via word-overlap clustering.
+def detect_chunk_changes(evidence: List[Dict]):
+    """Detect changes between adjacent chunks via action word-set comparison.
 
-    Assigns consistent IDs (person_1, pot_1, ...) to visible_entities
-    based on appearance description similarity.
+    Does NOT require entity linking — compares the set of action keywords
+    across all entities in adjacent chunks. This is more robust than
+    per-entity action string comparison (immune to paraphrase like
+    "stirring sauce" vs "stirring the pot").
+
+    Outputs: evidence[i]["state_changes"] = ["action_changed"] or []
+    Sufficient for: Pass 2 scoring (len), Pass 3-A E2/P1 detection (bool).
     """
-    # Collect all unique descs
-    all_descs = set()
-    for cap in evidence:
+    _stop = {"the", "a", "an", "is", "in", "on", "at", "to", "of", "with", "and"}
+
+    def _action_words(cap: Dict) -> set:
+        words = set()
         for entity in cap.get("visible_entities", []):
-            desc = entity.get("desc", entity.get("id", ""))
-            if desc:
-                all_descs.add(desc)
+            action = entity.get("action", "")
+            words |= {w.lower() for w in action.split()
+                       if w.lower() not in _stop and len(w) > 2}
+        return words
 
-    if not all_descs:
-        return
-
-    # Greedy clustering by word overlap (longest desc first)
-    stop = {"the", "a", "an", "is", "in", "on", "at", "of", "with", "and"}
-    clusters = []  # [(canonical_desc, [desc1, desc2, ...])]
-
-    for desc in sorted(all_descs, key=len, reverse=True):
-        words = set(desc.lower().split()) - stop
-        if not words:
-            continue
-        merged = False
-        for canonical, members in clusters:
-            canonical_words = set(canonical.lower().split()) - stop
-            overlap = len(words & canonical_words) / max(len(words | canonical_words), 1)
-            if overlap > 0.5:
-                members.append(desc)
-                merged = True
-                break
-        if not merged:
-            clusters.append((desc, [desc]))
-
-    # Assign IDs
-    desc_to_id = {}
-    type_counters = {}
-    for canonical, members in clusters:
-        prefix = _infer_type_prefix(canonical)
-        type_counters[prefix] = type_counters.get(prefix, 0) + 1
-        entity_id = f"{prefix}_{type_counters[prefix]}"
-        for d in members:
-            desc_to_id[d] = entity_id
-
-    # Write back
-    for cap in evidence:
-        for entity in cap.get("visible_entities", []):
-            desc = entity.get("desc", entity.get("id", ""))
-            entity["id"] = desc_to_id.get(desc, "unknown")
-
-
-def _infer_type_prefix(desc: str) -> str:
-    """Infer entity type prefix from description text."""
-    dl = desc.lower()
-    for keyword, prefix in [
-        ("person", "person"), ("man", "person"), ("woman", "person"),
-        ("chef", "person"), ("hand", "person"), ("child", "person"),
-        ("pot", "pot"), ("pan", "pan"), ("bowl", "bowl"), ("plate", "plate"),
-        ("knife", "tool"), ("spoon", "tool"), ("fork", "tool"),
-        ("bottle", "container"), ("cup", "container"), ("glass", "container"),
-        ("screen", "screen"), ("monitor", "screen"), ("phone", "screen"),
-    ]:
-        if keyword in dl:
-            return prefix
-    return "object"
-
-
-def derive_state_changes(evidence: List[Dict]):
-    """Derive state_changes by comparing adjacent chunks' entities.
-
-    Detects: entity appeared/disappeared, action changed.
-    Must run AFTER link_entities (needs consistent IDs).
-    """
     if not evidence:
         return
     evidence[0]["state_changes"] = []
 
     for i in range(1, len(evidence)):
-        prev_entities = {
-            e.get("id", e.get("desc", "")): e
-            for e in evidence[i - 1].get("visible_entities", [])
-        }
-        curr_entities = {
-            e.get("id", e.get("desc", "")): e
-            for e in evidence[i].get("visible_entities", [])
-        }
+        prev_actions = _action_words(evidence[i - 1])
+        curr_actions = _action_words(evidence[i])
+
+        # Entity count change
+        prev_n = len(evidence[i - 1].get("visible_entities", []))
+        curr_n = len(evidence[i].get("visible_entities", []))
+        entity_count_changed = abs(prev_n - curr_n) >= 1
+
+        # Action word-set change
+        if not prev_actions and not curr_actions:
+            action_changed = False
+        elif not prev_actions or not curr_actions:
+            action_changed = True
+        else:
+            overlap = len(prev_actions & curr_actions) / max(
+                len(prev_actions | curr_actions), 1
+            )
+            action_changed = overlap < 0.5
+
         changes = []
-
-        # New entities
-        for eid in curr_entities:
-            if eid not in prev_entities and eid != "unknown":
-                changes.append(f"{eid} appeared")
-
-        # Disappeared entities
-        for eid in prev_entities:
-            if eid not in curr_entities and eid != "unknown":
-                changes.append(f"{eid} disappeared")
-
-        # Action changes
-        for eid in curr_entities:
-            if eid in prev_entities:
-                prev_action = prev_entities[eid].get("action", "")
-                curr_action = curr_entities[eid].get("action", "")
-                if prev_action and curr_action and prev_action != curr_action:
-                    changes.append(f"{eid}: {prev_action} -> {curr_action}")
+        if action_changed:
+            changes.append("action_changed")
+        if entity_count_changed:
+            changes.append("entity_count_changed")
 
         evidence[i]["state_changes"] = changes
 

@@ -369,142 +369,124 @@ best_range = argmin(score)   # 综合最优
 300 视频 ÷ 64 ≈ ~5 min（vs 旧方案 ~70 min）
 ```
 
-#### 1-B: 后处理（实体链接 + state_changes 推导）
+#### 1-B: 后处理（变化检测 + 可选实体链接）
 
-1-A 输出的是每个 chunk 的**静态快照**——"画面里有什么"。
-1-B 做两件跨 chunk 后处理，全部是纯程序，不调 397B：
+1-A 输出的是每个 chunk 的**静态快照**。1-B 做跨 chunk 后处理，全部纯程序。
 
-##### 1-B-1: 实体链接
+##### 下游到底需要什么？
 
-同一实体在不同 chunk 的 `desc` 可能措辞不同（"person in red apron" vs "chef wearing red"），需要统一。
+| 消费者 | 用法 | 真正需要的信号 | 需要实体一致 ID？ |
+|--------|------|-------------|----------------|
+| Pass 2 `_teacher_fact_value` | `len(state_changes) * 0.3` | "这个 chunk 有没有变化" (bool/count) | **不需要** |
+| Pass 3-A E2 检测 | `if cap.get("state_changes")` | "这个 chunk 有变化吗" (bool) | **不需要** |
+| Pass 3-A P1 步骤序列 | 连续 ≥3 个有变化的 chunk | "连续变化的区间" | **不需要** |
+| Pass 3-A C1 比较 | 同实体跨时间的状态差异 | "entity X 在 t1 vs t2" | **需要** |
+| Pass 3-A R1 再识别 | 实体消失→重现模式 | "entity X 出现/消失时间线" | **需要** |
 
-**谁需要跨 chunk 实体一致性？**
+**结论：大多数场景只需要"有没有变化"这个信号，不需要精确的实体 ID。只有 C1 和 R1 需要。**
 
-| 消费者 | 是否需要 | 原因 |
-|--------|---------|------|
-| Pass 2 压缩评分 | **不需要** | 只看单 chunk 内 entity 数量 |
-| Pass 3-A 单 chunk 分析 | **不需要** | 只看有无 OCR、entity 数量 |
-| Pass 3-A 跨 chunk: P1/C1/R1 | **需要** | 追踪同一实体跨时间的变化 |
-| Pass 3-A 问题生成 | 弱需要 | 问题文本中引用实体名 |
+##### 1-B-1: 变化检测（所有视频必做，不需要实体 ID）
 
-**方案：基于词重叠的贪心聚类**
-
-```python
-def link_entities(evidence: List[Dict]) -> Dict[str, str]:
-    """
-    收集所有 chunk 的 entity desc，按词重叠聚类，分配统一 ID。
-    
-    "person wearing red apron" 和 "person in red apron"
-    → 词重叠 > 50% → 同一实体 → 都映射到 "person_1"
-    
-    输出: desc_to_id 映射
-    """
-    all_descs = set()
-    for cap in evidence:
-        for entity in cap.get("visible_entities", []):
-            all_descs.add(entity["desc"])
-    
-    # 贪心聚类（长描述优先匹配）
-    clusters = []
-    for desc in sorted(all_descs, key=len, reverse=True):
-        words = set(desc.lower().split())
-        merged = False
-        for canonical, members in clusters:
-            canonical_words = set(canonical.lower().split())
-            overlap = len(words & canonical_words) / max(len(words | canonical_words), 1)
-            if overlap > 0.5:
-                members.append(desc)
-                merged = True
-                break
-        if not merged:
-            clusters.append((desc, [desc]))
-    
-    # 分配 ID: person_1, pot_1, bowl_1, ...
-    desc_to_id = {}
-    type_counters = {}
-    for canonical, members in clusters:
-        prefix = _infer_type_prefix(canonical)
-        type_counters[prefix] = type_counters.get(prefix, 0) + 1
-        entity_id = f"{prefix}_{type_counters[prefix]}"
-        for d in members:
-            desc_to_id[d] = entity_id
-    
-    # 写回 evidence
-    for cap in evidence:
-        for entity in cap.get("visible_entities", []):
-            entity["id"] = desc_to_id.get(entity["desc"], "unknown")
-    
-    return desc_to_id
-```
-
-大多数视频唯一 desc < 20 个，纯规则聚类，零 397B 调用。
-
-##### 1-B-2: state_changes 推导
-
-独立 chunk 无法生成"相比之前变了什么"——但通过比较相邻 chunk 的快照可以推导：
+不依赖实体链接，直接比较相邻 chunk 的 **action 词集合** 变化：
 
 ```python
-def derive_state_changes(evidence: List[Dict]):
+def detect_chunk_changes(evidence: List[Dict]):
     """
-    比较相邻 chunk 的 visible_entities，推导 state_changes。
+    比较相邻 chunk 的 action 词集合，检测变化。
     
-    检测三种变化：
-    1. 实体出现/消失（chunk N 有但 N-1 没有，或反过来）
-    2. 同一实体的 action 变化（"stirring" → "pouring"）
-    3. 同一实体的 attribute 变化（从 desc 提取）
+    不做实体链接——只看"这个 chunk 的动作词集合和上一个 chunk 是否不同"。
+    输出: evidence[i]["state_changes"] = ["action changed"] 或 []
+    
+    这足以满足 Pass 2 评分和 Pass 3-A 的 E2/P1 检测。
     """
+    if not evidence:
+        return
+    evidence[0]["state_changes"] = []
+    
     for i in range(1, len(evidence)):
-        prev = evidence[i - 1]
-        curr = evidence[i]
+        prev_actions = _extract_action_words(evidence[i - 1])
+        curr_actions = _extract_action_words(evidence[i])
+        
+        # 实体数量变化
+        prev_n = len(evidence[i - 1].get("visible_entities", []))
+        curr_n = len(evidence[i].get("visible_entities", []))
+        entity_count_changed = abs(prev_n - curr_n) >= 1
+        
+        # action 词集合变化
+        if not prev_actions and not curr_actions:
+            action_changed = False
+        elif not prev_actions or not curr_actions:
+            action_changed = True
+        else:
+            overlap = len(prev_actions & curr_actions) / max(len(prev_actions | curr_actions), 1)
+            action_changed = overlap < 0.5  # 动作词重叠 < 50% → 认为有变化
+        
         changes = []
+        if action_changed:
+            changes.append("action_changed")
+        if entity_count_changed:
+            changes.append("entity_count_changed")
         
-        prev_entities = {e.get("id", e["desc"]): e for e in prev.get("visible_entities", [])}
-        curr_entities = {e.get("id", e["desc"]): e for e in curr.get("visible_entities", [])}
-        
-        # 新出现的实体
-        for eid in curr_entities:
-            if eid not in prev_entities:
-                changes.append(f"{eid} appeared")
-        
-        # 消失的实体
-        for eid in prev_entities:
-            if eid not in curr_entities:
-                changes.append(f"{eid} disappeared")
-        
-        # action 变化
-        for eid in curr_entities:
-            if eid in prev_entities:
-                prev_action = prev_entities[eid].get("action", "")
-                curr_action = curr_entities[eid].get("action", "")
-                if prev_action and curr_action and prev_action != curr_action:
-                    changes.append(f"{eid}: {prev_action} → {curr_action}")
-        
-        curr["state_changes"] = changes
-    
-    # 第一个 chunk 没有前文比较
-    if evidence:
-        evidence[0]["state_changes"] = []
+        evidence[i]["state_changes"] = changes
+
+
+def _extract_action_words(cap: Dict) -> set:
+    """提取一个 chunk 中所有 entity 的 action 关键词"""
+    stop = {"the", "a", "an", "is", "in", "on", "at", "to", "of", "with", "and"}
+    words = set()
+    for entity in cap.get("visible_entities", []):
+        action = entity.get("action", "")
+        words |= {w.lower() for w in action.split() if w.lower() not in stop and len(w) > 2}
+    return words
 ```
 
-**state_changes 的下游消费者**：
+**为什么不依赖实体 ID**：
+- Pass 2 压缩评分只看 `len(state_changes)` → 有几项变化，不关心谁变了
+- E2 只看 `if cap.get("state_changes")` → 有没有变化
+- P1 只看连续 chunk 有无变化 → bool 信号
+- action 词集合变化比逐实体比较 action 字符串更鲁棒（不怕 "stirring sauce" vs "stirring the pot" 的措辞差异）
 
-| 消费者 | 用什么 | 推导后能正常工作 |
-|--------|-------|---------------|
-| Pass 2 `_teacher_fact_value` | `len(state_changes)` 作为事件边界加分 | **能** — len() 不关心文本来源 |
-| Pass 3-A `scan_opportunities` E2 | 有无 state_changes | **能** — 推导的 changes 也是列表 |
-| Pass 3-A `_add_comparison_opportunities` | 同实体跨 chunk 的 state_change | **能** — 依赖 1-B-1 的 entity ID |
+##### 1-B-2: 实体链接（仅 C1/R1 需要，可选）
 
-**开销**：O(chunks × entities_per_chunk)，纯 dict 查找，~1ms/视频。
+**只有 C1（跨时间比较）和 R1（再识别）需要跨 chunk 的实体 ID。**
 
-##### 1-B 执行顺序
+第一版可以用两种方案：
+
+**方案 A（一版推荐）：跳过 C1/R1，不做实体链接**
+
+C1 和 R1 对首批数据不是必需的（见 §4.1 family targets: C1 目标 2 个/视频, R1 目标 1 个/视频）。
+如果跳过这两个 family，1-B 只需要 1-B-1 变化检测，零实体链接开销。
+
+**方案 B（二版）：397B 一次调用做实体链接**
+
+规则聚类（词重叠）对不同 action/角度的同一实体失败率高。
+如果需要 C1/R1，正确的做法是用一次 397B 调用：
+
+```python
+ENTITY_LINK_PROMPT = """以下是同一视频中不同时间段出现的实体描述列表。
+请将描述同一实体的归为一组。
+
+{entity_descriptions}
+
+输出 JSON: [["desc1", "desc2"], ["desc3"], ...]"""
+```
+
+- 一次调用/视频，输入 ~20 个 desc（~500 tokens），输出分组
+- 比规则聚类可靠（397B 能理解 "person in red apron" 和 "chef holding knife" 是同一个人）
+- 但增加一次 397B 调用开销
+
+##### 1-B 执行流程
 
 ```
-1-B-1 实体链接（给每个 entity 分配 id）
-  ↓
-1-B-2 state_changes 推导（用 entity id 比较相邻 chunk）
-```
+一版（推荐）:
+  1-B-1 变化检测 → state_changes    （纯程序，~0.1ms/视频）
+  跳过 C1/R1 family
 
-**1-B 总开销**：~1ms/视频，零 397B 调用。
+二版:
+  1-B-1 变化检测 → state_changes    （纯程序）
+  1-B-2 实体链接 → entity IDs       （1 次 397B/视频）
+  启用 C1/R1 family
+```
 
 **用途**（不变）：
 - 造任务（知道哪里有可问的细节）
