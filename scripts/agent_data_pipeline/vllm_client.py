@@ -111,7 +111,19 @@ class VLLMClient:
         request_id: str = "",
         max_retries: int = 3,
     ) -> Optional[str]:
-        """Make a single API call with semaphore-controlled concurrency and retry."""
+        """Make a single API call with semaphore-controlled concurrency and retry.
+
+        Handles vLLM --reasoning-parser qwen3 mode:
+        - content = actual output (JSON, text, etc.)
+        - reasoning_content = thinking tokens (separated by vLLM)
+        - If content is None (thinking explosion ate all tokens), falls back to
+          reasoning_content and tries to extract useful output from it.
+        """
+        # Initialize stats.start_time on first call (pipeline uses _call_one directly,
+        # not batch_chat, so stats.start_time may be 0)
+        if self.stats.start_time == 0:
+            self.stats.start_time = time.time()
+
         async with self.semaphore:
             client = await self._get_client()
             for attempt in range(max_retries):
@@ -122,7 +134,28 @@ class VLLMClient:
                         max_tokens=max_tokens,
                         temperature=temperature,
                     )
-                    result = response.choices[0].message.content
+                    msg = response.choices[0].message
+
+                    # Primary: content field (actual output after reasoning separation)
+                    result = msg.content
+
+                    # Fallback: if content is None, thinking explosion may have
+                    # consumed all tokens. Check reasoning_content for any output.
+                    if result is None or result.strip() == "":
+                        # reasoning_content may be in standard attr or model_extra
+                        reasoning = getattr(msg, "reasoning_content", None)
+                        if reasoning is None and hasattr(msg, "model_extra"):
+                            reasoning = msg.model_extra.get("reasoning_content")
+                        if reasoning:
+                            # Thinking may contain the actual answer after the reasoning.
+                            # Log warning and return reasoning for downstream to parse.
+                            logger.warning(
+                                "Request %s: content is empty, falling back to reasoning_content "
+                                "(%d chars). Likely thinking explosion.",
+                                request_id, len(reasoning),
+                            )
+                            result = reasoning
+
                     usage = response.usage
                     self.stats.completed += 1
                     if usage:
@@ -131,12 +164,12 @@ class VLLMClient:
 
                     # Progress log every 50 requests
                     if self.stats.completed % 50 == 0:
+                        elapsed = time.time() - self.stats.start_time
+                        rps = self.stats.completed / max(elapsed, 0.001)
+                        tps = self.stats.total_output_tokens / max(elapsed, 0.001)
                         logger.info(
-                            "Progress: %d/%d completed (%.1f req/s, %.1f tok/s)",
-                            self.stats.completed,
-                            self.stats.total,
-                            self.stats.throughput_rps,
-                            self.stats.throughput_tps,
+                            "Progress: %d completed (%.1f req/s, %.0f tok/s)",
+                            self.stats.completed, rps, tps,
                         )
                     return result
                 except Exception as exc:
