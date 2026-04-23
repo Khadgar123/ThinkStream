@@ -168,26 +168,46 @@ async def run_pass1b(
 # ---------------------------------------------------------------------------
 
 
-async def _call_with_semaphore(client, prompt, max_tokens, temperature, request_id, semaphore):
-    """Call 397B with optional semaphore."""
-    if semaphore:
-        async with semaphore:
+async def _call_with_semaphore(client, prompt, max_tokens, temperature, request_id, semaphore,
+                               max_retries: int = 2):
+    """Call 397B with optional semaphore. Retries on empty response (thinking explosion).
+
+    When thinking consumes all max_tokens, content is empty.
+    Retry with higher temperature (encourages shorter thinking) as fallback.
+    """
+    for attempt in range(max_retries + 1):
+        temp = temperature if attempt == 0 else min(temperature + 0.2 * attempt, 1.0)
+        if semaphore:
+            async with semaphore:
+                raw = await client._call_one(
+                    messages=[{"role": "user", "content": prompt}],
+                    max_tokens=max_tokens,
+                    temperature=temp,
+                    request_id=f"{request_id}_r{attempt}" if attempt > 0 else request_id,
+                )
+        else:
             raw = await client._call_one(
                 messages=[{"role": "user", "content": prompt}],
                 max_tokens=max_tokens,
-                temperature=temperature,
-                request_id=request_id,
+                temperature=temp,
+                request_id=f"{request_id}_r{attempt}" if attempt > 0 else request_id,
             )
-    else:
-        raw = await client._call_one(
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=max_tokens,
-            temperature=temperature,
-            request_id=request_id,
-        )
-    if raw:
-        raw = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip()
-    return raw
+
+        if raw:
+            raw = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip()
+
+        if raw:
+            return raw
+
+        # Empty response — likely thinking explosion ate all max_tokens
+        if attempt < max_retries:
+            logger.warning(
+                f"  [{request_id}] empty response (attempt {attempt+1}/{max_retries+1}), "
+                f"retrying with temperature={temp + 0.2:.1f}"
+            )
+
+    logger.warning(f"  [{request_id}] all {max_retries+1} attempts returned empty")
+    return None
 
 
 def _build_chunk_summary(evidence: List[Dict]) -> str:
