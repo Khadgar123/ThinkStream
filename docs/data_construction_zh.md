@@ -864,16 +864,49 @@ Student 训练分辨率: min_pixels=100352 (~317×317)
 
 ---
 
-## 7. 后续增强
+## 7. RL 阶段 (GRPO)
 
-### 7.1 Student Rollout Augmentation (DAgger)
+SFT Phase 5 完成后，在**独立的 RL 视频集**（75 条，不与 SFT 视频重叠）上进行 GRPO 训练。
 
-第一轮 SFT 后，用训练后的 student 模型跑视频：
-- Student 生成的 thinks 质量更低（短、漏信息）
-- 基于 student 的真实 memory 构造第二批 recall/compress 数据
-- 解决"训练时 memory 质量高，推理时质量低"的分布偏移
+### 7.1 RL 流程
 
-### 7.2 评估指标
+1. 从 RL 视频池采样 (视频, task) 对（task 的 gold_answer 来自 Pass3）
+2. 模型从视频开头 rollout 到 task 所在 chunk，自主决定每步 action
+3. 对同一 (视频, task) 生成 G=4 条 rollout（GRPO 需要组内对比）
+4. 计算每条 rollout 的 reward（6 个分量加权求和）
+5. 组内 advantage = (reward - mean) / std → GRPO loss 更新
+
+### 7.2 Reward 设计
+
+| 分量 | 权重 | 信号 | 已有代码 |
+|------|------|------|---------|
+| R_format | 0.15 | think/action tag 格式匹配 | `grpo.py: _compute_format_reward` |
+| R_action | 0.20 | 选对 action 类型 vs gold_action | `grpo.py: _compute_action_reward` |
+| R_correctness | 0.30 | 答案 vs gold_answer | `grpo.py: _compute_correctness_reward` |
+| R_timing | 0.15 | 在正确 chunk 响应 | `grpo.py: _compute_time_reward` |
+| R_think_len | 0.10 | think 长度在 40-60 tok | `grpo.py: _compute_think_length_factor` |
+| R_compress | 0.10 | 压缩后 entity retention | **需新增** |
+
+R_compress 计算方式：压缩后从 summary 中能还原多少 entity 和 fact（与 teacher evidence 对比）。
+
+### 7.3 RL 数据量与训练步数
+
+| 指标 | 数值 |
+|------|------|
+| RL 视频 | 75 条 (短16 + 中50 + 长9) |
+| (视频, task) 对 | ~2,050 |
+| Group size | 4 |
+| Global batch | 16 samples/step |
+| Epochs | 2 |
+| **总 steps** | **~256** |
+| LR | 5e-7 |
+| 基模型 | SFT Phase 5 checkpoint |
+
+### 7.4 迁移要点
+
+当前 `grpo.py` 的 `rollout()` 使用旧的 `streaming_video_chat`（多轮 KV cache 格式），需迁移到 `StreamingAgentLoop.step()`（per-timestep re-render），以保证 RL rollout 与 SFT 训练格式一致。
+
+### 7.5 评估指标
 
 | 维度 | 指标 |
 |------|------|
@@ -1484,7 +1517,7 @@ def select_videos_by_phase(catalog_csv, phase, num_videos, seed=42):
 
 1. **Per-timestep vs 短序列**: 当前方案 A 每步独立。如果实验中发现模型缺少连续性，可改为 3-step 滑动窗口（loss 只在最后一步）。先用纯 per-timestep 做 baseline。详见 `sft_engineering.md` §3.4。
 2. **Think 关键信息保留策略**: 如果 think 漏了关键细节（如盐的量），后续 recall 就找不到。建议：阶段 2 产出后，用 teacher caption 检查 thinks 的"关键信息覆盖率"。覆盖率 < 0.6 的重新生成。
-3. **DAgger 执行计划**: Phase 1-2 完成后训练 v0 模型 → v0 跑 100 视频 → 基于 v0 memory 造 2000 条补充数据 → 混入 Phase C1 训练。
+3. **RL rollout 迁移**: `grpo.py` 的 rollout 需从 `streaming_video_chat` 迁移到 `StreamingAgentLoop.step()`，确保 RL rollout 与 SFT 训练格式一致（per-timestep re-render + 显式 memory 管理）。
 
 ---
 

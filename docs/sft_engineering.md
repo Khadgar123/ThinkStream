@@ -810,15 +810,30 @@ if is_qwen3vl:
 
 ## 7. 训练课程（Curriculum）
 
-### 7.1 五阶段课程
+### 7.1 六阶段课程 (SFT + RL)
+
+**SFT 和 RL 使用不同的视频集**（详见 `data_batch1_plan.md` §2）：
+- SFT: 184 条视频 → teacher 轨迹 per-timestep 样本
+- RL: 75 条视频 → 模型自己 rollout + GRPO reward
 
 | 阶段 | 数据集 | 样本量 | 训练目标 | 超参 |
 |------|--------|--------|---------|------|
-| **Phase 1** 协议对齐 | P1: silent + response(from_frames) | ~4,000 | 学会 think + action 格式 | lr=1e-5, epochs=3 |
-| **Phase 2** Recall 学习 | P2: + recall + pending + uncertain | ~6,000 | 学会判断 recall 时机 | lr=5e-6, epochs=3, from P1 ckpt |
-| **Phase C1** 压缩行为 | C1: + compress(system指定) + compress_recall | ~15,000 | 学会按指定范围压缩 | lr=3e-6, epochs=2, from P2 ckpt |
-| **Phase C2** 自选压缩 | C2: + compress(自选范围) | ~3,000 | 学会自选压缩窗口 | lr=2e-6, epochs=2, from C1 ckpt |
-| **Phase 5** 混合训练 | P5: 所有类型按比例混合 | ~5,000 | 综合能力对齐 | lr=1e-6, epochs=1, from C2 ckpt |
+| **Phase 1** 协议对齐 | P1: silent + response(from_frames) | ~1,700 | 学会 think + action 格式 | lr=1e-5, epochs=3, 79 steps |
+| **Phase 2** Recall 学习 | P2: + recall + pending + uncertain | ~2,600 | 学会判断 recall 时机 | lr=5e-6, epochs=3, from P1 ckpt |
+| **Phase C1** 压缩行为 | C1: + compress(system指定) + compress_recall | ~800 | 学会按指定范围压缩 | lr=3e-6, epochs=2, from P2 ckpt |
+| **Phase C2** 自选压缩 | C2: + compress(自选范围) | ~630 | 学会自选压缩窗口 | lr=2e-6, epochs=2, from C1 ckpt |
+| **Phase 5** 混合训练 | P5: 所有类型按比例混合 | ~5,700 | 综合能力对齐 | lr=1e-6, epochs=1, from C2 ckpt |
+| **Phase 6** RL/GRPO | 75 条 RL 视频, ~2,050 (视频,task) 对 | on-policy | 决策优化 | lr=5e-7, epochs=2, group=4, from P5 ckpt |
+
+SFT 总计 333 steps (~4 min)，RL 总计 256 steps (~34 min)，8×H100。
+
+**Eval 检查点**：
+- P1 结束 → val action F1 (silent/response)
+- P2 结束 → val action F1 + recall 准确率
+- C2 结束 → val 压缩质量
+- P5 结束 → val 全量指标 → **决定是否进 RL**
+- RL 每 50 steps → val reward + action F1
+- 最终 → test 30 条视频全量评估
 
 ### 7.2 数据集文件与注册（P1-4）
 
