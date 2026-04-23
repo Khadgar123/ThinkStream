@@ -30,17 +30,23 @@ from .rope2d import get_rope_index_25, get_rope_index_3
 
 IGNORE_INDEX = -100
 
-# Per-sample loss weights by action type (sft_engineering.md §5.2)
+# Per-sample loss weights by action type.
+#
+# Design principle (see data_batch1_plan.md §5.3):
+# - silent/response: timing is DETERMINISTIC (answer visible or not).
+#   SFT must strictly learn correct timing → HIGH weight.
+# - recall/compress: timing is NON-DETERMINISTIC (no single correct moment).
+#   SFT teaches mechanism (format, query/summary quality), NOT timing.
+#   Timing optimization is left to RL/GRPO → LOW weight.
 ACTION_WEIGHTS = {
-    "silent": 0.5,
-    "response": 1.0,
-    "recall_query": 1.5,
-    "recall_response": 1.0,
-    "recall_silent": 1.5,              # recall failed → learned restraint
-    "proactive_recall_query": 1.5,     # model initiates recall without user question
-    "proactive_recall_silent": 1.0,    # post-proactive-recall: absorb result, stay silent
-    "compress": 1.5,
-    "merge_compress": 1.5,
+    # Deterministic timing — strict SFT
+    "response": 1.5,
+    "silent": 1.0,
+    # Non-deterministic timing — teach mechanism, not timing
+    "recall_query": 0.8,
+    "recall_response": 1.0,       # post-recall response is still deterministic
+    "compress": 0.8,
+    "merge_compress": 0.8,
 }
 
 # Agent special tokens (data_construction_zh.md §13.2, Approach B)

@@ -72,8 +72,7 @@ def assign_phase(sample: Dict) -> str:
         if "merge_compress" in task_type:
             return "C1"  # Phase C1: second-level compression
         return "C1"  # Phase C1: compression training
-    elif sample_type in ("recall_query", "recall_response", "recall_silent",
-                         "proactive_recall_query", "proactive_recall_silent"):
+    elif sample_type in ("recall_query", "recall_response"):
         if "compress_recall" in task_type:
             return "C1"  # Phase C1: recall from compressed
         return "2"  # Phase 2: recall training
@@ -514,10 +513,7 @@ async def run_pipeline(
             snapshots = rollout["snapshots"]
             compression_events = rollout["compression_events"]
 
-            # --- Build task/compress/pending/proactive-recall lookup tables ---
-            proactive_recall_chunks = set(
-                pr["chunk_idx"] for pr in rollout.get("proactive_recalls", [])
-            )
+            # --- Build task/compress/pending lookup tables ---
             compress_at = {e["trigger_chunk"]: e for e in compression_events}
             task_at = {}  # chunk_idx -> (task_type, task)
             skip_task_keys = {"_", "compress", "pending"}  # handled separately
@@ -602,10 +598,15 @@ async def run_pipeline(
                                           "gold_answer": task.get("gold_answer", "")}
                         vid_samples.append(s1)
 
-                        # Sample 2: post-recall action (no think)
-                        # If recall failed/distractor → silent (don't force an answer)
-                        # If recall succeeded → response with answer
+                        # Sample 2: post-recall response (no think)
+                        # The answer IS in the past (Pass3 verified), so model
+                        # should always attempt to respond:
+                        # - recall succeeded → confident response
+                        # - recall failed → uncertain response (answer exists
+                        #   but retrieval missed it)
                         is_failed = recall_result.get("noise_level") in ("distractor", "failure")
+                        if is_failed:
+                            resp = "I could not find enough evidence to answer confidently."
                         recall_suffix = (
                             f'<pending since="{chunk_idx * AGENT_CHUNK_SEC}">{task["question"]}</pending>\n'
                             f'<recall_result>{recall_result.get("text_content", "")}</recall_result>'
@@ -618,30 +619,16 @@ async def run_pipeline(
                                 "n_frames": len(rc) * 2,
                             }
 
-                        if is_failed:
-                            # Recall failed → silent (wait for more info)
-                            output2 = "<action>silent</action>"
-                            s2 = build_per_timestep_messages(
-                                snapshot, chunk_idx, vpath, output2,
-                                user_text_suffix=recall_suffix,
-                                recalled_frames=recalled_frames,
-                            )
-                            s2["sample_type"] = "recall_silent"
-                            s2["video_id"] = vid
-                            s2["metadata"] = {"task_type": task_type, "gold_action": "silent",
-                                              "recall_noise": recall_result.get("noise_level")}
-                        else:
-                            # Recall succeeded → response
-                            output2 = f"<action>response</action><response>{resp or ''}</response>"
-                            s2 = build_per_timestep_messages(
-                                snapshot, chunk_idx, vpath, output2,
-                                user_text_suffix=recall_suffix,
-                                recalled_frames=recalled_frames,
-                            )
-                            s2["sample_type"] = "recall_response"
-                            s2["video_id"] = vid
-                            s2["metadata"] = {"task_type": task_type, "gold_action": "response",
-                                              "recall_noise": recall_result.get("noise_level")}
+                        output2 = f"<action>response</action><response>{resp or ''}</response>"
+                        s2 = build_per_timestep_messages(
+                            snapshot, chunk_idx, vpath, output2,
+                            user_text_suffix=recall_suffix,
+                            recalled_frames=recalled_frames,
+                        )
+                        s2["sample_type"] = "recall_response"
+                        s2["video_id"] = vid
+                        s2["metadata"] = {"task_type": task_type, "gold_action": "response",
+                                          "recall_noise": recall_result.get("noise_level")}
                         vid_samples.append(s2)
 
                 elif is_pending_start:
@@ -737,74 +724,10 @@ async def run_pipeline(
                     vid_samples.append(c2)
 
 
-                elif (chunk_idx in proactive_recall_chunks
-                      and snapshot.get("compressed_segments")):
-                    # Proactive recall: model notices connection to compressed
-                    # history without user question → issues recall on its own.
-                    # Requires compressed_segments to exist (otherwise nothing
-                    # to recall from — skip to silent).
-
-                    compressed_segs = snapshot["compressed_segments"]
-
-                    # Build query: find the compressed segment whose entities
-                    # overlap most with the current think (entity connection).
-                    # Use the oldest segment as recall target (most likely to
-                    # have been forgotten).
-                    target_seg = compressed_segs[0]
-                    target_range = target_seg.get("time_range", [0, 0])
-                    # Evidence chunks: estimate from the target segment's range
-                    ev_start_chunk = target_range[0] // AGENT_CHUNK_SEC
-                    ev_end_chunk = target_range[1] // AGENT_CHUNK_SEC
-                    evidence_chunks = list(range(int(ev_start_chunk), int(ev_end_chunk)))
-
-                    query_json = {
-                        "query": f"What happened during t={target_range[0]}-{target_range[1]}s?",
-                        "time_range": f"{int(target_range[0])}-{int(target_range[1])}",
-                    }
-
-                    # Sample 1: proactive recall query
-                    output_pr = (f"<think>{think_text}</think>"
-                                 f"<action>recall</action>"
-                                 f'<query>{json.dumps(query_json, ensure_ascii=False)}</query>')
-                    s_pr = build_per_timestep_messages(
-                        snapshot, chunk_idx, vpath, output_pr,
-                    )
-                    s_pr["sample_type"] = "proactive_recall_query"
-                    s_pr["video_id"] = vid
-                    s_pr["metadata"] = {"task_type": "proactive_recall",
-                                        "gold_action": "recall",
-                                        "target_range": target_range}
-                    vid_samples.append(s_pr)
-
-                    # Sample 2: post-recall silent (absorb result, no user to answer)
-                    recall_result = simulate_recall_result(
-                        {"ask_chunk": chunk_idx, "gold_answer": "",
-                         "evidence_chunks": evidence_chunks},
-                        snapshot, observations, chunk_idx, query_json,
-                    )
-                    recall_suffix = (
-                        f'<recall_result>{recall_result.get("text_content", "")}</recall_result>'
-                    )
-                    recalled_frames = None
-                    if recall_result.get("returned_chunks"):
-                        rc = recall_result["returned_chunks"]
-                        recalled_frames = {
-                            "time_range": [rc[0] * AGENT_CHUNK_SEC, (rc[-1] + 1) * AGENT_CHUNK_SEC],
-                            "n_frames": len(rc) * 2,
-                        }
-                    output_pr2 = "<action>silent</action>"
-                    s_pr2 = build_per_timestep_messages(
-                        snapshot, chunk_idx, vpath, output_pr2,
-                        user_text_suffix=recall_suffix,
-                        recalled_frames=recalled_frames,
-                    )
-                    s_pr2["sample_type"] = "proactive_recall_silent"
-                    s_pr2["video_id"] = vid
-                    s_pr2["metadata"] = {"task_type": "proactive_recall",
-                                         "gold_action": "silent",
-                                         "recall_noise": recall_result.get("noise_level"),
-                                         "target_range": target_range}
-                    vid_samples.append(s_pr2)
+                # NOTE: proactive recall (model-initiated, no user question) is NOT
+                # trained in SFT — its timing is non-deterministic (Pass2 uses
+                # random 5% sampling, not real entity-connection detection).
+                # Proactive recall behavior is discovered through RL/GRPO.
 
                 else:
                     # Silent — subsample ~20%
