@@ -574,33 +574,77 @@ snapshots[chunk_idx] = {
 
 **输出**: task_cards/{video_id}.json
 
-#### Task Card 数据结构
+#### Task Card 数据结构（精简版）
+
+**只保留有明确消费者的字段，其余程序推导：**
 
 ```python
 TaskCard = {
-    "card_id": "vid001_F2_001",
-    "family": "F2",
-    "question": "What color is the chef\'s apron?",
-    "canonical_answer": "Red",
-    "answer_form": "short_exact",         # V1-V6 验证等级
-    "choices": null,                       # multiple_choice 时为 ["Red","Blue","White","Green"]
-    "support_chunks": [5],                 # 397B 发现答案的 chunk（证据来源）
-    "support_facts": ["Person wearing red apron"],
-    "visibility_type": "persistent",       # persistent（实体一直在）/ transient（事件瞬时）
-    "retention_class": "low",              # high / medium / low
-    "answer_keywords": ["red", "apron"],
-    "entities_involved": ["person wearing red apron"],
+    "card_id": "vid001_F2_001",           # 唯一标识
+    "family": "F2",                        # 问题家族 → 决定 retention_class / 3-B 逻辑
+    "question": "围裙是什么颜色？ A.红色 B.蓝色 C.白色 D.绿色",  # MC 选项嵌入问题
+    "canonical_answer": "A",               # MC→字母; binary→Yes/No; number→数字; exact→短文本
+    "answer_form": "multiple_choice",      # binary/multiple_choice/number/short_exact/descriptive
+    "support_chunks": [5],                 # 397B 从哪个 chunk 发现的证据
+    "visibility_type": "persistent",       # persistent / transient
 }
 ```
 
-**新增字段 `visibility_type`**：
+**7 个字段，每个有明确消费者：**
+
+| 字段 | 谁消费 | 做什么 |
+|------|--------|--------|
+| `card_id` | 全流程 | 唯一标识 |
+| `family` | 3-B, retention_class 推导 | 决定合法 availability + bitmap 阈值 |
+| `question` | 3-C, SFT 样本 | 问题文本（MC 选项嵌入其中） |
+| `canonical_answer` | 3-C response 约束, GRPO 验证 | 标准答案 |
+| `answer_form` | 验证系统 | exact match / 容差 / LLM judge |
+| `support_chunks` | 3-B placement 计算 | 证据位置 |
+| `visibility_type` | 3-B availability 过滤 | persistent 只允许 in_visual |
+
+**删除的字段及其替代：**
+
+| 删除字段 | 替代方式 |
+|---------|---------|
+| `choices` | 嵌入 question 文本：`"A.红色 B.蓝色 C.白色 D.绿色"` |
+| `answer_keywords` | 程序从 canonical_answer 提取：`extract_keywords("Red") → ["red"]` |
+| `retention_class` | 从 family 直接映射：`F1/F2/F3→low, F4/P1/E2/C1/R1→medium, E1/S1/M1→high` |
+| `support_facts` | 查 `evidence[support_chunks[0]]["atomic_facts"]` |
+| `entities_involved` | 问题文本已经用 desc 引用实体，不需要单独字段 |
+
+#### 各 answer_form 的问题格式
+
+```
+binary:
+  question: "围裙是红色的吗？"
+  canonical_answer: "Yes"
+
+multiple_choice:
+  question: "围裙是什么颜色？ A.红色 B.蓝色 C.白色 D.绿色"
+  canonical_answer: "A"
+  干扰选项来源：同视频其他 chunk 的同类 fact，不够时用 category 通用项
+
+number:
+  question: "加了几勺盐？"
+  canonical_answer: "1"
+
+short_exact:
+  question: "围裙什么颜色？"
+  canonical_answer: "Red"
+
+descriptive:
+  question: "描述当前场景"
+  canonical_answer: "厨师在红色围裙下切菜，旁边有不锈钢锅"
+```
+
+#### visibility_type
 
 | 类型 | 含义 | 例子 | 3-B 怎么用 |
 |------|------|------|----------|
-| **persistent** | 实体/属性持续可见 | 围裙颜色、锅的位置 | 只选 in_visual 的 ask_time（答案一直在帧里，不可能 recall） |
-| **transient** | 事件/数字一闪而过 | 加了一勺盐、屏幕显示 $4.99 | 可选 in_visual + in_history_only（可造 response/recall 对照） |
+| **persistent** | 实体/属性持续可见 | 围裙颜色、锅的位置、人的穿着 | 只选 in_visual（答案一直在帧里，不可能 recall） |
+| **transient** | 事件/数字一闪而过 | 加盐动作、屏幕 $4.99、切菜步骤 | 可选 in_visual + in_history_only（可造 response/recall 对照） |
 
-**397B 在生成 card 时告诉我们"这个答案是持续可见还是瞬时的"，3-B 据此决定哪些 availability 合法。**
+397B 在生成 card 时标注 visibility_type，3-B 据此过滤不合法的 availability。
 
 #### 生成流程：opportunity 筛选 + 分批 call
 
@@ -651,18 +695,26 @@ M1 call: 给全视频摘要 → 输出 2 个 M1 cards（需要看整体才知道
 
 每次 call 输入短（~500-1000 tokens）、输出短（~300 tokens）、任务单一、thinking 可控。
 
-**每 family 的 prompt 模板不同**：
+**每 family 的 prompt 明确指定 answer_form + 怎么造选项**：
 
-```
-F1 prompt: "根据以下含 OCR/数字的片段，生成 {n} 个关于精确数值的问题。
-            优先 binary/number 格式。输出 JSON 数组。"
+| Family | 优先 answer_form | prompt 要点 | 输出示例 |
+|--------|----------------|------------|---------|
+| F1 OCR | number, short_exact | "根据含数字/文字的片段生成问题" | `{"question":"屏幕显示的价格是？","canonical_answer":"$4.99","answer_form":"short_exact"}` |
+| F2 Attr | multiple_choice, binary | "关于外观属性，附带 4 个选项" | `{"question":"围裙什么颜色？ A.红 B.蓝 C.白 D.绿","canonical_answer":"A","answer_form":"multiple_choice"}` |
+| F3 Count | number | "关于数量/个数" | `{"question":"切了几个番茄？","canonical_answer":"4","answer_form":"number"}` |
+| F4 Spatial | binary, multiple_choice | "关于位置/方位" | `{"question":"锅在灶台右边吗？","canonical_answer":"Yes","answer_form":"binary"}` |
+| E1 Action | binary, short_exact | "关于当前动作" | `{"question":"在搅拌吗？","canonical_answer":"Yes","answer_form":"binary"}` |
+| E2 Change | binary | "关于事件边界 / event_watch" | `{"question":"看到开始炒菜的时候告诉我","canonical_answer":"开始炒菜","answer_form":"short_exact"}` |
+| P1 Step | number, multiple_choice | "关于步骤顺序" | `{"question":"这是第几步？ A.第2步 B.第3步 C.第4步 D.第5步","canonical_answer":"B","answer_form":"multiple_choice"}` |
+| C1 Compare | binary | "前后对比" | `{"question":"锅里的东西和之前比变了吗？","canonical_answer":"Yes","answer_form":"binary"}` |
+| R1 Re-id | binary | "实体是否还在" | `{"question":"之前那个小白碗还在画面里吗？","canonical_answer":"No","answer_form":"binary"}` |
+| S1 Summary | descriptive | "描述场景" | `{"question":"描述当前画面","canonical_answer":"厨师在...","answer_form":"descriptive"}` |
+| M1 Comment | descriptive | "持续解说" | `{"question":"描述后面每一步操作","canonical_answer":"正在切菜","answer_form":"descriptive"}` |
 
-E2 prompt: "根据以下状态变化，生成 {n} 个关于事件边界的问题。
-            格式：event_watch（'看到X告诉我'）或 binary（'X是否已经开始？'）"
-
-M1 prompt: "根据以下视频步骤摘要，生成 {n} 个适合持续解说的问题。
-            格式：'描述每一步操作' / '告诉我接下来发生什么'"
-```
+**MC 干扰选项生成**：
+- 从同视频其他 chunk 的同 family fact 中取（如其他颜色、其他数字）
+- 不够时用 category 通用项（颜色: 红/蓝/白/绿/黑；数字: ±1-3）
+- 正确答案随机插入 A-D 位置
 
 **每视频 ~11 次 call（11 family），每次 ~500 tok input → 总 ~5.5K tokens。**
 
