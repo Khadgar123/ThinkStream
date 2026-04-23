@@ -338,14 +338,15 @@ async def run_pipeline(
         logger.info("PASS 1: Teacher Evidence Graph (chunk-parallel)")
         logger.info("=" * 60)
 
-        # Shared semaphore across ALL chunks from ALL videos.
-        # Each chunk = 2 frames (~1.5K tokens), so 1024 concurrent is safe.
-        pass1_conc = safe_concurrency_for_pass("pass1_evidence")
-        logger.info(f"PASS 1 chunk-level concurrency={pass1_conc}")
-        chunk_semaphore = asyncio.Semaphore(pass1_conc)
+        # 1-A: chunk-level semaphore (2 frames per request, high concurrency)
+        pass1a_conc = safe_concurrency_for_pass("pass1_evidence")
+        logger.info(f"PASS 1-A chunk concurrency={pass1a_conc}")
+        chunk_semaphore = asyncio.Semaphore(pass1a_conc)
 
         total_chunks = sum(v["num_chunks"] for v in videos)
-        logger.info(f"PASS 1 total chunks to annotate: {total_chunks}")
+        logger.info(f"PASS 1-A total chunks: {total_chunks}")
+        # 1-B runs sequentially after 1-A per video (2 text calls, low concurrency)
+        # Concurrency is naturally limited by asyncio.gather across videos
 
         async def process_video_pass1(video):
             vid = video["video_id"]
@@ -354,7 +355,6 @@ async def run_pipeline(
                 logger.info(f"  [{vid}] Using cached evidence ({len(cached)} chunks)")
                 return vid, cached
 
-            # All chunks share the same semaphore — no per-video bottleneck
             captions = await run_pass1_single_video(
                 video_id=vid,
                 frame_paths=video_frames.get(vid, []),

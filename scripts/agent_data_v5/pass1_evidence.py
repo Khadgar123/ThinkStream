@@ -175,29 +175,29 @@ def _normalize_entity(entity) -> dict:
 # 1-B: Post-processing (change detection via 397B)
 # ---------------------------------------------------------------------------
 
-PASS1B_PROMPT = """Below is a per-chunk entity/action summary for a video.
-Do TWO things:
+ENTITY_LINK_PROMPT = """Below are entity descriptions from different chunks of the same video.
+Group descriptions that refer to the SAME entity (same person/object, even if action or angle differs).
 
-1. ENTITY GROUPS: Which descriptions across chunks refer to the SAME entity?
-   Group them by identity (same person/object across time, even if action differs).
+{entity_list}
 
-2. STATE CHANGES: Which chunks have meaningful state changes from the previous chunk?
-   Ignore paraphrase ("chopping" ≈ "cutting" = no change).
-   Focus on: new actions, entities appearing/disappearing, step transitions.
+Output JSON array:
+[
+  {{"id": "person_1", "descs": ["person wearing red apron, standing", "person in red apron, chopping", "hand stirring pot"]}},
+  {{"id": "pot_1", "descs": ["stainless steel pot", "pot with reddish sauce"]}}
+]"""
+
+STATE_CHANGE_PROMPT = """Below is a per-chunk entity/action summary for a video.
+Identify chunks where a meaningful state change occurs compared to the previous chunk.
 
 {chunk_summary}
 
-Output JSON:
-{{
-  "entity_groups": [
-    {{"id": "person_1", "descs": ["person wearing red apron, standing", "person in red apron, chopping", "hand stirring pot"]}},
-    {{"id": "pot_1", "descs": ["stainless steel pot", "pot with reddish sauce"]}}
-  ],
-  "state_changes": [
-    {{"chunk": 1, "change": "person started chopping vegetables"}},
-    {{"chunk": 3, "change": "person moved to stove, started pouring oil"}}
-  ]
-}}"""
+Rules:
+- Ignore paraphrase ("chopping" ≈ "cutting" = no change)
+- Ignore camera angle changes without actual scene change
+- Focus on: new actions starting, entities appearing/disappearing, step transitions
+
+Output JSON array (only chunks WITH changes):
+[{{"chunk": 3, "change": "started pouring oil into pot"}}, ...]"""
 
 
 def _build_chunk_summary(evidence: List[Dict]) -> str:
@@ -220,14 +220,13 @@ def _build_chunk_summary(evidence: List[Dict]) -> str:
 
 
 async def run_pass1b(evidence: List[Dict], client, video_id: str):
-    """Pass 1-B: Entity alignment + state change detection in one 397B call.
+    """Pass 1-B: Entity alignment + state change detection (two 397B calls).
 
-    One call per video. Same input for both tasks (chunk entity/action summary).
+    Split into two calls to avoid thinking explosion in a single long-context call:
+    - Call 1: Entity linking (~1K input: unique desc list)
+    - Call 2: State change detection (~3K input: chunk summary)
 
-    Outputs written to evidence:
-    - evidence[i]["state_changes"] = ["change description", ...]
-    - evidence[i].visible_entities[j]["id"] = "person_1" (aligned across chunks)
-    - evidence metadata: "_entity_groups" for downstream use
+    Each call is shorter, thinking more controlled.
     """
     if not evidence:
         return
@@ -238,40 +237,35 @@ async def run_pass1b(evidence: List[Dict], client, video_id: str):
     if len(evidence) <= 1:
         return
 
-    chunk_summary = _build_chunk_summary(evidence)
-    prompt = PASS1B_PROMPT.format(chunk_summary=chunk_summary)
+    # --- Call 1: Entity linking ---
+    all_descs = set()
+    for cap in evidence:
+        for entity in cap.get("visible_entities", []):
+            desc = entity.get("desc", "")
+            if desc and desc != "unknown":
+                all_descs.add(desc)
 
-    raw = await client._call_one(
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=PASS_CONFIG["pass1_evidence"]["max_tokens"],
-        temperature=0.3,
-        request_id=f"{video_id}_pass1b",
-    )
-
-    if not raw:
-        logger.warning(f"  [{video_id}] 1-B: empty response, using fallback")
-        _detect_changes_fallback(evidence)
-        return
-
-    raw = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip()
-
-    # Parse JSON object with entity_groups + state_changes
-    parsed = _parse_json_object(raw)
-    if parsed is None:
-        logger.warning(f"  [{video_id}] 1-B: parse failed, using fallback")
-        _detect_changes_fallback(evidence)
-        return
-
-    # --- Apply entity groups ---
-    entity_groups = parsed.get("entity_groups", [])
     desc_to_id = {}
-    for group in entity_groups:
-        if not isinstance(group, dict):
-            continue
-        group_id = group.get("id", "unknown")
-        for desc in group.get("descs", []):
-            desc_to_id[desc] = group_id
+    if len(all_descs) >= 2:
+        entity_list = "\n".join(f"- {d}" for d in sorted(all_descs))
+        raw_el = await client._call_one(
+            messages=[{"role": "user", "content": ENTITY_LINK_PROMPT.format(entity_list=entity_list)}],
+            max_tokens=PASS_CONFIG["pass1_evidence"]["max_tokens"],
+            temperature=0.3,
+            request_id=f"{video_id}_entity_link",
+        )
+        if raw_el:
+            raw_el = re.sub(r'<think>.*?</think>', '', raw_el, flags=re.DOTALL).strip()
+            groups = _parse_json_array(raw_el)
+            if groups:
+                for group in groups:
+                    if not isinstance(group, dict):
+                        continue
+                    group_id = group.get("id", "unknown")
+                    for desc in group.get("descs", []):
+                        desc_to_id[desc] = group_id
 
+    # Apply entity IDs
     if desc_to_id:
         for cap in evidence:
             for entity in cap.get("visible_entities", []):
@@ -279,45 +273,59 @@ async def run_pass1b(evidence: List[Dict], client, video_id: str):
                 if desc in desc_to_id:
                     entity["id"] = desc_to_id[desc]
 
-    # --- Apply state changes ---
-    changes_list = parsed.get("state_changes", [])
-    chunk_map = {cap.get("chunk_idx", i): cap for i, cap in enumerate(evidence)}
-    for item in changes_list:
-        if not isinstance(item, dict):
-            continue
-        chunk_idx = item.get("chunk")
-        change = item.get("change", "state_changed")
-        if chunk_idx is not None and chunk_idx in chunk_map:
-            chunk_map[chunk_idx]["state_changes"].append(change)
+    n_groups = len(set(desc_to_id.values())) if desc_to_id else 0
 
-    n_groups = len(entity_groups)
+    # --- Call 2: State change detection ---
+    chunk_summary = _build_chunk_summary(evidence)
+    raw_sc = await client._call_one(
+        messages=[{"role": "user", "content": STATE_CHANGE_PROMPT.format(chunk_summary=chunk_summary)}],
+        max_tokens=PASS_CONFIG["pass1_evidence"]["max_tokens"],
+        temperature=0.3,
+        request_id=f"{video_id}_state_changes",
+    )
+
+    if raw_sc:
+        raw_sc = re.sub(r'<think>.*?</think>', '', raw_sc, flags=re.DOTALL).strip()
+        changes_list = _parse_json_array(raw_sc)
+        if changes_list:
+            chunk_map = {cap.get("chunk_idx", i): cap for i, cap in enumerate(evidence)}
+            for item in changes_list:
+                if not isinstance(item, dict):
+                    continue
+                chunk_idx = item.get("chunk")
+                change = item.get("change", "state_changed")
+                if chunk_idx is not None and chunk_idx in chunk_map:
+                    chunk_map[chunk_idx]["state_changes"].append(change)
+        else:
+            _detect_changes_fallback(evidence)
+    else:
+        logger.warning(f"  [{video_id}] 1-B state changes: empty response, using fallback")
+        _detect_changes_fallback(evidence)
+
     n_changes = sum(1 for cap in evidence if cap["state_changes"])
     logger.info(
-        f"  [{video_id}] 1-B: {n_groups} entity groups, "
+        f"  [{video_id}] 1-B done: {n_groups} entity groups, "
         f"{n_changes}/{len(evidence)} chunks with state changes"
     )
 
 
-def _parse_json_object(raw: str) -> Optional[Dict]:
-    """Extract a JSON object from raw text."""
+def _parse_json_array(raw: str) -> Optional[List]:
+    """Extract a JSON array from raw text."""
     try:
-        return json.loads(raw)
+        result = json.loads(raw)
+        if isinstance(result, list):
+            return result
     except (json.JSONDecodeError, ValueError):
         pass
-    start = raw.find("{")
-    if start < 0:
-        return None
-    depth = 0
-    for i in range(start, len(raw)):
-        if raw[i] == '{':
-            depth += 1
-        elif raw[i] == '}':
-            depth -= 1
-            if depth == 0:
-                try:
-                    return json.loads(raw[start:i + 1])
-                except (json.JSONDecodeError, ValueError):
-                    return None
+    start = raw.find("[")
+    end = raw.rfind("]")
+    if start >= 0 and end > start:
+        try:
+            result = json.loads(raw[start:end + 1])
+            if isinstance(result, list):
+                return result
+        except (json.JSONDecodeError, ValueError):
+            pass
     return None
 
 
