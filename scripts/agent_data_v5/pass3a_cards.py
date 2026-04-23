@@ -19,13 +19,12 @@ from typing import Dict, List, Optional
 
 from .config import (
     AGENT_CHUNK_SEC,
+    TASK_CARDS_DIR,
     PASS_CONFIG,
     VISUAL_WINDOW_CHUNKS,
 )
 
 logger = logging.getLogger(__name__)
-
-TASK_CARDS_DIR = Path("data/agent_v5/task_cards")
 
 # Family targets per video
 FAMILY_TARGETS = {
@@ -182,6 +181,7 @@ def classify_chunks(evidence: List[Dict]) -> Dict[str, List[int]]:
         fc["P1"].extend(consecutive)
 
     # C1/R1: cross-chunk entity tracking
+    ev_by_idx = {cap["chunk_idx"]: cap for cap in evidence}
     entity_appearances = {}
     for cap in evidence:
         for e in cap.get("visible_entities", []):
@@ -191,7 +191,7 @@ def classify_chunks(evidence: List[Dict]) -> Dict[str, List[int]]:
 
     for eid, chunks in entity_appearances.items():
         state_chunks = [c for c in chunks
-                        if c < len(evidence) and evidence[c].get("state_changes")]
+                        if ev_by_idx.get(c, {}).get("state_changes")]
         if len(state_chunks) >= 2:
             fc["C1"].extend(state_chunks[-2:])
         for i in range(1, len(chunks)):
@@ -212,11 +212,12 @@ def classify_chunks(evidence: List[Dict]) -> Dict[str, List[int]]:
 
 def _format_evidence_for_prompt(evidence: List[Dict], chunk_indices: List[int]) -> str:
     """Format selected chunks' evidence into a compact prompt string."""
+    ev_by_idx = {cap["chunk_idx"]: cap for cap in evidence}
     lines = []
     for idx in chunk_indices[:10]:  # limit to 10 chunks per call
-        if idx >= len(evidence):
+        cap = ev_by_idx.get(idx)
+        if not cap:
             continue
-        cap = evidence[idx]
         t = cap.get("time", [idx * AGENT_CHUNK_SEC, (idx + 1) * AGENT_CHUNK_SEC])
         entities = [e.get("desc", "?") for e in cap.get("visible_entities", [])]
         facts = [f["fact"] for f in cap.get("atomic_facts", [])

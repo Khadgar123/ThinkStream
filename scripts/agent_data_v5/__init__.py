@@ -1,15 +1,20 @@
 """
-Agent Data Construction Pipeline v5.0
+Agent Data Construction Pipeline v8.0
 
-5-stage pipeline:
-  1. Teacher Evidence Graph (rich structured captions, hidden from student)
-  2. Question-blind Streaming Rollout (student observations + compressions)
-  3. Task Planning (per-type mining with action minimality)
-  4. Question-aware Forks (generate final training samples)
-  5. Verify + Filter (leakage, grounding, format, difficulty)
+4-stage pipeline:
+  1. Teacher Evidence Graph
+     1-A: Independent chunk annotation (2 frames, parallel)
+     1-B: Entity alignment + state change detection (2 x 397B/video)
+  2. Question-blind Streaming Rollout (thinks + compressions + snapshots)
+  3. Task Mining + Sample Generation
+     3-A: Task Card generation (per-family 397B calls)
+     3-B: Placement + behavior sequence planning (pure program)
+     3-C: Trajectory sample generation (397B response/query)
+  4. Verify + Filter
 
 Architecture:
-  - Per-timestep independent training samples (方案 A)
-  - Three-layer text separation (teacher_caption / student_observation / compressed_summary)
-  - Visibility matrix + action minimality for every sample
+  - Per-timestep independent training samples
+  - 3 prompts: SYSTEM_PROMPT / POST_RECALL / COMPRESS
+  - Queries zone for persistent question tracking
+  - Behavior sequences: immediate_response / recall / event_watch / multi_response
 """

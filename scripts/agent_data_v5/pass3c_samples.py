@@ -19,13 +19,12 @@ from typing import Dict, List, Optional
 
 from .config import (
     AGENT_CHUNK_SEC,
+    SAMPLES_3C_DIR,
     PASS_CONFIG,
     VISUAL_WINDOW_CHUNKS,
 )
 
 logger = logging.getLogger(__name__)
-
-FORK_SAMPLES_DIR = Path("data/agent_v5/fork_samples")
 
 
 # ---------------------------------------------------------------------------
@@ -166,10 +165,11 @@ def _simulate_recall_result(card: Dict, rollout: Dict, ask_chunk: int,
             parts.append(f"[{observations[ec]['time']}] {observations[ec]['think']}")
             returned.append(ec)
 
-    if noise_type == "noisy" and len(observations) > 0:
-        distractor = random.choice([o for o in observations if o["chunk_idx"] < ask_chunk]
-                                    if observations else observations)
-        parts.insert(0, f"[{distractor['time']}] {distractor['think']}")
+    if noise_type == "noisy":
+        past_obs = [o for o in observations if o["chunk_idx"] < ask_chunk]
+        if past_obs:
+            distractor = random.choice(past_obs)
+            parts.insert(0, f"[{distractor['time']}] {distractor['think']}")
 
     content = "\n".join(parts) if parts else "No matching results found."
     return {"source": "historical_frames", "text_content": content,
@@ -405,14 +405,14 @@ async def generate_trajectory_samples(
 
 
 def save_samples(video_id: str, samples: List[Dict]):
-    FORK_SAMPLES_DIR.mkdir(parents=True, exist_ok=True)
-    path = FORK_SAMPLES_DIR / f"{video_id}.json"
+    SAMPLES_3C_DIR.mkdir(parents=True, exist_ok=True)
+    path = SAMPLES_3C_DIR / f"{video_id}.json"
     with open(path, "w", encoding="utf-8") as f:
         json.dump(samples, f, ensure_ascii=False, indent=2)
 
 
 def load_samples(video_id: str) -> Optional[List[Dict]]:
-    path = FORK_SAMPLES_DIR / f"{video_id}.json"
+    path = SAMPLES_3C_DIR / f"{video_id}.json"
     if path.exists():
         with open(path, "r", encoding="utf-8") as f:
             return json.load(f)

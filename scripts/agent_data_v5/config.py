@@ -15,18 +15,19 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]  # ThinkStream/
 DATA_ROOT = PROJECT_ROOT / "data" / "agent_v5"
 
 # Stage outputs
-EVIDENCE_DIR = DATA_ROOT / "evidence_graph"     # legacy, used by old pass1_evidence.py
-EVIDENCE_1A_DIR = DATA_ROOT / "evidence_1a"     # 1-A raw per-chunk (no entity ID, no state_changes)
+EVIDENCE_1A_DIR = DATA_ROOT / "evidence_1a"     # 1-A raw per-chunk
 EVIDENCE_1B_DIR = DATA_ROOT / "evidence_1b"     # 1-B enriched (entity ID hint + state_changes)
 ROLLOUT_DIR = DATA_ROOT / "rollout"
-TASKS_DIR = DATA_ROOT / "tasks"
-SAMPLES_DIR = DATA_ROOT / "samples"
+TASK_CARDS_DIR = DATA_ROOT / "task_cards"        # 3-A task cards
+PLACEMENTS_DIR = DATA_ROOT / "placements"        # 3-B placements + trajectories
+SAMPLES_3C_DIR = DATA_ROOT / "samples_3c"        # 3-C trajectory samples
 FINAL_DIR = DATA_ROOT / "final"
 AUDIT_DIR = DATA_ROOT / "audits"
 
 ALL_DIRS = [
-    DATA_ROOT, EVIDENCE_DIR, EVIDENCE_1A_DIR, EVIDENCE_1B_DIR, ROLLOUT_DIR, TASKS_DIR,
-    SAMPLES_DIR, FINAL_DIR, AUDIT_DIR,
+    DATA_ROOT, EVIDENCE_1A_DIR, EVIDENCE_1B_DIR, ROLLOUT_DIR,
+    TASK_CARDS_DIR, PLACEMENTS_DIR, SAMPLES_3C_DIR,
+    FINAL_DIR, AUDIT_DIR,
 ]
 
 # ---------------------------------------------------------------------------

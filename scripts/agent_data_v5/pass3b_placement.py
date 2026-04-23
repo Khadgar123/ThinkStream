@@ -22,13 +22,12 @@ from typing import Dict, List, Optional, Set, Tuple
 
 from .config import (
     AGENT_CHUNK_SEC,
+    PLACEMENTS_DIR,
     VISUAL_WINDOW_CHUNKS,
 )
 from .pass3a_cards import RETENTION_CLASS, extract_keywords
 
 logger = logging.getLogger(__name__)
-
-PLACEMENTS_DIR = Path("data/agent_v5/placements")
 
 
 # ---------------------------------------------------------------------------
@@ -192,10 +191,11 @@ def compute_placement(
         key_chunks["post_silent"] = min(trigger + 1, num_chunks - 1)
 
     elif sequence_type == "multi_response":
+        ev_by_idx = {cap.get("chunk_idx", i): cap for i, cap in enumerate(evidence)}
         followup_r = []
         followup_s = []
         for c in range(ask_chunk + 1, min(num_chunks, ask_chunk + 30)):
-            cap = evidence[c] if c < len(evidence) else {}
+            cap = ev_by_idx.get(c, {})
             if cap.get("state_changes"):
                 followup_r.append(c)
             elif len(followup_s) < 2:
