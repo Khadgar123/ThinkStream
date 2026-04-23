@@ -75,6 +75,19 @@ COMPRESSION_RATIO_MIN = 2.5        # 最小压缩比
 RECALL_RETURN_FRAMES = 4           # recall 返回 4 帧 (4s at 1fps)
 MAX_COMPRESSED_SEGMENTS = 5        # 最多保留 5 段压缩
 
+# Per-video candidate limits (controls data volume + API cost)
+# Set to 0 to disable limiting for that type
+MAX_CANDIDATES_PER_VIDEO = {
+    "response_from_frames": 8,
+    "response_from_memory": 5,
+    "recall": 5,
+    "compress_recall": 3,
+    "compress_response": 3,
+    "unanswerable": 5,
+    "pending": 3,
+    # "compress" is not limited — determined by actual compression events
+}
+
 # Backward compat aliases (deprecated — use token-based constants above)
 OBSERVATION_TOKENS = THINK_TOKENS  # deprecated alias
 COMPRESS_THRESHOLD = 10  # deprecated: item-count fallback, prefer COMPRESS_TOKEN_THRESHOLD

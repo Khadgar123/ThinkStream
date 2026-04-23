@@ -19,6 +19,7 @@ from .config import (
     AGENT_CHUNK_SEC,
     CONFIDENCE_THRESHOLD,
     LEAKAGE_OVERLAP_THRESHOLD,
+    MAX_CANDIDATES_PER_VIDEO,
     PASS_CONFIG,
     RECALL_QUERY_PROMPT,
     TASK_QUESTION_PROMPT,
@@ -798,6 +799,26 @@ async def run_pass3(
     pending_tasks = mine_pending_tasks(evidence, rollout)
     all_candidates["pending"] = pending_tasks
     logger.info(f"  [{video_id}] Pending/event-watch candidates: {len(pending_tasks)}")
+
+    # --- Apply per-type candidate limits ---
+    # Reduces API cost: instead of generating questions for ALL candidates,
+    # keep only top-N per type (diverse by ask_chunk spread).
+    import random as _limit_rng
+    _limit_rng.seed(hash(video_id))  # deterministic per video
+    before_total = sum(len(t) for k, t in all_candidates.items()
+                       if not k.startswith("_") and isinstance(t, list))
+    for task_type, limit in MAX_CANDIDATES_PER_VIDEO.items():
+        if limit <= 0 or task_type not in all_candidates:
+            continue
+        candidates = all_candidates[task_type]
+        if len(candidates) > limit:
+            # Sample to keep diversity across ask_chunks
+            _limit_rng.shuffle(candidates)
+            all_candidates[task_type] = candidates[:limit]
+    after_total = sum(len(t) for k, t in all_candidates.items()
+                      if not k.startswith("_") and isinstance(t, list))
+    if before_total != after_total:
+        logger.info(f"  [{video_id}] Candidate limiting: {before_total} → {after_total}")
 
     # --- Generate questions and answers via 397B ---
     # Deduplicate by fact: same fact across different task types shares one question.
