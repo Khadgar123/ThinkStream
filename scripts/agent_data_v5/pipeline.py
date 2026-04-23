@@ -86,17 +86,19 @@ def assign_phase(sample: Dict) -> str:
 def select_videos(
     video_root: str,
     num_videos: int = 300,
-    min_duration: int = 120,
-    max_duration: int = 300,
+    min_duration: int = 60,
+    max_duration: int = 400,
     seed: int = 42,
     catalog_csv: str = None,
 ) -> List[Dict]:
     """Select videos for data construction.
 
-    Selection criteria (quality-first):
-    - Duration 120-300s: enough for compression+recall, not too long
-    - Stratified by dataset source for diversity
-    - Prefer 150-200s videos (best compression/recall coverage)
+    Duration mix strategy (not just "longer is better"):
+    - 60-120s  (30%): simple memory, learn basic think+response
+    - 120-240s (60%): main force, all task types, moderate memory complexity
+    - 240-400s (10%): deep compression (multi-merge), complex memory states
+
+    Stratified by dataset source for content diversity.
 
     Sources (in order of preference):
     1. Existing registry file (cached from previous run)
@@ -165,41 +167,56 @@ def select_videos(
         logger.error(f"No videos found with duration {min_duration}-{max_duration}s")
         return []
 
-    # --- Stratified sampling by dataset source ---
-    from collections import defaultdict
-    groups = defaultdict(list)
-    for v in videos:
-        groups[v.get("dataset", "unknown")].append(v)
+    # --- Duration-stratified selection ---
+    # Split videos into duration buckets, then sample proportionally
+    short = [v for v in videos if v["duration_sec"] < 120]          # 60-120s
+    medium = [v for v in videos if 120 <= v["duration_sec"] < 240]  # 120-240s
+    long = [v for v in videos if v["duration_sec"] >= 240]          # 240-400s
 
-    # Within each group, prefer 150-200s (best compression/recall coverage)
-    def quality_score(v):
-        d = v["duration_sec"]
-        if 150 <= d <= 200:
-            return 0  # best
-        elif 120 <= d < 150 or 200 < d <= 250:
-            return 1  # good
-        else:
-            return 2  # acceptable
-    for g in groups.values():
-        g.sort(key=lambda x: (quality_score(x), -x["duration_sec"]))
+    # Target mix: 30% short, 60% medium, 10% long
+    n_short = min(int(num_videos * 0.3), len(short))
+    n_long = min(int(num_videos * 0.1), len(long))
+    n_medium = min(num_videos - n_short - n_long, len(medium))
+    # Fill any shortfall from medium
+    n_medium += num_videos - n_short - n_medium - n_long
 
-    # Round-robin proportional selection across dataset sources
+    logger.info(
+        f"Duration mix target: {n_short} short (60-120s) + "
+        f"{n_medium} medium (120-240s) + {n_long} long (240-400s)"
+    )
+
+    def _stratified_sample(pool, n, seed_val):
+        """Sample n videos from pool, stratified by dataset source."""
+        from collections import defaultdict
+        groups = defaultdict(list)
+        for v in pool:
+            groups[v.get("dataset", "unknown")].append(v)
+        # Shuffle within groups
+        rng = random.Random(seed_val)
+        for g in groups.values():
+            rng.shuffle(g)
+        # Round-robin across groups
+        group_keys = sorted(groups.keys())
+        rng.shuffle(group_keys)
+        result = []
+        per_group = max(1, n // max(len(group_keys), 1))
+        for key in group_keys:
+            take = min(per_group, len(groups[key]), n - len(result))
+            result.extend(groups[key][:take])
+            if len(result) >= n:
+                break
+        if len(result) < n:
+            remaining = [v for k in group_keys for v in groups[k] if v not in result]
+            rng.shuffle(remaining)
+            result.extend(remaining[:n - len(result)])
+        return result[:n]
+
     random.seed(seed)
-    group_keys = sorted(groups.keys())
-    random.shuffle(group_keys)
-    selected = []
-    remaining = num_videos
-    per_group = max(1, num_videos // max(len(group_keys), 1))
-    for key in group_keys:
-        take = min(per_group, len(groups[key]), remaining)
-        selected.extend(groups[key][:take])
-        remaining -= take
-        if remaining <= 0:
-            break
-    if remaining > 0:
-        all_remaining = [v for g in group_keys for v in groups[g] if v not in selected]
-        all_remaining.sort(key=lambda x: (quality_score(x), -x["duration_sec"]))
-        selected.extend(all_remaining[:remaining])
+    selected = (
+        _stratified_sample(short, n_short, seed)
+        + _stratified_sample(medium, n_medium, seed + 1)
+        + _stratified_sample(long, n_long, seed + 2)
+    )
 
     random.shuffle(selected)
     selected = selected[:num_videos]
