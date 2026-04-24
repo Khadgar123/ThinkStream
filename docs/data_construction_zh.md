@@ -124,7 +124,7 @@ chunk 21: [SYSTEM_PROMPT, 3-action]
 
 ──── 系统触发压缩（BETWEEN chunk 21 and 22）────
   [SYSTEM_PROMPT_COMPRESS]
-  input: recent_thinks 列表 + visual_window
+  input: memory_timeline + visual_window
   C1: 系统指定 range="16-30" → 模型输出 summary
   C2: 模型自选 range → 模型输出 range + summary
   → memory.compress(summary, range)
@@ -274,14 +274,14 @@ compress 不在主循环中，不存在优先级冲突。
 
 ### 2.3 压缩触发与范围选择
 
-**触发条件**: `recent_thinks 总 token ≥ RECENT_THINKS_TOKEN_BUDGET × 80%`（~480 tok）
+**触发条件**: `timeline 中 thinks 总 token ≥ RECENT_THINKS_TOKEN_BUDGET × 80%`（~480 tok）
 
 具体行为取决于 think 长度：
 - 长 think（~60 tok/条）→ ~8 条就触发（早）
 - 中等 think（~50 tok/条）→ ~10 条触发
 - 短 think（~40 tok/条）→ 12 条才触发（由 item 硬上限兜底）
 
-**Hysteresis 机制**：压缩后 recent_thinks 总 token 须降至 `RECENT_THINKS_TOKEN_BUDGET × 55%`（~330 tok）以下。
+**Hysteresis 机制**：压缩后 timeline 中 thinks 总 token 须降至 `RECENT_THINKS_TOKEN_BUDGET × 55%`（~330 tok）以下。
 如果压缩一次不够（窗口太短），系统会扩大范围或连续触发。这防止频繁触发压缩导致 summary 质量下降。
 见 config.py `COMPRESS_HYSTERESIS_RATIO = 0.55` / `COMPRESS_HYSTERESIS_THRESHOLD = 330`。
 
@@ -295,22 +295,29 @@ compress 不在主循环中，不存在优先级冲突。
 **压缩在两步之间触发**：
 系统检测到 memory_timeline 总 token 超阈值后，在当前步和下一步之间插入 SYSTEM_PROMPT_COMPRESS 调用。
 
-**范围选择（C1: teacher 多维评分）**：
-系统评估 memory_timeline 中所有**连续 think 段**（跳过已有的 summary），选择综合得分最低的：
+**范围选择（C1: teacher 多维评分，归一化 [0,1]）**：
+系统评估 memory_timeline 中所有合法连续范围，选择综合得分最低的：
 
-```python
-score(range) =
-  + content_value        # 实体数、OCR/数字（来自 evidence）
-  + boundary_penalty     # 范围边界有 state_change → 罚（来自 1-B）
-  - token_saving         # 省越多 token 越好（tokenizer 精确计算）
+All 5 dimensions normalized to [0, 1], then weighted (configurable):
 
-best_range = argmin(score)
+| 维度 | 权重 | [0,1] 含义 |
+|------|------|-----------|
+| content | W=0.30 | 平均 per-item importance（entity/OCR/digits/state_change 加权） |
+| merge | W=0.20 | max_merge_level / 3（re-compress penalty） |
+| boundary | W=0.15 | 边界有 state_change → 0.5/1.0 |
+| recency | W=0.20 | center_position / timeline_length（越近越保留） |
+| token | W=0.15 | range_tokens / est_total（越多越优先压缩，subtracted） |
+
+```
+score = W_content × content + W_merge × merge + W_boundary × boundary + W_recency × recency - W_token × token_ratio
+
+LOWER = better to compress. 权重可在 config 调整。
 ```
 
 **合法范围约束**：
-1. 必须是 memory_timeline 中连续的 **thinks**（不能跨 summary）
-2. 至少 3 条 thinks
-3. 压缩后 token gain 足够
+1. timeline 中连续 items（可跨 summary）
+2. 至少含 2 个 thinks
+3. summary 有 merge_penalty 抑制再压缩
 
 **二级压缩**：当 memory_timeline 中 summary 段数超过 5 时，系统合并最老的两个相邻 summary（截断到 200 tok）。
 
@@ -522,7 +529,7 @@ Call 2: 变化检测
 
 **397B 输入** (每个 timestep):
 ```
-[压缩段] + [recent_thinks] + [24帧视觉窗口] + prompt
+[memory_timeline (summary + thinks)] + [24帧视觉窗口] + prompt
 ```
 
 **Rollout 产出数据结构**（与代码完全对齐）:
@@ -545,8 +552,7 @@ compression_events.append({
 # 每步 pre-action snapshot（不含当前 think）
 snapshots[chunk_idx] = {
     "chunk_idx": 14,
-    "compressed_segments": [...],
-    "recent_thinks": [...],
+    "timeline": [...],          # summary + thinks 混排，按时间序
     # queries 区独立于 snapshot，由系统单独管理
     "visual_window_start": 3,
 }
@@ -652,84 +658,23 @@ descriptive:
 
 **Step 1: 从 evidence 结构化字段筛选（纯程序，不做关键词匹配）**
 
-不从 fact 文本猜 family——直接用 evidence 的结构化字段：
+不从 fact 文本猜 family——直接用 evidence 的结构化字段。`classify_chunks(evidence)` 输出 `{family: [chunk_indices]}`：
 
-```python
-def classify_chunks(evidence):
-    """
-    按 evidence 的结构化字段分组，不做关键词匹配。
-    输出: family_chunks = {family: [chunk_indices]}
-    """
-    family_chunks = {f: [] for f in ["F1","F2","F3","F4","E1","E2","P1","C1","R1","S1","M1"]}
-    
-    for cap in evidence:
-        idx = cap["chunk_idx"]
-        entities = cap.get("visible_entities", [])
-        facts = [f for f in cap.get("atomic_facts", []) if f.get("confidence", 0) >= 0.7]
-        
-        # F1: 有 OCR 字段 或 facts 含数字
-        if cap.get("ocr"):
-            family_chunks["F1"].append(idx)
-        elif any(any(c.isdigit() for c in f["fact"]) for f in facts):
-            family_chunks["F1"].append(idx)
-        
-        # F2/F4: 有实体 → F2 (属性问题); 有 ≥2 实体 → F4 (空间关系)
-        if entities:
-            family_chunks["F2"].append(idx)
-        if len(entities) >= 2:
-            family_chunks["F4"].append(idx)
-        
-        # F3: facts 含数字（和 F1 重叠，但 F3 问的是"几个"不是"多少钱"）
-        if any(any(c.isdigit() for c in f["fact"]) for f in facts):
-            family_chunks["F3"].append(idx)
-        
-        # E2: 有 state_changes（来自 1-B）
-        if cap.get("state_changes"):
-            family_chunks["E2"].append(idx)
-    
-    # E1: 从全部 chunks 中均匀采样（几乎所有 chunk 都可以问"在做什么"）
-    all_chunks = [cap["chunk_idx"] for cap in evidence if cap.get("atomic_facts")]
-    family_chunks["E1"] = all_chunks[::3]  # 每 3 个取 1 个，避免全选
-    
-    # S1: 实体 ≥ 3 的 chunk（场景丰富，适合描述）
-    family_chunks["S1"] = [cap["chunk_idx"] for cap in evidence 
-                           if len(cap.get("visible_entities", [])) >= 3]
-    
-    # P1: 连续 ≥ 3 个有 state_changes 的 chunk
-    consecutive = []
-    for cap in evidence:
-        if cap.get("state_changes"):
-            consecutive.append(cap["chunk_idx"])
-        else:
-            if len(consecutive) >= 3:
-                family_chunks["P1"].extend(consecutive)
-            consecutive = []
-    if len(consecutive) >= 3:
-        family_chunks["P1"].extend(consecutive)
-    
-    # C1/R1: 需要跨 chunk 实体追踪（用 1-B 的 entity_id hint）
-    entity_appearances = {}  # entity_id → [chunk_indices]
-    for cap in evidence:
-        for e in cap.get("visible_entities", []):
-            eid = e.get("id", e.get("desc", ""))
-            if eid and eid != "unknown":
-                entity_appearances.setdefault(eid, []).append(cap["chunk_idx"])
-    
-    for eid, chunks in entity_appearances.items():
-        # C1: 同实体在不同 chunk 有 state_change
-        state_chunks = [c for c in chunks if evidence[c].get("state_changes")]
-        if len(state_chunks) >= 2:
-            family_chunks["C1"].extend(state_chunks[-2:])  # 取最后两个变化点
-        # R1: 实体消失后重现（gap ≥ 5 chunks）
-        for i in range(1, len(chunks)):
-            if chunks[i] - chunks[i-1] >= 5:
-                family_chunks["R1"].append(chunks[i])
-    
-    # M1: 需要全视频视角（哪些内容适合持续解说）→ 给全视频摘要
-    family_chunks["M1"] = None  # 特殊：不按 chunk 筛选，给全视频
-    
-    return family_chunks
-```
+| Family | 筛选条件（纯结构化字段） |
+|--------|----------------------|
+| F1 | `ocr` 非空 或 facts 含数字 |
+| F2 | 有 `visible_entities` |
+| F3 | facts 含数字（与 F1 重叠，但问"几个"） |
+| F4 | `visible_entities` ≥ 2 |
+| E1 | 有 `atomic_facts` 的 chunk 每 3 个取 1（均匀采样） |
+| E2 | 有 `state_changes`（来自 1-B） |
+| P1 | 连续 ≥ 3 个有 state_changes 的 chunk |
+| S1 | `visible_entities` ≥ 3（场景丰富） |
+| C1 | 同 entity_id 在不同 chunk 有 state_change（取最后 2 变化点） |
+| R1 | 同 entity_id 消失后重现（gap ≥ 5 chunks） |
+| M1 | 特殊：不按 chunk 筛选，给全视频摘要 |
+
+facts 过滤：confidence ≥ 0.7。C1/R1 用 1-B 的 entity_id hint 做跨 chunk 追踪。
 
 **Step 2: 按分组调 397B（每组一次 call）**
 
@@ -815,7 +760,7 @@ def determine_sequence_type(card, availability):
     if availability == "in_future":
         return "event_watch"
     
-    if availability in ("in_visual", "in_recent_thinks", "in_compressed"):
+    if availability in ("in_visual", "in_timeline_think", "in_timeline_summary"):
         return "immediate_response"
     
     if availability == "in_history_only":
@@ -826,166 +771,31 @@ def determine_sequence_type(card, availability):
 
 #### Placement 数据结构（行为序列蓝图）
 
-```python
-Placement = {
-    "card_id": "vid001_F2_001",
-    "ask_chunk": 20,
-    "sequence_type": "recall_success",
-    
-    # 序列的关键时间点（3-C 据此逐 chunk 生成样本）
-    "key_chunks": {
-        "ask": 20,           # 问题到达 → SYSTEM_PROMPT → recall
-        "post_recall": 20,   # recall 返回 → POST_RECALL_PROMPT → response
-        "post_silent": 21,   # 答完后 → SYSTEM_PROMPT → silent
-    },
-}
-```
+每条 Placement = `{card_id, ask_chunk, sequence_type, key_chunks}`。key_chunks 按序列类型不同：
 
-```python
-Placement_event_watch = {
-    "card_id": "vid001_E2_001",
-    "ask_chunk": 30,
-    "sequence_type": "event_watch",
-    
-    "key_chunks": {
-        "ask": 30,                  # 问题到达 → silent（事件没发生）
-        "wait_silent": [32, 35],    # 等待中 → silent（采样 2 个代表）
-        "trigger": 40,              # 事件发生 → response
-        "post_silent": 41,          # 答完 → silent
-    },
-}
-```
-
-```python
-Placement_M1 = {
-    "card_id": "vid001_M1_001",
-    "ask_chunk": 10,
-    "sequence_type": "multi_response",
-    
-    "key_chunks": {
-        "ask": 10,                       # 首次回答 → response
-        "no_change_silent": [15, 18],    # 无新 state_change → silent
-        "followup_response": [25, 40],   # 有 state_change → 追加 response
-        "post_silent": 41,               # 最后一次回答后 → silent
-    },
-}
-```
-
-```python
-Placement_recall_fail = {
-    "card_id": "vid001_F1_001",
-    "ask_chunk": 45,
-    "sequence_type": "recall_fail_then_found",
-    
-    "key_chunks": {
-        "ask": 45,              # 问题到达 → recall
-        "post_recall": 45,      # recall 结果没用 → POST_RECALL → silent
-        "wait_silent": [46],    # query 未答完，继续观察 → silent
-        "found_response": 50,   # 答案出现在帧里 → response
-        "post_silent": 51,      # 答完 → silent
-    },
-}
-```
+| sequence_type | key_chunks 字段 | 行为链示例 |
+|---------------|----------------|-----------|
+| **immediate_response** | `ask` → `post_silent` | ask:20 → response → post_silent:21 |
+| **recall_success** | `ask` → `post_recall` → `post_silent` | ask:20 → recall → post_recall:20(response) → post_silent:21 |
+| **recall_fail_then_found** | `ask` → `post_recall` → `wait_silent[]` → `found_response` → `post_silent` | ask:45 → recall → post_recall:45(silent) → wait:46 → found:50(response) → post_silent:51 |
+| **event_watch** | `ask` → `wait_silent[]` → `trigger` → `post_silent` | ask:30 → silent → wait:[32,35] → trigger:40(response) → post_silent:41 |
+| **multi_response** | `ask` → `no_change_silent[]` → `followup_response[]` → `post_silent` | ask:10 → response → silent:[15,18] → response:[25,40] → post_silent:41 |
 
 #### 计算 key_chunks 的逻辑
 
-```python
-def compute_placement(card, ask_chunk, sequence_type, rollout, evidence):
-    """计算行为序列的关键时间点"""
-    num_chunks = rollout["num_chunks"]
-    key_chunks = {"ask": ask_chunk}
-    
-    if sequence_type == "immediate_response":
-        key_chunks["post_silent"] = min(ask_chunk + 1, num_chunks - 1)
-    
-    elif sequence_type == "recall_success":
-        key_chunks["post_recall"] = ask_chunk  # 同 chunk step2
-        key_chunks["post_silent"] = min(ask_chunk + 1, num_chunks - 1)
-    
-    elif sequence_type == "recall_fail_then_found":
-        key_chunks["post_recall"] = ask_chunk  # step2 → silent（recall 失败）
-        # 找后续帧里答案重新出现的 chunk
-        found = find_next_visible_chunk(card, ask_chunk, evidence)
-        if found and found < num_chunks:
-            key_chunks["wait_silent"] = [ask_chunk + 1]
-            key_chunks["found_response"] = found
-            key_chunks["post_silent"] = min(found + 1, num_chunks - 1)
-        else:
-            return None  # 后续帧里也没有 → 这个 placement 无效
-    
-    elif sequence_type == "event_watch":
-        trigger = min(card.support_chunks)  # 事件发生的 chunk
-        wait_chunks = list(range(ask_chunk + 2, trigger, max(1, (trigger - ask_chunk) // 3)))
-        key_chunks["wait_silent"] = wait_chunks[:2]  # 采样 2 个等待点
-        key_chunks["trigger"] = trigger
-        key_chunks["post_silent"] = min(trigger + 1, num_chunks - 1)
-    
-    elif sequence_type == "multi_response":
-        # M1: 在有 state_change 的 chunk 追加 response
-        followup_r = []
-        followup_s = []
-        for c in range(ask_chunk + 1, num_chunks):
-            cap = evidence[c] if c < len(evidence) else {}
-            if cap.get("state_changes"):
-                followup_r.append(c)
-            elif len(followup_s) < 2:
-                followup_s.append(c)
-        key_chunks["no_change_silent"] = followup_s[:2]
-        key_chunks["followup_response"] = followup_r[:5]  # 最多 5 次追加
-        if followup_r:
-            key_chunks["post_silent"] = min(followup_r[-1] + 1, num_chunks - 1)
-    
-    return {"card_id": card.card_id, "ask_chunk": ask_chunk,
-            "sequence_type": sequence_type, "key_chunks": key_chunks}
-```
+`compute_placement(card, ask_chunk, sequence_type, rollout, evidence)` 按序列类型填充 key_chunks：
+
+- **immediate/recall_success**: post_silent = ask+1; recall_success 额外设 post_recall = ask
+- **recall_fail_then_found**: `find_next_visible_chunk()` 找答案重现的 chunk → found_response; 找不到则 placement 无效
+- **event_watch**: trigger = min(support_chunks), 均匀采样 2 个 wait_silent 点
+- **multi_response**: 遍历后续 chunk，有 state_change → followup_response（最多 5 次），无变化 → no_change_silent（最多 2 个）
 
 #### 轨迹规划：从 placements 组合多问题轨迹
 
-```python
-def plan_trajectories(placements, target=30):
-    """
-    每条轨迹 = 1-3 个 placement（不同问题），共享同一 base rollout。
-    同一轨迹内的问题至少间隔 5 chunks。
-    不同轨迹可以用同一 card 的不同 ask_chunk。
-    """
-    trajectories = []
-    
-    # 按 sequence_type 分桶，保证多样性
-    by_type = group_by(placements, key=lambda p: p["sequence_type"])
-    
-    # Phase 1: 每种 sequence_type 至少有代表轨迹
-    for seq_type, ps in by_type.items():
-        for p in ps[:3]:  # 每种类型最多 3 条单问题轨迹
-            trajectories.append({
-                "trajectory_id": f"traj_{len(trajectories)}",
-                "placements": [p],
-            })
-    
-    # Phase 2: 组合多问题轨迹
-    remaining = [p for p in placements if not any(
-        p in t["placements"] for t in trajectories)]
-    remaining.sort(key=lambda p: p["ask_chunk"])
-    
-    group = []
-    for p in remaining:
-        if len(trajectories) >= target:
-            break
-        if not group or p["ask_chunk"] - group[-1]["ask_chunk"] >= 5:
-            group.append(p)
-            if len(group) >= 3:
-                trajectories.append({
-                    "trajectory_id": f"traj_{len(trajectories)}",
-                    "placements": group,
-                })
-                group = []
-    if group:
-        trajectories.append({
-            "trajectory_id": f"traj_{len(trajectories)}",
-            "placements": group,
-        })
-    
-    return trajectories
-```
+`plan_trajectories(placements, target=30)` 将 placements 组合为轨迹（每条 1-3 个 placement，共享 base rollout）：
+1. Phase 1: 按 sequence_type 分桶，每种取 ≤3 条单问题轨迹（保证多样性）
+2. Phase 2: 剩余 placements 按 ask_chunk 排序，间隔 ≥5 chunks 组合为多问题轨迹
+3. 不同轨迹可复用同一 card 的不同 ask_chunk
 
 ### 3.5 阶段 3-C: 轨迹样本生成
 
@@ -997,187 +807,41 @@ def plan_trajectories(placements, target=30):
 
 #### 按行为序列逐 chunk 生成样本
 
-```python
-async def generate_trajectory_samples(trajectory, rollout, evidence, client):
-    """
-    遍历轨迹中所有 placement 的 key_chunks，逐个生成 SFT 样本。
-    
-    queries 区随轨迹演化：问题进入 → answer 追加 → 后续 chunk 都能看到。
-    """
-    samples = []
-    queries_state = []  # 模拟 queries 区的演化
-    
-    for placement in trajectory["placements"]:
-        card = get_card(placement["card_id"])
-        kc = placement["key_chunks"]
-        seq = placement["sequence_type"]
-        
-        # ── 问题到达 ──
-        ask = kc["ask"]
-        snapshot = rollout["snapshots"][ask]
-        think = rollout["thinks"][ask]["think"]
-        
-        if seq == "immediate_response":
-            # 397B 生成 response
-            response_text = await generate_response(card, snapshot, evidence, client)
-            samples.append(make_sample(
-                chunk=ask, prompt="SYSTEM_PROMPT", action="response",
-                think=think, response=response_text,
-                queries=queries_state, user_input=card.question,
-            ))
-            # 更新 queries 区
-            queries_state.append({"question": card.question, "answers": [response_text]})
-            # post_silent
-            samples.append(make_sample(
-                chunk=kc["post_silent"], prompt="SYSTEM_PROMPT", action="silent",
-                think=rollout["thinks"][kc["post_silent"]]["think"],
-                queries=queries_state,
-            ))
-        
-        elif seq == "recall_success":
-            # step1: recall
-            query_json = await generate_recall_query(card, snapshot, client)
-            samples.append(make_sample(
-                chunk=ask, prompt="SYSTEM_PROMPT", action="recall",
-                think=think, query=query_json,
-                queries=queries_state, user_input=card.question,
-            ))
-            # step2: post-recall response
-            # 检索噪声分布: 70% oracle(rank1正确) / 20% noisy(rank2-4正确) / 5% all-wrong / 5% failure
-            recall_result = simulate_recall_result(card, rollout, ask)
-            response_text = await generate_response_from_recall(card, recall_result, client)
-            samples.append(make_sample(
-                chunk=ask, prompt="POST_RECALL_PROMPT", action="response",
-                think=f"Recall returned relevant result.", response=response_text,
-                queries=queries_state, recall_result=recall_result,
-            ))
-            queries_state.append({"question": card.question, "answers": [response_text]})
-            # post_silent
-            samples.append(make_sample(
-                chunk=kc["post_silent"], prompt="SYSTEM_PROMPT", action="silent",
-                think=rollout["thinks"][kc["post_silent"]]["think"],
-                queries=queries_state,
-            ))
-        
-        elif seq == "recall_fail_then_found":
-            # step1: recall
-            query_json = await generate_recall_query(card, snapshot, client)
-            samples.append(make_sample(
-                chunk=ask, prompt="SYSTEM_PROMPT", action="recall",
-                think=think, query=query_json,
-                queries=queries_state, user_input=card.question,
-            ))
-            # step2: recall 失败 → silent
-            recall_result = {"source": "failure", "text_content": "No matching results."}
-            samples.append(make_sample(
-                chunk=ask, prompt="POST_RECALL_PROMPT", action="silent",
-                think="Recall returned no relevant results.",
-                queries=queries_state, recall_result=recall_result,
-            ))
-            # query 进入 queries 区但无 answer（未答完）
-            queries_state.append({"question": card.question, "answers": []})
-            # wait_silent
-            for wc in kc.get("wait_silent", []):
-                samples.append(make_sample(
-                    chunk=wc, prompt="SYSTEM_PROMPT", action="silent",
-                    think=rollout["thinks"][wc]["think"],
-                    queries=queries_state,
-                ))
-            # found_response: 答案出现在帧里
-            found = kc["found_response"]
-            response_text = await generate_response(card, rollout["snapshots"][found], evidence, client)
-            samples.append(make_sample(
-                chunk=found, prompt="SYSTEM_PROMPT", action="response",
-                think=rollout["thinks"][found]["think"], response=response_text,
-                queries=queries_state,
-            ))
-            # 更新 queries 区
-            queries_state[-1]["answers"].append(response_text)
-        
-        elif seq == "event_watch":
-            # ask: silent（事件没发生）
-            queries_state.append({"question": card.question, "answers": []})
-            samples.append(make_sample(
-                chunk=ask, prompt="SYSTEM_PROMPT", action="silent",
-                think=think, queries=queries_state, user_input=card.question,
-            ))
-            # wait_silent
-            for wc in kc.get("wait_silent", []):
-                samples.append(make_sample(
-                    chunk=wc, prompt="SYSTEM_PROMPT", action="silent",
-                    think=rollout["thinks"][wc]["think"],
-                    queries=queries_state,
-                ))
-            # trigger: response
-            trigger = kc["trigger"]
-            response_text = await generate_response(card, rollout["snapshots"][trigger], evidence, client)
-            samples.append(make_sample(
-                chunk=trigger, prompt="SYSTEM_PROMPT", action="response",
-                think=rollout["thinks"][trigger]["think"], response=response_text,
-                queries=queries_state,
-            ))
-            queries_state[-1]["answers"].append(response_text)
-        
-        elif seq == "multi_response":
-            # 首次 response
-            response_text = await generate_response(card, snapshot, evidence, client)
-            samples.append(make_sample(
-                chunk=ask, prompt="SYSTEM_PROMPT", action="response",
-                think=think, response=response_text,
-                queries=queries_state, user_input=card.question,
-            ))
-            queries_state.append({"question": card.question, "answers": [response_text]})
-            # no_change_silent
-            for sc in kc.get("no_change_silent", []):
-                samples.append(make_sample(
-                    chunk=sc, prompt="SYSTEM_PROMPT", action="silent",
-                    think=rollout["thinks"][sc]["think"],
-                    queries=queries_state,
-                ))
-            # followup_response
-            for fc in kc.get("followup_response", []):
-                resp = await generate_response(card, rollout["snapshots"][fc], evidence, client)
-                samples.append(make_sample(
-                    chunk=fc, prompt="SYSTEM_PROMPT", action="response",
-                    think=rollout["thinks"][fc]["think"], response=resp,
-                    queries=queries_state,
-                ))
-                queries_state[-1]["answers"].append(resp)
-    
-    # ── Base samples: 无问题的 silent + compress（共享）──
-    # 从 base rollout 采样，所有轨迹共享
-    
-    return samples
-```
+`generate_trajectory_samples(trajectory, rollout, evidence, client)` 遍历轨迹中所有 placement 的 key_chunks，逐个生成 SFT 样本。
+
+**核心逻辑**：
+1. 维护 `queries_state[]` 模拟 queries 区演化（问题进入 → answer 追加 → 后续 chunk 可见）
+2. 每个 key_chunk 调 `make_sample()` 生成一条样本，think 从 rollout 取，response/query 由 397B 生成
+3. Recall 噪声分布：70% oracle / 20% noisy(rank2-4) / 5% all-wrong / 5% failure
+
+**各序列类型的样本生成**：
+
+| 序列类型 | 生成的样本（按序） | 397B call |
+|---------|------------------|-----------|
+| immediate_response | ask→response, post_silent | 1 (response) |
+| recall_success | ask→recall, post_recall→response, post_silent | 2 (query + response) |
+| recall_fail_then_found | ask→recall, post_recall→silent, wait_silent×N, found→response | 3 (query + fail + found) |
+| event_watch | ask→silent, wait_silent×N, trigger→response | 1 (trigger response) |
+| multi_response | ask→response, no_change_silent×N, followup_response×N | 1+N (首次 + 追加) |
+
+Base samples（无问题的 silent + compress）从 rollout 采样，所有轨迹共享。
 
 #### 每条样本的完整结构
 
 ```python
-def make_sample(chunk, prompt, action, think, queries,
-                response=None, query=None, recall_result=None, user_input=None):
-    """构造一条 SFT 训练样本"""
-    return {
-        "chunk_idx": chunk,
-        "prompt_type": prompt,  # "SYSTEM_PROMPT" / "POST_RECALL_PROMPT" / "COMPRESS_PROMPT"
-        "action": action,
-        
-        # input
-        "input": {
-            "visual_window": f"chunk {max(0, chunk-11)}-{chunk}",
-            "memory": "snapshot at chunk",
-            "queries": queries,           # queries 区当前状态
-            "user_input": user_input,     # 当前步新问题（或空）
-            "recall_result": recall_result,  # post-recall 时有
-        },
-        
-        # output
-        "output": {
-            "think": think,
-            "action": action,
-            "response": response,
-            "query": query,
-        },
-    }
+sample = {
+    "chunk_idx": chunk,
+    "prompt_type": "SYSTEM_PROMPT" / "POST_RECALL_PROMPT" / "COMPRESS_PROMPT",
+    "action": action,
+    "input": {
+        "visual_window": "chunk range",
+        "memory": "timeline snapshot at chunk",
+        "queries": queries_state,        # queries 区当前状态
+        "user_input": user_input,        # 当前步新问题（或空）
+        "recall_result": recall_result,  # post-recall 时有
+    },
+    "output": {"think": think, "action": action, "response": response, "query": query},
+}
 ```
 
 #### 397B 调用量
@@ -1274,7 +938,7 @@ Multiple choice: 正确 + 3 干扰项（同视频同 family evidence），随机
 
 ### 4.3 Action 类型（由 availability 自动推导）
 
-`in_visual` / `in_recent_thinks` / `in_compressed` → response；`in_history_only` → recall；`in_future` → silent（仅 E2）。
+`in_visual` / `in_timeline_think` / `in_timeline_summary` → response；`in_history_only` → recall；`in_future` → silent（仅 E2）。
 Recall 必要条件：答案不在帧/thinks/compressed 中，但存在于历史中。Compress 从 rollout 继承。
 
 ### 4.4 Queries 机制（替代旧 pending）
@@ -1301,7 +965,7 @@ P1: silent 65% / response 35%。P2: 50/20/20(recall)/10(special)。C1: 45/18/15/
   "sample_type": "recall_query",  "chunk_idx": 30,  "phase": "C1",
   "input": {
     "system": "You are a streaming video agent...",
-    "memory": {"compressed": [{"time_range": [0,20], "text": "..."}], "recent_thinks": ["[40-42] ...", "[42-44] ..."]},
+    "memory": {"timeline": ["<summary t=\"0-20\">...</summary>", "[40-42] ...", "[42-44] ..."]},
     "queries": [{"question": "Describe each step", "answers": ["Chopping onions"]}],
     "visual_window": {"video_start": 36, "video_end": 60, "frames": 24},
     "user_input": "How much salt did the chef add?"
@@ -1329,7 +993,7 @@ Recall failure 时 response 表达"信息不足"。
 {
   "sample_id": "vid001_t44_compress",
   "input": {
-    "memory": {"compressed": [{"time_range": [0,20], "text": "..."}], "recent_thinks": ["[20-22] Oil poured...", "...(8 thinks)"]},
+    "memory": {"timeline": ["<summary t=\"0-20\">...</summary>", "[20-22] Oil poured...", "...(8 thinks)"]},
     "visual_window": {"video_start": 20, "video_end": 44},
     "user_input": "<compress_trigger range=\"20-34\"/>"
   },
@@ -1411,7 +1075,7 @@ R_compress 计算方式：压缩后从 summary 中能还原多少 entity 和 fac
 THINK_TOKENS = (40, 60)
 RECENT_THINKS_TOKEN_BUDGET = 600;  COMPRESS_TRIGGER_RATIO = 0.8  # threshold = 480
 STUDENT_MODEL = "Qwen/Qwen3-VL-8B"
-COMPRESS_RANGE_MIN = 4;  COMPRESS_RANGE_MAX = 8
+COMPRESS_RANGE_MIN = 2;  COMPRESS_RANGE_MAX = 8
 MAX_COMPRESSED_SEGMENTS = 5;  SUMMARY_TOKENS = (100, 180);  COMPRESSION_RATIO_MIN = 2.5
 VISUAL_WINDOW_CHUNKS = 12  # 24s, 24帧
 RECALL_RETURN_FRAMES = 4
@@ -1437,10 +1101,10 @@ THINKING = True;  MAX_TOKENS_VISION = 16384;  MAX_TOKENS_TEXT = 60000
 | # | 约束 | 对应���节 | 代码执行 |
 |---|------|---------|---------|
 | 1 | 视觉观察 think 每步立即入文本记忆（recall step2 分析 think 不存） | §2.1 | `MemoryState.add_think()` |
-| 2 | 文本记忆覆盖时间 > 视觉窗口，两者重叠 | §2.1 | `snapshot()` 中 `visual_window_start` 独立于 `recent_thinks` |
+| 2 | 文本记忆覆盖时间 > 视觉窗口，两者重叠 | §2.1 | `snapshot()` 中 `visual_window_start` 独立于 `timeline` |
 | 3 | 80% token 预算触发压缩（精确 tokenizer） | §2.3 | `should_compress()` + `count_recent_tokens()` |
-| 4 | compress range 只覆盖 INPUT ���的 recent_thinks，不含当前 think | §2.1 | `pre_action_thinks = snapshots[chunk_idx]["recent_thinks"]` |
-| 5 | 系���执行：先替换→再 append 当前 think | §2.1 | `memory.compress()` 后 think 已在 memory 中 |
+| 4 | compress range 只覆盖 INPUT 中的 timeline thinks，不含当前 think | §2.1 | `pre_action_thinks = snapshots[chunk_idx]["timeline"]` |
+| 5 | 系统执行：先替换→再 append 当前 think | §2.1 | `memory.compress()` 后 think 已在 memory 中 |
 | 6 | summary 只能引用 thinks，不能偷看视觉帧 | §2.1 | `verify_summary_provenance()` |
 | 7 | C1 teacher 多维评分选最优范围，C2 模型自选 | §2.3 | `score_range_for_compression()` 5 维评分 |
 | 8 | 主循环 action 优先级：用户问题 > query 触发 > silent（compress 不在主循环中） | §2.1 | pipeline Pass 3-C |
@@ -1448,7 +1112,7 @@ THINKING = True;  MAX_TOKENS_VISION = 16384;  MAX_TOKENS_TEXT = 60000
 | 10 | recall failure/distractor 时 response 内容表达信息不足，不用 gold_answer 强答 | §3.5 | `is_failed_recall` → "信息不足" response + `verify_information_flow()` |
 | 11 | post-recall response 输出 think（分析检索结果），格式与所有 action 统一 | §1.3 | step2 有 `<think>` 标签 |
 | 12 | query generator 不接收 gold_answer | §6 | `RECALL_QUERY_PROMPT` 仅含 question + visible_context |
-| 13 | compressed_segments 超 5 段时合并最老两段（≤200 tok） | §2.1 | `MemoryState.compress()` + tokenizer 截断 |
+| 13 | timeline 中 summary 超 5 段时合并最老两段（≤200 tok） | §2.1 | `MemoryState.compress()` + tokenizer 截断 |
 | 14 | merge_compress 有对应训练样本 | §2.1 | `build_merge_compress_sample()` |
 | 15 | 压缩比 ≥ 2.5:1 | §8 | `verify_compression_ratio()` |
 | 16 | C1/C2 必须拆开训练，不合并 | §2.3 | C1 `range="X-Y"` / C2 `<compress_trigger/>` 独立样本 |
