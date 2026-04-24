@@ -110,12 +110,38 @@ def format_memory_block(memory: Dict) -> str:
     return "\n".join(parts)
 
 
+def format_queries_block(queries: List[Dict]) -> str:
+    """Format the queries zone (past Q&A tracking, independent of memory).
+
+    The queries zone is NOT compressed — it persists across the trajectory
+    so the model can see what questions have been asked and answered.
+
+    Input: [{question: "...", answers: ["ans1", "ans2"]}, ...]
+    Output:
+      <queries>
+      {"question":"Q1","answers":["ans1"]}
+      {"question":"Q2","answers":[]}
+      </queries>
+    """
+    if not queries:
+        return ""
+    lines = []
+    for q in queries:
+        q_json = json.dumps({
+            "question": q.get("question", ""),
+            "answers": q.get("answers", []),
+        }, ensure_ascii=False)
+        lines.append(q_json)
+    return "<queries>\n" + "\n".join(lines) + "\n</queries>"
+
+
 def build_user_content(
     memory_text: str,
     chunk_idx: int,
     video_path: str,
     *,
     user_input: str = "",
+    queries: Optional[List[Dict]] = None,
     recalled_frames: Optional[Dict] = None,
     recall_result: Optional[Dict] = None,
     min_pixels: int = 100352,
@@ -126,7 +152,7 @@ def build_user_content(
 
     Ordering (sft_engineering.md v3.0 §2.1, must not violate):
     <visual_window> + frames → <recalled_frames> + frames → <memory>
-    → <recall_result> → <user_input>
+    → <queries> → <recall_result> → <user_input>
 
     Args:
         memory_text: Pre-formatted memory block from format_memory_block().
@@ -203,6 +229,15 @@ def build_user_content(
         "type": "text",
         "text": f"\n<memory>\n{memory_text}\n</memory>",
     })
+
+    # ── Zone Q: Queries (past Q&A, independent of memory, not compressed) ──
+    if queries:
+        queries_text = format_queries_block(queries)
+        if queries_text:
+            user_content.append({
+                "type": "text",
+                "text": f"\n{queries_text}",
+            })
 
     # ── Zone C continued: Recall result (recall_response only) ──
     if recall_result:

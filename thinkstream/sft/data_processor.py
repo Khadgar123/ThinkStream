@@ -100,6 +100,8 @@ SPECIAL_TOKENS_AGENT = [
     "<visual_window>", "</visual_window>",
     "<recalled_frames>", "</recalled_frames>",
     "<user_input>", "</user_input>",
+    # Queries zone (past Q&A tracking)
+    "<queries>", "</queries>",
     # Output payload
     "<summary>", "</summary>",
     # Trigger
@@ -294,6 +296,17 @@ def build_per_timestep_messages(sample: Dict, base_path: Path) -> List[Dict]:
         "type": "text",
         "text": f"\n<memory>\n{memory_text}\n</memory>",
     })
+
+    # ── Zone Q: Queries (past Q&A context, independent of memory) ──
+    queries = inp.get("queries", [])
+    if queries:
+        from thinkstream.data.agent_protocol import format_queries_block
+        queries_text = format_queries_block(queries)
+        if queries_text:
+            user_content.append({
+                "type": "text",
+                "text": f"\n{queries_text}",
+            })
 
     # ── Zone C continued: Recall result (recall_response only) ──
     if inp.get("recall_result"):
