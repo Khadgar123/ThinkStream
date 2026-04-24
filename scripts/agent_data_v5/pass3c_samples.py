@@ -449,7 +449,8 @@ async def generate_trajectory_samples(
                 ))
             # followup_response — pass prior answers to avoid repetition
             for fc in kc.get("followup_response", []):
-                prior = list(queries_state[-1]["answers"])
+                prior = [a["text"] if isinstance(a, dict) else str(a)
+                         for a in queries_state[-1]["answers"]]
                 resp = await _generate_response(card, _get_snapshot(fc), evidence,
                                                  client, video_id, fc,
                                                  prior_answers=prior)
