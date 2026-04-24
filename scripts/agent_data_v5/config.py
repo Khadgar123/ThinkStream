@@ -21,13 +21,14 @@ ROLLOUT_DIR = DATA_ROOT / "rollout"
 TASK_CARDS_DIR = DATA_ROOT / "task_cards"        # 3-A task cards
 PLACEMENTS_DIR = DATA_ROOT / "placements"        # 3-B placements + trajectories
 SAMPLES_3C_DIR = DATA_ROOT / "samples_3c"        # 3-C trajectory samples
+VERIFIED_DIR = DATA_ROOT / "verified"            # 4 verified samples
 FINAL_DIR = DATA_ROOT / "final"
 AUDIT_DIR = DATA_ROOT / "audits"
 
 ALL_DIRS = [
     DATA_ROOT, EVIDENCE_1A_DIR, EVIDENCE_1B_DIR, ROLLOUT_DIR,
     TASK_CARDS_DIR, PLACEMENTS_DIR, SAMPLES_3C_DIR,
-    FINAL_DIR, AUDIT_DIR,
+    VERIFIED_DIR, FINAL_DIR, AUDIT_DIR,
 ]
 
 # ---------------------------------------------------------------------------
@@ -130,7 +131,7 @@ PASS_CONTEXT_ESTIMATES = {
     "pass2_rollout":  {"input": 10_000, "output": 5_000, "thinking": 0},
     # Pass3/4: now include video frames (~2-4 frames per request).
     # max_tokens=16384 bounds thinking time.
-    "pass3a": {"input": 1_000, "output": 5_000, "thinking": 0},  # per-family card gen
+    "pass3a": {"input": 700, "output": 400, "thinking": 16_000},  # pure text, max_tokens=16384
     "pass3c": {"input": 2_000, "output": 5_000, "thinking": 0},  # response/query gen
 }
 
@@ -247,7 +248,7 @@ PASS_CONFIG = {
         "max_tokens": 16384,
         "temperature": 0.7,
         "thinking": True,
-        "concurrent": 64,    # per-family calls, moderate concurrency
+        "concurrent": 512,    # pure text, ~17K tok/req worst case, batch budget supports ~1882
     },
     "pass3c": {
         "max_tokens": 16384,

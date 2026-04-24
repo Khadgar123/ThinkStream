@@ -1,6 +1,6 @@
 # 流视频 Agent 数据构造方案
 
-> 版本: v8.0 | 日期: 2026-04-23
+> 版本: v9.0 | 日期: 2026-04-24
 >
 > 核心设计：
 > - Per-timestep 独立样本，每步重新构造完整 input，不依赖跨步 KV cache
@@ -351,19 +351,22 @@ LOWER = better to compress. 权重可在 config 调整。
 
 ## 3. 数据构造 Pipeline（4 阶段）
 
-> v8.0 重构：旧阶段 3（Task Planning）和阶段 4（Question-aware Forks）合并为新阶段 3 的三步流程。
-> 核心变化：**"问什么"和"什么时候问"彻底分离**，action 由 ask_time × support_time × snapshot 机械推出。
+> v9.0 变更：
+> - 3-A: 所有 family 并发调用（asyncio.gather），共享输出 schema，P1/C1/R1 双通路候选
+> - 3-B: 贪心多样性选择替代旧分桶方案，5 条密集轨迹（每条 4-6 问题），关键词提取修复 binary/MC
+> - 3-C: 新增 base sample 生成（5 类选择性采样），fork+base 合并为完整 episode
+> - Pass 5 重命名为 Pass 4，新增 4 项轨迹/base 一致性检查（共 14 项）
 
 ```
 阶段 1: Teacher Evidence Graph          [397B + 视频, ~5min]
   ├─ 1-A: 独立 chunk 标注              [397B, 2帧/chunk, 全并行]
-  └─ 1-B: 实体链接                     [规则 或 1 call/video]
-阶段 2: Question-blind Streaming Rollout [397B + 视频, ~4h]
-阶段 3: Task Mining + Sample Generation  [397B + 规则, ~2h]
-  ├─ 3-A: Task Card 生成               [397B, ~6-8 call/video (按 family 分批)]
-  ├─ 3-B: Placement + 行为序列规划     [纯程序, 0 call]
-  └─ 3-C: 轨迹样本生成                 [397B, ~90 call/video]
-阶段 4: Verify + Filter                 [规则 + 小模型, ~30min]
+  └─ 1-B: 实体链接                     [纯文本 397B, 2 call/video]
+阶段 2: Question-blind Streaming Rollout [397B + 视频, ~1h]
+阶段 3: Task Mining + Sample Generation  [397B + 规则, ~30min]
+  ├─ 3-A: Task Card 生成               [397B, ~6-8 call/video, asyncio.gather 全并行, ~2s]
+  ├─ 3-B: Placement + 行为序列规划     [纯程序, 0 call, 贪心多样性选择]
+  └─ 3-C: 轨迹样本生成 + base 采样     [397B, ~15-25 call/video, fork+base 合并]
+阶段 4: Verify + Filter                 [纯规则, 14 项检查, per-video 保存]
 ```
 
 ### 3.1 阶段 1: Teacher Evidence Graph
@@ -656,77 +659,47 @@ descriptive:
 
 #### 生成流程：结构化筛选 + 分组 397B call
 
-**Step 1: 从 evidence 结构化字段筛选（纯程序，不做关键词匹配）**
+**Step 1: 结构化字段筛选 + 双通路候选（纯程序）**
 
-不从 fact 文本猜 family——直接用 evidence 的结构化字段。`classify_chunks(evidence)` 输出 `{family: [chunk_indices]}`：
+`classify_chunks(evidence)` → `{family: [chunk_indices]}`。主路用 1-B 字段，备路用 1-A 直接视觉字段（减少因 1-B 文本推导漏标导致的 false negative）：
 
-| Family | 筛选条件（纯结构化字段） |
-|--------|----------------------|
-| F1 | `ocr` 非空 或 facts 含数字 |
-| F2 | 有 `visible_entities` |
-| F3 | facts 含数字（与 F1 重叠，但问"几个"） |
-| F4 | `visible_entities` ≥ 2 |
-| E1 | 有 `atomic_facts` 的 chunk 每 3 个取 1（均匀采样） |
-| E2 | 有 `state_changes`（来自 1-B） |
-| P1 | 连续 ≥ 3 个有 state_changes 的 chunk |
-| S1 | `visible_entities` ≥ 3（场景丰富） |
-| C1 | 同 entity_id 在不同 chunk 有 state_change（取最后 2 变化点） |
-| R1 | 同 entity_id 消失后重现（gap ≥ 5 chunks） |
-| M1 | 特殊：不按 chunk 筛选，给全视频摘要 |
+| Family | 主路筛选条件 | 备路（1-A fallback） |
+|--------|------------|-------------------|
+| F1 | `ocr` 非空 或 facts 含有效数字（`\d{2,}` 或货币/单位模式） | — |
+| F2 | 有 `visible_entities` | — |
+| F3 | facts 含有效数字（**独立于 F1，不互斥**） | — |
+| F4 | `visible_entities` ≥ 2 | — |
+| E1 | 有 `atomic_facts` 的 chunk 动态步长采样（保证 ≥ target×2 候选） | — |
+| E2 | 有 `state_changes`（来自 1-B） | — |
+| P1 | 连续 ≥ 3 个有 `state_changes` | 连续 ≥ 3 个 chunk 的主 entity `action` 各不同（1-A） |
+| S1 | `visible_entities` ≥ 3 | — |
+| C1 | 同 `entity_id` + 不同 chunk 有 `state_change` | desc 词重叠 ≥ 0.6 + action 不同（1-A） |
+| R1 | 同 `entity_id` 消失后重现（gap ≥ 5） | desc 词重叠 ≥ 0.6 + chunk 间隔 ≥ 5（1-A） |
+| M1 | 不按 chunk 筛选，给全视频摘要 | — |
 
-facts 过滤：confidence ≥ 0.7。C1/R1 用 1-B 的 entity_id hint 做跨 chunk 追踪。
+数字过滤用正则 `\d{2,}|[\$€¥£]\d|\d\s*(kg|lb|ml|oz|cm|mm|g)\b`，排除 "person 1" 等噪声。
+facts 过滤：confidence ≥ 0.7。
 
-**Step 2: 按分组调 397B（每组一次 call）**
+**Step 2: asyncio.gather 并发调 397B**
 
-每组只发相关 chunks 的 evidence，不发全部 60 个：
+所有 family 调用完全独立（不看其他 family 的输出），用 `asyncio.gather` 并行发出。每视频 ~6-8 个有效 family call，~2-3 秒完成。每组 ~500-1000 tok input，~200-300 tok output。
 
-```python
-for family, chunk_list in family_chunks.items():
-    if not chunk_list and family != "M1":
-        continue  # 这个 family 无候选 chunk
-    
-    # 准备输入：只取相关 chunks 的 evidence 摘要
-    if family == "M1":
-        # M1 需要全视频摘要才能设计持续解说问题
-        input_evidence = summarize_full_video(evidence)
-    else:
-        input_evidence = [evidence[c] for c in chunk_list[:10]]  # 限制最多 10 个 chunk
-    
-    target_n = FAMILY_TARGETS[family]
-    
-    # 397B call: 只生成这个 family 的 cards
-    cards = await call_397b_for_family(family, input_evidence, target_n, client)
-    all_cards.extend(cards)
-```
+**共享输出规范**（`_OUTPUT_SCHEMA`）：所有 11 个 family prompt 末尾拼接统一的 JSON schema + 格式约束：
+- 5 个必须字段：`question, canonical_answer, answer_form, support_chunks, visibility_type`
+- `canonical_answer` 格式：binary→"Yes"/"No"，MC→"A"/"B"/"C"/"D"，number→纯数字，short_exact→1-5 词，descriptive→1-3 句
+- Entity 引用规则：必须用外观描述，禁止用 entity_id
+- MC 选项嵌入问题文本，干扰项来自同视频同 family 的其他 fact
 
-每组 call 的输入 ~500-1000 tokens（5-10 个 chunk 摘要），输出 ~200-300 tokens（2-4 cards）。
-thinking 可控，不会爆炸。
+**关键词提取**：`extract_card_keywords(card)` 按 answer_form 智能提取（非统一用 canonical_answer）：
 
-**跳过无候选的 family**：如果视频没有 OCR → F1 call 跳过。如果没有 state_changes → E2 跳过。
-实际每视频 ~6-8 次 call（不是全部 11 个 family 都有候选）。
+| answer_form | 提取来源 | 示例 |
+|-------------|---------|------|
+| binary | question 文本 | "Is the apron red?" → `['apron', 'red']` |
+| multiple_choice | question 主体 + 正确选项文本 | "What color? A.Red ..." 答 "A" → `['color', 'apron', 'red']` |
+| number | question + 数字 | "How many tomatoes?" 答 "3" → `['tomatoes', 'cut', '3']` |
+| short_exact / descriptive | canonical_answer | 不变 |
 
-**每 family 的 prompt 明确指定 answer_form + 怎么造选项**：
-
-| Family | 优先 answer_form | prompt 要点 | 输出示例 |
-|--------|----------------|------------|---------|
-| F1 OCR | number, short_exact | "根据含数字/文字的片段生成问题" | `{"question":"屏幕显示的价格是？","canonical_answer":"$4.99","answer_form":"short_exact"}` |
-| F2 Attr | multiple_choice, binary | "关于外观属性，附带 4 个选项" | `{"question":"围裙什么颜色？ A.红 B.蓝 C.白 D.绿","canonical_answer":"A","answer_form":"multiple_choice"}` |
-| F3 Count | number | "关于数量/个数" | `{"question":"切了几个番茄？","canonical_answer":"4","answer_form":"number"}` |
-| F4 Spatial | binary, multiple_choice | "关于位置/方位" | `{"question":"锅在灶台右边吗？","canonical_answer":"Yes","answer_form":"binary"}` |
-| E1 Action | binary, short_exact | "关于当前动作" | `{"question":"在搅拌吗？","canonical_answer":"Yes","answer_form":"binary"}` |
-| E2 Change | binary | "关于事件边界 / event_watch" | `{"question":"看到开始炒菜的时候告诉我","canonical_answer":"开始炒菜","answer_form":"short_exact"}` |
-| P1 Step | number, multiple_choice | "关于步骤顺序" | `{"question":"这是第几步？ A.第2步 B.第3步 C.第4步 D.第5步","canonical_answer":"B","answer_form":"multiple_choice"}` |
-| C1 Compare | binary | "前后对比" | `{"question":"锅里的东西和之前比变了吗？","canonical_answer":"Yes","answer_form":"binary"}` |
-| R1 Re-id | binary | "实体是否还在" | `{"question":"之前那个小白碗还在画面里吗？","canonical_answer":"No","answer_form":"binary"}` |
-| S1 Summary | descriptive | "描述场景" | `{"question":"描述当前画面","canonical_answer":"厨师在...","answer_form":"descriptive"}` |
-| M1 Comment | descriptive | "持续解说" | `{"question":"描述后面每一步操作","canonical_answer":"正在切菜","answer_form":"descriptive"}` |
-
-**MC 干扰选项生成**：
-- 从同视频其他 chunk 的同 family fact 中取（如其他颜色、其他数字）
-- 不够时用 category 通用项（颜色: 红/蓝/白/绿/黑；数字: ±1-3）
-- 正确答案随机插入 A-D 位置
-
-**每视频 ~11 次 call（11 family），每次 ~500 tok input → 总 ~5.5K tokens。**
+**并发配置**: `concurrent: 512`（纯文本，batch budget 支持 ~1882），每视频 ~6-8 call 全并行 → ~2s/video。
 
 ### 3.4 阶段 3-B: Placement + 行为序列规划
 
@@ -752,22 +725,17 @@ thinking 可控，不会爆炸。
 
 ```python
 def determine_sequence_type(card, availability):
-    """availability + family → 完整行为序列类型"""
-    
-    if card.family == "M1":
-        return "multi_response"
-    
-    if availability == "in_future":
-        return "event_watch"
-    
-    if availability in ("in_visual", "in_timeline_think", "in_timeline_summary"):
+    if card.family == "M1":     return "multi_response"
+    if availability == "in_future":  return "event_watch"
+    if availability in ("in_visual", "in_recent_thinks", "in_compressed"):
         return "immediate_response"
-    
     if availability == "in_history_only":
-        # 70% recall 成功, 30% recall 失败后在后续帧找到
-        # 比例在轨迹规划时控制
-        return "recall_success"  # 或 "recall_fail_then_found"
+        return "recall_success"  # recall_fail_then_found 由 rng.random()<0.3 额外生成
+    return "immediate_response"
 ```
+
+> v9.0: availability 名称统一为 `in_recent_thinks` / `in_compressed`（旧名 `in_timeline_think` / `in_timeline_summary` 已废弃）。
+> `precompute_retention` 使用 `extract_card_keywords(card)` 而非 `extract_keywords(canonical_answer)`，修复 binary/MC 的 bitmap 全 False 问题。
 
 #### Placement 数据结构（行为序列蓝图）
 
@@ -790,121 +758,129 @@ def determine_sequence_type(card, availability):
 - **event_watch**: trigger = min(support_chunks), 均匀采样 2 个 wait_silent 点
 - **multi_response**: 遍历后续 chunk，有 state_change → followup_response（最多 5 次），无变化 → no_change_silent（最多 2 个）
 
-#### 轨迹规划：从 placements 组合多问题轨迹
+#### 轨迹规划：贪心多样性选择
 
-`plan_trajectories(placements, target=30)` 将 placements 组合为轨迹（每条 1-3 个 placement，共享 base rollout）：
-1. Phase 1: 按 sequence_type 分桶，每种取 ≤3 条单问题轨迹（保证多样性）
-2. Phase 2: 剩余 placements 按 ask_chunk 排序，间隔 ≥5 chunks 组合为多问题轨迹
-3. 不同轨迹可复用同一 card 的不同 ask_chunk
+> v9.0 重写：旧方案 30 条稀疏轨迹（1-3 问题/条）→ 5 条密集轨迹（4-6 问题/条），silent/response 比例从 80/8 改善到 ~60/30。
+
+`plan_trajectories(placements, cards_map, target=5, max_placements_per_traj=5, min_chunk_gap=8)`：
+
+**Phase 1: 贪心选择 placements**（budget = target × max_pp = 25）
+
+每轮对所有候选打分，选最高分的 placement：
+
+| 维度 | 分值 | 说明 |
+|------|------|------|
+| 答案可验证 | +1.0 | binary/MC/number/short_exact（支撑 RL reward） |
+| 未见 family | +2.0 | 已选中没有这个 family → 多样性奖励 |
+| 未见 sequence_type | +2.0 | 同上 |
+| 时间分散 | +0~1.5 | 与已选 ask_chunks 的最小距离 / 10，cap 1.5 |
+| support_inferred | -2.0 | 3-A 推断的 support_chunks → 质量惩罚 |
+
+同一 card_id 不重复选择。使用 seeded RNG 打破平分。
+
+**Phase 2: 组合为轨迹**
+
+按 ask_chunk 排序后，间隔 ≥ 8 chunks（16 秒）的 placements 分入同一 trajectory（最多 5 个/条）。剩余未配对的作为单问题轨迹。
+
+**效果**: 5 条轨迹覆盖 ≥ 5 种 family + ≥ 3 种 sequence_type，问题均匀分布在视频时间线上。
 
 ### 3.5 阶段 3-C: 轨迹样本生成
 
-> 397B 生成 response/recall 文本。只对选中的轨迹执行。
+> v9.0 变更：新增 base sample 生成（5 类选择性采样），fork+base 合并为完整 episode。
+> recall_fail_then_found 补 post_silent，multi_response followup 传 prior_answers 避免重复。
 
-**输入**: trajectories + rollout + evidence
+**输入**: trajectories + rollout + evidence + cards_map
 
-**输出**: fork_samples/{video_id}.json
+**输出**: samples_3c/{video_id}.json（fork + base 合并，按 chunk_idx 排序）
 
-#### 按行为序列逐 chunk 生成样本
+#### Fork 样本：按行为序列逐 key_chunk 生成
 
-`generate_trajectory_samples(trajectory, rollout, evidence, client)` 遍历轨迹中所有 placement 的 key_chunks，逐个生成 SFT 样本。
-
-**核心逻辑**：
-1. 维护 `queries_state[]` 模拟 queries 区演化（问题进入 → answer 追加 → 后续 chunk 可见）
-2. 每个 key_chunk 调 `make_sample()` 生成一条样本，think 从 rollout 取，response/query 由 397B 生成
-3. Recall 噪声分布：70% oracle / 20% noisy(rank2-4) / 5% all-wrong / 5% failure
-
-**各序列类型的样本生成**：
+维护 `queries_state[]` 演化 + `queries_state_at_chunks` 边界记录。
 
 | 序列类型 | 生成的样本（按序） | 397B call |
 |---------|------------------|-----------|
-| immediate_response | ask→response, post_silent | 1 (response) |
-| recall_success | ask→recall, post_recall→response, post_silent | 2 (query + response) |
-| recall_fail_then_found | ask→recall, post_recall→silent, wait_silent×N, found→response | 3 (query + fail + found) |
-| event_watch | ask→silent, wait_silent×N, trigger→response | 1 (trigger response) |
-| multi_response | ask→response, no_change_silent×N, followup_response×N | 1+N (首次 + 追加) |
+| immediate_response | ask→response, **post_silent** | 1 |
+| recall_success | ask→recall, post_recall→response, **post_silent** | 2 |
+| recall_fail_then_found | ask→recall, post_recall→silent, wait×N, found→response, **post_silent** | 3 |
+| event_watch | ask→silent, wait×N, trigger→response | 1 |
+| multi_response | ask→response, no_change_silent×N, followup→response×N（**含 prior_answers 去重**） | 1+N |
 
-Base samples（无问题的 silent + compress）从 rollout 采样，所有轨迹共享。
+#### Base 样本：选择性采样（非每 chunk 都选）
 
-#### 每条样本的完整结构
+`_select_base_chunks()` 从 60 chunks 中选 ~20-35 个有训练价值的，分 5 类：
 
-```python
-sample = {
-    "chunk_idx": chunk,
-    "prompt_type": "SYSTEM_PROMPT" / "POST_RECALL_PROMPT" / "COMPRESS_PROMPT",
-    "action": action,
-    "input": {
-        "visual_window": "chunk range",
-        "memory": "timeline snapshot at chunk",
-        "queries": queries_state,        # queries 区当前状态
-        "user_input": user_input,        # 当前步新问题（或空）
-        "recall_result": recall_result,  # post-recall 时有
-    },
-    "output": {"think": think, "action": action, "response": response, "query": query},
-}
-```
+| 类别 | 选择规则 | 训练目的 |
+|------|---------|---------|
+| **Warmup** | chunk 0-2 | 冷启动（memory 为空的观察） |
+| **Evidence anchor** | support_chunks ± 2 | recall 证据所在位置（模型需学会观察/记住） |
+| **Question window** | 每个 key_chunk ± 2/+3 | Q&A 前后上下文（非 min-max 全覆盖） |
+| **Compress anchor** | trigger ± 1 + 被压缩 chunk 首尾各 2 | 压缩上下文（非全选被压缩 chunks） |
+| **Long-silent patrol** | 间隔 > 10 chunks 的空白区每 5 chunk 采样 1 个 | 教模型"问题已答，持续 silent"（queries_state 非空） |
+
+`generate_base_samples()` 为每个选中 chunk 插值正确的 `queries_state`（从最近的 fork key_chunk 边界继承）。
+
+#### 完整 episode = fork + base，按 chunk_idx 排序
+
+**action 比例**（5 问题 trajectory）：silent ~60%，response+recall ~30%，compress ~10%。
 
 #### 397B 调用量
 
 ```
-每条轨迹 ~2-5 个 response/query 生成 call:
-  immediate_response: 1 call (response)
-  recall_success: 2 calls (query + response)
-  recall_fail_then_found: 3 calls (query + fail_response + found_response)
-  event_watch: 1 call (trigger response)
-  multi_response: 1 + N calls (首次 + 追加)
-
-~30 轨迹 × ~3 calls = ~90 calls/视频
-300 视频 = ~27,000 calls
+~5 轨迹 × ~3-5 calls = ~15-25 calls/视频
+300 视频 = ~4,500-7,500 calls（旧方案 ~27,000 → 降 70%）
 ```
 
-### 3.6 阶段 4: Verify + Filter
+### 3.6 阶段 4: Verify + Filter（pass4_verify.py）
 
-#### 5 类验证
+> v9.0 重写：旧"5 类验证"→ **14 项检查**（10 项旧有适配 + 4 项新增），按 trajectory 分组验证，per-video 保存。
 
-**第一类：信息流合法性（最重要）**
-```
-✓ 当前 action 是否只依赖当前可见信息
-✓ response 有没有用到未来信息
-✓ recall query 有没有包含未知答案
-✓ compression summary 有没有因未来问题而特殊保留答案
-✓ 问题出现前的 memory 是否 question-blind
-✓ recall_result 是否来自学生可访问内容
-```
+**输入**: 3-C 的 fork + base 合并样本
 
-**第二类：Action Minimality**
-```
-✓ 如果当前帧/obs/summary 能答 → 不应标 recall
-✓ 如果需要历史证据 → 不应标 response
-✓ 如果无证据 → 不应强答
-```
+**输出**: `verified/{video_id}.json`（通过的样本 + 统计）
 
-**第三类：Grounding**
-```
-✓ think 是否被当前帧支持
-✓ summary 是否只含原始 thinks 中的信息
-✓ response 是否被 support evidence 支持
-✓ 无声音/气味/情绪/意图推断
-```
+#### 14 项检查
 
-**第四类：格式与长度**
-```
-✓ think 40-60 tokens
-✓ response 长度匹配问题类型
-✓ query JSON 合法，无答案泄漏
-✓ summary JSON 合法，压缩比合理
-```
+**Per-sample 检查（1-10 旧有，适配 base sample）**：
 
-**第五类：难度标注**
-```
-标注: current_visible_response / memory_response / recall_required / unanswerable
-用于后续按 phase 采样
-```
+| # | 检查 | base sample 处理 |
+|---|------|:---:|
+| 1 | `information_flow`: 无未来信息泄漏 | 跳过（无 Q&A） |
+| 2 | `action_minimality`: action 匹配 sequence_type | 始终通过（silent/compress by construction） |
+| 3 | `grounding`: think 无声音/情绪/元推理 | base compress 允许空 think |
+| 4 | `format`: tag 完整 + action 合法 + JSON 合法 | base compress 允许缺 think tags |
+| 5 | `think_token_length`: think 40-60 tok ± 容差 | 标准 |
+| 6 | `compression_ratio`: 压缩比 ≥ 2.5 | 无 input.memory 时跳过 |
+| 7 | `summary_provenance`: summary 实体来自源 thinks | 无 source_texts 时跳过 |
+| 8 | `summary_retention`: summary 保留关键实体/数字 | 标准 |
+| 9 | `summary_no_current_think_leak`: summary 不含当前 think 独有事实 | 标准 |
+| 10 | `question_answer_leakage`: 问题文本不泄漏答案 | 标准 |
 
-**Grounding 验证方法**：entity 覆盖率（think 实体 vs teacher_caption，≥0.7 通过）+ 黑名单关键词过滤（sound/smell/emotion/intent 等）+ 可选 7B VLM entailment 判断（≥0.6 通过）。
-Pass 2 产出的每条 think 都验证，不通过则丢弃重新生成。
+**新增检查（11-14）**：
 
-**数据切分**：按 video_id 切分（不按 sample 随机切），300 videos → 240 train / 30 val / 30 test，同视频所有样本只在同一 split。
+| # | 检查 | 内容 |
+|---|------|------|
+| 11 | `queries_state_temporal` | queries 列表每项必须是 `{question, answers}` dict |
+| 12 | `trajectory_action_distribution` | 轨迹必须有 ≥1 active 样本；多问题轨迹 silent ≤ 90% |
+| 13 | `base_sample_consistency` | base sample 只能 silent/compress，无 user_input |
+| 14 | `recall_evidence_reachable` | recall 的 support_chunks 必须在 ask_chunk 之前 |
+
+#### Difficulty 标签
+
+基于 `sequence_type` + `action` 推导：
+
+| 条件 | 难度 |
+|------|------|
+| base silent (queries 为空) | easy |
+| base silent (queries 非空) / base compress | medium |
+| fork silent (event_watch) | medium |
+| immediate_response | easy |
+| recall_success | medium |
+| recall_fail_then_found | **hard** |
+| multi_response | medium |
+
+#### 数据切分
+
+按 video_id 切分（不按 sample 随机切），同视频所有样本只在同一 split。300 videos → 240 train / 30 val / 30 test。
 
 ---
 
@@ -938,7 +914,7 @@ Multiple choice: 正确 + 3 干扰项（同视频同 family evidence），随机
 
 ### 4.3 Action 类型（由 availability 自动推导）
 
-`in_visual` / `in_timeline_think` / `in_timeline_summary` → response；`in_history_only` → recall；`in_future` → silent（仅 E2）。
+`in_visual` / `in_recent_thinks` / `in_compressed` → response；`in_history_only` → recall；`in_future` → silent（仅 E2）。
 Recall 必要条件：答案不在帧/thinks/compressed 中，但存在于历史中。Compress 从 rollout 继承。
 
 ### 4.4 Queries 机制（替代旧 pending）
@@ -1007,10 +983,12 @@ Recall failure 时 response 表达"信息不足"。
 
 ## 6. 质量保证
 
-三项核心检查：
+14 项自动检查（详见 §3.6），核心三条不变：
 1. **Recall query 防泄漏**：query 只含问题已知信息 + 可观察锚点，禁止含未知答案值
 2. **Compression question-blind**：压缩不能因未来问题特殊保留答案（同类动作需一致处理）
 3. **Target-visibility**：只有 teacher caption confidence ≥ 0.7 的 fact 才能造任务
+
+新增：queries_state 时序一致性、轨迹 action 分布、base sample 结构合法性、recall 证据可达性。
 
 ---
 
@@ -1080,7 +1058,7 @@ MAX_COMPRESSED_SEGMENTS = 5;  SUMMARY_TOKENS = (100, 180);  COMPRESSION_RATIO_MI
 VISUAL_WINDOW_CHUNKS = 12  # 24s, 24帧
 RECALL_RETURN_FRAMES = 4
 MAX_LENGTH = 16384  # 训练 max_length (单样本 ~3500 tok)
-PASS1_CONCURRENT = 1024;  PASS2_CONCURRENT = 64;  PASS3_CONCURRENT = 64
+PASS1_CONCURRENT = 1024;  PASS2_CONCURRENT = 128;  PASS3A_CONCURRENT = 512;  PASS3C_CONCURRENT = 1024
 THINKING = True;  MAX_TOKENS_VISION = 16384;  MAX_TOKENS_TEXT = 60000
 # Special Tokens — 完整列表见 §13
 ```
@@ -1160,4 +1138,4 @@ P1(≥30s,200) + P2(≥60s,200) + C1/C2/P5(≥120s,300) = ~700 视频 → ~33K s
 
 **Visual Window**: `video_start/end` 绝对秒数，frames=24，recalled frames 单独加载（4 帧）。
 
-**Phase 分配**: Pass 4 输出 `train/val/test.jsonl`，按 `phase` 字段过滤。超参见 `sft_engineering.md` §7。
+**Phase 分配**: Pass 4 验证后输出 `verified/{video_id}.json`，pipeline 汇总为 `final/train/val/test.jsonl`，按 `phase` 字段过滤。超参见 `sft_engineering.md` §7。

@@ -11,6 +11,7 @@ Two steps:
 Output: task_cards/{video_id}.json
 """
 
+import asyncio
 import json
 import logging
 import re
@@ -41,90 +42,118 @@ RETENTION_CLASS = {
     "E1": "high", "S1": "high", "M1": "high",
 }
 
+# Shared output schema appended to every family prompt.
+# Solves: (1) inconsistent field names across families,
+#          (2) uncontrolled canonical_answer format,
+#          (3) entity_id leaking into question text.
+_OUTPUT_SCHEMA = """
+
+Output a JSON array. Each element MUST have exactly these fields:
+{{
+  "question": "...",
+  "canonical_answer": "...",
+  "answer_form": "binary|multiple_choice|number|short_exact|descriptive",
+  "support_chunks": [chunk_idx, ...],
+  "visibility_type": "persistent|transient"
+}}
+
+canonical_answer format rules:
+- binary: exactly "Yes" or "No" (English, capitalized)
+- multiple_choice: exactly one letter "A", "B", "C", or "D"
+- number: digits only, no units (e.g. "3" not "3个")
+- short_exact: 1-5 English words, no articles
+- descriptive: 1-3 sentences
+
+Entity reference rules:
+- ALWAYS refer to entities by visual appearance ("person wearing red apron"),
+  NEVER by ID ("person_1") — the model cannot see IDs at inference time.
+- For multiple_choice, embed "A. ... B. ... C. ... D. ..." in the question text.
+  Distractors should come from the same video (other chunks' facts of same type).
+  Randomize the position of the correct answer among A-D."""
+
 # Per-family prompt templates
 FAMILY_PROMPTS = {
     "F1": """Based on the following video chunks containing OCR text or numbers,
 generate {n} questions about precise values (price, count, text on screen).
 Prefer answer_form: number or short_exact.
+visibility_type: "transient" for momentary values, "persistent" for always-visible text.
 
 {evidence}
-
-Output JSON array of cards, each with: question, canonical_answer, answer_form, support_chunks, visibility_type.
-visibility_type: "transient" for momentary values, "persistent" for always-visible text.""",
+""" + _OUTPUT_SCHEMA,
 
     "F2": """Based on the following video chunks, generate {n} questions about
 visual attributes (color, material, shape, clothing).
-Prefer answer_form: multiple_choice (embed A/B/C/D choices in question) or binary.
+Prefer answer_form: multiple_choice or binary.
+visibility_type: "persistent" for always-visible attributes, "transient" for brief appearances.
 
 {evidence}
-
-Output JSON array. For multiple_choice, put choices in the question text.
-visibility_type: "persistent" for always-visible attributes, "transient" for brief appearances.""",
+""" + _OUTPUT_SCHEMA,
 
     "F3": """Generate {n} questions about counts/quantities from these chunks.
-answer_form: number.
+Prefer answer_form: number.
+visibility_type: usually "transient" (counts change).
 
 {evidence}
-
-Output JSON array. visibility_type: usually "transient" (counts change).""",
+""" + _OUTPUT_SCHEMA,
 
     "F4": """Generate {n} questions about spatial relationships from these chunks.
-Prefer binary ("Is X to the left of Y?") or multiple_choice.
+Prefer answer_form: binary ("Is X to the left of Y?") or multiple_choice.
+visibility_type: "persistent" for stable layouts, "transient" for moving objects.
 
 {evidence}
-
-Output JSON array. visibility_type: "persistent" for stable layouts.""",
+""" + _OUTPUT_SCHEMA,
 
     "E1": """Generate {n} questions about current actions from these chunks.
-Prefer binary ("Is the person stirring?") or short_exact.
+Prefer answer_form: binary ("Is the person stirring?") or short_exact.
+visibility_type: "transient" (actions change).
 
 {evidence}
-
-Output JSON array. visibility_type: "transient" (actions change).""",
+""" + _OUTPUT_SCHEMA,
 
     "E2": """Generate {n} event-watch or state-change questions from these chunks.
-Format: "Tell me when X starts" or "Has X started yet?"
-Prefer binary or short_exact.
+Question format: "Tell me when X starts" or "Has X started yet?"
+Prefer answer_form: binary or short_exact.
+visibility_type: "transient".
 
 {evidence}
-
-Output JSON array. visibility_type: "transient".""",
+""" + _OUTPUT_SCHEMA,
 
     "P1": """Generate {n} questions about procedure/step order from these chunks.
-Prefer number ("Which step is this?") or multiple_choice.
+Prefer answer_form: number ("Which step is this?") or multiple_choice.
+visibility_type: "transient".
 
 {evidence}
-
-Output JSON array. visibility_type: "transient".""",
+""" + _OUTPUT_SCHEMA,
 
     "C1": """Generate {n} comparison questions: how has something changed over time?
-Use entity descriptions (not IDs). Prefer binary ("Has X changed?").
+Prefer answer_form: binary ("Has X changed since earlier?").
+visibility_type: "transient".
 
 {evidence}
-
-Output JSON array. visibility_type: "transient".""",
+""" + _OUTPUT_SCHEMA,
 
     "R1": """Generate {n} re-identification questions: is a previously seen entity
-still present? Use appearance descriptions. answer_form: binary.
+still present? Describe the entity by appearance.
+answer_form: binary.
+visibility_type: "transient".
 
 {evidence}
-
-Output JSON array. visibility_type: "transient".""",
+""" + _OUTPUT_SCHEMA,
 
     "S1": """Generate {n} descriptive questions about the scene.
 answer_form: descriptive.
+visibility_type: "persistent".
 
 {evidence}
-
-Output JSON array. visibility_type: "persistent".""",
+""" + _OUTPUT_SCHEMA,
 
     "M1": """Based on this full video summary, generate {n} questions suitable
 for continuous commentary (e.g., "Describe each step as it happens").
 answer_form: descriptive.
+visibility_type: "transient".
 
 {evidence}
-
-Output JSON array. visibility_type: "transient".""",
+""" + _OUTPUT_SCHEMA,
 }
 
 
@@ -133,11 +162,30 @@ Output JSON array. visibility_type: "transient".""",
 # ---------------------------------------------------------------------------
 
 
-def classify_chunks(evidence: List[Dict]) -> Dict[str, List[int]]:
-    """Classify chunks by family using structural fields only.
+def _desc_overlap(desc_a: str, desc_b: str) -> float:
+    """Word-level overlap ratio between two entity descriptions."""
+    words_a = set(re.findall(r'[a-zA-Z]{2,}', desc_a.lower()))
+    words_b = set(re.findall(r'[a-zA-Z]{2,}', desc_b.lower()))
+    if not words_a or not words_b:
+        return 0.0
+    return len(words_a & words_b) / min(len(words_a), len(words_b))
 
-    No keyword matching on fact text — uses ocr, visible_entities count,
-    state_changes, entity_id for cross-chunk analysis.
+
+def _get_primary_action(cap: Dict) -> str:
+    """Extract the primary entity action from a chunk (1-A direct field)."""
+    for e in cap.get("visible_entities", []):
+        action = e.get("action", "")
+        if action:
+            return action.lower().strip()
+    return ""
+
+
+def classify_chunks(evidence: List[Dict]) -> Dict[str, List[int]]:
+    """Classify chunks by family using structural fields.
+
+    Primary path: 1-A direct fields (ocr, visible_entities, atomic_facts).
+    Fallback path for P1/C1/R1: 1-A action/desc fields when 1-B fields
+    (state_changes, entity_id) are missing, to reduce false negatives.
     """
     fc = {f: [] for f in FAMILY_TARGETS}
 
@@ -147,10 +195,14 @@ def classify_chunks(evidence: List[Dict]) -> Dict[str, List[int]]:
         facts = [f for f in cap.get("atomic_facts", [])
                  if f.get("confidence", 0) >= 0.7]
 
-        if cap.get("ocr"):
+        has_digit_facts = any(
+            re.search(r'\d{2,}|[\$€¥£]\d|\d\s*(?:kg|lb|ml|oz|cm|mm|g)\b', f.get("fact", ""))
+            for f in facts
+        )
+
+        if cap.get("ocr") or has_digit_facts:
             fc["F1"].append(idx)
-        elif any(any(c.isdigit() for c in f.get("fact", "")) for f in facts):
-            fc["F1"].append(idx)
+        if has_digit_facts:
             fc["F3"].append(idx)
 
         if entities:
@@ -164,11 +216,21 @@ def classify_chunks(evidence: List[Dict]) -> Dict[str, List[int]]:
         if len(entities) >= 3:
             fc["S1"].append(idx)
 
-    # E1: subsample (almost all chunks qualify)
+    # E1: subsample — guarantee at least FAMILY_TARGETS["E1"] candidates
     all_chunks = [cap["chunk_idx"] for cap in evidence if cap.get("atomic_facts")]
-    fc["E1"] = all_chunks[::3]
+    target_e1 = FAMILY_TARGETS.get("E1", 3)
+    step = max(1, len(all_chunks) // max(target_e1 * 2, 1))
+    fc["E1"] = all_chunks[::step]
 
-    # P1: consecutive state_changes >= 3
+    # ------------------------------------------------------------------
+    # P1: procedure detection
+    #   Primary: consecutive state_changes >= 3 (from 1-B)
+    #   Fallback: consecutive chunks with distinct primary actions >= 3
+    #             (from 1-A visible_entities[].action, direct visual field)
+    # ------------------------------------------------------------------
+    ev_by_idx = {cap["chunk_idx"]: cap for cap in evidence}
+
+    # Primary path: 1-B state_changes
     consecutive = []
     for cap in evidence:
         if cap.get("state_changes"):
@@ -180,23 +242,88 @@ def classify_chunks(evidence: List[Dict]) -> Dict[str, List[int]]:
     if len(consecutive) >= 3:
         fc["P1"].extend(consecutive)
 
+    # Fallback path: 1-A action diversity
+    action_run = []
+    seen_actions = set()
+    for cap in evidence:
+        action = _get_primary_action(cap)
+        if action and action not in seen_actions:
+            action_run.append(cap["chunk_idx"])
+            seen_actions.add(action)
+        else:
+            if len(action_run) >= 3:
+                fc["P1"].extend(action_run)
+            action_run = []
+            seen_actions = {action} if action else set()
+            if action:
+                action_run = [cap["chunk_idx"]]
+            else:
+                action_run = []
+    if len(action_run) >= 3:
+        fc["P1"].extend(action_run)
+
+    # ------------------------------------------------------------------
     # C1/R1: cross-chunk entity tracking
-    ev_by_idx = {cap["chunk_idx"]: cap for cap in evidence}
+    #   Primary: entity_id from 1-B alignment
+    #   Fallback: desc word-overlap from 1-A (direct visual field)
+    # ------------------------------------------------------------------
+
+    # Primary path: 1-B entity_id
     entity_appearances = {}
     for cap in evidence:
         for e in cap.get("visible_entities", []):
-            eid = e.get("id", e.get("desc", ""))
+            eid = e.get("id", "")
             if eid and eid != "unknown":
                 entity_appearances.setdefault(eid, []).append(cap["chunk_idx"])
 
     for eid, chunks in entity_appearances.items():
+        # C1: same entity in different chunks with state_change
         state_chunks = [c for c in chunks
                         if ev_by_idx.get(c, {}).get("state_changes")]
         if len(state_chunks) >= 2:
             fc["C1"].extend(state_chunks[-2:])
+        # R1: same entity reappears after gap >= 5
         for i in range(1, len(chunks)):
             if chunks[i] - chunks[i - 1] >= 5:
                 fc["R1"].append(chunks[i])
+
+    # Fallback path: 1-A desc similarity (covers 1-B entity_id misses)
+    # Build desc→chunks index from 1-A direct visual field
+    desc_chunks = {}  # desc_text -> [(chunk_idx, action)]
+    for cap in evidence:
+        for e in cap.get("visible_entities", []):
+            desc = e.get("desc", "")
+            if desc and len(desc) > 5:
+                desc_chunks.setdefault(desc, []).append(
+                    (cap["chunk_idx"], e.get("action", ""))
+                )
+
+    # Match desc pairs with high overlap but different literal desc
+    descs = list(desc_chunks.keys())
+    for i in range(len(descs)):
+        for j in range(i + 1, len(descs)):
+            if _desc_overlap(descs[i], descs[j]) < 0.6:
+                continue
+            chunks_i = desc_chunks[descs[i]]
+            chunks_j = desc_chunks[descs[j]]
+            all_cidx = sorted(set(c for c, _ in chunks_i + chunks_j))
+
+            # C1 fallback: same-looking entity with different actions
+            actions_by_chunk = {}
+            for c, a in chunks_i + chunks_j:
+                actions_by_chunk.setdefault(c, set()).add(a)
+            action_change_chunks = [c for c in all_cidx
+                                    if len(actions_by_chunk.get(c, set())) >= 1]
+            distinct_actions = set()
+            for c in action_change_chunks:
+                distinct_actions |= actions_by_chunk[c]
+            if len(distinct_actions) >= 2 and len(action_change_chunks) >= 2:
+                fc["C1"].extend(action_change_chunks[-2:])
+
+            # R1 fallback: similar desc reappears after gap >= 5
+            for k in range(1, len(all_cidx)):
+                if all_cidx[k] - all_cidx[k - 1] >= 5:
+                    fc["R1"].append(all_cidx[k])
 
     # Deduplicate
     for f in fc:
@@ -266,6 +393,55 @@ def _parse_cards_response(raw: Optional[str], family: str, video_id: str) -> Lis
     return []
 
 
+async def _generate_family_cards(
+    family: str, chunk_list: List[int],
+    evidence: List[Dict], client, video_id: str,
+) -> List[Dict]:
+    """Generate cards for a single family. Called concurrently per family."""
+    target_n = FAMILY_TARGETS[family]
+
+    if family == "M1":
+        ev_text = _format_evidence_for_prompt(evidence, [cap["chunk_idx"] for cap in evidence])
+    else:
+        ev_text = _format_evidence_for_prompt(evidence, chunk_list)
+
+    if not ev_text.strip():
+        return []
+
+    prompt_template = FAMILY_PROMPTS.get(family)
+    if not prompt_template:
+        return []
+
+    prompt = prompt_template.format(n=target_n, evidence=ev_text)
+
+    raw = await client._call_one(
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=PASS_CONFIG.get("pass3a", {}).get("max_tokens", 16384),
+        temperature=0.7,
+        request_id=f"{video_id}_3a_{family}",
+    )
+
+    cards = _parse_cards_response(raw, family, video_id)
+
+    valid = []
+    for card in cards:
+        if not isinstance(card, dict) or not card.get("question"):
+            continue
+        card["family"] = family
+        card.setdefault("answer_form", "short_exact")
+        card.setdefault("visibility_type", "transient")
+        if "support_chunks" not in card or not card["support_chunks"]:
+            card["support_chunks"] = chunk_list[:1] if chunk_list else [0]
+            card["_support_inferred"] = True
+            logger.warning(
+                f"  [{video_id}] 3-A {family}: "
+                f"support_chunks missing, inferred {card['support_chunks']}")
+        if isinstance(card["support_chunks"], int):
+            card["support_chunks"] = [card["support_chunks"]]
+        valid.append(card)
+    return valid
+
+
 async def generate_cards(
     video_id: str,
     evidence: List[Dict],
@@ -273,59 +449,39 @@ async def generate_cards(
 ) -> List[Dict]:
     """Generate task cards for one video via per-family 397B calls.
 
+    All family calls are independent and run concurrently via asyncio.gather.
     Returns list of TaskCard dicts.
     """
     family_chunks = classify_chunks(evidence)
-    all_cards = []
-    card_counter = 0
 
+    # Build tasks for families that have candidates
+    tasks = []
+    family_order = []
     for family, chunk_list in family_chunks.items():
-        target_n = FAMILY_TARGETS[family]
-
-        # Skip families with no candidate chunks (except M1 which uses full video)
         if family != "M1" and not chunk_list:
             continue
+        tasks.append(_generate_family_cards(family, chunk_list, evidence, client, video_id))
+        family_order.append(family)
 
-        # Build evidence input
-        if family == "M1":
-            ev_text = _format_evidence_for_prompt(evidence, [cap["chunk_idx"] for cap in evidence])
-        else:
-            ev_text = _format_evidence_for_prompt(evidence, chunk_list)
+    # Fire all family calls concurrently
+    results = await asyncio.gather(*tasks, return_exceptions=True)
 
-        if not ev_text.strip():
+    # Collect and assign sequential card_ids
+    all_cards = []
+    card_counter = 0
+    for family, result in zip(family_order, results):
+        if isinstance(result, Exception):
+            logger.error(f"  [{video_id}] 3-A {family}: call failed: {result}")
             continue
-
-        prompt_template = FAMILY_PROMPTS.get(family)
-        if not prompt_template:
-            continue
-
-        prompt = prompt_template.format(n=target_n, evidence=ev_text)
-
-        raw = await client._call_one(
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=PASS_CONFIG.get("pass3a", {}).get("max_tokens", 16384),
-            temperature=0.7,
-            request_id=f"{video_id}_3a_{family}",
-        )
-
-        cards = _parse_cards_response(raw, family, video_id)
-
-        for card in cards:
-            if not isinstance(card, dict) or not card.get("question"):
-                continue
+        for card in result:
             card_counter += 1
             card["card_id"] = f"{video_id}_{family}_{card_counter:03d}"
-            card["family"] = family
-            card.setdefault("answer_form", "short_exact")
-            card.setdefault("visibility_type", "transient")
-            card.setdefault("support_chunks", chunk_list[:1] if chunk_list else [0])
-            # Ensure support_chunks is a list of ints
-            if isinstance(card["support_chunks"], int):
-                card["support_chunks"] = [card["support_chunks"]]
             all_cards.append(card)
 
-    logger.info(f"  [{video_id}] 3-A: {len(all_cards)} cards "
-                f"({', '.join(f'{f}:{sum(1 for c in all_cards if c[\"family\"]==f)}' for f in FAMILY_TARGETS if any(c['family']==f for c in all_cards))})")
+    family_counts = {f: sum(1 for c in all_cards if c["family"] == f)
+                     for f in FAMILY_TARGETS if any(c["family"] == f for c in all_cards)}
+    counts_str = ", ".join(f"{f}:{n}" for f, n in family_counts.items())
+    logger.info(f"  [{video_id}] 3-A: {len(all_cards)} cards ({counts_str})")
 
     return all_cards
 
@@ -355,15 +511,100 @@ def load_cards(video_id: str) -> Optional[List[Dict]]:
 # ---------------------------------------------------------------------------
 
 
+_STOP_WORDS = frozenset({
+    # Articles / pronouns / prepositions / conjunctions
+    "the", "a", "an", "is", "was", "in", "on", "at", "to", "of",
+    "and", "or", "it", "yes", "no", "are", "were", "be", "been",
+    "has", "have", "had", "do", "does", "did", "will", "would",
+    "can", "could", "should", "may", "might", "this", "that",
+    "there", "here", "not", "but", "if", "so", "than", "then",
+    "just", "about", "up", "out", "its", "his", "her", "my", "your",
+    "their", "our", "me", "him", "them", "us", "we", "they",
+    "you", "he", "she", "with", "for", "from", "by", "as",
+    # Interrogatives / question function words — never appear in thinks
+    "what", "which", "who", "whom", "whose", "how", "when", "where",
+    "many", "much", "any", "some", "other", "tell", "describe",
+    "currently", "now", "still", "yet", "ever", "already",
+})
+
+
 def extract_keywords(text: str) -> List[str]:
-    """Extract keywords from answer text for retention bitmap."""
-    stop = {"the", "a", "an", "is", "was", "in", "on", "at", "to", "of",
-            "and", "or", "it", "yes", "no"}
+    """Extract content keywords from a text string, filtering stop words."""
     words = re.findall(r'\b[a-zA-Z0-9]+\b', text.lower())
     seen = set()
     result = []
     for w in words:
-        if w not in stop and len(w) > 1 and w not in seen:
+        if w not in _STOP_WORDS and len(w) > 1 and w not in seen:
             seen.add(w)
             result.append(w)
     return result
+
+
+def _extract_mc_choice_text(question: str, answer_letter: str) -> str:
+    """Extract the text of the correct MC choice from the question.
+
+    Supports formats:
+      "... A.Red B.Blue C.White D.Green"
+      "... A. Red B. Blue C. White D. Green"
+      "... A) Red B) Blue"
+    """
+    answer_letter = answer_letter.strip().upper()
+    # Build pattern: "A.Red" or "A. Red" or "A) Red", capture until next choice or end
+    pattern = rf'(?:^|\s){answer_letter}[\.\)]\s*(.+?)(?:\s+[B-Z][\.\)]|$)'
+    m = re.search(pattern, question, re.IGNORECASE)
+    if m:
+        return m.group(1).strip()
+    return ""
+
+
+def extract_card_keywords(card: Dict) -> List[str]:
+    """Extract discriminative keywords from a card for retention matching.
+
+    The canonical_answer alone is useless for binary ("Yes") and MC ("A").
+    This function extracts keywords that would actually appear in a think
+    or summary if the student observed the relevant evidence.
+
+    Strategy by answer_form:
+      binary:          question keywords (the predicate being judged)
+      multiple_choice: question subject + correct choice text
+      number:          question keywords + the number itself
+      short_exact:     canonical_answer keywords (already informative)
+      descriptive:     canonical_answer keywords (already informative)
+    """
+    answer_form = card.get("answer_form", "short_exact")
+    question = card.get("question", "")
+    canonical = card.get("canonical_answer", "")
+
+    if answer_form == "binary":
+        # "Is the apron red?" → ["apron", "red"]
+        return extract_keywords(question)
+
+    elif answer_form == "multiple_choice":
+        # "What color? A.Red B.Blue C.White D.Green", answer="A"
+        # → question subject ["color"] + correct choice ["red"]
+        # Strip choices from question to get the subject part
+        q_base = re.split(r'\s+A[\.\)]', question, maxsplit=1)[0]
+        q_kw = extract_keywords(q_base)
+        choice_text = _extract_mc_choice_text(question, canonical)
+        c_kw = extract_keywords(choice_text)
+        # Deduplicate preserving order
+        seen = set()
+        result = []
+        for w in q_kw + c_kw:
+            if w not in seen:
+                seen.add(w)
+                result.append(w)
+        return result
+
+    elif answer_form == "number":
+        # "How many tomatoes were cut?" answer="3"
+        # → ["tomatoes", "cut", "3"]
+        q_kw = extract_keywords(question)
+        num = canonical.strip()
+        if num and num not in {kw for kw in q_kw}:
+            q_kw.append(num)
+        return q_kw
+
+    else:
+        # short_exact / descriptive: canonical_answer is already informative
+        return extract_keywords(canonical)

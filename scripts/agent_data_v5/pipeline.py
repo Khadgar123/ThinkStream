@@ -542,7 +542,9 @@ async def run_pipeline(
             placements = compute_all_placements(
                 cards_map[vid], rollout_map[vid], evidence_map[vid]
             )
-            trajectories = plan_trajectories(placements)
+            # Build card lookup for quality-based trajectory scoring
+            vid_cards = {c["card_id"]: c for c in cards_map[vid]}
+            trajectories = plan_trajectories(placements, cards_map=vid_cards)
             data = {"placements": placements, "trajectories": trajectories}
             save_placements(vid, data)
             trajectories_map[vid] = data
@@ -619,17 +621,28 @@ async def run_pipeline(
         s["phase"] = assign_phase(s)
 
     # =================================================================
-    # PASS 5: Verify + Filter
+    # PASS 4: Verify + Filter
     # =================================================================
-    from .pass5_verify import filter_samples
+    from .pass4_verify import filter_samples, save_verified
 
     logger.info("=" * 60)
-    logger.info("PASS 5: Verify + Filter")
+    logger.info("PASS 4: Verify + Filter")
     logger.info("=" * 60)
 
     passed_samples, stats = filter_samples(all_samples)
     logger.info(f"Verification: {stats['passed']}/{stats['total']} passed ({stats['pass_rate']:.1%})")
     logger.info(f"Fail reasons: {stats['fail_reasons']}")
+    logger.info(f"Action dist: {stats['action_distribution']}")
+    logger.info(f"Difficulty dist: {stats['difficulty_distribution']}")
+    logger.info(f"Trajectory check failures: {stats['trajectory_check_failures']}/{stats['trajectories']}")
+
+    # Save verified samples per video
+    verified_by_vid = {}
+    for s in passed_samples:
+        vid = s.get("video_id", "unknown")
+        verified_by_vid.setdefault(vid, []).append(s)
+    for vid, vid_samples in verified_by_vid.items():
+        save_verified(vid, vid_samples, {"video_id": vid, "count": len(vid_samples)})
 
     # --- Final output ---
     FINAL_DIR.mkdir(parents=True, exist_ok=True)
