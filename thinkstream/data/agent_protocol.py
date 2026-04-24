@@ -111,43 +111,59 @@ def format_memory_block(memory: Dict) -> str:
 
 
 def format_queries_block(queries: List[Dict]) -> str:
-    """Format the queries zone: answered Q&A with ask and response timestamps.
+    """Format the queries zone as a chronological event stream.
 
-    Each entry records when the question was asked and when it was answered,
-    so the model knows the temporal context of past interactions.
+    Q and A events interleave on a timeline, mirroring the memory
+    timeline. Multi-response answers (M1 followups) appear as
+    separate A entries at their respective timestamps.
 
     Example output:
       <queries>
-      [asked=40s responded=40s] Q: What color is the apron? A: Red
-      [asked=50s responded=52s] Q: How many tomatoes? A: 3
+      [20s] Q: What color is the apron?
+      [20s] A: Red
+      [30s] Q: Describe each step
+      [30s] A: Chopping onions
+      [40s] A: Adding garlic to pan
+      [50s] Q: How many tomatoes?
+      [52s] A: 3
       </queries>
 
-    Unanswered questions are omitted — the model infers pending tasks
-    from its own memory of past user_input events.
+    Unanswered questions are omitted — the model infers pending
+    tasks from its own memory of past user_input events.
     """
     if not queries:
         return ""
-    lines = []
+
+    # Build chronological event list: (time, "Q"/"A", text)
+    events = []
     for q in queries:
         answers = q.get("answers", [])
         if not answers:
             continue
         question = q.get("question", "")
         ask_t = q.get("ask_time", "")
-        resp_t = q.get("response_time", "")
-        # Join multiple answers (M1 followups) with " | "
-        ans_text = " | ".join(str(a) for a in answers)
-        # Build timestamp prefix
-        if ask_t and resp_t:
-            prefix = f"[asked={ask_t}s responded={resp_t}s]"
-        elif ask_t:
-            prefix = f"[asked={ask_t}s]"
-        else:
-            prefix = ""
-        line = f"{prefix} Q: {question} A: {ans_text}".strip()
-        lines.append(line)
-    if not lines:
+
+        # Question event
+        events.append((ask_t, "Q", question))
+        # Answer event(s) — each carries its own timestamp
+        for ans in answers:
+            if isinstance(ans, dict):
+                events.append((ans.get("time", ask_t), "A", ans.get("text", "")))
+            else:
+                # Backward compat: plain string answer
+                events.append((q.get("response_time", ask_t), "A", str(ans)))
+
+    if not events:
         return ""
+
+    # Sort by time (stable sort preserves Q-before-A at same timestamp)
+    events.sort(key=lambda e: (float(e[0]) if e[0] != "" else 0, 0 if e[1] == "Q" else 1))
+
+    lines = []
+    for t, kind, text in events:
+        prefix = f"[{int(t)}s]" if t != "" else ""
+        lines.append(f"{prefix} {kind}: {text}")
+
     return "<queries>\n" + "\n".join(lines) + "\n</queries>"
 
 

@@ -285,14 +285,19 @@ async def generate_trajectory_samples(
         snapshots = rollout["snapshots"]
         return snapshots.get(chunk_idx) or snapshots.get(str(chunk_idx)) or {}
 
-    def _add_query(question, answers, ask_chunk, response_chunk=None):
-        """Append to queries_state with timestamps (seconds)."""
-        queries_state.append({
+    def _add_query(question, ask_chunk, answer=None, response_chunk=None):
+        """Append to queries_state. Each answer carries its own timestamp."""
+        entry = {
             "question": question,
-            "answers": answers,
             "ask_time": ask_chunk * AGENT_CHUNK_SEC,
-            "response_time": (response_chunk or ask_chunk) * AGENT_CHUNK_SEC,
-        })
+            "answers": [],  # list of {"text": ..., "time": ...}
+        }
+        if answer is not None:
+            entry["answers"].append({
+                "text": str(answer),
+                "time": (response_chunk or ask_chunk) * AGENT_CHUNK_SEC,
+            })
+        queries_state.append(entry)
 
     for placement in trajectory["placements"]:
         card = cards_map.get(placement["card_id"])
@@ -313,7 +318,7 @@ async def generate_trajectory_samples(
                 user_input=card["question"], trajectory_id=traj_id,
                 card_id=card["card_id"], sequence_type=seq,
             ))
-            _add_query(card["question"], [resp], ask, ask)
+            _add_query(card["question"], ask, answer=resp, response_chunk=ask)
             # post_silent
             ps = kc.get("post_silent", ask + 1)
             samples.append(_make_sample(
@@ -349,9 +354,9 @@ async def generate_trajectory_samples(
                 card_id=card["card_id"], sequence_type=seq,
             ))
             if post_action == "response":
-                _add_query(card["question"], [resp], ask, ask)
+                _add_query(card["question"], ask, answer=resp, response_chunk=ask)
             else:
-                _add_query(card["question"], [], ask)
+                _add_query(card["question"], ask)
             # post_silent
             ps = kc.get("post_silent", ask + 1)
             samples.append(_make_sample(
@@ -376,7 +381,7 @@ async def generate_trajectory_samples(
                 recall_result=recall_result, trajectory_id=traj_id,
                 card_id=card["card_id"], sequence_type=seq,
             ))
-            _add_query(card["question"], [], ask)
+            _add_query(card["question"], ask)
             # wait_silent
             for wc in kc.get("wait_silent", []):
                 samples.append(_make_sample(
@@ -393,8 +398,7 @@ async def generate_trajectory_samples(
                     response=resp, trajectory_id=traj_id,
                     card_id=card["card_id"], sequence_type=seq,
                 ))
-                queries_state[-1]["answers"].append(resp)
-                queries_state[-1]["response_time"] = found * AGENT_CHUNK_SEC
+                queries_state[-1]["answers"].append({"text": str(resp), "time": found * AGENT_CHUNK_SEC})
                 # post_silent after found_response
                 ps = kc.get("post_silent", found + 1)
                 samples.append(_make_sample(
@@ -404,7 +408,7 @@ async def generate_trajectory_samples(
 
         elif seq == "event_watch":
             # ask: silent (event not happened)
-            _add_query(card["question"], [], ask)
+            _add_query(card["question"], ask)
             samples.append(_make_sample(
                 ask, "SYSTEM_PROMPT", "silent", think, queries_state,
                 user_input=card["question"], trajectory_id=traj_id,
@@ -426,8 +430,7 @@ async def generate_trajectory_samples(
                     response=resp, trajectory_id=traj_id,
                     card_id=card["card_id"], sequence_type=seq,
                 ))
-                queries_state[-1]["answers"].append(resp)
-                queries_state[-1]["response_time"] = trigger * AGENT_CHUNK_SEC
+                queries_state[-1]["answers"].append({"text": str(resp), "time": trigger * AGENT_CHUNK_SEC})
 
         elif seq == "multi_response":
             # first response
@@ -437,7 +440,7 @@ async def generate_trajectory_samples(
                 response=resp, user_input=card["question"],
                 trajectory_id=traj_id, card_id=card["card_id"], sequence_type=seq,
             ))
-            _add_query(card["question"], [resp], ask, ask)
+            _add_query(card["question"], ask, answer=resp, response_chunk=ask)
             # no_change_silent
             for sc in kc.get("no_change_silent", []):
                 samples.append(_make_sample(
@@ -455,8 +458,7 @@ async def generate_trajectory_samples(
                     response=resp, trajectory_id=traj_id,
                     card_id=card["card_id"], sequence_type=seq,
                 ))
-                queries_state[-1]["answers"].append(resp)
-                queries_state[-1]["response_time"] = fc * AGENT_CHUNK_SEC
+                queries_state[-1]["answers"].append({"text": str(resp), "time": fc * AGENT_CHUNK_SEC})
 
     # Record queries_state at each fork sample's chunk for base interpolation
     for s in samples:
