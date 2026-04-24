@@ -644,6 +644,30 @@ async def run_pipeline(
     for vid, vid_samples in verified_by_vid.items():
         save_verified(vid, vid_samples, {"video_id": vid, "count": len(vid_samples)})
 
+    # =================================================================
+    # RENDER: Convert verified samples into SFT-ready format
+    # =================================================================
+    from .render_samples import render_video_samples
+
+    logger.info("=" * 60)
+    logger.info("RENDER: Building SFT-ready samples")
+    logger.info("=" * 60)
+
+    sft_samples = []
+    for vid, vid_samples in verified_by_vid.items():
+        if vid not in rollout_map:
+            logger.warning(f"  [{vid}] no rollout for render, skipping")
+            continue
+        v_info = next((v for v in videos if v["video_id"] == vid), {})
+        video_path = v_info.get("video_path", "")
+        rendered = render_video_samples(vid_samples, rollout_map[vid], video_path, vid)
+        sft_samples.extend(rendered)
+
+    logger.info(f"Rendered {len(sft_samples)} SFT samples from {len(verified_by_vid)} videos")
+
+    # Use rendered samples for final output
+    passed_samples = sft_samples
+
     # --- Final output ---
     FINAL_DIR.mkdir(parents=True, exist_ok=True)
 

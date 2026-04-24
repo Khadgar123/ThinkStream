@@ -39,17 +39,51 @@ IGNORE_INDEX = -100
 #   SFT teaches mechanism (format, query/summary quality), NOT timing.
 #   Timing optimization is left to RL/GRPO → LOW weight.
 ACTION_WEIGHTS = {
-    # Deterministic timing — strict SFT
-    "response": 1.5,
-    "silent": 1.0,
-    # Non-deterministic timing — teach mechanism, not timing
-    "recall_query": 0.8,
-    "recall_response": 1.0,              # post-recall response is still deterministic
-    "proactive_recall_query": 0.8,       # keyword-overlap triggered, mechanism seeding for RL
-    "proactive_recall_silent": 0.8,      # post-proactive-recall: absorb result
+    # ── Core behaviors (SFT teaches mechanism + timing) ──
+    "response": 1.5,            # Answering visible questions — highest value
+    "silent": 1.0,              # Default silent (with active queries — teaches restraint)
+
+    # ── Recall mechanism (SFT teaches format, RL optimizes timing) ──
+    "recall_query": 0.8,        # Recall query format learning
+    "recall_response": 1.0,     # Post-recall response (deterministic: evidence arrived)
+    "recall_silent": 0.8,       # Post-recall silent (recall failed)
+    "proactive_recall_query": 0.8,
+    "proactive_recall_silent": 0.8,
+
+    # ── Compression mechanism (SFT teaches summary quality) ──
     "compress": 0.8,
     "merge_compress": 0.8,
 }
+
+
+def _get_sample_weight(sample: Dict) -> float:
+    """Compute loss weight based on sample_type + context.
+
+    Goes beyond flat ACTION_WEIGHTS: distinguishes silent subtypes
+    to avoid low-value padding samples dominating the gradient.
+    """
+    sample_type = sample.get("sample_type", "silent")
+    sequence_type = sample.get("sequence_type", "")
+
+    # Use ACTION_WEIGHTS for non-silent types
+    if sample_type != "silent":
+        return ACTION_WEIGHTS.get(sample_type, 1.0)
+
+    # Silent subtypes — different training value:
+    queries = sample.get("queries") or sample.get("input", {}).get("queries", [])
+
+    if sequence_type == "base":
+        if queries:
+            return 0.8   # "Question answered, stay silent" — teaches restraint
+        return 0.3        # Empty queries, just observing — minimal signal
+    elif sequence_type == "event_watch":
+        return 1.0        # "Event hasn't happened, keep watching" — teaches patience
+    elif sequence_type in ("immediate_response", "recall_success", "recall_fail_then_found"):
+        return 0.5        # Post-action recovery — transitional
+    elif sequence_type == "multi_response":
+        return 0.8        # "No new change, stay silent" — teaches selective response
+
+    return 0.5  # Default silent
 
 # Agent special tokens (data_construction_zh.md §13.2, Approach B)
 SPECIAL_TOKENS_AGENT = [
@@ -376,9 +410,8 @@ def preprocess_per_timestep(sample: Dict, processor) -> Dict:
     full_result["labels"] = labels
     full_result["input_ids"] = input_ids
 
-    # Per-sample loss weight
-    sample_type = sample.get("sample_type", "silent")
-    full_result["sample_weight"] = ACTION_WEIGHTS.get(sample_type, 1.0)
+    # Per-sample loss weight (context-aware, not just sample_type)
+    full_result["sample_weight"] = _get_sample_weight(sample)
 
     return full_result
 
