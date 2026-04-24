@@ -48,49 +48,62 @@ logger = logging.getLogger(__name__)
 class MemoryState:
     """Tracks the student model's text memory at each timestep.
 
-    Key design: text memory covers LONGER time than visual window.
-    - Think is generated every chunk and IMMEDIATELY enters recent_thinks.
-    - Visual window only holds the last 12 chunks of frames.
+    v8.0: Unified timeline — summary and thinks in one list, chronological order.
+    Compression = in-place replacement (selected thinks → summary, same position).
+    No separate compressed_segments / recent_thinks zones.
 
-    v8.0: pending_questions removed. Queries are managed in a separate
-    <queries> zone, independent of memory. See §4.4 / §9.1.
+    Queries managed in separate <queries> zone, independent of memory.
     """
 
     def __init__(self):
-        self.compressed_segments: List[Dict] = []   # {"time_range": [s,e], "text": "..."}
-        self.recent_thinks: List[Dict] = []         # {"chunk": N, "time": "X-Y", "text": "..."}
-        self._retrieval_archive: List[Dict] = []    # system-side: all past thinks
+        # Unified timeline: mix of thinks and summaries, chronological order
+        # Think item: {"type": "think", "chunk": N, "time": "X-Y", "text": "..."}
+        # Summary item: {"type": "summary", "time_range": [s,e], "text": "..."}
+        self.timeline: List[Dict] = []
+        self._retrieval_archive: List[Dict] = []  # system-side: all past thinks (never compressed)
 
     @property
     def retrieval_archive(self) -> List[Dict]:
         return self._retrieval_archive
 
+    # Backward compat: downstream code may access these
+    @property
+    def compressed_segments(self) -> List[Dict]:
+        return [item for item in self.timeline if item.get("type") == "summary"]
+
+    @property
+    def recent_thinks(self) -> List[Dict]:
+        return [item for item in self.timeline if item.get("type") == "think"]
+
     def snapshot(self, chunk_idx: int) -> Dict:
         """Snapshot of what the model sees (no archive, no queries)."""
         return {
             "chunk_idx": chunk_idx,
+            "timeline": deepcopy(self.timeline),
+            # Backward compat fields (derived from timeline)
             "compressed_segments": deepcopy(self.compressed_segments),
             "recent_thinks": deepcopy(self.recent_thinks),
             "visual_window_start": max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1),
         }
 
     def add_think(self, chunk_idx: int, think_text: str):
-        """Add think to memory IMMEDIATELY."""
+        """Append think to timeline."""
         time_start = chunk_idx * AGENT_CHUNK_SEC
         time_end = time_start + AGENT_CHUNK_SEC
         item = {
+            "type": "think",
             "chunk": chunk_idx,
             "time": f"{int(time_start)}-{int(time_end)}",
             "text": think_text,
         }
-        self.recent_thinks.append(item)
+        self.timeline.append(item)
         self._retrieval_archive.append(item)
 
-    def count_recent_tokens(self) -> int:
-        """Count total tokens in recent_thinks using student tokenizer."""
+    def count_tokens(self) -> int:
+        """Count total tokens in timeline (thinks + summaries)."""
         tokenizer = get_tokenizer()
         total = 0
-        for item in self.recent_thinks:
+        for item in self.timeline:
             text = item.get("text", "")
             if tokenizer:
                 total += len(tokenizer.encode(text, add_special_tokens=False))
@@ -98,25 +111,54 @@ class MemoryState:
                 total += len(text) // 4
         return total
 
+    # Keep old name for compat
+    def count_recent_tokens(self) -> int:
+        return self.count_tokens()
+
     def should_compress(self) -> bool:
-        """Trigger compression when recent_thinks reach 80% of token budget."""
-        return self.count_recent_tokens() >= COMPRESS_TOKEN_THRESHOLD
+        """Trigger when timeline tokens reach 80% of budget."""
+        return self.count_tokens() >= COMPRESS_TOKEN_THRESHOLD
 
-    def compress(self, summary: Dict, compressed_chunks: Optional[List[int]] = None):
-        """Replace specified thinks with summary.
+    def compress(self, summary: Dict, compressed_chunks: List[int]):
+        """In-place replacement: selected thinks → summary at same position.
 
-        Raw thinks stay in _retrieval_archive for recall.
-        Merges oldest two segments when over MAX_COMPRESSED_SEGMENTS.
+        Finds the first think in compressed_chunks, inserts summary there,
+        then removes all thinks in compressed_chunks. Timeline stays sorted.
         """
-        if compressed_chunks is not None:
-            chunk_set = set(compressed_chunks)
-            self.recent_thinks = [t for t in self.recent_thinks if t["chunk"] not in chunk_set]
+        chunk_set = set(compressed_chunks)
+
+        # Find insertion position (where first compressed think is)
+        insert_pos = None
+        for i, item in enumerate(self.timeline):
+            if item.get("type") == "think" and item.get("chunk") in chunk_set:
+                insert_pos = i
+                break
+
+        # Remove compressed thinks
+        self.timeline = [t for t in self.timeline if not (
+            t.get("type") == "think" and t.get("chunk") in chunk_set
+        )]
+
+        # Insert summary at the position where first think was
+        summary_item = {
+            "type": "summary",
+            "time_range": summary["time_range"],
+            "text": summary["text"],
+        }
+        if insert_pos is not None:
+            # Adjust insert_pos for removed items before it
+            adjusted = sum(1 for t in self.timeline[:insert_pos]
+                           if t.get("type") != "_removed")
+            self.timeline.insert(min(adjusted, len(self.timeline)), summary_item)
         else:
-            self.recent_thinks = self.recent_thinks[COMPRESS_RANGE_MIN:]
-        self.compressed_segments.append(summary)
-        while len(self.compressed_segments) > MAX_COMPRESSED_SEGMENTS:
-            seg_a = self.compressed_segments.pop(0)
-            seg_b = self.compressed_segments.pop(0)
+            self.timeline.append(summary_item)
+
+        # Merge oldest two summaries if too many
+        summaries = [i for i, t in enumerate(self.timeline) if t.get("type") == "summary"]
+        if len(summaries) > MAX_COMPRESSED_SEGMENTS:
+            idx_a, idx_b = summaries[0], summaries[1]
+            seg_a = self.timeline[idx_a]
+            seg_b = self.timeline[idx_b]
             combined = f'{seg_a["text"]} {seg_b["text"]}'
             tokenizer = get_tokenizer()
             if tokenizer:
@@ -128,32 +170,27 @@ class MemoryState:
                 if len(words) > 200:
                     combined = " ".join(words[:200])
             merged = {
+                "type": "summary",
                 "time_range": [seg_a["time_range"][0], seg_b["time_range"][1]],
                 "text": combined,
                 "merged": True,
-                "merge_level": max(
-                    seg_a.get("merge_level", 1),
-                    seg_b.get("merge_level", 1),
-                ) + 1,
             }
-            self.compressed_segments.insert(0, merged)
+            # Remove both, insert merged at first position
+            self.timeline = [t for i, t in enumerate(self.timeline)
+                             if i not in (idx_a, idx_b)]
+            self.timeline.insert(idx_a, merged)
 
-    def format_for_prompt(self) -> Tuple[str, str]:
-        """Format memory state for model input prompt."""
+    def format_for_prompt(self) -> str:
+        """Format timeline as a single string for model input."""
         import json as _json
-        compressed_text = ""
-        for seg in self.compressed_segments:
-            seg_json = _json.dumps(
-                {"time_range": seg["time_range"], "text": seg["text"]},
-                ensure_ascii=False,
-            )
-            compressed_text += f"<compressed>{seg_json}</compressed>\n"
-
-        thinks_text = ""
-        for item in self.recent_thinks:
-            thinks_text += f'[{item["time"]}] {item["text"]}\n'
-
-        return compressed_text.strip(), thinks_text.strip()
+        lines = []
+        for item in self.timeline:
+            if item.get("type") == "summary":
+                tr = item["time_range"]
+                lines.append(f'<summary t="{tr[0]}-{tr[1]}">{item["text"]}</summary>')
+            else:
+                lines.append(f'[{item["time"]}] {item["text"]}')
+        return "\n".join(lines)
 
 
 # ---------------------------------------------------------------------------
@@ -172,11 +209,11 @@ def build_observation_request(
     end = start + AGENT_CHUNK_SEC
     window_start = max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1)
 
-    compressed_text, obs_text = memory.format_for_prompt()
+    memory_text = memory.format_for_prompt()
 
     prompt = OBSERVATION_PROMPT.format(
-        compressed_memory=compressed_text or "(none)",
-        recent_thinks=obs_text or "(none)",
+        compressed_memory="(see memory timeline below)",
+        recent_thinks=memory_text or "(none)",
         window_start=int(window_start * AGENT_CHUNK_SEC),
         window_end=int(end),
         start=int(start),

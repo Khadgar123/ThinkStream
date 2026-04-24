@@ -318,14 +318,11 @@ SPECIAL_TOKENS_BASE = [
 ]
 SPECIAL_TOKENS_PER_TIMESTEP = [
     # Input structure tags
-    "<memory>", "</memory>",               # wraps entire memory block
-    "<compressed>", "</compressed>",       # memory block: compressed segment
-    "<pending>", "</pending>",             # memory block: pending question
-    "<visual_window>", "</visual_window>", # visual window header (JSON inside)
+    "<memory>", "</memory>",               # wraps memory timeline
+    "<summary>", "</summary>",             # memory timeline: compressed segment (inline)
+    "<visual_window>", "</visual_window>", # visual window header
     "<recalled_frames>", "</recalled_frames>",  # recalled frames header
     "<user_input>", "</user_input>",       # wraps user input text
-    # Output payload tags
-    "<summary>", "</summary>",             # compress action payload
     # User input trigger
     "<compress_trigger>", "</compress_trigger>",  # system compress trigger
 ]
