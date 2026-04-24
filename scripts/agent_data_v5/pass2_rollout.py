@@ -316,41 +316,81 @@ def score_range_for_compression(
     return content_value + boundary_penalty + token_saving
 
 
+def _find_contiguous_think_segments(timeline: List[Dict]) -> List[List[Dict]]:
+    """Find contiguous think segments in the timeline (not separated by summaries).
+
+    Example:
+      timeline: [think_0, think_1, summary, think_6, think_7, think_8, think_9]
+      returns: [[think_0, think_1], [think_6, think_7, think_8, think_9]]
+
+    Only segments with >= COMPRESS_RANGE_MIN thinks are compression candidates.
+    """
+    segments = []
+    current = []
+    for item in timeline:
+        if item.get("type") == "think":
+            current.append(item)
+        else:
+            if current:
+                segments.append(current)
+                current = []
+    if current:
+        segments.append(current)
+    return segments
+
+
 def choose_optimal_compress_range(
-    recent_thinks: List[Dict],
+    timeline: List[Dict],
     evidence: Optional[List[Dict]] = None,
 ) -> Tuple[List[Dict], Dict]:
-    """Choose the contiguous range that is BEST to compress.
+    """Choose the best contiguous think range to compress.
 
-    Evaluates all valid contiguous ranges (COMPRESS_RANGE_MIN to MAX),
-    scores each, picks lowest score.
+    Finds contiguous think segments in the timeline (no summary in between),
+    then enumerates valid ranges within each segment.
 
     Returns: (best_range, policy_meta)
     """
-    n = len(recent_thinks)
+    segments = _find_contiguous_think_segments(timeline)
     best_range = None
     best_score = float("inf")
+    best_segment_idx = 0
     best_start = 0
     best_size = 0
 
-    for size in range(COMPRESS_RANGE_MIN, min(COMPRESS_RANGE_MAX + 1, n + 1)):
-        for start in range(0, n - size + 1):
-            candidate = recent_thinks[start:start + size]
-            score = score_range_for_compression(candidate, evidence)
-            if score < best_score:
-                best_score = score
-                best_range = candidate
-                best_start = start
-                best_size = size
+    for seg_idx, segment in enumerate(segments):
+        n = len(segment)
+        if n < COMPRESS_RANGE_MIN:
+            continue  # Segment too small
+        for size in range(COMPRESS_RANGE_MIN, min(COMPRESS_RANGE_MAX + 1, n + 1)):
+            for start in range(0, n - size + 1):
+                candidate = segment[start:start + size]
+                score = score_range_for_compression(candidate, evidence)
+                if score < best_score:
+                    best_score = score
+                    best_range = candidate
+                    best_segment_idx = seg_idx
+                    best_start = start
+                    best_size = size
 
-    selected = best_range if best_range else recent_thinks[:COMPRESS_RANGE_MIN]
+    if best_range is None:
+        # Fallback: largest segment, first COMPRESS_RANGE_MIN items
+        largest = max(segments, key=len) if segments else []
+        if len(largest) >= COMPRESS_RANGE_MIN:
+            best_range = largest[:COMPRESS_RANGE_MIN]
+        else:
+            # No valid segment at all
+            all_thinks = [t for t in timeline if t.get("type") == "think"]
+            best_range = all_thinks[:COMPRESS_RANGE_MIN] if len(all_thinks) >= COMPRESS_RANGE_MIN else all_thinks
+
     meta = {
-        "score": round(best_score, 2),
-        "range_start_idx": best_start,
-        "range_size": best_size,
-        "total_thinks": n,
+        "score": round(best_score, 2) if best_score < float("inf") else -1,
+        "segment_idx": best_segment_idx,
+        "range_start_in_segment": best_start,
+        "range_size": best_size or len(best_range),
+        "n_segments": len(segments),
+        "segment_sizes": [len(s) for s in segments],
     }
-    return selected, meta
+    return best_range, meta
 
 
 # ---------------------------------------------------------------------------
@@ -386,20 +426,19 @@ def estimate_summary_length(
 
 
 def build_compress_request(
-    pre_action_thinks: List[Dict],
+    pre_action_timeline: List[Dict],
     memory: MemoryState,
     video_id: str,
     chunk_idx: int,
     evidence: Optional[List[Dict]] = None,
     frame_paths: Optional[List[str]] = None,
 ) -> Optional[Dict]:
-    """Build compression request using pre-action thinks.
+    """Build compression request from pre-action timeline.
 
-    v8.0: compression is BETWEEN timesteps (separate SYSTEM_PROMPT_COMPRESS).
-    Range selection uses 1-B state_changes for boundary penalty.
+    Finds contiguous think segments, selects best range within segments.
     """
     to_compress, policy_meta = choose_optimal_compress_range(
-        pre_action_thinks, evidence
+        pre_action_timeline, evidence
     )
 
     if not to_compress:
@@ -534,6 +573,7 @@ async def run_pass2_single_video(
     for chunk_idx in range(num_chunks):
         # --- 1. Snapshot BEFORE this step's think ---
         snapshots[chunk_idx] = memory.snapshot(chunk_idx)
+        pre_action_timeline = snapshots[chunk_idx]["timeline"]
         pre_action_thinks = snapshots[chunk_idx]["recent_thinks"]
 
         should_compress_now = (
@@ -559,7 +599,7 @@ async def run_pass2_single_video(
         # --- 3. Compress (between timesteps) then append current think ---
         if should_compress_now:
             comp_request = build_compress_request(
-                pre_action_thinks, memory, video_id, chunk_idx,
+                pre_action_timeline, memory, video_id, chunk_idx,
                 evidence=evidence, frame_paths=frame_paths,
             )
             if comp_request is None:
