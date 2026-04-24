@@ -78,39 +78,107 @@ def _extract_action(text: str) -> str:
     return m.group(1) if m else "unknown"
 
 
-def _compute_action_reward(
+def _compute_response_reward(
+    model_answer: Optional[str],
+    gt_answer: str,
     predicted_actions: List[str],
-    need_recall: bool,
-    wrong_action_penalty: float = 1.0,
-    over_recall_penalty: float = 0.3,
+    answer_form: str = "",
 ) -> float:
-    """Evaluate whether the model chose the correct action sequence.
+    """Primary reward: did the model eventually produce a correct response?
 
-    For need_recall=True samples:
-      recall → response = 1.0 (full credit)
-      direct response (if correct) = 0.3 (partial)
-      all silent = 0.0
+    Unlike the old _compute_action_reward, this does NOT penalize the
+    specific action path (recall vs direct response). The model is free
+    to choose any path as long as the final answer is correct.
 
-    For need_recall=False samples:
-      response (no recall) = 1.0
-      recall triggered = -over_recall_penalty
-      all silent = 0.0
+    Scoring:
+      correct response: 1.0
+      incorrect response: 0.1 (tried but wrong)
+      no response (all silent): 0.0
+      response when should be silent: -0.2 (over-response penalty)
     """
-    if need_recall:
-        if "recall" in predicted_actions:
-            recall_idx = predicted_actions.index("recall")
-            if "response" in predicted_actions[recall_idx + 1:]:
-                return 1.0  # recall then response
-            return 0.5  # recall but no response after
-        if "response" in predicted_actions:
-            return 0.3  # direct response without recall
-        return 0.0  # all silent
+    has_response = "response" in predicted_actions
+
+    if not gt_answer:
+        # No gold answer → this is a silent-only sample
+        return -0.2 if has_response else 1.0
+
+    if not has_response:
+        return 0.0  # should have responded but didn't
+
+    if not model_answer:
+        return 0.1  # responded but couldn't extract answer
+
+    # Compare answer
+    gt_clean = _extract_literal_answer(gt_answer)
+    if gt_clean and model_answer == gt_clean:
+        return 1.0
+    # Fuzzy match for descriptive answers
+    if answer_form == "descriptive":
+        # Keyword overlap as partial credit
+        gt_words = set(gt_answer.lower().split())
+        ans_words = set(model_answer.lower().split())
+        overlap = len(gt_words & ans_words) / max(len(gt_words), 1)
+        return min(1.0, overlap * 1.5)  # scale up, cap at 1.0
+    return 0.1  # wrong answer
+
+
+def _compute_recall_quality_reward(
+    predicted_actions: List[str],
+    chunk_texts: List[str],
+    gt_answer: str,
+    model_answer: Optional[str],
+) -> float:
+    """Recall quality: was recall well-used, well-formed, and necessary?
+
+    Rewards:
+      recall → correct response: 1.0 (recall was useful)
+      recall → wrong/no response: 0.3 (recall mechanism OK, result bad)
+      no recall + correct response: 0.8 (didn't need recall, good)
+      no recall + wrong response: 0.0 (maybe should have recalled)
+      unnecessary recall (answer was easy): -0.3
+
+    Also checks query format quality.
+    """
+    used_recall = "recall" in predicted_actions
+
+    if not gt_answer:
+        # Silent-only sample — recall is unnecessary
+        return -0.3 if used_recall else 1.0
+
+    if used_recall:
+        # Check query format quality
+        query_quality = 0.5  # default
+        for text in chunk_texts:
+            query_match = re.search(r'<query>(.*?)</query>', text, re.DOTALL)
+            if query_match:
+                try:
+                    q = json.loads(query_match.group(1))
+                    has_query = bool(q.get("query", ""))
+                    has_range = bool(q.get("time_range", ""))
+                    # Check query doesn't contain answer value
+                    query_text = q.get("query", "").lower()
+                    answer_in_query = gt_answer.lower() in query_text if gt_answer else False
+                    query_quality = 1.0
+                    if not has_query or not has_range:
+                        query_quality -= 0.3
+                    if answer_in_query:
+                        query_quality -= 0.5  # answer leakage penalty
+                except (json.JSONDecodeError, ValueError):
+                    query_quality = 0.2  # bad JSON
+
+        # Did recall lead to correct answer?
+        gt_clean = _extract_literal_answer(gt_answer) if gt_answer else None
+        answer_correct = (model_answer == gt_clean) if gt_clean and model_answer else False
+
+        if answer_correct:
+            return query_quality  # recall + correct = full quality reward
+        return query_quality * 0.5  # recall + wrong = partial
     else:
-        if "recall" in predicted_actions:
-            return max(0.0, 1.0 - over_recall_penalty)
-        if "response" in predicted_actions:
-            return 1.0
-        return 0.0
+        # No recall used
+        gt_clean = _extract_literal_answer(gt_answer) if gt_answer else None
+        if gt_clean and model_answer == gt_clean:
+            return 0.8  # correct without recall — good
+        return 0.0  # wrong without recall — maybe should have recalled
 
 
 def _compute_format_reward(chunk_texts: List[str], agent_mode: bool = False) -> float:
@@ -495,9 +563,11 @@ def rollout(
         metadata = raw_sample.get("metadata", {})
         ask_chunk = raw_sample.get("chunk_idx", rollout_max_chunks - 1)
 
-        # Extract user question (from messages or conversations)
+        # Extract user question (new format: input.user_input; legacy: messages/conversations)
         user_question = None
-        if "messages" in raw_sample:
+        if "input" in raw_sample and raw_sample["input"].get("user_input"):
+            user_question = raw_sample["input"]["user_input"]
+        elif "messages" in raw_sample:
             for msg in raw_sample["messages"]:
                 if msg.get("role") == "user":
                     content = msg.get("content", "")
@@ -506,8 +576,7 @@ def rollout(
                             if isinstance(item, dict) and item.get("type") == "text":
                                 text = item.get("text", "")
                                 if "<user_input>" in text:
-                                    import re as _re
-                                    m = _re.search(r'<user_input>(.*?)</user_input>', text)
+                                    m = re.search(r'<user_input>(.*?)</user_input>', text)
                                     if m:
                                         user_question = m.group(1)
         elif "conversations" in raw_sample:
@@ -584,14 +653,14 @@ def rollout(
     return ctx.set(rollout_data, all_rollout_results)
 
 
-REWARD_DICT_KEYS = ("format", "action", "correctness", "timing", "think_len", "compress")
+REWARD_DICT_KEYS = ("format", "response", "timing", "think_len", "recall_quality", "compress_quality")
 DEFAULT_REWARD_WEIGHTS = {
-    "format": 0.15,
-    "action": 0.20,
-    "correctness": 0.30,
-    "timing": 0.15,
-    "think_len": 0.10,
-    "compress": 0.10,
+    "format": 0.15,         # output format compliance
+    "response": 0.35,       # primary: answer correct + appropriate silence
+    "timing": 0.10,         # responded at reasonable time
+    "think_len": 0.10,      # think length near target
+    "recall_quality": 0.20, # recall query quality + necessity
+    "compress_quality": 0.10,  # entity retention + compression ratio
 }
 
 
@@ -648,18 +717,19 @@ def calc_rewards(
     time_reward_slack: Auto[float],
     rollout_max_think_tokens: Auto[int],
 ) -> Context:
-    """Compute per-generation rewards for 4-action per-timestep agent.
+    """Compute per-generation rewards for per-timestep streaming agent.
 
-    Six reward components (see data_batch1_plan.md §5.3):
+    v9.0 reward design (SFT teaches mechanism, RL teaches decisions):
     - format: think/action tag structure correct
-    - action: chose correct action type vs gold_action
-    - correctness: answer matches gold_answer
-    - timing: responded at the right chunk
-    - think_len: think length near target (40-60 tok)
-    - compress: entity retention in compression summaries
+    - response: PRIMARY — answer correctness + appropriate silence (soft, no hard gold_action)
+    - timing: responded at reasonable time (softened)
+    - think_len: think length near target
+    - recall_quality: query format + necessity + no answer leakage
+    - compress_quality: entity retention in compression summaries
 
-    ``rollout_data`` is ``List[Dict]`` of length B (one per sample).
-    Sets ``rewards`` (shape [B*G]) and ``rewards_dict``.
+    Key change from v8: NO gold_action hard label. Model is free to choose
+    any action path. Reward is based on OUTCOME (correct answer, good query,
+    good summary), not on matching a predetermined action sequence.
     """
     weights = DEFAULT_REWARD_WEIGHTS
     all_rewards = {k: [] for k in REWARD_DICT_KEYS}
@@ -668,24 +738,22 @@ def calc_rewards(
         raw_sample = sample_data["raw_sample"]
         chunk_results: List[Dict[str, Any]] = sample_data["chunk_results"]
 
-        # Extract ground truth from raw sample
-        # Per-timestep format: gold info in metadata
+        # Extract ground truth from raw sample (new format: metadata)
         metadata = raw_sample.get("metadata", {})
-        gold_action = metadata.get("gold_action", "")
-        gt_content = metadata.get("gold_answer", "")
-        need_recall = gold_action == "recall"
-        compressed_segments = raw_sample.get("compressed_segments",
-                              raw_sample.get("input", {}).get("compressed_segments", []))
+        gt_answer = metadata.get("gold_answer", "")
+        answer_form = metadata.get("answer_form", "")
+        compressed_segments = raw_sample.get("input", {}).get(
+            "memory", {}).get("compressed_segments", [])
 
-        # Timing: use ask_chunk from metadata
+        # Timing: use chunk_idx from sample
         gt_chunk_idx = raw_sample.get("chunk_idx")
-        time_per_chunk = 2.0  # AGENT_CHUNK_SEC
+        time_per_chunk = 2.0
 
         # Legacy format fallback
-        if not gold_action and "conversations" in raw_sample:
+        if not gt_answer and "conversations" in raw_sample:
             conversations = raw_sample["conversations"]
             gt_msg = conversations[1] if len(conversations) > 1 else {}
-            gt_content = gt_msg.get("content", "")
+            gt_answer = gt_msg.get("content", "")
             gt_timestamp = float(gt_msg.get("timestamp", 0.0))
             if chunk_results:
                 time_per_chunk = chunk_results[0]["window_end"] - chunk_results[0]["window_start"]
@@ -706,14 +774,12 @@ def calc_rewards(
             # R_format
             fmt_r = _compute_format_reward(chunk_texts, agent_mode=True)
 
-            # R_action
-            action_r = _compute_action_reward(predicted_actions, need_recall)
+            # R_response (primary: outcome-based, no hard gold_action)
+            resp_r = _compute_response_reward(
+                model_answer, gt_answer, predicted_actions, answer_form)
 
-            # R_correctness
-            corr_r = _compute_correctness_reward(model_answer, gt_content)
-
-            # R_timing
-            if gt_chunk_idx is not None:
+            # R_timing (softened)
+            if gt_chunk_idx is not None and gt_answer:
                 slack_window_chunks = (
                     int(time_reward_slack / time_per_chunk) if time_per_chunk > 0 else 0
                 )
@@ -722,28 +788,25 @@ def calc_rewards(
                     time_reward_window, slack_window_chunks,
                 )
             else:
-                time_r = 0.0
+                time_r = 1.0 if "response" not in predicted_actions else 0.5
 
             # R_think_len
             avg_think_len = _avg_think_len_for_generation(chunk_results, g, tokenizer)
             think_r = _compute_think_length_factor(avg_think_len, rollout_max_think_tokens)
 
-            # R_compress
+            # R_recall_quality (derived from outcome, not forced)
+            recall_r = _compute_recall_quality_reward(
+                predicted_actions, chunk_texts, gt_answer, model_answer)
+
+            # R_compress_quality
             compress_r = _compute_compress_reward(chunk_texts, compressed_segments)
 
-            total_r = sum(
-                weights[k] * v for k, v in zip(
-                    REWARD_DICT_KEYS,
-                    [fmt_r, action_r, corr_r, time_r, think_r, compress_r],
-                )
-            )
-
             all_rewards["format"].append(fmt_r)
-            all_rewards["action"].append(action_r)
-            all_rewards["correctness"].append(corr_r)
+            all_rewards["response"].append(resp_r)
             all_rewards["timing"].append(time_r)
             all_rewards["think_len"].append(think_r)
-            all_rewards["compress"].append(compress_r)
+            all_rewards["recall_quality"].append(recall_r)
+            all_rewards["compress_quality"].append(compress_r)
 
     total_tensor = torch.tensor(
         [sum(all_rewards[k][i] * weights[k] for k in REWARD_DICT_KEYS)
