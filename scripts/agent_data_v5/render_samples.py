@@ -60,18 +60,39 @@ def _get_system_prompt(prompt_type: str) -> str:
     return SYSTEM_PROMPT
 
 
-def _build_visual_window(chunk_idx: int, num_chunks: int, video_path: str) -> Dict:
-    """Build visual_window structure from chunk index."""
+def _build_visual_window(
+    chunk_idx: int, num_chunks: int, video_path: str,
+    frame_dir: str = None,
+) -> Dict:
+    """Build visual_window structure from chunk index.
+
+    If frame_dir is provided (pre-extracted frames), includes frame_paths
+    for fast training I/O. Otherwise SFT data_processor falls back to
+    video_path online decoding.
+    """
     window_start = max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1)
     video_start = window_start * AGENT_CHUNK_SEC
     video_end = (chunk_idx + 1) * AGENT_CHUNK_SEC
     n_frames = (chunk_idx - window_start + 1) * FRAMES_PER_CHUNK
 
-    return {
+    vw = {
         "video_start": video_start,
         "video_end": video_end,
         "frames": n_frames,
     }
+
+    # If pre-extracted frames exist, add frame_paths for fast I/O
+    if frame_dir:
+        paths = []
+        for ci in range(window_start, chunk_idx + 1):
+            for fi in range(FRAMES_PER_CHUNK):
+                p = Path(frame_dir) / f"chunk_{ci:04d}_f{fi}.jpg"
+                if p.exists():
+                    paths.append(str(p))
+        if paths:
+            vw["frame_paths"] = paths
+
+    return vw
 
 
 def _build_memory_from_snapshot(snapshot: Dict) -> Dict:
