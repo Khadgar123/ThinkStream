@@ -242,6 +242,40 @@ def _evidence_by_chunk(evidence: Optional[List[Dict]]) -> Dict[int, Dict]:
     return {cap.get("chunk_idx", i): cap for i, cap in enumerate(evidence)}
 
 
+# Compression scoring weights (configurable, sum ≈ 1.0)
+COMPRESS_W_CONTENT  = 0.30  # content importance → avoid compressing
+COMPRESS_W_MERGE    = 0.20  # re-compression penalty → avoid
+COMPRESS_W_BOUNDARY = 0.15  # event boundary → avoid splitting
+COMPRESS_W_RECENCY  = 0.20  # time recency → prefer compressing old
+COMPRESS_W_TOKEN    = 0.15  # token saving → prefer compressing more tokens
+
+
+def _item_importance(item: Dict, ev_index: Dict) -> float:
+    """Per-item importance score [0, 1].
+
+    Normalized: each factor is [0, 1], weighted sum capped at 1.0.
+    """
+    if item.get("type") == "summary":
+        has_digits = 1.0 if any(c.isdigit() for c in item.get("text", "")) else 0.0
+        return min(1.0, has_digits * 0.5)
+
+    # Think: check evidence
+    cap = ev_index.get(item.get("chunk"))
+    if not cap:
+        return 0.0
+
+    entity_score = min(len(cap.get("visible_entities", [])) / 5.0, 1.0)
+    ocr_score = 1.0 if cap.get("ocr") else 0.0
+    digit_score = 1.0 if any(
+        any(c.isdigit() for c in f.get("fact", ""))
+        for f in cap.get("atomic_facts", [])
+        if f.get("confidence", 0) >= CONFIDENCE_THRESHOLD
+    ) else 0.0
+    change_score = min(len(cap.get("state_changes", [])), 2) / 2.0
+
+    return min(1.0, entity_score * 0.25 + ocr_score * 0.35 + digit_score * 0.20 + change_score * 0.20)
+
+
 def score_range_for_compression(
     items: List[Dict],
     start_idx: int,
@@ -250,78 +284,57 @@ def score_range_for_compression(
 ) -> float:
     """Score a candidate range for compression. LOWER = better to compress.
 
-    Handles mixed ranges (thinks + summaries).
-
-    Dimensions (normalized to comparable scales):
-    - content_value [0~100]: high-value content → avoid compressing
-    - merge_penalty [0~100]: re-compressing summaries → heavy penalty
-    - boundary_penalty [0~30]: state_change at boundaries → penalize
-    - recency_penalty [0~50]: recent items more valuable → penalize
-    - token_saving [-50~0]: more tokens saved → lower score → prefer
-
-    All dimensions contribute meaningfully; no single one dominates.
+    All dimensions normalized to [0, 1], then weighted.
+    Total score range: approximately [-W_TOKEN, W_CONTENT+W_MERGE+W_BOUNDARY+W_RECENCY].
     """
     ev_index = _evidence_by_chunk(evidence) if evidence else {}
+    n = len(items)
 
-    # --- content_value: normalized per item ---
-    content_value = 0.0
-    for item in items:
-        if item.get("type") == "think":
-            cap = ev_index.get(item.get("chunk"))
-            if cap:
-                content_value += min(len(cap.get("visible_entities", [])) * 5.0, 20.0)
-                if cap.get("ocr"):
-                    content_value += 25.0  # OCR is high-value, hard to recall
-                for fact in cap.get("atomic_facts", []):
-                    if fact.get("confidence", 0) >= CONFIDENCE_THRESHOLD and any(c.isdigit() for c in fact.get("fact", "")):
-                        content_value += 15.0  # numbers hard to recall
-                content_value += len(cap.get("state_changes", [])) * 8.0
-        elif item.get("type") == "summary":
-            if any(c.isdigit() for c in item.get("text", "")):
-                content_value += 10.0
-    # Cap total content_value
-    content_value = min(content_value, 100.0)
-
-    # --- merge_penalty: re-compressing already compressed ---
-    merge_penalty = 0.0
-    for item in items:
-        if item.get("type") == "summary":
-            level = item.get("merge_level", 1)
-            merge_penalty += 30.0 * level  # level 1→30, level 2→60, level 3→90
-
-    # --- boundary_penalty ---
-    boundary_penalty = 0.0
-    if evidence:
-        first_item = items[0]
-        last_item = items[-1]
-        if first_item.get("type") == "think":
-            first_cap = ev_index.get(first_item.get("chunk"))
-            if first_cap and first_cap.get("state_changes"):
-                boundary_penalty += 15.0
-        if last_item.get("type") == "think":
-            last_cap = ev_index.get(last_item.get("chunk"))
-            if last_cap and last_cap.get("state_changes"):
-                boundary_penalty += 15.0
-
-    # --- recency_penalty: recent items are more valuable ---
-    # Position ratio: 0.0 (start of timeline) → 1.0 (end of timeline)
-    if timeline_len > 0:
-        center = (start_idx + len(items) / 2) / timeline_len
-        recency_penalty = center * 50.0  # 0→0, 0.5→25, 1.0→50
+    # --- content [0, 1]: average per-item importance ---
+    if n > 0:
+        content = sum(_item_importance(item, ev_index) for item in items) / n
     else:
-        recency_penalty = 0.0
+        content = 0.0
 
-    # --- token_saving: normalize to [-50, 0] ---
+    # --- merge [0, 1]: max merge_level / 3 (level 3+ → 1.0) ---
+    max_level = max((item.get("merge_level", 0) for item in items), default=0)
+    merge = min(max_level / 3.0, 1.0)
+
+    # --- boundary [0, 1]: state_change at first/last item ---
+    boundary = 0.0
+    if ev_index:
+        for edge_item in [items[0], items[-1]]:
+            if edge_item.get("type") == "think":
+                cap = ev_index.get(edge_item.get("chunk"))
+                if cap and cap.get("state_changes"):
+                    boundary += 0.5  # max 1.0 if both edges have state_change
+
+    # --- recency [0, 1]: center position in timeline ---
+    if timeline_len > 1:
+        recency = (start_idx + n / 2) / timeline_len
+    else:
+        recency = 0.5
+
+    # --- token_ratio [0, 1]: fraction of total timeline tokens ---
     tokenizer = get_tokenizer()
-    text = " ".join(item.get("text", "") for item in items)
     if tokenizer:
-        n_tokens = sum(len(tokenizer.encode(item.get("text", ""), add_special_tokens=False)) for item in items)
+        range_tokens = sum(len(tokenizer.encode(item.get("text", ""), add_special_tokens=False)) for item in items)
     else:
-        n_tokens = len(text) // 4
-    # Normalize: 200 tokens → -50, 400 tokens → -50 (capped)
-    token_saving = -min(n_tokens * 0.25, 50.0)
+        range_tokens = sum(len(item.get("text", "")) // 4 for item in items)
+    # Estimate total timeline tokens (avoid recomputing full timeline)
+    avg_item_tokens = max(range_tokens / max(n, 1), 1)
+    est_total = avg_item_tokens * timeline_len
+    token_ratio = range_tokens / max(est_total, 1)
 
-    return content_value + merge_penalty + boundary_penalty + recency_penalty + token_saving
+    # --- Weighted combination ---
+    score = (
+        COMPRESS_W_CONTENT  * content       # high content → high score → avoid
+        + COMPRESS_W_MERGE  * merge         # has summary → high score → avoid
+        + COMPRESS_W_BOUNDARY * boundary    # event boundary → high score → avoid
+        + COMPRESS_W_RECENCY * recency      # recent → high score → avoid
+        - COMPRESS_W_TOKEN  * token_ratio   # more tokens → low score → prefer
+    )
+    return score
 
 
 def choose_optimal_compress_range(
