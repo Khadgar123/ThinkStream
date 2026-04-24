@@ -119,66 +119,53 @@ class MemoryState:
         """Trigger when timeline tokens reach 80% of budget."""
         return self.count_tokens() >= COMPRESS_TOKEN_THRESHOLD
 
-    def compress(self, summary: Dict, compressed_chunks: List[int]):
-        """In-place replacement: selected thinks → summary at same position.
+    def compress(self, summary: Dict, selected_indices: List[int]):
+        """In-place replacement: selected timeline items → summary.
 
-        Finds the first think in compressed_chunks, inserts summary there,
-        then removes all thinks in compressed_chunks. Timeline stays sorted.
+        selected_indices: positions in self.timeline to replace.
+        Can include both thinks AND summaries (cross-summary compression).
+        The new summary inherits source_chunks from all replaced items.
         """
-        chunk_set = set(compressed_chunks)
+        if not selected_indices:
+            return
 
-        # Find insertion position (where first compressed think is)
-        insert_pos = None
+        # Collect source_chunks from all replaced items
+        source_chunks = []
+        for idx in sorted(selected_indices):
+            item = self.timeline[idx]
+            if item.get("type") == "think":
+                source_chunks.append(item["chunk"])
+            elif item.get("type") == "summary":
+                source_chunks.extend(item.get("source_chunks", []))
+
+        # Compute merge_level (max of replaced items + 1)
+        max_level = 0
+        for idx in selected_indices:
+            item = self.timeline[idx]
+            max_level = max(max_level, item.get("merge_level", 0))
+
+        insert_pos = min(selected_indices)
+        idx_set = set(selected_indices)
+
+        # Remove selected items, insert new summary at first position
+        new_timeline = []
+        inserted = False
         for i, item in enumerate(self.timeline):
-            if item.get("type") == "think" and item.get("chunk") in chunk_set:
-                insert_pos = i
-                break
-
-        # Remove compressed thinks
-        self.timeline = [t for t in self.timeline if not (
-            t.get("type") == "think" and t.get("chunk") in chunk_set
-        )]
-
-        # Insert summary at the position where first think was
-        summary_item = {
-            "type": "summary",
-            "time_range": summary["time_range"],
-            "text": summary["text"],
-        }
-        if insert_pos is not None:
-            # Adjust insert_pos for removed items before it
-            adjusted = sum(1 for t in self.timeline[:insert_pos]
-                           if t.get("type") != "_removed")
-            self.timeline.insert(min(adjusted, len(self.timeline)), summary_item)
-        else:
-            self.timeline.append(summary_item)
-
-        # Merge oldest two summaries if too many
-        summaries = [i for i, t in enumerate(self.timeline) if t.get("type") == "summary"]
-        if len(summaries) > MAX_COMPRESSED_SEGMENTS:
-            idx_a, idx_b = summaries[0], summaries[1]
-            seg_a = self.timeline[idx_a]
-            seg_b = self.timeline[idx_b]
-            combined = f'{seg_a["text"]} {seg_b["text"]}'
-            tokenizer = get_tokenizer()
-            if tokenizer:
-                ids = tokenizer.encode(combined, add_special_tokens=False)
-                if len(ids) > 200:
-                    combined = tokenizer.decode(ids[:200])
+            if i in idx_set:
+                if not inserted:
+                    new_timeline.append({
+                        "type": "summary",
+                        "time_range": summary["time_range"],
+                        "text": summary["text"],
+                        "source_chunks": sorted(source_chunks),
+                        "merge_level": max_level + 1,
+                    })
+                    inserted = True
+                # skip replaced items
             else:
-                words = combined.split()
-                if len(words) > 200:
-                    combined = " ".join(words[:200])
-            merged = {
-                "type": "summary",
-                "time_range": [seg_a["time_range"][0], seg_b["time_range"][1]],
-                "text": combined,
-                "merged": True,
-            }
-            # Remove both, insert merged at first position
-            self.timeline = [t for i, t in enumerate(self.timeline)
-                             if i not in (idx_a, idx_b)]
-            self.timeline.insert(idx_a, merged)
+                new_timeline.append(item)
+
+        self.timeline = new_timeline
 
     def format_for_prompt(self) -> str:
         """Format timeline as a single string for model input."""
@@ -256,141 +243,120 @@ def _evidence_by_chunk(evidence: Optional[List[Dict]]) -> Dict[int, Dict]:
 
 
 def score_range_for_compression(
-    thinks: List[Dict],
+    items: List[Dict],
     evidence: Optional[List[Dict]] = None,
 ) -> float:
     """Score a candidate range for compression. LOWER = better to compress.
 
-    v8.0 simplified to 3 dimensions (removed pending_overlap, reconstructability):
-    - content_value: high-value content (entities, numbers, OCR) → avoid compressing
-    - boundary_penalty: range starts/ends at state_change → splitting event → penalize
-    - token_saving: more tokens saved → lower score → prefer
+    Handles mixed ranges (thinks + summaries). Summaries get merge_level penalty.
+
+    Dimensions:
+    - content_value: high-value content → avoid compressing
+    - merge_penalty: re-compressing summaries → heavy penalty (info loss compounds)
+    - boundary_penalty: state_change at boundaries → splitting event
+    - token_saving: more tokens saved → prefer
     """
-    text = " ".join(item.get("text", item.get("obs", "")) for item in thinks)
+    text = " ".join(item.get("text", "") for item in items)
+    ev_index = _evidence_by_chunk(evidence) if evidence else {}
 
-    # --- content_value: from teacher evidence ---
+    # --- content_value ---
     content_value = 0.0
-    if evidence:
-        ev_index = _evidence_by_chunk(evidence)
-        for t in thinks:
-            cap = ev_index.get(t["chunk"])
-            if not cap:
-                continue
-            # Entity count
-            content_value += len(cap.get("visible_entities", [])) * 2.0
-            # OCR
-            if cap.get("ocr"):
-                content_value += 8.0
-            # Numbers in facts
-            for fact in cap.get("atomic_facts", []):
-                if fact.get("confidence", 0) >= CONFIDENCE_THRESHOLD:
-                    if any(c.isdigit() for c in fact.get("fact", "")):
+    for item in items:
+        if item.get("type") == "think":
+            cap = ev_index.get(item.get("chunk"))
+            if cap:
+                content_value += len(cap.get("visible_entities", [])) * 2.0
+                if cap.get("ocr"):
+                    content_value += 8.0
+                for fact in cap.get("atomic_facts", []):
+                    if fact.get("confidence", 0) >= CONFIDENCE_THRESHOLD and any(c.isdigit() for c in fact.get("fact", "")):
                         content_value += 4.0
-            # State changes (from 1-B)
-            content_value += len(cap.get("state_changes", [])) * 3.0
+                content_value += len(cap.get("state_changes", [])) * 3.0
+        elif item.get("type") == "summary":
+            # Text-based importance estimate for summaries (no evidence lookup)
+            if any(c.isdigit() for c in item.get("text", "")):
+                content_value += 4.0
 
-    # --- boundary_penalty: from 1-B state_changes ---
+    # --- merge_penalty: re-compressing already compressed content ---
+    merge_penalty = 0.0
+    for item in items:
+        if item.get("type") == "summary":
+            level = item.get("merge_level", 1)
+            merge_penalty += 8.0 * level  # heavy: level 1 → 8, level 2 → 16, ...
+
+    # --- boundary_penalty ---
     boundary_penalty = 0.0
     if evidence:
-        ev_index = _evidence_by_chunk(evidence)
-        # Penalize if range STARTS at a state change (splitting from prev event)
-        first_cap = ev_index.get(thinks[0]["chunk"])
-        if first_cap and first_cap.get("state_changes"):
-            boundary_penalty += 5.0
-        # Penalize if range ENDS at a state change (splitting ongoing event)
-        last_cap = ev_index.get(thinks[-1]["chunk"])
-        if last_cap and last_cap.get("state_changes"):
-            boundary_penalty += 5.0
+        first_item = items[0]
+        last_item = items[-1]
+        if first_item.get("type") == "think":
+            first_cap = ev_index.get(first_item.get("chunk"))
+            if first_cap and first_cap.get("state_changes"):
+                boundary_penalty += 5.0
+        if last_item.get("type") == "think":
+            last_cap = ev_index.get(last_item.get("chunk"))
+            if last_cap and last_cap.get("state_changes"):
+                boundary_penalty += 5.0
 
-    # --- token_saving: precise token count ---
+    # --- token_saving ---
     tokenizer = get_tokenizer()
     if tokenizer:
-        n_tokens = sum(
-            len(tokenizer.encode(item.get("text", ""), add_special_tokens=False))
-            for item in thinks
-        )
+        n_tokens = sum(len(tokenizer.encode(item.get("text", ""), add_special_tokens=False)) for item in items)
     else:
         n_tokens = len(text) // 4
     token_saving = -n_tokens * 0.3
 
-    return content_value + boundary_penalty + token_saving
-
-
-def _find_contiguous_think_segments(timeline: List[Dict]) -> List[List[Dict]]:
-    """Find contiguous think segments in the timeline (not separated by summaries).
-
-    Example:
-      timeline: [think_0, think_1, summary, think_6, think_7, think_8, think_9]
-      returns: [[think_0, think_1], [think_6, think_7, think_8, think_9]]
-
-    Only segments with >= COMPRESS_RANGE_MIN thinks are compression candidates.
-    """
-    segments = []
-    current = []
-    for item in timeline:
-        if item.get("type") == "think":
-            current.append(item)
-        else:
-            if current:
-                segments.append(current)
-                current = []
-    if current:
-        segments.append(current)
-    return segments
+    return content_value + merge_penalty + boundary_penalty + token_saving
 
 
 def choose_optimal_compress_range(
     timeline: List[Dict],
     evidence: Optional[List[Dict]] = None,
-) -> Tuple[List[Dict], Dict]:
-    """Choose the best contiguous think range to compress.
+) -> Tuple[List[int], Dict]:
+    """Choose the best contiguous range in timeline to compress.
 
-    Finds contiguous think segments in the timeline (no summary in between),
-    then enumerates valid ranges within each segment.
+    Allows cross-summary ranges (thinks + summaries mixed).
+    Summaries in the range get merge_level penalty in scoring.
 
-    Returns: (best_range, policy_meta)
+    Returns: (selected_indices in timeline, policy_meta)
     """
-    segments = _find_contiguous_think_segments(timeline)
-    best_range = None
+    n = len(timeline)
+    best_indices = None
     best_score = float("inf")
-    best_segment_idx = 0
-    best_start = 0
-    best_size = 0
 
-    for seg_idx, segment in enumerate(segments):
-        n = len(segment)
-        if n < COMPRESS_RANGE_MIN:
-            continue  # Segment too small
-        for size in range(COMPRESS_RANGE_MIN, min(COMPRESS_RANGE_MAX + 1, n + 1)):
-            for start in range(0, n - size + 1):
-                candidate = segment[start:start + size]
-                score = score_range_for_compression(candidate, evidence)
-                if score < best_score:
-                    best_score = score
-                    best_range = candidate
-                    best_segment_idx = seg_idx
-                    best_start = start
-                    best_size = size
+    # Enumerate all contiguous ranges of size 3 to COMPRESS_RANGE_MAX
+    for size in range(COMPRESS_RANGE_MIN, min(COMPRESS_RANGE_MAX + 1, n + 1)):
+        for start in range(0, n - size + 1):
+            candidate_indices = list(range(start, start + size))
+            candidate_items = [timeline[i] for i in candidate_indices]
 
-    if best_range is None:
-        # Fallback: largest segment, first COMPRESS_RANGE_MIN items
-        largest = max(segments, key=len) if segments else []
-        if len(largest) >= COMPRESS_RANGE_MIN:
-            best_range = largest[:COMPRESS_RANGE_MIN]
+            # Must contain at least 2 thinks (can't compress only summaries)
+            n_thinks = sum(1 for it in candidate_items if it.get("type") == "think")
+            if n_thinks < 2:
+                continue
+
+            score = score_range_for_compression(candidate_items, evidence)
+            if score < best_score:
+                best_score = score
+                best_indices = candidate_indices
+
+    if best_indices is None:
+        # Fallback: last COMPRESS_RANGE_MIN items (most recent)
+        think_indices = [i for i, t in enumerate(timeline) if t.get("type") == "think"]
+        if len(think_indices) >= COMPRESS_RANGE_MIN:
+            best_indices = think_indices[-COMPRESS_RANGE_MIN:]
         else:
-            # No valid segment at all
-            all_thinks = [t for t in timeline if t.get("type") == "think"]
-            best_range = all_thinks[:COMPRESS_RANGE_MIN] if len(all_thinks) >= COMPRESS_RANGE_MIN else all_thinks
+            best_indices = think_indices
 
     meta = {
         "score": round(best_score, 2) if best_score < float("inf") else -1,
-        "segment_idx": best_segment_idx,
-        "range_start_in_segment": best_start,
-        "range_size": best_size or len(best_range),
-        "n_segments": len(segments),
-        "segment_sizes": [len(s) for s in segments],
+        "range_indices": best_indices,
+        "range_size": len(best_indices) if best_indices else 0,
+        "timeline_size": n,
+        "n_thinks_in_range": sum(1 for i in (best_indices or []) if timeline[i].get("type") == "think"),
+        "n_summaries_in_range": sum(1 for i in (best_indices or []) if timeline[i].get("type") == "summary"),
     }
-    return best_range, meta
+    return best_indices, meta
 
 
 # ---------------------------------------------------------------------------
@@ -437,24 +403,42 @@ def build_compress_request(
 
     Finds contiguous think segments, selects best range within segments.
     """
-    to_compress, policy_meta = choose_optimal_compress_range(
+    selected_indices, policy_meta = choose_optimal_compress_range(
         pre_action_timeline, evidence
     )
 
-    if not to_compress:
+    if not selected_indices:
         return None
 
-    obs_lines = [f'[{item["time"]}] {item.get("text", "")}' for item in to_compress]
+    to_compress = [pre_action_timeline[i] for i in selected_indices]
+
+    obs_lines = []
+    for item in to_compress:
+        if item.get("type") == "think":
+            obs_lines.append(f'[{item["time"]}] {item.get("text", "")}')
+        elif item.get("type") == "summary":
+            tr = item["time_range"]
+            obs_lines.append(f'<summary t="{tr[0]}-{tr[1]}">{item.get("text", "")}</summary>')
     obs_text = "\n".join(obs_lines)
 
-    first_time = to_compress[0]["chunk"] * AGENT_CHUNK_SEC
-    last_time = to_compress[-1]["chunk"] * AGENT_CHUNK_SEC + AGENT_CHUNK_SEC
+    # Compute time range from items (thinks have "chunk", summaries have "time_range")
+    all_times = []
+    for item in to_compress:
+        if item.get("type") == "think":
+            all_times.append(item["chunk"] * AGENT_CHUNK_SEC)
+            all_times.append(item["chunk"] * AGENT_CHUNK_SEC + AGENT_CHUNK_SEC)
+        elif item.get("type") == "summary":
+            all_times.extend(item["time_range"])
+    first_time = min(all_times) if all_times else 0
+    last_time = max(all_times) if all_times else 0
 
-    target_length = estimate_summary_length(to_compress, evidence)
+    target_length = estimate_summary_length(
+        [item for item in to_compress if item.get("type") == "think"], evidence
+    )
 
-    # Overlapping frames: compress range ∩ visual window
+    # Overlapping frames: compress range ∩ visual window (only for thinks)
     window_start = max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1)
-    compress_chunks = [item["chunk"] for item in to_compress]
+    compress_chunks = [item["chunk"] for item in to_compress if item.get("type") == "think"]
     overlap_chunks = [c for c in compress_chunks if window_start <= c <= chunk_idx]
 
     overlap_frame_paths = []
@@ -492,6 +476,7 @@ def build_compress_request(
         "id": f"{video_id}_compress_{chunk_idx}",
         "_meta": {
             "time_range": [int(first_time), int(last_time)],
+            "selected_indices": selected_indices,
             "chunks": compress_chunks,
             "teacher_policy": policy_meta,
             "overlap_chunks": overlap_chunks,
@@ -612,9 +597,9 @@ async def run_pass2_single_video(
                 request_id=comp_request["id"],
             )
             summary = parse_compress_result(comp_raw, comp_request["_meta"])
-            real_chunks = comp_request["_meta"]["chunks"]
+            selected_indices = comp_request["_meta"]["selected_indices"]
 
-            memory.compress(summary, compressed_chunks=real_chunks)
+            memory.compress(summary, selected_indices=selected_indices)
             memory.add_think(chunk_idx, think_text)
 
             post_compress_tokens = memory.count_recent_tokens()
@@ -628,7 +613,8 @@ async def run_pass2_single_video(
             compression_events.append({
                 "trigger_chunk": chunk_idx,
                 "summary": summary,
-                "compressed_thinks_chunks": real_chunks,
+                "selected_indices": selected_indices,
+                "compressed_thinks_chunks": comp_request["_meta"].get("chunks", []),
                 "teacher_policy": comp_request["_meta"].get("teacher_policy", {}),
                 "hysteresis_ok": hysteresis_ok,
                 "post_compress_tokens": post_compress_tokens,
