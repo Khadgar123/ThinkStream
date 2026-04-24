@@ -92,9 +92,12 @@ MAX_CANDIDATES_PER_VIDEO = {
     # "compress" is not limited — determined by actual compression events
 }
 
-# Per-video FINAL sample cap (applied after Pass4 generation).
-# Candidates limit controls API cost; this controls training set balance.
+# Per-video FINAL sample cap (applied after render).
 MAX_SAMPLES_PER_VIDEO = 50
+# Hard caps for trajectory planning
+MAX_TRAJECTORIES_PER_VIDEO = 10     # even for 400s videos
+MAX_QUESTIONS_PER_TRAJECTORY = 6    # beyond this queries_state gets too long
+MAX_ACTIVE_QUERIES = 2              # max unanswered questions at any time
 
 # Backward compat aliases (deprecated — use token-based constants above)
 OBSERVATION_TOKENS = THINK_TOKENS  # deprecated alias

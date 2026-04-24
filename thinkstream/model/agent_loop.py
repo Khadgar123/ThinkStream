@@ -141,6 +141,31 @@ class MemoryState:
             pq for pq in self.pending_questions if pq["question"] != question
         ]
 
+    # --- Queries tracking (matches SFT <queries> zone) ---
+
+    def add_query(self, question: str, ask_time: float):
+        """Register a question (pending until answered)."""
+        if not hasattr(self, "_queries"):
+            self._queries = []
+        self._queries.append({
+            "question": question,
+            "ask_time": ask_time,
+            "answers": [],
+        })
+
+    def answer_query(self, question: str, answer: str, response_time: float):
+        """Record an answer for a pending query."""
+        if not hasattr(self, "_queries"):
+            return
+        for q in reversed(self._queries):
+            if q["question"] == question:
+                q["answers"].append({"text": answer, "time": response_time})
+                return
+
+    @property
+    def queries(self) -> List[Dict]:
+        return getattr(self, "_queries", [])
+
 
 # format_memory_block, build_user_content, parse_agent_output are imported
 # from thinkstream.data.agent_protocol (single source of truth).
@@ -152,6 +177,7 @@ def build_single_step_messages(
     video_path: str,
     *,
     user_input: str = "",
+    queries: Optional[List[Dict]] = None,
     recalled_frames: Optional[Dict] = None,
     recall_result: Optional[Dict] = None,
     min_pixels: int = 100352,
@@ -167,6 +193,7 @@ def build_single_step_messages(
         chunk_idx,
         video_path,
         user_input=user_input,
+        queries=queries,
         recalled_frames=recalled_frames,
         recall_result=recall_result,
         min_pixels=min_pixels,

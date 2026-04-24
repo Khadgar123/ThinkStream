@@ -22,6 +22,8 @@ from typing import Dict, List, Optional, Set, Tuple
 
 from .config import (
     AGENT_CHUNK_SEC,
+    MAX_QUESTIONS_PER_TRAJECTORY,
+    MAX_TRAJECTORIES_PER_VIDEO,
     PLACEMENTS_DIR,
     VISUAL_WINDOW_CHUNKS,
 )
@@ -402,8 +404,9 @@ def plan_trajectories(
         cards_map = {}
     rng = random.Random(seed)
 
-    # Dynamic target: ~1 trajectory per 20 chunks, minimum 2
-    target = max(2, num_chunks // 20)
+    # Dynamic target: ~1 trajectory per 20 chunks, clamped to [2, MAX]
+    target = min(max(2, num_chunks // 20), MAX_TRAJECTORIES_PER_VIDEO)
+    max_placements_per_traj = min(max_placements_per_traj, MAX_QUESTIONS_PER_TRAJECTORY)
 
     # --- Phase 1: Greedy selection of best placements ---
     used_families: Set[str] = set()

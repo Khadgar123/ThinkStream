@@ -113,23 +113,18 @@ def format_memory_block(memory: Dict) -> str:
 def format_queries_block(queries: List[Dict]) -> str:
     """Format the queries zone as a chronological event stream.
 
-    Q and A events interleave on a timeline, mirroring the memory
-    timeline. Multi-response answers (M1 followups) appear as
-    separate A entries at their respective timestamps.
+    Q and A events interleave on a timeline. All questions are shown
+    (including unanswered/pending ones) so the model knows what it's
+    tracking. Unanswered questions appear as Q without a following A.
 
     Example output:
       <queries>
+      [10s] Q: Tell me when plating starts
       [20s] Q: What color is the apron?
       [20s] A: Red
-      [30s] Q: Describe each step
-      [30s] A: Chopping onions
-      [40s] A: Adding garlic to pan
       [50s] Q: How many tomatoes?
       [52s] A: 3
       </queries>
-
-    Unanswered questions are omitted — the model infers pending
-    tasks from its own memory of past user_input events.
     """
     if not queries:
         return ""
@@ -138,19 +133,16 @@ def format_queries_block(queries: List[Dict]) -> str:
     events = []
     for q in queries:
         answers = q.get("answers", [])
-        if not answers:
-            continue
         question = q.get("question", "")
         ask_t = q.get("ask_time", "")
 
-        # Question event
+        # Question event — always shown (even if unanswered/pending)
         events.append((ask_t, "Q", question))
         # Answer event(s) — each carries its own timestamp
         for ans in answers:
             if isinstance(ans, dict):
                 events.append((ans.get("time", ask_t), "A", ans.get("text", "")))
             else:
-                # Backward compat: plain string answer
                 events.append((q.get("response_time", ask_t), "A", str(ans)))
 
     if not events:

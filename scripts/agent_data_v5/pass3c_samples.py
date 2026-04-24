@@ -318,7 +318,7 @@ async def generate_trajectory_samples(
                 user_input=card["question"], trajectory_id=traj_id,
                 card_id=card["card_id"], sequence_type=seq,
             ))
-            _add_query(card["question"], ask, answer=resp, response_chunk=ask)
+            _add_query(card["question"], ask, answer=resp, response_chunk=ask)  # answered immediately
             # post_silent
             ps = kc.get("post_silent", ask + 1)
             samples.append(_make_sample(
@@ -327,6 +327,8 @@ async def generate_trajectory_samples(
             ))
 
         elif seq == "recall_success":
+            # Register question as pending BEFORE recall (model sees it in queries)
+            _add_query(card["question"], ask)
             # step1: recall
             query_json = await _generate_recall_query(card, snapshot, client, video_id, ask)
             samples.append(_make_sample(
@@ -353,10 +355,9 @@ async def generate_trajectory_samples(
                 recall_result=recall_result, trajectory_id=traj_id,
                 card_id=card["card_id"], sequence_type=seq,
             ))
+            # Update with answer (or leave pending if failed)
             if post_action == "response":
-                _add_query(card["question"], ask, answer=resp, response_chunk=ask)
-            else:
-                _add_query(card["question"], ask)
+                queries_state[-1]["answers"].append({"text": str(resp), "time": ask * AGENT_CHUNK_SEC})
             # post_silent
             ps = kc.get("post_silent", ask + 1)
             samples.append(_make_sample(
@@ -365,6 +366,8 @@ async def generate_trajectory_samples(
             ))
 
         elif seq == "recall_fail_then_found":
+            # Register question as pending BEFORE recall
+            _add_query(card["question"], ask)
             # step1: recall
             query_json = await _generate_recall_query(card, snapshot, client, video_id, ask)
             samples.append(_make_sample(
@@ -381,7 +384,6 @@ async def generate_trajectory_samples(
                 recall_result=recall_result, trajectory_id=traj_id,
                 card_id=card["card_id"], sequence_type=seq,
             ))
-            _add_query(card["question"], ask)
             # wait_silent
             for wc in kc.get("wait_silent", []):
                 samples.append(_make_sample(

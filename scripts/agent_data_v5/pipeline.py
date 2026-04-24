@@ -618,11 +618,6 @@ async def run_pipeline(
             if cached:
                 all_samples.extend(cached)
 
-    # Assign sample_id and phase
-    for i, s in enumerate(all_samples):
-        s["sample_id"] = f"{s.get('video_id', 'unk')}_{s.get('action', 'unk')}_{i}"
-        s["phase"] = assign_phase(s)
-
     # =================================================================
     # PASS 4: Verify + Filter
     # =================================================================
@@ -669,6 +664,11 @@ async def run_pipeline(
         sft_samples.extend(rendered)
 
     logger.info(f"Rendered {len(sft_samples)} SFT samples from {len(verified_by_vid)} videos")
+
+    # Assign sample_id and phase AFTER render (render creates new dicts)
+    for i, s in enumerate(sft_samples):
+        s["sample_id"] = f"{s.get('video_id', 'unk')}_{s.get('action', 'unk')}_{i}"
+        s["phase"] = assign_phase(s)
 
     # Use rendered samples for final output
     passed_samples = sft_samples
