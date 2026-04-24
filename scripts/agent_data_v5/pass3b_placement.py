@@ -321,35 +321,52 @@ def _score_placement(
     used_families: Set[str],
     used_seq_types: Set[str],
     used_ask_chunks: List[int],
+    used_answers: Set[str],
+    evidence: List[Dict] = None,
 ) -> float:
-    """Score a placement for greedy selection. Higher = better."""
+    """Score a placement for greedy selection (8 dimensions). Higher = better."""
     card = cards_map.get(p["card_id"], {})
     score = 0.0
 
-    # Quality: penalize inferred support_chunks
+    # 1. Quality: penalize inferred support_chunks
     if card.get("_support_inferred"):
         score -= 2.0
 
-    # Quality: prefer auto-verifiable answer_forms (RL reward works)
+    # 2. Verifiability: prefer auto-verifiable answer_forms (RL reward works)
     auto_verify = {"binary", "multiple_choice", "number", "short_exact"}
     if card.get("answer_form") in auto_verify:
         score += 1.0
 
-    # Diversity: unseen family bonus
+    # 3. Evidence quality: prefer high-confidence support facts
+    if evidence:
+        ev_by_idx = {c.get("chunk_idx", i): c for i, c in enumerate(evidence)}
+        for sc in card.get("support_chunks", []):
+            cap = ev_by_idx.get(sc, {})
+            facts = cap.get("atomic_facts", [])
+            avg_conf = sum(f.get("confidence", 0) for f in facts) / max(len(facts), 1)
+            if avg_conf >= 0.85:
+                score += 0.5  # high-confidence evidence
+
+    # 4. Diversity: unseen family bonus
     family = card.get("family", "")
     if family not in used_families:
         score += 2.0
 
-    # Diversity: unseen sequence_type bonus
+    # 5. Diversity: unseen sequence_type bonus
     if p["sequence_type"] not in used_seq_types:
         score += 2.0
 
-    # Spread: distance from nearest used ask_chunk
+    # 6. Spread: distance from nearest used ask_chunk
     if used_ask_chunks:
         min_dist = min(abs(p["ask_chunk"] - c) for c in used_ask_chunks)
         score += min(min_dist / 10.0, 1.5)  # cap at 1.5
     else:
         score += 1.5  # first placement gets full spread bonus
+
+    # 7. Dedup: penalize if same canonical_answer already selected
+    canonical = card.get("canonical_answer", "").strip().lower()
+    if canonical and canonical in used_answers:
+        score -= 1.5  # same answer → likely redundant question
 
     return score
 
@@ -357,52 +374,56 @@ def _score_placement(
 def plan_trajectories(
     placements: List[Dict],
     cards_map: Dict[str, Dict] = None,
-    target: int = 5,
+    num_chunks: int = 60,
     max_placements_per_traj: int = 5,
     min_chunk_gap: int = 8,
     seed: int = 42,
+    evidence: List[Dict] = None,
 ) -> List[Dict]:
     """Select placements and build trajectories via greedy diversity scoring.
 
     Design principles:
     1. 4-6 questions per trajectory (keeps silent/response ratio ~60/30)
     2. Questions spread across the video timeline (min gap = 8 chunks = 16s)
-    3. Maximize diversity: different families, sequence_types
-    4. Fewer trajectories (5 per video) — each is a dense, complete episode
+    3. Maximize diversity: families, sequence_types, answers
+    4. Trajectory count scales with video length (1 per ~20 chunks)
+    5. Penalize duplicate answers and low-confidence evidence
 
     Args:
         placements: all valid placements from compute_all_placements
         cards_map: {card_id: card_dict} for quality scoring
-        target: target number of trajectories per video
+        num_chunks: video length in chunks (for dynamic target)
         max_placements_per_traj: max questions per trajectory (4-6)
         min_chunk_gap: minimum gap between questions in same trajectory
         seed: RNG seed for reproducibility
+        evidence: optional evidence list for confidence scoring
     """
     if cards_map is None:
         cards_map = {}
     rng = random.Random(seed)
+
+    # Dynamic target: ~1 trajectory per 20 chunks, minimum 2
+    target = max(2, num_chunks // 20)
 
     # --- Phase 1: Greedy selection of best placements ---
     used_families: Set[str] = set()
     used_seq_types: Set[str] = set()
     used_ask_chunks: List[int] = []
     used_card_ids: Set[str] = set()
+    used_answers: Set[str] = set()
     selected: List[Dict] = []
 
     candidates = list(placements)
-    # Select up to target * max_placements_per_traj placements
     budget = target * max_placements_per_traj
 
     while candidates and len(selected) < budget:
-        # Score all remaining candidates
         scored = []
         for p in candidates:
-            # Skip if same card already selected (different ask_chunk is ok,
-            # but same card_id means same question — prefer variety)
             if p["card_id"] in used_card_ids:
                 continue
             s = _score_placement(p, cards_map, used_families,
-                                 used_seq_types, used_ask_chunks)
+                                 used_seq_types, used_ask_chunks,
+                                 used_answers, evidence)
             scored.append((s, p))
 
         if not scored:
@@ -420,6 +441,9 @@ def plan_trajectories(
         used_seq_types.add(best["sequence_type"])
         used_ask_chunks.append(best["ask_chunk"])
         used_card_ids.add(best["card_id"])
+        canonical = card.get("canonical_answer", "").strip().lower()
+        if canonical:
+            used_answers.add(canonical)
         candidates.remove(best)
 
     # --- Phase 2: Build trajectories from selected placements ---

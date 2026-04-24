@@ -116,6 +116,7 @@ def render_sample(
     rollout: Dict,
     video_path: str,
     video_id: str,
+    cards_map: Dict[str, Dict] = None,
 ) -> Dict:
     """Render a 3-C sample into an SFT-ready training sample.
 
@@ -124,8 +125,9 @@ def render_sample(
     - rollout's snapshot at chunk_idx (from Pass 2)
     - system prompt (from agent_protocol)
     - visual_window structure (computed from chunk_idx)
+    - metadata with gold_action/gold_answer (from cards_map)
 
-    Returns a complete sample with `input` + `output` fields.
+    Returns a complete sample with `input` + `output` + `metadata` fields.
     """
     chunk_idx = sample["chunk_idx"]
     prompt_type = sample.get("prompt_type", "SYSTEM_PROMPT")
@@ -157,6 +159,18 @@ def render_sample(
                     inp["user_input"] = f'<compress_trigger range="{time_start}-{time_end}"/>'
                 break
 
+    # Build metadata for RL reward computation
+    card_id = sample.get("card_id", "")
+    card = (cards_map or {}).get(card_id, {})
+    metadata = {
+        "gold_action": sample.get("action", "silent"),
+        "gold_answer": card.get("canonical_answer", ""),
+        "answer_form": card.get("answer_form", ""),
+        "family": card.get("family", ""),
+        "availability": sample.get("sequence_type", ""),
+        "support_chunks": card.get("support_chunks", []),
+    }
+
     # Build complete SFT sample
     rendered = {
         # Core fields for SFT data_processor
@@ -166,13 +180,16 @@ def render_sample(
         "video_id": video_id,
         "chunk_idx": chunk_idx,
 
-        # Metadata for phase assignment and verification
+        # Phase assignment
         "sample_type": sample.get("sample_type", "silent"),
         "action": sample.get("action", "silent"),
         "prompt_type": prompt_type,
         "sequence_type": sample.get("sequence_type", ""),
         "trajectory_id": sample.get("trajectory_id", ""),
-        "card_id": sample.get("card_id", ""),
+        "card_id": card_id,
+
+        # RL reward fields
+        "metadata": metadata,
     }
 
     return rendered
@@ -183,17 +200,13 @@ def render_trajectory(
     rollout: Dict,
     video_path: str,
     video_id: str,
+    cards_map: Dict[str, Dict] = None,
 ) -> List[Dict]:
-    """Render all samples in a trajectory into SFT-ready format.
-
-    Handles the queries_state override: for each sample, the queries
-    from the 3-C fork generation take precedence over the rollout
-    snapshot's queries (which is always empty in question-blind rollout).
-    """
+    """Render all samples in a trajectory into SFT-ready format."""
     rendered = []
     for sample in trajectory_samples:
         try:
-            r = render_sample(sample, rollout, video_path, video_id)
+            r = render_sample(sample, rollout, video_path, video_id, cards_map)
             rendered.append(r)
         except Exception as e:
             logger.warning(
@@ -207,13 +220,9 @@ def render_video_samples(
     rollout: Dict,
     video_path: str,
     video_id: str,
+    cards_map: Dict[str, Dict] = None,
 ) -> List[Dict]:
-    """Render all samples for a video, grouped by trajectory.
-
-    Each trajectory's samples share a queries_state evolution.
-    Base samples inherit queries_state from their trajectory.
-    """
-    # Group by trajectory_id
+    """Render all samples for a video, grouped by trajectory."""
     by_traj = {}
     for s in all_samples:
         tid = s.get("trajectory_id", "no_traj")
@@ -221,7 +230,8 @@ def render_video_samples(
 
     rendered = []
     for tid, traj_samples in by_traj.items():
-        traj_rendered = render_trajectory(traj_samples, rollout, video_path, video_id)
+        traj_rendered = render_trajectory(
+            traj_samples, rollout, video_path, video_id, cards_map)
         rendered.extend(traj_rendered)
 
     return rendered

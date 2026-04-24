@@ -544,7 +544,10 @@ async def run_pipeline(
             )
             # Build card lookup for quality-based trajectory scoring
             vid_cards = {c["card_id"]: c for c in cards_map[vid]}
-            trajectories = plan_trajectories(placements, cards_map=vid_cards)
+            nc = rollout_map[vid]["num_chunks"]
+            trajectories = plan_trajectories(
+                placements, cards_map=vid_cards,
+                num_chunks=nc, evidence=evidence_map[vid])
             data = {"placements": placements, "trajectories": trajectories}
             save_placements(vid, data)
             trajectories_map[vid] = data
@@ -660,7 +663,9 @@ async def run_pipeline(
             continue
         v_info = next((v for v in videos if v["video_id"] == vid), {})
         video_path = v_info.get("video_path", "")
-        rendered = render_video_samples(vid_samples, rollout_map[vid], video_path, vid)
+        vid_cards = {c["card_id"]: c for c in cards_map.get(vid, [])}
+        rendered = render_video_samples(
+            vid_samples, rollout_map[vid], video_path, vid, vid_cards)
         sft_samples.extend(rendered)
 
     logger.info(f"Rendered {len(sft_samples)} SFT samples from {len(verified_by_vid)} videos")
