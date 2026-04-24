@@ -111,14 +111,19 @@ def format_memory_block(memory: Dict) -> str:
 
 
 def format_queries_block(queries: List[Dict]) -> str:
-    """Format the queries zone: only show answered Q&A pairs.
+    """Format the queries zone: answered Q&A with ask and response timestamps.
 
-    Only includes questions that have at least one answer.
-    Unanswered questions (answers=[]) are omitted — the model infers
-    what's pending from user_input history and its own memory.
+    Each entry records when the question was asked and when it was answered,
+    so the model knows the temporal context of past interactions.
 
-    This keeps the queries zone compact and avoids training the model
-    to depend on an explicit "pending" list.
+    Example output:
+      <queries>
+      [asked=40s responded=40s] Q: What color is the apron? A: Red
+      [asked=50s responded=52s] Q: How many tomatoes? A: 3
+      </queries>
+
+    Unanswered questions are omitted — the model infers pending tasks
+    from its own memory of past user_input events.
     """
     if not queries:
         return ""
@@ -126,12 +131,21 @@ def format_queries_block(queries: List[Dict]) -> str:
     for q in queries:
         answers = q.get("answers", [])
         if not answers:
-            continue  # skip unanswered — model infers from context
-        q_json = json.dumps({
-            "question": q.get("question", ""),
-            "answers": answers,
-        }, ensure_ascii=False)
-        lines.append(q_json)
+            continue
+        question = q.get("question", "")
+        ask_t = q.get("ask_time", "")
+        resp_t = q.get("response_time", "")
+        # Join multiple answers (M1 followups) with " | "
+        ans_text = " | ".join(str(a) for a in answers)
+        # Build timestamp prefix
+        if ask_t and resp_t:
+            prefix = f"[asked={ask_t}s responded={resp_t}s]"
+        elif ask_t:
+            prefix = f"[asked={ask_t}s]"
+        else:
+            prefix = ""
+        line = f"{prefix} Q: {question} A: {ans_text}".strip()
+        lines.append(line)
     if not lines:
         return ""
     return "<queries>\n" + "\n".join(lines) + "\n</queries>"

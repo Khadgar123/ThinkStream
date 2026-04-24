@@ -285,6 +285,15 @@ async def generate_trajectory_samples(
         snapshots = rollout["snapshots"]
         return snapshots.get(chunk_idx) or snapshots.get(str(chunk_idx)) or {}
 
+    def _add_query(question, answers, ask_chunk, response_chunk=None):
+        """Append to queries_state with timestamps (seconds)."""
+        queries_state.append({
+            "question": question,
+            "answers": answers,
+            "ask_time": ask_chunk * AGENT_CHUNK_SEC,
+            "response_time": (response_chunk or ask_chunk) * AGENT_CHUNK_SEC,
+        })
+
     for placement in trajectory["placements"]:
         card = cards_map.get(placement["card_id"])
         if not card:
@@ -304,7 +313,7 @@ async def generate_trajectory_samples(
                 user_input=card["question"], trajectory_id=traj_id,
                 card_id=card["card_id"], sequence_type=seq,
             ))
-            queries_state.append({"question": card["question"], "answers": [resp]})
+            _add_query(card["question"], [resp], ask, ask)
             # post_silent
             ps = kc.get("post_silent", ask + 1)
             samples.append(_make_sample(
@@ -340,9 +349,9 @@ async def generate_trajectory_samples(
                 card_id=card["card_id"], sequence_type=seq,
             ))
             if post_action == "response":
-                queries_state.append({"question": card["question"], "answers": [resp]})
+                _add_query(card["question"], [resp], ask, ask)
             else:
-                queries_state.append({"question": card["question"], "answers": []})
+                _add_query(card["question"], [], ask)
             # post_silent
             ps = kc.get("post_silent", ask + 1)
             samples.append(_make_sample(
@@ -367,7 +376,7 @@ async def generate_trajectory_samples(
                 recall_result=recall_result, trajectory_id=traj_id,
                 card_id=card["card_id"], sequence_type=seq,
             ))
-            queries_state.append({"question": card["question"], "answers": []})
+            _add_query(card["question"], [], ask)
             # wait_silent
             for wc in kc.get("wait_silent", []):
                 samples.append(_make_sample(
@@ -385,6 +394,7 @@ async def generate_trajectory_samples(
                     card_id=card["card_id"], sequence_type=seq,
                 ))
                 queries_state[-1]["answers"].append(resp)
+                queries_state[-1]["response_time"] = found * AGENT_CHUNK_SEC
                 # post_silent after found_response
                 ps = kc.get("post_silent", found + 1)
                 samples.append(_make_sample(
@@ -394,7 +404,7 @@ async def generate_trajectory_samples(
 
         elif seq == "event_watch":
             # ask: silent (event not happened)
-            queries_state.append({"question": card["question"], "answers": []})
+            _add_query(card["question"], [], ask)
             samples.append(_make_sample(
                 ask, "SYSTEM_PROMPT", "silent", think, queries_state,
                 user_input=card["question"], trajectory_id=traj_id,
@@ -417,6 +427,7 @@ async def generate_trajectory_samples(
                     card_id=card["card_id"], sequence_type=seq,
                 ))
                 queries_state[-1]["answers"].append(resp)
+                queries_state[-1]["response_time"] = trigger * AGENT_CHUNK_SEC
 
         elif seq == "multi_response":
             # first response
@@ -426,7 +437,7 @@ async def generate_trajectory_samples(
                 response=resp, user_input=card["question"],
                 trajectory_id=traj_id, card_id=card["card_id"], sequence_type=seq,
             ))
-            queries_state.append({"question": card["question"], "answers": [resp]})
+            _add_query(card["question"], [resp], ask, ask)
             # no_change_silent
             for sc in kc.get("no_change_silent", []):
                 samples.append(_make_sample(
@@ -445,6 +456,7 @@ async def generate_trajectory_samples(
                     card_id=card["card_id"], sequence_type=seq,
                 ))
                 queries_state[-1]["answers"].append(resp)
+                queries_state[-1]["response_time"] = fc * AGENT_CHUNK_SEC
 
     # Record queries_state at each fork sample's chunk for base interpolation
     for s in samples:
