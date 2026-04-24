@@ -1,32 +1,16 @@
 """End-to-end tests for data construction + SFT pipeline.
 
-Tests the full chain: MemoryState → snapshot → Pass4 sample construction →
-SFT message formatting → label masking → agent_loop inference format.
+DEPRECATED: This file references pass3_tasks and pass4_forks which were
+replaced by pass3a/3b/3c in v9.0. The new e2e tests are in test_pass3_e2e.py.
 
-Verifies train/inference format identity without GPU or video files.
+Kept for reference. All tests are skipped.
 """
 
-import json
-import re
 import pytest
-from copy import deepcopy
-from pathlib import Path
 
-from scripts.agent_data_v5.pass2_rollout import MemoryState
-from scripts.agent_data_v5.pass3_tasks import (
-    determine_gold_action,
-    extract_keywords,
-    build_visibility_matrix,
-)
-from scripts.agent_data_v5.pass4_forks import (
-    build_per_timestep_messages,
-    build_sample_input,
-    simulate_recall_result,
-    get_visual_frame_info,
-)
-from scripts.agent_data_v5.pass5_verify import (
-    verify_sample,
-    filter_samples,
+pytestmark = pytest.mark.skip(
+    reason="References deleted pass3_tasks/pass4_forks modules. "
+           "See test_pass3_e2e.py for current e2e tests."
 )
 from scripts.agent_data_v5.config import (
     AGENT_CHUNK_SEC,
