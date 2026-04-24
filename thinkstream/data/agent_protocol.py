@@ -111,27 +111,29 @@ def format_memory_block(memory: Dict) -> str:
 
 
 def format_queries_block(queries: List[Dict]) -> str:
-    """Format the queries zone (past Q&A tracking, independent of memory).
+    """Format the queries zone: only show answered Q&A pairs.
 
-    The queries zone is NOT compressed — it persists across the trajectory
-    so the model can see what questions have been asked and answered.
+    Only includes questions that have at least one answer.
+    Unanswered questions (answers=[]) are omitted — the model infers
+    what's pending from user_input history and its own memory.
 
-    Input: [{question: "...", answers: ["ans1", "ans2"]}, ...]
-    Output:
-      <queries>
-      {"question":"Q1","answers":["ans1"]}
-      {"question":"Q2","answers":[]}
-      </queries>
+    This keeps the queries zone compact and avoids training the model
+    to depend on an explicit "pending" list.
     """
     if not queries:
         return ""
     lines = []
     for q in queries:
+        answers = q.get("answers", [])
+        if not answers:
+            continue  # skip unanswered — model infers from context
         q_json = json.dumps({
             "question": q.get("question", ""),
-            "answers": q.get("answers", []),
+            "answers": answers,
         }, ensure_ascii=False)
         lines.append(q_json)
+    if not lines:
+        return ""
     return "<queries>\n" + "\n".join(lines) + "\n</queries>"
 
 
