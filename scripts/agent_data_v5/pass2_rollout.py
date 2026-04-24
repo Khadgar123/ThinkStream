@@ -569,14 +569,14 @@ async def run_pass2_single_video(
     num_chunks: int,
     client,
     evidence: Optional[List[Dict]] = None,
+    chunk_log_path: Optional[Path] = None,
 ) -> Dict:
     """Run question-blind streaming rollout for a single video.
 
-    v8.0 changes:
-    - No pending_questions (queries are independent, see §9.1)
-    - Compression is conceptually BETWEEN timesteps (separate prompt)
-    - Range scoring uses 3 dimensions (content_value + boundary_penalty + token_saving)
-    - Logs compression range statistics for analysis
+    Args:
+        chunk_log_path: If set, appends a JSONL line per chunk for real-time debug.
+                        Contains: chunk_idx, think text, timeline state, compression info.
+                        Does NOT affect final output (snapshots/thinks/events all unchanged).
     """
     memory = MemoryState()
     thinks = []
@@ -650,6 +650,28 @@ async def run_pass2_single_video(
             logger.debug(f"  [{video_id}] Compress at chunk {chunk_idx}: {summary['time_range']}")
         else:
             memory.add_think(chunk_idx, think_text)
+
+        # --- Per-chunk debug log (real-time, does not affect final output) ---
+        if chunk_log_path:
+            log_entry = {
+                "video_id": video_id,
+                "chunk": chunk_idx,
+                "t": f"{chunk_idx * AGENT_CHUNK_SEC}-{(chunk_idx+1) * AGENT_CHUNK_SEC}",
+                "think": think_text[:120],
+                "timeline_len": len(memory.timeline),
+                "n_thinks": len(memory.recent_thinks),
+                "n_summaries": len(memory.compressed_segments),
+                "tokens": memory.count_tokens(),
+                "compressed": should_compress_now,
+            }
+            if should_compress_now and compression_events and compression_events[-1]["trigger_chunk"] == chunk_idx:
+                ce = compression_events[-1]
+                log_entry["compress_range"] = ce["summary"].get("time_range")
+                log_entry["compress_score"] = ce["teacher_policy"].get("score")
+                log_entry["post_tokens"] = ce.get("post_compress_tokens")
+                log_entry["summary_preview"] = ce["summary"].get("text", "")[:80]
+            with open(chunk_log_path, "a") as f:
+                f.write(json.dumps(log_entry, ensure_ascii=False) + "\n")
 
         if (chunk_idx + 1) % 10 == 0:
             logger.info(

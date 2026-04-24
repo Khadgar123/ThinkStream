@@ -429,6 +429,11 @@ async def run_pipeline(
 
         uncached_p2 = [v for v in videos if not load_rollout(v["video_id"])]
         tracker_p2 = ProgressTracker("pass2", len(uncached_p2), AUDIT_DIR)
+        # Per-chunk debug log: tail -f to see each chunk's think + memory state
+        pass2_chunk_log = AUDIT_DIR / "pass2_chunks.jsonl"
+        AUDIT_DIR.mkdir(parents=True, exist_ok=True)
+        pass2_chunk_log.write_text("")  # truncate on new run
+        logger.info(f"PASS 2: per-chunk debug → tail -f {pass2_chunk_log}")
 
         async def process_video_pass2(video):
             vid = video["video_id"]
@@ -443,6 +448,7 @@ async def run_pipeline(
                     num_chunks=video["num_chunks"],
                     client=client,
                     evidence=evidence_map.get(vid),
+                    chunk_log_path=pass2_chunk_log,
                 )
                 save_rollout(vid, rollout)
                 await tracker_p2.record(
