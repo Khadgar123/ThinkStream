@@ -745,8 +745,15 @@ def verify_trajectory(
     for sample in trajectory_samples:
         verify_sample(sample)
 
-    # Trajectory-level check 12
+    # Trajectory-level check 12: if trajectory distribution is invalid,
+    # drop the ENTIRE trajectory (not just individual samples)
     traj_passed, traj_reason = verify_trajectory_action_distribution(trajectory_samples)
+
+    if not traj_passed:
+        # Entire trajectory is invalid — drop all samples
+        for s in trajectory_samples:
+            s["verification"]["passed"] = False
+            s["verification"]["fail_reasons"].append(f"trajectory_distribution: {traj_reason}")
 
     passed = [s for s in trajectory_samples if s["verification"]["passed"]]
     failed = [s for s in trajectory_samples if not s["verification"]["passed"]]
