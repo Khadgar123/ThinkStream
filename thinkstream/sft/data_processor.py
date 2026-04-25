@@ -57,10 +57,15 @@ ACTION_WEIGHTS = {
 
 
 def _get_sample_weight(sample: Dict) -> float:
-    """Compute loss weight based on sample_type + context.
+    """Compute loss weight based on sample_type + context + trajectory role.
 
-    Goes beyond flat ACTION_WEIGHTS: distinguishes silent subtypes
-    to avoid low-value padding samples dominating the gradient.
+    Goes beyond flat ACTION_WEIGHTS: distinguishes silent subtypes AND
+    base sample roles to ensure critical training signals are not buried.
+
+    Key insight: base samples at evidence_anchor chunks (support_chunks ± 2)
+    teach the model to OBSERVE and RETAIN facts needed for future recall.
+    These must have high weight — otherwise the model never learns good
+    memory formation, making recall decisions unreliable downstream.
     """
     sample_type = sample.get("sample_type", "silent")
     sequence_type = sample.get("sequence_type", "")
@@ -73,9 +78,33 @@ def _get_sample_weight(sample: Dict) -> float:
     queries = sample.get("queries") or sample.get("input", {}).get("queries", [])
 
     if sequence_type == "base":
-        if queries:
-            return 0.8   # "Question answered, stay silent" — teaches restraint
-        return 0.3        # Empty queries, just observing — minimal signal
+        # Base samples carry a base_role from pass3c that indicates
+        # WHY this chunk was selected for training
+        base_role = sample.get("base_role", "")
+
+        if base_role == "evidence_anchor":
+            # support_chunks ± 2: model must learn to observe and retain
+            # facts that will be needed for future recall questions.
+            # High weight regardless of queries — memory formation is
+            # critical even before any question arrives.
+            return 1.2
+        elif base_role == "compress_boundary":
+            # Chunks around compression events: critical for learning
+            # what to preserve and what to discard during compression.
+            return 1.0
+        elif base_role == "question_window":
+            # Chunks around Q&A events: context for decision boundaries.
+            return 0.8 if queries else 0.5
+        elif base_role == "warmup":
+            # Cold-start chunks: empty memory, minimal signal.
+            return 0.3
+        elif base_role == "patrol":
+            # Long-silent stretches: teaches sustained silence.
+            return 0.8 if queries else 0.3
+        else:
+            # Legacy samples without base_role (backward compat)
+            return 0.8 if queries else 0.3
+
     elif sequence_type == "event_watch":
         return 1.0        # "Event hasn't happened, keep watching" — teaches patience
     elif sequence_type in ("immediate_response", "recall_success", "recall_fail_then_found"):

@@ -615,92 +615,94 @@ def _select_base_chunks(
     trajectory: Dict,
     rollout: Dict,
     cards_map: Dict[str, Dict],
-) -> List[int]:
-    """Select which base chunks to generate samples for.
+) -> Dict[int, str]:
+    """Select which base chunks to generate samples for, with role labels.
 
-    Balances training signal density vs completeness. Selected chunks:
+    Returns {chunk_idx: base_role} where base_role is one of:
+      evidence_anchor, compress_boundary, question_window,
+      warmup, patrol
 
-    1. Warmup: chunks 0..2 (cold-start, empty memory)
-    2. Evidence anchors: support_chunks ± 2 (where recall evidence lives —
-       model must learn to observe/retain this info before the question)
-    3. Question window: ask-3 .. last_key+5 (context around Q&A)
-    4. Compress chain: all chunks between compress trigger-1 and trigger+1,
-       preserving the thinks that feed into the compression summary
-    5. Long-silent patrol: every 5th chunk in stretches >10 chunks without
-       any selected chunk (teaches "Q answered, stay silent" behavior
-       with non-empty queries_state)
-
-    Returns sorted, deduplicated chunk indices.
+    The role determines training loss weight via _get_sample_weight:
+    - evidence_anchor: HIGH weight — model must learn to observe/retain
+      facts that will be needed for future recall
+    - compress_boundary: MEDIUM weight — critical for compression quality
+    - question_window: MEDIUM weight — context around Q&A events
+    - warmup: LOW weight — cold-start, empty memory
+    - patrol: LOW weight — long-silent stretches
     """
     num_chunks = rollout["num_chunks"]
-    selected = set()
+    # Use dict to track role; later roles override earlier (higher priority wins)
+    chunk_role: Dict[int, str] = {}
 
-    # 1. Warmup
+    # 1. Warmup (lowest priority)
     for c in range(min(WARMUP_CHUNKS, num_chunks)):
-        selected.add(c)
+        chunk_role[c] = "warmup"
 
-    # 2. Evidence anchors (support_chunks — where recall answers come from)
+    # 5. Long-silent patrol (low priority, computed early so higher-priority overrides)
+    # We compute patrol positions first, then let evidence/compress/question override
+    all_selected = set(chunk_role.keys())
+
+    # Pre-compute evidence + question + compress chunks for patrol gap detection
+    evidence_chunks = set()
     for placement in trajectory["placements"]:
         card = cards_map.get(placement["card_id"], {})
         for sc in card.get("support_chunks", []):
             for c in range(max(0, sc - EVIDENCE_WINDOW),
                            min(num_chunks, sc + EVIDENCE_WINDOW + 1)):
-                selected.add(c)
+                evidence_chunks.add(c)
 
-    # 3. Question windows: ask ± buffer for each key_chunk individually
-    #    (NOT min-to-max of all key_chunks — multi_response followups
-    #    can span 30 chunks, which would select half the video)
+    question_chunks = set()
     for placement in trajectory["placements"]:
         kc = placement["key_chunks"]
         for key, val in kc.items():
-            chunks_to_window = []
-            if isinstance(val, int):
-                chunks_to_window.append(val)
-            elif isinstance(val, list):
-                chunks_to_window.extend(val)
-            for anchor in chunks_to_window:
+            anchors = [val] if isinstance(val, int) else (val if isinstance(val, list) else [])
+            for anchor in anchors:
                 ws = max(0, anchor - QUESTION_WINDOW_BEFORE)
                 we = min(num_chunks - 1, anchor + QUESTION_WINDOW_AFTER)
                 for c in range(ws, we + 1):
-                    selected.add(c)
+                    question_chunks.add(c)
 
-    # 4. Compress anchor: trigger ± 1 + first/last 2 of compressed range
-    #    Full compressed_thinks_chunks can be 10-15 chunks — selecting all
-    #    would bloat base samples. The model only needs to see:
-    #    - trigger context (what state triggered compression)
-    #    - range boundaries (what was compressed)
+    compress_chunks = set()
     for event in rollout.get("compression_events", []):
         trigger = event.get("trigger_chunk", -1)
         if trigger < 0:
             continue
         for c in range(max(0, trigger - COMPRESS_WINDOW),
                        min(num_chunks, trigger + COMPRESS_WINDOW + 1)):
-            selected.add(c)
-        # First/last 2 of compressed range (boundary context)
+            compress_chunks.add(c)
         cc = sorted(event.get("compressed_thinks_chunks", []))
         for c in cc[:2] + cc[-2:]:
-            selected.add(c)
+            compress_chunks.add(c)
 
-    # 5. Long-silent patrol: in gaps >10 without selected chunks,
-    #    sample every 5th chunk to teach "stay silent with active queries"
-    sorted_sel = sorted(selected)
-    patrol_additions = []
+    all_selected = all_selected | evidence_chunks | question_chunks | compress_chunks
+
+    # Patrol: fill long gaps
+    sorted_sel = sorted(all_selected)
     prev = -1
     for s in sorted_sel:
-        gap = s - prev
-        if gap > 10:
+        if s - prev > 10:
             for c in range(prev + LONG_SILENT_SAMPLE_INTERVAL,
                            s, LONG_SILENT_SAMPLE_INTERVAL):
-                patrol_additions.append(c)
+                chunk_role.setdefault(c, "patrol")
         prev = s
-    # Also patrol the tail (last selected → end of video)
     if sorted_sel and num_chunks - 1 - sorted_sel[-1] > 10:
         for c in range(sorted_sel[-1] + LONG_SILENT_SAMPLE_INTERVAL,
                        num_chunks, LONG_SILENT_SAMPLE_INTERVAL):
-            patrol_additions.append(c)
-    selected.update(patrol_additions)
+            chunk_role.setdefault(c, "patrol")
 
-    return sorted(selected)
+    # 3. Question windows (medium priority, overrides warmup/patrol)
+    for c in question_chunks:
+        chunk_role[c] = "question_window"
+
+    # 4. Compress boundaries (medium-high priority)
+    for c in compress_chunks:
+        chunk_role[c] = "compress_boundary"
+
+    # 2. Evidence anchors (highest priority — overrides everything)
+    for c in evidence_chunks:
+        chunk_role[c] = "evidence_anchor"
+
+    return chunk_role
 
 
 def generate_base_samples(
@@ -744,14 +746,14 @@ def generate_base_samples(
             elif isinstance(v, list):
                 fork_chunks.update(v)
 
-    base_chunks = _select_base_chunks(trajectory, rollout, cards_map)
+    chunk_roles = _select_base_chunks(trajectory, rollout, cards_map)
     samples = []
 
     # Build queries_state interpolation: for any base chunk, use the
     # queries_state from the nearest preceding key_chunk
     sorted_boundaries = sorted(queries_state_at_chunks.keys())
 
-    for chunk_idx in base_chunks:
+    for chunk_idx, base_role in sorted(chunk_roles.items()):
         if chunk_idx in fork_chunks:
             continue  # already has a fork sample
 
@@ -781,7 +783,7 @@ def generate_base_samples(
             action = "silent"
             sample_type = "silent"
 
-        samples.append(_make_sample(
+        sample = _make_sample(
             chunk_idx=chunk_idx,
             prompt_type="COMPRESS_PROMPT" if is_compress else "SYSTEM_PROMPT",
             action=action,
@@ -790,7 +792,10 @@ def generate_base_samples(
             trajectory_id=traj_id,
             card_id="",
             sequence_type="base",
-        ))
+        )
+        # Attach base_role for training loss weighting
+        sample["base_role"] = base_role
+        samples.append(sample)
 
     return samples
 
