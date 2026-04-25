@@ -6,20 +6,24 @@ Two modes corresponding to two rows in the results table:
 1. **Offline baseline** (batch mode):
    Loads N frames uniformly sampled from full video, standard model.generate.
    Matches "Open-source Offline Models" in paper Table 2.
-   Uses vanilla HF model (no streaming patches).
 
 2. **Online baseline** (streaming mode):
-   Same streaming engine as ThinkStream (chunk-by-chunk, same visual window,
-   same KV cache) but WITHOUT think/action protocol.
+   Same streaming engine as ThinkStream but WITHOUT think/action protocol.
    Matches "Open-source Online Models" in paper Table 2.
-   Uses MODEL_CLS with streaming patches, baseline_sample_restricted.
+
+Debug support:
+   All per-sample diagnostics go to a log file (not stdout) so you can
+   tail -f during runs. Results JSON includes generated_text, frames_loaded,
+   parse diagnostics. --debug enables extra JSONL debug log.
 """
 
 import gc
 import json
+import logging
 import os
 import random
 import sys
+import time
 from pathlib import Path
 
 import numpy as np
@@ -29,7 +33,6 @@ import tqdm
 from torch.utils.data import DataLoader, Dataset
 from transformers import AutoProcessor
 
-# Offline baseline uses standard HF model classes (no streaming patches)
 from transformers import (
     Qwen2_5_VLForConditionalGeneration,
     Qwen3VLForConditionalGeneration,
@@ -55,6 +58,104 @@ from eval_common import (
 
 
 # ---------------------------------------------------------------------------
+# Logging setup — file-based, tail-friendly
+# ---------------------------------------------------------------------------
+
+
+def setup_eval_logging(log_path: str, rank: int = 0) -> logging.Logger:
+    """Create a file logger for eval. Only rank 0 writes.
+
+    Usage: tail -f <log_path> to monitor during run.
+    """
+    log = logging.getLogger(f"baseline_eval_rank{rank}")
+    log.setLevel(logging.DEBUG if rank == 0 else logging.WARNING)
+    log.handlers.clear()
+
+    if rank == 0:
+        os.makedirs(os.path.dirname(log_path), exist_ok=True)
+        fh = logging.FileHandler(log_path, mode="w", encoding="utf-8")
+        fh.setLevel(logging.DEBUG)
+        fh.setFormatter(logging.Formatter(
+            "%(asctime)s [%(levelname)s] %(message)s", datefmt="%H:%M:%S"
+        ))
+        log.addHandler(fh)
+
+        # Also log to stderr for immediate visibility
+        sh = logging.StreamHandler()
+        sh.setLevel(logging.INFO)
+        sh.setFormatter(logging.Formatter("[%(levelname)s] %(message)s"))
+        log.addHandler(sh)
+
+    return log
+
+
+# ---------------------------------------------------------------------------
+# Debug JSONL logger
+# ---------------------------------------------------------------------------
+
+
+class DebugLogger:
+    """Per-sample JSONL debug log. Only writes on rank 0.
+
+    Each line is a full JSON record with input/output/diagnostics.
+    tail -f <path> to watch samples as they complete.
+    """
+
+    def __init__(self, path: str, enabled: bool = False, rank: int = 0):
+        self.enabled = enabled and rank == 0
+        self._fh = None
+        if self.enabled:
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            self._fh = open(path, "w", encoding="utf-8")
+
+    def log(self, record: dict):
+        if self._fh:
+            self._fh.write(json.dumps(record, ensure_ascii=False) + "\n")
+            self._fh.flush()
+
+    def close(self):
+        if self._fh:
+            self._fh.close()
+
+
+# ---------------------------------------------------------------------------
+# Answer parsing with diagnostics
+# ---------------------------------------------------------------------------
+
+
+def parse_answer(generated_text: str, options: list) -> dict:
+    """Parse generated text into option index with diagnostics.
+
+    Returns dict with pred_idx, matched (bool), match_type (str).
+    """
+    gen_stripped = generated_text.strip()
+    gen_upper = gen_stripped.upper()
+
+    # 1. Exact prefix match
+    for i, opt in enumerate(options):
+        if gen_upper.startswith(opt.upper()):
+            return {"pred_idx": i, "matched": True, "match_type": "prefix"}
+
+    # 2. First character match (e.g., "A." or "A)")
+    first_char = gen_upper[:1] if gen_upper else ""
+    for i, opt in enumerate(options):
+        if opt.upper() == first_char:
+            return {"pred_idx": i, "matched": True, "match_type": "first_char"}
+
+    # 3. Contains match (e.g., "The answer is B")
+    for i, opt in enumerate(options):
+        if opt.upper() in gen_upper:
+            return {"pred_idx": i, "matched": True, "match_type": "contains"}
+
+    # 4. No match — random fallback
+    return {
+        "pred_idx": random.randint(0, len(options) - 1),
+        "matched": False,
+        "match_type": "random_fallback",
+    }
+
+
+# ---------------------------------------------------------------------------
 # Streaming baseline: sample function (no think/action protocol)
 # ---------------------------------------------------------------------------
 
@@ -71,29 +172,23 @@ def baseline_sample_restricted(
 ) -> torch.Tensor:
     """Baseline restricted sampling: directly pick the best option token.
 
-    No think budget, no <think>/<response>/<silent> protocol.
-    Step 0: pick argmax over restricted_token_ids from logits.
-    Step 1+: force EOS.
-
-    Same interface as think_budget_sample_restricted for compatibility with
-    streaming_video_chat's sample parameter.
+    Step 0: argmax over restricted_token_ids. Step 1+: force EOS.
     """
     device = next_token.device
-
     if step == 0:
         restricted_ids = torch.tensor(
             restricted_token_ids, device=device, dtype=torch.long
         )
-        restricted_logits = logits[:, restricted_ids]  # [B, R]
-        top1_local = restricted_logits.argmax(dim=-1)  # [B]
-        top1_token = restricted_ids[top1_local]  # [B]
+        restricted_logits = logits[:, restricted_ids]
+        top1_local = restricted_logits.argmax(dim=-1)
+        top1_token = restricted_ids[top1_local]
         return top1_token.unsqueeze(1)
     else:
         return torch.full_like(next_token, eos_token_id)
 
 
 # ---------------------------------------------------------------------------
-# Offline baseline: load model + video frames + generate
+# Offline baseline
 # ---------------------------------------------------------------------------
 
 
@@ -132,7 +227,10 @@ def _load_video_frames(
     video_end: float = None,
     max_frames: int = 64,
 ):
-    """Load video frames as PIL Images, uniformly sampled from [start, end]."""
+    """Load video frames as PIL Images, uniformly sampled from [start, end].
+
+    Returns (frames, meta_dict) for diagnostics.
+    """
     from decord import VideoReader, cpu
     from PIL import Image
 
@@ -148,16 +246,23 @@ def _load_video_frames(
     n_available = end_frame - start_frame
     n_sample = min(max_frames, n_available)
     if n_sample <= 0:
-        return []
+        return [], {"sampled": 0, "error": "no_frames_available"}
 
     indices = np.linspace(start_frame, end_frame - 1, n_sample, dtype=int)
     frames = vr.get_batch(indices.tolist()).asnumpy()
-    return [Image.fromarray(f) for f in frames]
+
+    meta = {
+        "fps": round(float(fps), 2),
+        "total_frames": total_frames,
+        "video_duration_sec": round(total_frames / fps, 1),
+        "start_frame": int(start_frame),
+        "end_frame": int(end_frame),
+        "sampled": int(n_sample),
+    }
+    return [Image.fromarray(f) for f in frames], meta
 
 
 class OfflineMCQDataset(Dataset):
-    """JSONL dataset for offline baseline evaluation."""
-
     def __init__(self, path, sample=None):
         lines = open(path).readlines()
         if sample is not None:
@@ -182,11 +287,12 @@ def add_offline_args(parser):
         choices=list(BASELINE_MODEL_CLS.keys()),
     )
     parser.add_argument("--max_new_tokens", type=int, default=30)
-    parser.add_argument("--max_frames", type=int, default=64,
-                        help="Frames uniformly sampled from full video (paper uses 64).")
+    parser.add_argument("--max_frames", type=int, default=64)
     parser.add_argument("--min_pixels", type=int, default=200704)
     parser.add_argument("--max_pixels", type=int, default=401408)
     parser.add_argument("--sample", type=int, default=None)
+    parser.add_argument("--debug", action="store_true",
+                        help="Enable per-sample JSONL debug log.")
     return parser
 
 
@@ -205,10 +311,13 @@ def offline_predict_mcq(
     rank: int = 0,
     world_size: int = 1,
     sample: int = None,
+    debug: bool = False,
+    debug_dir: str = None,
 ):
-    """Offline MCQ prediction: N frames uniformly sampled, standard generate.
+    """Offline MCQ prediction with full diagnostic logging.
 
-    Matches "Open-source Offline Models" row in paper Table 2.
+    All per-sample info goes to log file (tail -f friendly).
+    --debug additionally writes per-sample JSONL with full input/output.
     """
     dataset = OfflineMCQDataset(benchmark_path, sample=sample)
 
@@ -221,13 +330,42 @@ def offline_predict_mcq(
         collate_fn=lambda batch: batch[0],
     )
 
+    # Setup logging
+    if debug_dir is None:
+        debug_dir = os.path.join(os.path.dirname(benchmark_path), "debug")
+    log = setup_eval_logging(
+        os.path.join(debug_dir, "offline_eval.log"), rank=rank
+    )
+    dbg = DebugLogger(
+        os.path.join(debug_dir, "offline_debug.jsonl"),
+        enabled=debug, rank=rank,
+    )
+
+    log.info(f"Offline eval: {len(dataset)} samples, {max_frames} frames, "
+             f"world_size={world_size}")
+    log.info(f"Options: {options}")
+    log.info(f"Debug JSONL: {'ON' if debug else 'OFF'}")
+    log.info(f"Log file: tail -f {debug_dir}/offline_eval.log")
+
     predictions = []
-    datums = []
+    datums_out = []
     local_indices = []
+    stats = {"total": 0, "success": 0, "parse_matched": 0,
+             "parse_fallback": 0, "errors": 0, "match_types": {},
+             "correct": 0}
 
     for idx, datum in tqdm.tqdm(
         dataloader, desc="Offline eval", disable=(rank != 0)
     ):
+        stats["total"] += 1
+        t0 = time.time()
+        debug_record = {
+            "idx": idx, "video": datum.get("video", ""),
+            "task": datum.get("task", ""),
+            "question": datum.get("question", ""),
+            "gt_answer": datum.get("answer", ""),
+        }
+
         try:
             video_path = os.path.join(dataset.data_dir, datum["video"])
             video_end = datum.get("video_end")
@@ -241,12 +379,22 @@ def offline_predict_mcq(
             else:
                 query = datum["question"]
 
-            frames = _load_video_frames(
+            frames, frame_meta = _load_video_frames(
                 video_path, video_start=video_start,
                 video_end=video_end, max_frames=max_frames,
             )
             if not frames:
                 raise ValueError(f"No frames loaded from {video_path}")
+
+            log.debug(
+                f"[{idx}] video={datum['video']} frames={len(frames)} "
+                f"range=[{video_start:.1f}-{video_end}s] "
+                f"fps={frame_meta.get('fps')} task={datum.get('task','?')}"
+            )
+
+            debug_record["frames_loaded"] = len(frames)
+            debug_record["frame_meta"] = frame_meta
+            debug_record["query"] = query
 
             messages = [
                 {
@@ -266,6 +414,8 @@ def offline_predict_mcq(
                 padding=True, return_tensors="pt",
             ).to(model.device)
 
+            debug_record["input_ids_len"] = inputs["input_ids"].shape[1]
+
             output_ids = model.generate(
                 **inputs, max_new_tokens=max_new_tokens, do_sample=False,
             )
@@ -274,34 +424,87 @@ def offline_predict_mcq(
             generated_text = processor.tokenizer.decode(
                 generated, skip_special_tokens=True
             ).strip()
+            generated_text_raw = processor.tokenizer.decode(
+                generated, skip_special_tokens=False
+            ).strip()
 
-            pred_idx = 0
-            gen_upper = generated_text.upper().strip()
-            for i, opt in enumerate(options):
-                if gen_upper.startswith(opt.upper()):
-                    pred_idx = i
-                    break
+            debug_record["generated_text"] = generated_text
+            debug_record["generated_text_raw"] = generated_text_raw
+            debug_record["generated_tokens"] = len(generated)
 
-            if rank == 0:
-                print(f"[Offline] {generated_text} -> {options[pred_idx]}")
+            # Parse answer
+            parse_result = parse_answer(generated_text, options)
+            pred_idx = parse_result["pred_idx"]
+            is_correct = options[pred_idx] == datum.get("answer", "")
+
+            debug_record["pred_option"] = options[pred_idx]
+            debug_record["parse_matched"] = parse_result["matched"]
+            debug_record["match_type"] = parse_result["match_type"]
+            debug_record["correct"] = is_correct
+
+            # Log every sample to file
+            mark = "✓" if is_correct else "✗"
+            log.info(
+                f"[{idx}] {mark} gen='{generated_text}' -> {options[pred_idx]} "
+                f"(gt={datum.get('answer','?')}, match={parse_result['match_type']}, "
+                f"frames={len(frames)}, {time.time()-t0:.1f}s)"
+            )
+
+            if not parse_result["matched"]:
+                stats["parse_fallback"] += 1
+                log.warning(
+                    f"[{idx}] PARSE MISS: generated='{generated_text}' "
+                    f"raw='{generated_text_raw}' "
+                    f"gt={datum.get('answer','?')}"
+                )
+            else:
+                stats["parse_matched"] += 1
+
+            mt = parse_result["match_type"]
+            stats["match_types"][mt] = stats["match_types"].get(mt, 0) + 1
+            if is_correct:
+                stats["correct"] += 1
 
             predictions.append(pred_idx)
-            datums.append({**datum, "success": True})
+            datums_out.append({
+                **datum, "success": True,
+                "generated_text": generated_text,
+                "parse_matched": parse_result["matched"],
+                "match_type": parse_result["match_type"],
+                "frames_loaded": len(frames),
+            })
             local_indices.append(idx)
+            stats["success"] += 1
 
         except Exception as e:
-            print(f"Error processing sample {idx}: {e}")
-            import traceback
-            traceback.print_exc()
+            stats["errors"] += 1
+            debug_record["error"] = str(e)
+            log.error(f"[{idx}] ERROR: {e}", exc_info=True)
             predictions.append(random.randint(0, len(options) - 1))
-            datums.append({**datum, "success": False})
+            datums_out.append({**datum, "success": False, "error": str(e)})
             local_indices.append(idx)
         finally:
+            debug_record["time_sec"] = round(time.time() - t0, 2)
+            dbg.log(debug_record)
             gc.collect()
             torch.cuda.empty_cache()
 
+    # Summary
+    log.info("=" * 50)
+    log.info(f"DONE: {stats['total']} samples")
+    log.info(f"Success: {stats['success']}, Errors: {stats['errors']}")
+    log.info(f"Parse matched: {stats['parse_matched']}, "
+             f"Fallback: {stats['parse_fallback']}")
+    log.info(f"Match types: {stats['match_types']}")
+    if stats["success"] > 0:
+        log.info(f"Running accuracy: {stats['correct']}/{stats['success']} "
+                 f"= {stats['correct']/stats['success']:.1%}")
+    log.info("=" * 50)
+
+    dbg.close()
+
     if world_size > 1:
-        local_data = list(zip(local_indices, predictions, datums))
+        local_data = list(zip(local_indices, predictions, datums_out))
         gathered_data = [None] * world_size
         dist.all_gather_object(gathered_data, local_data)
         if rank == 0:
@@ -311,6 +514,6 @@ def offline_predict_mcq(
             all_data.sort(key=lambda x: x[0])
             return np.array([d[1] for d in all_data]), [d[2] for d in all_data], 0
         else:
-            return np.array(predictions), datums, rank
+            return np.array(predictions), datums_out, rank
     else:
-        return np.array(predictions), datums, 0
+        return np.array(predictions), datums_out, 0

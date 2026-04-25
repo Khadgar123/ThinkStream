@@ -56,6 +56,8 @@ if __name__ == "__main__":
         "A", "B", "C", "D", "E",
     ]
 
+    debug_dir = os.path.join(args.model_path, "eval", "ovo_bench", "debug")
+
     predictions, datums, process_index = offline_predict_mcq(
         model=model,
         processor=processor,
@@ -68,6 +70,8 @@ if __name__ == "__main__":
         rank=rank,
         world_size=world_size,
         sample=args.sample,
+        debug=args.debug,
+        debug_dir=debug_dir,
     )
 
     if process_index == 0:
