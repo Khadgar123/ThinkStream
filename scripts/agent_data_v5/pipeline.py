@@ -26,6 +26,7 @@ from .config import (
     AUDIT_DIR,
     DATA_ROOT,
     FINAL_DIR,
+    MAX_SAMPLES_PER_VIDEO,
     PASS_CONFIG,
     PHASE_CONFIG,
     ROLLOUT_DIR,
@@ -675,6 +676,8 @@ async def run_pipeline(
     logger.info("=" * 60)
 
     sft_samples = []
+    per_video_stats = {}  # {vid: {count, families, seq_types, actions}}
+
     for vid, vid_samples in verified_by_vid.items():
         if vid not in rollout_map:
             logger.warning(f"  [{vid}] no rollout for render, skipping")
@@ -684,9 +687,83 @@ async def run_pipeline(
         vid_cards = {c["card_id"]: c for c in cards_map.get(vid, [])}
         rendered = render_video_samples(
             vid_samples, rollout_map[vid], video_path, vid, vid_cards)
+
+        # Enforce MAX_SAMPLES_PER_VIDEO cap
+        if MAX_SAMPLES_PER_VIDEO > 0 and len(rendered) > MAX_SAMPLES_PER_VIDEO:
+            logger.warning(
+                f"  [{vid}] {len(rendered)} samples exceeds cap {MAX_SAMPLES_PER_VIDEO}, "
+                f"truncating (keeping diverse sample types)")
+            # Prioritize: response > recall > compress > silent
+            priority = {"response": 0, "recall_query": 1, "recall_response": 1,
+                        "compress": 2, "silent": 3, "recall_silent": 3}
+            rendered.sort(key=lambda s: (
+                priority.get(s.get("sample_type", "silent"), 4),
+                s.get("chunk_idx", 0),
+            ))
+            rendered = rendered[:MAX_SAMPLES_PER_VIDEO]
+
+        # Collect per-video distribution stats
+        vid_families = {}
+        vid_seq_types = {}
+        vid_actions = {}
+        for s in rendered:
+            fam = s.get("metadata", {}).get("family", "?")
+            vid_families[fam] = vid_families.get(fam, 0) + 1
+            seq = s.get("sequence_type", "?")
+            vid_seq_types[seq] = vid_seq_types.get(seq, 0) + 1
+            act = s.get("action", "?")
+            vid_actions[act] = vid_actions.get(act, 0) + 1
+
+        per_video_stats[vid] = {
+            "count": len(rendered),
+            "families": vid_families,
+            "sequence_types": vid_seq_types,
+            "actions": vid_actions,
+        }
+
         sft_samples.extend(rendered)
 
     logger.info(f"Rendered {len(sft_samples)} SFT samples from {len(verified_by_vid)} videos")
+
+    # --- Distribution audit ---
+    sample_counts = [v["count"] for v in per_video_stats.values()]
+    if sample_counts:
+        min_c, max_c = min(sample_counts), max(sample_counts)
+        avg_c = sum(sample_counts) / len(sample_counts)
+        logger.info(f"Per-video samples: min={min_c}, max={max_c}, avg={avg_c:.1f}")
+
+        # Warn on extreme skew
+        for vid, vs in per_video_stats.items():
+            if vs["count"] < 3:
+                logger.warning(f"  [{vid}] only {vs['count']} samples — underrepresented")
+            if vs["count"] > MAX_SAMPLES_PER_VIDEO * 0.9 and MAX_SAMPLES_PER_VIDEO > 0:
+                logger.warning(f"  [{vid}] {vs['count']} samples — near cap")
+
+    # Global family distribution
+    global_families = {}
+    global_seq_types = {}
+    global_base_roles = {}
+    for s in sft_samples:
+        fam = s.get("metadata", {}).get("family", "")
+        if fam:
+            global_families[fam] = global_families.get(fam, 0) + 1
+        seq = s.get("sequence_type", "")
+        global_seq_types[seq] = global_seq_types.get(seq, 0) + 1
+        br = s.get("base_role", "")
+        if br:
+            global_base_roles[br] = global_base_roles.get(br, 0) + 1
+
+    logger.info(f"Global family dist: {dict(sorted(global_families.items()))}")
+    logger.info(f"Global seq_type dist: {dict(sorted(global_seq_types.items()))}")
+    logger.info(f"Global base_role dist: {dict(sorted(global_base_roles.items()))}")
+
+    # Warn if any expected family has <1% representation
+    total_with_family = sum(global_families.values()) or 1
+    for fam in ["F1", "F2", "E1", "E2", "S1"]:
+        fam_count = global_families.get(fam, 0)
+        fam_pct = fam_count / total_with_family * 100
+        if fam_pct < 1.0:
+            logger.warning(f"  Family {fam} underrepresented: {fam_count} ({fam_pct:.1f}%)")
 
     # Assign sample_id and phase AFTER render (render creates new dicts)
     for i, s in enumerate(sft_samples):
@@ -746,15 +823,31 @@ async def run_pipeline(
     phase_counts["5"] = len(train_samples)
     logger.info(f"  phase 5 (mixed): {len(train_samples)} train samples → {p5_path}")
 
-    # Save stats
+    # Save comprehensive stats
     stats_path = FINAL_DIR / "pipeline_stats.json"
     stats["train_count"] = len(train_samples)
     stats["val_count"] = len(val_samples)
     stats["test_count"] = len(test_samples)
     stats["phase_counts"] = phase_counts
     stats["split_by_video"] = True
+    stats["global_family_distribution"] = global_families
+    stats["global_sequence_type_distribution"] = global_seq_types
+    stats["global_base_role_distribution"] = global_base_roles
+    stats["per_video_sample_counts"] = {
+        "min": min(sample_counts) if sample_counts else 0,
+        "max": max(sample_counts) if sample_counts else 0,
+        "avg": round(sum(sample_counts) / len(sample_counts), 1) if sample_counts else 0,
+        "total_videos": len(sample_counts),
+    }
     with open(stats_path, "w") as f:
         json.dump(stats, f, indent=2)
+
+    # Save per-video distribution audit
+    audit_path = AUDIT_DIR / "per_video_distribution.json"
+    AUDIT_DIR.mkdir(parents=True, exist_ok=True)
+    with open(audit_path, "w") as f:
+        json.dump(per_video_stats, f, indent=2, ensure_ascii=False)
+    logger.info(f"Per-video distribution audit → {audit_path}")
 
     logger.info("=" * 60)
     logger.info("PIPELINE COMPLETE")
