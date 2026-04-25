@@ -1,6 +1,12 @@
 #!/bin/bash
 #
-# Baseline OVO-Bench evaluation (vanilla VLM, no streaming).
+# Baseline OVO-Bench evaluation (streaming video, no agent protocol).
+#
+# Uses the SAME streaming infrastructure as ThinkStream eval:
+# - Same chunk-by-chunk video delivery
+# - Same visual window constraints
+# - Same KV cache management
+# Only difference: no think/action protocol, direct answer from logits.
 #
 # Usage:
 #   bash scripts/eval/baseline/eval_ovo.sh \
@@ -39,10 +45,6 @@ while [[ $# -gt 0 ]]; do
             MAX_NEW_TOKENS="$2"
             shift 2
             ;;
-        --max_frames)
-            MAX_FRAMES="$2"
-            shift 2
-            ;;
         *)
             echo "Unknown parameter: $1"
             exit 1
@@ -50,22 +52,19 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# Defaults
+# Defaults (same as ThinkStream eval for fair comparison)
 NGPU=${NGPU:-8}
 MODEL_TYPE=${MODEL_TYPE:-qwen3vl}
 MIN_PIXELS=${MIN_PIXELS:-$((100352*2))}
 MAX_PIXELS=${MAX_PIXELS:-$((100352*4))}
 MAX_NEW_TOKENS=${MAX_NEW_TOKENS:-30}
-MAX_FRAMES=${MAX_FRAMES:-64}
 BENCHMARK_DIR=${BENCHMARK_DIR:-/your/benchmark/dir}
 
-echo "=== Baseline OVO-Bench Evaluation ==="
+echo "=== Baseline OVO-Bench (Streaming) ==="
 echo "Model: ${CKPT}"
 echo "Type: ${MODEL_TYPE}"
 echo "GPUs: ${NGPU}"
 echo "Pixels: ${MIN_PIXELS}-${MAX_PIXELS}"
-echo "Max frames: ${MAX_FRAMES}"
-echo "Max new tokens: ${MAX_NEW_TOKENS}"
 
 TOKENIZERS_PARALLELISM=false \
 torchrun \
@@ -75,5 +74,4 @@ torchrun \
 --model_type "${MODEL_TYPE}" \
 --min_pixels "${MIN_PIXELS}" \
 --max_pixels "${MAX_PIXELS}" \
---max_new_tokens "${MAX_NEW_TOKENS}" \
---max_frames "${MAX_FRAMES}"
+--max_new_tokens "${MAX_NEW_TOKENS}"
