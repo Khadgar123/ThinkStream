@@ -213,6 +213,10 @@ def render_sample(
         "metadata": metadata,
     }
 
+    # Propagate base_role for trajectory-aware loss weighting
+    if "base_role" in sample:
+        rendered["base_role"] = sample["base_role"]
+
     return rendered
 
 

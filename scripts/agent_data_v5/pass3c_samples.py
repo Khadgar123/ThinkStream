@@ -203,7 +203,9 @@ async def _generate_fork_think(
         return base_think  # no active questions → base think is fine
 
     # Format active queries (unanswered only)
-    pending = [q for q in queries_state if not q.get("answers")]
+    # Note: answers=[] (empty list) means question is pending (asked but not answered).
+    # Must check len() explicitly — empty list is falsy in Python.
+    pending = [q for q in queries_state if len(q.get("answers", [])) == 0]
     if not pending:
         return base_think  # all answered → no need to rewrite
 
@@ -323,6 +325,12 @@ def _make_sample(
         output_parts.append(f"<response>{response}</response>")
     elif action == "recall" and query:
         output_parts.append(f'<query>{json.dumps(query, ensure_ascii=False)}</query>')
+    elif action == "compress" and snapshot:
+        # Compress action must include <summary> tag from rollout compression event
+        compress_event = snapshot.get("_compress_event")
+        if compress_event:
+            summary = compress_event.get("summary", {})
+            output_parts.append(f'<summary>{json.dumps(summary, ensure_ascii=False)}</summary>')
 
     # Derive sample_type for phase assignment and verification
     if prompt_type == "POST_RECALL_PROMPT":
@@ -331,6 +339,8 @@ def _make_sample(
         sample_type = "recall_query"
     elif action == "response":
         sample_type = "response"
+    elif action == "compress":
+        sample_type = "compress"
     else:
         sample_type = "silent"
 
@@ -770,25 +780,27 @@ def generate_base_samples(
         think = obs.get("think", "") if obs else ""
 
         # Check if this chunk is a compression event
-        is_compress = False
+        compress_event = None
         for event in rollout.get("compression_events", []):
             if event.get("trigger_chunk") == chunk_idx:
-                is_compress = True
+                compress_event = event
                 break
 
-        if is_compress:
+        if compress_event:
             action = "compress"
-            sample_type = "compress"
+            # Pass compress event data through snapshot for _make_sample
+            compress_snapshot = {"_compress_event": compress_event}
         else:
             action = "silent"
-            sample_type = "silent"
+            compress_snapshot = None
 
         sample = _make_sample(
             chunk_idx=chunk_idx,
-            prompt_type="COMPRESS_PROMPT" if is_compress else "SYSTEM_PROMPT",
+            prompt_type="COMPRESS_PROMPT" if compress_event else "SYSTEM_PROMPT",
             action=action,
             think=think,
             queries=qs,
+            snapshot=compress_snapshot,
             trajectory_id=traj_id,
             card_id="",
             sequence_type="base",

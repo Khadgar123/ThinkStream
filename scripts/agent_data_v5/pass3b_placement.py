@@ -373,16 +373,19 @@ async def compute_all_placements(
                             immediate_placements.append(p)
 
             # history_chunk: needs retention check (LLM or keyword fallback)
+            # 30% of cards get recall_fail_then_found INSTEAD of the LLM check
+            # (mutually exclusive — same card can't have both at same chunk)
             history_chunk = min(support_end + VISUAL_WINDOW_CHUNKS + 5, num_chunks - 1)
             if history_chunk < num_chunks and support_end < history_chunk:
-                candidates_needing_llm.append((card, history_chunk))
-
-            # recall_fail variant (30% of recall cards, always recall_fail_then_found)
-            if rng.random() < 0.3 and history_chunk < num_chunks:
-                p = compute_placement(card, history_chunk, "recall_fail_then_found",
-                                       rollout, evidence)
-                if p:
-                    immediate_placements.append(p)
+                if rng.random() < 0.3:
+                    # recall_fail variant: skip LLM check, always recall_fail
+                    p = compute_placement(card, history_chunk, "recall_fail_then_found",
+                                           rollout, evidence)
+                    if p:
+                        immediate_placements.append(p)
+                else:
+                    # Normal path: LLM checks if student can answer
+                    candidates_needing_llm.append((card, history_chunk))
 
         # E2 event_watch: pure math (ask before support starts)
         if card.get("family") == "E2":

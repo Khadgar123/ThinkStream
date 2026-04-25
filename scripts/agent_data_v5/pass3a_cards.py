@@ -706,8 +706,16 @@ async def _verify_one_card(
         return card
 
     # Apply fixes from verification
+    num_chunks = max((cap.get("chunk_idx", 0) for cap in evidence), default=0) + 1
     fixed_sc = result.get("support_chunks")
     if isinstance(fixed_sc, list) and fixed_sc:
+        # Bounds check: discard out-of-range chunk indices
+        fixed_sc = [c for c in fixed_sc if isinstance(c, int) and 0 <= c < num_chunks]
+        if not fixed_sc:
+            logger.warning(f"  [{video_id}] verify {card.get('card_id')}: "
+                           f"all support_chunks out of range, dropping card")
+            card["_verified"] = False
+            return card
         card["support_chunks"] = fixed_sc
     if result.get("visibility_type") in ("persistent", "transient"):
         card["visibility_type"] = result["visibility_type"]
