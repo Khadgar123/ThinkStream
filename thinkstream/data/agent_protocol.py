@@ -171,12 +171,18 @@ def build_user_content(
     min_pixels: int = 100352,
     max_pixels: int = 150528,
     frame_paths: Optional[List[str]] = None,
+    memory: Optional[Dict] = None,
 ) -> List[Dict]:
     """Build the user content list for a single-step message.
 
     Ordering (sft_engineering.md v3.0 §2.1, must not violate):
     <visual_window> + frames → <recalled_frames> + frames → <memory>
     → <queries> → <recall_result> → <user_input>
+
+    When *memory* dict is provided (contains compressed_segments and
+    recent_thinks with timestamps), also builds temporal alignment
+    metadata for MROPE. Access via the ``_temporal_spans`` attribute
+    on the returned list (only set when memory is provided).
 
     Args:
         memory_text: Pre-formatted memory block from format_memory_block().
@@ -188,6 +194,7 @@ def build_user_content(
         min_pixels, max_pixels: Resolution limits.
         frame_paths: Optional explicit frame paths (training). If None, uses
                      video_path with time range (inference).
+        memory: Optional raw memory dict for temporal span extraction.
     """
     chunk_sec = AGENT_CHUNK_SEC
     user_content = []
@@ -282,7 +289,84 @@ def build_user_content(
             "text": f"\n<user_input>{user_input}</user_input>",
         })
 
+    # ── Build temporal span metadata for MROPE alignment ──
+    # Each entry: (text_snippet, timestamp_sec) — used after tokenization
+    # to locate token spans and override temporal dim of position_ids.
+    temporal_spans = _extract_temporal_spans(memory, recall_result)
+
+    # Attach as attribute on the list (avoids breaking return type)
+    user_content = _UserContentWithSpans(user_content, temporal_spans)
+
     return user_content
+
+
+class _UserContentWithSpans(list):
+    """List subclass that carries temporal span metadata for MROPE."""
+    def __init__(self, items, temporal_spans):
+        super().__init__(items)
+        self.temporal_spans = temporal_spans
+
+
+def _extract_temporal_spans(
+    memory: Optional[Dict],
+    recall_result: Optional[Dict] = None,
+) -> List[tuple]:
+    """Extract (text_snippet, timestamp_sec) pairs from memory for MROPE.
+
+    These snippets will be searched in the tokenized sequence to find
+    their token positions, then the temporal dim of those positions
+    will be overridden to match the video timestamp.
+
+    Returns list of (text_snippet, timestamp_mid_sec) tuples.
+    """
+    spans = []
+    if not memory:
+        return spans
+
+    # Compressed segments: each has time_range and text
+    for seg in memory.get("compressed_segments", memory.get("compressed", [])):
+        tr = seg.get("time_range", [0, 0])
+        mid_sec = (tr[0] + tr[1]) / 2.0
+        text = seg.get("text", "")
+        if text:
+            # Use the first 30 chars as locator (enough to find in token stream)
+            spans.append((text[:60], mid_sec))
+
+    # Recent thinks: each has time and text
+    for item in memory.get("recent_thinks", memory.get("recent_observations", [])):
+        if isinstance(item, dict):
+            time_str = item.get("time", "")
+            text = item.get("text", item.get("obs", ""))
+            # Parse time: "10-12" → mid = 11.0
+            if isinstance(time_str, str) and "-" in time_str:
+                try:
+                    parts = time_str.split("-")
+                    mid_sec = (float(parts[0]) + float(parts[1])) / 2.0
+                except (ValueError, IndexError):
+                    mid_sec = 0.0
+            elif isinstance(time_str, (int, float)):
+                mid_sec = float(time_str)
+            else:
+                mid_sec = 0.0
+            if text:
+                spans.append((text[:60], mid_sec))
+
+    # Recall result: align to its time range
+    if recall_result:
+        rr_text = recall_result.get("text_content", recall_result.get("text", ""))
+        rr_time = recall_result.get("time", "")
+        if rr_text and rr_time:
+            if isinstance(rr_time, str) and "-" in rr_time:
+                try:
+                    parts = rr_time.split("-")
+                    mid_sec = (float(parts[0]) + float(parts[1])) / 2.0
+                except (ValueError, IndexError):
+                    mid_sec = 0.0
+            else:
+                mid_sec = float(rr_time) if rr_time else 0.0
+            spans.append((rr_text[:60], mid_sec))
+
+    return spans
 
 
 # ---------------------------------------------------------------------------

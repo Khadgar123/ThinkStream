@@ -16,7 +16,7 @@ import transformers
 from torchcodec.decoders import VideoDecoder
 
 from . import data_list
-from .rope2d import ROPE_INDEX_FN
+from .rope2d import ROPE_INDEX_FN, ROPE_INDEX_FN_AGENT
 
 
 def _get_video_pixels(processor):
@@ -950,6 +950,8 @@ def compute_position_ids(
     processor_output: Dict[str, Any],
     processor,
     model_type: str,
+    text_temporal_positions: Optional[list] = None,
+    per_entry_second_per_grid_ts: Optional[list] = None,
 ) -> torch.Tensor:
     """Compute MROPE position IDs – the **single** path for all workflows.
 
@@ -958,12 +960,18 @@ def compute_position_ids(
     is present in *processor_output* so that ``second_per_grid_ts`` is
     computed identically everywhere.
 
-    Handles ``image_grid_thw`` / ``video_grid_thw`` normalisation,
-    ``second_per_grid_ts`` computation from ``video_chunk_size``, and
-    dispatches to the correct RoPE function for the given *model_type*.
-
-    The ``video_chunk_size`` key is **consumed** (popped) from
-    *processor_output* during this call.
+    Args:
+        processor_output: Dict from HF processor (input_ids, video_grid_thw, etc.)
+        processor: HF processor instance.
+        model_type: "qwen2.5vl" or "qwen3vl".
+        text_temporal_positions: Optional per-batch list of
+            (token_start, token_end, timestamp_sec) tuples for agent MROPE.
+            When provided, uses ROPE_INDEX_FN_AGENT to align text memory
+            tokens with their corresponding video timestamps.
+        per_entry_second_per_grid_ts: Optional per-video-entry list of
+            second_per_grid_ts values. When provided, overrides the uniform
+            computation. Use this to give visual_window and recalled_frames
+            different temporal spacing.
 
     Returns:
         ``position_ids`` tensor of shape ``(3, B, L)`` for MROPE models.
@@ -985,25 +993,44 @@ def compute_position_ids(
         if not isinstance(video_grid_thw, (list, tuple)):
             video_grid_thw = [video_grid_thw]
         video_grid_thw = torch.cat(video_grid_thw, dim=0)
-        second_per_grid_ts = [
-            processor_output.pop("video_chunk_size", 1)
-            * processor.video_processor.temporal_patch_size
-            / processor.video_processor.fps
-        ] * len(video_grid_thw)
+
+        if per_entry_second_per_grid_ts is not None:
+            # Caller provides per-entry values (e.g., different for
+            # visual_window vs recalled_frames)
+            second_per_grid_ts = per_entry_second_per_grid_ts
+        else:
+            # Uniform: same temporal spacing for all video entries
+            second_per_grid_ts = [
+                processor_output.pop("video_chunk_size", 1)
+                * processor.video_processor.temporal_patch_size
+                / processor.video_processor.fps
+            ] * len(video_grid_thw)
     else:
         video_grid_thw = None
         second_per_grid_ts = None
 
     merge_size = getattr(processor.image_processor, "merge_size", 2)
-    rope_fn = ROPE_INDEX_FN[model_type]
 
-    position_ids, _ = rope_fn(
-        merge_size,
-        input_ids,
-        image_grid_thw=image_grid_thw,
-        video_grid_thw=video_grid_thw,
-        second_per_grid_ts=second_per_grid_ts,
-    )
+    # Use agent ROPE when text_temporal_positions provided
+    if text_temporal_positions is not None:
+        rope_fn = ROPE_INDEX_FN_AGENT[model_type]
+        position_ids, _ = rope_fn(
+            spatial_merge_size=merge_size,
+            input_ids=input_ids,
+            image_grid_thw=image_grid_thw,
+            video_grid_thw=video_grid_thw,
+            second_per_grid_ts=second_per_grid_ts,
+            text_temporal_positions=text_temporal_positions,
+        )
+    else:
+        rope_fn = ROPE_INDEX_FN[model_type]
+        position_ids, _ = rope_fn(
+            merge_size,
+            input_ids,
+            image_grid_thw=image_grid_thw,
+            video_grid_thw=video_grid_thw,
+            second_per_grid_ts=second_per_grid_ts,
+        )
     return position_ids
 
 

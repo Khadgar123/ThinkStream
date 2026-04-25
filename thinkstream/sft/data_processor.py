@@ -26,7 +26,7 @@ from torch.utils.data import Dataset
 import transformers
 
 from .data_list import data_list
-from .rope2d import get_rope_index_25, get_rope_index_3
+from .rope2d import get_rope_index_25, get_rope_index_3, get_rope_index_agent
 
 IGNORE_INDEX = -100
 
@@ -113,6 +113,103 @@ def _get_sample_weight(sample: Dict) -> float:
         return 0.8        # "No new change, stay silent" — teaches selective response
 
     return 0.5  # Default silent
+
+# ---------------------------------------------------------------------------
+# Text temporal position extraction for MROPE alignment
+# ---------------------------------------------------------------------------
+
+
+def _extract_text_temporal_positions(
+    input_ids: torch.Tensor,
+    sample: Dict,
+    tokenizer,
+) -> Optional[list]:
+    """Extract text_temporal_positions from a per-timestep sample.
+
+    Scans the sample's memory (compressed segments + recent thinks) for
+    timestamped text entries, locates them in the token sequence, and
+    returns position annotations for MROPE temporal alignment.
+
+    Returns:
+        Per-batch list of (token_start, token_end, timestamp_sec) tuples,
+        or None if no temporal spans found.
+    """
+    # Collect timestamped text entries from sample's input memory
+    inp = sample.get("input", {})
+    memory = inp.get("memory", {})
+    if not memory:
+        return None
+
+    # Build (text_snippet, timestamp_sec) pairs
+    entries = []
+
+    # Compressed segments
+    for seg in memory.get("compressed", memory.get("compressed_segments", [])):
+        tr = seg.get("time_range", [0, 0])
+        mid_sec = (tr[0] + tr[1]) / 2.0
+        text = seg.get("text", "")
+        if text:
+            entries.append((text, mid_sec))
+
+    # Recent thinks
+    for item in memory.get("recent_thinks", memory.get("recent_observations", [])):
+        if isinstance(item, dict):
+            time_str = item.get("time", "")
+            text = item.get("text", item.get("obs", ""))
+            if isinstance(time_str, str) and "-" in time_str:
+                try:
+                    parts = time_str.split("-")
+                    mid_sec = (float(parts[0]) + float(parts[1])) / 2.0
+                except (ValueError, IndexError):
+                    continue
+            elif isinstance(time_str, (int, float)):
+                mid_sec = float(time_str)
+            else:
+                continue
+            if text:
+                entries.append((text, mid_sec))
+        elif isinstance(item, str):
+            # "[10-12] text" format
+            import re as _re
+            m = _re.match(r'\[(\d+)-(\d+)\]\s*(.*)', item)
+            if m:
+                mid_sec = (float(m.group(1)) + float(m.group(2))) / 2.0
+                entries.append((m.group(3), mid_sec))
+
+    if not entries:
+        return None
+
+    # Locate each text snippet in the token sequence
+    # Strategy: tokenize snippet, find as subsequence in input_ids
+    ids_1d = input_ids[0] if input_ids.ndim == 2 else input_ids
+    ids_list = ids_1d.tolist()
+    L = len(ids_list)
+
+    spans = []
+    for text, timestamp in entries:
+        # Tokenize the snippet (without special tokens)
+        snippet_ids = tokenizer.encode(text[:80], add_special_tokens=False)
+        if len(snippet_ids) < 3:
+            continue
+
+        # Search for first 5 tokens as anchor (full match too slow for long seqs)
+        anchor = snippet_ids[:5]
+        anchor_len = len(anchor)
+        found = False
+        for i in range(L - anchor_len):
+            if ids_list[i:i + anchor_len] == anchor:
+                # Found anchor, span covers full snippet length
+                tok_end = min(i + len(snippet_ids), L)
+                spans.append((i, tok_end, timestamp))
+                found = True
+                break
+
+    if not spans:
+        return None
+
+    # Return as per-batch list (batch_size=1 in SFT)
+    return [spans]
+
 
 # Agent special tokens (data_construction_zh.md §13.2, Approach B)
 SPECIAL_TOKENS_AGENT = [
@@ -477,11 +574,11 @@ class PerTimestepDataset(Dataset):
         rank0_print(f"Loading datasets: {dataset_configs}")
 
         # Select RoPE function by model type
+        # Use agent ROPE to align text memory tokens with video timestamps
         self.model_type = data_args.model_type
-        if data_args.model_type == "qwen3vl":
-            self.get_rope_index = get_rope_index_3
-        elif data_args.model_type == "qwen2.5vl":
-            self.get_rope_index = get_rope_index_25
+        if data_args.model_type in ("qwen3vl", "qwen2.5vl"):
+            self.get_rope_index = lambda **kw: get_rope_index_agent(
+                base_model_type=data_args.model_type, **kw)
         else:
             raise ValueError(
                 f"Unsupported model_type: {data_args.model_type}. "
@@ -591,14 +688,21 @@ class PerTimestepDataset(Dataset):
             else:
                 second_per_grid_ts = [default_spg] * n_video_entries
 
+        # Extract text_temporal_positions from sample's memory spans
+        # Each span maps a text token range to a video timestamp
+        text_temporal_positions = _extract_text_temporal_positions(
+            data_dict["input_ids"], sample, self.processor.tokenizer
+        )
+
         position_ids, _ = self.get_rope_index(
-            self.merge_size,
-            data_dict["input_ids"],
+            spatial_merge_size=self.merge_size,
+            input_ids=data_dict["input_ids"],
             image_grid_thw=torch.cat(grid_thw, dim=0) if grid_thw else None,
             video_grid_thw=(
                 torch.cat(video_grid_thw, dim=0) if video_grid_thw else None
             ),
             second_per_grid_ts=second_per_grid_ts,
+            text_temporal_positions=text_temporal_positions,
         )
 
         data_dict["position_ids"] = position_ids
