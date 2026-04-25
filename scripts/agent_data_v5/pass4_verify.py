@@ -138,12 +138,22 @@ def verify_information_flow(sample: Dict) -> Tuple[bool, str]:
     if metadata.get("leakage_checks", {}).get("query_contains_answer"):
         return False, "query_contains_answer_value"
 
-    # Response is non-empty
+    # Response is non-empty.
+    # v9.1: don't reject by character length — binary "No" is 2 chars and
+    # short_exact "5" is 1. Only reject TRULY empty responses.
     if "<response>" in output:
         response_match = re.search(r'<response>(.*?)</response>', output, re.DOTALL)
         if response_match:
-            if len(response_match.group(1).strip()) < 3:
+            resp_text = response_match.group(1).strip()
+            if not resp_text:
                 return False, "empty_response"
+            answer_form = metadata.get("answer_form", "")
+            family = metadata.get("family", "")
+            # For non-short answer forms, require at least 3 chars (catches
+            # garbled / single-token outputs from teacher).
+            if answer_form not in ("binary", "number", "short_exact") and family != "N1":
+                if len(resp_text) < 3:
+                    return False, "response_too_short"
 
     # recall_response after failure must show uncertainty
     if sample_type == "recall_response":
@@ -407,7 +417,10 @@ def verify_summary_provenance(sample: Dict) -> Tuple[bool, str]:
 
     unsupported = [w for w in entity_words if w.lower() not in source_words]
     has_visual = sample.get("metadata", {}).get("has_visual_context", False)
-    max_ratio = 0.4 if has_visual else 0.2
+    # v9.1: relax thresholds. With visual_context, 397B legitimately refines
+    # entity details (correct color/count) that may not be verbatim in thinks.
+    # Old: 0.4/0.2 → New: 0.5/0.3.
+    max_ratio = 0.5 if has_visual else 0.3
 
     if len(unsupported) / len(entity_words) > max_ratio:
         return False, f"summary_provenance_violation: {unsupported[:3]} not in source"
@@ -571,7 +584,10 @@ def verify_trajectory_action_distribution(
 
     Checks at the trajectory level (not per-sample):
     - At least 1 response or recall sample (not all silent)
-    - Silent should not exceed 90% for multi-question trajectories
+    - Silent should not exceed an adaptive threshold:
+        * 95% if any placement is event_watch (legit long waits)
+        * 92% if any placement is multi_response (silent gaps OK)
+        * 90% otherwise
     """
     if not trajectory_samples:
         return True, "pass"
@@ -594,9 +610,22 @@ def verify_trajectory_action_distribution(
     ))
 
     if n_questions >= 3:
+        # v9.1: adaptive threshold by sequence_type. event_watch trajectories
+        # legitimately spend most chunks waiting for the trigger.
+        seq_types = {s.get("sequence_type", "") for s in trajectory_samples}
+        if "event_watch" in seq_types:
+            silent_threshold = 95.0
+        elif "multi_response" in seq_types:
+            silent_threshold = 92.0
+        else:
+            silent_threshold = 90.0
+
         silent_pct = action_counts.get("silent", 0) / total * 100
-        if silent_pct > 90:
-            return False, f"multi_question_trajectory_too_silent ({silent_pct:.0f}%)"
+        if silent_pct > silent_threshold:
+            return False, (
+                f"multi_question_trajectory_too_silent "
+                f"({silent_pct:.0f}% > {silent_threshold:.0f}%)"
+            )
 
     return True, "pass"
 

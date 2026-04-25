@@ -42,10 +42,11 @@ class WeightedSFTTrainer(Trainer):
 
     def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
         sample_weights = inputs.pop("sample_weights", None)
+        token_loss_weight = inputs.pop("token_loss_weight", None)
 
         outputs = model(**inputs)
 
-        if sample_weights is None or sample_weights.numel() == 0:
+        if (sample_weights is None or sample_weights.numel() == 0) and token_loss_weight is None:
             loss = outputs.loss
         else:
             logits = outputs.logits
@@ -61,13 +62,24 @@ class WeightedSFTTrainer(Trainer):
             ).view(B, L)
 
             valid_mask = (shift_labels != IGNORE_INDEX).float()
+
+            # v9: per-token weight (span-based: think/action/response/query/summary)
+            if token_loss_weight is not None:
+                tw = token_loss_weight[..., 1:].contiguous().to(per_token_loss.device)
+                effective_mask = valid_mask * tw
+            else:
+                effective_mask = valid_mask
+
             per_sample_loss = (
-                (per_token_loss * valid_mask).sum(dim=1)
-                / valid_mask.sum(dim=1).clamp(min=1)
+                (per_token_loss * effective_mask).sum(dim=1)
+                / effective_mask.sum(dim=1).clamp(min=1)
             )
 
-            sample_weights = sample_weights.to(per_sample_loss.device)
-            loss = (per_sample_loss * sample_weights).sum() / sample_weights.sum()
+            if sample_weights is not None and sample_weights.numel() > 0:
+                sample_weights = sample_weights.to(per_sample_loss.device)
+                loss = (per_sample_loss * sample_weights).sum() / sample_weights.sum()
+            else:
+                loss = per_sample_loss.mean()
 
         return (loss, outputs) if return_outputs else loss
 

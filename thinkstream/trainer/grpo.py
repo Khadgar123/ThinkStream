@@ -653,15 +653,74 @@ def rollout(
     return ctx.set(rollout_data, all_rollout_results)
 
 
-REWARD_DICT_KEYS = ("format", "response", "timing", "think_len", "recall_quality", "compress_quality")
+REWARD_DICT_KEYS = (
+    "format", "response", "timing", "think_len",
+    "recall_quality", "compress_quality", "silent_quality",
+)
+
+# v9.0 gated additive design (T-GRPO + DeepSeek-R1 + Dispider):
+#   - format is a HARD GATE: format fail → total = -1.0 (Open-R1-Video).
+#   - response (correctness) is the primary signal.
+#   - process rewards (timing/think_len/recall/compress) are GATED on correctness:
+#       only counted when response is fully correct (resp_r >= 1.0).
+#   - silent_quality is ALWAYS counted (Dispider double-signal): explicitly
+#     supervises both "should-be-silent → silent +0.1" and
+#     "should-respond → silent -0.3" to prevent silent collapse.
 DEFAULT_REWARD_WEIGHTS = {
-    "format": 0.15,         # output format compliance
-    "response": 0.35,       # primary: answer correct + appropriate silence
-    "timing": 0.10,         # responded at reasonable time
-    "think_len": 0.10,      # think length near target
-    "recall_quality": 0.20, # recall query quality + necessity
-    "compress_quality": 0.10,  # entity retention + compression ratio
+    "format": 0.10,            # gate (also small contribution when passed)
+    "response": 0.50,          # primary: answer correctness
+    "timing": 0.15,            # gated: response was at right time
+    "think_len": 0.05,         # gated: think length near target
+    "recall_quality": 0.10,    # gated: recall query well-formed + necessary
+    "compress_quality": 0.10,  # gated: compression preserves entities
+    "silent_quality": 0.15,    # ALWAYS counted: explicit silent supervision
 }
+# Format gate threshold: below this, the entire sample is rejected with -1.0.
+FORMAT_GATE_THRESHOLD = 0.7
+# Correctness gate: process rewards unlocked when resp_r >= this.
+CORRECT_GATE_THRESHOLD = 1.0
+
+
+def _compute_silent_quality_reward(
+    predicted_actions: List[str],
+    gt_answer: str,
+    model_answer: Optional[str],
+    answer_form: str = "",
+) -> float:
+    """Explicit silent supervision (Dispider double-signal).
+
+    Always counted (NOT gated on correctness) so that the model gets a
+    direct signal preventing two failure modes:
+      1. Silent collapse — model learns to always silent for safety.
+      2. Over-response — model spams response on every chunk.
+
+    Scoring:
+      should-be-silent + silent      → +0.1 (rewarded but small; correctness handles it)
+      should-be-silent + response    → -0.4 (premature/hallucinated response)
+      should-respond + silent        → -0.3 (missed event)
+      should-respond + response      →  0.0 (correctness reward handles it)
+      HLD-negative (canonical=No) + correct "No" response → +0.3 (refusal bonus)
+    """
+    has_response = "response" in predicted_actions
+    is_silent_only = not has_response and "compress" not in predicted_actions
+    is_negative = (gt_answer or "").strip().lower() == "no" and answer_form == "binary"
+
+    if is_negative:
+        # HLD: model SHOULD respond "No" (not stay silent)
+        if has_response and model_answer == "no":
+            return 0.3
+        if not has_response:
+            return -0.3  # silent on HLD = missed refusal
+        return 0.0
+
+    if not gt_answer:
+        # Silent-only sample: reward correct silence, penalize over-response
+        return 0.1 if is_silent_only else -0.4
+
+    # gt_answer present: model should respond
+    if is_silent_only:
+        return -0.3  # missed: should have responded
+    return 0.0       # responded — correctness reward handles quality
 
 
 def _compute_compress_reward(
@@ -801,18 +860,50 @@ def calc_rewards(
             # R_compress_quality
             compress_r = _compute_compress_reward(chunk_texts, compressed_segments)
 
+            # R_silent_quality (v9: explicit silent supervision, never gated)
+            silent_r = _compute_silent_quality_reward(
+                predicted_actions, gt_answer, model_answer, answer_form)
+
             all_rewards["format"].append(fmt_r)
             all_rewards["response"].append(resp_r)
             all_rewards["timing"].append(time_r)
             all_rewards["think_len"].append(think_r)
             all_rewards["recall_quality"].append(recall_r)
             all_rewards["compress_quality"].append(compress_r)
+            all_rewards["silent_quality"].append(silent_r)
 
-    total_tensor = torch.tensor(
-        [sum(all_rewards[k][i] * weights[k] for k in REWARD_DICT_KEYS)
-         for i in range(len(all_rewards["format"]))],
-        dtype=torch.float32,
-    )
+    # v9 gated aggregation:
+    #   - format < threshold → entire sample rejected (-1.0)
+    #   - resp_r < CORRECT_GATE → only format + response + silent count
+    #   - resp_r >= CORRECT_GATE → all rewards counted (process unlocked)
+    totals: List[float] = []
+    n = len(all_rewards["format"])
+    for i in range(n):
+        fmt_r = all_rewards["format"][i]
+        resp_r = all_rewards["response"][i]
+        silent_r = all_rewards["silent_quality"][i]
+
+        if fmt_r < FORMAT_GATE_THRESHOLD:
+            totals.append(-1.0)
+            continue
+
+        # Always-on rewards
+        total = (
+            weights["format"] * fmt_r
+            + weights["response"] * resp_r
+            + weights["silent_quality"] * silent_r
+        )
+        # Process rewards: gated on full correctness
+        if resp_r >= CORRECT_GATE_THRESHOLD:
+            total += (
+                weights["timing"] * all_rewards["timing"][i]
+                + weights["think_len"] * all_rewards["think_len"][i]
+                + weights["recall_quality"] * all_rewards["recall_quality"][i]
+                + weights["compress_quality"] * all_rewards["compress_quality"][i]
+            )
+        totals.append(total)
+
+    total_tensor = torch.tensor(totals, dtype=torch.float32)
     rewards_dict_val = {
         k: torch.tensor(v, dtype=torch.float32) for k, v in all_rewards.items()
     }

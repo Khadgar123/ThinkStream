@@ -348,9 +348,45 @@ async def compute_all_placements(
             continue
         support_end = max(support_chunks)
         support_start = min(support_chunks)
+        family = card.get("family", "")
+
+        # ---- v9 new families ---------------------------------------------
+        # F5 (REC): ask AFTER last repetition so count is complete.
+        if family == "F5":
+            ask_f5 = min(support_end + 2, num_chunks - 1)
+            if ask_f5 > support_end:
+                p = compute_placement(card, ask_f5, "immediate_response",
+                                       rollout, evidence)
+                if p:
+                    immediate_placements.append(p)
+            continue
+
+        # F6 (FPD): ask AT support_end (state observed, predict next).
+        # Skip if too close to end — need future evidence for verify.
+        if family == "F6":
+            if support_end < num_chunks - 2:
+                p = compute_placement(card, support_end, "immediate_response",
+                                       rollout, evidence)
+                if p:
+                    immediate_placements.append(p)
+            continue
+
+        # N1 (HLD): negative — absence holds everywhere. Spread asks across
+        # the timeline so the model learns to refuse at any moment.
+        if family == "N1":
+            for frac in (0.25, 0.5, 0.75):
+                ask_n1 = int(num_chunks * frac)
+                ask_n1 = max(1, min(ask_n1, num_chunks - 1))
+                p = compute_placement(card, ask_n1, "immediate_response",
+                                       rollout, evidence)
+                if p:
+                    immediate_placements.append(p)
+            continue
+        # ---- end v9 new families -----------------------------------------
 
         if vis_type == "persistent":
-            # Pure math: persistent → always immediate_response
+            # Pure math: persistent → always immediate_response.
+            # Soft window: sample 3 evenly-spaced ask_chunks across timeline.
             candidates = [num_chunks // 4, num_chunks // 2, 3 * num_chunks // 4]
             for ask in candidates:
                 if 0 <= ask < num_chunks:
@@ -359,22 +395,41 @@ async def compute_all_placements(
                         immediate_placements.append(p)
 
         else:  # transient
-            # in_visual: pure math — check if support is within visual window
-            visual_mid = min(support_end + VISUAL_WINDOW_CHUNKS // 2, num_chunks - 1)
-            if visual_mid >= support_end:
-                snapshot = _get_snapshot(rollout, visual_mid)
-                if snapshot:
+            # ----------------------------------------------------------------
+            # v9 SOFT ASK_WINDOW (StreamBridge-style):
+            # Instead of a single ask_chunk = visual_mid, sample 1-2 ask_chunks
+            # within the in-visual window. This trains the model to be robust
+            # over a range of timing offsets, not a single rigid moment.
+            # ----------------------------------------------------------------
+            # in_visual window: [support_end + 1, support_end + VISUAL_WINDOW_CHUNKS - 1]
+            #   (support is in window throughout this range)
+            visual_lo = support_end + 1
+            visual_hi = min(support_end + VISUAL_WINDOW_CHUNKS - 1, num_chunks - 1)
+            if visual_hi > visual_lo:
+                # Sample 2 ask_chunks: ~1/3 and ~2/3 of window (deterministic + diverse)
+                span = visual_hi - visual_lo
+                visual_asks = sorted(set([
+                    visual_lo + max(1, span // 3),
+                    visual_lo + max(1, (2 * span) // 3),
+                ]))
+                for ask in visual_asks:
+                    if not (visual_lo <= ask <= visual_hi):
+                        continue
+                    snapshot = _get_snapshot(rollout, ask)
+                    if not snapshot:
+                        continue
                     window_start = snapshot["visual_window_start"]
                     window_end = snapshot["chunk_idx"]
+                    # Only emit if support actually falls inside the visual window at ask time.
                     if any(window_start <= c <= window_end for c in support_chunks):
                         seq = determine_sequence_type(card, "in_visual")
-                        p = compute_placement(card, visual_mid, seq, rollout, evidence)
+                        p = compute_placement(card, ask, seq, rollout, evidence)
                         if p:
                             immediate_placements.append(p)
 
-            # history_chunk: needs retention check (LLM or keyword fallback)
+            # history_chunk: needs retention check (LLM or keyword fallback).
             # 30% of cards get recall_fail_then_found INSTEAD of the LLM check
-            # (mutually exclusive — same card can't have both at same chunk)
+            # (mutually exclusive — same card can't have both at same chunk).
             history_chunk = min(support_end + VISUAL_WINDOW_CHUNKS + 5, num_chunks - 1)
             if history_chunk < num_chunks and support_end < history_chunk:
                 if rng.random() < 0.3:
@@ -650,23 +705,71 @@ def plan_trajectories(
         # Group placements that are ≥min_chunk_gap apart into multi-question trajectories
         # Also enforce MAX_ACTIVE_QUERIES: at any point in the trajectory,
         # no more than MAX_ACTIVE_QUERIES questions can be pending (asked but unresolved).
+        #
+        # v9: 50% of trajectories use ENTITY BRIDGING — pick the next placement
+        # from temporally-valid candidates with highest card_keyword overlap to
+        # the trajectory so far (≥30% threshold). The other 50% stay independent.
         paired: Set[int] = set()
         for i in range(len(selected)):
             if i in paired or len(trajectories) >= target:
                 break
             group = [selected[i]]
             paired.add(i)
-            for j in range(i + 1, len(selected)):
+            entity_bridge = rng.random() < 0.5  # 50% bridged trajectories
+
+            def _valid(j: int) -> bool:
                 if j in paired:
-                    continue
+                    return False
                 if selected[j]["ask_chunk"] - group[-1]["ask_chunk"] < min_chunk_gap:
-                    continue
-                # Pending check: would adding this placement exceed limit?
-                pending = _count_pending_at(group, selected[j]["ask_chunk"])
-                if pending >= MAX_ACTIVE_QUERIES:
-                    continue
-                group.append(selected[j])
-                paired.add(j)
+                    return False
+                if _count_pending_at(group, selected[j]["ask_chunk"]) >= MAX_ACTIVE_QUERIES:
+                    return False
+                return True
+
+            def _bridging_kw(card: Dict) -> Set[str]:
+                """For bridging we want ENTITY overlap, so combine question text +
+                canonical_answer keywords across all answer_forms (richer than
+                extract_card_keywords which is tuned for retention scoring)."""
+                q = card.get("question", "")
+                a = card.get("canonical_answer", "")
+                return set(extract_keywords(q)) | set(extract_keywords(a))
+
+            def _bridging_score(j: int) -> float:
+                """Max keyword overlap between j's card and any card in current group."""
+                card_j = cards_map.get(selected[j]["card_id"], {})
+                kw_j = _bridging_kw(card_j)
+                if not kw_j:
+                    return 0.0
+                best = 0.0
+                for p_in in group:
+                    card_in = cards_map.get(p_in["card_id"], {})
+                    kw_in = _bridging_kw(card_in)
+                    if not kw_in:
+                        continue
+                    overlap = len(kw_j & kw_in) / max(min(len(kw_j), len(kw_in)), 1)
+                    best = max(best, overlap)
+                return best
+
+            j_indices = list(range(i + 1, len(selected)))
+            while j_indices:
+                valid = [j for j in j_indices if _valid(j)]
+                if not valid:
+                    break
+                if entity_bridge:
+                    # Prefer highest bridging score; require ≥0.3 to count as bridged.
+                    scored = [(j, _bridging_score(j)) for j in valid]
+                    scored.sort(key=lambda x: x[1], reverse=True)
+                    best_j, best_score = scored[0]
+                    if best_score >= 0.3:
+                        chosen_j = best_j
+                    else:
+                        # No bridging candidate — fall back to temporal order
+                        chosen_j = valid[0]
+                else:
+                    chosen_j = valid[0]
+                group.append(selected[chosen_j])
+                paired.add(chosen_j)
+                j_indices = [j for j in j_indices if j != chosen_j]
                 if len(group) >= max_placements_per_traj:
                     break
             trajectories.append({
@@ -752,6 +855,9 @@ def save_placements(video_id: str, data: Dict):
 
 
 def load_placements(video_id: str) -> Optional[Dict]:
+    from .cache_version import stage_version_ok
+    if not stage_version_ok("3b"):
+        return None
     path = PLACEMENTS_DIR / f"{video_id}.json"
     if path.exists():
         with open(path, "r", encoding="utf-8") as f:

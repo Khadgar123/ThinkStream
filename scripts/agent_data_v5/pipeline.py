@@ -15,6 +15,7 @@ import argparse
 import asyncio
 import json
 import logging
+import os
 import random
 from pathlib import Path
 from typing import Dict, List
@@ -360,6 +361,8 @@ async def run_pipeline(
         results = await asyncio.gather(*[process_video_1a(v) for v in videos])
         evidence_1a_map = {vid: caps for vid, caps in results}
         tracker_1a.summary()
+        from .cache_version import write_stage_version
+        write_stage_version("1a")
     else:
         from .pass1a_evidence import load_1a
         evidence_1a_map = {}
@@ -406,6 +409,8 @@ async def run_pipeline(
         results = await asyncio.gather(*[process_video_1b(v) for v in videos])
         evidence_map = {vid: ev for vid, ev in results if ev is not None}
         tracker_1b.summary()
+        from .cache_version import write_stage_version
+        write_stage_version("1b")
     else:
         from .pass1b_enrich import load_1b
         evidence_map = {}
@@ -462,6 +467,8 @@ async def run_pipeline(
         results = await asyncio.gather(*[process_video_pass2(v) for v in videos])
         rollout_map = {vid: roll for vid, roll in results}
         tracker_p2.summary()
+        from .cache_version import write_stage_version
+        write_stage_version("2")
 
         # --- Compression statistics ---
         from .pass2_rollout import compute_compression_stats
@@ -512,6 +519,8 @@ async def run_pipeline(
         results = await asyncio.gather(*[process_video_3a(v) for v in videos])
         cards_map = {vid: cards for vid, cards in results}
         tracker_3a.summary()
+        from .cache_version import write_stage_version
+        write_stage_version("3a")
     else:
         from .pass3a_cards import load_cards
         cards_map = {}
@@ -563,6 +572,8 @@ async def run_pipeline(
                 trajectories_map[vid] = data
 
         logger.info(f"Pass 3-B complete: {sum(len(d.get('trajectories',[])) for d in trajectories_map.values())} trajectories")
+        from .cache_version import write_stage_version
+        write_stage_version("3b")
     else:
         from .pass3b_placement import load_placements
         trajectories_map = {}
@@ -634,6 +645,8 @@ async def run_pipeline(
             all_samples.extend(vid_samples)
 
         tracker_3c.summary()
+        from .cache_version import write_stage_version
+        write_stage_version("3c")
     else:
         from .pass3c_samples import load_samples
         all_samples = []
@@ -788,6 +801,21 @@ async def run_pipeline(
         s["sample_id"] = f"{s.get('video_id', 'unk')}_{s.get('action', 'unk')}_{i}"
         s["phase"] = assign_phase(s)
 
+    # =================================================================
+    # PASS 3-D: IFD scoring + submodular selection (v9)
+    # Optional: enabled when --select_target > 0 (else no-op).
+    # =================================================================
+    select_target = int(os.environ.get("PASS3D_TARGET", "0"))
+    if select_target > 0 and len(sft_samples) > select_target:
+        from .pass3d_select import select_samples as _pass3d_select
+        backend = os.environ.get("PASS3D_BACKEND", "heuristic")
+        logger.info("=" * 60)
+        logger.info(f"PASS 3-D: IFD + submodular selection "
+                    f"(target={select_target}, backend={backend})")
+        logger.info("=" * 60)
+        sft_samples = _pass3d_select(sft_samples, target_count=select_target, backend=backend)
+        logger.info(f"Pass 3-D: {len(sft_samples)} samples kept after selection")
+
     # Use rendered samples for final output
     passed_samples = sft_samples
 
@@ -893,6 +921,12 @@ def main():
     run_parser.add_argument("--num_videos", type=int, default=300)
     run_parser.add_argument("--seed", type=int, default=42)
     run_parser.add_argument("--skip_pass", type=int, nargs="*", default=[])
+    run_parser.add_argument(
+        "--force_rerun_from",
+        choices=["1a", "1b", "2", "3a", "3b", "3c", "4"],
+        default=None,
+        help="Delete cache for this stage and all downstream stages, forcing regeneration.",
+    )
 
     # Stress test
     st_parser = subparsers.add_parser("stress_test", help="Test vLLM endpoint")
@@ -909,6 +943,13 @@ def main():
     )
 
     if args.command == "run":
+        if getattr(args, "force_rerun_from", None):
+            from .cache_version import invalidate_stage_and_downstream
+            logger.warning(
+                f"--force_rerun_from {args.force_rerun_from} → "
+                f"clearing cache from this stage downstream"
+            )
+            invalidate_stage_and_downstream(args.force_rerun_from)
         asyncio.run(run_pipeline(
             api_base=args.api_base,
             model=args.model,

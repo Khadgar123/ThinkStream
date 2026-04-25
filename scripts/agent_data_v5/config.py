@@ -137,7 +137,7 @@ PASS_CONTEXT_ESTIMATES = {
     "pass3a": {"input": 700, "output": 400, "thinking": 16_000},  # pure text, max_tokens=16384
     "pass3a_verify": {"input": 800, "output": 200, "thinking": 16_000},  # card verify, thinking enabled
     "pass3b_visibility": {"input": 600, "output": 100, "thinking": 16_000},  # visibility check, thinking enabled
-    "pass3c": {"input": 2_000, "output": 5_000, "thinking": 0},  # response/query gen
+    "pass3c": {"input": 2_000, "output": 5_000, "thinking": 5_000},  # response/query gen, thinking=True
 }
 
 

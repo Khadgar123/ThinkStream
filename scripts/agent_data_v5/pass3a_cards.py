@@ -27,11 +27,15 @@ from .config import (
 
 logger = logging.getLogger(__name__)
 
-# Family targets per video
+# Family targets per video.
+# v9.0: F5/F6/N1 added for OVOBench REC/FPD/HLD coverage.
 FAMILY_TARGETS = {
     "F1": 3, "F2": 4, "F3": 2, "F4": 2,
     "E1": 3, "E2": 2, "P1": 2, "C1": 2,
     "R1": 1, "S1": 2, "M1": 2,
+    "F5": 2,  # repetition counting (OVO REC)
+    "F6": 2,  # future prediction (OVO FPD)
+    "N1": 2,  # hallucination negative (OVO HLD)
 }
 
 # Retention class derived from family (not from 397B)
@@ -40,7 +44,14 @@ RETENTION_CLASS = {
     "F4": "medium", "P1": "medium", "E2": "medium",
     "C1": "medium", "R1": "medium",
     "E1": "high", "S1": "high", "M1": "high",
+    "F5": "low",      # exact count must persist
+    "F6": "medium",   # process-aware
+    "N1": "low",      # specific entity absence
 }
+
+# Families whose canonical_answer="No" indicates expected silent/refusal.
+# Used by GRPO silent_quality reward and SFT label routing.
+NEGATIVE_FAMILIES = {"N1"}
 
 # Shared output schema appended to every family prompt.
 # Solves: (1) inconsistent field names across families,
@@ -141,8 +152,14 @@ visibility_type: "transient".
 """ + _OUTPUT_SCHEMA,
 
     "S1": """Generate {n} descriptive questions about the scene.
+Question format: "Describe what is happening" / "What entities are present and what are they doing?"
 answer_form: descriptive.
 visibility_type: "persistent".
+
+ANSWER FORMAT (strict): canonical_answer must be 30-80 words containing
+3-5 SPECIFIC observations (entity descriptions + actions + spatial layout).
+DO NOT write meta-commentary like "the video shows" or "we can see".
+Each observation must be a concrete visual fact, not interpretation.
 
 {evidence}
 """ + _OUTPUT_SCHEMA,
@@ -151,6 +168,58 @@ visibility_type: "persistent".
 for continuous commentary (e.g., "Describe each step as it happens").
 answer_form: descriptive.
 visibility_type: "transient".
+
+ANSWER FORMAT (strict): canonical_answer must be 30-80 words describing
+3-5 distinct moments/steps with timestamps when visible. Format like:
+"At [t1], X happens; at [t2], Y begins; ..."
+DO NOT write meta narration. Each clause must reference a concrete visible event.
+
+{evidence}
+""" + _OUTPUT_SCHEMA,
+
+    "F5": """Based on the following video chunks, generate {n} questions about
+ACTION REPETITION COUNT (OVOBench REC).
+The action MUST repeat across multiple chunks (the chunks below show repeated occurrences).
+Question format: "How many times did the person {{verb}}?"
+answer_form: number (digits only, e.g. "3").
+visibility_type: "transient" (count is only complete after the last repetition).
+support_chunks MUST list every chunk where the repetition is observed.
+
+{evidence}
+""" + _OUTPUT_SCHEMA,
+
+    "F6": """Based on the following video chunks, generate {n} questions about
+FUTURE PREDICTION (OVOBench FPD).
+Pick a CLEAR in-progress process where the next step is OBVIOUS from the
+visible context (e.g. "person grabs knife and tomato" → next step is cutting).
+Ask what happens NEXT (within 4-8 seconds after the chunk).
+
+Question format: "What will the person do next?" or "What is about to happen?"
+Prefer answer_form: multiple_choice (4 plausible options, one is the actual continuation).
+Distractors should be plausible alternatives from the same domain (other steps in the procedure).
+visibility_type: "transient".
+support_chunks MUST be the chunks BEFORE the predicted event (not the event itself).
+
+CRITICAL: if the continuation is ambiguous, novel, or you would have to GUESS,
+SKIP this question — DO NOT fabricate. Output fewer than {n} questions if needed.
+Quality > quantity. A wrong "future prediction" gold answer poisons training.
+
+{evidence}
+""" + _OUTPUT_SCHEMA,
+
+    "N1": """Based on the following video chunks, generate {n} HALLUCINATION-NEGATIVE
+questions (OVOBench HLD).
+The question must ask about an entity, action, or attribute that is SEMANTICALLY PLAUSIBLE
+for this video genre but DOES NOT actually appear in the video.
+Examples:
+- Video shows kitchen cooking → "Is there a microwave being used?" (No, only stovetop)
+- Video shows outdoor sports → "Is the person wearing a helmet?" (No, no helmet visible)
+Question format: "Is/Does ...?" or "What color is the X?" where X never appears.
+answer_form: binary (canonical_answer MUST be "No"), or short_exact ("not present"/"never appears").
+visibility_type: "persistent" (absence holds throughout).
+support_chunks: pick 2-3 representative chunks that show the SCENE CONTEXT (not the absent entity).
+
+CRITICAL: the asked-about entity/action/attribute must NOT appear in any chunk's evidence above.
 
 {evidence}
 """ + _OUTPUT_SCHEMA,
@@ -324,6 +393,55 @@ def classify_chunks(evidence: List[Dict]) -> Dict[str, List[int]]:
             for k in range(1, len(all_cidx)):
                 if all_cidx[k] - all_cidx[k - 1] >= 5:
                     fc["R1"].append(all_cidx[k])
+
+    # ------------------------------------------------------------------
+    # F5: action repetition count (OVO REC)
+    #   Detect runs of SAME primary_action across >= 3 consecutive chunks.
+    #   Distinct from P1 which detects runs of DIFFERENT actions.
+    # ------------------------------------------------------------------
+    rep_run = []
+    rep_action = ""
+    for cap in evidence:
+        action = _get_primary_action(cap)
+        if action and action == rep_action:
+            rep_run.append(cap["chunk_idx"])
+        else:
+            if len(rep_run) >= 3:
+                fc["F5"].extend(rep_run)
+            rep_run = [cap["chunk_idx"]] if action else []
+            rep_action = action
+    if len(rep_run) >= 3:
+        fc["F5"].extend(rep_run)
+
+    # ------------------------------------------------------------------
+    # F6: future prediction (OVO FPD)
+    #   Pick chunks that (a) have state_changes or sequential action, AND
+    #   (b) have at least 2 chunks of evidence remaining after them
+    #   so the predicted continuation is observable.
+    # ------------------------------------------------------------------
+    if evidence:
+        max_idx = max(cap.get("chunk_idx", 0) for cap in evidence)
+        for cap in evidence:
+            idx = cap.get("chunk_idx", 0)
+            if idx > max_idx - 2:
+                continue  # need future evidence
+            if cap.get("state_changes") or _get_primary_action(cap):
+                fc["F6"].append(idx)
+
+    # ------------------------------------------------------------------
+    # N1: hallucination negative (OVO HLD)
+    #   Pick chunks with rich entity context (>=2 entities) so the teacher
+    #   has enough scene grounding to construct plausible-but-absent
+    #   negative questions. Distribute across the video timeline.
+    # ------------------------------------------------------------------
+    n1_candidates = [
+        cap["chunk_idx"] for cap in evidence
+        if len(cap.get("visible_entities", [])) >= 2
+    ]
+    n1_target = FAMILY_TARGETS.get("N1", 2) * 3  # 3x oversample for teacher selection
+    if n1_candidates:
+        step = max(1, len(n1_candidates) // max(n1_target, 1))
+        fc["N1"] = n1_candidates[::step][:n1_target]
 
     # Deduplicate
     for f in fc:
@@ -499,6 +617,9 @@ def save_cards(video_id: str, cards: List[Dict]):
 
 
 def load_cards(video_id: str) -> Optional[List[Dict]]:
+    from .cache_version import stage_version_ok
+    if not stage_version_ok("3a"):
+        return None
     path = TASK_CARDS_DIR / f"{video_id}.json"
     if path.exists():
         with open(path, "r", encoding="utf-8") as f:
@@ -644,6 +765,31 @@ Output JSON only:
 If ANY check fails (not answerable, not visual-dependent, or answer leaked), output:
 {{"valid": false}}"""
 
+# N1 (hallucination) needs an inverted check: the asked-about entity must NOT
+# appear in the evidence. Standard verify would mark these "not answerable".
+VERIFY_N1_PROMPT = """Verify this HALLUCINATION-NEGATIVE question card.
+The card claims the asked-about entity/action/attribute is ABSENT from the video.
+
+Evidence chunks (ALL chunks of the video, or a representative subset):
+{evidence}
+
+Card:
+- question: "{question}"
+- canonical_answer: "{canonical_answer}"  (must be "No" or equivalent absence statement)
+
+Check:
+1. Does the question ask about something specific (entity / action / attribute)?
+2. Is that thing genuinely ABSENT from every chunk of evidence above? (If it appears
+   in any chunk, the card is INVALID — answer should be Yes, not No.)
+3. Is the asked-about thing semantically plausible for this video genre (otherwise
+   the negative is too easy and not discriminative)?
+4. Is canonical_answer exactly "No" (binary) or a clear absence phrase?
+
+Output JSON only:
+{{"valid": true, "support_chunks": [chunk_idx, ...], "visibility_type": "persistent", "canonical_answer": "No"}}
+If the asked-about thing actually appears, or the question is trivial, output:
+{{"valid": false}}"""
+
 
 def _parse_verify_response(raw: Optional[str]) -> Optional[Dict]:
     """Parse verification response JSON."""
@@ -673,25 +819,47 @@ async def _verify_one_card(
         card["_verified"] = False
         return card
 
-    # Include support chunks ± 2 for context
-    search_range = set()
-    for sc in support:
-        for c in range(max(0, sc - 2), sc + 3):
-            search_range.add(c)
+    family = card.get("family", "")
+    is_negative = family in NEGATIVE_FAMILIES
 
-    ev_text = _format_evidence_for_prompt(evidence, sorted(search_range))
+    if is_negative:
+        # N1: verify against the WHOLE video (or a wide sample), not just
+        # support_chunks ± 2 — we need to confirm absence everywhere.
+        all_idx = sorted(cap.get("chunk_idx", 0) for cap in evidence)
+        # Sample up to 12 evenly-spaced chunks for context
+        if len(all_idx) > 12:
+            step = len(all_idx) // 12
+            sampled = all_idx[::step][:12]
+        else:
+            sampled = all_idx
+        ev_text = _format_evidence_for_prompt(evidence, sampled)
+    else:
+        # Include support chunks ± 2 for context
+        search_range = set()
+        for sc in support:
+            for c in range(max(0, sc - 2), sc + 3):
+                search_range.add(c)
+        ev_text = _format_evidence_for_prompt(evidence, sorted(search_range))
+
     if not ev_text.strip():
         card["_verified"] = False
         return card
 
-    prompt = VERIFY_CARD_PROMPT.format(
-        evidence=ev_text,
-        question=card.get("question", ""),
-        canonical_answer=card.get("canonical_answer", ""),
-        answer_form=card.get("answer_form", "short_exact"),
-        support_chunks=card.get("support_chunks", []),
-        visibility_type=card.get("visibility_type", "transient"),
-    )
+    if is_negative:
+        prompt = VERIFY_N1_PROMPT.format(
+            evidence=ev_text,
+            question=card.get("question", ""),
+            canonical_answer=card.get("canonical_answer", ""),
+        )
+    else:
+        prompt = VERIFY_CARD_PROMPT.format(
+            evidence=ev_text,
+            question=card.get("question", ""),
+            canonical_answer=card.get("canonical_answer", ""),
+            answer_form=card.get("answer_form", "short_exact"),
+            support_chunks=card.get("support_chunks", []),
+            visibility_type=card.get("visibility_type", "transient"),
+        )
 
     raw = await client._call_one(
         messages=[{"role": "user", "content": prompt}],

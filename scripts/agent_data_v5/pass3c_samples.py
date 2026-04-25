@@ -9,6 +9,7 @@ Maintains queries_state as it evolves (questions enter, answers accumulate).
 Output: fork_samples/{video_id}.json
 """
 
+import asyncio
 import json
 import logging
 import random
@@ -435,9 +436,11 @@ async def generate_trajectory_samples(
         base_think = _get_think(ask)
 
         if seq == "immediate_response":
-            # Fork think: rewrite with query awareness, then response
-            think = await _generate_fork_think(
-                base_think, queries_state, client, video_id, ask)
+            # v9.1: skip fork_think for immediate_response. The model answers
+            # in the same chunk, so query-aware think rewriting is wasted —
+            # the response itself proves the question was processed. Saves
+            # ~30% of fork_think 397B calls. Keep base_think (visual obs).
+            think = base_think
             resp = await _generate_response(card, snapshot, evidence, client, video_id, ask)
             if resp is None:
                 logger.warning(f"  [{video_id}] response gen failed at chunk {ask}, skipping placement")
@@ -458,37 +461,44 @@ async def generate_trajectory_samples(
 
         elif seq == "recall_success":
             _add_query(card["question"], ask)
-            # Fork think at recall point
-            think = await _generate_fork_think(
-                base_think, queries_state, client, video_id, ask)
-            query_json = await _generate_recall_query(card, snapshot, client, video_id, ask)
+            # v9.1: pre-compute the synchronous recall_result first, then
+            # gather all 4 LLM calls (fork_think, recall_query, response,
+            # recall_think) — they're all input-independent.
+            noise = random.random()
+            noise_type = "oracle" if noise < 0.7 else "noisy" if noise < 0.9 else "distractor" if noise < 0.95 else "failure"
+            recall_result = _simulate_recall_result(card, rollout, ask, noise_type)
+            is_failed = noise_type in ("distractor", "failure")
+
+            tasks = [
+                _generate_fork_think(base_think, queries_state, client, video_id, ask),
+                _generate_recall_query(card, snapshot, client, video_id, ask),
+                _generate_recall_think(card, recall_result, client, video_id, ask),
+            ]
+            if not is_failed:
+                tasks.append(_generate_response(
+                    card, snapshot, evidence, client, video_id, ask,
+                    recall_evidence=recall_result.get("text_content", "")))
+            results = await asyncio.gather(*tasks)
+            think = results[0]
+            query_json = results[1]
+            recall_think = results[2]
+            if is_failed:
+                resp = "I could not find enough evidence to answer."
+                post_action = "silent"
+            else:
+                resp = results[3]
+                if resp is None:
+                    resp = "I could not find enough evidence to answer."
+                    post_action = "silent"
+                else:
+                    post_action = "response"
+
             samples.append(_make_sample(
                 ask, "SYSTEM_PROMPT", "recall", think, queries_state,
                 snapshot=snapshot, query=query_json,
                 user_input=card["question"], trajectory_id=traj_id,
                 card_id=card["card_id"], sequence_type=seq,
             ))
-            # Post-recall: generate real recall think
-            noise = random.random()
-            noise_type = "oracle" if noise < 0.7 else "noisy" if noise < 0.9 else "distractor" if noise < 0.95 else "failure"
-            recall_result = _simulate_recall_result(card, rollout, ask, noise_type)
-            is_failed = noise_type in ("distractor", "failure")
-            if is_failed:
-                resp = "I could not find enough evidence to answer."
-                post_action = "silent"
-            else:
-                # Response must be based on what recall actually returned,
-                # not the student's snapshot. This closes the recall loop.
-                resp = await _generate_response(
-                    card, snapshot, evidence, client, video_id, ask,
-                    recall_evidence=recall_result.get("text_content", ""))
-                if resp is None:
-                    resp = "I could not find enough evidence to answer."
-                    post_action = "silent"
-                else:
-                    post_action = "response"
-            recall_think = await _generate_recall_think(
-                card, recall_result, client, video_id, ask)
             samples.append(_make_sample(
                 ask, "POST_RECALL_PROMPT", post_action, recall_think, queries_state,
                 response=resp if post_action == "response" else None,
@@ -505,40 +515,55 @@ async def generate_trajectory_samples(
 
         elif seq == "recall_fail_then_found":
             _add_query(card["question"], ask)
-            # Fork think at recall point
-            think = await _generate_fork_think(
-                base_think, queries_state, client, video_id, ask)
-            query_json = await _generate_recall_query(card, snapshot, client, video_id, ask)
+            # v9.1: queries_state stays unchanged until found_response.
+            # Pre-compute recall_result synchronously, then gather all
+            # independent LLM calls in two batches (before/after found).
+            recall_result = _simulate_recall_result(card, rollout, ask, "failure")
+            wait_chunks = kc.get("wait_silent", [])
+            found = kc.get("found_response")
+
+            # Batch 1: ask-time think + recall_query + recall_think + wait_silent thinks
+            #          + found_think + found_response (all independent, queries_state stable).
+            tasks = [
+                _generate_fork_think(base_think, queries_state, client, video_id, ask),
+                _generate_recall_query(card, snapshot, client, video_id, ask),
+                _generate_recall_think(card, recall_result, client, video_id, ask),
+            ]
+            tasks += [
+                _generate_fork_think(_get_think(wc), queries_state, client, video_id, wc)
+                for wc in wait_chunks
+            ]
+            if found is not None:
+                tasks.append(_generate_fork_think(
+                    _get_think(found), queries_state, client, video_id, found))
+                tasks.append(_generate_response(
+                    card, _get_snapshot(found), evidence, client, video_id, found))
+            results = await asyncio.gather(*tasks)
+
+            think = results[0]
+            query_json = results[1]
+            recall_think = results[2]
+            wait_thinks = results[3:3 + len(wait_chunks)]
+
             samples.append(_make_sample(
                 ask, "SYSTEM_PROMPT", "recall", think, queries_state,
                 snapshot=snapshot, query=query_json,
                 user_input=card["question"], trajectory_id=traj_id,
                 card_id=card["card_id"], sequence_type=seq,
             ))
-            # Recall fail: real recall think
-            recall_result = _simulate_recall_result(card, rollout, ask, "failure")
-            recall_think = await _generate_recall_think(
-                card, recall_result, client, video_id, ask)
             samples.append(_make_sample(
                 ask, "POST_RECALL_PROMPT", "silent", recall_think, queries_state,
                 recall_result=recall_result, trajectory_id=traj_id,
                 card_id=card["card_id"], sequence_type=seq,
             ))
-            # wait_silent: fork think (question still pending)
-            for wc in kc.get("wait_silent", []):
-                wc_think = await _generate_fork_think(
-                    _get_think(wc), queries_state, client, video_id, wc)
+            for wc, wc_think in zip(wait_chunks, wait_thinks):
                 samples.append(_make_sample(
                     wc, "SYSTEM_PROMPT", "silent", wc_think, queries_state,
                     trajectory_id=traj_id, card_id=card["card_id"], sequence_type=seq,
                 ))
-            # found_response: fork think + response
-            found = kc.get("found_response")
             if found is not None:
-                found_think = await _generate_fork_think(
-                    _get_think(found), queries_state, client, video_id, found)
-                resp = await _generate_response(card, _get_snapshot(found), evidence,
-                                                 client, video_id, found)
+                found_think = results[3 + len(wait_chunks)]
+                resp = results[4 + len(wait_chunks)]
                 if resp is None:
                     logger.warning(f"  [{video_id}] found_response gen failed at chunk {found}")
                     continue
@@ -556,29 +581,42 @@ async def generate_trajectory_samples(
 
         elif seq == "event_watch":
             _add_query(card["question"], ask)
-            # ask: fork think (question just received, event not happened)
-            think = await _generate_fork_think(
-                base_think, queries_state, client, video_id, ask)
+            # v9.1: queries_state is unchanged through ask + wait_silent + trigger
+            # (no _add_query, no answer append) — all thinks are independent of
+            # each other, so gather them all in one batch. trigger response also
+            # independent of trigger think → include in same batch.
+            wait_chunks = kc.get("wait_silent", [])
+            trigger = kc.get("trigger")
+            think_tasks = [
+                _generate_fork_think(base_think, queries_state, client, video_id, ask)
+            ]
+            think_tasks += [
+                _generate_fork_think(_get_think(wc), queries_state, client, video_id, wc)
+                for wc in wait_chunks
+            ]
+            if trigger is not None:
+                think_tasks.append(_generate_fork_think(
+                    _get_think(trigger), queries_state, client, video_id, trigger))
+                think_tasks.append(_generate_response(
+                    card, _get_snapshot(trigger), evidence, client, video_id, trigger))
+            results = await asyncio.gather(*think_tasks)
+
+            # Unpack in order: ask_think, *wait_thinks, [trigger_think, resp]
+            ask_think = results[0]
+            wait_thinks = results[1:1 + len(wait_chunks)]
             samples.append(_make_sample(
-                ask, "SYSTEM_PROMPT", "silent", think, queries_state,
+                ask, "SYSTEM_PROMPT", "silent", ask_think, queries_state,
                 user_input=card["question"], trajectory_id=traj_id,
                 card_id=card["card_id"], sequence_type=seq,
             ))
-            # wait_silent: fork think (still watching for event)
-            for wc in kc.get("wait_silent", []):
-                wc_think = await _generate_fork_think(
-                    _get_think(wc), queries_state, client, video_id, wc)
+            for wc, wc_think in zip(wait_chunks, wait_thinks):
                 samples.append(_make_sample(
                     wc, "SYSTEM_PROMPT", "silent", wc_think, queries_state,
                     trajectory_id=traj_id, card_id=card["card_id"], sequence_type=seq,
                 ))
-            # trigger: fork think + response
-            trigger = kc.get("trigger")
             if trigger is not None:
-                trigger_think = await _generate_fork_think(
-                    _get_think(trigger), queries_state, client, video_id, trigger)
-                resp = await _generate_response(card, _get_snapshot(trigger), evidence,
-                                                 client, video_id, trigger)
+                trigger_think = results[1 + len(wait_chunks)]
+                resp = results[2 + len(wait_chunks)]
                 if resp is None:
                     logger.warning(f"  [{video_id}] trigger response gen failed at chunk {trigger}")
                     continue
@@ -590,9 +628,10 @@ async def generate_trajectory_samples(
                 queries_state[-1]["answers"].append({"text": str(resp), "time": trigger * AGENT_CHUNK_SEC})
 
         elif seq == "multi_response":
-            # first response: fork think
-            think = await _generate_fork_think(
-                base_think, queries_state, client, video_id, ask)
+            # v9.1: first response at ask_chunk — skip fork_think (same logic
+            # as immediate_response). Followup chunks below STILL get fork_think
+            # because the question stays active across silent gaps.
+            think = base_think
             resp = await _generate_response(card, snapshot, evidence, client, video_id, ask)
             if resp is None:
                 logger.warning(f"  [{video_id}] multi_response gen failed at chunk {ask}, skipping")
@@ -603,23 +642,30 @@ async def generate_trajectory_samples(
                 trajectory_id=traj_id, card_id=card["card_id"], sequence_type=seq,
             ))
             _add_query(card["question"], ask, answer=resp, response_chunk=ask)
-            # no_change_silent: fork think (watching for changes)
-            for sc in kc.get("no_change_silent", []):
-                sc_think = await _generate_fork_think(
-                    _get_think(sc), queries_state, client, video_id, sc)
-                samples.append(_make_sample(
-                    sc, "SYSTEM_PROMPT", "silent", sc_think, queries_state,
-                    trajectory_id=traj_id, card_id=card["card_id"], sequence_type=seq,
-                ))
-            # followup_response: fork think + response
+            # v9.1: no_change_silent thinks all see the same queries_state
+            # (no mutation in loop) → gather them.
+            sc_chunks = kc.get("no_change_silent", [])
+            if sc_chunks:
+                sc_thinks = await asyncio.gather(*[
+                    _generate_fork_think(_get_think(sc), queries_state, client, video_id, sc)
+                    for sc in sc_chunks
+                ])
+                for sc, sc_think in zip(sc_chunks, sc_thinks):
+                    samples.append(_make_sample(
+                        sc, "SYSTEM_PROMPT", "silent", sc_think, queries_state,
+                        trajectory_id=traj_id, card_id=card["card_id"], sequence_type=seq,
+                    ))
+            # followup_response: queries_state mutates each iteration via answer
+            # append, so cross-iteration parallel is unsafe. Within-iteration
+            # gather of (fc_think, resp) is safe — both use the same queries_state.
             for fc in kc.get("followup_response", []):
-                fc_think = await _generate_fork_think(
-                    _get_think(fc), queries_state, client, video_id, fc)
                 prior = [a["text"] if isinstance(a, dict) else str(a)
                          for a in queries_state[-1]["answers"]]
-                resp = await _generate_response(card, _get_snapshot(fc), evidence,
-                                                 client, video_id, fc,
-                                                 prior_answers=prior)
+                fc_think, resp = await asyncio.gather(
+                    _generate_fork_think(_get_think(fc), queries_state, client, video_id, fc),
+                    _generate_response(card, _get_snapshot(fc), evidence,
+                                       client, video_id, fc, prior_answers=prior),
+                )
                 if resp is None:
                     logger.warning(f"  [{video_id}] followup response gen failed at chunk {fc}")
                     continue
@@ -640,7 +686,52 @@ async def generate_trajectory_samples(
     all_samples = samples + base_samples
     all_samples.sort(key=lambda s: s["chunk_idx"])
 
+    # v9: enrich compress samples with gold_caption (ICAE auxiliary loss target).
+    # Done here (post-render) so we don't have to thread evidence into helpers.
+    _enrich_compress_with_gold_caption(all_samples, rollout, evidence)
+
     return all_samples
+
+
+def _enrich_compress_with_gold_caption(
+    samples: List[Dict], rollout: Dict, evidence: List[Dict],
+) -> None:
+    """Attach gold_caption to compress samples (ICAE-style aux target).
+
+    The gold_caption is a concatenation of high-confidence atomic_facts +
+    state_changes from the chunks being compressed. The trainer can use it
+    as a reconstruction target to prevent summary degeneration into vague
+    "the person continues" platitudes.
+
+    Mutates samples in place: adds `gold_caption: str` to compress samples.
+    """
+    if not evidence:
+        return
+    ev_by_idx = {cap.get("chunk_idx", 0): cap for cap in evidence}
+    events_by_trigger = {
+        e.get("trigger_chunk"): e
+        for e in rollout.get("compression_events", [])
+    }
+
+    for s in samples:
+        if s.get("sample_type") != "compress":
+            continue
+        event = events_by_trigger.get(s["chunk_idx"])
+        if not event:
+            continue
+        compressed_chunks = event.get("compressed_thinks_chunks", [])
+        facts: List[str] = []
+        for c in compressed_chunks:
+            cap = ev_by_idx.get(c, {})
+            for f in cap.get("atomic_facts", []):
+                if f.get("confidence", 0) >= 0.75:
+                    facts.append(f["fact"])
+            for sc in cap.get("state_changes", []):
+                facts.append(str(sc))
+        # Cap at 280 tokens (~12 facts) to bound aux loss compute
+        gold_caption = " | ".join(facts[:12]).strip()
+        if gold_caption:
+            s["gold_caption"] = gold_caption
 
 
 # ---------------------------------------------------------------------------
@@ -859,6 +950,9 @@ def save_samples(video_id: str, samples: List[Dict]):
 
 
 def load_samples(video_id: str) -> Optional[List[Dict]]:
+    from .cache_version import stage_version_ok
+    if not stage_version_ok("3c"):
+        return None
     path = SAMPLES_3C_DIR / f"{video_id}.json"
     if path.exists():
         with open(path, "r", encoding="utf-8") as f:

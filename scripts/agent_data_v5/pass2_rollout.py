@@ -716,6 +716,9 @@ def save_rollout(video_id: str, rollout: Dict, output_dir: Path = ROLLOUT_DIR):
 
 
 def load_rollout(video_id: str, rollout_dir: Path = ROLLOUT_DIR) -> Optional[Dict]:
+    from .cache_version import stage_version_ok
+    if not stage_version_ok("2"):
+        return None
     path = rollout_dir / f"{video_id}.json"
     if not path.exists():
         return None

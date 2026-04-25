@@ -267,12 +267,37 @@ def _parse_json_array(raw: str) -> Optional[List]:
 
 
 def _detect_changes_fallback(evidence: List[Dict]):
-    """Fallback: entity count change between adjacent chunks."""
+    """Fallback: detect state changes when LLM did not provide them.
+
+    v9.1: tighten from "any 2-entity swing" to either:
+      (a) entity count changed by >= 3 (strong scene-level change), OR
+      (b) primary entity DESCRIPTION changed (different desc text), AND
+          count delta >= 1.
+
+    Avoids over-classifying flickering entity detection (a tomato briefly
+    occluded counts as a change) while still catching real procedural steps.
+    """
     for i in range(1, len(evidence)):
-        prev_n = len(evidence[i - 1].get("visible_entities", []))
-        curr_n = len(evidence[i].get("visible_entities", []))
-        if abs(prev_n - curr_n) >= 2:
-            evidence[i]["state_changes"] = ["entity_count_changed"]
+        prev_entities = evidence[i - 1].get("visible_entities", [])
+        curr_entities = evidence[i].get("visible_entities", [])
+        prev_n = len(prev_entities)
+        curr_n = len(curr_entities)
+        delta = abs(prev_n - curr_n)
+
+        if delta >= 3:
+            evidence[i]["state_changes"] = ["entity_count_changed_significantly"]
+            continue
+
+        # Check if dominant entity description actually changed (any count delta).
+        prev_desc = (prev_entities[0].get("desc", "") if prev_entities else "")
+        curr_desc = (curr_entities[0].get("desc", "") if curr_entities else "")
+        if prev_desc and curr_desc and prev_desc != curr_desc:
+            pw = set(prev_desc.lower().split())
+            cw = set(curr_desc.lower().split())
+            if pw and cw:
+                overlap = len(pw & cw) / min(len(pw), len(cw))
+                if overlap < 0.5:
+                    evidence[i]["state_changes"] = ["primary_entity_changed"]
 
 
 # ---------------------------------------------------------------------------
@@ -288,6 +313,9 @@ def save_1b(video_id: str, evidence: List[Dict], output_dir: Path = EVIDENCE_1B_
 
 
 def load_1b(video_id: str, evidence_dir: Path = EVIDENCE_1B_DIR) -> Optional[List[Dict]]:
+    from .cache_version import stage_version_ok
+    if not stage_version_ok("1b"):
+        return None
     path = evidence_dir / f"{video_id}.json"
     if path.exists():
         with open(path, "r", encoding="utf-8") as f:

@@ -1361,12 +1361,112 @@ def pad_and_cat(tensor_list):
     return stacked_tensor
 
 
+# ---------------------------------------------------------------------------
+# v9.0 token-type loss weighting (Agent-FLAN + T3S)
+# ---------------------------------------------------------------------------
+#
+# Per-position loss weight by token-span type, applied at trainer.compute_loss.
+# Span detection: scan input_ids for paired open/close special token IDs.
+#
+# Default (phase=None): legacy uniform weighting — returns None to short-circuit.
+#
+# Phase weights:
+#   default tokens      : 1.0
+#   <think>...</think>  : 1.0   (kept full, ppl-aware variant deferred)
+#   <action>...</action>: 2.0   (class imbalance: silent ~60% > response ~30%)
+#   <response>...</r..> : 1.0
+#   <query>...</query>  : 0.4   (structured, avoid overfitting teacher phrasing)
+#   <summary>...</s..>  : 0.6 in C1 / 0.3 in C2
+
+_TOKEN_TYPE_WEIGHTS = {
+    "C1": {"think": 1.0, "action": 2.0, "response": 1.0, "query": 0.4, "summary": 0.6},
+    "C2": {"think": 1.0, "action": 2.0, "response": 1.0, "query": 0.4, "summary": 0.3},
+    # Phase 1/2 (no compress yet) — same as C1 but summary weight irrelevant
+    "1":  {"think": 1.0, "action": 2.0, "response": 1.0, "query": 0.4, "summary": 0.6},
+    "2":  {"think": 1.0, "action": 2.0, "response": 1.0, "query": 0.4, "summary": 0.6},
+}
+
+_SPAN_OPEN_CLOSE = (
+    ("think",    "<think>",    "</think>"),
+    ("action",   "<action>",   "</action>"),
+    ("response", "<response>", "</response>"),
+    ("query",    "<query>",    "</query>"),
+    ("summary",  "<summary>",  "</summary>"),
+)
+
+
+def _resolve_special_token_ids(tokenizer) -> Dict[str, Dict[str, int]]:
+    """Resolve open/close token IDs once; tokens not found are skipped."""
+    out: Dict[str, Dict[str, int]] = {}
+    for span_name, open_tok, close_tok in _SPAN_OPEN_CLOSE:
+        try:
+            open_id = tokenizer.convert_tokens_to_ids(open_tok)
+            close_id = tokenizer.convert_tokens_to_ids(close_tok)
+        except Exception:
+            continue
+        unk = tokenizer.unk_token_id
+        if open_id is None or close_id is None or open_id == unk or close_id == unk:
+            continue
+        out[span_name] = {"open": open_id, "close": close_id}
+    return out
+
+
+def build_token_loss_weight(
+    input_ids: torch.Tensor,
+    labels: torch.Tensor,
+    tokenizer,
+    phase: Optional[str],
+) -> Optional[torch.Tensor]:
+    """Build per-position loss weight tensor by token-span type.
+
+    Returns None if phase is unset (legacy uniform weighting).
+    Tokens with label=IGNORE_INDEX get weight 0 (still ignored by loss).
+
+    input_ids: [B, T]
+    labels:    [B, T]
+    """
+    if phase is None or phase not in _TOKEN_TYPE_WEIGHTS:
+        return None
+    weights_cfg = _TOKEN_TYPE_WEIGHTS[phase]
+    span_ids = _resolve_special_token_ids(tokenizer)
+    if not span_ids:
+        return None
+
+    B, T = input_ids.shape
+    w = torch.ones((B, T), dtype=torch.float32)
+    for b in range(B):
+        ids = input_ids[b].tolist()
+        # Mark each position's span type ("default" if outside all spans).
+        in_span: Optional[str] = None
+        in_span_close_id: Optional[int] = None
+        for t in range(T):
+            tok = ids[t]
+            if in_span is None:
+                # Look for any span open
+                for span_name, pair in span_ids.items():
+                    if tok == pair["open"]:
+                        in_span = span_name
+                        in_span_close_id = pair["close"]
+                        # Open tag itself: weight = span weight
+                        w[b, t] = weights_cfg.get(span_name, 1.0)
+                        break
+            else:
+                w[b, t] = weights_cfg.get(in_span, 1.0)
+                if tok == in_span_close_id:
+                    in_span = None
+                    in_span_close_id = None
+    # Zero-out positions that don't contribute to loss anyway
+    w = w * (labels != IGNORE_INDEX).float()
+    return w
+
+
 @dataclass
 class DataCollatorForSupervisedDataset:
     """Collate examples for supervised fine-tuning."""
 
     tokenizer: transformers.PreTrainedTokenizer
     vocab_size: int
+    token_loss_phase: Optional[str] = None  # None | "1" | "2" | "C1" | "C2"
 
     def __call__(self, instances: Sequence[Dict]) -> Dict[str, torch.Tensor]:
         input_ids, labels, position_ids, video_masks = tuple(
@@ -1461,14 +1561,24 @@ class DataCollatorForSupervisedDataset:
             f"n_silent={n_silent} n_response={n_response} "
             f"w=[{ce_weight[silent_id]:.2f}, {ce_weight[response_id]:.2f}]"
         )
+
+        # v9 token-type loss weighting (per-position, span-based).
+        # If phase unset, returns None and trainer falls back to uniform.
+        token_loss_weight = build_token_loss_weight(
+            batch["input_ids"], batch["labels"], self.tokenizer, self.token_loss_phase,
+        )
+        if token_loss_weight is not None:
+            batch["token_loss_weight"] = token_loss_weight
+
         return batch
 
 
 def make_supervised_data_module(processor, data_args, vocab_size: int) -> Dict:
     """Make dataset and collator for supervised fine-tuning."""
     train_dataset = LazySupervisedDataset(processor, data_args=data_args)
+    token_loss_phase = getattr(data_args, "token_loss_phase", None)
     data_collator = DataCollatorForSupervisedDataset(
-        processor.tokenizer, vocab_size=vocab_size
+        processor.tokenizer, vocab_size=vocab_size, token_loss_phase=token_loss_phase,
     )
     return dict(
         train_dataset=train_dataset, eval_dataset=None, data_collator=data_collator

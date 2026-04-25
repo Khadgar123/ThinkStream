@@ -189,6 +189,9 @@ def save_1a(video_id: str, captions: List[Dict], output_dir: Path = EVIDENCE_1A_
 
 
 def load_1a(video_id: str, evidence_dir: Path = EVIDENCE_1A_DIR) -> Optional[List[Dict]]:
+    from .cache_version import stage_version_ok
+    if not stage_version_ok("1a"):
+        return None
     path = evidence_dir / f"{video_id}.json"
     if path.exists():
         with open(path, "r", encoding="utf-8") as f:
