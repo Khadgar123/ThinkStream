@@ -478,10 +478,10 @@ async def run_pipeline(
                 rollout_map[v["video_id"]] = cached
 
     # =================================================================
-    # PASS 3-A: Task Card Generation
+    # PASS 3-A: Task Card Generation + Verification
     # =================================================================
     if 3 not in skip_pass:
-        from .pass3a_cards import generate_cards, save_cards, load_cards
+        from .pass3a_cards import generate_cards, verify_cards, save_cards, load_cards
 
         logger.info("=" * 60)
         logger.info("PASS 3-A: Task Card Generation")
@@ -502,6 +502,8 @@ async def run_pipeline(
                 return vid, []
             async with semaphore_3a:
                 cards = await generate_cards(vid, evidence_map[vid], client)
+                # Verify each card independently (high concurrency within)
+                cards = await verify_cards(vid, cards, evidence_map[vid], client)
                 save_cards(vid, cards)
                 await tracker_3a.record(success=len(cards) > 0, video_id=vid, n_cards=len(cards))
                 return vid, cards
@@ -518,7 +520,7 @@ async def run_pipeline(
                 cards_map[v["video_id"]] = cached
 
     # =================================================================
-    # PASS 3-B: Placement + Trajectory Planning
+    # PASS 3-B: Placement + Trajectory Planning (LLM visibility)
     # =================================================================
     if 3 not in skip_pass:
         from .pass3b_placement import (
@@ -527,22 +529,23 @@ async def run_pipeline(
         )
 
         logger.info("=" * 60)
-        logger.info("PASS 3-B: Placement + Trajectory Planning")
+        logger.info("PASS 3-B: Placement + Trajectory Planning (LLM visibility)")
         logger.info("=" * 60)
 
         trajectories_map = {}
-        for v in videos:
-            vid = v["video_id"]
+
+        async def process_video_3b(video):
+            vid = video["video_id"]
             cached = load_placements(vid)
             if cached:
-                trajectories_map[vid] = cached
-                continue
+                return vid, cached
             if vid not in cards_map or vid not in rollout_map or vid not in evidence_map:
-                continue
-            placements = compute_all_placements(
-                cards_map[vid], rollout_map[vid], evidence_map[vid]
+                return vid, None
+            # LLM visibility checks inside (independent per card, high concurrency)
+            placements = await compute_all_placements(
+                cards_map[vid], rollout_map[vid], evidence_map[vid],
+                client=client, video_id=vid,
             )
-            # Build card lookup for quality-based trajectory scoring
             vid_cards = {c["card_id"]: c for c in cards_map[vid]}
             nc = rollout_map[vid]["num_chunks"]
             trajectories = plan_trajectories(
@@ -550,8 +553,13 @@ async def run_pipeline(
                 num_chunks=nc, evidence=evidence_map[vid])
             data = {"placements": placements, "trajectories": trajectories}
             save_placements(vid, data)
-            trajectories_map[vid] = data
             logger.info(f"  [{vid}] 3-B: {len(placements)} placements → {len(trajectories)} trajectories")
+            return vid, data
+
+        results = await asyncio.gather(*[process_video_3b(v) for v in videos])
+        for vid, data in results:
+            if data is not None:
+                trajectories_map[vid] = data
 
         logger.info(f"Pass 3-B complete: {sum(len(d.get('trajectories',[])) for d in trajectories_map.values())} trajectories")
     else:
@@ -576,21 +584,22 @@ async def run_pipeline(
         uncached_3c = [v for v in videos if v["video_id"] in trajectories_map]
         tracker_3c = ProgressTracker("pass3c", len(uncached_3c), AUDIT_DIR)
 
-        for v in videos:
-            vid = v["video_id"]
+        async def process_video_3c(video):
+            vid = video["video_id"]
             if vid not in trajectories_map or vid not in rollout_map or vid not in evidence_map:
-                continue
+                return vid, []
             traj_data = trajectories_map[vid]
             trajectories = traj_data.get("trajectories", [])
             if not trajectories:
-                continue
+                return vid, []
 
-            # Build card lookup
             vid_cards = {c["card_id"]: c for c in cards_map.get(vid, [])}
-            vid_samples = []
 
-            for traj in trajectories:
-                samples = await generate_trajectory_samples(
+            # Trajectories within a video are independent (each starts
+            # with empty queries_state) — run them concurrently.
+            # Only placements WITHIN a trajectory must be sequential.
+            traj_tasks = [
+                generate_trajectory_samples(
                     trajectory=traj,
                     cards_map=vid_cards,
                     rollout=rollout_map[vid],
@@ -598,16 +607,30 @@ async def run_pipeline(
                     client=client,
                     video_id=vid,
                 )
-                vid_samples.extend(samples)
+                for traj in trajectories
+            ]
+            traj_results = await asyncio.gather(*traj_tasks, return_exceptions=True)
 
-            # Add video metadata
+            vid_samples = []
+            for result in traj_results:
+                if isinstance(result, Exception):
+                    logger.error(f"  [{vid}] 3-C trajectory failed: {result}")
+                    continue
+                vid_samples.extend(result)
+
             for s in vid_samples:
                 s["video_id"] = vid
-                s["video_path"] = v.get("video_path", "")
+                s["video_path"] = video.get("video_path", "")
 
             save_samples(vid, vid_samples)
-            all_samples.extend(vid_samples)
             await tracker_3c.record(success=len(vid_samples) > 0, video_id=vid, n_samples=len(vid_samples))
+            return vid, vid_samples
+
+        # Videos are independent — run them all concurrently.
+        # Client semaphore limits actual API calls in flight.
+        results_3c = await asyncio.gather(*[process_video_3c(v) for v in videos])
+        for vid, vid_samples in results_3c:
+            all_samples.extend(vid_samples)
 
         tracker_3c.summary()
     else:

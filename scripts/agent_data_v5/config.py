@@ -135,6 +135,8 @@ PASS_CONTEXT_ESTIMATES = {
     # Pass3/4: now include video frames (~2-4 frames per request).
     # max_tokens=16384 bounds thinking time.
     "pass3a": {"input": 700, "output": 400, "thinking": 16_000},  # pure text, max_tokens=16384
+    "pass3a_verify": {"input": 800, "output": 200, "thinking": 16_000},  # card verify, thinking enabled
+    "pass3b_visibility": {"input": 600, "output": 100, "thinking": 16_000},  # visibility check, thinking enabled
     "pass3c": {"input": 2_000, "output": 5_000, "thinking": 0},  # response/query gen
 }
 
@@ -258,6 +260,18 @@ PASS_CONFIG = {
         "temperature": 0.3,
         "thinking": True,
         "concurrent": 1024,
+    },
+    "pass3a_verify": {
+        "max_tokens": 16384,
+        "temperature": 0.1,
+        "thinking": True,
+        "concurrent": 1024,    # independent per card, high concurrency
+    },
+    "pass3b_visibility": {
+        "max_tokens": 16384,
+        "temperature": 0.1,
+        "thinking": True,
+        "concurrent": 1024,    # independent per (card, chunk), high concurrency
     },
 }
 

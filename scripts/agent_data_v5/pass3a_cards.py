@@ -608,3 +608,143 @@ def extract_card_keywords(card: Dict) -> List[str]:
     else:
         # short_exact / descriptive: canonical_answer is already informative
         return extract_keywords(canonical)
+
+
+# ---------------------------------------------------------------------------
+# Card Verification (397B, independent per card, high concurrency)
+# ---------------------------------------------------------------------------
+
+VERIFY_CARD_PROMPT = """Verify this video question card against the source evidence.
+
+Evidence chunks:
+{evidence}
+
+Card:
+- question: "{question}"
+- canonical_answer: "{canonical_answer}"
+- answer_form: {answer_form}
+- support_chunks: {support_chunks}
+- visibility_type: {visibility_type}
+
+Check:
+1. Is the question answerable from the evidence above?
+2. Does the question REQUIRE visual observation to answer? Reject pure common-sense
+   questions that could be answered without watching the video (e.g. "Is water wet?").
+3. Does the question text leak the answer? (e.g. "The red apron is what color?")
+4. Which chunk indices actually contain the answer evidence?
+5. Is the answer always visible throughout the video (persistent) or only momentarily (transient)?
+6. Is canonical_answer correctly formatted?
+   - binary: exactly "Yes" or "No"
+   - multiple_choice: exactly one letter "A"/"B"/"C"/"D"
+   - number: digits only, no units
+   - short_exact: 1-5 English words, no articles
+
+Output JSON only:
+{{"valid": true, "support_chunks": [chunk_idx, ...], "visibility_type": "persistent|transient", "canonical_answer": "..."}}
+If ANY check fails (not answerable, not visual-dependent, or answer leaked), output:
+{{"valid": false}}"""
+
+
+def _parse_verify_response(raw: Optional[str]) -> Optional[Dict]:
+    """Parse verification response JSON."""
+    if not raw:
+        return None
+    raw = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip()
+    try:
+        return json.loads(raw)
+    except (json.JSONDecodeError, ValueError):
+        pass
+    start = raw.find("{")
+    end = raw.rfind("}")
+    if start >= 0 and end > start:
+        try:
+            return json.loads(raw[start:end + 1])
+        except (json.JSONDecodeError, ValueError):
+            pass
+    return None
+
+
+async def _verify_one_card(
+    card: Dict, evidence: List[Dict], client, video_id: str,
+) -> Dict:
+    """Verify one card independently. No cross-card dependency."""
+    support = card.get("support_chunks", [])
+    if not support:
+        card["_verified"] = False
+        return card
+
+    # Include support chunks ± 2 for context
+    search_range = set()
+    for sc in support:
+        for c in range(max(0, sc - 2), sc + 3):
+            search_range.add(c)
+
+    ev_text = _format_evidence_for_prompt(evidence, sorted(search_range))
+    if not ev_text.strip():
+        card["_verified"] = False
+        return card
+
+    prompt = VERIFY_CARD_PROMPT.format(
+        evidence=ev_text,
+        question=card.get("question", ""),
+        canonical_answer=card.get("canonical_answer", ""),
+        answer_form=card.get("answer_form", "short_exact"),
+        support_chunks=card.get("support_chunks", []),
+        visibility_type=card.get("visibility_type", "transient"),
+    )
+
+    raw = await client._call_one(
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=PASS_CONFIG.get("pass3a_verify", {}).get("max_tokens", 2048),
+        temperature=0.1,
+        request_id=f"{video_id}_verify_{card.get('card_id', '')}",
+    )
+
+    result = _parse_verify_response(raw)
+    if not result or not result.get("valid", False):
+        card["_verified"] = False
+        return card
+
+    # Apply fixes from verification
+    fixed_sc = result.get("support_chunks")
+    if isinstance(fixed_sc, list) and fixed_sc:
+        card["support_chunks"] = fixed_sc
+    if result.get("visibility_type") in ("persistent", "transient"):
+        card["visibility_type"] = result["visibility_type"]
+    fixed_answer = result.get("canonical_answer")
+    if isinstance(fixed_answer, str) and fixed_answer:
+        card["canonical_answer"] = fixed_answer
+
+    card["_verified"] = True
+    return card
+
+
+async def verify_cards(
+    video_id: str, cards: List[Dict], evidence: List[Dict], client,
+) -> List[Dict]:
+    """Verify all cards concurrently. Each card is an independent 397B call.
+
+    Drops invalid cards, fixes support_chunks/visibility_type/canonical_answer.
+    Returns only verified cards.
+    """
+    if not cards:
+        return []
+
+    tasks = [_verify_one_card(card, evidence, client, video_id)
+             for card in cards]
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+
+    verified = []
+    dropped = 0
+    for result in results:
+        if isinstance(result, Exception):
+            logger.error(f"  [{video_id}] verify card failed: {result}")
+            dropped += 1
+            continue
+        if result.get("_verified", False):
+            verified.append(result)
+        else:
+            dropped += 1
+
+    logger.info(f"  [{video_id}] 3-A verify: {len(verified)} passed, {dropped} dropped")
+    return verified

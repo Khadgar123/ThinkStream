@@ -32,6 +32,41 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 
 
+FORK_THINK_PROMPT = """You are a streaming video agent generating a think (incremental visual memory note).
+
+Current visual observation (from base rollout):
+{base_think}
+
+Active questions:
+{queries_text}
+
+Rewrite the think in 40-60 tokens. Include:
+1. What is NEW or CHANGED in the current visual (same as base observation)
+2. If any active question relates to what you currently see, note the relevant visual detail
+
+Rules:
+- Only observable visual facts
+- Describe entities by appearance (clothing, color, material), not by ID
+- NO meta-reasoning, NO "I think", NO "the question asks"
+- Do NOT answer the question — just note relevant observations
+- If no active question relates to current visual: output the base observation unchanged
+
+Output (one paragraph, 40-60 tokens):"""
+
+RECALL_THINK_PROMPT = """You are a streaming video agent that just received recall results.
+
+Question: "{question}"
+Recall result: {recall_text}
+Recall source: {recall_source}
+
+Write a brief analysis (20-40 tokens) of the recall result.
+- If results contain relevant evidence: note what was found and how it relates to the question
+- If results are irrelevant or empty: note the recall failed to find matching evidence
+- NO meta-reasoning ("I think"), NO sounds/smells/emotions
+- Focus on factual assessment of the retrieved content
+
+Output (one paragraph, 20-40 tokens):"""
+
 RESPONSE_GEN_PROMPT = """Generate a response for this streaming video agent:
 - Question: "{question}"
 - Available evidence: {evidence}
@@ -152,6 +187,74 @@ async def _generate_recall_query(card: Dict, snapshot: Dict,
             except (json.JSONDecodeError, ValueError):
                 pass
     return {"query": card.get("question", "")[:30], "time_range": time_range}
+
+
+async def _generate_fork_think(
+    base_think: str, queries_state: List[Dict],
+    client, video_id: str, chunk_idx: int,
+) -> str:
+    """Generate query-aware think for fork points via 397B.
+
+    Takes the pass2 base think (question-blind) and rewrites it to
+    acknowledge active questions when visually relevant. Each call
+    is independent — only needs base_think + queries_state.
+    """
+    if not queries_state:
+        return base_think  # no active questions → base think is fine
+
+    # Format active queries (unanswered only)
+    pending = [q for q in queries_state if not q.get("answers")]
+    if not pending:
+        return base_think  # all answered → no need to rewrite
+
+    queries_text = "\n".join(
+        f"- [{q.get('ask_time', '?')}s] {q['question']}"
+        for q in pending
+    )
+
+    prompt = FORK_THINK_PROMPT.format(
+        base_think=base_think,
+        queries_text=queries_text,
+    )
+
+    raw = await client._call_one(
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=PASS_CONFIG.get("pass3c", {}).get("max_tokens", 16384),
+        temperature=0.3,
+        request_id=f"{video_id}_fthink_{chunk_idx}",
+    )
+    if raw:
+        raw = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip().strip('"')
+    return raw or base_think
+
+
+async def _generate_recall_think(
+    card: Dict, recall_result: Dict,
+    client, video_id: str, chunk_idx: int,
+) -> str:
+    """Generate analysis think after recall via 397B.
+
+    Replaces the hardcoded "Recall returned relevant results." string.
+    Each call is independent.
+    """
+    recall_text = recall_result.get("text_content", "No results.")
+    recall_source = recall_result.get("source", "unknown")
+
+    prompt = RECALL_THINK_PROMPT.format(
+        question=card.get("question", ""),
+        recall_text=recall_text,
+        recall_source=recall_source,
+    )
+
+    raw = await client._call_one(
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=PASS_CONFIG.get("pass3c", {}).get("max_tokens", 16384),
+        temperature=0.3,
+        request_id=f"{video_id}_rthink_{chunk_idx}",
+    )
+    if raw:
+        raw = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip().strip('"')
+    return raw or f"Recall {'returned results' if recall_source != 'failure' else 'found no matching evidence'}."
 
 
 def _simulate_recall_result(card: Dict, rollout: Dict, ask_chunk: int,
@@ -308,9 +411,12 @@ async def generate_trajectory_samples(
         seq = placement["sequence_type"]
         ask = kc["ask"]
         snapshot = _get_snapshot(ask)
-        think = _get_think(ask)
+        base_think = _get_think(ask)
 
         if seq == "immediate_response":
+            # Fork think: rewrite with query awareness, then response
+            think = await _generate_fork_think(
+                base_think, queries_state, client, video_id, ask)
             resp = await _generate_response(card, snapshot, evidence, client, video_id, ask)
             samples.append(_make_sample(
                 ask, "SYSTEM_PROMPT", "response", think, queries_state,
@@ -318,8 +424,8 @@ async def generate_trajectory_samples(
                 user_input=card["question"], trajectory_id=traj_id,
                 card_id=card["card_id"], sequence_type=seq,
             ))
-            _add_query(card["question"], ask, answer=resp, response_chunk=ask)  # answered immediately
-            # post_silent
+            _add_query(card["question"], ask, answer=resp, response_chunk=ask)
+            # post_silent: base think OK (question already answered)
             ps = kc.get("post_silent", ask + 1)
             samples.append(_make_sample(
                 ps, "SYSTEM_PROMPT", "silent", _get_think(ps), queries_state,
@@ -327,9 +433,10 @@ async def generate_trajectory_samples(
             ))
 
         elif seq == "recall_success":
-            # Register question as pending BEFORE recall (model sees it in queries)
             _add_query(card["question"], ask)
-            # step1: recall
+            # Fork think at recall point
+            think = await _generate_fork_think(
+                base_think, queries_state, client, video_id, ask)
             query_json = await _generate_recall_query(card, snapshot, client, video_id, ask)
             samples.append(_make_sample(
                 ask, "SYSTEM_PROMPT", "recall", think, queries_state,
@@ -337,7 +444,7 @@ async def generate_trajectory_samples(
                 user_input=card["question"], trajectory_id=traj_id,
                 card_id=card["card_id"], sequence_type=seq,
             ))
-            # step2: post-recall response
+            # Post-recall: generate real recall think
             noise = random.random()
             noise_type = "oracle" if noise < 0.7 else "noisy" if noise < 0.9 else "distractor" if noise < 0.95 else "failure"
             recall_result = _simulate_recall_result(card, rollout, ask, noise_type)
@@ -348,17 +455,16 @@ async def generate_trajectory_samples(
             else:
                 resp = await _generate_response(card, snapshot, evidence, client, video_id, ask)
                 post_action = "response"
-            recall_think = "Recall returned relevant results." if not is_failed else "Recall returned no relevant results."
+            recall_think = await _generate_recall_think(
+                card, recall_result, client, video_id, ask)
             samples.append(_make_sample(
                 ask, "POST_RECALL_PROMPT", post_action, recall_think, queries_state,
                 response=resp if post_action == "response" else None,
                 recall_result=recall_result, trajectory_id=traj_id,
                 card_id=card["card_id"], sequence_type=seq,
             ))
-            # Update with answer (or leave pending if failed)
             if post_action == "response":
                 queries_state[-1]["answers"].append({"text": str(resp), "time": ask * AGENT_CHUNK_SEC})
-            # post_silent
             ps = kc.get("post_silent", ask + 1)
             samples.append(_make_sample(
                 ps, "SYSTEM_PROMPT", "silent", _get_think(ps), queries_state,
@@ -366,9 +472,10 @@ async def generate_trajectory_samples(
             ))
 
         elif seq == "recall_fail_then_found":
-            # Register question as pending BEFORE recall
             _add_query(card["question"], ask)
-            # step1: recall
+            # Fork think at recall point
+            think = await _generate_fork_think(
+                base_think, queries_state, client, video_id, ask)
             query_json = await _generate_recall_query(card, snapshot, client, video_id, ask)
             samples.append(_make_sample(
                 ask, "SYSTEM_PROMPT", "recall", think, queries_state,
@@ -376,32 +483,36 @@ async def generate_trajectory_samples(
                 user_input=card["question"], trajectory_id=traj_id,
                 card_id=card["card_id"], sequence_type=seq,
             ))
-            # step2: recall fail → silent
+            # Recall fail: real recall think
             recall_result = _simulate_recall_result(card, rollout, ask, "failure")
+            recall_think = await _generate_recall_think(
+                card, recall_result, client, video_id, ask)
             samples.append(_make_sample(
-                ask, "POST_RECALL_PROMPT", "silent",
-                "Recall returned no relevant results.", queries_state,
+                ask, "POST_RECALL_PROMPT", "silent", recall_think, queries_state,
                 recall_result=recall_result, trajectory_id=traj_id,
                 card_id=card["card_id"], sequence_type=seq,
             ))
-            # wait_silent
+            # wait_silent: fork think (question still pending)
             for wc in kc.get("wait_silent", []):
+                wc_think = await _generate_fork_think(
+                    _get_think(wc), queries_state, client, video_id, wc)
                 samples.append(_make_sample(
-                    wc, "SYSTEM_PROMPT", "silent", _get_think(wc), queries_state,
+                    wc, "SYSTEM_PROMPT", "silent", wc_think, queries_state,
                     trajectory_id=traj_id, card_id=card["card_id"], sequence_type=seq,
                 ))
-            # found_response + post_silent
+            # found_response: fork think + response
             found = kc.get("found_response")
             if found is not None:
+                found_think = await _generate_fork_think(
+                    _get_think(found), queries_state, client, video_id, found)
                 resp = await _generate_response(card, _get_snapshot(found), evidence,
                                                  client, video_id, found)
                 samples.append(_make_sample(
-                    found, "SYSTEM_PROMPT", "response", _get_think(found), queries_state,
+                    found, "SYSTEM_PROMPT", "response", found_think, queries_state,
                     response=resp, trajectory_id=traj_id,
                     card_id=card["card_id"], sequence_type=seq,
                 ))
                 queries_state[-1]["answers"].append({"text": str(resp), "time": found * AGENT_CHUNK_SEC})
-                # post_silent after found_response
                 ps = kc.get("post_silent", found + 1)
                 samples.append(_make_sample(
                     ps, "SYSTEM_PROMPT", "silent", _get_think(ps), queries_state,
@@ -409,33 +520,41 @@ async def generate_trajectory_samples(
                 ))
 
         elif seq == "event_watch":
-            # ask: silent (event not happened)
             _add_query(card["question"], ask)
+            # ask: fork think (question just received, event not happened)
+            think = await _generate_fork_think(
+                base_think, queries_state, client, video_id, ask)
             samples.append(_make_sample(
                 ask, "SYSTEM_PROMPT", "silent", think, queries_state,
                 user_input=card["question"], trajectory_id=traj_id,
                 card_id=card["card_id"], sequence_type=seq,
             ))
-            # wait_silent
+            # wait_silent: fork think (still watching for event)
             for wc in kc.get("wait_silent", []):
+                wc_think = await _generate_fork_think(
+                    _get_think(wc), queries_state, client, video_id, wc)
                 samples.append(_make_sample(
-                    wc, "SYSTEM_PROMPT", "silent", _get_think(wc), queries_state,
+                    wc, "SYSTEM_PROMPT", "silent", wc_think, queries_state,
                     trajectory_id=traj_id, card_id=card["card_id"], sequence_type=seq,
                 ))
-            # trigger: response
+            # trigger: fork think + response
             trigger = kc.get("trigger")
             if trigger is not None:
+                trigger_think = await _generate_fork_think(
+                    _get_think(trigger), queries_state, client, video_id, trigger)
                 resp = await _generate_response(card, _get_snapshot(trigger), evidence,
                                                  client, video_id, trigger)
                 samples.append(_make_sample(
-                    trigger, "SYSTEM_PROMPT", "response", _get_think(trigger), queries_state,
+                    trigger, "SYSTEM_PROMPT", "response", trigger_think, queries_state,
                     response=resp, trajectory_id=traj_id,
                     card_id=card["card_id"], sequence_type=seq,
                 ))
                 queries_state[-1]["answers"].append({"text": str(resp), "time": trigger * AGENT_CHUNK_SEC})
 
         elif seq == "multi_response":
-            # first response
+            # first response: fork think
+            think = await _generate_fork_think(
+                base_think, queries_state, client, video_id, ask)
             resp = await _generate_response(card, snapshot, evidence, client, video_id, ask)
             samples.append(_make_sample(
                 ask, "SYSTEM_PROMPT", "response", think, queries_state,
@@ -443,21 +562,25 @@ async def generate_trajectory_samples(
                 trajectory_id=traj_id, card_id=card["card_id"], sequence_type=seq,
             ))
             _add_query(card["question"], ask, answer=resp, response_chunk=ask)
-            # no_change_silent
+            # no_change_silent: fork think (watching for changes)
             for sc in kc.get("no_change_silent", []):
+                sc_think = await _generate_fork_think(
+                    _get_think(sc), queries_state, client, video_id, sc)
                 samples.append(_make_sample(
-                    sc, "SYSTEM_PROMPT", "silent", _get_think(sc), queries_state,
+                    sc, "SYSTEM_PROMPT", "silent", sc_think, queries_state,
                     trajectory_id=traj_id, card_id=card["card_id"], sequence_type=seq,
                 ))
-            # followup_response — pass prior answers to avoid repetition
+            # followup_response: fork think + response
             for fc in kc.get("followup_response", []):
+                fc_think = await _generate_fork_think(
+                    _get_think(fc), queries_state, client, video_id, fc)
                 prior = [a["text"] if isinstance(a, dict) else str(a)
                          for a in queries_state[-1]["answers"]]
                 resp = await _generate_response(card, _get_snapshot(fc), evidence,
                                                  client, video_id, fc,
                                                  prior_answers=prior)
                 samples.append(_make_sample(
-                    fc, "SYSTEM_PROMPT", "response", _get_think(fc), queries_state,
+                    fc, "SYSTEM_PROMPT", "response", fc_think, queries_state,
                     response=resp, trajectory_id=traj_id,
                     card_id=card["card_id"], sequence_type=seq,
                 ))
