@@ -95,20 +95,29 @@ Output JSON: {{"query": "keyword1 keyword2 keyword3", "time_range": "{time_range
 
 async def _generate_response(card: Dict, snapshot: Dict, evidence: List[Dict],
                               client, video_id: str, chunk_idx: int,
-                              prior_answers: List[str] = None) -> Optional[str]:
+                              prior_answers: List[str] = None,
+                              recall_evidence: str = None) -> Optional[str]:
     """Generate response text via 397B.
 
     Args:
         prior_answers: Previously generated answers for the same question
             (multi_response followups). Used to avoid repeating content.
+        recall_evidence: When provided (recall_success path), use this as
+            the evidence instead of the snapshot. This ensures the response
+            is derived from what recall actually returned, not from the
+            student's current memory state.
     """
-    # Build evidence context from what student can see
-    evidence_parts = []
-    for seg in snapshot.get("compressed_segments", []):
-        evidence_parts.append(f"[{seg['time_range']}] {seg['text'][:100]}")
-    for item in snapshot.get("recent_thinks", []):
-        evidence_parts.append(f"[{item['time']}] {item.get('text', '')}")
-    evidence_text = "\n".join(evidence_parts[-10:]) or "Current visual frames."
+    if recall_evidence:
+        # Recall path: response must be based on recall result
+        evidence_text = recall_evidence
+    else:
+        # Normal path: build evidence from what student can see
+        evidence_parts = []
+        for seg in snapshot.get("compressed_segments", []):
+            evidence_parts.append(f"[{seg['time_range']}] {seg['text'][:100]}")
+        for item in snapshot.get("recent_thinks", []):
+            evidence_parts.append(f"[{item['time']}] {item.get('text', '')}")
+        evidence_text = "\n".join(evidence_parts[-10:]) or "Current visual frames."
 
     # Build prior-answers section for multi_response dedup
     if prior_answers:
@@ -136,7 +145,9 @@ async def _generate_response(card: Dict, snapshot: Dict, evidence: List[Dict],
     )
     if raw:
         raw = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip().strip('"')
-    return raw or card.get("canonical_answer", "")
+    # Return None on failure — caller must skip this sample.
+    # Do NOT fallback to canonical_answer (format mismatch risk).
+    return raw or None
 
 
 async def _generate_recall_query(card: Dict, snapshot: Dict,
@@ -428,6 +439,9 @@ async def generate_trajectory_samples(
             think = await _generate_fork_think(
                 base_think, queries_state, client, video_id, ask)
             resp = await _generate_response(card, snapshot, evidence, client, video_id, ask)
+            if resp is None:
+                logger.warning(f"  [{video_id}] response gen failed at chunk {ask}, skipping placement")
+                continue
             samples.append(_make_sample(
                 ask, "SYSTEM_PROMPT", "response", think, queries_state,
                 snapshot=snapshot, response=resp,
@@ -463,8 +477,16 @@ async def generate_trajectory_samples(
                 resp = "I could not find enough evidence to answer."
                 post_action = "silent"
             else:
-                resp = await _generate_response(card, snapshot, evidence, client, video_id, ask)
-                post_action = "response"
+                # Response must be based on what recall actually returned,
+                # not the student's snapshot. This closes the recall loop.
+                resp = await _generate_response(
+                    card, snapshot, evidence, client, video_id, ask,
+                    recall_evidence=recall_result.get("text_content", ""))
+                if resp is None:
+                    resp = "I could not find enough evidence to answer."
+                    post_action = "silent"
+                else:
+                    post_action = "response"
             recall_think = await _generate_recall_think(
                 card, recall_result, client, video_id, ask)
             samples.append(_make_sample(
@@ -517,6 +539,9 @@ async def generate_trajectory_samples(
                     _get_think(found), queries_state, client, video_id, found)
                 resp = await _generate_response(card, _get_snapshot(found), evidence,
                                                  client, video_id, found)
+                if resp is None:
+                    logger.warning(f"  [{video_id}] found_response gen failed at chunk {found}")
+                    continue
                 samples.append(_make_sample(
                     found, "SYSTEM_PROMPT", "response", found_think, queries_state,
                     response=resp, trajectory_id=traj_id,
@@ -554,6 +579,9 @@ async def generate_trajectory_samples(
                     _get_think(trigger), queries_state, client, video_id, trigger)
                 resp = await _generate_response(card, _get_snapshot(trigger), evidence,
                                                  client, video_id, trigger)
+                if resp is None:
+                    logger.warning(f"  [{video_id}] trigger response gen failed at chunk {trigger}")
+                    continue
                 samples.append(_make_sample(
                     trigger, "SYSTEM_PROMPT", "response", trigger_think, queries_state,
                     response=resp, trajectory_id=traj_id,
@@ -566,6 +594,9 @@ async def generate_trajectory_samples(
             think = await _generate_fork_think(
                 base_think, queries_state, client, video_id, ask)
             resp = await _generate_response(card, snapshot, evidence, client, video_id, ask)
+            if resp is None:
+                logger.warning(f"  [{video_id}] multi_response gen failed at chunk {ask}, skipping")
+                continue
             samples.append(_make_sample(
                 ask, "SYSTEM_PROMPT", "response", think, queries_state,
                 response=resp, user_input=card["question"],
@@ -589,6 +620,9 @@ async def generate_trajectory_samples(
                 resp = await _generate_response(card, _get_snapshot(fc), evidence,
                                                  client, video_id, fc,
                                                  prior_answers=prior)
+                if resp is None:
+                    logger.warning(f"  [{video_id}] followup response gen failed at chunk {fc}")
+                    continue
                 samples.append(_make_sample(
                     fc, "SYSTEM_PROMPT", "response", fc_think, queries_state,
                     response=resp, trajectory_id=traj_id,

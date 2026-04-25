@@ -643,15 +643,49 @@ async def run_pipeline(
                 all_samples.extend(cached)
 
     # =================================================================
-    # PASS 4: Verify + Filter
+    # RENDER: Convert raw samples into SFT-ready format (BEFORE Pass4)
+    # =================================================================
+    # Render MUST happen before Pass4 because Pass4's semantic checks
+    # depend on fields that render creates:
+    #   - metadata.gold_answer (question-answer leakage check)
+    #   - metadata.support_chunks (recall evidence reachability)
+    #   - input.memory (compression ratio/provenance/retention checks)
+    from .render_samples import render_video_samples
+
+    logger.info("=" * 60)
+    logger.info("RENDER: Building SFT-ready samples")
+    logger.info("=" * 60)
+
+    # Group raw samples by video for rendering
+    raw_by_vid = {}
+    for s in all_samples:
+        vid = s.get("video_id", "unknown")
+        raw_by_vid.setdefault(vid, []).append(s)
+
+    rendered_samples = []
+    for vid, vid_samples in raw_by_vid.items():
+        if vid not in rollout_map:
+            logger.warning(f"  [{vid}] no rollout for render, skipping")
+            continue
+        v_info = next((v for v in videos if v["video_id"] == vid), {})
+        video_path = v_info.get("video_path", "")
+        vid_cards = {c["card_id"]: c for c in cards_map.get(vid, [])}
+        rendered = render_video_samples(
+            vid_samples, rollout_map[vid], video_path, vid, vid_cards)
+        rendered_samples.extend(rendered)
+
+    logger.info(f"Rendered {len(rendered_samples)} samples from {len(raw_by_vid)} videos")
+
+    # =================================================================
+    # PASS 4: Verify + Filter (on RENDERED samples with full metadata)
     # =================================================================
     from .pass4_verify import filter_samples, save_verified
 
     logger.info("=" * 60)
-    logger.info("PASS 4: Verify + Filter")
+    logger.info("PASS 4: Verify + Filter (on rendered samples)")
     logger.info("=" * 60)
 
-    passed_samples, stats = filter_samples(all_samples)
+    passed_samples, stats = filter_samples(rendered_samples)
     logger.info(f"Verification: {stats['passed']}/{stats['total']} passed ({stats['pass_rate']:.1%})")
     logger.info(f"Fail reasons: {stats['fail_reasons']}")
     logger.info(f"Action dist: {stats['action_distribution']}")
@@ -667,46 +701,30 @@ async def run_pipeline(
         save_verified(vid, vid_samples, {"video_id": vid, "count": len(vid_samples)})
 
     # =================================================================
-    # RENDER: Convert verified samples into SFT-ready format
+    # POST-FILTER: Enforce caps + distribution audit
     # =================================================================
-    from .render_samples import render_video_samples
-
-    logger.info("=" * 60)
-    logger.info("RENDER: Building SFT-ready samples")
-    logger.info("=" * 60)
-
     sft_samples = []
-    per_video_stats = {}  # {vid: {count, families, seq_types, actions}}
+    per_video_stats = {}
 
     for vid, vid_samples in verified_by_vid.items():
-        if vid not in rollout_map:
-            logger.warning(f"  [{vid}] no rollout for render, skipping")
-            continue
-        v_info = next((v for v in videos if v["video_id"] == vid), {})
-        video_path = v_info.get("video_path", "")
-        vid_cards = {c["card_id"]: c for c in cards_map.get(vid, [])}
-        rendered = render_video_samples(
-            vid_samples, rollout_map[vid], video_path, vid, vid_cards)
-
         # Enforce MAX_SAMPLES_PER_VIDEO cap
-        if MAX_SAMPLES_PER_VIDEO > 0 and len(rendered) > MAX_SAMPLES_PER_VIDEO:
+        if MAX_SAMPLES_PER_VIDEO > 0 and len(vid_samples) > MAX_SAMPLES_PER_VIDEO:
             logger.warning(
-                f"  [{vid}] {len(rendered)} samples exceeds cap {MAX_SAMPLES_PER_VIDEO}, "
+                f"  [{vid}] {len(vid_samples)} samples exceeds cap {MAX_SAMPLES_PER_VIDEO}, "
                 f"truncating (keeping diverse sample types)")
-            # Prioritize: response > recall > compress > silent
             priority = {"response": 0, "recall_query": 1, "recall_response": 1,
                         "compress": 2, "silent": 3, "recall_silent": 3}
-            rendered.sort(key=lambda s: (
+            vid_samples.sort(key=lambda s: (
                 priority.get(s.get("sample_type", "silent"), 4),
                 s.get("chunk_idx", 0),
             ))
-            rendered = rendered[:MAX_SAMPLES_PER_VIDEO]
+            vid_samples = vid_samples[:MAX_SAMPLES_PER_VIDEO]
 
         # Collect per-video distribution stats
         vid_families = {}
         vid_seq_types = {}
         vid_actions = {}
-        for s in rendered:
+        for s in vid_samples:
             fam = s.get("metadata", {}).get("family", "?")
             vid_families[fam] = vid_families.get(fam, 0) + 1
             seq = s.get("sequence_type", "?")
@@ -715,13 +733,13 @@ async def run_pipeline(
             vid_actions[act] = vid_actions.get(act, 0) + 1
 
         per_video_stats[vid] = {
-            "count": len(rendered),
+            "count": len(vid_samples),
             "families": vid_families,
             "sequence_types": vid_seq_types,
             "actions": vid_actions,
         }
 
-        sft_samples.extend(rendered)
+        sft_samples.extend(vid_samples)
 
     logger.info(f"Rendered {len(sft_samples)} SFT samples from {len(verified_by_vid)} videos")
 
