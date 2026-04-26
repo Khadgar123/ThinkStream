@@ -295,7 +295,10 @@ async def run_pipeline(
 
     # --- Setup ---
     # Client cap = max safe concurrency across all passes; per-pass semaphores
-    # enforce tighter limits.
+    # enforce tighter limits. NOTE: pass3c is included here (was missing) and
+    # ALSO gets its own semaphore in process_video_3c — both are required:
+    # the client-level cap is the hard ceiling, the per-pass semaphore is the
+    # actual rate limiter for that pass.
     client = VLLMClient(
         api_base=api_base,
         model=model,
@@ -304,6 +307,7 @@ async def run_pipeline(
             safe_concurrency_for_pass("pass1b"),
             safe_concurrency_for_pass("pass2_rollout"),
             safe_concurrency_for_pass("pass3a"),
+            safe_concurrency_for_pass("pass3c"),
         ),
     )
 
@@ -596,6 +600,19 @@ async def run_pipeline(
         uncached_3c = [v for v in videos if v["video_id"] in trajectories_map]
         tracker_3c = ProgressTracker("pass3c", len(uncached_3c), AUDIT_DIR)
 
+        # ── Per-pass concurrency enforcement ──
+        # pass3c calls go through `client._call_one` which uses the client's
+        # internal semaphore (sized to `max_concurrent` of all passes — likely
+        # 1024). To enforce pass3c's tighter PASS_CONFIG limit, swap the
+        # client's semaphore for a pass3c-sized one for the duration of pass3c.
+        pass3c_conc = safe_concurrency_for_pass("pass3c")
+        logger.info(f"PASS 3-C: enforcing concurrency={pass3c_conc} "
+                    f"(was client default {client.max_concurrent})")
+        _saved_sem = client.semaphore
+        _saved_max = client.max_concurrent
+        client.semaphore = asyncio.Semaphore(pass3c_conc)
+        client.max_concurrent = pass3c_conc
+
         async def process_video_3c(video):
             vid = video["video_id"]
             if vid not in trajectories_map or vid not in rollout_map or vid not in evidence_map:
@@ -639,10 +656,17 @@ async def run_pipeline(
             return vid, vid_samples
 
         # Videos are independent — run them all concurrently.
-        # Client semaphore limits actual API calls in flight.
-        results_3c = await asyncio.gather(*[process_video_3c(v) for v in videos])
-        for vid, vid_samples in results_3c:
-            all_samples.extend(vid_samples)
+        # Client semaphore (now pass3c-sized) limits actual API calls in flight.
+        try:
+            results_3c = await asyncio.gather(*[process_video_3c(v) for v in videos])
+            for vid, vid_samples in results_3c:
+                all_samples.extend(vid_samples)
+        finally:
+            # Restore the client's original semaphore so subsequent passes use
+            # the full client cap. (Currently pass3c is the last LLM-calling
+            # pass before render/Pass4, but be safe in case the order changes.)
+            client.semaphore = _saved_sem
+            client.max_concurrent = _saved_max
 
         tracker_3c.summary()
         from .cache_version import write_stage_version
