@@ -1,0 +1,2303 @@
+{
+  "samples": [
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 0,
+          "video_end": 4,
+          "frames": 4
+        },
+        "memory": {
+          "compressed_segments": [],
+          "recent_thinks": [
+            "[0-2] The text \"Arvind G\" transitions from a diagonal slant to a horizontal position at the top. A geometric diagram appears centrally, featuring a hexagon with red nodes connected by thick black and thinner grey lines. Below this graphic, the text \"Hands-0\" is displayed in black font against the white background."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The upper text completes to display \"Arvind Gupta Toys\" in black font. Below the central diagram, the caption changes from \"Hands-0\" to \"Hands-on Science\". The geometric hexagon structure with red nodes and connecting lines in the center remains unchanged during these textual updates.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/F4tIIAzHnHU.mp4",
+      "video_id": "F4tIIAzHnHU",
+      "chunk_idx": 1,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 0,
+          "video_end": 6,
+          "frames": 6
+        },
+        "memory": {
+          "compressed_segments": [],
+          "recent_thinks": [
+            "[0-2] The text \"Arvind G\" transitions from a diagonal slant to a horizontal position at the top. A geometric diagram appears centrally, featuring a hexagon with red nodes connected by thick black and thinner grey lines. Below this graphic, the text \"Hands-0\" is displayed in black font against the white background.",
+            "[2-4] The upper text completes to display \"Arvind Gupta Toys\" in black font. Below the central diagram, the caption changes from \"Hands-0\" to \"Hands-on Science\". The geometric hexagon structure with red nodes and connecting lines in the center remains unchanged during these textual updates."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The scene cuts to a blue background featuring a toy car made from a clear plastic bottle with button wheels. A red balloon is attached via a green straw. A hand rests on the left. Yellow text \"TOYS FROM TRASH\" and green text \"JET CAR\" appear. A subtitle regarding French dubbing is added at the bottom.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/F4tIIAzHnHU.mp4",
+      "video_id": "F4tIIAzHnHU",
+      "chunk_idx": 2,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 0,
+          "video_end": 24,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-4] Text \"Arvind G\" shifts from a diagonal slant to a horizontal position at the top, completing to \"Arvind Gupta Toys\". A central geometric hexagon diagram featuring red nodes connected by thick black and thinner grey lines appears centrally. Below this graphic, the caption changes from \"Hands-0\" to \"Hands-on Science\" in black font.\n[4-8] The scene cuts to a blue background featuring a toy car constructed from a clear plastic bottle with button wheels. A red balloon is attached via a green straw. A hand rests on the left side of the car. Yellow text \"TOYS FROM TRASH\" and green text \"JET CAR\" appear. A subtitle \"Dubbed in French by Louis Jourdin (Les petits derovillards)\" is added before fading to black.\n[8-12] A blue background appears displaying the yellow title \"MATERIALS\". Below, labeled components are arranged: a small plastic bottle with button wheels and a needle, a red balloon, a rubber band, and a green bent straw. White text labels clearly identify each item: \"NEEDLE\", \"BIG BUTTONS\", \"SMALL PLASTIC BOTTLE\", \"BALLOON\", \"RUBBER BAND\", and \"BENT STRAW\" against the blue surface. The static display persists."
+            }
+          ],
+          "recent_thinks": [
+            "[12-14] The static materials display cuts to a hand holding the assembled bottle car against a blue background. The red balloon is attached to the green straw mounted on the bottle's top. Yellow text reading \"BOTTLE JET CAR\" appears in the lower left corner, labeling the completed toy vehicle with button wheels.",
+            "[14-16] A hand holds the assembled bottle car against a blue background. The vehicle features a clear plastic bottle with button wheels and a red balloon attached to a green straw on top. Yellow text reading \"BOTTLE JET CAR\" appears in the lower left corner as the hand displays the toy.",
+            "[16-18] A hand tilts the clear plastic bottle car upwards, displaying the underside with button wheels mounted on needle axles. The red balloon is now located inside the bottle, attached to the green straw extending from the rear. The yellow caption 'BOTTLE JET CAR' persists in the lower left corner on the blue surface.",
+            "[18-20] A hand holds the clear plastic bottle car tilted upwards, exposing the underside. Button wheels are mounted on needle axles with straw segments acting as bushings. A red balloon is visible inside the bottle attached to the green straw. Yellow text at the bottom updates to read \"BUTTON WHEELS + NEEDLE AXLE + STRAW BUSH\".",
+            "[20-22] The hand continues holding the clear bottle car tilted up against a blue background, revealing the underside assembly. Button wheels spin on needle axles with straw bushings. Inside, a red balloon connects to a green straw. The yellow caption \"BUTTON WHEELS + NEEDLE AXLE + STRAW BUSH\" remains visible at the bottom."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>A hand holds the clear plastic bottle car tilted upwards against a blue background, revealing button wheels on needle axles. Inside, a red balloon connects to a green straw. The yellow caption at the bottom changes to read \"BENT STRAW + BALLOON\", highlighting the internal propulsion components.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/F4tIIAzHnHU.mp4",
+      "video_id": "F4tIIAzHnHU",
+      "chunk_idx": 11,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 2,
+          "video_end": 26,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-4] Text \"Arvind G\" shifts from a diagonal slant to a horizontal position at the top, completing to \"Arvind Gupta Toys\". A central geometric hexagon diagram featuring red nodes connected by thick black and thinner grey lines appears centrally. Below this graphic, the caption changes from \"Hands-0\" to \"Hands-on Science\" in black font.\n[4-8] The scene cuts to a blue background featuring a toy car constructed from a clear plastic bottle with button wheels. A red balloon is attached via a green straw. A hand rests on the left side of the car. Yellow text \"TOYS FROM TRASH\" and green text \"JET CAR\" appear. A subtitle \"Dubbed in French by Louis Jourdin (Les petits derovillards)\" is added before fading to black.\n[8-12] A blue background appears displaying the yellow title \"MATERIALS\". Below, labeled components are arranged: a small plastic bottle with button wheels and a needle, a red balloon, a rubber band, and a green bent straw. White text labels clearly identify each item: \"NEEDLE\", \"BIG BUTTONS\", \"SMALL PLASTIC BOTTLE\", \"BALLOON\", \"RUBBER BAND\", and \"BENT STRAW\" against the blue surface. The static display persists."
+            }
+          ],
+          "recent_thinks": [
+            "[12-14] The static materials display cuts to a hand holding the assembled bottle car against a blue background. The red balloon is attached to the green straw mounted on the bottle's top. Yellow text reading \"BOTTLE JET CAR\" appears in the lower left corner, labeling the completed toy vehicle with button wheels.",
+            "[14-16] A hand holds the assembled bottle car against a blue background. The vehicle features a clear plastic bottle with button wheels and a red balloon attached to a green straw on top. Yellow text reading \"BOTTLE JET CAR\" appears in the lower left corner as the hand displays the toy.",
+            "[16-18] A hand tilts the clear plastic bottle car upwards, displaying the underside with button wheels mounted on needle axles. The red balloon is now located inside the bottle, attached to the green straw extending from the rear. The yellow caption 'BOTTLE JET CAR' persists in the lower left corner on the blue surface.",
+            "[18-20] A hand holds the clear plastic bottle car tilted upwards, exposing the underside. Button wheels are mounted on needle axles with straw segments acting as bushings. A red balloon is visible inside the bottle attached to the green straw. Yellow text at the bottom updates to read \"BUTTON WHEELS + NEEDLE AXLE + STRAW BUSH\".",
+            "[20-22] The hand continues holding the clear bottle car tilted up against a blue background, revealing the underside assembly. Button wheels spin on needle axles with straw bushings. Inside, a red balloon connects to a green straw. The yellow caption \"BUTTON WHEELS + NEEDLE AXLE + STRAW BUSH\" remains visible at the bottom.",
+            "[22-24] A hand holds the clear plastic bottle car tilted upwards against a blue background, revealing button wheels on needle axles. Inside, a red balloon connects to a green straw. The yellow caption at the bottom changes to read \"BENT STRAW + BALLOON\", highlighting the internal propulsion components."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The hand rotates the clear bottle car, displaying the green straw running through the interior. The red balloon is attached to the straw inside the bottle. The yellow text 'BENT STRAW + BALLOON' remains at the bottom, labeling the internal components against the blue background.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/F4tIIAzHnHU.mp4",
+      "video_id": "F4tIIAzHnHU",
+      "chunk_idx": 12,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 32,
+          "video_end": 56,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-4] Text \"Arvind G\" shifts from a diagonal slant to a horizontal position at the top, completing to \"Arvind Gupta Toys\". A central geometric hexagon diagram featuring red nodes connected by thick black and thinner grey lines appears centrally. Below this graphic, the caption changes from \"Hands-0\" to \"Hands-on Science\" in black font.\n[4-8] The scene cuts to a blue background featuring a toy car constructed from a clear plastic bottle with button wheels. A red balloon is attached via a green straw. A hand rests on the left side of the car. Yellow text \"TOYS FROM TRASH\" and green text \"JET CAR\" appear. A subtitle \"Dubbed in French by Louis Jourdin (Les petits derovillards)\" is added before fading to black.\n[8-12] A blue background appears displaying the yellow title \"MATERIALS\". Below, labeled components are arranged: a small plastic bottle with button wheels and a needle, a red balloon, a rubber band, and a green bent straw. White text labels clearly identify each item: \"NEEDLE\", \"BIG BUTTONS\", \"SMALL PLASTIC BOTTLE\", \"BALLOON\", \"RUBBER BAND\", and \"BENT STRAW\" against the blue surface. The static display persists."
+            },
+            {
+              "time_range": [
+                14,
+                26
+              ],
+              "text": "[14-18] A hand holds a clear plastic bottle car with button wheels and a red balloon on a green straw, captioned \"BOTTLE JET CAR\". The car is tilted upwards to show the underside and the red balloon located inside the bottle.\n[18-22] The yellow text changes to \"BUTTON WHEELS + NEEDLE AXLE + STRAW BUSH\" as the hand maintains the tilt, revealing button wheels mounted on needle axles with straw segments acting as bushings.\n[22-26] The caption updates to \"BENT STRAW + BALLOON\" while the hand rotates the vehicle, displaying the internal green straw connected to the red balloon against the blue background."
+            },
+            {
+              "time_range": [
+                26,
+                38
+              ],
+              "text": "[26-30] Against a blue background, a hand displays a DIY car made from a clear plastic bottle with wooden button wheels on needle axles. A red balloon is attached to a green straw inside. The text \"BENT STRAW + BALLOON\" is visible as the car rotates from an underside view to a side profile.\n[30-32] The background changes to a grey textured wall. A man with dark hair and a mustache holds the bottle car near his face. The yellow text updates to \"INFLATE BALLOON & CLOSE STRAW\".\n[32-38] The man blows into the green straw, inflating the red balloon. It expands from a small shape into a large, spherical balloon attached to the top of the vehicle. He holds the clear bottle steady with puffed cheeks as the balloon reaches full inflation."
+            },
+            {
+              "time_range": [
+                38,
+                50
+              ],
+              "text": "[38-42] A man holds a clear plastic bottle car with yellow button wheels and a fully inflated red balloon against a grey wall, pinching the green straw to trap air while \"INFLATE BALLOON & CLOSE STRAW\" is displayed. [42-46] The setting changes to a grey floor where a hand places the car down as the text updates to \"PLACE ON FLOOR & LET GO !!\". The hand releases the vehicle, and escaping air propels it forward. [46-50] The car rolls across the polished floor toward background office furniture as the red balloon deflates, eventually moving out of sight while the text remains on screen."
+            }
+          ],
+          "recent_thinks": [
+            "[12-14] The static materials display cuts to a hand holding the assembled bottle car against a blue background. The red balloon is attached to the green straw mounted on the bottle's top. Yellow text reading \"BOTTLE JET CAR\" appears in the lower left corner, labeling the completed toy vehicle with button wheels.",
+            "[50-52] The scene cuts from the distant empty room back to a close-up view where a hand holds the clear plastic bottle car with the inflated red balloon resting on a grey surface. The green straw and button wheels are clearly visible as the vehicle is held stationary.",
+            "[52-54] A hand holds the clear plastic bottle car with an inflated red balloon stationary on a grey surface. The vehicle is released and propels forward across the floor, driven by escaping air from the balloon as it moves away from the camera."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The clear plastic bottle car with the inflated red balloon continues rolling away from the camera across the polished grey floor. It travels towards the background office area, passing near white partitions and a potted plant, becoming smaller in the frame as it maintains forward momentum.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/F4tIIAzHnHU.mp4",
+      "video_id": "F4tIIAzHnHU",
+      "chunk_idx": 27,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "question_window",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 34,
+          "video_end": 58,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-4] Text \"Arvind G\" shifts from a diagonal slant to a horizontal position at the top, completing to \"Arvind Gupta Toys\". A central geometric hexagon diagram featuring red nodes connected by thick black and thinner grey lines appears centrally. Below this graphic, the caption changes from \"Hands-0\" to \"Hands-on Science\" in black font.\n[4-8] The scene cuts to a blue background featuring a toy car constructed from a clear plastic bottle with button wheels. A red balloon is attached via a green straw. A hand rests on the left side of the car. Yellow text \"TOYS FROM TRASH\" and green text \"JET CAR\" appear. A subtitle \"Dubbed in French by Louis Jourdin (Les petits derovillards)\" is added before fading to black.\n[8-12] A blue background appears displaying the yellow title \"MATERIALS\". Below, labeled components are arranged: a small plastic bottle with button wheels and a needle, a red balloon, a rubber band, and a green bent straw. White text labels clearly identify each item: \"NEEDLE\", \"BIG BUTTONS\", \"SMALL PLASTIC BOTTLE\", \"BALLOON\", \"RUBBER BAND\", and \"BENT STRAW\" against the blue surface. The static display persists."
+            },
+            {
+              "time_range": [
+                14,
+                26
+              ],
+              "text": "[14-18] A hand holds a clear plastic bottle car with button wheels and a red balloon on a green straw, captioned \"BOTTLE JET CAR\". The car is tilted upwards to show the underside and the red balloon located inside the bottle.\n[18-22] The yellow text changes to \"BUTTON WHEELS + NEEDLE AXLE + STRAW BUSH\" as the hand maintains the tilt, revealing button wheels mounted on needle axles with straw segments acting as bushings.\n[22-26] The caption updates to \"BENT STRAW + BALLOON\" while the hand rotates the vehicle, displaying the internal green straw connected to the red balloon against the blue background."
+            },
+            {
+              "time_range": [
+                26,
+                38
+              ],
+              "text": "[26-30] Against a blue background, a hand displays a DIY car made from a clear plastic bottle with wooden button wheels on needle axles. A red balloon is attached to a green straw inside. The text \"BENT STRAW + BALLOON\" is visible as the car rotates from an underside view to a side profile.\n[30-32] The background changes to a grey textured wall. A man with dark hair and a mustache holds the bottle car near his face. The yellow text updates to \"INFLATE BALLOON & CLOSE STRAW\".\n[32-38] The man blows into the green straw, inflating the red balloon. It expands from a small shape into a large, spherical balloon attached to the top of the vehicle. He holds the clear bottle steady with puffed cheeks as the balloon reaches full inflation."
+            },
+            {
+              "time_range": [
+                38,
+                50
+              ],
+              "text": "[38-42] A man holds a clear plastic bottle car with yellow button wheels and a fully inflated red balloon against a grey wall, pinching the green straw to trap air while \"INFLATE BALLOON & CLOSE STRAW\" is displayed. [42-46] The setting changes to a grey floor where a hand places the car down as the text updates to \"PLACE ON FLOOR & LET GO !!\". The hand releases the vehicle, and escaping air propels it forward. [46-50] The car rolls across the polished floor toward background office furniture as the red balloon deflates, eventually moving out of sight while the text remains on screen."
+            }
+          ],
+          "recent_thinks": [
+            "[12-14] The static materials display cuts to a hand holding the assembled bottle car against a blue background. The red balloon is attached to the green straw mounted on the bottle's top. Yellow text reading \"BOTTLE JET CAR\" appears in the lower left corner, labeling the completed toy vehicle with button wheels.",
+            "[50-52] The scene cuts from the distant empty room back to a close-up view where a hand holds the clear plastic bottle car with the inflated red balloon resting on a grey surface. The green straw and button wheels are clearly visible as the vehicle is held stationary.",
+            "[52-54] A hand holds the clear plastic bottle car with an inflated red balloon stationary on a grey surface. The vehicle is released and propels forward across the floor, driven by escaping air from the balloon as it moves away from the camera.",
+            "[54-56] The clear plastic bottle car with the inflated red balloon continues rolling away from the camera across the polished grey floor. It travels towards the background office area, passing near white partitions and a potted plant, becoming smaller in the frame as it maintains forward momentum."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The toy car moves further away across the shiny floor, reaching the far left area near a white cabinet and seating. The red balloon remains attached as the vehicle travels into the distance, appearing smaller against the backdrop of office furniture and windows.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/F4tIIAzHnHU.mp4",
+      "video_id": "F4tIIAzHnHU",
+      "chunk_idx": 28,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "question_window",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 42,
+          "video_end": 66,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-4] Text \"Arvind G\" shifts from a diagonal slant to a horizontal position at the top, completing to \"Arvind Gupta Toys\". A central geometric hexagon diagram featuring red nodes connected by thick black and thinner grey lines appears centrally. Below this graphic, the caption changes from \"Hands-0\" to \"Hands-on Science\" in black font.\n[4-8] The scene cuts to a blue background featuring a toy car constructed from a clear plastic bottle with button wheels. A red balloon is attached via a green straw. A hand rests on the left side of the car. Yellow text \"TOYS FROM TRASH\" and green text \"JET CAR\" appear. A subtitle \"Dubbed in French by Louis Jourdin (Les petits derovillards)\" is added before fading to black.\n[8-12] A blue background appears displaying the yellow title \"MATERIALS\". Below, labeled components are arranged: a small plastic bottle with button wheels and a needle, a red balloon, a rubber band, and a green bent straw. White text labels clearly identify each item: \"NEEDLE\", \"BIG BUTTONS\", \"SMALL PLASTIC BOTTLE\", \"BALLOON\", \"RUBBER BAND\", and \"BENT STRAW\" against the blue surface. The static display persists."
+            },
+            {
+              "time_range": [
+                14,
+                26
+              ],
+              "text": "[14-18] A hand holds a clear plastic bottle car with button wheels and a red balloon on a green straw, captioned \"BOTTLE JET CAR\". The car is tilted upwards to show the underside and the red balloon located inside the bottle.\n[18-22] The yellow text changes to \"BUTTON WHEELS + NEEDLE AXLE + STRAW BUSH\" as the hand maintains the tilt, revealing button wheels mounted on needle axles with straw segments acting as bushings.\n[22-26] The caption updates to \"BENT STRAW + BALLOON\" while the hand rotates the vehicle, displaying the internal green straw connected to the red balloon against the blue background."
+            },
+            {
+              "time_range": [
+                26,
+                38
+              ],
+              "text": "[26-30] Against a blue background, a hand displays a DIY car made from a clear plastic bottle with wooden button wheels on needle axles. A red balloon is attached to a green straw inside. The text \"BENT STRAW + BALLOON\" is visible as the car rotates from an underside view to a side profile.\n[30-32] The background changes to a grey textured wall. A man with dark hair and a mustache holds the bottle car near his face. The yellow text updates to \"INFLATE BALLOON & CLOSE STRAW\".\n[32-38] The man blows into the green straw, inflating the red balloon. It expands from a small shape into a large, spherical balloon attached to the top of the vehicle. He holds the clear bottle steady with puffed cheeks as the balloon reaches full inflation."
+            },
+            {
+              "time_range": [
+                38,
+                50
+              ],
+              "text": "[38-42] A man holds a clear plastic bottle car with yellow button wheels and a fully inflated red balloon against a grey wall, pinching the green straw to trap air while \"INFLATE BALLOON & CLOSE STRAW\" is displayed. [42-46] The setting changes to a grey floor where a hand places the car down as the text updates to \"PLACE ON FLOOR & LET GO !!\". The hand releases the vehicle, and escaping air propels it forward. [46-50] The car rolls across the polished floor toward background office furniture as the red balloon deflates, eventually moving out of sight while the text remains on screen."
+            },
+            {
+              "time_range": [
+                50,
+                62
+              ],
+              "text": "[50-54] A hand holds a clear plastic bottle car with an inflated red balloon, green straw, and button wheels stationary on a grey surface, then releases it. [54-60] The car propels forward across the polished floor, moving away from the camera past white partitions and a potted plant towards the far left near a white cabinet and brown chairs by a window. [60-62] The scene cuts to an end screen with text boxes \"Click here to suggest activities for our future videos\" and \"Click here to subscribe and know more about our future videos\". Thumbnails show \"TOYS FROM TRASH D.C. MOTOR\" and \"TOYS FROM TRASH MAGNETIC LEVITATION\". The footer displays \"www.arvindguptatoys.com\", social icons, and credits: \"Ashok Rupner, Dr. Vidula Mhaiskar, Shivaji Mane, Jyoti Hiremath, Arvind Gupta, Manish Jain\"."
+            }
+          ],
+          "recent_thinks": [
+            "[12-14] The static materials display cuts to a hand holding the assembled bottle car against a blue background. The red balloon is attached to the green straw mounted on the bottle's top. Yellow text reading \"BOTTLE JET CAR\" appears in the lower left corner, labeling the completed toy vehicle with button wheels.",
+            "[62-64] The end screen persists with top text boxes. The lower video thumbnails update to show hands interacting with the projects: a hand holds a copper coil over a battery on the left, and a hand holds a rod on a pink board on the right. Credits text appears at the bottom left above the website URL."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The end screen remains with static top text boxes. The bottom left thumbnail updates to show a copper coil spinning above a battery with yellow text \"PLACE COIL MAKE MOTOR SPIN!\". The bottom right thumbnail changes to display a striped rod floating above a pink base with yellow text \"FRICTIONL\".</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/F4tIIAzHnHU.mp4",
+      "video_id": "F4tIIAzHnHU",
+      "chunk_idx": 32,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 44,
+          "video_end": 68,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-4] Text \"Arvind G\" shifts from a diagonal slant to a horizontal position at the top, completing to \"Arvind Gupta Toys\". A central geometric hexagon diagram featuring red nodes connected by thick black and thinner grey lines appears centrally. Below this graphic, the caption changes from \"Hands-0\" to \"Hands-on Science\" in black font.\n[4-8] The scene cuts to a blue background featuring a toy car constructed from a clear plastic bottle with button wheels. A red balloon is attached via a green straw. A hand rests on the left side of the car. Yellow text \"TOYS FROM TRASH\" and green text \"JET CAR\" appear. A subtitle \"Dubbed in French by Louis Jourdin (Les petits derovillards)\" is added before fading to black.\n[8-12] A blue background appears displaying the yellow title \"MATERIALS\". Below, labeled components are arranged: a small plastic bottle with button wheels and a needle, a red balloon, a rubber band, and a green bent straw. White text labels clearly identify each item: \"NEEDLE\", \"BIG BUTTONS\", \"SMALL PLASTIC BOTTLE\", \"BALLOON\", \"RUBBER BAND\", and \"BENT STRAW\" against the blue surface. The static display persists."
+            },
+            {
+              "time_range": [
+                14,
+                26
+              ],
+              "text": "[14-18] A hand holds a clear plastic bottle car with button wheels and a red balloon on a green straw, captioned \"BOTTLE JET CAR\". The car is tilted upwards to show the underside and the red balloon located inside the bottle.\n[18-22] The yellow text changes to \"BUTTON WHEELS + NEEDLE AXLE + STRAW BUSH\" as the hand maintains the tilt, revealing button wheels mounted on needle axles with straw segments acting as bushings.\n[22-26] The caption updates to \"BENT STRAW + BALLOON\" while the hand rotates the vehicle, displaying the internal green straw connected to the red balloon against the blue background."
+            },
+            {
+              "time_range": [
+                26,
+                38
+              ],
+              "text": "[26-30] Against a blue background, a hand displays a DIY car made from a clear plastic bottle with wooden button wheels on needle axles. A red balloon is attached to a green straw inside. The text \"BENT STRAW + BALLOON\" is visible as the car rotates from an underside view to a side profile.\n[30-32] The background changes to a grey textured wall. A man with dark hair and a mustache holds the bottle car near his face. The yellow text updates to \"INFLATE BALLOON & CLOSE STRAW\".\n[32-38] The man blows into the green straw, inflating the red balloon. It expands from a small shape into a large, spherical balloon attached to the top of the vehicle. He holds the clear bottle steady with puffed cheeks as the balloon reaches full inflation."
+            },
+            {
+              "time_range": [
+                38,
+                50
+              ],
+              "text": "[38-42] A man holds a clear plastic bottle car with yellow button wheels and a fully inflated red balloon against a grey wall, pinching the green straw to trap air while \"INFLATE BALLOON & CLOSE STRAW\" is displayed. [42-46] The setting changes to a grey floor where a hand places the car down as the text updates to \"PLACE ON FLOOR & LET GO !!\". The hand releases the vehicle, and escaping air propels it forward. [46-50] The car rolls across the polished floor toward background office furniture as the red balloon deflates, eventually moving out of sight while the text remains on screen."
+            },
+            {
+              "time_range": [
+                50,
+                62
+              ],
+              "text": "[50-54] A hand holds a clear plastic bottle car with an inflated red balloon, green straw, and button wheels stationary on a grey surface, then releases it. [54-60] The car propels forward across the polished floor, moving away from the camera past white partitions and a potted plant towards the far left near a white cabinet and brown chairs by a window. [60-62] The scene cuts to an end screen with text boxes \"Click here to suggest activities for our future videos\" and \"Click here to subscribe and know more about our future videos\". Thumbnails show \"TOYS FROM TRASH D.C. MOTOR\" and \"TOYS FROM TRASH MAGNETIC LEVITATION\". The footer displays \"www.arvindguptatoys.com\", social icons, and credits: \"Ashok Rupner, Dr. Vidula Mhaiskar, Shivaji Mane, Jyoti Hiremath, Arvind Gupta, Manish Jain\"."
+            }
+          ],
+          "recent_thinks": [
+            "[12-14] The static materials display cuts to a hand holding the assembled bottle car against a blue background. The red balloon is attached to the green straw mounted on the bottle's top. Yellow text reading \"BOTTLE JET CAR\" appears in the lower left corner, labeling the completed toy vehicle with button wheels.",
+            "[62-64] The end screen persists with top text boxes. The lower video thumbnails update to show hands interacting with the projects: a hand holds a copper coil over a battery on the left, and a hand holds a rod on a pink board on the right. Credits text appears at the bottom left above the website URL.",
+            "[64-66] The end screen remains with static top text boxes. The bottom left thumbnail updates to show a copper coil spinning above a battery with yellow text \"PLACE COIL MAKE MOTOR SPIN!\". The bottom right thumbnail changes to display a striped rod floating above a pink base with yellow text \"FRICTIONL\"."
+          ]
+        },
+        "queries": [
+          {
+            "question": "What action does the clear plastic bottle car perform in the room view?",
+            "answers": []
+          }
+        ],
+        "user_input": "What action does the clear plastic bottle car perform in the room view?",
+        "recall_result": null
+      },
+      "output": "<think>The end screen persists. In the bottom right thumbnail, yellow text completes to \"FRICTIONLESS FLOATING PENCIL !! MINI MAG-LEV TRAIN !!!\". In the bottom left thumbnail, a hand holds a magnet above the coil with text \"BRING ANOTHER MAGNET\". Top boxes and footer remain static.</think><action>recall</action><query>{\"query\": \"What action does the clear pla\", \"time_range\": \"0-66\"}</query>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/F4tIIAzHnHU.mp4",
+      "video_id": "F4tIIAzHnHU",
+      "chunk_idx": 33,
+      "sample_type": "recall_query",
+      "action": "recall",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "recall_success",
+      "trajectory_id": "traj_0",
+      "card_id": "F4tIIAzHnHU_E1_012",
+      "metadata": {
+        "gold_action": "recall",
+        "gold_answer": "Exits frame",
+        "answer_form": "short_exact",
+        "family": "E1",
+        "availability": "recall_success",
+        "support_chunks": [
+          23
+        ]
+      },
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "medium",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 44,
+          "video_end": 68,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-4] Text \"Arvind G\" shifts from a diagonal slant to a horizontal position at the top, completing to \"Arvind Gupta Toys\". A central geometric hexagon diagram featuring red nodes connected by thick black and thinner grey lines appears centrally. Below this graphic, the caption changes from \"Hands-0\" to \"Hands-on Science\" in black font.\n[4-8] The scene cuts to a blue background featuring a toy car constructed from a clear plastic bottle with button wheels. A red balloon is attached via a green straw. A hand rests on the left side of the car. Yellow text \"TOYS FROM TRASH\" and green text \"JET CAR\" appear. A subtitle \"Dubbed in French by Louis Jourdin (Les petits derovillards)\" is added before fading to black.\n[8-12] A blue background appears displaying the yellow title \"MATERIALS\". Below, labeled components are arranged: a small plastic bottle with button wheels and a needle, a red balloon, a rubber band, and a green bent straw. White text labels clearly identify each item: \"NEEDLE\", \"BIG BUTTONS\", \"SMALL PLASTIC BOTTLE\", \"BALLOON\", \"RUBBER BAND\", and \"BENT STRAW\" against the blue surface. The static display persists."
+            },
+            {
+              "time_range": [
+                14,
+                26
+              ],
+              "text": "[14-18] A hand holds a clear plastic bottle car with button wheels and a red balloon on a green straw, captioned \"BOTTLE JET CAR\". The car is tilted upwards to show the underside and the red balloon located inside the bottle.\n[18-22] The yellow text changes to \"BUTTON WHEELS + NEEDLE AXLE + STRAW BUSH\" as the hand maintains the tilt, revealing button wheels mounted on needle axles with straw segments acting as bushings.\n[22-26] The caption updates to \"BENT STRAW + BALLOON\" while the hand rotates the vehicle, displaying the internal green straw connected to the red balloon against the blue background."
+            },
+            {
+              "time_range": [
+                26,
+                38
+              ],
+              "text": "[26-30] Against a blue background, a hand displays a DIY car made from a clear plastic bottle with wooden button wheels on needle axles. A red balloon is attached to a green straw inside. The text \"BENT STRAW + BALLOON\" is visible as the car rotates from an underside view to a side profile.\n[30-32] The background changes to a grey textured wall. A man with dark hair and a mustache holds the bottle car near his face. The yellow text updates to \"INFLATE BALLOON & CLOSE STRAW\".\n[32-38] The man blows into the green straw, inflating the red balloon. It expands from a small shape into a large, spherical balloon attached to the top of the vehicle. He holds the clear bottle steady with puffed cheeks as the balloon reaches full inflation."
+            },
+            {
+              "time_range": [
+                38,
+                50
+              ],
+              "text": "[38-42] A man holds a clear plastic bottle car with yellow button wheels and a fully inflated red balloon against a grey wall, pinching the green straw to trap air while \"INFLATE BALLOON & CLOSE STRAW\" is displayed. [42-46] The setting changes to a grey floor where a hand places the car down as the text updates to \"PLACE ON FLOOR & LET GO !!\". The hand releases the vehicle, and escaping air propels it forward. [46-50] The car rolls across the polished floor toward background office furniture as the red balloon deflates, eventually moving out of sight while the text remains on screen."
+            },
+            {
+              "time_range": [
+                50,
+                62
+              ],
+              "text": "[50-54] A hand holds a clear plastic bottle car with an inflated red balloon, green straw, and button wheels stationary on a grey surface, then releases it. [54-60] The car propels forward across the polished floor, moving away from the camera past white partitions and a potted plant towards the far left near a white cabinet and brown chairs by a window. [60-62] The scene cuts to an end screen with text boxes \"Click here to suggest activities for our future videos\" and \"Click here to subscribe and know more about our future videos\". Thumbnails show \"TOYS FROM TRASH D.C. MOTOR\" and \"TOYS FROM TRASH MAGNETIC LEVITATION\". The footer displays \"www.arvindguptatoys.com\", social icons, and credits: \"Ashok Rupner, Dr. Vidula Mhaiskar, Shivaji Mane, Jyoti Hiremath, Arvind Gupta, Manish Jain\"."
+            }
+          ],
+          "recent_thinks": [
+            "[12-14] The static materials display cuts to a hand holding the assembled bottle car against a blue background. The red balloon is attached to the green straw mounted on the bottle's top. Yellow text reading \"BOTTLE JET CAR\" appears in the lower left corner, labeling the completed toy vehicle with button wheels.",
+            "[62-64] The end screen persists with top text boxes. The lower video thumbnails update to show hands interacting with the projects: a hand holds a copper coil over a battery on the left, and a hand holds a rod on a pink board on the right. Credits text appears at the bottom left above the website URL.",
+            "[64-66] The end screen remains with static top text boxes. The bottom left thumbnail updates to show a copper coil spinning above a battery with yellow text \"PLACE COIL MAKE MOTOR SPIN!\". The bottom right thumbnail changes to display a striped rod floating above a pink base with yellow text \"FRICTIONL\"."
+          ]
+        },
+        "queries": [
+          {
+            "question": "What action does the clear plastic bottle car perform in the room view?",
+            "answers": []
+          }
+        ],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The end screen persists. In the bottom right thumbnail, yellow text completes to \"FRICTIONLESS FLOATING PENCIL !! MINI MAG-LEV TRAIN !!!\". In the bottom left thumbnail, a hand holds a magnet above the coil with text \"BRING ANOTHER MAGNET\". Top boxes and footer remain static.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/F4tIIAzHnHU.mp4",
+      "video_id": "F4tIIAzHnHU",
+      "chunk_idx": 33,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "recall_success",
+      "trajectory_id": "traj_0",
+      "card_id": "F4tIIAzHnHU_E1_012",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "Exits frame",
+        "answer_form": "short_exact",
+        "family": "E1",
+        "availability": "recall_success",
+        "support_chunks": [
+          23
+        ]
+      },
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 0,
+          "video_end": 4,
+          "frames": 4
+        },
+        "memory": {
+          "compressed_segments": [],
+          "recent_thinks": [
+            "[0-2] The text \"Arvind G\" transitions from a diagonal slant to a horizontal position at the top. A geometric diagram appears centrally, featuring a hexagon with red nodes connected by thick black and thinner grey lines. Below this graphic, the text \"Hands-0\" is displayed in black font against the white background."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The upper text completes to display \"Arvind Gupta Toys\" in black font. Below the central diagram, the caption changes from \"Hands-0\" to \"Hands-on Science\". The geometric hexagon structure with red nodes and connecting lines in the center remains unchanged during these textual updates.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/F4tIIAzHnHU.mp4",
+      "video_id": "F4tIIAzHnHU",
+      "chunk_idx": 1,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 0,
+          "video_end": 6,
+          "frames": 6
+        },
+        "memory": {
+          "compressed_segments": [],
+          "recent_thinks": [
+            "[0-2] The text \"Arvind G\" transitions from a diagonal slant to a horizontal position at the top. A geometric diagram appears centrally, featuring a hexagon with red nodes connected by thick black and thinner grey lines. Below this graphic, the text \"Hands-0\" is displayed in black font against the white background.",
+            "[2-4] The upper text completes to display \"Arvind Gupta Toys\" in black font. Below the central diagram, the caption changes from \"Hands-0\" to \"Hands-on Science\". The geometric hexagon structure with red nodes and connecting lines in the center remains unchanged during these textual updates."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The scene cuts to a blue background featuring a toy car made from a clear plastic bottle with button wheels. A red balloon is attached via a green straw. A hand rests on the left. Yellow text \"TOYS FROM TRASH\" and green text \"JET CAR\" appear. A subtitle regarding French dubbing is added at the bottom.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/F4tIIAzHnHU.mp4",
+      "video_id": "F4tIIAzHnHU",
+      "chunk_idx": 2,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 12,
+          "video_end": 36,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-4] Text \"Arvind G\" shifts from a diagonal slant to a horizontal position at the top, completing to \"Arvind Gupta Toys\". A central geometric hexagon diagram featuring red nodes connected by thick black and thinner grey lines appears centrally. Below this graphic, the caption changes from \"Hands-0\" to \"Hands-on Science\" in black font.\n[4-8] The scene cuts to a blue background featuring a toy car constructed from a clear plastic bottle with button wheels. A red balloon is attached via a green straw. A hand rests on the left side of the car. Yellow text \"TOYS FROM TRASH\" and green text \"JET CAR\" appear. A subtitle \"Dubbed in French by Louis Jourdin (Les petits derovillards)\" is added before fading to black.\n[8-12] A blue background appears displaying the yellow title \"MATERIALS\". Below, labeled components are arranged: a small plastic bottle with button wheels and a needle, a red balloon, a rubber band, and a green bent straw. White text labels clearly identify each item: \"NEEDLE\", \"BIG BUTTONS\", \"SMALL PLASTIC BOTTLE\", \"BALLOON\", \"RUBBER BAND\", and \"BENT STRAW\" against the blue surface. The static display persists."
+            },
+            {
+              "time_range": [
+                14,
+                26
+              ],
+              "text": "[14-18] A hand holds a clear plastic bottle car with button wheels and a red balloon on a green straw, captioned \"BOTTLE JET CAR\". The car is tilted upwards to show the underside and the red balloon located inside the bottle.\n[18-22] The yellow text changes to \"BUTTON WHEELS + NEEDLE AXLE + STRAW BUSH\" as the hand maintains the tilt, revealing button wheels mounted on needle axles with straw segments acting as bushings.\n[22-26] The caption updates to \"BENT STRAW + BALLOON\" while the hand rotates the vehicle, displaying the internal green straw connected to the red balloon against the blue background."
+            }
+          ],
+          "recent_thinks": [
+            "[12-14] The static materials display cuts to a hand holding the assembled bottle car against a blue background. The red balloon is attached to the green straw mounted on the bottle's top. Yellow text reading \"BOTTLE JET CAR\" appears in the lower left corner, labeling the completed toy vehicle with button wheels.",
+            "[26-28] A hand holds the clear bottle car tilted against a blue background, displaying the underside with button wheels on needle axles. Inside, a red balloon is attached to a green straw. The yellow text 'BENT STRAW + BALLOON' remains at the bottom. The car is rotated slightly to show the internal components and wheel assembly clearly.",
+            "[28-30] A hand rotates the clear plastic bottle car from a tilted underside angle to an upright side profile against a blue background. The red balloon attached to the green straw is visible inside the bottle. Button wheels on needle axles are seen on the sides. The yellow text \"BENT STRAW + BALLOON\" remains at the bottom.",
+            "[30-32] The blue background is replaced by a grey wall as a man with dark hair and a mustache appears in profile on the left. He holds the bottle car near his face. The yellow text at the bottom updates to \"INFLATE BALLOON & CLOSE STRAW\". The red balloon and green straw assembly remains attached to the clear bottle.",
+            "[32-34] A man holds the bottle car and blows into the green straw. The red balloon inflates, becoming round and taut. The text 'INFLATE BALLOON & CLOSE STRAW' is displayed in yellow at the bottom left against a grey wall background."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The man continues blowing into the green straw, causing the red balloon attached to the bottle car to inflate further into a large, spherical shape. He holds the clear plastic vehicle steady against a grey textured wall. The yellow caption \"INFLATE BALLOON & CLOSE STRAW\" persists at the bottom left.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/F4tIIAzHnHU.mp4",
+      "video_id": "F4tIIAzHnHU",
+      "chunk_idx": 17,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "System: memory token budget exceeded. Compress the specified thinks into a summary.\n\nOutput: <summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n\nRules: retain ALL entity names, visual attributes, OCR text, numbers, and state changes.",
+        "visual_window": {
+          "video_start": 16,
+          "video_end": 40,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-4] Text \"Arvind G\" shifts from a diagonal slant to a horizontal position at the top, completing to \"Arvind Gupta Toys\". A central geometric hexagon diagram featuring red nodes connected by thick black and thinner grey lines appears centrally. Below this graphic, the caption changes from \"Hands-0\" to \"Hands-on Science\" in black font.\n[4-8] The scene cuts to a blue background featuring a toy car constructed from a clear plastic bottle with button wheels. A red balloon is attached via a green straw. A hand rests on the left side of the car. Yellow text \"TOYS FROM TRASH\" and green text \"JET CAR\" appear. A subtitle \"Dubbed in French by Louis Jourdin (Les petits derovillards)\" is added before fading to black.\n[8-12] A blue background appears displaying the yellow title \"MATERIALS\". Below, labeled components are arranged: a small plastic bottle with button wheels and a needle, a red balloon, a rubber band, and a green bent straw. White text labels clearly identify each item: \"NEEDLE\", \"BIG BUTTONS\", \"SMALL PLASTIC BOTTLE\", \"BALLOON\", \"RUBBER BAND\", and \"BENT STRAW\" against the blue surface. The static display persists."
+            },
+            {
+              "time_range": [
+                14,
+                26
+              ],
+              "text": "[14-18] A hand holds a clear plastic bottle car with button wheels and a red balloon on a green straw, captioned \"BOTTLE JET CAR\". The car is tilted upwards to show the underside and the red balloon located inside the bottle.\n[18-22] The yellow text changes to \"BUTTON WHEELS + NEEDLE AXLE + STRAW BUSH\" as the hand maintains the tilt, revealing button wheels mounted on needle axles with straw segments acting as bushings.\n[22-26] The caption updates to \"BENT STRAW + BALLOON\" while the hand rotates the vehicle, displaying the internal green straw connected to the red balloon against the blue background."
+            }
+          ],
+          "recent_thinks": [
+            "[12-14] The static materials display cuts to a hand holding the assembled bottle car against a blue background. The red balloon is attached to the green straw mounted on the bottle's top. Yellow text reading \"BOTTLE JET CAR\" appears in the lower left corner, labeling the completed toy vehicle with button wheels.",
+            "[26-28] A hand holds the clear bottle car tilted against a blue background, displaying the underside with button wheels on needle axles. Inside, a red balloon is attached to a green straw. The yellow text 'BENT STRAW + BALLOON' remains at the bottom. The car is rotated slightly to show the internal components and wheel assembly clearly.",
+            "[28-30] A hand rotates the clear plastic bottle car from a tilted underside angle to an upright side profile against a blue background. The red balloon attached to the green straw is visible inside the bottle. Button wheels on needle axles are seen on the sides. The yellow text \"BENT STRAW + BALLOON\" remains at the bottom.",
+            "[30-32] The blue background is replaced by a grey wall as a man with dark hair and a mustache appears in profile on the left. He holds the bottle car near his face. The yellow text at the bottom updates to \"INFLATE BALLOON & CLOSE STRAW\". The red balloon and green straw assembly remains attached to the clear bottle.",
+            "[32-34] A man holds the bottle car and blows into the green straw. The red balloon inflates, becoming round and taut. The text 'INFLATE BALLOON & CLOSE STRAW' is displayed in yellow at the bottom left against a grey wall background.",
+            "[34-36] The man continues blowing into the green straw, causing the red balloon attached to the bottle car to inflate further into a large, spherical shape. He holds the clear plastic vehicle steady against a grey textured wall. The yellow caption \"INFLATE BALLOON & CLOSE STRAW\" persists at the bottom left.",
+            "[36-38] The man continues blowing into the green straw, expanding the red balloon into a large sphere. He holds the clear plastic bottle car steady against a grey wall. The yellow text 'INFLATE BALLOON & CLOSE STRAW' remains at the bottom left. His cheeks are puffed as he forces air into the balloon attached to the vehicle."
+          ]
+        },
+        "queries": [],
+        "user_input": "<compress_trigger range=\"26-38\"/>",
+        "recall_result": null
+      },
+      "output": "<think>The man ceases blowing and pinches the green straw shut with his fingers to trap air inside the fully inflated red balloon. He holds the clear plastic bottle car steady against the grey wall while the yellow caption \"INFLATE BALLOON & CLOSE STRAW\" remains displayed at the bottom left corner.</think><action>compress</action><summary>{\"time_range\": [26, 38], \"text\": \"[26-30] Against a blue background, a hand displays a DIY car made from a clear plastic bottle with wooden button wheels on needle axles. A red balloon is attached to a green straw inside. The text \\\"BENT STRAW + BALLOON\\\" is visible as the car rotates from an underside view to a side profile.\\n[30-32] The background changes to a grey textured wall. A man with dark hair and a mustache holds the bottle car near his face. The yellow text updates to \\\"INFLATE BALLOON & CLOSE STRAW\\\".\\n[32-38] The man blows into the green straw, inflating the red balloon. It expands from a small shape into a large, spherical balloon attached to the top of the vehicle. He holds the clear bottle steady with puffed cheeks as the balloon reaches full inflation.\", \"parse_success\": true}</summary>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/F4tIIAzHnHU.mp4",
+      "video_id": "F4tIIAzHnHU",
+      "chunk_idx": 19,
+      "sample_type": "compress",
+      "action": "compress",
+      "prompt_type": "COMPRESS_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "compress",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "medium",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 22,
+          "video_end": 46,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-4] Text \"Arvind G\" shifts from a diagonal slant to a horizontal position at the top, completing to \"Arvind Gupta Toys\". A central geometric hexagon diagram featuring red nodes connected by thick black and thinner grey lines appears centrally. Below this graphic, the caption changes from \"Hands-0\" to \"Hands-on Science\" in black font.\n[4-8] The scene cuts to a blue background featuring a toy car constructed from a clear plastic bottle with button wheels. A red balloon is attached via a green straw. A hand rests on the left side of the car. Yellow text \"TOYS FROM TRASH\" and green text \"JET CAR\" appear. A subtitle \"Dubbed in French by Louis Jourdin (Les petits derovillards)\" is added before fading to black.\n[8-12] A blue background appears displaying the yellow title \"MATERIALS\". Below, labeled components are arranged: a small plastic bottle with button wheels and a needle, a red balloon, a rubber band, and a green bent straw. White text labels clearly identify each item: \"NEEDLE\", \"BIG BUTTONS\", \"SMALL PLASTIC BOTTLE\", \"BALLOON\", \"RUBBER BAND\", and \"BENT STRAW\" against the blue surface. The static display persists."
+            },
+            {
+              "time_range": [
+                14,
+                26
+              ],
+              "text": "[14-18] A hand holds a clear plastic bottle car with button wheels and a red balloon on a green straw, captioned \"BOTTLE JET CAR\". The car is tilted upwards to show the underside and the red balloon located inside the bottle.\n[18-22] The yellow text changes to \"BUTTON WHEELS + NEEDLE AXLE + STRAW BUSH\" as the hand maintains the tilt, revealing button wheels mounted on needle axles with straw segments acting as bushings.\n[22-26] The caption updates to \"BENT STRAW + BALLOON\" while the hand rotates the vehicle, displaying the internal green straw connected to the red balloon against the blue background."
+            },
+            {
+              "time_range": [
+                26,
+                38
+              ],
+              "text": "[26-30] Against a blue background, a hand displays a DIY car made from a clear plastic bottle with wooden button wheels on needle axles. A red balloon is attached to a green straw inside. The text \"BENT STRAW + BALLOON\" is visible as the car rotates from an underside view to a side profile.\n[30-32] The background changes to a grey textured wall. A man with dark hair and a mustache holds the bottle car near his face. The yellow text updates to \"INFLATE BALLOON & CLOSE STRAW\".\n[32-38] The man blows into the green straw, inflating the red balloon. It expands from a small shape into a large, spherical balloon attached to the top of the vehicle. He holds the clear bottle steady with puffed cheeks as the balloon reaches full inflation."
+            }
+          ],
+          "recent_thinks": [
+            "[12-14] The static materials display cuts to a hand holding the assembled bottle car against a blue background. The red balloon is attached to the green straw mounted on the bottle's top. Yellow text reading \"BOTTLE JET CAR\" appears in the lower left corner, labeling the completed toy vehicle with button wheels.",
+            "[38-40] The man ceases blowing and pinches the green straw shut with his fingers to trap air inside the fully inflated red balloon. He holds the clear plastic bottle car steady against the grey wall while the yellow caption \"INFLATE BALLOON & CLOSE STRAW\" remains displayed at the bottom left corner.",
+            "[40-42] The man holds the clear bottle car with the large red balloon fully inflated against a grey wall. He pinches the green straw with his fingers to trap the air inside. The yellow instructional text overlay disappears from the bottom left corner as he maintains his grip on the stationary vehicle.",
+            "[42-44] The scene transitions to a grey floor where the bottle car rests with its red balloon inflated. A hand holds the vehicle steady on the surface. Yellow text appears in the lower left corner displaying the instruction \"PLACE ON FLOOR & LET GO !!\"."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>A hand releases the clear plastic bottle car on a grey floor. Propelled by air escaping the red balloon, the vehicle rolls forward away from the camera. The yellow text \"PLACE ON FLOOR & LET GO !!\" remains overlaid in the bottom left corner as the car travels across the smooth surface.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/F4tIIAzHnHU.mp4",
+      "video_id": "F4tIIAzHnHU",
+      "chunk_idx": 22,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "question_window",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "System: memory token budget exceeded. Compress the specified thinks into a summary.\n\nOutput: <summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n\nRules: retain ALL entity names, visual attributes, OCR text, numbers, and state changes.",
+        "visual_window": {
+          "video_start": 28,
+          "video_end": 52,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-4] Text \"Arvind G\" shifts from a diagonal slant to a horizontal position at the top, completing to \"Arvind Gupta Toys\". A central geometric hexagon diagram featuring red nodes connected by thick black and thinner grey lines appears centrally. Below this graphic, the caption changes from \"Hands-0\" to \"Hands-on Science\" in black font.\n[4-8] The scene cuts to a blue background featuring a toy car constructed from a clear plastic bottle with button wheels. A red balloon is attached via a green straw. A hand rests on the left side of the car. Yellow text \"TOYS FROM TRASH\" and green text \"JET CAR\" appear. A subtitle \"Dubbed in French by Louis Jourdin (Les petits derovillards)\" is added before fading to black.\n[8-12] A blue background appears displaying the yellow title \"MATERIALS\". Below, labeled components are arranged: a small plastic bottle with button wheels and a needle, a red balloon, a rubber band, and a green bent straw. White text labels clearly identify each item: \"NEEDLE\", \"BIG BUTTONS\", \"SMALL PLASTIC BOTTLE\", \"BALLOON\", \"RUBBER BAND\", and \"BENT STRAW\" against the blue surface. The static display persists."
+            },
+            {
+              "time_range": [
+                14,
+                26
+              ],
+              "text": "[14-18] A hand holds a clear plastic bottle car with button wheels and a red balloon on a green straw, captioned \"BOTTLE JET CAR\". The car is tilted upwards to show the underside and the red balloon located inside the bottle.\n[18-22] The yellow text changes to \"BUTTON WHEELS + NEEDLE AXLE + STRAW BUSH\" as the hand maintains the tilt, revealing button wheels mounted on needle axles with straw segments acting as bushings.\n[22-26] The caption updates to \"BENT STRAW + BALLOON\" while the hand rotates the vehicle, displaying the internal green straw connected to the red balloon against the blue background."
+            },
+            {
+              "time_range": [
+                26,
+                38
+              ],
+              "text": "[26-30] Against a blue background, a hand displays a DIY car made from a clear plastic bottle with wooden button wheels on needle axles. A red balloon is attached to a green straw inside. The text \"BENT STRAW + BALLOON\" is visible as the car rotates from an underside view to a side profile.\n[30-32] The background changes to a grey textured wall. A man with dark hair and a mustache holds the bottle car near his face. The yellow text updates to \"INFLATE BALLOON & CLOSE STRAW\".\n[32-38] The man blows into the green straw, inflating the red balloon. It expands from a small shape into a large, spherical balloon attached to the top of the vehicle. He holds the clear bottle steady with puffed cheeks as the balloon reaches full inflation."
+            }
+          ],
+          "recent_thinks": [
+            "[12-14] The static materials display cuts to a hand holding the assembled bottle car against a blue background. The red balloon is attached to the green straw mounted on the bottle's top. Yellow text reading \"BOTTLE JET CAR\" appears in the lower left corner, labeling the completed toy vehicle with button wheels.",
+            "[38-40] The man ceases blowing and pinches the green straw shut with his fingers to trap air inside the fully inflated red balloon. He holds the clear plastic bottle car steady against the grey wall while the yellow caption \"INFLATE BALLOON & CLOSE STRAW\" remains displayed at the bottom left corner.",
+            "[40-42] The man holds the clear bottle car with the large red balloon fully inflated against a grey wall. He pinches the green straw with his fingers to trap the air inside. The yellow instructional text overlay disappears from the bottom left corner as he maintains his grip on the stationary vehicle.",
+            "[42-44] The scene transitions to a grey floor where the bottle car rests with its red balloon inflated. A hand holds the vehicle steady on the surface. Yellow text appears in the lower left corner displaying the instruction \"PLACE ON FLOOR & LET GO !!\".",
+            "[44-46] A hand releases the clear plastic bottle car on a grey floor. Propelled by air escaping the red balloon, the vehicle rolls forward away from the camera. The yellow text \"PLACE ON FLOOR & LET GO !!\" remains overlaid in the bottom left corner as the car travels across the smooth surface.",
+            "[46-48] The clear bottle car travels further across the polished grey floor, moving away from the camera towards the background office furniture. As the red balloon deflates, propelling the vehicle, it becomes smaller in the frame. The yellow text \"PLACE ON FLOOR & LET GO !!\" stays visible in the bottom left corner throughout the motion.",
+            "[48-50] The toy car rolls completely out of the frame or becomes indistinguishable in the distance, leaving the polished grey floor empty. The background office furniture remains visible as the vehicle disappears from view. The yellow text \"PLACE ON FLOOR & LET GO !!\" persists in the bottom left corner over the static scene of the room."
+          ]
+        },
+        "queries": [],
+        "user_input": "<compress_trigger range=\"38-50\"/>",
+        "recall_result": null
+      },
+      "output": "<think>The scene cuts from the distant empty room back to a close-up view where a hand holds the clear plastic bottle car with the inflated red balloon resting on a grey surface. The green straw and button wheels are clearly visible as the vehicle is held stationary.</think><action>compress</action><summary>{\"time_range\": [38, 50], \"text\": \"[38-42] A man holds a clear plastic bottle car with yellow button wheels and a fully inflated red balloon against a grey wall, pinching the green straw to trap air while \\\"INFLATE BALLOON & CLOSE STRAW\\\" is displayed. [42-46] The setting changes to a grey floor where a hand places the car down as the text updates to \\\"PLACE ON FLOOR & LET GO !!\\\". The hand releases the vehicle, and escaping air propels it forward. [46-50] The car rolls across the polished floor toward background office furniture as the red balloon deflates, eventually moving out of sight while the text remains on screen.\", \"parse_success\": true}</summary>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/F4tIIAzHnHU.mp4",
+      "video_id": "F4tIIAzHnHU",
+      "chunk_idx": 25,
+      "sample_type": "compress",
+      "action": "compress",
+      "prompt_type": "COMPRESS_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "compress",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "medium",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 30,
+          "video_end": 54,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-4] Text \"Arvind G\" shifts from a diagonal slant to a horizontal position at the top, completing to \"Arvind Gupta Toys\". A central geometric hexagon diagram featuring red nodes connected by thick black and thinner grey lines appears centrally. Below this graphic, the caption changes from \"Hands-0\" to \"Hands-on Science\" in black font.\n[4-8] The scene cuts to a blue background featuring a toy car constructed from a clear plastic bottle with button wheels. A red balloon is attached via a green straw. A hand rests on the left side of the car. Yellow text \"TOYS FROM TRASH\" and green text \"JET CAR\" appear. A subtitle \"Dubbed in French by Louis Jourdin (Les petits derovillards)\" is added before fading to black.\n[8-12] A blue background appears displaying the yellow title \"MATERIALS\". Below, labeled components are arranged: a small plastic bottle with button wheels and a needle, a red balloon, a rubber band, and a green bent straw. White text labels clearly identify each item: \"NEEDLE\", \"BIG BUTTONS\", \"SMALL PLASTIC BOTTLE\", \"BALLOON\", \"RUBBER BAND\", and \"BENT STRAW\" against the blue surface. The static display persists."
+            },
+            {
+              "time_range": [
+                14,
+                26
+              ],
+              "text": "[14-18] A hand holds a clear plastic bottle car with button wheels and a red balloon on a green straw, captioned \"BOTTLE JET CAR\". The car is tilted upwards to show the underside and the red balloon located inside the bottle.\n[18-22] The yellow text changes to \"BUTTON WHEELS + NEEDLE AXLE + STRAW BUSH\" as the hand maintains the tilt, revealing button wheels mounted on needle axles with straw segments acting as bushings.\n[22-26] The caption updates to \"BENT STRAW + BALLOON\" while the hand rotates the vehicle, displaying the internal green straw connected to the red balloon against the blue background."
+            },
+            {
+              "time_range": [
+                26,
+                38
+              ],
+              "text": "[26-30] Against a blue background, a hand displays a DIY car made from a clear plastic bottle with wooden button wheels on needle axles. A red balloon is attached to a green straw inside. The text \"BENT STRAW + BALLOON\" is visible as the car rotates from an underside view to a side profile.\n[30-32] The background changes to a grey textured wall. A man with dark hair and a mustache holds the bottle car near his face. The yellow text updates to \"INFLATE BALLOON & CLOSE STRAW\".\n[32-38] The man blows into the green straw, inflating the red balloon. It expands from a small shape into a large, spherical balloon attached to the top of the vehicle. He holds the clear bottle steady with puffed cheeks as the balloon reaches full inflation."
+            },
+            {
+              "time_range": [
+                38,
+                50
+              ],
+              "text": "[38-42] A man holds a clear plastic bottle car with yellow button wheels and a fully inflated red balloon against a grey wall, pinching the green straw to trap air while \"INFLATE BALLOON & CLOSE STRAW\" is displayed. [42-46] The setting changes to a grey floor where a hand places the car down as the text updates to \"PLACE ON FLOOR & LET GO !!\". The hand releases the vehicle, and escaping air propels it forward. [46-50] The car rolls across the polished floor toward background office furniture as the red balloon deflates, eventually moving out of sight while the text remains on screen."
+            }
+          ],
+          "recent_thinks": [
+            "[12-14] The static materials display cuts to a hand holding the assembled bottle car against a blue background. The red balloon is attached to the green straw mounted on the bottle's top. Yellow text reading \"BOTTLE JET CAR\" appears in the lower left corner, labeling the completed toy vehicle with button wheels.",
+            "[50-52] The scene cuts from the distant empty room back to a close-up view where a hand holds the clear plastic bottle car with the inflated red balloon resting on a grey surface. The green straw and button wheels are clearly visible as the vehicle is held stationary."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>A hand holds the clear plastic bottle car with an inflated red balloon stationary on a grey surface. The vehicle is released and propels forward across the floor, driven by escaping air from the balloon as it moves away from the camera.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/F4tIIAzHnHU.mp4",
+      "video_id": "F4tIIAzHnHU",
+      "chunk_idx": 26,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 32,
+          "video_end": 56,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-4] Text \"Arvind G\" shifts from a diagonal slant to a horizontal position at the top, completing to \"Arvind Gupta Toys\". A central geometric hexagon diagram featuring red nodes connected by thick black and thinner grey lines appears centrally. Below this graphic, the caption changes from \"Hands-0\" to \"Hands-on Science\" in black font.\n[4-8] The scene cuts to a blue background featuring a toy car constructed from a clear plastic bottle with button wheels. A red balloon is attached via a green straw. A hand rests on the left side of the car. Yellow text \"TOYS FROM TRASH\" and green text \"JET CAR\" appear. A subtitle \"Dubbed in French by Louis Jourdin (Les petits derovillards)\" is added before fading to black.\n[8-12] A blue background appears displaying the yellow title \"MATERIALS\". Below, labeled components are arranged: a small plastic bottle with button wheels and a needle, a red balloon, a rubber band, and a green bent straw. White text labels clearly identify each item: \"NEEDLE\", \"BIG BUTTONS\", \"SMALL PLASTIC BOTTLE\", \"BALLOON\", \"RUBBER BAND\", and \"BENT STRAW\" against the blue surface. The static display persists."
+            },
+            {
+              "time_range": [
+                14,
+                26
+              ],
+              "text": "[14-18] A hand holds a clear plastic bottle car with button wheels and a red balloon on a green straw, captioned \"BOTTLE JET CAR\". The car is tilted upwards to show the underside and the red balloon located inside the bottle.\n[18-22] The yellow text changes to \"BUTTON WHEELS + NEEDLE AXLE + STRAW BUSH\" as the hand maintains the tilt, revealing button wheels mounted on needle axles with straw segments acting as bushings.\n[22-26] The caption updates to \"BENT STRAW + BALLOON\" while the hand rotates the vehicle, displaying the internal green straw connected to the red balloon against the blue background."
+            },
+            {
+              "time_range": [
+                26,
+                38
+              ],
+              "text": "[26-30] Against a blue background, a hand displays a DIY car made from a clear plastic bottle with wooden button wheels on needle axles. A red balloon is attached to a green straw inside. The text \"BENT STRAW + BALLOON\" is visible as the car rotates from an underside view to a side profile.\n[30-32] The background changes to a grey textured wall. A man with dark hair and a mustache holds the bottle car near his face. The yellow text updates to \"INFLATE BALLOON & CLOSE STRAW\".\n[32-38] The man blows into the green straw, inflating the red balloon. It expands from a small shape into a large, spherical balloon attached to the top of the vehicle. He holds the clear bottle steady with puffed cheeks as the balloon reaches full inflation."
+            },
+            {
+              "time_range": [
+                38,
+                50
+              ],
+              "text": "[38-42] A man holds a clear plastic bottle car with yellow button wheels and a fully inflated red balloon against a grey wall, pinching the green straw to trap air while \"INFLATE BALLOON & CLOSE STRAW\" is displayed. [42-46] The setting changes to a grey floor where a hand places the car down as the text updates to \"PLACE ON FLOOR & LET GO !!\". The hand releases the vehicle, and escaping air propels it forward. [46-50] The car rolls across the polished floor toward background office furniture as the red balloon deflates, eventually moving out of sight while the text remains on screen."
+            }
+          ],
+          "recent_thinks": [
+            "[12-14] The static materials display cuts to a hand holding the assembled bottle car against a blue background. The red balloon is attached to the green straw mounted on the bottle's top. Yellow text reading \"BOTTLE JET CAR\" appears in the lower left corner, labeling the completed toy vehicle with button wheels.",
+            "[50-52] The scene cuts from the distant empty room back to a close-up view where a hand holds the clear plastic bottle car with the inflated red balloon resting on a grey surface. The green straw and button wheels are clearly visible as the vehicle is held stationary.",
+            "[52-54] A hand holds the clear plastic bottle car with an inflated red balloon stationary on a grey surface. The vehicle is released and propels forward across the floor, driven by escaping air from the balloon as it moves away from the camera."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The clear plastic bottle car with the inflated red balloon continues rolling away from the camera across the polished grey floor. It travels towards the background office area, passing near white partitions and a potted plant, becoming smaller in the frame as it maintains forward momentum.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/F4tIIAzHnHU.mp4",
+      "video_id": "F4tIIAzHnHU",
+      "chunk_idx": 27,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "question_window",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 34,
+          "video_end": 58,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-4] Text \"Arvind G\" shifts from a diagonal slant to a horizontal position at the top, completing to \"Arvind Gupta Toys\". A central geometric hexagon diagram featuring red nodes connected by thick black and thinner grey lines appears centrally. Below this graphic, the caption changes from \"Hands-0\" to \"Hands-on Science\" in black font.\n[4-8] The scene cuts to a blue background featuring a toy car constructed from a clear plastic bottle with button wheels. A red balloon is attached via a green straw. A hand rests on the left side of the car. Yellow text \"TOYS FROM TRASH\" and green text \"JET CAR\" appear. A subtitle \"Dubbed in French by Louis Jourdin (Les petits derovillards)\" is added before fading to black.\n[8-12] A blue background appears displaying the yellow title \"MATERIALS\". Below, labeled components are arranged: a small plastic bottle with button wheels and a needle, a red balloon, a rubber band, and a green bent straw. White text labels clearly identify each item: \"NEEDLE\", \"BIG BUTTONS\", \"SMALL PLASTIC BOTTLE\", \"BALLOON\", \"RUBBER BAND\", and \"BENT STRAW\" against the blue surface. The static display persists."
+            },
+            {
+              "time_range": [
+                14,
+                26
+              ],
+              "text": "[14-18] A hand holds a clear plastic bottle car with button wheels and a red balloon on a green straw, captioned \"BOTTLE JET CAR\". The car is tilted upwards to show the underside and the red balloon located inside the bottle.\n[18-22] The yellow text changes to \"BUTTON WHEELS + NEEDLE AXLE + STRAW BUSH\" as the hand maintains the tilt, revealing button wheels mounted on needle axles with straw segments acting as bushings.\n[22-26] The caption updates to \"BENT STRAW + BALLOON\" while the hand rotates the vehicle, displaying the internal green straw connected to the red balloon against the blue background."
+            },
+            {
+              "time_range": [
+                26,
+                38
+              ],
+              "text": "[26-30] Against a blue background, a hand displays a DIY car made from a clear plastic bottle with wooden button wheels on needle axles. A red balloon is attached to a green straw inside. The text \"BENT STRAW + BALLOON\" is visible as the car rotates from an underside view to a side profile.\n[30-32] The background changes to a grey textured wall. A man with dark hair and a mustache holds the bottle car near his face. The yellow text updates to \"INFLATE BALLOON & CLOSE STRAW\".\n[32-38] The man blows into the green straw, inflating the red balloon. It expands from a small shape into a large, spherical balloon attached to the top of the vehicle. He holds the clear bottle steady with puffed cheeks as the balloon reaches full inflation."
+            },
+            {
+              "time_range": [
+                38,
+                50
+              ],
+              "text": "[38-42] A man holds a clear plastic bottle car with yellow button wheels and a fully inflated red balloon against a grey wall, pinching the green straw to trap air while \"INFLATE BALLOON & CLOSE STRAW\" is displayed. [42-46] The setting changes to a grey floor where a hand places the car down as the text updates to \"PLACE ON FLOOR & LET GO !!\". The hand releases the vehicle, and escaping air propels it forward. [46-50] The car rolls across the polished floor toward background office furniture as the red balloon deflates, eventually moving out of sight while the text remains on screen."
+            }
+          ],
+          "recent_thinks": [
+            "[12-14] The static materials display cuts to a hand holding the assembled bottle car against a blue background. The red balloon is attached to the green straw mounted on the bottle's top. Yellow text reading \"BOTTLE JET CAR\" appears in the lower left corner, labeling the completed toy vehicle with button wheels.",
+            "[50-52] The scene cuts from the distant empty room back to a close-up view where a hand holds the clear plastic bottle car with the inflated red balloon resting on a grey surface. The green straw and button wheels are clearly visible as the vehicle is held stationary.",
+            "[52-54] A hand holds the clear plastic bottle car with an inflated red balloon stationary on a grey surface. The vehicle is released and propels forward across the floor, driven by escaping air from the balloon as it moves away from the camera.",
+            "[54-56] The clear plastic bottle car with the inflated red balloon continues rolling away from the camera across the polished grey floor. It travels towards the background office area, passing near white partitions and a potted plant, becoming smaller in the frame as it maintains forward momentum."
+          ]
+        },
+        "queries": [
+          {
+            "question": "Describe what is happening with the materials and construction components shown?",
+            "answers": []
+          }
+        ],
+        "user_input": "Describe what is happening with the materials and construction components shown?",
+        "recall_result": null
+      },
+      "output": "<think>The toy car moves further away across the shiny floor, reaching the far left area near a white cabinet and seating. The red balloon remains attached as the vehicle travels into the distance, appearing smaller against the backdrop of office furniture and windows.</think><action>recall</action><query>{\"query\": \"Describe what is happening wit\", \"time_range\": \"0-56\"}</query>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/F4tIIAzHnHU.mp4",
+      "video_id": "F4tIIAzHnHU",
+      "chunk_idx": 28,
+      "sample_type": "recall_query",
+      "action": "recall",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "recall_success",
+      "trajectory_id": "traj_1",
+      "card_id": "F4tIIAzHnHU_S1_019",
+      "metadata": {
+        "gold_action": "recall",
+        "gold_answer": "Text overlays label components like big buttons, a needle, and a bent straw alongside a small plastic bottle. Wooden disc wheels are fixed to the bottle sides with thin metal rods acting as axles. A red balloon connects to the green straw at the rear, extending from the bottle.",
+        "answer_form": "descriptive",
+        "family": "S1",
+        "availability": "recall_success",
+        "support_chunks": [
+          4,
+          9,
+          10,
+          11
+        ]
+      },
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "medium",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 42,
+          "video_end": 66,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-4] Text \"Arvind G\" shifts from a diagonal slant to a horizontal position at the top, completing to \"Arvind Gupta Toys\". A central geometric hexagon diagram featuring red nodes connected by thick black and thinner grey lines appears centrally. Below this graphic, the caption changes from \"Hands-0\" to \"Hands-on Science\" in black font.\n[4-8] The scene cuts to a blue background featuring a toy car constructed from a clear plastic bottle with button wheels. A red balloon is attached via a green straw. A hand rests on the left side of the car. Yellow text \"TOYS FROM TRASH\" and green text \"JET CAR\" appear. A subtitle \"Dubbed in French by Louis Jourdin (Les petits derovillards)\" is added before fading to black.\n[8-12] A blue background appears displaying the yellow title \"MATERIALS\". Below, labeled components are arranged: a small plastic bottle with button wheels and a needle, a red balloon, a rubber band, and a green bent straw. White text labels clearly identify each item: \"NEEDLE\", \"BIG BUTTONS\", \"SMALL PLASTIC BOTTLE\", \"BALLOON\", \"RUBBER BAND\", and \"BENT STRAW\" against the blue surface. The static display persists."
+            },
+            {
+              "time_range": [
+                14,
+                26
+              ],
+              "text": "[14-18] A hand holds a clear plastic bottle car with button wheels and a red balloon on a green straw, captioned \"BOTTLE JET CAR\". The car is tilted upwards to show the underside and the red balloon located inside the bottle.\n[18-22] The yellow text changes to \"BUTTON WHEELS + NEEDLE AXLE + STRAW BUSH\" as the hand maintains the tilt, revealing button wheels mounted on needle axles with straw segments acting as bushings.\n[22-26] The caption updates to \"BENT STRAW + BALLOON\" while the hand rotates the vehicle, displaying the internal green straw connected to the red balloon against the blue background."
+            },
+            {
+              "time_range": [
+                26,
+                38
+              ],
+              "text": "[26-30] Against a blue background, a hand displays a DIY car made from a clear plastic bottle with wooden button wheels on needle axles. A red balloon is attached to a green straw inside. The text \"BENT STRAW + BALLOON\" is visible as the car rotates from an underside view to a side profile.\n[30-32] The background changes to a grey textured wall. A man with dark hair and a mustache holds the bottle car near his face. The yellow text updates to \"INFLATE BALLOON & CLOSE STRAW\".\n[32-38] The man blows into the green straw, inflating the red balloon. It expands from a small shape into a large, spherical balloon attached to the top of the vehicle. He holds the clear bottle steady with puffed cheeks as the balloon reaches full inflation."
+            },
+            {
+              "time_range": [
+                38,
+                50
+              ],
+              "text": "[38-42] A man holds a clear plastic bottle car with yellow button wheels and a fully inflated red balloon against a grey wall, pinching the green straw to trap air while \"INFLATE BALLOON & CLOSE STRAW\" is displayed. [42-46] The setting changes to a grey floor where a hand places the car down as the text updates to \"PLACE ON FLOOR & LET GO !!\". The hand releases the vehicle, and escaping air propels it forward. [46-50] The car rolls across the polished floor toward background office furniture as the red balloon deflates, eventually moving out of sight while the text remains on screen."
+            },
+            {
+              "time_range": [
+                50,
+                62
+              ],
+              "text": "[50-54] A hand holds a clear plastic bottle car with an inflated red balloon, green straw, and button wheels stationary on a grey surface, then releases it. [54-60] The car propels forward across the polished floor, moving away from the camera past white partitions and a potted plant towards the far left near a white cabinet and brown chairs by a window. [60-62] The scene cuts to an end screen with text boxes \"Click here to suggest activities for our future videos\" and \"Click here to subscribe and know more about our future videos\". Thumbnails show \"TOYS FROM TRASH D.C. MOTOR\" and \"TOYS FROM TRASH MAGNETIC LEVITATION\". The footer displays \"www.arvindguptatoys.com\", social icons, and credits: \"Ashok Rupner, Dr. Vidula Mhaiskar, Shivaji Mane, Jyoti Hiremath, Arvind Gupta, Manish Jain\"."
+            }
+          ],
+          "recent_thinks": [
+            "[12-14] The static materials display cuts to a hand holding the assembled bottle car against a blue background. The red balloon is attached to the green straw mounted on the bottle's top. Yellow text reading \"BOTTLE JET CAR\" appears in the lower left corner, labeling the completed toy vehicle with button wheels.",
+            "[62-64] The end screen persists with top text boxes. The lower video thumbnails update to show hands interacting with the projects: a hand holds a copper coil over a battery on the left, and a hand holds a rod on a pink board on the right. Credits text appears at the bottom left above the website URL."
+          ]
+        },
+        "queries": [
+          {
+            "question": "Describe what is happening with the materials and construction components shown?",
+            "answers": []
+          }
+        ],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The end screen remains with static top text boxes. The bottom left thumbnail updates to show a copper coil spinning above a battery with yellow text \"PLACE COIL MAKE MOTOR SPIN!\". The bottom right thumbnail changes to display a striped rod floating above a pink base with yellow text \"FRICTIONL\".</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_caption/F4tIIAzHnHU.mp4",
+      "video_id": "F4tIIAzHnHU",
+      "chunk_idx": 32,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    }
+  ],
+  "stats": {
+    "video_id": "F4tIIAzHnHU",
+    "count": 19
+  }
+}

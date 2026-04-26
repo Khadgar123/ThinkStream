@@ -1,0 +1,1572 @@
+[
+  {
+    "chunk_idx": 0,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A large white building featuring a grid of rectangular windows dominates the view. At the base, a covered entrance is supported by a row of tall, cylindrical columns. Green trees are positioned on the left side near the structure. The sky is clear and blue. A white circular logo appears in the upper right corner.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 1,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A blue lower-third graphic overlays the bottom of the frame, partially obscuring the building's columns. White Russian text reads \"Обстановка накаляется\" above \"КНДР грозит ударить по Южной Корее\". A golden circular logo sits on the left edge of the banner, while the URL \"ntdtv.ru\" appears on the right side.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 2,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600_E2_013",
+    "sequence_type": "event_watch",
+    "action": "silent",
+    "output": "<think>The scene cuts to a close-up of three flags waving against the white tiled building facade. A red flag with a yellow emblem hangs on the left, flanked by a white flag with a central circle and black trigrams in the middle. Another red flag is partially visible on the right. The blue lower-third graphic remains at the bottom.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "Has the scene with three burning effigies started yet?",
+    "recall_result": null,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 3,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The flags continue waving against the white tiled wall. The central white flag twists and unfurls in the wind, alternating between showing its face and side. The red flag on the left displays a yellow star emblem, while the red flag on the right shows white text. The blue news banner with Russian text remains fixed at the bottom.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "evidence_anchor",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 4,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600_E2_013",
+    "sequence_type": "event_watch",
+    "action": "silent",
+    "output": "<think>The blue lower-third graphic disappears. The scene cuts to an outdoor protest where three white effigies mounted on wooden crosses burn fiercely. Flames and smoke rise from the figures. In the background, a crowd of people holds signs with Korean text.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 7,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>In a close-up view, two individuals wearing dark outerwear manipulate a document featuring a pinkish image. The person on the right, wearing black gloves, tears the paper while the other holds it steady. Behind their hands, a white banner displays large blue Korean characters partially obscured by the action.</think><action>compress</action><summary>{\"time_range\": [0, 14], \"text\": \"[0-2] A large white building featuring a grid of rectangular windows dominates the view. At the base, a covered entrance is supported by a row of tall, cylindrical columns. Green trees are on the left. A logo is in the upper right. [2-4] A blue lower-third graphic overlays the bottom. White Russian text reads \\\"Обстановка накаляется\\\" above \\\"КНДР грозит ударить по Южной Корее\\\". A golden logo sits on the left, while \\\"ntdtv.ru\\\" appears on the right. [4-8] The scene cuts to a close-up of three flags waving against the white tiled facade. A red flag with a yellow emblem hangs on the left, flanked by a white flag with a central circle and black trigrams. Another red flag is on the right. [8-12] The blue graphic disappears. The scene cuts to an outdoor protest where three white effigies mounted on wooden crosses burn fiercely. Flames and smoke rise from the figures. A crowd holds signs with Korean text. [12-14] A close-up shows a person wearing black gloves tearing a document featuring a pink image. A white banner displays large blue Korean characters behind them.\", \"parse_success\": true}</summary>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "evidence_anchor",
+    "gold_caption": "The building has a grid-like pattern of windows across its facade. | The sky is clear and blue. | The news banner contains Russian text. | The website 'ntdtv.ru' is visible in the bottom right corner. | Scene starts with building facade and news banner overlay | Scene becomes empty | Three effigies are engulfed in flames | The effigies are attached to wooden cross structures | The central effigy has a face visible on its upper portion | White smoke is rising from the burning figures | The crowd is holding banners with Korean text | Fire is burning at the base of the crosses",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 8,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene shifts to a crowd of protesters, mostly men in winter jackets and caps. A green sign reads '북한 동포여! 일어나자!' while a large white banner in the foreground displays bold Korean text. A man in the center raises a clenched fist while shouting.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "evidence_anchor",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 9,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The view shifts to the front row where a man in a brown cap holds a white banner pole. Beside him, a man in a dark cap shouts with an open mouth. In the background, a green sign with Korean text is held high above the dense crowd of protesters wearing winter clothing.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "evidence_anchor",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 10,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The view captures a dense crowd of protesters wearing winter hats and dark jackets. A green sign with Korean text is held high on the left, while a smaller green sign reading \"패륜아\" appears below. In the foreground, a large white banner with bold black Korean characters waves slightly. Several men in the crowd have open mouths, appearing to shout slogans.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "evidence_anchor",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 13,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The view shifts to a close-up of a different effigy featuring a paper cutout of a younger man's face with short dark hair. Smoke billows around the figure's neck. Behind it, a protester holds a sign with a photograph, and a child in an orange vest is visible on the left.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "evidence_anchor",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 14,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The camera maintains a close-up on the effigy with the paper face cutout as flames burn behind it. Sparks fly upward near the head. In the background, a child in an orange vest and blue mask stands watching. A sign with a photograph is partially visible on the right side.</think><action>compress</action><summary>{\"time_range\": [14, 28], \"text\": \"[14-16] Two individuals in dark outerwear tear a document featuring a pinkish image; the person on the right wears black gloves. Behind them, a white banner displays large blue Korean characters.\\n[16-22] A crowd of men in winter jackets and caps protests. A green sign reads '북한 동포여! 일어나자!' and a smaller sign says '패륜아'. A large white banner with bold black text waves in the foreground as men shout and raise fists.\\n[22-26] An effigy in light clothing wears a chest sign reading '김정은 뒈진놈'. Smoke surrounds it as a stick strikes it from the right. Background signs include '백두혈통? 돼지혈통!' and photos of Kim Jong-un.\\n[26-28] A close-up shows an effigy head of a younger man with short dark hair. Smoke billows around its neck. A child in an orange vest stands in the background left.\", \"parse_success\": true}</summary>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "evidence_anchor",
+    "gold_caption": "A person on the left is holding a clear plastic bag. | Inside the plastic bag is a dark object, possibly a shoe or small bag. | A person on the right wearing black gloves is touching or adjusting the plastic bag. | There is a white sign with blue Korean text in the background. | A circular logo with a character inside is visible in the top right corner. | Scene starts with two people exchanging a plastic bag | Scene becomes empty | A man in the center-right foreground is holding a white flag with black text. | A green sign in the upper left has the text '북한 동포여! 일어나자!'. | A green sign held by a man in the center-left has the text '패륜아'. | Multiple men in the crowd are wearing dark-colored jackets and caps. | A man on the left side is raising his gloved fist.",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 15,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera cuts to a wide shot revealing three effigies on wooden crosses burning intensely with heavy smoke. Behind the flames, a crowd holds banners, including a large white sign with Korean text referencing the second anniversary of Kim Jong-il's death. The fire engulfs the lower bodies of the figures as sparks fly.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 16,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The wide view continues as flames vigorously consume the three white effigies mounted on wooden crosses. Thick smoke rises from the burning figures, particularly around the central one. Behind the fire, a crowd holds banners with Korean text, one clearly marking a second anniversary. The flames at the base of the crosses burn brightly, engulfing the lower garments.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 19,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the dark pinstripe suit continues speaking at the podium. A blue lower-third graphic appears at the bottom, displaying a golden logo on the left and white Russian text reading \"Ким Мин Сок\" above a second line of text, with a website URL visible on the far right edge.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "evidence_anchor",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 20,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the dark pinstripe suit continues speaking at the podium, looking down at his notes. The blue lower-third graphic with Russian text remains visible at the bottom of the frame. The South Korean flag and blue backdrop with white text remain static in the background.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "evidence_anchor",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 21,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man in the dark pinstripe suit continues speaking at the podium, lowering his gaze to read from notes. The blue lower-third graphic with Russian text remains fixed at the bottom, displaying his name and title, while the South Korean flag stands stationary in the background.</think><action>compress</action><summary>{\"time_range\": [30, 42], \"text\": \"[30-36] Three white effigies on wooden crosses burn intensely with heavy smoke as a crowd behind holds banners with Korean text, including one marking the second anniversary of Kim Jong-il's death. A man in a black jacket stands to the right with a microphone, raising his hand.\\n[36-42] The video cuts to a man in a dark pinstripe suit, glasses, and purple tie speaking at a podium. To his left is a South Korean flag against a blue backdrop reading \\\"National Defense\\\". A blue lower-third graphic appears with Russian text \\\"Ким Мин Сок\\\" and \\\"представитель Минобороны Южной Кореи\\\" as he looks down at his notes.\", \"parse_success\": true}</summary>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "evidence_anchor",
+    "gold_caption": "A large portrait is being burned on a wooden stake. | Sparks are flying upwards from the burning materials. | Protesters are holding signs with Korean text. | Smoke is rising from the burning effigies. | The banner text includes the characters '김정일 사망 2주년' (Kim Jong-il death 2nd anniversary). | Scene becomes empty",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 22,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the dark suit and purple tie continues speaking at the podium, looking down at notes then up. The blue lower-third graphic with Russian text disappears from the bottom of the screen. The South Korean flag remains stationary on the left against the blue backdrop with white text.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "evidence_anchor",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 23,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the dark pinstripe suit and purple tie continues speaking at the podium, lowering his gaze to read notes before looking up again. The South Korean flag stands on the left against the blue backdrop with white text. No lower-third graphic appears on screen as he continues his address.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "evidence_anchor",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 24,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the dark pinstripe suit and purple tie continues speaking at the podium, looking down at his notes. The South Korean flag stands to his left against the blue backdrop with white text. No lower-third graphic is visible as he maintains his position at the microphone.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "evidence_anchor",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 25,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the dark pinstripe suit and purple tie continues speaking at the podium, shifting his gaze from notes to forward. The South Korean flag remains stationary on the left against the blue backdrop with white text. No lower-third graphic is visible as he maintains his position at the microphone.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "evidence_anchor",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 26,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the dark pinstripe suit and purple tie continues speaking at the podium, his mouth moving as he addresses the audience. He wears glasses and looks slightly downward then forward. The South Korean flag remains stationary on the left against the blue backdrop with white text. No lower-third graphic is visible.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 27,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man in the dark pinstripe suit and purple tie continues speaking at the podium, wearing glasses. He shifts his gaze from forward to down at his notes. The South Korean flag stands on the left against the blue backdrop with white text. No lower-third graphic is visible as he maintains his position.</think><action>compress</action><summary>{\"time_range\": [44, 54], \"text\": \"[44-54] A man in a dark pinstripe suit, purple tie, and glasses speaks at a podium with two microphones. He alternates his gaze, looking down at notes and then up or forward. To his left, the South Korean flag stands stationary against a blue backdrop featuring white text reading \\\"Ministry of National Defense\\\" and Korean characters. Initially, a blue lower-third graphic containing Russian text is visible at the bottom of the screen but disappears by the 46-second mark. For the remainder of the segment, no lower-third graphic appears. The man continues his address, maintaining his position at the microphone, with his mouth moving as he speaks. The background elements, including the flag and the ministry signage, remain static throughout the duration.\", \"parse_success\": true}</summary>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "gold_caption": "The man is wearing wire-rimmed glasses. | The suit jacket has faint vertical pinstripes. | The tie is purple with a small repeating pattern. | The backdrop text includes 'Min' and 'National De' in English. | The man's gaze shifts from forward to downward between the two frames. | The man is wearing a dark suit with thin vertical pinstripes. | The man is wearing wire-rimmed glasses. | Two thin black microphones are positioned in front of the man. | The text '대한민국 국방' is visible at the top of the blue background. | The text 'Mini' and 'ational De' is visible below the Korean text. | The man's gaze shifts from forward to downward between the two frames. | Scene becomes empty",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 30,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the dark pinstripe suit and purple tie lifts his gaze from the podium to look forward while speaking. He wears glasses and stands before a blue backdrop with white text. The South Korean flag remains stationary to his left, and no lower-third graphic appears on the screen during this segment.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 31,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the dark pinstripe suit and purple tie continues speaking into the microphones at the podium. He wears glasses and maintains a forward gaze while his mouth moves. To his left, the South Korean flag stands stationary against the blue backdrop with white text. No lower-third graphic appears on the screen.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 32,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man in the dark pinstripe suit and purple tie continues speaking at the podium, maintaining a forward gaze. He wears glasses and stands before a blue backdrop with white text. The South Korean flag remains stationary to his left. No lower-third graphic appears on the screen as he addresses the audience.</think><action>compress</action><summary>{\"time_range\": [56, 64], \"text\": \"From 56-64s, a man in a dark pinstripe suit, purple tie, and glasses speaks into microphones at a podium, his mouth moving. He alternates his gaze between looking forward at the audience and looking down to read notes. To his left, the South Korean flag stands stationary against a blue backdrop featuring white text reading \\\"대한민국 국방\\\" and \\\"Ministry of National Defense\\\". No lower-third graphic is visible on the screen throughout the segment.\", \"parse_success\": true}</summary>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "gold_caption": "Scene becomes empty",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 33,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the dark pinstripe suit and purple tie lowers his gaze to read from notes on the podium. The video then cuts to a static exterior view of a large white building with a grid of rectangular windows and a dark covered entrance displaying a silver emblem above the glass doors.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 34,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene presents a static exterior view of a large, multi-story white building featuring a grid of rectangular windows. A dark, curved canopy extends over the main entrance, displaying a silver emblem above the glass doors. Red flags hang from poles near the roofline, while small potted plants sit on either side of the entrance.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 35,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene transitions to a wide interior shot of a press briefing room. A man in a dark suit stands at a wooden podium centered before a blue backdrop featuring white text and a row of various flags. In the foreground, audience members sit at tables with laptops, facing the speaker.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 36,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The wide shot continues, displaying a man in a dark suit at a wooden podium. Behind him, a blue backdrop features white text and a row of seven flags. In the foreground, audience members in dark jackets sit at tables with laptops, facing the speaker. The man looks down at his notes. The scene remains static.</think><action>compress</action><summary>{\"time_range\": [64, 72], \"text\": \"[64-68] A man in a dark pinstripe suit and purple tie speaks at a podium, gazing forward then down at notes, before a blue backdrop with text \\\"대한민국 국방\\\" and \\\"Mini... National De...\\\" and a South Korean flag. [68-70] The scene cuts to a static exterior of a large white building with a grid of windows, red flags, and a dark curved canopy displaying a silver emblem. [70-72] The view shifts to a wide interior press briefing where the man stands at a wooden podium before a blue backdrop reading \\\"대한민국 국방부 Ministry of National Defense\\\" and a row of flags, facing an audience with laptops.\", \"parse_success\": true}</summary>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 39,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene cuts to a man in a dark blue jacket and glasses standing with his head bowed. Two men in olive-green military uniforms stand behind him, securing handcuffs on his wrists. To the left, another uniformed man sits at a desk, observing the procedure.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 40,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A man in a dark blue jacket and glasses stands with his head bowed while two officers in olive-green uniforms secure handcuffs on his wrists. One officer holds his shoulder. To the left, a seated uniformed man observes the scene near a beige wall and wooden door frame.</think><action>compress</action><summary>{\"time_range\": [72, 80], \"text\": \"[72-74] A wide shot displays a man in a dark suit at a wooden podium. Behind him, a blue backdrop features white text and a row of seven flags. In the foreground, audience members in dark jackets sit at tables with laptops, facing the speaker who looks down at his notes. [74-78] The scene cuts to a room with beige walls where four men in olive-green military uniforms sit. Three are behind a long, dark wooden desk with microphones, while a fourth sits at a separate desk to the left. A North Korean flag hangs on the wall beneath a gold emblem. [78-80] A man in a dark blue jacket and glasses stands with his head bowed. Two men in olive-green military uniforms stand behind him, securing handcuffs on his wrists. To the left, another uniformed man sits at a desk, observing the procedure.\", \"parse_success\": true}</summary>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "gold_caption": "A man in a suit is standing at a podium. | There is a blue banner with white Korean text behind the speaker. | Several flags are displayed behind the speaker. | An audience is seated at desks facing the speaker. | The text '대한민국 국방부' and 'Ministry of National Defense' is visible on the backdrop. | Scene starts with man speaking at podium to seated audience | Scene becomes empty",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 41,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A man in a dark suit speaks into a cluster of microphones at a podium. Beside him, a military officer in a white uniform and cap stands attentively. The background features a grey, textured wall. Small logos appear in the upper corners of the screen. The man's mouth is open as he addresses the audience.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 42,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A man in a dark suit stands at a podium with multiple microphones next to an officer in a white uniform and cap against a grey wall. The officer raises his hands to clap, joining others whose hands are visible at the frame edges, while the man in the dark suit looks forward.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 43,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the dark suit looks down at the podium while the officer in the white uniform continues clapping beside him. A military officer in a green uniform becomes visible on the right edge, raising his hands. The cluster of microphones remains in the foreground against the grey textured wall.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 44,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The scene cuts to an interior room where a man in a black coat sits at a conference table. He points at a large document with his right hand while holding a cigarette in his left. Several men in military uniforms sit nearby, observing the document and the speaker. A television set is visible in the background against a white wall.</think><action>compress</action><summary>{\"time_range\": [80, 88], \"text\": \"[80-82] A man in a dark blue jacket and glasses stands with his head bowed while two officers in olive-green uniforms secure handcuffs on his wrists, one holding his shoulder, as a seated uniformed man observes near a beige wall. [82-84] A man in a dark suit speaks into a cluster of microphones at a podium beside a military officer in a white uniform and cap against a grey textured wall, with small logos in the upper corners. [84-88] The man in the dark suit looks forward then down at the podium while the officer in white and a newly visible officer in green on the right raise their hands to clap.\", \"parse_success\": true}</summary>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "gold_caption": "A man in a dark jacket is being physically held by two men in military uniforms. | A man in a military uniform is seated in a chair in the background of the first frame. | Multiple microphones are arranged on a podium in front of the speaker in the second frame. | Broadcast logos are visible in the top corners of the second frame. | Scene starts with man being escorted by uniformed military men | Scene becomes empty | The central figure is wearing a dark suit with a red rectangular pin on the left chest. | The man on the left is wearing a white uniform and clapping. | There is a row of at least six microphones arranged in an arc. | A second man in a military uniform becomes visible on the right side in the second frame. | The background consists of a textured grey wall. | Scene starts with man at podium and military men clapping",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 45,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the black coat remains seated at the conference table, pointing at the large document with his right hand while holding a cigarette in his left. The surrounding military officials in olive-green uniforms continue to observe him and the paper. The television set remains visible in the background against the white wall.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 46,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene transitions to a white rocket structure secured by blue supports on a launch pad. Bright orange and yellow flames exhaust intensely from the engine nozzle at the base. The view tightens on the fiery propulsion test, showing smoke and heat surrounding the burning engine mechanism.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 47,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A wide shot displays a white rocket ascending from a launch pad situated in a snowy, rural landscape. A large cloud of white exhaust smoke expands rapidly to the left of the launch tower structure. Bright orange flames are visible at the base of the rocket, and a road curves along the right side of the frame.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 48,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A white rocket continues ascending from a launch pad situated in a snowy, rural landscape. Bright orange flames are visible at the base, propelling the vehicle upward. A large cloud of white exhaust smoke expands rapidly to the left of the dark launch tower structure, while a road curves along the right side.</think><action>compress</action><summary>{\"time_range\": [88, 96], \"text\": \"[88-92] In an interior room, a man in a black coat sits at a conference table, pointing at a large document with his right hand while holding a cigarette in his left. Several men in olive-green military uniforms observe him, with a television set visible against the white wall in the background. [92-94] The view cuts to a white rocket structure secured by blue supports, where bright orange and yellow flames exhaust intensely from the engine nozzle during a test. [94-96] The scene transitions to a wide shot of the white rocket ascending from a launch pad in a snowy, rural landscape. A large cloud of white exhaust smoke expands to the left of the launch tower, bright orange flames burn at the base, and a road curves along the right side.\", \"parse_success\": true}</summary>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "gold_caption": "A man in a black coat is pointing at a document on a table. | The man in the black coat is holding a cigarette. | There are multiple men in military uniforms present in the room. | A white telephone is visible on the table. | A microphone is positioned on the table near the telephone. | The document on the table contains text and grid lines. | A television is visible in the background on a cabinet. | Scene changes to man sitting at table with military men | Scene becomes empty",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 49,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The white rocket ascends vertically against a backdrop of snowy, forested hills. Bright orange flames propel the vehicle upward continuously. A massive cloud of white exhaust smoke billows extensively to the left, expanding significantly as the rocket gains altitude above the dark launch tower structure.</think><action>silent</action>",
+    "queries": [
+      {
+        "question": "Has the scene with three burning effigies started yet?",
+        "ask_time": 4,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 0,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A large white building featuring a grid of rectangular windows dominates the view. At the base, a covered entrance is supported by a row of tall, cylindrical columns. Green trees are positioned on the left side near the structure. The sky is clear and blue. A white circular logo appears in the upper right corner.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 1,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A blue lower-third graphic overlays the bottom of the frame, partially obscuring the building's columns. White Russian text reads \"Обстановка накаляется\" above \"КНДР грозит ударить по Южной Корее\". A golden circular logo sits on the left edge of the banner, while the URL \"ntdtv.ru\" appears on the right side.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 2,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene cuts to a close-up of three flags waving against the white tiled building facade. A red flag with a yellow emblem hangs on the left, flanked by a white flag with a central circle and black trigrams in the middle. Another red flag is partially visible on the right. The blue lower-third graphic remains at the bottom.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "warmup",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 5,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene cuts to an outdoor protest where three white effigies mounted on wooden crosses burn fiercely. Flames and smoke rise from the figures, which have signs with Korean text attached. In the background, a crowd of people holds additional placards with Korean writing.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 6,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene cuts to a close-up where a person wearing black gloves tears a document featuring a pink image held by another individual. In the background, a white banner displays large blue Korean characters partially visible behind the action.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 7,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>In a close-up view, two individuals wearing dark outerwear manipulate a document featuring a pinkish image. The person on the right, wearing black gloves, tears the paper while the other holds it steady. Behind their hands, a white banner displays large blue Korean characters partially obscured by the action.</think><action>compress</action><summary>{\"time_range\": [0, 14], \"text\": \"[0-2] A large white building featuring a grid of rectangular windows dominates the view. At the base, a covered entrance is supported by a row of tall, cylindrical columns. Green trees are on the left. A logo is in the upper right. [2-4] A blue lower-third graphic overlays the bottom. White Russian text reads \\\"Обстановка накаляется\\\" above \\\"КНДР грозит ударить по Южной Корее\\\". A golden logo sits on the left, while \\\"ntdtv.ru\\\" appears on the right. [4-8] The scene cuts to a close-up of three flags waving against the white tiled facade. A red flag with a yellow emblem hangs on the left, flanked by a white flag with a central circle and black trigrams. Another red flag is on the right. [8-12] The blue graphic disappears. The scene cuts to an outdoor protest where three white effigies mounted on wooden crosses burn fiercely. Flames and smoke rise from the figures. A crowd holds signs with Korean text. [12-14] A close-up shows a person wearing black gloves tearing a document featuring a pink image. A white banner displays large blue Korean characters behind them.\", \"parse_success\": true}</summary>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "gold_caption": "The building has a grid-like pattern of windows across its facade. | The sky is clear and blue. | The news banner contains Russian text. | The website 'ntdtv.ru' is visible in the bottom right corner. | Scene starts with building facade and news banner overlay | Scene becomes empty | Three effigies are engulfed in flames | The effigies are attached to wooden cross structures | The central effigy has a face visible on its upper portion | White smoke is rising from the burning figures | The crowd is holding banners with Korean text | Fire is burning at the base of the crosses",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 8,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene shifts to a crowd of protesters, mostly men in winter jackets and caps. A green sign reads '북한 동포여! 일어나자!' while a large white banner in the foreground displays bold Korean text. A man in the center raises a clenched fist while shouting.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 10,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The view captures a dense crowd of protesters wearing winter hats and dark jackets. A green sign with Korean text is held high on the left, while a smaller green sign reading \"패륜아\" appears below. In the foreground, a large white banner with bold black Korean characters waves slightly. Several men in the crowd have open mouths, appearing to shout slogans.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "question_window",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 11,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera focuses on a central effigy dressed in light clothing with a white sign bearing vertical red Korean characters on its chest. A photograph is attached above the sign. Smoke surrounds the figure as a stick strikes it from the right. Background protesters hold green signs with Korean text.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "question_window",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 14,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The camera maintains a close-up on the effigy with the paper face cutout as flames burn behind it. Sparks fly upward near the head. In the background, a child in an orange vest and blue mask stands watching. A sign with a photograph is partially visible on the right side.</think><action>compress</action><summary>{\"time_range\": [14, 28], \"text\": \"[14-16] Two individuals in dark outerwear tear a document featuring a pinkish image; the person on the right wears black gloves. Behind them, a white banner displays large blue Korean characters.\\n[16-22] A crowd of men in winter jackets and caps protests. A green sign reads '북한 동포여! 일어나자!' and a smaller sign says '패륜아'. A large white banner with bold black text waves in the foreground as men shout and raise fists.\\n[22-26] An effigy in light clothing wears a chest sign reading '김정은 뒈진놈'. Smoke surrounds it as a stick strikes it from the right. Background signs include '백두혈통? 돼지혈통!' and photos of Kim Jong-un.\\n[26-28] A close-up shows an effigy head of a younger man with short dark hair. Smoke billows around its neck. A child in an orange vest stands in the background left.\", \"parse_success\": true}</summary>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "gold_caption": "A person on the left is holding a clear plastic bag. | Inside the plastic bag is a dark object, possibly a shoe or small bag. | A person on the right wearing black gloves is touching or adjusting the plastic bag. | There is a white sign with blue Korean text in the background. | A circular logo with a character inside is visible in the top right corner. | Scene starts with two people exchanging a plastic bag | Scene becomes empty | A man in the center-right foreground is holding a white flag with black text. | A green sign in the upper left has the text '북한 동포여! 일어나자!'. | A green sign held by a man in the center-left has the text '패륜아'. | Multiple men in the crowd are wearing dark-colored jackets and caps. | A man on the left side is raising his gloved fist.",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 15,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera cuts to a wide shot revealing three effigies on wooden crosses burning intensely with heavy smoke. Behind the flames, a crowd holds banners, including a large white sign with Korean text referencing the second anniversary of Kim Jong-il's death. The fire engulfs the lower bodies of the figures as sparks fly.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 16,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The wide view continues as flames vigorously consume the three white effigies mounted on wooden crosses. Thick smoke rises from the burning figures, particularly around the central one. Behind the fire, a crowd holds banners with Korean text, one clearly marking a second anniversary. The flames at the base of the crosses burn brightly, engulfing the lower garments.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 19,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the dark pinstripe suit continues speaking at the podium. A blue lower-third graphic appears at the bottom, displaying a golden logo on the left and white Russian text reading \"Ким Мин Сок\" above a second line of text, with a website URL visible on the far right edge.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "evidence_anchor",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 20,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the dark pinstripe suit continues speaking at the podium, looking down at his notes. The blue lower-third graphic with Russian text remains visible at the bottom of the frame. The South Korean flag and blue backdrop with white text remain static in the background.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "evidence_anchor",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 21,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man in the dark pinstripe suit continues speaking at the podium, lowering his gaze to read from notes. The blue lower-third graphic with Russian text remains fixed at the bottom, displaying his name and title, while the South Korean flag stands stationary in the background.</think><action>compress</action><summary>{\"time_range\": [30, 42], \"text\": \"[30-36] Three white effigies on wooden crosses burn intensely with heavy smoke as a crowd behind holds banners with Korean text, including one marking the second anniversary of Kim Jong-il's death. A man in a black jacket stands to the right with a microphone, raising his hand.\\n[36-42] The video cuts to a man in a dark pinstripe suit, glasses, and purple tie speaking at a podium. To his left is a South Korean flag against a blue backdrop reading \\\"National Defense\\\". A blue lower-third graphic appears with Russian text \\\"Ким Мин Сок\\\" and \\\"представитель Минобороны Южной Кореи\\\" as he looks down at his notes.\", \"parse_success\": true}</summary>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "evidence_anchor",
+    "gold_caption": "A large portrait is being burned on a wooden stake. | Sparks are flying upwards from the burning materials. | Protesters are holding signs with Korean text. | Smoke is rising from the burning effigies. | The banner text includes the characters '김정일 사망 2주년' (Kim Jong-il death 2nd anniversary). | Scene becomes empty",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 22,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the dark suit and purple tie continues speaking at the podium, looking down at notes then up. The blue lower-third graphic with Russian text disappears from the bottom of the screen. The South Korean flag remains stationary on the left against the blue backdrop with white text.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "evidence_anchor",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 23,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the dark pinstripe suit and purple tie continues speaking at the podium, lowering his gaze to read notes before looking up again. The South Korean flag stands on the left against the blue backdrop with white text. No lower-third graphic appears on screen as he continues his address.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "evidence_anchor",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 24,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the dark pinstripe suit and purple tie continues speaking at the podium, looking down at his notes. The South Korean flag stands to his left against the blue backdrop with white text. No lower-third graphic is visible as he maintains his position at the microphone.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "evidence_anchor",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 25,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the dark pinstripe suit and purple tie continues speaking at the podium, shifting his gaze from notes to forward. The South Korean flag remains stationary on the left against the blue backdrop with white text. No lower-third graphic is visible as he maintains his position at the microphone.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "evidence_anchor",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 26,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the dark pinstripe suit and purple tie continues speaking at the podium, his mouth moving as he addresses the audience. He wears glasses and looks slightly downward then forward. The South Korean flag remains stationary on the left against the blue backdrop with white text. No lower-third graphic is visible.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 27,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man in the dark pinstripe suit and purple tie continues speaking at the podium, wearing glasses. He shifts his gaze from forward to down at his notes. The South Korean flag stands on the left against the blue backdrop with white text. No lower-third graphic is visible as he maintains his position.</think><action>compress</action><summary>{\"time_range\": [44, 54], \"text\": \"[44-54] A man in a dark pinstripe suit, purple tie, and glasses speaks at a podium with two microphones. He alternates his gaze, looking down at notes and then up or forward. To his left, the South Korean flag stands stationary against a blue backdrop featuring white text reading \\\"Ministry of National Defense\\\" and Korean characters. Initially, a blue lower-third graphic containing Russian text is visible at the bottom of the screen but disappears by the 46-second mark. For the remainder of the segment, no lower-third graphic appears. The man continues his address, maintaining his position at the microphone, with his mouth moving as he speaks. The background elements, including the flag and the ministry signage, remain static throughout the duration.\", \"parse_success\": true}</summary>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "gold_caption": "The man is wearing wire-rimmed glasses. | The suit jacket has faint vertical pinstripes. | The tie is purple with a small repeating pattern. | The backdrop text includes 'Min' and 'National De' in English. | The man's gaze shifts from forward to downward between the two frames. | The man is wearing a dark suit with thin vertical pinstripes. | The man is wearing wire-rimmed glasses. | Two thin black microphones are positioned in front of the man. | The text '대한민국 국방' is visible at the top of the blue background. | The text 'Mini' and 'ational De' is visible below the Korean text. | The man's gaze shifts from forward to downward between the two frames. | Scene becomes empty",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 28,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the dark pinstripe suit and purple tie continues speaking at the podium, his mouth moving as he addresses the audience. He wears glasses and maintains a forward gaze. To his left, the South Korean flag stands stationary against the blue backdrop featuring white text. No lower-third graphic is visible on the screen.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 29,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the dark pinstripe suit continues speaking at the podium, lowering his gaze to read from notes. The South Korean flag stands on the left against the blue backdrop with white text. No lower-third graphic is visible as he maintains his position.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 30,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the dark pinstripe suit and purple tie lifts his gaze from the podium to look forward while speaking. He wears glasses and stands before a blue backdrop with white text. The South Korean flag remains stationary to his left, and no lower-third graphic appears on the screen during this segment.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 31,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the dark pinstripe suit and purple tie continues speaking into the microphones at the podium. He wears glasses and maintains a forward gaze while his mouth moves. To his left, the South Korean flag stands stationary against the blue backdrop with white text. No lower-third graphic appears on the screen.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 32,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man in the dark pinstripe suit and purple tie continues speaking at the podium, maintaining a forward gaze. He wears glasses and stands before a blue backdrop with white text. The South Korean flag remains stationary to his left. No lower-third graphic appears on the screen as he addresses the audience.</think><action>compress</action><summary>{\"time_range\": [56, 64], \"text\": \"From 56-64s, a man in a dark pinstripe suit, purple tie, and glasses speaks into microphones at a podium, his mouth moving. He alternates his gaze between looking forward at the audience and looking down to read notes. To his left, the South Korean flag stands stationary against a blue backdrop featuring white text reading \\\"대한민국 국방\\\" and \\\"Ministry of National Defense\\\". No lower-third graphic is visible on the screen throughout the segment.\", \"parse_success\": true}</summary>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "gold_caption": "Scene becomes empty",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 33,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the dark pinstripe suit and purple tie lowers his gaze to read from notes on the podium. The video then cuts to a static exterior view of a large white building with a grid of rectangular windows and a dark covered entrance displaying a silver emblem above the glass doors.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 34,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene presents a static exterior view of a large, multi-story white building featuring a grid of rectangular windows. A dark, curved canopy extends over the main entrance, displaying a silver emblem above the glass doors. Red flags hang from poles near the roofline, while small potted plants sit on either side of the entrance.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 35,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene transitions to a wide interior shot of a press briefing room. A man in a dark suit stands at a wooden podium centered before a blue backdrop featuring white text and a row of various flags. In the foreground, audience members sit at tables with laptops, facing the speaker.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 36,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The wide shot continues, displaying a man in a dark suit at a wooden podium. Behind him, a blue backdrop features white text and a row of seven flags. In the foreground, audience members in dark jackets sit at tables with laptops, facing the speaker. The man looks down at his notes. The scene remains static.</think><action>compress</action><summary>{\"time_range\": [64, 72], \"text\": \"[64-68] A man in a dark pinstripe suit and purple tie speaks at a podium, gazing forward then down at notes, before a blue backdrop with text \\\"대한민국 국방\\\" and \\\"Mini... National De...\\\" and a South Korean flag. [68-70] The scene cuts to a static exterior of a large white building with a grid of windows, red flags, and a dark curved canopy displaying a silver emblem. [70-72] The view shifts to a wide interior press briefing where the man stands at a wooden podium before a blue backdrop reading \\\"대한민국 국방부 Ministry of National Defense\\\" and a row of flags, facing an audience with laptops.\", \"parse_success\": true}</summary>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 37,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene cuts to a room with beige walls where four men in olive-green military uniforms sit behind a long, dark wooden desk. A North Korean flag hangs on the wall behind them beneath a gold emblem. Microphones are positioned on the desk, and the man on the far left looks down at papers while the others face forward.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 38,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Four men in olive-green military uniforms are in a room with beige walls. Three sit behind a long, dark wooden desk with microphones, while a fourth sits at a separate desk to the left. A North Korean flag hangs on the wall beneath a gold emblem. The men look down at papers on the desks.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 39,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene cuts to a man in a dark blue jacket and glasses standing with his head bowed. Two men in olive-green military uniforms stand behind him, securing handcuffs on his wrists. To the left, another uniformed man sits at a desk, observing the procedure.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 40,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A man in a dark blue jacket and glasses stands with his head bowed while two officers in olive-green uniforms secure handcuffs on his wrists. One officer holds his shoulder. To the left, a seated uniformed man observes the scene near a beige wall and wooden door frame.</think><action>compress</action><summary>{\"time_range\": [72, 80], \"text\": \"[72-74] A wide shot displays a man in a dark suit at a wooden podium. Behind him, a blue backdrop features white text and a row of seven flags. In the foreground, audience members in dark jackets sit at tables with laptops, facing the speaker who looks down at his notes. [74-78] The scene cuts to a room with beige walls where four men in olive-green military uniforms sit. Three are behind a long, dark wooden desk with microphones, while a fourth sits at a separate desk to the left. A North Korean flag hangs on the wall beneath a gold emblem. [78-80] A man in a dark blue jacket and glasses stands with his head bowed. Two men in olive-green military uniforms stand behind him, securing handcuffs on his wrists. To the left, another uniformed man sits at a desk, observing the procedure.\", \"parse_success\": true}</summary>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "gold_caption": "A man in a suit is standing at a podium. | There is a blue banner with white Korean text behind the speaker. | Several flags are displayed behind the speaker. | An audience is seated at desks facing the speaker. | The text '대한민국 국방부' and 'Ministry of National Defense' is visible on the backdrop. | Scene starts with man speaking at podium to seated audience | Scene becomes empty",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 41,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A man in a dark suit speaks into a cluster of microphones at a podium. Beside him, a military officer in a white uniform and cap stands attentively. The background features a grey, textured wall. Small logos appear in the upper corners of the screen. The man's mouth is open as he addresses the audience.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 42,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A man in a dark suit stands at a podium with multiple microphones next to an officer in a white uniform and cap against a grey wall. The officer raises his hands to clap, joining others whose hands are visible at the frame edges, while the man in the dark suit looks forward.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 43,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the dark suit looks down at the podium while the officer in the white uniform continues clapping beside him. A military officer in a green uniform becomes visible on the right edge, raising his hands. The cluster of microphones remains in the foreground against the grey textured wall.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 44,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The scene cuts to an interior room where a man in a black coat sits at a conference table. He points at a large document with his right hand while holding a cigarette in his left. Several men in military uniforms sit nearby, observing the document and the speaker. A television set is visible in the background against a white wall.</think><action>compress</action><summary>{\"time_range\": [80, 88], \"text\": \"[80-82] A man in a dark blue jacket and glasses stands with his head bowed while two officers in olive-green uniforms secure handcuffs on his wrists, one holding his shoulder, as a seated uniformed man observes near a beige wall. [82-84] A man in a dark suit speaks into a cluster of microphones at a podium beside a military officer in a white uniform and cap against a grey textured wall, with small logos in the upper corners. [84-88] The man in the dark suit looks forward then down at the podium while the officer in white and a newly visible officer in green on the right raise their hands to clap.\", \"parse_success\": true}</summary>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "gold_caption": "A man in a dark jacket is being physically held by two men in military uniforms. | A man in a military uniform is seated in a chair in the background of the first frame. | Multiple microphones are arranged on a podium in front of the speaker in the second frame. | Broadcast logos are visible in the top corners of the second frame. | Scene starts with man being escorted by uniformed military men | Scene becomes empty | The central figure is wearing a dark suit with a red rectangular pin on the left chest. | The man on the left is wearing a white uniform and clapping. | There is a row of at least six microphones arranged in an arc. | A second man in a military uniform becomes visible on the right side in the second frame. | The background consists of a textured grey wall. | Scene starts with man at podium and military men clapping",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 45,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the black coat remains seated at the conference table, pointing at the large document with his right hand while holding a cigarette in his left. The surrounding military officials in olive-green uniforms continue to observe him and the paper. The television set remains visible in the background against the white wall.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 46,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene transitions to a white rocket structure secured by blue supports on a launch pad. Bright orange and yellow flames exhaust intensely from the engine nozzle at the base. The view tightens on the fiery propulsion test, showing smoke and heat surrounding the burning engine mechanism.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 47,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A wide shot displays a white rocket ascending from a launch pad situated in a snowy, rural landscape. A large cloud of white exhaust smoke expands rapidly to the left of the launch tower structure. Bright orange flames are visible at the base of the rocket, and a road curves along the right side of the frame.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 48,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A white rocket continues ascending from a launch pad situated in a snowy, rural landscape. Bright orange flames are visible at the base, propelling the vehicle upward. A large cloud of white exhaust smoke expands rapidly to the left of the dark launch tower structure, while a road curves along the right side.</think><action>compress</action><summary>{\"time_range\": [88, 96], \"text\": \"[88-92] In an interior room, a man in a black coat sits at a conference table, pointing at a large document with his right hand while holding a cigarette in his left. Several men in olive-green military uniforms observe him, with a television set visible against the white wall in the background. [92-94] The view cuts to a white rocket structure secured by blue supports, where bright orange and yellow flames exhaust intensely from the engine nozzle during a test. [94-96] The scene transitions to a wide shot of the white rocket ascending from a launch pad in a snowy, rural landscape. A large cloud of white exhaust smoke expands to the left of the launch tower, bright orange flames burn at the base, and a road curves along the right side.\", \"parse_success\": true}</summary>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "gold_caption": "A man in a black coat is pointing at a document on a table. | The man in the black coat is holding a cigarette. | There are multiple men in military uniforms present in the room. | A white telephone is visible on the table. | A microphone is positioned on the table near the telephone. | The document on the table contains text and grid lines. | A television is visible in the background on a cabinet. | Scene changes to man sitting at table with military men | Scene becomes empty",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  },
+  {
+    "chunk_idx": 49,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The white rocket ascends vertically against a backdrop of snowy, forested hills. Bright orange flames propel the vehicle upward continuously. A massive cloud of white exhaust smoke billows extensively to the left, expanding significantly as the rocket gains altitude above the dark launch tower structure.</think><action>silent</action>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "base_role": "compress_boundary",
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/internvid_vtime/videos/9Jq3NEJIhBI_00:00:00:000_00:01:06:600.mp4"
+  }
+]

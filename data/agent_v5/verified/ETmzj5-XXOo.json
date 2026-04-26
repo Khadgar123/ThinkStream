@@ -1,0 +1,2808 @@
+{
+  "samples": [
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 0,
+          "video_end": 10,
+          "frames": 10
+        },
+        "memory": {
+          "compressed_segments": [],
+          "recent_thinks": [
+            "[0-2] A woman with dark hair in a side braid appears wearing blue scrubs and a small microphone. She sits in front of a white shelving unit holding decorative balls and a stack of books. A lower-third graphic displays the text \"Intermountain Healthcare\" on the left. She faces forward with her mouth slightly open as if speaking.",
+            "[2-4] A white lower-third graphic expands to display the name \"Nurse Dani\" and a question about a child allergic to eggs, dairy, peanuts, and wheat. The woman in blue scrubs continues facing forward, her mouth moving slightly as she speaks. The Intermountain Healthcare logo remains on the left side of the banner.",
+            "[4-6] The woman in blue scrubs continues speaking, her mouth moving and eyebrows raising slightly. The lower-third graphic remains static, displaying 'Nurse Dani' and the question about allergies to eggs, dairy, peanuts, and wheat. The background shelving with books and decorative balls remains unchanged throughout this segment.",
+            "[6-8] The woman in blue scrubs continues facing forward, her mouth moving slightly as she speaks. Her eyebrows raise and lower subtly while maintaining eye contact. The lower-third graphic displaying \"Nurse Dani\" and the allergy question remains static at the bottom. The background shelving with books and decorative balls stays unchanged."
+          ]
+        },
+        "queries": [
+          {
+            "question": "Has the woman with the dark blue v-neck top started speaking yet?",
+            "answers": []
+          }
+        ],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The woman in blue scrubs continues speaking, her mouth opening and closing while her eyebrows lift slightly. The lower-third graphic displaying 'Nurse Dani' and the allergy question remains static at the bottom of the screen. The background shelving with books and decorative balls is unchanged.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/ETmzj5-XXOo.mp4",
+      "video_id": "ETmzj5-XXOo",
+      "chunk_idx": 4,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "event_watch",
+      "trajectory_id": "traj_0",
+      "card_id": "ETmzj5-XXOo_E2_013",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "Yes",
+        "answer_form": "binary",
+        "family": "E2",
+        "availability": "event_watch",
+        "support_chunks": [
+          7
+        ]
+      },
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "medium",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 14,
+          "video_end": 38,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "A woman with dark hair in a side braid, wearing blue scrubs and a microphone, sits before white shelves holding books and decorative balls. Initially, an \"Intermountain Healthcare\" logo is visible. From [2-10], a lower-third graphic expands to display \"Nurse Dani\" and the question \"Re: My 5 year old is allergic to eggs, dairy, peanuts and wheat. How can he get enough protein?\" while she speaks. At [10], she smiles broadly as the graphics vanish from the screen."
+            },
+            {
+              "time_range": [
+                12,
+                26
+              ],
+              "text": "A woman with dark braided hair resting over her shoulder, wearing blue scrubs, is centered in the frame. Behind her are white shelves displaying a stack of books and a bowl of decorative spheres. From 12-14s, she smiles broadly with teeth visible, shifting her gaze slightly down and right. She then speaks with an open mouth and neutral expression from 14-18s. She smiles broadly again from 18-22s, maintaining eye contact, before opening her mouth to speak. From 22-26s, she continues speaking facing forward and raises her right hand near her chest in a gesture. No text graphics appear on screen, and the background remains unchanged throughout the clip."
+            }
+          ],
+          "recent_thinks": [
+            "[26-28] The woman in blue scrubs lowers her right hand from her chest. Her mouth moves from open speaking to a slight smile while facing forward. Her dark braided hair remains over her shoulder. The background stays static with white shelves holding books and spheres. No text overlays appear.",
+            "[28-30] The woman in blue scrubs continues facing forward with dark braided hair over her left shoulder. Her mouth transitions from slightly open to closed. Hands appear gesturing at the bottom edge. The white background shelves with books and decorative spheres still remain static. No text overlays are visible on the screen.",
+            "[30-32] The woman in blue scrubs opens her mouth again while speaking. Her hands disappear from the bottom edge of the frame. Her head remains facing forward with dark braided hair over her left shoulder. The background shelves holding books and decorative spheres stay static. No text overlays appear on the screen during this segment.",
+            "[32-34] The woman in blue scrubs continues facing forward with her mouth open in speech. Her right hand is raised near her upper chest, fingers slightly spread in a gesture. Her dark braided hair rests over her left shoulder against the static background of white shelves holding books and decorative spheres. No text overlays appear on screen.",
+            "[34-36] The woman in blue scrubs lowers her right hand from her chest while facing forward with her mouth open in speech. Her dark braided hair remains over her left shoulder against the static background of white shelves holding books and decorative spheres. No text overlays appear on the screen."
+          ]
+        },
+        "queries": [
+          {
+            "question": "Has the woman with the dark blue v-neck top started speaking yet?",
+            "answers": []
+          }
+        ],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The woman in blue scrubs continues speaking while facing forward, her mouth open. Her dark braided hair stays over her left shoulder against the static background of white shelves holding books and spheres. No hand gestures are visible in this segment, and no text overlays appear on the screen.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/ETmzj5-XXOo.mp4",
+      "video_id": "ETmzj5-XXOo",
+      "chunk_idx": 18,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 22,
+          "video_end": 46,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "A woman with dark hair in a side braid, wearing blue scrubs and a microphone, sits before white shelves holding books and decorative balls. Initially, an \"Intermountain Healthcare\" logo is visible. From [2-10], a lower-third graphic expands to display \"Nurse Dani\" and the question \"Re: My 5 year old is allergic to eggs, dairy, peanuts and wheat. How can he get enough protein?\" while she speaks. At [10], she smiles broadly as the graphics vanish from the screen."
+            },
+            {
+              "time_range": [
+                12,
+                26
+              ],
+              "text": "A woman with dark braided hair resting over her shoulder, wearing blue scrubs, is centered in the frame. Behind her are white shelves displaying a stack of books and a bowl of decorative spheres. From 12-14s, she smiles broadly with teeth visible, shifting her gaze slightly down and right. She then speaks with an open mouth and neutral expression from 14-18s. She smiles broadly again from 18-22s, maintaining eye contact, before opening her mouth to speak. From 22-26s, she continues speaking facing forward and raises her right hand near her chest in a gesture. No text graphics appear on screen, and the background remains unchanged throughout the clip."
+            },
+            {
+              "time_range": [
+                26,
+                40
+              ],
+              "text": "Between 26-40s, a woman in blue scrubs with dark braided hair over her left shoulder speaks facing forward. The background features static white shelves with books and decorative spheres. She lowers her right hand from her chest, transitioning to a slight smile, then gestures at the bottom edge. Her hands disappear briefly before she raises her right hand near her upper chest with fingers spread. She lowers her hand again while continuing to articulate. Her mouth moves from open to closed throughout. No text overlays are visible."
+            }
+          ],
+          "recent_thinks": [
+            "[40-42] The woman in blue scrubs continues facing directly forward with her mouth open while speaking. Her dark braided hair remains draped over her left shoulder. The background featuring white shelves with books and decorative spheres remains static. No hand gestures or visible text overlays appear in the frame during this segment.",
+            "[42-44] The woman in blue scrubs continues facing forward with her dark braid resting on her left shoulder. Her mouth shifts from an open speaking position to a narrower shape while maintaining direct eye contact. The background containing white shelves, books, and decorative spheres remains static. No hand gestures or text overlays are visible during this segment."
+          ]
+        },
+        "queries": [
+          {
+            "question": "Has the woman with the dark blue v-neck top started speaking yet?",
+            "answers": []
+          }
+        ],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The woman in blue scrubs faces forward, dark braid on her left shoulder. Her mouth opens to reveal teeth as she articulates, eyebrows slightly raised. White shelves behind her holding books and decorative spheres remain static without new text overlays or hand gestures entering the frame.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/ETmzj5-XXOo.mp4",
+      "video_id": "ETmzj5-XXOo",
+      "chunk_idx": 22,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 28,
+          "video_end": 52,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "A woman with dark hair in a side braid, wearing blue scrubs and a microphone, sits before white shelves holding books and decorative balls. Initially, an \"Intermountain Healthcare\" logo is visible. From [2-10], a lower-third graphic expands to display \"Nurse Dani\" and the question \"Re: My 5 year old is allergic to eggs, dairy, peanuts and wheat. How can he get enough protein?\" while she speaks. At [10], she smiles broadly as the graphics vanish from the screen."
+            },
+            {
+              "time_range": [
+                12,
+                26
+              ],
+              "text": "A woman with dark braided hair resting over her shoulder, wearing blue scrubs, is centered in the frame. Behind her are white shelves displaying a stack of books and a bowl of decorative spheres. From 12-14s, she smiles broadly with teeth visible, shifting her gaze slightly down and right. She then speaks with an open mouth and neutral expression from 14-18s. She smiles broadly again from 18-22s, maintaining eye contact, before opening her mouth to speak. From 22-26s, she continues speaking facing forward and raises her right hand near her chest in a gesture. No text graphics appear on screen, and the background remains unchanged throughout the clip."
+            },
+            {
+              "time_range": [
+                26,
+                40
+              ],
+              "text": "Between 26-40s, a woman in blue scrubs with dark braided hair over her left shoulder speaks facing forward. The background features static white shelves with books and decorative spheres. She lowers her right hand from her chest, transitioning to a slight smile, then gestures at the bottom edge. Her hands disappear briefly before she raises her right hand near her upper chest with fingers spread. She lowers her hand again while continuing to articulate. Her mouth moves from open to closed throughout. No text overlays are visible."
+            }
+          ],
+          "recent_thinks": [
+            "[40-42] The woman in blue scrubs continues facing directly forward with her mouth open while speaking. Her dark braided hair remains draped over her left shoulder. The background featuring white shelves with books and decorative spheres remains static. No hand gestures or visible text overlays appear in the frame during this segment.",
+            "[42-44] The woman in blue scrubs continues facing forward with her dark braid resting on her left shoulder. Her mouth shifts from an open speaking position to a narrower shape while maintaining direct eye contact. The background containing white shelves, books, and decorative spheres remains static. No hand gestures or text overlays are visible during this segment.",
+            "[44-46] The woman in blue scrubs faces forward, dark braid on her left shoulder. Her mouth opens to reveal teeth as she articulates, eyebrows slightly raised. White shelves behind her holding books and decorative spheres remain static without new text overlays or hand gestures entering the frame.",
+            "[46-48] The woman in blue scrubs maintains her forward-facing position with her dark braid resting on her left shoulder. Her mouth moves slightly as she continues speaking, keeping direct eye contact. The background featuring white shelves, stacked books, and decorative spheres remains unchanged, with no new text overlays or hand gestures visible in the frame.",
+            "[48-50] The woman in blue scrubs continues facing forward with her dark braid resting on her left shoulder. Her mouth opens wider, revealing teeth as she articulates words. The background shelves holding books and decorative spheres remain static. No text overlays or hand gestures appear within the frame during this segment."
+          ]
+        },
+        "queries": [
+          {
+            "question": "Has the woman with the dark blue v-neck top started speaking yet?",
+            "answers": []
+          }
+        ],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The woman in blue scrubs faces forward, dark braid on her left shoulder. Her mouth stays open, revealing teeth while articulating. Her gaze remains direct toward the camera. Background shelves with books and decorative spheres stay static. No new text overlays or hand gestures appear.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/ETmzj5-XXOo.mp4",
+      "video_id": "ETmzj5-XXOo",
+      "chunk_idx": 25,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 34,
+          "video_end": 58,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "A woman with dark hair in a side braid, wearing blue scrubs and a microphone, sits before white shelves holding books and decorative balls. Initially, an \"Intermountain Healthcare\" logo is visible. From [2-10], a lower-third graphic expands to display \"Nurse Dani\" and the question \"Re: My 5 year old is allergic to eggs, dairy, peanuts and wheat. How can he get enough protein?\" while she speaks. At [10], she smiles broadly as the graphics vanish from the screen."
+            },
+            {
+              "time_range": [
+                12,
+                26
+              ],
+              "text": "A woman with dark braided hair resting over her shoulder, wearing blue scrubs, is centered in the frame. Behind her are white shelves displaying a stack of books and a bowl of decorative spheres. From 12-14s, she smiles broadly with teeth visible, shifting her gaze slightly down and right. She then speaks with an open mouth and neutral expression from 14-18s. She smiles broadly again from 18-22s, maintaining eye contact, before opening her mouth to speak. From 22-26s, she continues speaking facing forward and raises her right hand near her chest in a gesture. No text graphics appear on screen, and the background remains unchanged throughout the clip."
+            },
+            {
+              "time_range": [
+                26,
+                40
+              ],
+              "text": "Between 26-40s, a woman in blue scrubs with dark braided hair over her left shoulder speaks facing forward. The background features static white shelves with books and decorative spheres. She lowers her right hand from her chest, transitioning to a slight smile, then gestures at the bottom edge. Her hands disappear briefly before she raises her right hand near her upper chest with fingers spread. She lowers her hand again while continuing to articulate. Her mouth moves from open to closed throughout. No text overlays are visible."
+            },
+            {
+              "time_range": [
+                40,
+                52
+              ],
+              "text": "[40-52] The woman in blue scrubs continues facing forward with her dark braid draped over her left shoulder. She speaks directly to the camera, her mouth transitioning from an open position to a narrower shape, then opening wider to reveal teeth as she articulates. Her eyebrows raise slightly at times. The background remains unchanged, showing white shelves with a stack of books and a bowl of decorative spheres. No text overlays or hand gestures appear in the frame."
+            }
+          ],
+          "recent_thinks": [
+            "[52-54] The woman in blue scrubs maintains her forward-facing position with her dark braid resting on her left shoulder. Her mouth articulates words with teeth visible, looking forward. The background featuring white shelves, stacked books, and decorative spheres remains unchanged, with no new text overlays or hand gestures visible in the frame.",
+            "[54-56] The woman in blue scrubs continues speaking directly to the camera with her mouth open and teeth visible. Her dark braid remains over her left shoulder against the static background of white shelves and books. Her hands appear slightly at the bottom edge of the frame with fingers spread, gesturing slightly while maintaining forward eye contact."
+          ]
+        },
+        "queries": [
+          {
+            "question": "Has the woman with the dark blue v-neck top started speaking yet?",
+            "answers": []
+          }
+        ],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The woman in blue scrubs continues speaking with mouth open and teeth visible. Her dark braid rests on the left shoulder. Hands are now lowered out of the frame. Background featuring white shelves, books, and decorative spheres remains static without text overlays.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/ETmzj5-XXOo.mp4",
+      "video_id": "ETmzj5-XXOo",
+      "chunk_idx": 28,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 36,
+          "video_end": 60,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "A woman with dark hair in a side braid, wearing blue scrubs and a microphone, sits before white shelves holding books and decorative balls. Initially, an \"Intermountain Healthcare\" logo is visible. From [2-10], a lower-third graphic expands to display \"Nurse Dani\" and the question \"Re: My 5 year old is allergic to eggs, dairy, peanuts and wheat. How can he get enough protein?\" while she speaks. At [10], she smiles broadly as the graphics vanish from the screen."
+            },
+            {
+              "time_range": [
+                12,
+                26
+              ],
+              "text": "A woman with dark braided hair resting over her shoulder, wearing blue scrubs, is centered in the frame. Behind her are white shelves displaying a stack of books and a bowl of decorative spheres. From 12-14s, she smiles broadly with teeth visible, shifting her gaze slightly down and right. She then speaks with an open mouth and neutral expression from 14-18s. She smiles broadly again from 18-22s, maintaining eye contact, before opening her mouth to speak. From 22-26s, she continues speaking facing forward and raises her right hand near her chest in a gesture. No text graphics appear on screen, and the background remains unchanged throughout the clip."
+            },
+            {
+              "time_range": [
+                26,
+                40
+              ],
+              "text": "Between 26-40s, a woman in blue scrubs with dark braided hair over her left shoulder speaks facing forward. The background features static white shelves with books and decorative spheres. She lowers her right hand from her chest, transitioning to a slight smile, then gestures at the bottom edge. Her hands disappear briefly before she raises her right hand near her upper chest with fingers spread. She lowers her hand again while continuing to articulate. Her mouth moves from open to closed throughout. No text overlays are visible."
+            },
+            {
+              "time_range": [
+                40,
+                52
+              ],
+              "text": "[40-52] The woman in blue scrubs continues facing forward with her dark braid draped over her left shoulder. She speaks directly to the camera, her mouth transitioning from an open position to a narrower shape, then opening wider to reveal teeth as she articulates. Her eyebrows raise slightly at times. The background remains unchanged, showing white shelves with a stack of books and a bowl of decorative spheres. No text overlays or hand gestures appear in the frame."
+            }
+          ],
+          "recent_thinks": [
+            "[52-54] The woman in blue scrubs maintains her forward-facing position with her dark braid resting on her left shoulder. Her mouth articulates words with teeth visible, looking forward. The background featuring white shelves, stacked books, and decorative spheres remains unchanged, with no new text overlays or hand gestures visible in the frame.",
+            "[54-56] The woman in blue scrubs continues speaking directly to the camera with her mouth open and teeth visible. Her dark braid remains over her left shoulder against the static background of white shelves and books. Her hands appear slightly at the bottom edge of the frame with fingers spread, gesturing slightly while maintaining forward eye contact.",
+            "[56-58] The woman in blue scrubs continues speaking with mouth open and teeth visible. Her dark braid rests on the left shoulder. Hands are now lowered out of the frame. Background featuring white shelves, books, and decorative spheres remains static without text overlays."
+          ]
+        },
+        "queries": [
+          {
+            "question": "Has the woman with the dark blue v-neck top started speaking yet?",
+            "answers": []
+          }
+        ],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The woman in blue scrubs continues facing forward with her dark braid over her left shoulder. Her mouth remains open as she speaks directly to the camera. Her hands stay lowered out of the frame. The background with white shelves, books, and spheres remains static without new text overlays.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/ETmzj5-XXOo.mp4",
+      "video_id": "ETmzj5-XXOo",
+      "chunk_idx": 29,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 40,
+          "video_end": 64,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "A woman with dark hair in a side braid, wearing blue scrubs and a microphone, sits before white shelves holding books and decorative balls. Initially, an \"Intermountain Healthcare\" logo is visible. From [2-10], a lower-third graphic expands to display \"Nurse Dani\" and the question \"Re: My 5 year old is allergic to eggs, dairy, peanuts and wheat. How can he get enough protein?\" while she speaks. At [10], she smiles broadly as the graphics vanish from the screen."
+            },
+            {
+              "time_range": [
+                12,
+                26
+              ],
+              "text": "A woman with dark braided hair resting over her shoulder, wearing blue scrubs, is centered in the frame. Behind her are white shelves displaying a stack of books and a bowl of decorative spheres. From 12-14s, she smiles broadly with teeth visible, shifting her gaze slightly down and right. She then speaks with an open mouth and neutral expression from 14-18s. She smiles broadly again from 18-22s, maintaining eye contact, before opening her mouth to speak. From 22-26s, she continues speaking facing forward and raises her right hand near her chest in a gesture. No text graphics appear on screen, and the background remains unchanged throughout the clip."
+            },
+            {
+              "time_range": [
+                26,
+                40
+              ],
+              "text": "Between 26-40s, a woman in blue scrubs with dark braided hair over her left shoulder speaks facing forward. The background features static white shelves with books and decorative spheres. She lowers her right hand from her chest, transitioning to a slight smile, then gestures at the bottom edge. Her hands disappear briefly before she raises her right hand near her upper chest with fingers spread. She lowers her hand again while continuing to articulate. Her mouth moves from open to closed throughout. No text overlays are visible."
+            },
+            {
+              "time_range": [
+                40,
+                52
+              ],
+              "text": "[40-52] The woman in blue scrubs continues facing forward with her dark braid draped over her left shoulder. She speaks directly to the camera, her mouth transitioning from an open position to a narrower shape, then opening wider to reveal teeth as she articulates. Her eyebrows raise slightly at times. The background remains unchanged, showing white shelves with a stack of books and a bowl of decorative spheres. No text overlays or hand gestures appear in the frame."
+            }
+          ],
+          "recent_thinks": [
+            "[52-54] The woman in blue scrubs maintains her forward-facing position with her dark braid resting on her left shoulder. Her mouth articulates words with teeth visible, looking forward. The background featuring white shelves, stacked books, and decorative spheres remains unchanged, with no new text overlays or hand gestures visible in the frame.",
+            "[54-56] The woman in blue scrubs continues speaking directly to the camera with her mouth open and teeth visible. Her dark braid remains over her left shoulder against the static background of white shelves and books. Her hands appear slightly at the bottom edge of the frame with fingers spread, gesturing slightly while maintaining forward eye contact.",
+            "[56-58] The woman in blue scrubs continues speaking with mouth open and teeth visible. Her dark braid rests on the left shoulder. Hands are now lowered out of the frame. Background featuring white shelves, books, and decorative spheres remains static without text overlays.",
+            "[58-60] The woman in blue scrubs continues facing forward with her dark braid over her left shoulder. Her mouth remains open as she speaks directly to the camera. Her hands stay lowered out of the frame. The background with white shelves, books, and spheres remains static without new text overlays.",
+            "[60-62] The woman in blue scrubs faces forward with a dark braid over her shoulder. Her mouth opens to reveal teeth while speaking. Her right hand becomes visible again at the bottom edge of the frame, showing fingers. The background featuring white shelves, stacked books, and decorative spheres remains static without new text overlays."
+          ]
+        },
+        "queries": [
+          {
+            "question": "Has the woman with the dark blue v-neck top started speaking yet?",
+            "answers": []
+          }
+        ],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The woman in blue scrubs continues speaking, her mouth shape shifting slightly while teeth remain visible. Her dark braid rests on her left shoulder. Her hands are no longer visible at the bottom edge. She maintains forward eye contact against the static background of white shelves and books.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/ETmzj5-XXOo.mp4",
+      "video_id": "ETmzj5-XXOo",
+      "chunk_idx": 31,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 46,
+          "video_end": 70,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "A woman with dark hair in a side braid, wearing blue scrubs and a microphone, sits before white shelves holding books and decorative balls. Initially, an \"Intermountain Healthcare\" logo is visible. From [2-10], a lower-third graphic expands to display \"Nurse Dani\" and the question \"Re: My 5 year old is allergic to eggs, dairy, peanuts and wheat. How can he get enough protein?\" while she speaks. At [10], she smiles broadly as the graphics vanish from the screen."
+            },
+            {
+              "time_range": [
+                12,
+                26
+              ],
+              "text": "A woman with dark braided hair resting over her shoulder, wearing blue scrubs, is centered in the frame. Behind her are white shelves displaying a stack of books and a bowl of decorative spheres. From 12-14s, she smiles broadly with teeth visible, shifting her gaze slightly down and right. She then speaks with an open mouth and neutral expression from 14-18s. She smiles broadly again from 18-22s, maintaining eye contact, before opening her mouth to speak. From 22-26s, she continues speaking facing forward and raises her right hand near her chest in a gesture. No text graphics appear on screen, and the background remains unchanged throughout the clip."
+            },
+            {
+              "time_range": [
+                26,
+                40
+              ],
+              "text": "Between 26-40s, a woman in blue scrubs with dark braided hair over her left shoulder speaks facing forward. The background features static white shelves with books and decorative spheres. She lowers her right hand from her chest, transitioning to a slight smile, then gestures at the bottom edge. Her hands disappear briefly before she raises her right hand near her upper chest with fingers spread. She lowers her hand again while continuing to articulate. Her mouth moves from open to closed throughout. No text overlays are visible."
+            },
+            {
+              "time_range": [
+                40,
+                52
+              ],
+              "text": "[40-52] The woman in blue scrubs continues facing forward with her dark braid draped over her left shoulder. She speaks directly to the camera, her mouth transitioning from an open position to a narrower shape, then opening wider to reveal teeth as she articulates. Her eyebrows raise slightly at times. The background remains unchanged, showing white shelves with a stack of books and a bowl of decorative spheres. No text overlays or hand gestures appear in the frame."
+            },
+            {
+              "time_range": [
+                52,
+                66
+              ],
+              "text": "A woman in blue scrubs speaks directly to the camera, her dark braid resting on her left shoulder. She maintains forward eye contact with her mouth articulating words, often showing teeth. The background features static white shelves holding stacked books, including one titled 'Child Health Nursing,' and a bowl of decorative spheres. Her hand gestures vary: hands are initially unseen [52-54], appear briefly at the bottom edge with spread fingers [54-56], disappear again [56-60], reappear slightly (right hand) [60-62], and finally remain out of frame [62-66]. No text overlays appear."
+            }
+          ],
+          "recent_thinks": [
+            "[66-68] The woman in blue scrubs maintains her forward-facing position with her dark braid resting on her left shoulder. She continues speaking with her mouth open and teeth visible. Her hands remain out of the frame. The background featuring white shelves, stacked books, and decorative spheres stays static without new text overlays or posture changes."
+          ]
+        },
+        "queries": [
+          {
+            "question": "Has the woman with the dark blue v-neck top started speaking yet?",
+            "answers": []
+          }
+        ],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The woman in blue scrubs speaks to the camera, dark braid over her left shoulder. Her mouth stays open with teeth visible. Hands remain out of frame. The background with shelves, books, and spheres remains static without new text overlays.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/ETmzj5-XXOo.mp4",
+      "video_id": "ETmzj5-XXOo",
+      "chunk_idx": 34,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 54,
+          "video_end": 78,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "A woman with dark hair in a side braid, wearing blue scrubs and a microphone, sits before white shelves holding books and decorative balls. Initially, an \"Intermountain Healthcare\" logo is visible. From [2-10], a lower-third graphic expands to display \"Nurse Dani\" and the question \"Re: My 5 year old is allergic to eggs, dairy, peanuts and wheat. How can he get enough protein?\" while she speaks. At [10], she smiles broadly as the graphics vanish from the screen."
+            },
+            {
+              "time_range": [
+                12,
+                26
+              ],
+              "text": "A woman with dark braided hair resting over her shoulder, wearing blue scrubs, is centered in the frame. Behind her are white shelves displaying a stack of books and a bowl of decorative spheres. From 12-14s, she smiles broadly with teeth visible, shifting her gaze slightly down and right. She then speaks with an open mouth and neutral expression from 14-18s. She smiles broadly again from 18-22s, maintaining eye contact, before opening her mouth to speak. From 22-26s, she continues speaking facing forward and raises her right hand near her chest in a gesture. No text graphics appear on screen, and the background remains unchanged throughout the clip."
+            },
+            {
+              "time_range": [
+                26,
+                40
+              ],
+              "text": "Between 26-40s, a woman in blue scrubs with dark braided hair over her left shoulder speaks facing forward. The background features static white shelves with books and decorative spheres. She lowers her right hand from her chest, transitioning to a slight smile, then gestures at the bottom edge. Her hands disappear briefly before she raises her right hand near her upper chest with fingers spread. She lowers her hand again while continuing to articulate. Her mouth moves from open to closed throughout. No text overlays are visible."
+            },
+            {
+              "time_range": [
+                40,
+                52
+              ],
+              "text": "[40-52] The woman in blue scrubs continues facing forward with her dark braid draped over her left shoulder. She speaks directly to the camera, her mouth transitioning from an open position to a narrower shape, then opening wider to reveal teeth as she articulates. Her eyebrows raise slightly at times. The background remains unchanged, showing white shelves with a stack of books and a bowl of decorative spheres. No text overlays or hand gestures appear in the frame."
+            },
+            {
+              "time_range": [
+                52,
+                66
+              ],
+              "text": "A woman in blue scrubs speaks directly to the camera, her dark braid resting on her left shoulder. She maintains forward eye contact with her mouth articulating words, often showing teeth. The background features static white shelves holding stacked books, including one titled 'Child Health Nursing,' and a bowl of decorative spheres. Her hand gestures vary: hands are initially unseen [52-54], appear briefly at the bottom edge with spread fingers [54-56], disappear again [56-60], reappear slightly (right hand) [60-62], and finally remain out of frame [62-66]. No text overlays appear."
+            }
+          ],
+          "recent_thinks": [
+            "[66-68] The woman in blue scrubs maintains her forward-facing position with her dark braid resting on her left shoulder. She continues speaking with her mouth open and teeth visible. Her hands remain out of the frame. The background featuring white shelves, stacked books, and decorative spheres stays static without new text overlays or posture changes.",
+            "[68-70] The woman in blue scrubs speaks to the camera, dark braid over her left shoulder. Her mouth stays open with teeth visible. Hands remain out of frame. The background with shelves, books, and spheres remains static without new text overlays.",
+            "[70-72] The camera cuts to a slightly closer shot of the woman in blue scrubs as she continues speaking with her mouth open. Her dark braid remains draped over her left shoulder. The background shelves holding books and decorative spheres are still visible but appear cropped tighter due to the closer framing. No new text overlays appear.",
+            "[72-74] The woman in blue scrubs remains in the closer shot, her dark braid resting over her left shoulder. She glances slightly to her right before returning her gaze forward. Her mouth transitions from slightly open to closed. The background shelves with books and decorative spheres remain static behind her.",
+            "[74-76] The woman in blue scrubs faces forward with her dark braid resting on her left shoulder. Her mouth opens wider as she articulates words. She maintains direct eye contact with the camera. Her hands remain out of frame. The background shelves holding books and decorative spheres remain static without new text overlays appearing."
+          ]
+        },
+        "queries": [
+          {
+            "question": "Has the woman with the dark blue v-neck top started speaking yet?",
+            "answers": []
+          }
+        ],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The woman in blue scrubs continues speaking with her mouth open and teeth visible. Her dark braid rests over her left shoulder. A faint white graphic bar fades in at bottom edge. The background shelves holding books and decorative spheres remain static behind her.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/ETmzj5-XXOo.mp4",
+      "video_id": "ETmzj5-XXOo",
+      "chunk_idx": 38,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 56,
+          "video_end": 80,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "A woman with dark hair in a side braid, wearing blue scrubs and a microphone, sits before white shelves holding books and decorative balls. Initially, an \"Intermountain Healthcare\" logo is visible. From [2-10], a lower-third graphic expands to display \"Nurse Dani\" and the question \"Re: My 5 year old is allergic to eggs, dairy, peanuts and wheat. How can he get enough protein?\" while she speaks. At [10], she smiles broadly as the graphics vanish from the screen."
+            },
+            {
+              "time_range": [
+                12,
+                26
+              ],
+              "text": "A woman with dark braided hair resting over her shoulder, wearing blue scrubs, is centered in the frame. Behind her are white shelves displaying a stack of books and a bowl of decorative spheres. From 12-14s, she smiles broadly with teeth visible, shifting her gaze slightly down and right. She then speaks with an open mouth and neutral expression from 14-18s. She smiles broadly again from 18-22s, maintaining eye contact, before opening her mouth to speak. From 22-26s, she continues speaking facing forward and raises her right hand near her chest in a gesture. No text graphics appear on screen, and the background remains unchanged throughout the clip."
+            },
+            {
+              "time_range": [
+                26,
+                40
+              ],
+              "text": "Between 26-40s, a woman in blue scrubs with dark braided hair over her left shoulder speaks facing forward. The background features static white shelves with books and decorative spheres. She lowers her right hand from her chest, transitioning to a slight smile, then gestures at the bottom edge. Her hands disappear briefly before she raises her right hand near her upper chest with fingers spread. She lowers her hand again while continuing to articulate. Her mouth moves from open to closed throughout. No text overlays are visible."
+            },
+            {
+              "time_range": [
+                40,
+                52
+              ],
+              "text": "[40-52] The woman in blue scrubs continues facing forward with her dark braid draped over her left shoulder. She speaks directly to the camera, her mouth transitioning from an open position to a narrower shape, then opening wider to reveal teeth as she articulates. Her eyebrows raise slightly at times. The background remains unchanged, showing white shelves with a stack of books and a bowl of decorative spheres. No text overlays or hand gestures appear in the frame."
+            },
+            {
+              "time_range": [
+                52,
+                66
+              ],
+              "text": "A woman in blue scrubs speaks directly to the camera, her dark braid resting on her left shoulder. She maintains forward eye contact with her mouth articulating words, often showing teeth. The background features static white shelves holding stacked books, including one titled 'Child Health Nursing,' and a bowl of decorative spheres. Her hand gestures vary: hands are initially unseen [52-54], appear briefly at the bottom edge with spread fingers [54-56], disappear again [56-60], reappear slightly (right hand) [60-62], and finally remain out of frame [62-66]. No text overlays appear."
+            }
+          ],
+          "recent_thinks": [
+            "[66-68] The woman in blue scrubs maintains her forward-facing position with her dark braid resting on her left shoulder. She continues speaking with her mouth open and teeth visible. Her hands remain out of the frame. The background featuring white shelves, stacked books, and decorative spheres stays static without new text overlays or posture changes.",
+            "[68-70] The woman in blue scrubs speaks to the camera, dark braid over her left shoulder. Her mouth stays open with teeth visible. Hands remain out of frame. The background with shelves, books, and spheres remains static without new text overlays.",
+            "[70-72] The camera cuts to a slightly closer shot of the woman in blue scrubs as she continues speaking with her mouth open. Her dark braid remains draped over her left shoulder. The background shelves holding books and decorative spheres are still visible but appear cropped tighter due to the closer framing. No new text overlays appear.",
+            "[72-74] The woman in blue scrubs remains in the closer shot, her dark braid resting over her left shoulder. She glances slightly to her right before returning her gaze forward. Her mouth transitions from slightly open to closed. The background shelves with books and decorative spheres remain static behind her.",
+            "[74-76] The woman in blue scrubs faces forward with her dark braid resting on her left shoulder. Her mouth opens wider as she articulates words. She maintains direct eye contact with the camera. Her hands remain out of frame. The background shelves holding books and decorative spheres remain static without new text overlays appearing.",
+            "[76-78] The woman in blue scrubs continues speaking with her mouth open and teeth visible. Her dark braid rests over her left shoulder. A faint white graphic bar fades in at bottom edge. The background shelves holding books and decorative spheres remain static behind her."
+          ]
+        },
+        "queries": [
+          {
+            "question": "Has the woman with the dark blue v-neck top started speaking yet?",
+            "answers": []
+          }
+        ],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The woman in blue scrubs continues speaking with her mouth slightly open. A white lower-third graphic fully fades in at the bottom of the screen, displaying the text \"Facebook.com/IntermountainMoms\" in blue font. Her dark braid remains over her left shoulder against the static background of shelves.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/ETmzj5-XXOo.mp4",
+      "video_id": "ETmzj5-XXOo",
+      "chunk_idx": 39,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 64,
+          "video_end": 88,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                26
+              ],
+              "text": "A woman with dark hair in a side braid, wearing blue scrubs and a microphone, sits before white shelves holding books and decorative balls. Initially, an \"Intermountain Healthcare\" logo is visible. From [2-10], a lower-third graphic expands to display \"Nurse Dani\" and the question \"Re: My 5 year old is allergic to eggs, dairy, peanuts and wheat. How can he get enough protein?\" while she speaks. At [10], she smiles broadly as the graphics vanish from the screen. A woman with dark braided hair resting over her shoulder, wearing blue scrubs, is centered in the frame. Behind her are white shelves displaying a stack of books and a bowl of decorative spheres. From 12-14s, she smiles broadly with teeth visible, shifting her gaze slightly down and right. She then speaks with an open mouth and neutral expression from 14-18s. She smiles broadly again from 18-22s, maintaining eye contact, before opening her mouth to speak. From 22-26s, she continues speaking facing forward and raises her right hand near her chest in a gesture. No text graphics appear on screen, and the background remains unchanged throughout the clip."
+            },
+            {
+              "time_range": [
+                26,
+                40
+              ],
+              "text": "Between 26-40s, a woman in blue scrubs with dark braided hair over her left shoulder speaks facing forward. The background features static white shelves with books and decorative spheres. She lowers her right hand from her chest, transitioning to a slight smile, then gestures at the bottom edge. Her hands disappear briefly before she raises her right hand near her upper chest with fingers spread. She lowers her hand again while continuing to articulate. Her mouth moves from open to closed throughout. No text overlays are visible."
+            },
+            {
+              "time_range": [
+                40,
+                52
+              ],
+              "text": "[40-52] The woman in blue scrubs continues facing forward with her dark braid draped over her left shoulder. She speaks directly to the camera, her mouth transitioning from an open position to a narrower shape, then opening wider to reveal teeth as she articulates. Her eyebrows raise slightly at times. The background remains unchanged, showing white shelves with a stack of books and a bowl of decorative spheres. No text overlays or hand gestures appear in the frame."
+            },
+            {
+              "time_range": [
+                52,
+                66
+              ],
+              "text": "A woman in blue scrubs speaks directly to the camera, her dark braid resting on her left shoulder. She maintains forward eye contact with her mouth articulating words, often showing teeth. The background features static white shelves holding stacked books, including one titled 'Child Health Nursing,' and a bowl of decorative spheres. Her hand gestures vary: hands are initially unseen [52-54], appear briefly at the bottom edge with spread fingers [54-56], disappear again [56-60], reappear slightly (right hand) [60-62], and finally remain out of frame [62-66]. No text overlays appear."
+            },
+            {
+              "time_range": [
+                66,
+                80
+              ],
+              "text": "From 66-70s, a woman in blue scrubs with a dark braid resting on her left shoulder speaks facing forward. Behind her, white shelves display stacked books and decorative spheres in brown, green, and red. At 70s, the camera cuts to a closer shot as she continues talking, briefly glancing right around 74s before returning her gaze forward. Her mouth moves as she articulates words, showing teeth. Around 76s, a faint white graphic bar fades in at the bottom edge. By 78s, the lower-third graphic is fully visible, displaying the text \"Facebook.com/IntermountainMoms\" in blue font while she continues speaking. The background remains static throughout the sequence."
+            }
+          ],
+          "recent_thinks": [
+            "[80-82] The woman in blue scrubs continues speaking with her mouth open, facing the camera. The white lower-third graphic containing the blue text Facebook.com/IntermountainMoms remains fully visible across the bottom edge. Her dark braid rests on her left shoulder while the background shelves with books and decorative spheres remain static.",
+            "[82-84] The woman in blue scrubs continues speaking with her dark braid over her left shoulder. The white lower third graphic displaying Facebook.com/IntermountainMoms in blue text remains fixed at the bottom. Her mouth moves to articulate words while the background shelves with books and decorative spheres stay static. She smiles slightly while looking forward.",
+            "[84-86] The woman in blue scrubs continues speaking centered in the frame with her dark braid resting on her left shoulder. The white lower-third graphic displaying Facebook.com/IntermountainMoms in blue text remains visible at the bottom. Her mouth articulates words while the background shelves holding books and decorative spheres remain unchanged during these final seconds."
+          ]
+        },
+        "queries": [
+          {
+            "question": "Has the woman with the dark blue v-neck top started speaking yet?",
+            "answers": []
+          }
+        ],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>Woman vanishes as the screen transitions to a static final end card. A sleeping baby appears on the left against white background. Blue text on the right reads \"Refer This Page to Your Friends\" above a URL. Intermountain Healthcare logo displays at the bottom right corner.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/ETmzj5-XXOo.mp4",
+      "video_id": "ETmzj5-XXOo",
+      "chunk_idx": 43,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 0,
+          "video_end": 10,
+          "frames": 10
+        },
+        "memory": {
+          "compressed_segments": [],
+          "recent_thinks": [
+            "[0-2] A woman with dark hair in a side braid appears wearing blue scrubs and a small microphone. She sits in front of a white shelving unit holding decorative balls and a stack of books. A lower-third graphic displays the text \"Intermountain Healthcare\" on the left. She faces forward with her mouth slightly open as if speaking.",
+            "[2-4] A white lower-third graphic expands to display the name \"Nurse Dani\" and a question about a child allergic to eggs, dairy, peanuts, and wheat. The woman in blue scrubs continues facing forward, her mouth moving slightly as she speaks. The Intermountain Healthcare logo remains on the left side of the banner.",
+            "[4-6] The woman in blue scrubs continues speaking, her mouth moving and eyebrows raising slightly. The lower-third graphic remains static, displaying 'Nurse Dani' and the question about allergies to eggs, dairy, peanuts, and wheat. The background shelving with books and decorative balls remains unchanged throughout this segment.",
+            "[6-8] The woman in blue scrubs continues facing forward, her mouth moving slightly as she speaks. Her eyebrows raise and lower subtly while maintaining eye contact. The lower-third graphic displaying \"Nurse Dani\" and the allergy question remains static at the bottom. The background shelving with books and decorative balls stays unchanged."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The woman in blue scrubs continues speaking, her mouth opening and closing while her eyebrows lift slightly. The lower-third graphic displaying 'Nurse Dani' and the allergy question remains static at the bottom of the screen. The background shelving with books and decorative balls is unchanged.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/ETmzj5-XXOo.mp4",
+      "video_id": "ETmzj5-XXOo",
+      "chunk_idx": 4,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 0,
+          "video_end": 16,
+          "frames": 16
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "A woman with dark hair in a side braid, wearing blue scrubs and a microphone, sits before white shelves holding books and decorative balls. Initially, an \"Intermountain Healthcare\" logo is visible. From [2-10], a lower-third graphic expands to display \"Nurse Dani\" and the question \"Re: My 5 year old is allergic to eggs, dairy, peanuts and wheat. How can he get enough protein?\" while she speaks. At [10], she smiles broadly as the graphics vanish from the screen."
+            }
+          ],
+          "recent_thinks": [
+            "[12-14] The woman in blue scrubs continues smiling broadly with her teeth visible. She shifts her gaze slightly downward and to the right, then looks forward again. The background remains unchanged with white shelves holding books and decorative spheres. No text graphics are visible on the screen during this segment."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The woman in blue scrubs speaks with her mouth open, ending her smile. Her expression looks neutral while facing the camera directly. The background with white shelves, books, and decorative spheres remains static. No text overlays appear on the screen. Her dark hair stays braided over her shoulder.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/ETmzj5-XXOo.mp4",
+      "video_id": "ETmzj5-XXOo",
+      "chunk_idx": 7,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 14,
+          "video_end": 38,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "A woman with dark hair in a side braid, wearing blue scrubs and a microphone, sits before white shelves holding books and decorative balls. Initially, an \"Intermountain Healthcare\" logo is visible. From [2-10], a lower-third graphic expands to display \"Nurse Dani\" and the question \"Re: My 5 year old is allergic to eggs, dairy, peanuts and wheat. How can he get enough protein?\" while she speaks. At [10], she smiles broadly as the graphics vanish from the screen."
+            },
+            {
+              "time_range": [
+                12,
+                26
+              ],
+              "text": "A woman with dark braided hair resting over her shoulder, wearing blue scrubs, is centered in the frame. Behind her are white shelves displaying a stack of books and a bowl of decorative spheres. From 12-14s, she smiles broadly with teeth visible, shifting her gaze slightly down and right. She then speaks with an open mouth and neutral expression from 14-18s. She smiles broadly again from 18-22s, maintaining eye contact, before opening her mouth to speak. From 22-26s, she continues speaking facing forward and raises her right hand near her chest in a gesture. No text graphics appear on screen, and the background remains unchanged throughout the clip."
+            }
+          ],
+          "recent_thinks": [
+            "[26-28] The woman in blue scrubs lowers her right hand from her chest. Her mouth moves from open speaking to a slight smile while facing forward. Her dark braided hair remains over her shoulder. The background stays static with white shelves holding books and spheres. No text overlays appear.",
+            "[28-30] The woman in blue scrubs continues facing forward with dark braided hair over her left shoulder. Her mouth transitions from slightly open to closed. Hands appear gesturing at the bottom edge. The white background shelves with books and decorative spheres still remain static. No text overlays are visible on the screen.",
+            "[30-32] The woman in blue scrubs opens her mouth again while speaking. Her hands disappear from the bottom edge of the frame. Her head remains facing forward with dark braided hair over her left shoulder. The background shelves holding books and decorative spheres stay static. No text overlays appear on the screen during this segment.",
+            "[32-34] The woman in blue scrubs continues facing forward with her mouth open in speech. Her right hand is raised near her upper chest, fingers slightly spread in a gesture. Her dark braided hair rests over her left shoulder against the static background of white shelves holding books and decorative spheres. No text overlays appear on screen.",
+            "[34-36] The woman in blue scrubs lowers her right hand from her chest while facing forward with her mouth open in speech. Her dark braided hair remains over her left shoulder against the static background of white shelves holding books and decorative spheres. No text overlays appear on the screen."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The woman in blue scrubs continues speaking while facing forward, her mouth open. Her dark braided hair stays over her left shoulder against the static background of white shelves holding books and spheres. No hand gestures are visible in this segment, and no text overlays appear on the screen.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/ETmzj5-XXOo.mp4",
+      "video_id": "ETmzj5-XXOo",
+      "chunk_idx": 18,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 22,
+          "video_end": 46,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "A woman with dark hair in a side braid, wearing blue scrubs and a microphone, sits before white shelves holding books and decorative balls. Initially, an \"Intermountain Healthcare\" logo is visible. From [2-10], a lower-third graphic expands to display \"Nurse Dani\" and the question \"Re: My 5 year old is allergic to eggs, dairy, peanuts and wheat. How can he get enough protein?\" while she speaks. At [10], she smiles broadly as the graphics vanish from the screen."
+            },
+            {
+              "time_range": [
+                12,
+                26
+              ],
+              "text": "A woman with dark braided hair resting over her shoulder, wearing blue scrubs, is centered in the frame. Behind her are white shelves displaying a stack of books and a bowl of decorative spheres. From 12-14s, she smiles broadly with teeth visible, shifting her gaze slightly down and right. She then speaks with an open mouth and neutral expression from 14-18s. She smiles broadly again from 18-22s, maintaining eye contact, before opening her mouth to speak. From 22-26s, she continues speaking facing forward and raises her right hand near her chest in a gesture. No text graphics appear on screen, and the background remains unchanged throughout the clip."
+            },
+            {
+              "time_range": [
+                26,
+                40
+              ],
+              "text": "Between 26-40s, a woman in blue scrubs with dark braided hair over her left shoulder speaks facing forward. The background features static white shelves with books and decorative spheres. She lowers her right hand from her chest, transitioning to a slight smile, then gestures at the bottom edge. Her hands disappear briefly before she raises her right hand near her upper chest with fingers spread. She lowers her hand again while continuing to articulate. Her mouth moves from open to closed throughout. No text overlays are visible."
+            }
+          ],
+          "recent_thinks": [
+            "[40-42] The woman in blue scrubs continues facing directly forward with her mouth open while speaking. Her dark braided hair remains draped over her left shoulder. The background featuring white shelves with books and decorative spheres remains static. No hand gestures or visible text overlays appear in the frame during this segment.",
+            "[42-44] The woman in blue scrubs continues facing forward with her dark braid resting on her left shoulder. Her mouth shifts from an open speaking position to a narrower shape while maintaining direct eye contact. The background containing white shelves, books, and decorative spheres remains static. No hand gestures or text overlays are visible during this segment."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The woman in blue scrubs faces forward, dark braid on her left shoulder. Her mouth opens to reveal teeth as she articulates, eyebrows slightly raised. White shelves behind her holding books and decorative spheres remain static without new text overlays or hand gestures entering the frame.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/ETmzj5-XXOo.mp4",
+      "video_id": "ETmzj5-XXOo",
+      "chunk_idx": 22,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 28,
+          "video_end": 52,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "A woman with dark hair in a side braid, wearing blue scrubs and a microphone, sits before white shelves holding books and decorative balls. Initially, an \"Intermountain Healthcare\" logo is visible. From [2-10], a lower-third graphic expands to display \"Nurse Dani\" and the question \"Re: My 5 year old is allergic to eggs, dairy, peanuts and wheat. How can he get enough protein?\" while she speaks. At [10], she smiles broadly as the graphics vanish from the screen."
+            },
+            {
+              "time_range": [
+                12,
+                26
+              ],
+              "text": "A woman with dark braided hair resting over her shoulder, wearing blue scrubs, is centered in the frame. Behind her are white shelves displaying a stack of books and a bowl of decorative spheres. From 12-14s, she smiles broadly with teeth visible, shifting her gaze slightly down and right. She then speaks with an open mouth and neutral expression from 14-18s. She smiles broadly again from 18-22s, maintaining eye contact, before opening her mouth to speak. From 22-26s, she continues speaking facing forward and raises her right hand near her chest in a gesture. No text graphics appear on screen, and the background remains unchanged throughout the clip."
+            },
+            {
+              "time_range": [
+                26,
+                40
+              ],
+              "text": "Between 26-40s, a woman in blue scrubs with dark braided hair over her left shoulder speaks facing forward. The background features static white shelves with books and decorative spheres. She lowers her right hand from her chest, transitioning to a slight smile, then gestures at the bottom edge. Her hands disappear briefly before she raises her right hand near her upper chest with fingers spread. She lowers her hand again while continuing to articulate. Her mouth moves from open to closed throughout. No text overlays are visible."
+            }
+          ],
+          "recent_thinks": [
+            "[40-42] The woman in blue scrubs continues facing directly forward with her mouth open while speaking. Her dark braided hair remains draped over her left shoulder. The background featuring white shelves with books and decorative spheres remains static. No hand gestures or visible text overlays appear in the frame during this segment.",
+            "[42-44] The woman in blue scrubs continues facing forward with her dark braid resting on her left shoulder. Her mouth shifts from an open speaking position to a narrower shape while maintaining direct eye contact. The background containing white shelves, books, and decorative spheres remains static. No hand gestures or text overlays are visible during this segment.",
+            "[44-46] The woman in blue scrubs faces forward, dark braid on her left shoulder. Her mouth opens to reveal teeth as she articulates, eyebrows slightly raised. White shelves behind her holding books and decorative spheres remain static without new text overlays or hand gestures entering the frame.",
+            "[46-48] The woman in blue scrubs maintains her forward-facing position with her dark braid resting on her left shoulder. Her mouth moves slightly as she continues speaking, keeping direct eye contact. The background featuring white shelves, stacked books, and decorative spheres remains unchanged, with no new text overlays or hand gestures visible in the frame.",
+            "[48-50] The woman in blue scrubs continues facing forward with her dark braid resting on her left shoulder. Her mouth opens wider, revealing teeth as she articulates words. The background shelves holding books and decorative spheres remain static. No text overlays or hand gestures appear within the frame during this segment."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The woman in blue scrubs faces forward, dark braid on her left shoulder. Her mouth stays open, revealing teeth while articulating. Her gaze remains direct toward the camera. Background shelves with books and decorative spheres stay static. No new text overlays or hand gestures appear.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/ETmzj5-XXOo.mp4",
+      "video_id": "ETmzj5-XXOo",
+      "chunk_idx": 25,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 34,
+          "video_end": 58,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "A woman with dark hair in a side braid, wearing blue scrubs and a microphone, sits before white shelves holding books and decorative balls. Initially, an \"Intermountain Healthcare\" logo is visible. From [2-10], a lower-third graphic expands to display \"Nurse Dani\" and the question \"Re: My 5 year old is allergic to eggs, dairy, peanuts and wheat. How can he get enough protein?\" while she speaks. At [10], she smiles broadly as the graphics vanish from the screen."
+            },
+            {
+              "time_range": [
+                12,
+                26
+              ],
+              "text": "A woman with dark braided hair resting over her shoulder, wearing blue scrubs, is centered in the frame. Behind her are white shelves displaying a stack of books and a bowl of decorative spheres. From 12-14s, she smiles broadly with teeth visible, shifting her gaze slightly down and right. She then speaks with an open mouth and neutral expression from 14-18s. She smiles broadly again from 18-22s, maintaining eye contact, before opening her mouth to speak. From 22-26s, she continues speaking facing forward and raises her right hand near her chest in a gesture. No text graphics appear on screen, and the background remains unchanged throughout the clip."
+            },
+            {
+              "time_range": [
+                26,
+                40
+              ],
+              "text": "Between 26-40s, a woman in blue scrubs with dark braided hair over her left shoulder speaks facing forward. The background features static white shelves with books and decorative spheres. She lowers her right hand from her chest, transitioning to a slight smile, then gestures at the bottom edge. Her hands disappear briefly before she raises her right hand near her upper chest with fingers spread. She lowers her hand again while continuing to articulate. Her mouth moves from open to closed throughout. No text overlays are visible."
+            },
+            {
+              "time_range": [
+                40,
+                52
+              ],
+              "text": "[40-52] The woman in blue scrubs continues facing forward with her dark braid draped over her left shoulder. She speaks directly to the camera, her mouth transitioning from an open position to a narrower shape, then opening wider to reveal teeth as she articulates. Her eyebrows raise slightly at times. The background remains unchanged, showing white shelves with a stack of books and a bowl of decorative spheres. No text overlays or hand gestures appear in the frame."
+            }
+          ],
+          "recent_thinks": [
+            "[52-54] The woman in blue scrubs maintains her forward-facing position with her dark braid resting on her left shoulder. Her mouth articulates words with teeth visible, looking forward. The background featuring white shelves, stacked books, and decorative spheres remains unchanged, with no new text overlays or hand gestures visible in the frame.",
+            "[54-56] The woman in blue scrubs continues speaking directly to the camera with her mouth open and teeth visible. Her dark braid remains over her left shoulder against the static background of white shelves and books. Her hands appear slightly at the bottom edge of the frame with fingers spread, gesturing slightly while maintaining forward eye contact."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The woman in blue scrubs continues speaking with mouth open and teeth visible. Her dark braid rests on the left shoulder. Hands are now lowered out of the frame. Background featuring white shelves, books, and decorative spheres remains static without text overlays.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/ETmzj5-XXOo.mp4",
+      "video_id": "ETmzj5-XXOo",
+      "chunk_idx": 28,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 36,
+          "video_end": 60,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "A woman with dark hair in a side braid, wearing blue scrubs and a microphone, sits before white shelves holding books and decorative balls. Initially, an \"Intermountain Healthcare\" logo is visible. From [2-10], a lower-third graphic expands to display \"Nurse Dani\" and the question \"Re: My 5 year old is allergic to eggs, dairy, peanuts and wheat. How can he get enough protein?\" while she speaks. At [10], she smiles broadly as the graphics vanish from the screen."
+            },
+            {
+              "time_range": [
+                12,
+                26
+              ],
+              "text": "A woman with dark braided hair resting over her shoulder, wearing blue scrubs, is centered in the frame. Behind her are white shelves displaying a stack of books and a bowl of decorative spheres. From 12-14s, she smiles broadly with teeth visible, shifting her gaze slightly down and right. She then speaks with an open mouth and neutral expression from 14-18s. She smiles broadly again from 18-22s, maintaining eye contact, before opening her mouth to speak. From 22-26s, she continues speaking facing forward and raises her right hand near her chest in a gesture. No text graphics appear on screen, and the background remains unchanged throughout the clip."
+            },
+            {
+              "time_range": [
+                26,
+                40
+              ],
+              "text": "Between 26-40s, a woman in blue scrubs with dark braided hair over her left shoulder speaks facing forward. The background features static white shelves with books and decorative spheres. She lowers her right hand from her chest, transitioning to a slight smile, then gestures at the bottom edge. Her hands disappear briefly before she raises her right hand near her upper chest with fingers spread. She lowers her hand again while continuing to articulate. Her mouth moves from open to closed throughout. No text overlays are visible."
+            },
+            {
+              "time_range": [
+                40,
+                52
+              ],
+              "text": "[40-52] The woman in blue scrubs continues facing forward with her dark braid draped over her left shoulder. She speaks directly to the camera, her mouth transitioning from an open position to a narrower shape, then opening wider to reveal teeth as she articulates. Her eyebrows raise slightly at times. The background remains unchanged, showing white shelves with a stack of books and a bowl of decorative spheres. No text overlays or hand gestures appear in the frame."
+            }
+          ],
+          "recent_thinks": [
+            "[52-54] The woman in blue scrubs maintains her forward-facing position with her dark braid resting on her left shoulder. Her mouth articulates words with teeth visible, looking forward. The background featuring white shelves, stacked books, and decorative spheres remains unchanged, with no new text overlays or hand gestures visible in the frame.",
+            "[54-56] The woman in blue scrubs continues speaking directly to the camera with her mouth open and teeth visible. Her dark braid remains over her left shoulder against the static background of white shelves and books. Her hands appear slightly at the bottom edge of the frame with fingers spread, gesturing slightly while maintaining forward eye contact.",
+            "[56-58] The woman in blue scrubs continues speaking with mouth open and teeth visible. Her dark braid rests on the left shoulder. Hands are now lowered out of the frame. Background featuring white shelves, books, and decorative spheres remains static without text overlays."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The woman in blue scrubs continues facing forward with her dark braid over her left shoulder. Her mouth remains open as she speaks directly to the camera. Her hands stay lowered out of the frame. The background with white shelves, books, and spheres remains static without new text overlays.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/ETmzj5-XXOo.mp4",
+      "video_id": "ETmzj5-XXOo",
+      "chunk_idx": 29,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 40,
+          "video_end": 64,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "A woman with dark hair in a side braid, wearing blue scrubs and a microphone, sits before white shelves holding books and decorative balls. Initially, an \"Intermountain Healthcare\" logo is visible. From [2-10], a lower-third graphic expands to display \"Nurse Dani\" and the question \"Re: My 5 year old is allergic to eggs, dairy, peanuts and wheat. How can he get enough protein?\" while she speaks. At [10], she smiles broadly as the graphics vanish from the screen."
+            },
+            {
+              "time_range": [
+                12,
+                26
+              ],
+              "text": "A woman with dark braided hair resting over her shoulder, wearing blue scrubs, is centered in the frame. Behind her are white shelves displaying a stack of books and a bowl of decorative spheres. From 12-14s, she smiles broadly with teeth visible, shifting her gaze slightly down and right. She then speaks with an open mouth and neutral expression from 14-18s. She smiles broadly again from 18-22s, maintaining eye contact, before opening her mouth to speak. From 22-26s, she continues speaking facing forward and raises her right hand near her chest in a gesture. No text graphics appear on screen, and the background remains unchanged throughout the clip."
+            },
+            {
+              "time_range": [
+                26,
+                40
+              ],
+              "text": "Between 26-40s, a woman in blue scrubs with dark braided hair over her left shoulder speaks facing forward. The background features static white shelves with books and decorative spheres. She lowers her right hand from her chest, transitioning to a slight smile, then gestures at the bottom edge. Her hands disappear briefly before she raises her right hand near her upper chest with fingers spread. She lowers her hand again while continuing to articulate. Her mouth moves from open to closed throughout. No text overlays are visible."
+            },
+            {
+              "time_range": [
+                40,
+                52
+              ],
+              "text": "[40-52] The woman in blue scrubs continues facing forward with her dark braid draped over her left shoulder. She speaks directly to the camera, her mouth transitioning from an open position to a narrower shape, then opening wider to reveal teeth as she articulates. Her eyebrows raise slightly at times. The background remains unchanged, showing white shelves with a stack of books and a bowl of decorative spheres. No text overlays or hand gestures appear in the frame."
+            }
+          ],
+          "recent_thinks": [
+            "[52-54] The woman in blue scrubs maintains her forward-facing position with her dark braid resting on her left shoulder. Her mouth articulates words with teeth visible, looking forward. The background featuring white shelves, stacked books, and decorative spheres remains unchanged, with no new text overlays or hand gestures visible in the frame.",
+            "[54-56] The woman in blue scrubs continues speaking directly to the camera with her mouth open and teeth visible. Her dark braid remains over her left shoulder against the static background of white shelves and books. Her hands appear slightly at the bottom edge of the frame with fingers spread, gesturing slightly while maintaining forward eye contact.",
+            "[56-58] The woman in blue scrubs continues speaking with mouth open and teeth visible. Her dark braid rests on the left shoulder. Hands are now lowered out of the frame. Background featuring white shelves, books, and decorative spheres remains static without text overlays.",
+            "[58-60] The woman in blue scrubs continues facing forward with her dark braid over her left shoulder. Her mouth remains open as she speaks directly to the camera. Her hands stay lowered out of the frame. The background with white shelves, books, and spheres remains static without new text overlays.",
+            "[60-62] The woman in blue scrubs faces forward with a dark braid over her shoulder. Her mouth opens to reveal teeth while speaking. Her right hand becomes visible again at the bottom edge of the frame, showing fingers. The background featuring white shelves, stacked books, and decorative spheres remains static without new text overlays."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The woman in blue scrubs continues speaking, her mouth shape shifting slightly while teeth remain visible. Her dark braid rests on her left shoulder. Her hands are no longer visible at the bottom edge. She maintains forward eye contact against the static background of white shelves and books.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/ETmzj5-XXOo.mp4",
+      "video_id": "ETmzj5-XXOo",
+      "chunk_idx": 31,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 46,
+          "video_end": 70,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "A woman with dark hair in a side braid, wearing blue scrubs and a microphone, sits before white shelves holding books and decorative balls. Initially, an \"Intermountain Healthcare\" logo is visible. From [2-10], a lower-third graphic expands to display \"Nurse Dani\" and the question \"Re: My 5 year old is allergic to eggs, dairy, peanuts and wheat. How can he get enough protein?\" while she speaks. At [10], she smiles broadly as the graphics vanish from the screen."
+            },
+            {
+              "time_range": [
+                12,
+                26
+              ],
+              "text": "A woman with dark braided hair resting over her shoulder, wearing blue scrubs, is centered in the frame. Behind her are white shelves displaying a stack of books and a bowl of decorative spheres. From 12-14s, she smiles broadly with teeth visible, shifting her gaze slightly down and right. She then speaks with an open mouth and neutral expression from 14-18s. She smiles broadly again from 18-22s, maintaining eye contact, before opening her mouth to speak. From 22-26s, she continues speaking facing forward and raises her right hand near her chest in a gesture. No text graphics appear on screen, and the background remains unchanged throughout the clip."
+            },
+            {
+              "time_range": [
+                26,
+                40
+              ],
+              "text": "Between 26-40s, a woman in blue scrubs with dark braided hair over her left shoulder speaks facing forward. The background features static white shelves with books and decorative spheres. She lowers her right hand from her chest, transitioning to a slight smile, then gestures at the bottom edge. Her hands disappear briefly before she raises her right hand near her upper chest with fingers spread. She lowers her hand again while continuing to articulate. Her mouth moves from open to closed throughout. No text overlays are visible."
+            },
+            {
+              "time_range": [
+                40,
+                52
+              ],
+              "text": "[40-52] The woman in blue scrubs continues facing forward with her dark braid draped over her left shoulder. She speaks directly to the camera, her mouth transitioning from an open position to a narrower shape, then opening wider to reveal teeth as she articulates. Her eyebrows raise slightly at times. The background remains unchanged, showing white shelves with a stack of books and a bowl of decorative spheres. No text overlays or hand gestures appear in the frame."
+            },
+            {
+              "time_range": [
+                52,
+                66
+              ],
+              "text": "A woman in blue scrubs speaks directly to the camera, her dark braid resting on her left shoulder. She maintains forward eye contact with her mouth articulating words, often showing teeth. The background features static white shelves holding stacked books, including one titled 'Child Health Nursing,' and a bowl of decorative spheres. Her hand gestures vary: hands are initially unseen [52-54], appear briefly at the bottom edge with spread fingers [54-56], disappear again [56-60], reappear slightly (right hand) [60-62], and finally remain out of frame [62-66]. No text overlays appear."
+            }
+          ],
+          "recent_thinks": [
+            "[66-68] The woman in blue scrubs maintains her forward-facing position with her dark braid resting on her left shoulder. She continues speaking with her mouth open and teeth visible. Her hands remain out of the frame. The background featuring white shelves, stacked books, and decorative spheres stays static without new text overlays or posture changes."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The woman in blue scrubs speaks to the camera, dark braid over her left shoulder. Her mouth stays open with teeth visible. Hands remain out of frame. The background with shelves, books, and spheres remains static without new text overlays.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/ETmzj5-XXOo.mp4",
+      "video_id": "ETmzj5-XXOo",
+      "chunk_idx": 34,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 54,
+          "video_end": 78,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "A woman with dark hair in a side braid, wearing blue scrubs and a microphone, sits before white shelves holding books and decorative balls. Initially, an \"Intermountain Healthcare\" logo is visible. From [2-10], a lower-third graphic expands to display \"Nurse Dani\" and the question \"Re: My 5 year old is allergic to eggs, dairy, peanuts and wheat. How can he get enough protein?\" while she speaks. At [10], she smiles broadly as the graphics vanish from the screen."
+            },
+            {
+              "time_range": [
+                12,
+                26
+              ],
+              "text": "A woman with dark braided hair resting over her shoulder, wearing blue scrubs, is centered in the frame. Behind her are white shelves displaying a stack of books and a bowl of decorative spheres. From 12-14s, she smiles broadly with teeth visible, shifting her gaze slightly down and right. She then speaks with an open mouth and neutral expression from 14-18s. She smiles broadly again from 18-22s, maintaining eye contact, before opening her mouth to speak. From 22-26s, she continues speaking facing forward and raises her right hand near her chest in a gesture. No text graphics appear on screen, and the background remains unchanged throughout the clip."
+            },
+            {
+              "time_range": [
+                26,
+                40
+              ],
+              "text": "Between 26-40s, a woman in blue scrubs with dark braided hair over her left shoulder speaks facing forward. The background features static white shelves with books and decorative spheres. She lowers her right hand from her chest, transitioning to a slight smile, then gestures at the bottom edge. Her hands disappear briefly before she raises her right hand near her upper chest with fingers spread. She lowers her hand again while continuing to articulate. Her mouth moves from open to closed throughout. No text overlays are visible."
+            },
+            {
+              "time_range": [
+                40,
+                52
+              ],
+              "text": "[40-52] The woman in blue scrubs continues facing forward with her dark braid draped over her left shoulder. She speaks directly to the camera, her mouth transitioning from an open position to a narrower shape, then opening wider to reveal teeth as she articulates. Her eyebrows raise slightly at times. The background remains unchanged, showing white shelves with a stack of books and a bowl of decorative spheres. No text overlays or hand gestures appear in the frame."
+            },
+            {
+              "time_range": [
+                52,
+                66
+              ],
+              "text": "A woman in blue scrubs speaks directly to the camera, her dark braid resting on her left shoulder. She maintains forward eye contact with her mouth articulating words, often showing teeth. The background features static white shelves holding stacked books, including one titled 'Child Health Nursing,' and a bowl of decorative spheres. Her hand gestures vary: hands are initially unseen [52-54], appear briefly at the bottom edge with spread fingers [54-56], disappear again [56-60], reappear slightly (right hand) [60-62], and finally remain out of frame [62-66]. No text overlays appear."
+            }
+          ],
+          "recent_thinks": [
+            "[66-68] The woman in blue scrubs maintains her forward-facing position with her dark braid resting on her left shoulder. She continues speaking with her mouth open and teeth visible. Her hands remain out of the frame. The background featuring white shelves, stacked books, and decorative spheres stays static without new text overlays or posture changes.",
+            "[68-70] The woman in blue scrubs speaks to the camera, dark braid over her left shoulder. Her mouth stays open with teeth visible. Hands remain out of frame. The background with shelves, books, and spheres remains static without new text overlays.",
+            "[70-72] The camera cuts to a slightly closer shot of the woman in blue scrubs as she continues speaking with her mouth open. Her dark braid remains draped over her left shoulder. The background shelves holding books and decorative spheres are still visible but appear cropped tighter due to the closer framing. No new text overlays appear.",
+            "[72-74] The woman in blue scrubs remains in the closer shot, her dark braid resting over her left shoulder. She glances slightly to her right before returning her gaze forward. Her mouth transitions from slightly open to closed. The background shelves with books and decorative spheres remain static behind her.",
+            "[74-76] The woman in blue scrubs faces forward with her dark braid resting on her left shoulder. Her mouth opens wider as she articulates words. She maintains direct eye contact with the camera. Her hands remain out of frame. The background shelves holding books and decorative spheres remain static without new text overlays appearing."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The woman in blue scrubs continues speaking with her mouth open and teeth visible. Her dark braid rests over her left shoulder. A faint white graphic bar fades in at bottom edge. The background shelves holding books and decorative spheres remain static behind her.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/ETmzj5-XXOo.mp4",
+      "video_id": "ETmzj5-XXOo",
+      "chunk_idx": 38,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 56,
+          "video_end": 80,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "A woman with dark hair in a side braid, wearing blue scrubs and a microphone, sits before white shelves holding books and decorative balls. Initially, an \"Intermountain Healthcare\" logo is visible. From [2-10], a lower-third graphic expands to display \"Nurse Dani\" and the question \"Re: My 5 year old is allergic to eggs, dairy, peanuts and wheat. How can he get enough protein?\" while she speaks. At [10], she smiles broadly as the graphics vanish from the screen."
+            },
+            {
+              "time_range": [
+                12,
+                26
+              ],
+              "text": "A woman with dark braided hair resting over her shoulder, wearing blue scrubs, is centered in the frame. Behind her are white shelves displaying a stack of books and a bowl of decorative spheres. From 12-14s, she smiles broadly with teeth visible, shifting her gaze slightly down and right. She then speaks with an open mouth and neutral expression from 14-18s. She smiles broadly again from 18-22s, maintaining eye contact, before opening her mouth to speak. From 22-26s, she continues speaking facing forward and raises her right hand near her chest in a gesture. No text graphics appear on screen, and the background remains unchanged throughout the clip."
+            },
+            {
+              "time_range": [
+                26,
+                40
+              ],
+              "text": "Between 26-40s, a woman in blue scrubs with dark braided hair over her left shoulder speaks facing forward. The background features static white shelves with books and decorative spheres. She lowers her right hand from her chest, transitioning to a slight smile, then gestures at the bottom edge. Her hands disappear briefly before she raises her right hand near her upper chest with fingers spread. She lowers her hand again while continuing to articulate. Her mouth moves from open to closed throughout. No text overlays are visible."
+            },
+            {
+              "time_range": [
+                40,
+                52
+              ],
+              "text": "[40-52] The woman in blue scrubs continues facing forward with her dark braid draped over her left shoulder. She speaks directly to the camera, her mouth transitioning from an open position to a narrower shape, then opening wider to reveal teeth as she articulates. Her eyebrows raise slightly at times. The background remains unchanged, showing white shelves with a stack of books and a bowl of decorative spheres. No text overlays or hand gestures appear in the frame."
+            },
+            {
+              "time_range": [
+                52,
+                66
+              ],
+              "text": "A woman in blue scrubs speaks directly to the camera, her dark braid resting on her left shoulder. She maintains forward eye contact with her mouth articulating words, often showing teeth. The background features static white shelves holding stacked books, including one titled 'Child Health Nursing,' and a bowl of decorative spheres. Her hand gestures vary: hands are initially unseen [52-54], appear briefly at the bottom edge with spread fingers [54-56], disappear again [56-60], reappear slightly (right hand) [60-62], and finally remain out of frame [62-66]. No text overlays appear."
+            }
+          ],
+          "recent_thinks": [
+            "[66-68] The woman in blue scrubs maintains her forward-facing position with her dark braid resting on her left shoulder. She continues speaking with her mouth open and teeth visible. Her hands remain out of the frame. The background featuring white shelves, stacked books, and decorative spheres stays static without new text overlays or posture changes.",
+            "[68-70] The woman in blue scrubs speaks to the camera, dark braid over her left shoulder. Her mouth stays open with teeth visible. Hands remain out of frame. The background with shelves, books, and spheres remains static without new text overlays.",
+            "[70-72] The camera cuts to a slightly closer shot of the woman in blue scrubs as she continues speaking with her mouth open. Her dark braid remains draped over her left shoulder. The background shelves holding books and decorative spheres are still visible but appear cropped tighter due to the closer framing. No new text overlays appear.",
+            "[72-74] The woman in blue scrubs remains in the closer shot, her dark braid resting over her left shoulder. She glances slightly to her right before returning her gaze forward. Her mouth transitions from slightly open to closed. The background shelves with books and decorative spheres remain static behind her.",
+            "[74-76] The woman in blue scrubs faces forward with her dark braid resting on her left shoulder. Her mouth opens wider as she articulates words. She maintains direct eye contact with the camera. Her hands remain out of frame. The background shelves holding books and decorative spheres remain static without new text overlays appearing.",
+            "[76-78] The woman in blue scrubs continues speaking with her mouth open and teeth visible. Her dark braid rests over her left shoulder. A faint white graphic bar fades in at bottom edge. The background shelves holding books and decorative spheres remain static behind her."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The woman in blue scrubs continues speaking with her mouth slightly open. A white lower-third graphic fully fades in at the bottom of the screen, displaying the text \"Facebook.com/IntermountainMoms\" in blue font. Her dark braid remains over her left shoulder against the static background of shelves.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/ETmzj5-XXOo.mp4",
+      "video_id": "ETmzj5-XXOo",
+      "chunk_idx": 39,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    }
+  ],
+  "stats": {
+    "video_id": "ETmzj5-XXOo",
+    "count": 22
+  }
+}

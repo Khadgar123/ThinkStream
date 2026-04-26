@@ -1,0 +1,809 @@
+{
+  "samples": [
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 34,
+          "video_end": 58,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-4] A static white title screen displays the word \"Shaving\" in large, dark grey sans-serif font. Beneath it, smaller text reads \"High Speed Video Microscope Footage\". In the bottom right corner, a dotted grid logo containing letters sits next to a \"gt.\" logo with a red dot. The image remains unchanged throughout the duration. [4-12] The static title card vanishes, replaced by a high-contrast, black-and-white close-up shot. A person's chin, covered in coarse facial hair, fills the left side. An electric shaver head, exposing internal white mechanical components and a label with a diagram, stays pressed against the facial hair. The corner logos persist in the bottom right. The scene appears static with no significant movement or changes observed in this interval as the shaver remains pressed against the beard."
+            },
+            {
+              "time_range": [
+                12,
+                24
+              ],
+              "text": "[12-24] The high-contrast, black-and-white close-up remains entirely static. A chin covered in coarse stubble stays positioned on the left side of the frame. An electric shaver head, displaying a label with a diagram and exposed white internal components, continues to be pressed firmly against the facial hair without movement. The corner logos, including 'gt.', remain visible in the bottom right. The scene exhibits no state changes or user interactions throughout this duration."
+            },
+            {
+              "time_range": [
+                24,
+                36
+              ],
+              "text": "[24-36] The video displays a static, high-contrast black-and-white close-up. A chin covered in coarse stubble occupies the left side, pressed firmly against an electric shaver head. The shaver attachment features a label with a diagram and the inverted text \"PHILIPS,\" alongside two exposed white internal components. In the bottom right corner, a grid of dots and the text \"gt.\" remain visible. The scene is entirely motionless; the shaver stays fixed against the facial hair without any movement, state changes, or interactions occurring throughout the duration. The lighting and composition remain constant, emphasizing the texture of the stubble and the mechanical details of the shaver head."
+            },
+            {
+              "time_range": [
+                36,
+                48
+              ],
+              "text": "[36-48] The high-contrast black-and-white close-up remains entirely static. A chin covered in coarse stubble stays positioned on the left, pressed firmly against an electric shaver head. The device exposes internal white mechanical components, specifically two white circular parts, and an attachment bearing an inverted label with a diagram and the text \"PHILIPS\". The shaver does not move against the facial hair. Corner logos, including a grid and \"gt.\", persist in the bottom right. No motion, lighting changes, or state transitions occur; the scene is completely still throughout the interval."
+            }
+          ],
+          "recent_thinks": [
+            "[48-50] The high-contrast black-and-white shot remains static. Coarse stubble on the chin stays pressed against the electric shaver head. The device displays exposed white internal parts and an inverted PHILIPS label. Bottom right logos remain visible. No movement or state changes occur.",
+            "[50-52] The high-contrast black-and-white close-up remains entirely static. Coarse stubble on the chin stays pressed firmly against the electric shaver head, revealing exposed white mechanical parts and an inverted label. Corner logos remain visible. No motion, lighting changes, or state transitions occur; the scene is completely still.",
+            "[52-54] The static, high-contrast monochrome shot persists without alteration. A chin covered in dense facial hair remains pressed against the electric shaver head, which displays internal white components and an inverted brand label. The bottom-right logos stay fixed. No movement, lighting shifts, or state changes are observable; the composition is frozen.",
+            "[54-56] The high-contrast black-and-white close-up remains entirely static. A chin covered in coarse stubble stays pressed firmly against the electric shaver head, displaying exposed white mechanical components and an inverted label. The bottom-right logos persist without alteration. No movement, lighting shifts, or state changes occur; the scene is frozen in place."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The high-contrast monochrome shot remains static. Coarse facial hair on a chin stays pressed against the electric shaver head, held by a hand, revealing internal white components and an attachment with a diagram and inverted text. Logos persist. No motion or state changes occur; the scene is frozen.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_Ktxr4ZiqO3o.mp4",
+      "video_id": "v_Ktxr4ZiqO3o",
+      "chunk_idx": 28,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 38,
+          "video_end": 62,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-4] A static white title screen displays the word \"Shaving\" in large, dark grey sans-serif font. Beneath it, smaller text reads \"High Speed Video Microscope Footage\". In the bottom right corner, a dotted grid logo containing letters sits next to a \"gt.\" logo with a red dot. The image remains unchanged throughout the duration. [4-12] The static title card vanishes, replaced by a high-contrast, black-and-white close-up shot. A person's chin, covered in coarse facial hair, fills the left side. An electric shaver head, exposing internal white mechanical components and a label with a diagram, stays pressed against the facial hair. The corner logos persist in the bottom right. The scene appears static with no significant movement or changes observed in this interval as the shaver remains pressed against the beard."
+            },
+            {
+              "time_range": [
+                12,
+                24
+              ],
+              "text": "[12-24] The high-contrast, black-and-white close-up remains entirely static. A chin covered in coarse stubble stays positioned on the left side of the frame. An electric shaver head, displaying a label with a diagram and exposed white internal components, continues to be pressed firmly against the facial hair without movement. The corner logos, including 'gt.', remain visible in the bottom right. The scene exhibits no state changes or user interactions throughout this duration."
+            },
+            {
+              "time_range": [
+                24,
+                36
+              ],
+              "text": "[24-36] The video displays a static, high-contrast black-and-white close-up. A chin covered in coarse stubble occupies the left side, pressed firmly against an electric shaver head. The shaver attachment features a label with a diagram and the inverted text \"PHILIPS,\" alongside two exposed white internal components. In the bottom right corner, a grid of dots and the text \"gt.\" remain visible. The scene is entirely motionless; the shaver stays fixed against the facial hair without any movement, state changes, or interactions occurring throughout the duration. The lighting and composition remain constant, emphasizing the texture of the stubble and the mechanical details of the shaver head."
+            },
+            {
+              "time_range": [
+                36,
+                48
+              ],
+              "text": "[36-48] The high-contrast black-and-white close-up remains entirely static. A chin covered in coarse stubble stays positioned on the left, pressed firmly against an electric shaver head. The device exposes internal white mechanical components, specifically two white circular parts, and an attachment bearing an inverted label with a diagram and the text \"PHILIPS\". The shaver does not move against the facial hair. Corner logos, including a grid and \"gt.\", persist in the bottom right. No motion, lighting changes, or state transitions occur; the scene is completely still throughout the interval."
+            }
+          ],
+          "recent_thinks": [
+            "[48-50] The high-contrast black-and-white shot remains static. Coarse stubble on the chin stays pressed against the electric shaver head. The device displays exposed white internal parts and an inverted PHILIPS label. Bottom right logos remain visible. No movement or state changes occur.",
+            "[50-52] The high-contrast black-and-white close-up remains entirely static. Coarse stubble on the chin stays pressed firmly against the electric shaver head, revealing exposed white mechanical parts and an inverted label. Corner logos remain visible. No motion, lighting changes, or state transitions occur; the scene is completely still.",
+            "[52-54] The static, high-contrast monochrome shot persists without alteration. A chin covered in dense facial hair remains pressed against the electric shaver head, which displays internal white components and an inverted brand label. The bottom-right logos stay fixed. No movement, lighting shifts, or state changes are observable; the composition is frozen.",
+            "[54-56] The high-contrast black-and-white close-up remains entirely static. A chin covered in coarse stubble stays pressed firmly against the electric shaver head, displaying exposed white mechanical components and an inverted label. The bottom-right logos persist without alteration. No movement, lighting shifts, or state changes occur; the scene is frozen in place.",
+            "[56-58] The high-contrast monochrome shot remains static. Coarse facial hair on a chin stays pressed against the electric shaver head, held by a hand, revealing internal white components and an attachment with a diagram and inverted text. Logos persist. No motion or state changes occur; the scene is frozen.",
+            "[58-60] The high-contrast black-and-white close-up persists without alteration. A chin covered in dense facial hair remains pressed against the electric shaver head, held by a hand, displaying internal white components and an inverted brand label. Bottom-right logos stay fixed. No movement, lighting shifts, or state changes are observable; the composition is frozen."
+          ]
+        },
+        "queries": [
+          {
+            "question": "Has the pop-up trimmer on the electric shaver been extended compared to earlier views of the device?",
+            "answers": []
+          }
+        ],
+        "user_input": "Has the pop-up trimmer on the electric shaver been extended compared to earlier views of the device?",
+        "recall_result": null
+      },
+      "output": "<think>The high-contrast monochrome shot remains unchanged. Coarse facial hair on a chin stays pressed against the electric shaver head, held by a hand, revealing internal white components and an attachment with a diagram and inverted text. Logos persist. No motion or state changes occur; the scene is frozen.</think><action>recall</action><query>{\"query\": \"Has the pop-up trimmer on the \", \"time_range\": \"0-60\"}</query>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_Ktxr4ZiqO3o.mp4",
+      "video_id": "v_Ktxr4ZiqO3o",
+      "chunk_idx": 30,
+      "sample_type": "recall_query",
+      "action": "recall",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "recall_success",
+      "trajectory_id": "traj_0",
+      "card_id": "v_Ktxr4ZiqO3o_C1_011",
+      "metadata": {
+        "gold_action": "recall",
+        "gold_answer": "Yes",
+        "answer_form": "binary",
+        "family": "C1",
+        "availability": "recall_success",
+        "support_chunks": [
+          8,
+          13
+        ]
+      },
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "medium",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 34,
+          "video_end": 58,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-4] A static white title screen displays the word \"Shaving\" in large, dark grey sans-serif font. Beneath it, smaller text reads \"High Speed Video Microscope Footage\". In the bottom right corner, a dotted grid logo containing letters sits next to a \"gt.\" logo with a red dot. The image remains unchanged throughout the duration. [4-12] The static title card vanishes, replaced by a high-contrast, black-and-white close-up shot. A person's chin, covered in coarse facial hair, fills the left side. An electric shaver head, exposing internal white mechanical components and a label with a diagram, stays pressed against the facial hair. The corner logos persist in the bottom right. The scene appears static with no significant movement or changes observed in this interval as the shaver remains pressed against the beard."
+            },
+            {
+              "time_range": [
+                12,
+                24
+              ],
+              "text": "[12-24] The high-contrast, black-and-white close-up remains entirely static. A chin covered in coarse stubble stays positioned on the left side of the frame. An electric shaver head, displaying a label with a diagram and exposed white internal components, continues to be pressed firmly against the facial hair without movement. The corner logos, including 'gt.', remain visible in the bottom right. The scene exhibits no state changes or user interactions throughout this duration."
+            },
+            {
+              "time_range": [
+                24,
+                36
+              ],
+              "text": "[24-36] The video displays a static, high-contrast black-and-white close-up. A chin covered in coarse stubble occupies the left side, pressed firmly against an electric shaver head. The shaver attachment features a label with a diagram and the inverted text \"PHILIPS,\" alongside two exposed white internal components. In the bottom right corner, a grid of dots and the text \"gt.\" remain visible. The scene is entirely motionless; the shaver stays fixed against the facial hair without any movement, state changes, or interactions occurring throughout the duration. The lighting and composition remain constant, emphasizing the texture of the stubble and the mechanical details of the shaver head."
+            },
+            {
+              "time_range": [
+                36,
+                48
+              ],
+              "text": "[36-48] The high-contrast black-and-white close-up remains entirely static. A chin covered in coarse stubble stays positioned on the left, pressed firmly against an electric shaver head. The device exposes internal white mechanical components, specifically two white circular parts, and an attachment bearing an inverted label with a diagram and the text \"PHILIPS\". The shaver does not move against the facial hair. Corner logos, including a grid and \"gt.\", persist in the bottom right. No motion, lighting changes, or state transitions occur; the scene is completely still throughout the interval."
+            }
+          ],
+          "recent_thinks": [
+            "[48-50] The high-contrast black-and-white shot remains static. Coarse stubble on the chin stays pressed against the electric shaver head. The device displays exposed white internal parts and an inverted PHILIPS label. Bottom right logos remain visible. No movement or state changes occur.",
+            "[50-52] The high-contrast black-and-white close-up remains entirely static. Coarse stubble on the chin stays pressed firmly against the electric shaver head, revealing exposed white mechanical parts and an inverted label. Corner logos remain visible. No motion, lighting changes, or state transitions occur; the scene is completely still.",
+            "[52-54] The static, high-contrast monochrome shot persists without alteration. A chin covered in dense facial hair remains pressed against the electric shaver head, which displays internal white components and an inverted brand label. The bottom-right logos stay fixed. No movement, lighting shifts, or state changes are observable; the composition is frozen.",
+            "[54-56] The high-contrast black-and-white close-up remains entirely static. A chin covered in coarse stubble stays pressed firmly against the electric shaver head, displaying exposed white mechanical components and an inverted label. The bottom-right logos persist without alteration. No movement, lighting shifts, or state changes occur; the scene is frozen in place."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The high-contrast monochrome shot remains static. Coarse facial hair on a chin stays pressed against the electric shaver head, held by a hand, revealing internal white components and an attachment with a diagram and inverted text. Logos persist. No motion or state changes occur; the scene is frozen.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_Ktxr4ZiqO3o.mp4",
+      "video_id": "v_Ktxr4ZiqO3o",
+      "chunk_idx": 28,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "System: memory token budget exceeded. Compress the specified thinks into a summary.\n\nOutput: <summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n\nRules: retain ALL entity names, visual attributes, OCR text, numbers, and state changes.",
+        "visual_window": {
+          "video_start": 38,
+          "video_end": 62,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-4] A static white title screen displays the word \"Shaving\" in large, dark grey sans-serif font. Beneath it, smaller text reads \"High Speed Video Microscope Footage\". In the bottom right corner, a dotted grid logo containing letters sits next to a \"gt.\" logo with a red dot. The image remains unchanged throughout the duration. [4-12] The static title card vanishes, replaced by a high-contrast, black-and-white close-up shot. A person's chin, covered in coarse facial hair, fills the left side. An electric shaver head, exposing internal white mechanical components and a label with a diagram, stays pressed against the facial hair. The corner logos persist in the bottom right. The scene appears static with no significant movement or changes observed in this interval as the shaver remains pressed against the beard."
+            },
+            {
+              "time_range": [
+                12,
+                24
+              ],
+              "text": "[12-24] The high-contrast, black-and-white close-up remains entirely static. A chin covered in coarse stubble stays positioned on the left side of the frame. An electric shaver head, displaying a label with a diagram and exposed white internal components, continues to be pressed firmly against the facial hair without movement. The corner logos, including 'gt.', remain visible in the bottom right. The scene exhibits no state changes or user interactions throughout this duration."
+            },
+            {
+              "time_range": [
+                24,
+                36
+              ],
+              "text": "[24-36] The video displays a static, high-contrast black-and-white close-up. A chin covered in coarse stubble occupies the left side, pressed firmly against an electric shaver head. The shaver attachment features a label with a diagram and the inverted text \"PHILIPS,\" alongside two exposed white internal components. In the bottom right corner, a grid of dots and the text \"gt.\" remain visible. The scene is entirely motionless; the shaver stays fixed against the facial hair without any movement, state changes, or interactions occurring throughout the duration. The lighting and composition remain constant, emphasizing the texture of the stubble and the mechanical details of the shaver head."
+            },
+            {
+              "time_range": [
+                36,
+                48
+              ],
+              "text": "[36-48] The high-contrast black-and-white close-up remains entirely static. A chin covered in coarse stubble stays positioned on the left, pressed firmly against an electric shaver head. The device exposes internal white mechanical components, specifically two white circular parts, and an attachment bearing an inverted label with a diagram and the text \"PHILIPS\". The shaver does not move against the facial hair. Corner logos, including a grid and \"gt.\", persist in the bottom right. No motion, lighting changes, or state transitions occur; the scene is completely still throughout the interval."
+            }
+          ],
+          "recent_thinks": [
+            "[48-50] The high-contrast black-and-white shot remains static. Coarse stubble on the chin stays pressed against the electric shaver head. The device displays exposed white internal parts and an inverted PHILIPS label. Bottom right logos remain visible. No movement or state changes occur.",
+            "[50-52] The high-contrast black-and-white close-up remains entirely static. Coarse stubble on the chin stays pressed firmly against the electric shaver head, revealing exposed white mechanical parts and an inverted label. Corner logos remain visible. No motion, lighting changes, or state transitions occur; the scene is completely still.",
+            "[52-54] The static, high-contrast monochrome shot persists without alteration. A chin covered in dense facial hair remains pressed against the electric shaver head, which displays internal white components and an inverted brand label. The bottom-right logos stay fixed. No movement, lighting shifts, or state changes are observable; the composition is frozen.",
+            "[54-56] The high-contrast black-and-white close-up remains entirely static. A chin covered in coarse stubble stays pressed firmly against the electric shaver head, displaying exposed white mechanical components and an inverted label. The bottom-right logos persist without alteration. No movement, lighting shifts, or state changes occur; the scene is frozen in place.",
+            "[56-58] The high-contrast monochrome shot remains static. Coarse facial hair on a chin stays pressed against the electric shaver head, held by a hand, revealing internal white components and an attachment with a diagram and inverted text. Logos persist. No motion or state changes occur; the scene is frozen.",
+            "[58-60] The high-contrast black-and-white close-up persists without alteration. A chin covered in dense facial hair remains pressed against the electric shaver head, held by a hand, displaying internal white components and an inverted brand label. Bottom-right logos stay fixed. No movement, lighting shifts, or state changes are observable; the composition is frozen."
+          ]
+        },
+        "queries": [],
+        "user_input": "<compress_trigger range=\"48-60\"/>",
+        "recall_result": null
+      },
+      "output": "<think>The high-contrast monochrome shot remains unchanged. Coarse facial hair on a chin stays pressed against the electric shaver head, held by a hand, revealing internal white components and an attachment with a diagram and inverted text. Logos persist. No motion or state changes occur; the scene is frozen.</think><action>compress</action><summary>{\"time_range\": [48, 60], \"text\": \"[48-60] The high-contrast black-and-white close-up remains completely static. A chin covered in coarse stubble stays pressed firmly against an electric shaver head held by a hand. The device reveals exposed white mechanical components and an attachment with a diagram and inverted \\\"PHILIPS\\\" text. Bottom-right logos, including \\\"gt.\\\", persist without alteration. No movement, lighting shifts, or state changes occur; the scene is frozen with the shaver maintained against the facial hair throughout the interval.\", \"parse_success\": true}</summary>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_Ktxr4ZiqO3o.mp4",
+      "video_id": "v_Ktxr4ZiqO3o",
+      "chunk_idx": 30,
+      "sample_type": "compress",
+      "action": "compress",
+      "prompt_type": "COMPRESS_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "compress",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "medium",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 34,
+          "video_end": 58,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-4] A static white title screen displays the word \"Shaving\" in large, dark grey sans-serif font. Beneath it, smaller text reads \"High Speed Video Microscope Footage\". In the bottom right corner, a dotted grid logo containing letters sits next to a \"gt.\" logo with a red dot. The image remains unchanged throughout the duration. [4-12] The static title card vanishes, replaced by a high-contrast, black-and-white close-up shot. A person's chin, covered in coarse facial hair, fills the left side. An electric shaver head, exposing internal white mechanical components and a label with a diagram, stays pressed against the facial hair. The corner logos persist in the bottom right. The scene appears static with no significant movement or changes observed in this interval as the shaver remains pressed against the beard."
+            },
+            {
+              "time_range": [
+                12,
+                24
+              ],
+              "text": "[12-24] The high-contrast, black-and-white close-up remains entirely static. A chin covered in coarse stubble stays positioned on the left side of the frame. An electric shaver head, displaying a label with a diagram and exposed white internal components, continues to be pressed firmly against the facial hair without movement. The corner logos, including 'gt.', remain visible in the bottom right. The scene exhibits no state changes or user interactions throughout this duration."
+            },
+            {
+              "time_range": [
+                24,
+                36
+              ],
+              "text": "[24-36] The video displays a static, high-contrast black-and-white close-up. A chin covered in coarse stubble occupies the left side, pressed firmly against an electric shaver head. The shaver attachment features a label with a diagram and the inverted text \"PHILIPS,\" alongside two exposed white internal components. In the bottom right corner, a grid of dots and the text \"gt.\" remain visible. The scene is entirely motionless; the shaver stays fixed against the facial hair without any movement, state changes, or interactions occurring throughout the duration. The lighting and composition remain constant, emphasizing the texture of the stubble and the mechanical details of the shaver head."
+            },
+            {
+              "time_range": [
+                36,
+                48
+              ],
+              "text": "[36-48] The high-contrast black-and-white close-up remains entirely static. A chin covered in coarse stubble stays positioned on the left, pressed firmly against an electric shaver head. The device exposes internal white mechanical components, specifically two white circular parts, and an attachment bearing an inverted label with a diagram and the text \"PHILIPS\". The shaver does not move against the facial hair. Corner logos, including a grid and \"gt.\", persist in the bottom right. No motion, lighting changes, or state transitions occur; the scene is completely still throughout the interval."
+            }
+          ],
+          "recent_thinks": [
+            "[48-50] The high-contrast black-and-white shot remains static. Coarse stubble on the chin stays pressed against the electric shaver head. The device displays exposed white internal parts and an inverted PHILIPS label. Bottom right logos remain visible. No movement or state changes occur.",
+            "[50-52] The high-contrast black-and-white close-up remains entirely static. Coarse stubble on the chin stays pressed firmly against the electric shaver head, revealing exposed white mechanical parts and an inverted label. Corner logos remain visible. No motion, lighting changes, or state transitions occur; the scene is completely still.",
+            "[52-54] The static, high-contrast monochrome shot persists without alteration. A chin covered in dense facial hair remains pressed against the electric shaver head, which displays internal white components and an inverted brand label. The bottom-right logos stay fixed. No movement, lighting shifts, or state changes are observable; the composition is frozen.",
+            "[54-56] The high-contrast black-and-white close-up remains entirely static. A chin covered in coarse stubble stays pressed firmly against the electric shaver head, displaying exposed white mechanical components and an inverted label. The bottom-right logos persist without alteration. No movement, lighting shifts, or state changes occur; the scene is frozen in place."
+          ]
+        },
+        "queries": [
+          {
+            "question": "What color is the dot in the 'gt' logo on the title card? A. Blue B. Green C. Red D. Yellow",
+            "answers": []
+          }
+        ],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The high-contrast monochrome shot remains static. Coarse facial hair on a chin stays pressed against the electric shaver head, held by a hand, revealing internal white components and an attachment with a diagram and inverted text. Logos persist. No motion or state changes occur; the scene is frozen.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_Ktxr4ZiqO3o.mp4",
+      "video_id": "v_Ktxr4ZiqO3o",
+      "chunk_idx": 28,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_2",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 44,
+          "video_end": 68,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-4] A static white title screen displays the word \"Shaving\" in large, dark grey sans-serif font. Beneath it, smaller text reads \"High Speed Video Microscope Footage\". In the bottom right corner, a dotted grid logo containing letters sits next to a \"gt.\" logo with a red dot. The image remains unchanged throughout the duration. [4-12] The static title card vanishes, replaced by a high-contrast, black-and-white close-up shot. A person's chin, covered in coarse facial hair, fills the left side. An electric shaver head, exposing internal white mechanical components and a label with a diagram, stays pressed against the facial hair. The corner logos persist in the bottom right. The scene appears static with no significant movement or changes observed in this interval as the shaver remains pressed against the beard."
+            },
+            {
+              "time_range": [
+                12,
+                24
+              ],
+              "text": "[12-24] The high-contrast, black-and-white close-up remains entirely static. A chin covered in coarse stubble stays positioned on the left side of the frame. An electric shaver head, displaying a label with a diagram and exposed white internal components, continues to be pressed firmly against the facial hair without movement. The corner logos, including 'gt.', remain visible in the bottom right. The scene exhibits no state changes or user interactions throughout this duration."
+            },
+            {
+              "time_range": [
+                24,
+                36
+              ],
+              "text": "[24-36] The video displays a static, high-contrast black-and-white close-up. A chin covered in coarse stubble occupies the left side, pressed firmly against an electric shaver head. The shaver attachment features a label with a diagram and the inverted text \"PHILIPS,\" alongside two exposed white internal components. In the bottom right corner, a grid of dots and the text \"gt.\" remain visible. The scene is entirely motionless; the shaver stays fixed against the facial hair without any movement, state changes, or interactions occurring throughout the duration. The lighting and composition remain constant, emphasizing the texture of the stubble and the mechanical details of the shaver head."
+            },
+            {
+              "time_range": [
+                36,
+                48
+              ],
+              "text": "[36-48] The high-contrast black-and-white close-up remains entirely static. A chin covered in coarse stubble stays positioned on the left, pressed firmly against an electric shaver head. The device exposes internal white mechanical components, specifically two white circular parts, and an attachment bearing an inverted label with a diagram and the text \"PHILIPS\". The shaver does not move against the facial hair. Corner logos, including a grid and \"gt.\", persist in the bottom right. No motion, lighting changes, or state transitions occur; the scene is completely still throughout the interval."
+            },
+            {
+              "time_range": [
+                48,
+                60
+              ],
+              "text": "[48-60] The high-contrast black-and-white close-up remains completely static. A chin covered in coarse stubble stays pressed firmly against an electric shaver head held by a hand. The device reveals exposed white mechanical components and an attachment with a diagram and inverted \"PHILIPS\" text. Bottom-right logos, including \"gt.\", persist without alteration. No movement, lighting shifts, or state changes occur; the scene is frozen with the shaver maintained against the facial hair throughout the interval."
+            }
+          ],
+          "recent_thinks": [
+            "[60-62] The high-contrast monochrome shot remains unchanged. Coarse facial hair on a chin stays pressed against the electric shaver head, held by a hand, revealing internal white components and an attachment with a diagram and inverted text. Logos persist. No motion or state changes occur; the scene is frozen.",
+            "[62-64] The static, high-contrast black-and-white close-up continues without change. A chin with coarse stubble remains pressed against the electric shaver head, displaying exposed white internal mechanisms and an inverted label. A hand holds the device steady. Corner logos persist. No movement, lighting shifts, or interactions occur; the scene remains completely frozen.",
+            "[64-66] The high-contrast black-and-white close-up remains entirely static. A chin covered in coarse stubble stays pressed firmly against the electric shaver head, which displays exposed white internal components and an inverted label. A hand holds the device steady. No movement, lighting shifts, or state changes occur; the scene is frozen."
+          ]
+        },
+        "queries": [
+          {
+            "question": "What color is the dot in the 'gt' logo on the title card? A. Blue B. Green C. Red D. Yellow",
+            "answers": []
+          }
+        ],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The perspective shifts to a macro close-up, where a circular spotlight illuminates the shaver head pressing into coarse facial hair against a pitch-black background. White mechanical components and a labeled attachment are centrally framed, replacing the previous side-profile view of the chin and hand.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_Ktxr4ZiqO3o.mp4",
+      "video_id": "v_Ktxr4ZiqO3o",
+      "chunk_idx": 33,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_2",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "question_window",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    }
+  ],
+  "stats": {
+    "video_id": "v_Ktxr4ZiqO3o",
+    "count": 6
+  }
+}

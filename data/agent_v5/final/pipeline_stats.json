@@ -1,0 +1,70 @@
+{
+  "total": 81995,
+  "passed": 43561,
+  "failed": 38434,
+  "pass_rate": 0.5312641014696018,
+  "fail_reasons": {
+    "think_token_length": 30446,
+    "grounding": 2014,
+    "format": 511,
+    "summary_provenance": 3541,
+    "compression_ratio": 1781,
+    "summary_retention": 7312,
+    "summary_current_think_leak": 179,
+    "trajectory_distribution": 619
+  },
+  "action_distribution": {
+    "silent": 39048,
+    "compress": 3950,
+    "recall_query": 563
+  },
+  "difficulty_distribution": {
+    "medium": 4485,
+    "easy": 38865,
+    "hard": 211
+  },
+  "trajectories": 9,
+  "trajectory_check_failures": 1,
+  "train_count": 11284,
+  "val_count": 1385,
+  "test_count": 1523,
+  "phase_counts": {
+    "1": 7869,
+    "2": 566,
+    "C1": 2849,
+    "C2": 0,
+    "5": 11284
+  },
+  "split_by_video": true,
+  "global_family_distribution": {
+    "E2": 167,
+    "P1": 92,
+    "C1": 135,
+    "R1": 76,
+    "E1": 176,
+    "F1": 95,
+    "F3": 51,
+    "M1": 13,
+    "F4": 27,
+    "F2": 55,
+    "S1": 6
+  },
+  "global_sequence_type_distribution": {
+    "event_watch": 153,
+    "base": 13299,
+    "recall_success": 459,
+    "recall_fail_then_found": 281
+  },
+  "global_base_role_distribution": {
+    "question_window": 833,
+    "compress_boundary": 6457,
+    "evidence_anchor": 5929,
+    "warmup": 80
+  },
+  "per_video_sample_counts": {
+    "min": 3,
+    "max": 50,
+    "avg": 45.5,
+    "total_videos": 312
+  }
+}

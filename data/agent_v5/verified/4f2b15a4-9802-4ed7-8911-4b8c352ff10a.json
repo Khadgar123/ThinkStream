@@ -1,0 +1,1101 @@
+{
+  "samples": [
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 0,
+          "video_end": 2,
+          "frames": 2
+        },
+        "memory": {
+          "compressed_segments": [],
+          "recent_thinks": []
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>A hand holds a smartphone in the foreground where a recording timer increments from zero seconds to one second on the dark screen. Phone moves. To the left, a blurry arm obstructs the view of the white desk with a keyboard. A silver monitor with a black screen sits beside a laptop displaying icons.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/1_2_m_academic_v0_1/academic_source/ego4d/4f2b15a4-9802-4ed7-8911-4b8c352ff10a.mp4",
+      "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
+      "chunk_idx": 0,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 0,
+          "video_end": 8,
+          "frames": 8
+        },
+        "memory": {
+          "compressed_segments": [],
+          "recent_thinks": [
+            "[0-2] A hand holds a smartphone in the foreground where a recording timer increments from zero seconds to one second on the dark screen. Phone moves. To the left, a blurry arm obstructs the view of the white desk with a keyboard. A silver monitor with a black screen sits beside a laptop displaying icons.",
+            "[2-4] The camera tilts upward, removing the smartphone and hand from the foreground view. This movement reveals a silver, articulated desk lamp mounted above the black monitor. The white keyboard slides out of the bottom frame, while the upper wall and ceiling corner become visible. The laptop and monitor remain stationary on the desk.",
+            "[4-6] The camera pans right, revealing the full silver articulated arm of a desk lamp mounted on the wall. A blue water bottle becomes visible standing on a wooden surface in the background on the far right. The black monitor and open laptop remain stationary on the white desk below as the view expands to show the room's corner."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The camera angle lowers slightly. A hand enters the frame from the bottom left, fingers visible near a yellow notepad. A blurry finger obstructs the top right corner. The black monitor, open laptop, and silver lamp remain stationary against the white wall with yellow sticky notes.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/1_2_m_academic_v0_1/academic_source/ego4d/4f2b15a4-9802-4ed7-8911-4b8c352ff10a.mp4",
+      "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
+      "chunk_idx": 3,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 2,
+          "video_end": 26,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-2] A hand holds a smartphone with a recording timer incrementing from 00:00 to 00:01 on its dark screen, positioned before a white desk setup. This setup includes a silver monitor with a black screen, a white keyboard, and an open laptop displaying desktop icons, while a blurry arm obstructs the left side. [2-6] The camera tilts upward and pans right, removing the smartphone and keyboard from view to reveal a silver articulated desk lamp mounted above the monitor and a blue water bottle standing on a wooden surface in the background. Yellow sticky notes are visible on the wall. [6-10] The camera angle lowers slightly as a hand enters the frame near a yellow notepad on the left, followed by a sharp upward tilt. [10-12] The view stabilizes on the upper wall and ceiling soffit, retaining only the top portions of the monitor, lamp, and laptop screen while the desk surface remains out of frame."
+            }
+          ],
+          "recent_thinks": [
+            "[12-14] The camera holds a steady, static shot of the workspace corner. The black monitor, silver articulated lamp, and laptop screen remain fixed in position against the white wall. The yellow sticky notes and ceiling soffit are unchanged, with no new objects entering the frame or existing items moving during this period.",
+            "[14-16] The large silver monitor screen illuminates, transitioning from black to display a colorful login interface featuring blue and orange abstract waves with a central user icon. The adjacent laptop remains open with its desktop visible, while the silver lamp and yellow sticky notes on the white wall stay stationary.",
+            "[16-18] The scene remains static as the large monitor continues displaying the colorful login interface with blue and orange waves. The adjacent laptop screen stays open showing desktop icons, while the silver lamp and yellow sticky notes on the white wall remain fixed in position without any movement or changes occurring.",
+            "[18-20] The large monitor continues displaying the colorful login screen with blue and orange abstract waves. The adjacent laptop remains open showing desktop icons against a purple landscape background. The silver articulated lamp and yellow sticky notes on the white wall stay fixed in position without any movement or changes occurring in the scene.",
+            "[20-22] The large monitor screen transitions from the login interface to a desktop view, displaying a bright application window over a mountain landscape wallpaper. The adjacent laptop screen remains static with its grid of icons, while the silver lamp and yellow sticky notes on the wall stay fixed in position.",
+            "[22-24] The camera tilts upward, revealing more of the white ceiling soffit and upper wall area above the workspace. The large monitor continues displaying a desktop interface with a bright white window open over a landscape wallpaper, while the adjacent laptop screen remains visible below with its grid of application icons."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The camera pans slightly right and tilts down, revealing a blue water bottle on a wooden surface to the right and the base of the silver lamp. The large monitor continues displaying a desktop with an open white window, while the laptop screen remains static with visible icons.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/1_2_m_academic_v0_1/academic_source/ego4d/4f2b15a4-9802-4ed7-8911-4b8c352ff10a.mp4",
+      "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
+      "chunk_idx": 12,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 8,
+          "video_end": 32,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-2] A hand holds a smartphone with a recording timer incrementing from 00:00 to 00:01 on its dark screen, positioned before a white desk setup. This setup includes a silver monitor with a black screen, a white keyboard, and an open laptop displaying desktop icons, while a blurry arm obstructs the left side. [2-6] The camera tilts upward and pans right, removing the smartphone and keyboard from view to reveal a silver articulated desk lamp mounted above the monitor and a blue water bottle standing on a wooden surface in the background. Yellow sticky notes are visible on the wall. [6-10] The camera angle lowers slightly as a hand enters the frame near a yellow notepad on the left, followed by a sharp upward tilt. [10-12] The view stabilizes on the upper wall and ceiling soffit, retaining only the top portions of the monitor, lamp, and laptop screen while the desk surface remains out of frame."
+            },
+            {
+              "time_range": [
+                12,
+                26
+              ],
+              "text": "[12-14] A static shot captures a workspace corner featuring a black monitor, silver articulated lamp, open laptop, and yellow sticky notes on a white wall beneath a ceiling soffit. [14-20] The large monitor illuminates, transitioning from black to a login interface with blue and orange abstract waves and a user icon, while the adjacent laptop displays a desktop with a purple landscape. [20-22] The monitor changes to a desktop view showing a mountain landscape wallpaper and a bright white application window. [22-24] The camera tilts upward, revealing more of the white ceiling soffit above the active screens. [24-26] The camera pans right and tilts down, exposing a blue water bottle on a wooden surface and the lamp's base, while both the monitor and laptop remain active with their respective desktop interfaces visible."
+            }
+          ],
+          "recent_thinks": [
+            "[26-28] The camera tilts downward and zooms out, bringing a black smartphone back into view in the foreground before the laptop. This wider angle also reveals the silver lamp's base and a blue water bottle on a wooden surface to the right. The large monitor continues displaying a white window over a landscape wallpaper.",
+            "[28-30] A hand holds a black smartphone steady in the lower center foreground. The large monitor continues displaying a white window over a landscape wallpaper, and the laptop screen shows a desktop grid of icons. The silver articulated lamp and row of yellow sticky notes remain fixed on the white wall above the devices."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The black smartphone held in the foreground illuminates, revealing an application interface with a green circular icon. The hand remains steady. Behind it, the large monitor displays a white window over a landscape wallpaper, while the laptop screen shows a grid of desktop icons under the silver lamp.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/1_2_m_academic_v0_1/academic_source/ego4d/4f2b15a4-9802-4ed7-8911-4b8c352ff10a.mp4",
+      "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
+      "chunk_idx": 15,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 0,
+          "video_end": 2,
+          "frames": 2
+        },
+        "memory": {
+          "compressed_segments": [],
+          "recent_thinks": []
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>A hand holds a smartphone in the foreground where a recording timer increments from zero seconds to one second on the dark screen. Phone moves. To the left, a blurry arm obstructs the view of the white desk with a keyboard. A silver monitor with a black screen sits beside a laptop displaying icons.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/1_2_m_academic_v0_1/academic_source/ego4d/4f2b15a4-9802-4ed7-8911-4b8c352ff10a.mp4",
+      "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
+      "chunk_idx": 0,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 0,
+          "video_end": 8,
+          "frames": 8
+        },
+        "memory": {
+          "compressed_segments": [],
+          "recent_thinks": [
+            "[0-2] A hand holds a smartphone in the foreground where a recording timer increments from zero seconds to one second on the dark screen. Phone moves. To the left, a blurry arm obstructs the view of the white desk with a keyboard. A silver monitor with a black screen sits beside a laptop displaying icons.",
+            "[2-4] The camera tilts upward, removing the smartphone and hand from the foreground view. This movement reveals a silver, articulated desk lamp mounted above the black monitor. The white keyboard slides out of the bottom frame, while the upper wall and ceiling corner become visible. The laptop and monitor remain stationary on the desk.",
+            "[4-6] The camera pans right, revealing the full silver articulated arm of a desk lamp mounted on the wall. A blue water bottle becomes visible standing on a wooden surface in the background on the far right. The black monitor and open laptop remain stationary on the white desk below as the view expands to show the room's corner."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The camera angle lowers slightly. A hand enters the frame from the bottom left, fingers visible near a yellow notepad. A blurry finger obstructs the top right corner. The black monitor, open laptop, and silver lamp remain stationary against the white wall with yellow sticky notes.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/1_2_m_academic_v0_1/academic_source/ego4d/4f2b15a4-9802-4ed7-8911-4b8c352ff10a.mp4",
+      "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
+      "chunk_idx": 3,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 2,
+          "video_end": 26,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-2] A hand holds a smartphone with a recording timer incrementing from 00:00 to 00:01 on its dark screen, positioned before a white desk setup. This setup includes a silver monitor with a black screen, a white keyboard, and an open laptop displaying desktop icons, while a blurry arm obstructs the left side. [2-6] The camera tilts upward and pans right, removing the smartphone and keyboard from view to reveal a silver articulated desk lamp mounted above the monitor and a blue water bottle standing on a wooden surface in the background. Yellow sticky notes are visible on the wall. [6-10] The camera angle lowers slightly as a hand enters the frame near a yellow notepad on the left, followed by a sharp upward tilt. [10-12] The view stabilizes on the upper wall and ceiling soffit, retaining only the top portions of the monitor, lamp, and laptop screen while the desk surface remains out of frame."
+            }
+          ],
+          "recent_thinks": [
+            "[12-14] The camera holds a steady, static shot of the workspace corner. The black monitor, silver articulated lamp, and laptop screen remain fixed in position against the white wall. The yellow sticky notes and ceiling soffit are unchanged, with no new objects entering the frame or existing items moving during this period.",
+            "[14-16] The large silver monitor screen illuminates, transitioning from black to display a colorful login interface featuring blue and orange abstract waves with a central user icon. The adjacent laptop remains open with its desktop visible, while the silver lamp and yellow sticky notes on the white wall stay stationary.",
+            "[16-18] The scene remains static as the large monitor continues displaying the colorful login interface with blue and orange waves. The adjacent laptop screen stays open showing desktop icons, while the silver lamp and yellow sticky notes on the white wall remain fixed in position without any movement or changes occurring.",
+            "[18-20] The large monitor continues displaying the colorful login screen with blue and orange abstract waves. The adjacent laptop remains open showing desktop icons against a purple landscape background. The silver articulated lamp and yellow sticky notes on the white wall stay fixed in position without any movement or changes occurring in the scene.",
+            "[20-22] The large monitor screen transitions from the login interface to a desktop view, displaying a bright application window over a mountain landscape wallpaper. The adjacent laptop screen remains static with its grid of icons, while the silver lamp and yellow sticky notes on the wall stay fixed in position.",
+            "[22-24] The camera tilts upward, revealing more of the white ceiling soffit and upper wall area above the workspace. The large monitor continues displaying a desktop interface with a bright white window open over a landscape wallpaper, while the adjacent laptop screen remains visible below with its grid of application icons."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The camera pans slightly right and tilts down, revealing a blue water bottle on a wooden surface to the right and the base of the silver lamp. The large monitor continues displaying a desktop with an open white window, while the laptop screen remains static with visible icons.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/1_2_m_academic_v0_1/academic_source/ego4d/4f2b15a4-9802-4ed7-8911-4b8c352ff10a.mp4",
+      "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
+      "chunk_idx": 12,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 8,
+          "video_end": 32,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-2] A hand holds a smartphone with a recording timer incrementing from 00:00 to 00:01 on its dark screen, positioned before a white desk setup. This setup includes a silver monitor with a black screen, a white keyboard, and an open laptop displaying desktop icons, while a blurry arm obstructs the left side. [2-6] The camera tilts upward and pans right, removing the smartphone and keyboard from view to reveal a silver articulated desk lamp mounted above the monitor and a blue water bottle standing on a wooden surface in the background. Yellow sticky notes are visible on the wall. [6-10] The camera angle lowers slightly as a hand enters the frame near a yellow notepad on the left, followed by a sharp upward tilt. [10-12] The view stabilizes on the upper wall and ceiling soffit, retaining only the top portions of the monitor, lamp, and laptop screen while the desk surface remains out of frame."
+            },
+            {
+              "time_range": [
+                12,
+                26
+              ],
+              "text": "[12-14] A static shot captures a workspace corner featuring a black monitor, silver articulated lamp, open laptop, and yellow sticky notes on a white wall beneath a ceiling soffit. [14-20] The large monitor illuminates, transitioning from black to a login interface with blue and orange abstract waves and a user icon, while the adjacent laptop displays a desktop with a purple landscape. [20-22] The monitor changes to a desktop view showing a mountain landscape wallpaper and a bright white application window. [22-24] The camera tilts upward, revealing more of the white ceiling soffit above the active screens. [24-26] The camera pans right and tilts down, exposing a blue water bottle on a wooden surface and the lamp's base, while both the monitor and laptop remain active with their respective desktop interfaces visible."
+            }
+          ],
+          "recent_thinks": [
+            "[26-28] The camera tilts downward and zooms out, bringing a black smartphone back into view in the foreground before the laptop. This wider angle also reveals the silver lamp's base and a blue water bottle on a wooden surface to the right. The large monitor continues displaying a white window over a landscape wallpaper.",
+            "[28-30] A hand holds a black smartphone steady in the lower center foreground. The large monitor continues displaying a white window over a landscape wallpaper, and the laptop screen shows a desktop grid of icons. The silver articulated lamp and row of yellow sticky notes remain fixed on the white wall above the devices."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The black smartphone held in the foreground illuminates, revealing an application interface with a green circular icon. The hand remains steady. Behind it, the large monitor displays a white window over a landscape wallpaper, while the laptop screen shows a grid of desktop icons under the silver lamp.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/1_2_m_academic_v0_1/academic_source/ego4d/4f2b15a4-9802-4ed7-8911-4b8c352ff10a.mp4",
+      "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
+      "chunk_idx": 15,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 36,
+          "video_end": 60,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-2] A hand holds a smartphone with a recording timer incrementing from 00:00 to 00:01 on its dark screen, positioned before a white desk setup. This setup includes a silver monitor with a black screen, a white keyboard, and an open laptop displaying desktop icons, while a blurry arm obstructs the left side. [2-6] The camera tilts upward and pans right, removing the smartphone and keyboard from view to reveal a silver articulated desk lamp mounted above the monitor and a blue water bottle standing on a wooden surface in the background. Yellow sticky notes are visible on the wall. [6-10] The camera angle lowers slightly as a hand enters the frame near a yellow notepad on the left, followed by a sharp upward tilt. [10-12] The view stabilizes on the upper wall and ceiling soffit, retaining only the top portions of the monitor, lamp, and laptop screen while the desk surface remains out of frame."
+            },
+            {
+              "time_range": [
+                12,
+                26
+              ],
+              "text": "[12-14] A static shot captures a workspace corner featuring a black monitor, silver articulated lamp, open laptop, and yellow sticky notes on a white wall beneath a ceiling soffit. [14-20] The large monitor illuminates, transitioning from black to a login interface with blue and orange abstract waves and a user icon, while the adjacent laptop displays a desktop with a purple landscape. [20-22] The monitor changes to a desktop view showing a mountain landscape wallpaper and a bright white application window. [22-24] The camera tilts upward, revealing more of the white ceiling soffit above the active screens. [24-26] The camera pans right and tilts down, exposing a blue water bottle on a wooden surface and the lamp's base, while both the monitor and laptop remain active with their respective desktop interfaces visible."
+            },
+            {
+              "time_range": [
+                26,
+                38
+              ],
+              "text": "[26-38] The camera tilts downward and zooms out, bringing a black smartphone held by a hand back into the foreground. This wider angle reveals the silver lamp's base and a blue water bottle on a wooden surface to the right. The smartphone screen illuminates, first showing an interface with a green circular icon, then updating to display a grid of colorful application icons. Throughout, the large monitor displays a white window over a landscape wallpaper, and the laptop screen shows a desktop grid. The silver articulated lamp and row of yellow sticky notes remain fixed on the white wall above the devices."
+            },
+            {
+              "time_range": [
+                38,
+                50
+              ],
+              "text": "[38-46] In the foreground, a smartphone screen updates sequentially: transitioning from a grid of icons to a white interface with text, then a list view, followed by a black screen, and finally illuminating with colorful app icons. Behind it, a large monitor displaying an open window over a mountain wallpaper and a laptop with a desktop full of icons remain static. A silver articulated lamp and yellow sticky notes on the wall are unchanged.\n[46-50] The camera pans left, shifting the composition. The smartphone exits the frame. The large monitor moves from the center to the right side, and the laptop disappears from view. A dark notebook appears on the desk's left side near a white keyboard. The final view highlights the left wall corner and the edge of the monitor, while the screen content remains static."
+            }
+          ],
+          "recent_thinks": [
+            "[50-52] The camera pans sharply left, shifting the large monitor to the right edge of the frame while the laptop exits the view. A dark notebook resting on the desk becomes clearly visible in the bottom left corner against the white wall. The monitor screen content remains static throughout the movement.",
+            "[52-54] The camera pans left, moving the large monitor to the right edge and removing the laptop. A dark notebook rests on the desk's left side. A hand holding a pen appears at the bottom center, poised over the notebook. The monitor screen remains static, showing an open application window against a scenic wallpaper.",
+            "[54-56] The camera maintains a static view of the desk's left corner, showing a hand holding a pen over a dark notebook at the bottom. To the right, the large monitor displays a stationary application window against a mountain wallpaper. The white wall and ceiling soffit occupy the upper left, with no visible changes in object positions or lighting.",
+            "[56-58] The camera pans right, shifting the large monitor from the right edge toward the center and revealing the laptop screen in the bottom right corner. The silver lamp arm reappears above the monitor, while the hand and notebook shift toward the left periphery. The monitor displays a static window over a landscape wallpaper."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The camera pans right, centering the workspace. The large monitor shifts left, displaying a white window. The laptop reappears on the right with a desktop grid. Yellow sticky notes line the wall. A smartphone is partially visible at the bottom. The silver lamp hangs overhead.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/1_2_m_academic_v0_1/academic_source/ego4d/4f2b15a4-9802-4ed7-8911-4b8c352ff10a.mp4",
+      "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
+      "chunk_idx": 29,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "question_window",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 38,
+          "video_end": 62,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                12
+              ],
+              "text": "[0-2] A hand holds a smartphone with a recording timer incrementing from 00:00 to 00:01 on its dark screen, positioned before a white desk setup. This setup includes a silver monitor with a black screen, a white keyboard, and an open laptop displaying desktop icons, while a blurry arm obstructs the left side. [2-6] The camera tilts upward and pans right, removing the smartphone and keyboard from view to reveal a silver articulated desk lamp mounted above the monitor and a blue water bottle standing on a wooden surface in the background. Yellow sticky notes are visible on the wall. [6-10] The camera angle lowers slightly as a hand enters the frame near a yellow notepad on the left, followed by a sharp upward tilt. [10-12] The view stabilizes on the upper wall and ceiling soffit, retaining only the top portions of the monitor, lamp, and laptop screen while the desk surface remains out of frame."
+            },
+            {
+              "time_range": [
+                12,
+                26
+              ],
+              "text": "[12-14] A static shot captures a workspace corner featuring a black monitor, silver articulated lamp, open laptop, and yellow sticky notes on a white wall beneath a ceiling soffit. [14-20] The large monitor illuminates, transitioning from black to a login interface with blue and orange abstract waves and a user icon, while the adjacent laptop displays a desktop with a purple landscape. [20-22] The monitor changes to a desktop view showing a mountain landscape wallpaper and a bright white application window. [22-24] The camera tilts upward, revealing more of the white ceiling soffit above the active screens. [24-26] The camera pans right and tilts down, exposing a blue water bottle on a wooden surface and the lamp's base, while both the monitor and laptop remain active with their respective desktop interfaces visible."
+            },
+            {
+              "time_range": [
+                26,
+                38
+              ],
+              "text": "[26-38] The camera tilts downward and zooms out, bringing a black smartphone held by a hand back into the foreground. This wider angle reveals the silver lamp's base and a blue water bottle on a wooden surface to the right. The smartphone screen illuminates, first showing an interface with a green circular icon, then updating to display a grid of colorful application icons. Throughout, the large monitor displays a white window over a landscape wallpaper, and the laptop screen shows a desktop grid. The silver articulated lamp and row of yellow sticky notes remain fixed on the white wall above the devices."
+            },
+            {
+              "time_range": [
+                38,
+                50
+              ],
+              "text": "[38-46] In the foreground, a smartphone screen updates sequentially: transitioning from a grid of icons to a white interface with text, then a list view, followed by a black screen, and finally illuminating with colorful app icons. Behind it, a large monitor displaying an open window over a mountain wallpaper and a laptop with a desktop full of icons remain static. A silver articulated lamp and yellow sticky notes on the wall are unchanged.\n[46-50] The camera pans left, shifting the composition. The smartphone exits the frame. The large monitor moves from the center to the right side, and the laptop disappears from view. A dark notebook appears on the desk's left side near a white keyboard. The final view highlights the left wall corner and the edge of the monitor, while the screen content remains static."
+            }
+          ],
+          "recent_thinks": [
+            "[50-52] The camera pans sharply left, shifting the large monitor to the right edge of the frame while the laptop exits the view. A dark notebook resting on the desk becomes clearly visible in the bottom left corner against the white wall. The monitor screen content remains static throughout the movement.",
+            "[52-54] The camera pans left, moving the large monitor to the right edge and removing the laptop. A dark notebook rests on the desk's left side. A hand holding a pen appears at the bottom center, poised over the notebook. The monitor screen remains static, showing an open application window against a scenic wallpaper.",
+            "[54-56] The camera maintains a static view of the desk's left corner, showing a hand holding a pen over a dark notebook at the bottom. To the right, the large monitor displays a stationary application window against a mountain wallpaper. The white wall and ceiling soffit occupy the upper left, with no visible changes in object positions or lighting.",
+            "[56-58] The camera pans right, shifting the large monitor from the right edge toward the center and revealing the laptop screen in the bottom right corner. The silver lamp arm reappears above the monitor, while the hand and notebook shift toward the left periphery. The monitor displays a static window over a landscape wallpaper.",
+            "[58-60] The camera pans right, centering the workspace. The large monitor shifts left, displaying a white window. The laptop reappears on the right with a desktop grid. Yellow sticky notes line the wall. A smartphone is partially visible at the bottom. The silver lamp hangs overhead."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The camera holds a steady view of the workspace, with the large monitor on the left and the laptop on the right displaying static screens. The silver lamp extends over the desk, and yellow sticky notes remain on the wall. A smartphone is partially visible at the bottom edge. The scene is motionless.</think><action>silent</action>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/1_2_m_academic_v0_1/academic_source/ego4d/4f2b15a4-9802-4ed7-8911-4b8c352ff10a.mp4",
+      "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
+      "chunk_idx": 30,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": []
+      },
+      "base_role": "question_window",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    }
+  ],
+  "stats": {
+    "video_id": "4f2b15a4-9802-4ed7-8911-4b8c352ff10a",
+    "count": 10
+  }
+}
