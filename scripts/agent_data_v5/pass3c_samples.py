@@ -138,6 +138,9 @@ async def _generate_response(card: Dict, snapshot: Dict, evidence: List[Dict],
         dedup_instruction=dedup,
     )
 
+    # NOTE: keep thinking + 16K budget — this output IS the SFT label the
+    # student will mimic. Quality > speed. Timeout cascade is solved by
+    # lowering concurrency, not by crippling the teacher.
     raw = await client._call_one(
         messages=[{"role": "user", "content": prompt}],
         max_tokens=PASS_CONFIG.get("pass3c", {}).get("max_tokens", 16384),
@@ -178,6 +181,8 @@ async def _generate_recall_query(card: Dict, snapshot: Dict,
         time_range=time_range,
     )
 
+    # Keep thinking — picking discriminative keywords requires reasoning,
+    # and bad recall queries cause downstream recall failure at inference.
     raw = await client._call_one(
         messages=[{"role": "user", "content": prompt}],
         max_tokens=PASS_CONFIG.get("pass3c", {}).get("max_tokens", 16384),
@@ -231,6 +236,10 @@ async def _generate_fork_think(
         queries_text=queries_text,
     )
 
+    # Keep thinking — fork_think must mention active question WITHOUT leaking
+    # the answer. This requires careful reasoning about what's visible vs
+    # what's been observed, otherwise the data construction's leakage check
+    # will reject the sample at Pass 4.
     raw = await client._call_one(
         messages=[{"role": "user", "content": prompt}],
         max_tokens=PASS_CONFIG.get("pass3c", {}).get("max_tokens", 16384),
@@ -260,6 +269,8 @@ async def _generate_recall_think(
         recall_source=recall_source,
     )
 
+    # Keep thinking — student learns to evaluate recall result quality;
+    # the analysis must correctly distinguish useful vs irrelevant results.
     raw = await client._call_one(
         messages=[{"role": "user", "content": prompt}],
         max_tokens=PASS_CONFIG.get("pass3c", {}).get("max_tokens", 16384),

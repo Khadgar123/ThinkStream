@@ -259,10 +259,17 @@ PASS_CONFIG = {
         "concurrent": 512,    # pure text, ~17K tok/req worst case, batch budget supports ~1882
     },
     "pass3c": {
+        # Keep thinking + 16K — 3C outputs ARE the SFT labels (response,
+        # fork_think, recall_query, recall_think). Quality determines what
+        # the student learns. Throughput problems are addressed by lowering
+        # concurrency (less GPU oversubscription) + extending client timeout,
+        # not by crippling teacher reasoning.
         "max_tokens": 16384,
         "temperature": 0.3,
         "thinking": True,
-        "concurrent": 1024,
+        "concurrent": 256,    # ↓ from 1024: at 1024 each request waits ~55min
+                              # (orphan-cascade); at 256 each gets ~14min, no
+                              # timeouts, total throughput ~unchanged.
     },
     "pass3a_verify": {
         "max_tokens": 16384,

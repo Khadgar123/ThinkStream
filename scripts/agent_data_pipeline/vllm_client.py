@@ -81,7 +81,10 @@ class VLLMClient:
         model: str = "",
         max_concurrent: int = 40,
         api_key: str = "placeholder",
-        timeout: float = 1800.0,  # 30 min: 8K tokens at 6.4 tok/s = 21 min worst case
+        timeout: float = 5400.0,  # 90 min — safety net for thinking-enabled passes
+                                    # (1A/1B/2/3A still use thinking for quality).
+                                    # pass3c now disables thinking + caps max_tokens
+                                    # so it won't approach this anyway.
     ):
         self.api_base = api_base
         self.model = model
@@ -110,18 +113,37 @@ class VLLMClient:
         temperature: float = 0.7,
         request_id: str = "",
         max_retries: int = 3,
+        enable_thinking: Optional[bool] = None,
     ) -> Optional[str]:
-        """Make a single API call with semaphore-controlled concurrency and retry."""
+        """Make a single API call with semaphore-controlled concurrency and retry.
+
+        Args:
+            enable_thinking: when False, ask vLLM (with --enable-reasoning) to
+              skip the reasoning phase via Qwen3 chat-template kwargs. This
+              cuts a 16K-token reasoning budget down to actual content tokens
+              and prevents the 30-min timeout cascade we hit on pass3c.
+              None = leave server default; True = force on; False = force off.
+        """
+        # Build extra_body for per-request reasoning control
+        extra_body = None
+        if enable_thinking is not None:
+            extra_body = {
+                "chat_template_kwargs": {"enable_thinking": bool(enable_thinking)}
+            }
+
         async with self.semaphore:
             client = await self._get_client()
             for attempt in range(max_retries):
                 try:
-                    response = await client.chat.completions.create(
+                    create_kwargs = dict(
                         model=self.model,
                         messages=messages,
                         max_tokens=max_tokens,
                         temperature=temperature,
                     )
+                    if extra_body is not None:
+                        create_kwargs["extra_body"] = extra_body
+                    response = await client.chat.completions.create(**create_kwargs)
                     result = response.choices[0].message.content
                     usage = response.usage
                     self.stats.completed += 1
@@ -158,6 +180,7 @@ class VLLMClient:
         requests: List[Dict],
         max_tokens: int = 2048,
         temperature: float = 0.7,
+        enable_thinking: Optional[bool] = None,
     ) -> List[Optional[str]]:
         """Send a batch of requests with automatic concurrency control.
 
@@ -166,6 +189,7 @@ class VLLMClient:
             - "id": optional request identifier
             - "max_tokens": optional per-request override
             - "temperature": optional per-request override
+            - "enable_thinking": optional per-request override
         """
         self.stats = RequestStats(total=len(requests), start_time=time.time())
         logger.info(
@@ -180,6 +204,7 @@ class VLLMClient:
                 max_tokens=req.get("max_tokens", max_tokens),
                 temperature=req.get("temperature", temperature),
                 request_id=req.get("id", f"req_{i}"),
+                enable_thinking=req.get("enable_thinking", enable_thinking),
             )
             tasks.append(task)
 
