@@ -265,14 +265,22 @@ def build_per_timestep_messages(sample: Dict, base_path: Path) -> List[Dict]:
     if video_path and not Path(video_path).is_absolute():
         video_path = str(base_path / video_path)
 
+    require_pre = bool(sample.get("_require_pre_extracted_frames", True))
     if "frame_paths" in vw:
         paths = [str(base_path / p) if not Path(p).is_absolute() else p
                  for p in vw["frame_paths"]]
         user_content.append({"type": "video", "video": paths})
     elif "frame_indices" in vw and video_path:
+        if require_pre:
+            raise ValueError(
+                f"Sample {sample.get('sample_id', '?')}: visual_window has no "
+                f"frame_paths (only frame_indices). Pre-extract frames or set "
+                f"--require_pre_extracted_frames False (NOT recommended for "
+                f"real training: online decoding is ~50× slower)."
+            )
         logging.warning(
             f"Sample {sample.get('sample_id', '?')}: no frame_paths, "
-            f"using video_start/end fallback"
+            f"using video_start/end fallback (slow online decode)"
         )
         user_content.append({
             "type": "video",
@@ -303,9 +311,15 @@ def build_per_timestep_messages(sample: Dict, base_path: Path) -> List[Dict]:
                      for p in rf["frame_paths"]]
             user_content.append({"type": "video", "video": paths})
         elif video_path:
+            if require_pre:
+                raise ValueError(
+                    f"Sample {sample.get('sample_id', '?')}: recalled_frames "
+                    f"has no frame_paths. Pre-extract recall frames or disable "
+                    f"--require_pre_extracted_frames."
+                )
             logging.warning(
                 f"Sample {sample.get('sample_id', '?')}: recalled_frames missing "
-                f"frame_paths, using time range fallback"
+                f"frame_paths, using time range fallback (slow online decode)"
             )
             user_content.append({
                 "type": "video",
@@ -391,6 +405,51 @@ def _resolve_video_paths(messages: List[Dict], base_path: Path) -> List[Dict]:
     return resolved
 
 
+# Cache so we resolve once per tokenizer (rather than per sample).
+_CHAT_TEMPLATE_ID_CACHE: Dict[int, tuple] = {}
+
+
+def _resolve_chat_template_ids(tokenizer) -> tuple:
+    """Resolve (assistant_role_token_id, im_end_token_id) from the tokenizer.
+
+    Fails loudly with a precise diagnosis if the chat template doesn't
+    contain the expected tokens, so a tokenizer drift surfaces immediately
+    instead of silently producing wrong loss masks.
+    """
+    cache_key = id(tokenizer)
+    cached = _CHAT_TEMPLATE_ID_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    vocab = tokenizer.get_vocab()
+    im_end_id = vocab.get("<|im_end|>")
+    if im_end_id is None:
+        raise RuntimeError(
+            "Tokenizer drift: '<|im_end|>' not in vocab. "
+            "SFT loss masking depends on Qwen chat-template tokens."
+        )
+
+    # The Qwen chat template emits "<|im_start|>assistant\n" — the role token
+    # immediately follows <|im_start|>. Probe by encoding the template.
+    probe_ids = tokenizer.encode("<|im_start|>assistant", add_special_tokens=False)
+    im_start_id = vocab.get("<|im_start|>")
+    if im_start_id is None or im_start_id not in probe_ids:
+        raise RuntimeError(
+            f"Tokenizer drift: probe ids {probe_ids!r} do not contain "
+            f"<|im_start|> ({im_start_id}). Cannot locate assistant role token."
+        )
+    idx = probe_ids.index(im_start_id)
+    if idx + 1 >= len(probe_ids):
+        raise RuntimeError(
+            "Tokenizer drift: '<|im_start|>assistant' did not tokenize to "
+            "[<|im_start|>, assistant_role_token]."
+        )
+    assistant_id = probe_ids[idx + 1]
+
+    _CHAT_TEMPLATE_ID_CACHE[cache_key] = (assistant_id, im_end_id)
+    return assistant_id, im_end_id
+
+
 def preprocess_per_timestep(sample: Dict, processor) -> Dict:
     """Tokenize a per-timestep sample and mask labels.
 
@@ -423,19 +482,16 @@ def preprocess_per_timestep(sample: Dict, processor) -> Dict:
     labels = torch.full_like(input_ids, IGNORE_INDEX)
 
     # Find assistant span by token pattern.
-    # These IDs are stable across Qwen2/2.5/3 tokenizer families
-    # (base vocab tokens; adding special tokens appends, doesn't shift).
-    ASSISTANT_TOKEN_ID = 77091   # "assistant" role token
-    IM_END_TOKEN_ID = 151645     # <|im_end|>
-
-    # Defensive check: verify token IDs match this tokenizer
-    vocab = processor.tokenizer.get_vocab()
-    assert vocab.get("assistant", -1) == ASSISTANT_TOKEN_ID or \
-        ASSISTANT_TOKEN_ID in input_ids[0].tolist(), \
-        f"Token ID mismatch: 'assistant' not at {ASSISTANT_TOKEN_ID} in this tokenizer"
+    # These IDs are stable across Qwen2/2.5/3 tokenizer families, but we
+    # resolve them dynamically from the actual tokenizer to avoid silent
+    # mask drift if the upstream vocab ever shifts.
+    ASSISTANT_TOKEN_ID, IM_END_TOKEN_ID = _resolve_chat_template_ids(
+        processor.tokenizer
+    )
 
     input_ids_flat = input_ids[0].tolist()
     L = len(input_ids_flat)
+    assistant_spans: List[tuple] = []
     pos = 0
     while pos < L:
         if input_ids_flat[pos] == ASSISTANT_TOKEN_ID:
@@ -444,10 +500,23 @@ def preprocess_per_timestep(sample: Dict, processor) -> Dict:
             while ans_end < L and input_ids_flat[ans_end] != IM_END_TOKEN_ID:
                 ans_end += 1
             if ans_end < L:
-                # Unmask assistant tokens (include <|im_end|> + newline)
-                labels[0, ans_start: ans_end + 2] = input_ids[0, ans_start: ans_end + 2]
+                assistant_spans.append((ans_start, ans_end))
                 pos = ans_end
         pos += 1
+
+    # Per-timestep design: exactly one assistant turn per sample.
+    # Multiple turns (or zero) means data corruption — fail loudly so we
+    # don't silently train on the wrong span.
+    if len(assistant_spans) != 1:
+        sid = sample.get("sample_id") or sample.get("trajectory_id") or "?"
+        raise ValueError(
+            f"Sample {sid}: expected exactly 1 assistant turn, "
+            f"found {len(assistant_spans)}. Per-timestep samples must have "
+            f"a single assistant output."
+        )
+    ans_start, ans_end = assistant_spans[0]
+    # Unmask assistant tokens (include <|im_end|> + newline)
+    labels[0, ans_start: ans_end + 2] = input_ids[0, ans_start: ans_end + 2]
 
     full_result["labels"] = labels
     full_result["input_ids"] = input_ids
@@ -507,6 +576,9 @@ class PerTimestepDataset(Dataset):
 
             for ann in annotations:
                 ann["data_path"] = cfg["data_path"]
+                ann["_require_pre_extracted_frames"] = bool(
+                    getattr(data_args, "require_pre_extracted_frames", True)
+                )
             all_samples.extend(annotations)
 
         # Filter overlong samples (P0-4: no silent truncation in collator)
@@ -604,6 +676,17 @@ class PerTimestepDataset(Dataset):
         data_dict["position_ids"] = position_ids
         data_dict["attention_mask"] = [seq_len]
 
+        # Audit metadata — passed through collator to trainer for per-sample logs.
+        data_dict["sample_meta"] = {
+            "sample_id": sample.get("sample_id") or sample.get("trajectory_id"),
+            "video_id": sample.get("video_id"),
+            "chunk_idx": sample.get("chunk_idx"),
+            "sample_type": sample.get("sample_type"),
+            "action": sample.get("action"),
+            "sequence_type": sample.get("sequence_type"),
+            "base_role": sample.get("base_role"),
+        }
+
         return data_dict
 
 
@@ -699,6 +782,9 @@ class PerTimestepDataCollator:
             [inst.get("sample_weight", 1.0) for inst in instances],
             dtype=torch.float32,
         )
+
+        # Per-sample metadata (audit logging only; popped before model.forward)
+        batch["sample_meta"] = [inst.get("sample_meta", {}) for inst in instances]
 
         return batch
 

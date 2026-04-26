@@ -329,6 +329,12 @@ SYSTEM_PROMPT_COMPRESS = (
 
 # Special tokens required by SFT init_processor (see sft_engineering.md §6.2)
 # Approach B: exact-match tags, attributes as JSON inside tags.
+#
+# CANONICAL SOURCE: thinkstream/sft/data_processor.py:SPECIAL_TOKENS_AGENT
+# (which mirrors thinkstream/data/agent_protocol.py).
+# The two lists below are kept here for documentation only — do NOT use them
+# to register tokens; the SFT entry point already does that. Any divergence
+# from the canonical source is a bug.
 SPECIAL_TOKENS_BASE = [
     "<silent>", "<response>", "<think>", "</think>",
     "<action>", "</action>", "<query>", "</query>",
@@ -336,11 +342,15 @@ SPECIAL_TOKENS_BASE = [
 ]
 SPECIAL_TOKENS_PER_TIMESTEP = [
     # Input structure tags
-    "<memory>", "</memory>",               # wraps memory timeline
-    "<summary>", "</summary>",             # memory timeline: compressed segment (inline)
-    "<visual_window>", "</visual_window>", # visual window header
+    "<memory>", "</memory>",                    # wraps memory timeline
+    "<compressed>", "</compressed>",            # memory timeline: compressed segment (inline)
+    "<pending>", "</pending>",                  # memory timeline: pending question
+    "<visual_window>", "</visual_window>",      # visual window header
     "<recalled_frames>", "</recalled_frames>",  # recalled frames header
-    "<user_input>", "</user_input>",       # wraps user input text
+    "<user_input>", "</user_input>",            # wraps user input text
+    "<queries>", "</queries>",                  # past Q&A zone
+    # Output payload (assistant)
+    "<summary>", "</summary>",                  # compress-action summary payload
     # User input trigger
     "<compress_trigger>", "</compress_trigger>",  # system compress trigger
 ]

@@ -180,9 +180,25 @@ def render_sample(
                     inp["user_input"] = f'<compress_trigger range="{time_start}-{time_end}"/>'
                 break
 
-    # Build metadata for RL reward computation
+    # Build metadata for RL reward computation.
+    #
+    # Contract (silent failures here ⇒ Pass4 + GRPO get neutered):
+    #   - if sample has a card_id, the card MUST be in cards_map.
+    #     A missing lookup means cards_map was passed empty/wrong upstream;
+    #     fail loudly rather than emit an empty-metadata sample.
+    #   - silent-only samples (no card_id) legitimately have empty metadata.
     card_id = sample.get("card_id", "")
-    card = (cards_map or {}).get(card_id, {})
+    if card_id:
+        if not cards_map or card_id not in cards_map:
+            raise KeyError(
+                f"[{video_id}] sample chunk={chunk_idx} references card_id="
+                f"{card_id!r} but it is missing from cards_map "
+                f"(cards_map size={len(cards_map or {})}). Render before Pass4 "
+                f"requires fully-populated cards_map."
+            )
+        card = cards_map[card_id]
+    else:
+        card = {}
     metadata = {
         "gold_action": sample.get("action", "silent"),
         "gold_answer": card.get("canonical_answer", ""),

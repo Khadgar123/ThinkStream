@@ -12,11 +12,14 @@ Removed from Qwen3-VL official finetune:
 """
 
 import torch
+from pathlib import Path
 from transformers import Trainer
 from transformers.models.qwen2_5_vl.modeling_qwen2_5_vl import (
     Qwen2_5_VisionTransformerPretrainedModel,
     Qwen2_5_VLModel,
 )
+
+from thinkstream.trainer.audit import AuditWriter, resolve_audit_dir
 from transformers.models.qwen3_vl.modeling_qwen3_vl import (
     Qwen3VLVisionModel,
     Qwen3VLModel,
@@ -40,12 +43,33 @@ class WeightedSFTTrainer(Trainer):
     before reduction. Otherwise fall back to standard loss.
     """
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._audit_step = self._init_audit_writers()
+
+    def _init_audit_writers(self):
+        """Open <audit_dir>/sft_step.jsonl + sft_sample.jsonl. Rank-0 only."""
+        audit_dir = resolve_audit_dir(
+            getattr(self.args, "audit_log_dir", None),
+            self.args.output_dir,
+        )
+        if audit_dir is None:
+            self._audit_step_writer = None
+            self._audit_sample_writer = None
+            return None
+        self._audit_step_writer = AuditWriter(audit_dir / "sft_step.jsonl")
+        self._audit_sample_writer = AuditWriter(audit_dir / "sft_sample.jsonl")
+        self._audit_every = max(1, int(getattr(self.args, "audit_log_every", 1)))
+        return 0
+
     def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
         sample_weights = inputs.pop("sample_weights", None)
         token_loss_weight = inputs.pop("token_loss_weight", None)
+        sample_meta = inputs.pop("sample_meta", None)
 
         outputs = model(**inputs)
 
+        per_sample_loss_for_audit = None
         if (sample_weights is None or sample_weights.numel() == 0) and token_loss_weight is None:
             loss = outputs.loss
         else:
@@ -74,6 +98,7 @@ class WeightedSFTTrainer(Trainer):
                 (per_token_loss * effective_mask).sum(dim=1)
                 / effective_mask.sum(dim=1).clamp(min=1)
             )
+            per_sample_loss_for_audit = per_sample_loss.detach()
 
             if sample_weights is not None and sample_weights.numel() > 0:
                 sample_weights = sample_weights.to(per_sample_loss.device)
@@ -81,7 +106,96 @@ class WeightedSFTTrainer(Trainer):
             else:
                 loss = per_sample_loss.mean()
 
+        # ── Audit log: per-step aggregate + per-sample breakdown ──
+        if self._audit_step_writer is not None:
+            try:
+                self._write_sft_audit(
+                    loss=loss,
+                    per_sample_loss=per_sample_loss_for_audit,
+                    sample_weights=sample_weights,
+                    token_loss_weight=token_loss_weight,
+                    labels=inputs.get("labels"),
+                    sample_meta=sample_meta,
+                )
+            except Exception as e:
+                # Never let audit logging break training
+                import logging as _logging
+                _logging.getLogger(__name__).debug("audit log skipped: %s", e)
+
         return (loss, outputs) if return_outputs else loss
+
+    def _write_sft_audit(
+        self, *, loss, per_sample_loss, sample_weights, token_loss_weight,
+        labels, sample_meta,
+    ) -> None:
+        if self._audit_step is None:
+            return
+        self._audit_step += 1
+        if self._audit_step % self._audit_every != 0:
+            return
+
+        step_record: dict = {
+            "step": self.state.global_step,
+            "audit_step": self._audit_step,
+            "epoch": self.state.epoch,
+            "lr": self._current_lr(),
+            "loss": float(loss.detach().item()) if torch.is_tensor(loss) else float(loss),
+        }
+        if per_sample_loss is not None:
+            psl = per_sample_loss.float().cpu()
+            step_record["per_sample_loss"] = {
+                "mean": float(psl.mean()),
+                "min": float(psl.min()),
+                "max": float(psl.max()),
+                "n": int(psl.numel()),
+            }
+        if sample_weights is not None and sample_weights.numel() > 0:
+            sw = sample_weights.float().cpu()
+            step_record["sample_weights"] = {
+                "mean": float(sw.mean()),
+                "min": float(sw.min()),
+                "max": float(sw.max()),
+            }
+        if labels is not None:
+            unmasked = (labels != IGNORE_INDEX).sum(dim=-1).float().cpu()
+            step_record["unmasked_tokens"] = {
+                "mean": float(unmasked.mean()),
+                "max": float(unmasked.max()),
+            }
+        self._audit_step_writer.write(step_record)
+
+        # Per-sample stream — needs sample_meta from collator
+        if (
+            self._audit_sample_writer is not None
+            and sample_meta
+            and per_sample_loss is not None
+        ):
+            psl_list = per_sample_loss.float().cpu().tolist()
+            sw_list = (
+                sample_weights.float().cpu().tolist()
+                if sample_weights is not None and sample_weights.numel() > 0
+                else [1.0] * len(psl_list)
+            )
+            for i, meta in enumerate(sample_meta):
+                if i >= len(psl_list):
+                    break
+                self._audit_sample_writer.write({
+                    "step": self.state.global_step,
+                    "sample_id": meta.get("sample_id"),
+                    "video_id": meta.get("video_id"),
+                    "chunk_idx": meta.get("chunk_idx"),
+                    "sample_type": meta.get("sample_type"),
+                    "action": meta.get("action"),
+                    "sequence_type": meta.get("sequence_type"),
+                    "loss": psl_list[i],
+                    "weight": sw_list[i] if i < len(sw_list) else 1.0,
+                })
+
+    def _current_lr(self) -> float:
+        try:
+            return float(self.optimizer.param_groups[0]["lr"])
+        except Exception:
+            return -1.0
 
 
 # ---------------------------------------------------------------------------

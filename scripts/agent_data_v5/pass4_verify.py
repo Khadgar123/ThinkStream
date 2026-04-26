@@ -681,6 +681,34 @@ def verify_recall_evidence_reachable(sample: Dict, rollout: Dict = None) -> Tupl
     return True, "pass"
 
 
+def verify_metadata_complete(sample: Dict) -> Tuple[bool, str]:
+    """Check 15: response/recall samples must have non-empty metadata.gold_answer.
+
+    Empty gold_answer would silently neuter the GRPO response/recall reward
+    (the reward function falls through to the silent-only branch). This check
+    catches that situation at data-construction time so downstream training
+    isn't given unsupervised samples.
+
+    Silent samples (and compress) legitimately have empty gold_answer and
+    are exempt.
+    """
+    sample_type = sample.get("sample_type", "")
+    if sample_type not in ("response", "recall_query", "recall_response"):
+        return True, "pass"
+
+    metadata = sample.get("metadata", {})
+    gold_answer = (metadata.get("gold_answer") or "").strip()
+    if not gold_answer:
+        card_id = sample.get("card_id", "?")
+        return False, (
+            f"metadata.gold_answer empty for {sample_type} sample "
+            f"(card={card_id}). Render is missing canonical_answer; "
+            f"GRPO would silently un-gate this sample."
+        )
+
+    return True, "pass"
+
+
 # ---------------------------------------------------------------------------
 # Difficulty Labeling
 # ---------------------------------------------------------------------------
@@ -744,6 +772,7 @@ def verify_sample(sample: Dict) -> Dict:
         ("queries_state_temporal", verify_queries_state_temporal),
         ("base_sample_consistency", verify_base_sample_consistency),
         ("recall_evidence_reachable", verify_recall_evidence_reachable),
+        ("metadata_complete", verify_metadata_complete),
     ]:
         passed, reason = func(sample)
         checks[name] = {"passed": passed, "reason": reason}

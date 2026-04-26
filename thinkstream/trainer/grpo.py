@@ -36,6 +36,33 @@ from thinkstream.model import MODEL_CLS, get_text_config, DEFAULT_VIDEO_FLEX_WIN
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
+# Audit logging (env-controlled, no slyme node-signature changes)
+# ---------------------------------------------------------------------------
+# Enable by setting THINKSTREAM_AUDIT_DIR=<path>; falls back to
+# THINKSTREAM_OUTPUT_DIR/audit when only the output dir is exported.
+from thinkstream.trainer.audit import AuditWriter, resolve_audit_dir
+
+_GRPO_STEP_WRITER: Optional[AuditWriter] = None
+_GRPO_SAMPLE_WRITER: Optional[AuditWriter] = None
+_GRPO_STEP_COUNTER = 0
+
+
+def _grpo_audit_writers():
+    """Lazy-init audit writers from env vars."""
+    global _GRPO_STEP_WRITER, _GRPO_SAMPLE_WRITER
+    if _GRPO_STEP_WRITER is not None or _GRPO_SAMPLE_WRITER is not None:
+        return _GRPO_STEP_WRITER, _GRPO_SAMPLE_WRITER
+    audit_dir = resolve_audit_dir(
+        os.environ.get("THINKSTREAM_AUDIT_DIR"),
+        os.environ.get("THINKSTREAM_OUTPUT_DIR"),
+    )
+    if audit_dir is None:
+        return None, None
+    _GRPO_STEP_WRITER = AuditWriter(audit_dir / "grpo_step.jsonl")
+    _GRPO_SAMPLE_WRITER = AuditWriter(audit_dir / "grpo_sample.jsonl")
+    return _GRPO_STEP_WRITER, _GRPO_SAMPLE_WRITER
+
+# ---------------------------------------------------------------------------
 # Reward helper functions (Unchanged from original grpo.py)
 # ---------------------------------------------------------------------------
 
@@ -673,7 +700,11 @@ DEFAULT_REWARD_WEIGHTS = {
     "think_len": 0.05,         # gated: think length near target
     "recall_quality": 0.10,    # gated: recall query well-formed + necessary
     "compress_quality": 0.10,  # gated: compression preserves entities
-    "silent_quality": 0.15,    # ALWAYS counted: explicit silent supervision
+    # silent_quality: ALWAYS counted. Bumped 0.15→0.20 so the always-on
+    # silent signal stays comparable in magnitude to the SFT silent loss
+    # weights (1.0–1.2× for response/silent, 0.3–0.5 for transition silents).
+    # Without this, RL slowly weakens the SFT-learned silent behavior.
+    "silent_quality": 0.20,
 }
 # Format gate threshold: below this, the entire sample is rejected with -1.0.
 FORMAT_GATE_THRESHOLD = 0.7
@@ -694,12 +725,18 @@ def _compute_silent_quality_reward(
       1. Silent collapse — model learns to always silent for safety.
       2. Over-response — model spams response on every chunk.
 
-    Scoring:
-      should-be-silent + silent      → +0.1 (rewarded but small; correctness handles it)
-      should-be-silent + response    → -0.4 (premature/hallucinated response)
-      should-respond + silent        → -0.3 (missed event)
-      should-respond + response      →  0.0 (correctness reward handles it)
-      HLD-negative (canonical=No) + correct "No" response → +0.3 (refusal bonus)
+    Scoring (v9.1, scaled to match SFT silent loss weights):
+      should-be-silent + silent      → +0.3 (correct silence — comparable to SFT 1.0×)
+      should-be-silent + response    → -0.6 (premature/hallucinated response)
+      should-respond + silent        → -0.6 (missed event)
+      should-respond + response      →  0.0 (correctness reward handles quality)
+      HLD-negative (canonical=No) + correct "No" response → +0.5 (refusal bonus)
+      HLD-negative + silent          → -0.6 (missed refusal)
+
+    Why the magnitudes: at weight=0.20 the swing is ±0.12 — same order as the
+    response-correctness weight ×0.5 (0.25), so silent_quality can no longer be
+    drowned out by other reward components. Below this scale RL drifts away
+    from the SFT silent prior.
     """
     has_response = "response" in predicted_actions
     is_silent_only = not has_response and "compress" not in predicted_actions
@@ -708,18 +745,18 @@ def _compute_silent_quality_reward(
     if is_negative:
         # HLD: model SHOULD respond "No" (not stay silent)
         if has_response and model_answer == "no":
-            return 0.3
+            return 0.5
         if not has_response:
-            return -0.3  # silent on HLD = missed refusal
+            return -0.6  # silent on HLD = missed refusal
         return 0.0
 
     if not gt_answer:
         # Silent-only sample: reward correct silence, penalize over-response
-        return 0.1 if is_silent_only else -0.4
+        return 0.3 if is_silent_only else -0.6
 
     # gt_answer present: model should respond
     if is_silent_only:
-        return -0.3  # missed: should have responded
+        return -0.6  # missed: should have responded
     return 0.0       # responded — correctness reward handles quality
 
 
@@ -819,6 +856,28 @@ def calc_rewards(
                 video_start = chunk_results[0]["window_start"]
                 gt_chunk_idx = int((gt_timestamp - video_start) / time_per_chunk) if time_per_chunk > 0 else None
 
+        # Sanity: if the sample's gold_action expects a response but no gt_answer
+        # is available from any source, the recall/response reward gates will
+        # silently stay closed. Warn loudly so we notice rather than train on
+        # half-supervised samples. (Pure silent / compress samples are exempt.)
+        gold_action = metadata.get("gold_action") or raw_sample.get("action") or ""
+        if not gt_answer and gold_action in (
+            "response", "recall_query", "recall_response"
+        ):
+            sid = (
+                raw_sample.get("sample_id")
+                or raw_sample.get("trajectory_id")
+                or raw_sample.get("video_id")
+                or "?"
+            )
+            logger.warning(
+                "[grpo.calc_rewards] sample=%s gold_action=%s but gt_answer is "
+                "empty (metadata.gold_answer + conversations[1] both missing). "
+                "Recall/response rewards will be unavailable for this sample. "
+                "Re-run Pass4 with the metadata_complete check enabled.",
+                sid, gold_action,
+            )
+
         for g in range(group_size):
             chunk_texts: List[str] = []
             for cr in chunk_results:
@@ -907,7 +966,120 @@ def calc_rewards(
     rewards_dict_val = {
         k: torch.tensor(v, dtype=torch.float32) for k, v in all_rewards.items()
     }
+
+    # ── Audit log: per-step aggregate + per-(sample, generation) breakdown ──
+    try:
+        _emit_grpo_audit(
+            rollout_data, all_rewards, totals, group_size, tokenizer,
+        )
+    except Exception as e:
+        logger.debug("grpo audit log skipped: %s", e)
+
     return ctx.update({rewards: total_tensor, rewards_dict: rewards_dict_val})
+
+
+def _emit_grpo_audit(
+    rollout_data, all_rewards, totals, group_size, tokenizer,
+) -> None:
+    """Write one grpo_step record + one grpo_sample record per (sample, gen)."""
+    global _GRPO_STEP_COUNTER
+    step_w, sample_w = _grpo_audit_writers()
+    if step_w is None and sample_w is None:
+        return
+
+    _GRPO_STEP_COUNTER += 1
+    n = len(totals)
+
+    if step_w is not None and n > 0:
+        def _stats(key):
+            xs = all_rewards[key]
+            return {
+                "mean": float(sum(xs) / len(xs)),
+                "min": float(min(xs)),
+                "max": float(max(xs)),
+            }
+        format_passed = sum(1 for r in all_rewards["format"] if r >= FORMAT_GATE_THRESHOLD)
+        correct_passed = sum(
+            1 for r in all_rewards["response"] if r >= CORRECT_GATE_THRESHOLD
+        )
+        step_w.write({
+            "step": _GRPO_STEP_COUNTER,
+            "n": n,
+            "total": {
+                "mean": float(sum(totals) / n),
+                "min": float(min(totals)),
+                "max": float(max(totals)),
+            },
+            "format": _stats("format"),
+            "response": _stats("response"),
+            "silent_quality": _stats("silent_quality"),
+            "timing": _stats("timing"),
+            "think_len": _stats("think_len"),
+            "recall_quality": _stats("recall_quality"),
+            "compress_quality": _stats("compress_quality"),
+            "format_gate_pass_rate": format_passed / n,
+            "correct_gate_pass_rate": correct_passed / n,
+        })
+
+    if sample_w is not None:
+        # Reconstruct (sample, generation) pairing — rewards are flattened in the
+        # same order as the calc_rewards loop, group_size per sample.
+        i = 0
+        for sample_data in rollout_data:
+            raw = sample_data["raw_sample"]
+            chunk_results = sample_data.get("chunk_results", [])
+            metadata = raw.get("metadata", {})
+            sid = (
+                raw.get("sample_id")
+                or raw.get("trajectory_id")
+                or raw.get("video_id")
+                or "?"
+            )
+            for g in range(group_size):
+                if i >= n:
+                    break
+                # Re-decode model output for this generation (truncate to keep log small)
+                try:
+                    chunks = []
+                    for cr in chunk_results:
+                        toks = cr["generated_tokens"][g]
+                        chunks.append(tokenizer.decode(toks, skip_special_tokens=False))
+                    actions = [_extract_action(t) for t in chunks]
+                    full_out = "".join(chunks)
+                    if len(full_out) > 600:
+                        full_out = full_out[:600] + "...<truncated>"
+                except Exception:
+                    actions, full_out = [], ""
+
+                sample_w.write({
+                    "step": _GRPO_STEP_COUNTER,
+                    "sample_id": sid,
+                    "video_id": raw.get("video_id"),
+                    "chunk_idx": raw.get("chunk_idx"),
+                    "generation": g,
+                    "gold_action": metadata.get("gold_action"),
+                    "gold_answer": (metadata.get("gold_answer") or "")[:200],
+                    "answer_form": metadata.get("answer_form"),
+                    "predicted_actions": actions,
+                    "model_output": full_out,
+                    "rewards": {
+                        "format": all_rewards["format"][i],
+                        "response": all_rewards["response"][i],
+                        "timing": all_rewards["timing"][i],
+                        "think_len": all_rewards["think_len"][i],
+                        "recall_quality": all_rewards["recall_quality"][i],
+                        "compress_quality": all_rewards["compress_quality"][i],
+                        "silent_quality": all_rewards["silent_quality"][i],
+                    },
+                    "total": totals[i],
+                    "format_gate_passed": (
+                        all_rewards["format"][i] >= FORMAT_GATE_THRESHOLD
+                    ),
+                    "correct_gate_passed": (
+                        all_rewards["response"][i] >= CORRECT_GATE_THRESHOLD
+                    ),
+                })
+                i += 1
 
 
 def _build_rollout_messages(

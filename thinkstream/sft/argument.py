@@ -42,6 +42,27 @@ class DataArguments:
         default=8192,
         metadata={"help": "Filter samples exceeding this token count in Dataset init (P0-4)."},
     )
+    require_pre_extracted_frames: bool = field(
+        default=True,
+        metadata={
+            "help": "Fail loudly if a sample lacks frame_paths. "
+            "Online video decoding is ~50× slower than pre-extracted frames; "
+            "set False only for one-off smoke tests."
+        },
+    )
+
+    # Audit / reviewable training logs
+    audit_log_dir: Optional[str] = field(
+        default=None,
+        metadata={
+            "help": "Directory for per-step JSONL audit logs (loss, weights, "
+            "sample ids). Defaults to <output_dir>/audit if unset."
+        },
+    )
+    audit_log_every: int = field(
+        default=1,
+        metadata={"help": "Write audit log every N steps (1 = every step)."},
+    )
 
 
 @dataclass
