@@ -1,0 +1,4927 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "A large yellow circle with twelve smaller yellow triangles radiating outward, resembling a stylized sun.",
+        "action": "static display",
+        "position": "center of the frame",
+        "id": "graphics_1"
+      },
+      {
+        "desc": "White text with a sketchy, hand-drawn outline style.",
+        "action": "appearing on the sun graphic",
+        "position": "center of the yellow circle",
+        "id": "graphics_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The background features a soft gradient transitioning from pink on the left to light blue on the right.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'Nikki' is visible in the center of the sun graphic in the first frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'Vegan' appears below 'Nikki' in the second frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The sun graphic consists of a central circle and twelve triangular rays.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Nikki",
+      "Nikki Vegan"
+    ],
+    "spatial": "A central sun graphic dominates the middle of the frame against a pastel gradient background. Text is centered within the sun.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "yellow sun graphic with triangular rays",
+        "action": "displayed as background graphic",
+        "position": "center",
+        "id": "graphics_1"
+      },
+      {
+        "desc": "white triangular frame overlay",
+        "action": "framing the pasta scene",
+        "position": "center",
+        "id": "graphics_1"
+      },
+      {
+        "desc": "silver saucepan with black handle",
+        "action": "holding pasta",
+        "position": "center",
+        "id": "cooking_pot_1"
+      },
+      {
+        "desc": "cooked spiral pasta (fusilli)",
+        "action": "being covered in sauce",
+        "position": "inside the saucepan",
+        "id": "pasta_dish_1"
+      },
+      {
+        "desc": "thick yellow cheese sauce",
+        "action": "being poured onto the pasta",
+        "position": "center, flowing from top",
+        "id": "pasta_dish_1"
+      },
+      {
+        "desc": "green and white striped cloth",
+        "action": "underneath the saucepan",
+        "position": "bottom left and right",
+        "id": "table_surface_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A thick yellow liquid is being poured from above onto spiral pasta.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The pasta is contained within a silver pot with a white interior.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The pot rests on a green and white striped kitchen towel.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The first frame features a stylized sun graphic with a play button overlay.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The first frame is a graphic overlay with a sun and triangle. The second frame is a close-up shot of a pot centered in the frame, with a cloth underneath it on a white surface.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "yellow spiral pasta (fusilli) coated in a creamy sauce",
+        "action": "sitting in a bowl",
+        "position": "center and right side of the frame",
+        "id": "pasta_dish_1"
+      },
+      {
+        "desc": "white ceramic bowl",
+        "action": "holding the pasta",
+        "position": "center, partially cropped on the left"
+      },
+      {
+        "desc": "red and white checkered tablecloth",
+        "action": "underneath the bowl",
+        "position": "bottom left corner",
+        "id": "table_surface_1"
+      },
+      {
+        "desc": "large dark grey text overlay",
+        "action": "displayed over the image",
+        "position": "center of the frame",
+        "id": "graphics_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The pasta is spiral-shaped and yellow in color.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The word 'Vegan' is overlaid on the video in the second frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The bowl is white and appears to be made of ceramic or plastic.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A red and white checkered pattern is visible on the surface below the bowl.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Vegan"
+    ],
+    "spatial": "A white bowl filled with yellow pasta dominates the center and right of the frame. A red and white checkered tablecloth is visible in the bottom left corner. In the second frame, the text 'Vegan' is superimposed over the center of the pasta.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "A white, round bowl containing cooked fusilli pasta coated in a yellow sauce.",
+        "action": "stationary",
+        "position": "center and right side of the frame",
+        "id": "pasta_dish_1"
+      },
+      {
+        "desc": "A plain, light-colored surface, likely a table or countertop.",
+        "action": "stationary",
+        "position": "left side and background of the frame",
+        "id": "table_surface_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The image displays a close-up, top-down view of a bowl of pasta.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The pasta is fusilli, identifiable by its spiral shape.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The pasta is coated in a creamy, yellow-colored sauce.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Text is overlaid on the image, reading '+ Vegan +' and 'Mac and Cheese'.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The bowl is positioned on the right side of the frame, with the left side showing the surface it rests on.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "+ Vegan +",
+      "Mac and Cheese"
+    ],
+    "spatial": "A white bowl filled with yellow fusilli pasta dominates the right and center of the frame. The left portion of the frame shows a plain, light-colored surface. Text overlays are centered on the image, superimposed over the pasta.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with blonde wavy hair, wearing a white t-shirt with red text",
+        "action": "speaking and gesturing with right hand",
+        "position": "center of frame",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Cooked fusilli pasta, yellow in color",
+        "action": "displayed in a close-up shot",
+        "position": "filling the frame in the first image, overlaying the right side in the second image",
+        "id": "pasta_dish_1"
+      },
+      {
+        "desc": "White plate",
+        "action": "holding the pasta",
+        "position": "left side of the first frame"
+      },
+      {
+        "desc": "Macrame wall hanging",
+        "action": "hanging on the wall",
+        "position": "background, behind the woman",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Shelving unit with plants",
+        "action": "stationary in the background",
+        "position": "left side of the frame",
+        "id": "shelving_unit_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A close-up shot of cooked fusilli pasta is shown.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A woman with blonde hair and red lipstick is speaking.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman is wearing a white t-shirt with red cursive text.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A macrame wall hanging is visible in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are small potted plants on a shelf in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A semi-transparent overlay of the pasta clip appears on the right side of the screen.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Sweatsh..."
+    ],
+    "spatial": "The first frame is a close-up of pasta. The second frame shows a woman centered in a room, with a macrame hanging behind her and shelves to her left. A video overlay of the pasta is on the right side of the second frame.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with blonde wavy hair, wearing a white t-shirt with red text",
+        "action": "speaking with mouth open, hands clasped in front",
+        "position": "center foreground",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Macrame wall hanging, beige/tan color",
+        "action": "hanging on wall",
+        "position": "background left",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Two round mirrors with sunburst frames",
+        "action": "mounted on wall",
+        "position": "background right",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "Console table with metal frame and glass shelves",
+        "action": "holding books and decor",
+        "position": "background right",
+        "id": "console_table_1"
+      },
+      {
+        "desc": "Graphic overlay, green and yellow watercolor circle",
+        "action": "displaying text and button",
+        "position": "bottom left corner",
+        "id": "graphics_1"
+      },
+      {
+        "desc": "White door with paneling",
+        "action": "closed",
+        "position": "background center",
+        "id": "door_1"
+      },
+      {
+        "desc": "Shelving unit with plants",
+        "action": "holding potted plants",
+        "position": "far left edge",
+        "id": "shelving_unit_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is wearing red lipstick.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The graphic overlay contains a YouTube subscribe button icon.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are books stacked on the console table.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman's t-shirt has red cursive text on the left chest area.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The mirrors have a wooden or rattan sunburst design.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Like, Share, and Subscribe!",
+      "Subscribe"
+    ],
+    "spatial": "The woman is centered in the foreground. Behind her to the left is a macrame hanging and shelving. Behind her to the right is a console table and two wall mirrors. A graphic overlay is in the bottom left corner.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with blonde wavy hair, wearing a white t-shirt with red text",
+        "action": "looking slightly to her right then turning to face forward",
+        "position": "center foreground",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Beige macrame wall hanging",
+        "action": "hanging on wall",
+        "position": "background center-left",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Two round mirrors with sunburst frames",
+        "action": "hanging on wall",
+        "position": "background right",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "Console table with books and decor",
+        "action": "standing against wall",
+        "position": "background right",
+        "id": "console_table_1"
+      },
+      {
+        "desc": "White shelving unit with plants",
+        "action": "standing against wall",
+        "position": "background far left",
+        "id": "shelving_unit_1"
+      },
+      {
+        "desc": "Beige sofa with green patterned pillow",
+        "action": "stationary",
+        "position": "foreground left",
+        "id": "sofa_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is wearing red lipstick.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The t-shirt has red cursive text on the left chest area.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are two mirrors on the wall to the right.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A macrame hanging is visible behind the woman.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Sriracha"
+    ],
+    "spatial": "The woman is centered in the foreground. Behind her to the left is a sofa and shelving. Directly behind is a macrame hanging. To the right background are mirrors and a console table.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with shoulder-length blonde hair, wearing a white t-shirt with red text and red lipstick",
+        "action": "looking down then looking up at the camera",
+        "position": "center foreground",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Beige macrame wall hanging",
+        "action": "hanging on the wall",
+        "position": "background left-center",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Two round mirrors with sunburst frames",
+        "action": "mounted on the wall",
+        "position": "background right",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "Console table with books and decor",
+        "action": "standing against the wall",
+        "position": "background right",
+        "id": "console_table_1"
+      },
+      {
+        "desc": "White arched shelving unit with plants",
+        "action": "built into the wall",
+        "position": "far left",
+        "id": "shelving_unit_1"
+      },
+      {
+        "desc": "Sofa with pillows",
+        "action": "positioned behind the woman",
+        "position": "background left",
+        "id": "sofa_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman's eyes are closed in the first frame and open in the second frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman is wearing a white t-shirt with red cursive text on the left chest area.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are two sunburst-style mirrors on the wall in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A macrame wall hanging is visible behind the woman.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Srinika"
+    ],
+    "spatial": "The woman is centered in the foreground. Behind her to the left is a sofa and a macrame hanging. To her right in the background is a console table and two mirrors on the wall. An arched shelving unit is on the far left edge of the frame.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with shoulder-length wavy blonde hair, wearing a white t-shirt with red cursive text",
+        "action": "Sitting and facing forward, looking directly at the camera",
+        "position": "Center foreground",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Beige macrame wall hanging",
+        "action": "Hanging on the wall",
+        "position": "Background, behind the woman's left shoulder",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Two round mirrors with sunburst-style wooden frames",
+        "action": "Mounted on the wall",
+        "position": "Background, upper right",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "Console table with metal frame and glass shelves holding books",
+        "action": "Standing against the wall",
+        "position": "Background, right side",
+        "id": "console_table_1"
+      },
+      {
+        "desc": "White arched shelving unit with potted plants",
+        "action": "Built into the wall",
+        "position": "Background, far left",
+        "id": "shelving_unit_1"
+      },
+      {
+        "desc": "Green leaf-patterned pillow",
+        "action": "Resting on furniture",
+        "position": "Bottom left corner",
+        "id": "sofa_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is wearing bright red lipstick.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The t-shirt has red cursive text on the left chest area.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There is a white door visible behind the woman.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "An arched doorway is visible in the far right background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Sincerely"
+    ],
+    "spatial": "The woman is centered in the foreground. Behind her to the left is a macrame hanging and built-in shelves. Behind her to the right is a white door, a console table, and wall mirrors. An arched doorway leads to another room on the far right.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with shoulder-length blonde hair, wearing a white t-shirt with red text and red lipstick",
+        "action": "speaking and looking at the camera",
+        "position": "center foreground",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Beige macrame wall hanging",
+        "action": "hanging on the wall",
+        "position": "background center-left",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Two round mirrors with sunburst frames",
+        "action": "mounted on the wall",
+        "position": "background right",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "Console table with books and decor",
+        "action": "standing against the wall",
+        "position": "background right",
+        "id": "console_table_1"
+      },
+      {
+        "desc": "Arched shelving unit with plants",
+        "action": "built into the wall",
+        "position": "background left",
+        "id": "shelving_unit_1"
+      },
+      {
+        "desc": "Sofa with patterned pillows",
+        "action": "positioned behind the woman",
+        "position": "background left",
+        "id": "sofa_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is wearing a white t-shirt with red cursive text on the left chest area.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are two round mirrors with wooden sunburst frames on the wall.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A beige macrame wall hanging is visible behind the woman.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman has red lipstick on.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are plants on the shelves to the left.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is centered in the foreground. Behind her to the left is a sofa and an arched shelving unit. Directly behind her is a macrame hanging and a white door. To her right, there is a console table and two mirrors on the wall, with an arched doorway further back.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with blonde wavy hair, red lipstick, wearing a white t-shirt with red text",
+        "action": "sitting, looking at camera, then raising hands slightly with fingers curled",
+        "position": "center foreground",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Beige macrame wall hanging",
+        "action": "hanging on wall",
+        "position": "background left of center",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Two round mirrors with sunburst frames",
+        "action": "mounted on wall",
+        "position": "background right wall",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "Glass console table with metal frame",
+        "action": "standing against wall",
+        "position": "background right",
+        "id": "console_table_1"
+      },
+      {
+        "desc": "White arched shelving unit with plants",
+        "action": "built into wall",
+        "position": "far left",
+        "id": "shelving_unit_1"
+      },
+      {
+        "desc": "Bed with beige bedding",
+        "action": "partially visible",
+        "position": "bottom left",
+        "id": "sofa_1"
+      },
+      {
+        "desc": "Green patterned pillow",
+        "action": "resting on bed",
+        "position": "bottom left corner",
+        "id": "sofa_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman raises both hands slightly in front of her chest between the two frames.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman's gaze shifts slightly to her right in the second frame.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There is red cursive text on the left side of the woman's white t-shirt.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Books and small decorative objects are on the glass console table.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is centered in the foreground. Behind her to the left is a bed and an arched shelf. Directly behind her is a macrame hanging and a white door. To her right in the background are two mirrors and a console table.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with shoulder-length blonde wavy hair, wearing a white t-shirt with red cursive text, red lipstick, and small earrings",
+        "action": "sitting and talking, gesturing with right hand near chest",
+        "position": "center foreground",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Beige macrame wall hanging with wooden dowel",
+        "action": "hanging stationary",
+        "position": "background left-center",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Two round mirrors with sunburst-style wooden frames",
+        "action": "mounted on wall",
+        "position": "background right wall",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "Metal console table with glass shelves holding books and decorative items",
+        "action": "stationary",
+        "position": "background right",
+        "id": "console_table_1"
+      },
+      {
+        "desc": "White built-in shelving unit with arched top containing potted plants",
+        "action": "stationary",
+        "position": "background far left",
+        "id": "shelving_unit_1"
+      },
+      {
+        "desc": "Green leaf-patterned pillow",
+        "action": "resting on furniture",
+        "position": "bottom left foreground",
+        "id": "sofa_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is wearing a white t-shirt with red cursive text that appears to say 'Sincerely'",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman has red lipstick applied",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Two round mirrors with wooden sunburst frames are mounted on the wall behind the woman",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A macrame wall hanging is visible behind the woman's left shoulder",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman's right hand is raised near her chest in a gesturing motion",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Sincerely"
+    ],
+    "spatial": "Woman centered in foreground. Behind her to the left is a macrame hanging and built-in shelves. Behind her to the right is a white door, two round mirrors on the wall, and a metal console table. A green pillow is visible in the bottom left corner.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with shoulder-length wavy blonde hair, wearing a white t-shirt with red cursive text on the chest",
+        "action": "smiling and facing the camera",
+        "position": "center foreground",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Beige macrame wall hanging",
+        "action": "hanging on the wall",
+        "position": "background left",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "White door",
+        "action": "closed",
+        "position": "background center",
+        "id": "door_1"
+      },
+      {
+        "desc": "Two round mirrors with sunburst frames",
+        "action": "mounted on the wall",
+        "position": "background right wall",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "Metal console table with glass shelves",
+        "action": "holding books and decor",
+        "position": "background right",
+        "id": "console_table_1"
+      },
+      {
+        "desc": "Built-in white shelving unit",
+        "action": "holding potted plants",
+        "position": "far left",
+        "id": "shelving_unit_1"
+      },
+      {
+        "desc": "Sofa with beige cushions and a green leaf-patterned pillow",
+        "action": "stationary",
+        "position": "bottom left",
+        "id": "sofa_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman with blonde hair is centered in the frame wearing a white t-shirt.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The t-shirt has red cursive text on the front.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A large macrame wall hanging is visible behind the woman.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Two round mirrors with wooden frames are mounted on the wall to the right.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A metal console table holds stacked books.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "White grid lines overlay the second frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Sincerely"
+    ],
+    "spatial": "The woman is centered in the foreground. Behind her to the left is a macrame hanging and built-in shelves. Directly behind is a white door. To the right, a console table sits against a wall with two mirrors. A sofa is visible in the bottom left corner.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with dark red nail polish",
+        "action": "holding a pasta box",
+        "position": "left side (frame 1)",
+        "id": "hands_1"
+      },
+      {
+        "desc": "green and white pasta box labeled Rotini",
+        "action": "being held then standing on table",
+        "position": "left side",
+        "id": "pasta_box_1"
+      },
+      {
+        "desc": "large dark grey bowl with white interior",
+        "action": "sitting on table",
+        "position": "foreground left (frame 1)",
+        "id": "serving_bowl_1"
+      },
+      {
+        "desc": "wooden bowl",
+        "action": "sitting on table",
+        "position": "background center"
+      },
+      {
+        "desc": "small orange and white decorative pumpkins",
+        "action": "sitting on wooden board",
+        "position": "background right",
+        "id": "pumpkin_decor_1"
+      },
+      {
+        "desc": "two small fox figurines",
+        "action": "sitting on table",
+        "position": "center",
+        "id": "fox_figurines_1"
+      },
+      {
+        "desc": "small cactus in terracotta pot",
+        "action": "sitting on table",
+        "position": "background center",
+        "id": "pumpkin_decor_1"
+      },
+      {
+        "desc": "blurry light-colored object with text",
+        "action": "falling or tumbling",
+        "position": "center (frame 2)",
+        "id": "graphics_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand holds a box of Rotini pasta next to a large bowl.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A box of pasta stands upright on the left side of the table.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A blurry object, appearing to be a box, is in mid-motion falling towards the table.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Autumn-themed decorations including pumpkins and foxes are arranged in the background.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Rotini",
+      "PRODU"
+    ],
+    "spatial": "A white table surface occupies the foreground. On the left, a pasta box and bowl are present. In the background, a wooden bowl, cactus, fox figurines, and pumpkins are arranged on a striped placemat. A chair with a cushion is visible on the far right.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "A hand with dark red nail polish holding a box",
+        "action": "holding a pasta box",
+        "position": "left side of the frame",
+        "id": "hands_1"
+      },
+      {
+        "desc": "A white and green cardboard box with a clear window showing pasta",
+        "action": "being held",
+        "position": "center to right of the frame",
+        "id": "pasta_box_1"
+      },
+      {
+        "desc": "A blurry background with a white surface and indistinct objects",
+        "action": "stationary",
+        "position": "background",
+        "id": "table_surface_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand with dark red nail polish is holding a box of Simple Truth Organic Rotini pasta.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The box has a clear window showing the rotini pasta inside.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The box is labeled as an 'Organic Macaroni Product'.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The brand logo 'Simple Truth Organic' is visible in a green circle.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Images of wheat stalks and pineapple are on the front of the box.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "simple truth organic",
+      "Rotini",
+      "ORGANIC MACARONI PRODUCT",
+      "NET WT 12 OZ (340g)"
+    ],
+    "spatial": "A hand enters from the left, holding a pasta box angled towards the camera. The box dominates the center of the frame. The background is a blurry kitchen or room setting.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "A person's hand with dark red nail polish holding a plastic bag.",
+        "action": "holding a bag of frozen vegetables",
+        "position": "left side of the frame",
+        "id": "hands_1"
+      },
+      {
+        "desc": "A plastic bag of frozen organic kabocha squash.",
+        "action": "being held up for display",
+        "position": "center of the frame",
+        "id": "kabocha_squash_1"
+      },
+      {
+        "desc": "A white table surface.",
+        "action": "stationary",
+        "position": "bottom and right of the frame",
+        "id": "table_surface_1"
+      },
+      {
+        "desc": "A white cabinet or dresser in the background.",
+        "action": "stationary",
+        "position": "upper left background",
+        "id": "shelving_unit_1"
+      },
+      {
+        "desc": "A wicker basket in the background.",
+        "action": "stationary",
+        "position": "upper right background",
+        "id": "wicker_basket_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a bag of Trader Joe's Organic Kabocha Squash.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The squash in the bag is peeled and cut into chunks.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The bag is partially transparent, showing the orange squash inside.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background is a kitchen or dining area with white furniture.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Organic Kabocha Squash",
+      "TRADER JOE'S",
+      "PEELED & CUT"
+    ],
+    "spatial": "The main subject, a hand holding a bag of squash, is in the foreground and center-left. The background consists of a white table surface below and out-of-focus kitchen furniture behind.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      68,
+      70
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      70,
+      72
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      72,
+      74
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with dark nail polish",
+        "action": "holding a glass jar and scooping contents with a spoon",
+        "position": "left side of frame",
+        "id": "hands_1"
+      },
+      {
+        "desc": "glass jar with orange and black label",
+        "action": "being held and scooped from",
+        "position": "left-center",
+        "id": "spice_jar_1"
+      },
+      {
+        "desc": "clear plastic blender cup",
+        "action": "standing upright containing yellow chunks",
+        "position": "center",
+        "id": "blender_cup_1"
+      },
+      {
+        "desc": "white table surface",
+        "action": "supporting objects",
+        "position": "bottom and foreground",
+        "id": "table_surface_1"
+      },
+      {
+        "desc": "decorative pumpkins and cactus",
+        "action": "sitting on a wooden board",
+        "position": "background right",
+        "id": "pumpkin_decor_1"
+      },
+      {
+        "desc": "wicker chair with striped cushion",
+        "action": "stationary",
+        "position": "background right",
+        "id": "chair_1"
+      },
+      {
+        "desc": "metal jar lid",
+        "action": "resting on table",
+        "position": "bottom left",
+        "id": "spice_jar_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is scooping a beige paste from a jar labeled 'Artisana'.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The blender cup contains diced yellow fruit or vegetable pieces at the bottom.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are small decorative pumpkins in white and orange colors in the background.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A small cactus in a pot is visible behind the pumpkins.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Artisana"
+    ],
+    "spatial": "The scene is a close-up of a white table. On the left, hands hold a jar over a blender cup in the center. The background features a wooden board with autumn decorations (pumpkins, cactus) and a chair to the right.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      74,
+      76
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      76,
+      78
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with dark nail polish",
+        "action": "holding a spoon with beige paste and a jar",
+        "position": "left side of frame",
+        "id": "hands_1"
+      },
+      {
+        "desc": "clear plastic cup",
+        "action": "containing yellow chunks and receiving paste",
+        "position": "center of frame",
+        "id": "blender_cup_1"
+      },
+      {
+        "desc": "jar with beige paste",
+        "action": "being held and scooped from",
+        "position": "left center",
+        "id": "spice_jar_1"
+      },
+      {
+        "desc": "decorative pumpkins (white, orange, yellow)",
+        "action": "sitting on wooden board",
+        "position": "background right",
+        "id": "pumpkin_decor_1"
+      },
+      {
+        "desc": "small cactus in pot",
+        "action": "sitting on surface",
+        "position": "background center",
+        "id": "pumpkin_decor_1"
+      },
+      {
+        "desc": "wicker chair with striped cushion",
+        "action": "stationary",
+        "position": "right background",
+        "id": "chair_1"
+      },
+      {
+        "desc": "gold jar lid",
+        "action": "resting on table",
+        "position": "bottom left",
+        "id": "spice_jar_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A spoonful of beige paste is being transferred from a jar to a clear cup.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The clear cup already contains yellow chunks at the bottom.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'hug' appears as an overlay at the bottom center of the second frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are multiple decorative pumpkins on a wooden board in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "hug"
+    ],
+    "spatial": "Foreground shows hands preparing food in a cup on a white table. Background features a wooden board with decorative pumpkins and a cactus, with a chair visible on the right.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      78,
+      80
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hands with dark nail polish",
+        "action": "scooping a beige paste from a jar with a spoon",
+        "position": "left foreground",
+        "id": "hands_1"
+      },
+      {
+        "desc": "clear plastic blender cup",
+        "action": "standing upright containing yellow chunks",
+        "position": "center foreground",
+        "id": "blender_cup_1"
+      },
+      {
+        "desc": "glass jar with orange and black label",
+        "action": "being held in left hand",
+        "position": "left foreground",
+        "id": "spice_jar_1"
+      },
+      {
+        "desc": "small decorative pumpkins (white, orange, yellow)",
+        "action": "sitting on a wooden board",
+        "position": "background right",
+        "id": "pumpkin_decor_1"
+      },
+      {
+        "desc": "wicker chair with striped cushion",
+        "action": "stationary",
+        "position": "background right",
+        "id": "chair_1"
+      },
+      {
+        "desc": "gold jar lid",
+        "action": "resting on table",
+        "position": "bottom left",
+        "id": "spice_jar_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is scooping a thick beige substance from a jar.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The blender cup contains yellow chunks at the bottom.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Text overlay reads 'huge time saver' in white outline font.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Decorative pumpkins are arranged on a wooden board in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "huge time saver"
+    ],
+    "spatial": "Foreground shows hands preparing food with a blender cup and jar on a white table. Background features a wooden board with decorative pumpkins and a chair with a cushion against a wall.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      80,
+      82
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person's hands with dark nail polish",
+        "action": "Using a spoon to scoop a beige paste from a jar into a clear blender cup",
+        "position": "Upper left quadrant, extending towards the center",
+        "id": "hands_1"
+      },
+      {
+        "desc": "Clear plastic blender cup",
+        "action": "Being filled with ingredients",
+        "position": "Center of the frame",
+        "id": "blender_cup_1"
+      },
+      {
+        "desc": "Glass jar with an orange label",
+        "action": "Sitting on the table",
+        "position": "Bottom left corner",
+        "id": "spice_jar_1"
+      },
+      {
+        "desc": "Decorative white and orange pumpkins and a small cactus",
+        "action": "Arranged as decoration",
+        "position": "Background, on a wooden board",
+        "id": "pumpkin_decor_1"
+      },
+      {
+        "desc": "Wooden bowl",
+        "action": "Sitting on the table",
+        "position": "Behind the blender cup"
+      },
+      {
+        "desc": "Red and white striped cloth",
+        "action": "Placed under the decorative items",
+        "position": "Middle ground",
+        "id": "table_surface_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is adding a spoonful of a thick, beige paste into a blender cup that already contains chopped yellow fruit.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The jar in the bottom left has the brand name 'Artisana' and the words 'CASHEW BUTTER' visible on its orange label.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'huge time saver!' is overlaid on the bottom right of the video frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The scene is set on a white table with autumn-themed decorations in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Artisana",
+      "CASHEW BUTTER",
+      "huge time saver!"
+    ],
+    "spatial": "The shot is a medium close-up focused on a white table. In the foreground, a blender cup is being filled. To the left is a jar of cashew butter. The background features a wooden board with decorative pumpkins and a cactus, with a wicker chair partially visible on the far right.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      82,
+      84
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      84,
+      86
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person's hands with dark nail polish holding a yellow spice jar",
+        "action": "pouring contents into a funnel",
+        "position": "upper left quadrant",
+        "id": "hands_1"
+      },
+      {
+        "desc": "Clear plastic blender cup with yellow contents at the bottom",
+        "action": "receiving ingredients through a funnel",
+        "position": "center foreground",
+        "id": "blender_cup_1"
+      },
+      {
+        "desc": "Small glass jar with 'Artisan' label",
+        "action": "sitting stationary",
+        "position": "left side",
+        "id": "spice_jar_1"
+      },
+      {
+        "desc": "Decorative pumpkins (white, orange, yellow) on wooden board",
+        "action": "stationary display",
+        "position": "background right",
+        "id": "pumpkin_decor_1"
+      },
+      {
+        "desc": "Red and white striped cloth under blender cup",
+        "action": "lying flat",
+        "position": "center",
+        "id": "table_surface_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is pouring yellow powder from a jar into a funnel placed on top of a blender cup",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The blender cup already contains yellow chunks at the bottom",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A jar labeled 'Artisan' is visible on the left side of the table",
+        "confidence": 0.85,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Decorative pumpkins are arranged on a wooden board in the background",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Artisan"
+    ],
+    "spatial": "The scene is set on a white table. In the foreground, a blender cup sits on a striped cloth. To the left is a spice jar and a bag. In the background, decorative pumpkins and a cactus sit on a wooden board near a chair with a cushion.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      86,
+      88
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      88,
+      90
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      90,
+      92
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      92,
+      94
+    ],
+    "visible_entities": [
+      {
+        "desc": "light-skinned hand and forearm",
+        "action": "holding a red measuring spoon in the first frame and a small spice shaker in the second frame, adding ingredients to a cup",
+        "position": "top left, reaching towards the center",
+        "id": "hands_1"
+      },
+      {
+        "desc": "red plastic measuring spoon",
+        "action": "pouring white powder into the cup",
+        "position": "center, held by hand",
+        "id": "measuring_tools_1"
+      },
+      {
+        "desc": "small spice shaker with a white perforated lid",
+        "action": "being shaken over the cup",
+        "position": "center, held by hand",
+        "id": "spice_jar_1"
+      },
+      {
+        "desc": "tall clear plastic blender cup",
+        "action": "containing a yellow liquid mixture at the bottom",
+        "position": "center foreground",
+        "id": "blender_cup_1"
+      },
+      {
+        "desc": "glass jar with a gold lid and a label reading 'Artisan'",
+        "action": "sitting on the table",
+        "position": "far left",
+        "id": "spice_jar_1"
+      },
+      {
+        "desc": "open white and silver packaging bag",
+        "action": "sitting next to the jar",
+        "position": "left",
+        "id": "packaging_bag_1"
+      },
+      {
+        "desc": "wooden bowl",
+        "action": "sitting on the table",
+        "position": "background left-center"
+      },
+      {
+        "desc": "assortment of decorative gourds and pumpkins (white, orange, yellow) and a small cactus",
+        "action": "arranged on a wooden board and striped cloth",
+        "position": "background right-center",
+        "id": "pumpkin_decor_1"
+      },
+      {
+        "desc": "wicker chair with a striped cushion",
+        "action": "positioned at the table",
+        "position": "far right",
+        "id": "chair_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand pours a white powdery substance from a red measuring spoon into a clear cup.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A hand shakes seasoning from a small container with a white perforated lid into the cup.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A jar labeled 'Artisan' is visible on the left side of the table.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Decorative pumpkins and a cactus are arranged in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Artisan"
+    ],
+    "spatial": "The scene is centered on a white table where a clear blender cup sits in the foreground. To the left, a jar and an open bag rest on the surface. Behind the cup, a wooden bowl and a decorative arrangement of pumpkins and a cactus sit on a striped cloth. A wicker chair is visible on the right edge.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      94,
+      96
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      96,
+      98
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      98,
+      100
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      100,
+      102
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 50,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      102,
+      104
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      104,
+      106
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 52,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      106,
+      108
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person's hands and forearms with light skin tone",
+        "action": "holding a black pot and then using a pink scoop inside it",
+        "position": "left side of the frame",
+        "id": "hands_1"
+      },
+      {
+        "desc": "Black cooking pot with a cream-colored interior containing yellow cooked food",
+        "action": "being held and tilted slightly",
+        "position": "left center",
+        "id": "cooking_pot_1"
+      },
+      {
+        "desc": "Small pink plastic measuring scoop",
+        "action": "being used to scoop contents from the pot",
+        "position": "inside the black pot",
+        "id": "measuring_tools_1"
+      },
+      {
+        "desc": "Clear plastic blender cup containing yellow liquid or puree",
+        "action": "sitting stationary on the table",
+        "position": "center foreground",
+        "id": "blender_cup_1"
+      },
+      {
+        "desc": "Assortment of decorative pumpkins (white, orange, yellow) and a small potted cactus",
+        "action": "arranged on a wooden board",
+        "position": "center background",
+        "id": "pumpkin_decor_1"
+      },
+      {
+        "desc": "Wooden chair with a patterned cushion featuring stripes and floral designs",
+        "action": "stationary",
+        "position": "right background",
+        "id": "chair_1"
+      },
+      {
+        "desc": "White table surface",
+        "action": "supporting the objects",
+        "position": "bottom foreground",
+        "id": "table_surface_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person holds a black pot containing yellow cooked food, possibly pasta.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A clear blender cup sits on the table with a small amount of yellow liquid at the bottom.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person uses a small pink scoop inside the black pot.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Decorative pumpkins and a cactus are visible on a wooden board in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The scene is set on a white table. On the left, a person interacts with a black pot. In the center foreground, a blender cup stands ready. Behind the cup, a wooden board displays autumn decorations including pumpkins and a cactus. To the right, a wooden chair with a cushion is partially visible.",
+    "parse_success": true,
+    "chunk_idx": 53,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      108,
+      110
+    ],
+    "visible_entities": [
+      {
+        "desc": "human hand with dark nail polish",
+        "action": "holding a pink measuring cup and tilting it to pour liquid",
+        "position": "left side of frame",
+        "id": "hands_1"
+      },
+      {
+        "desc": "black pot with white interior",
+        "action": "being held by the hand",
+        "position": "left side, below the hand",
+        "id": "cooking_pot_1"
+      },
+      {
+        "desc": "clear plastic blender cup",
+        "action": "receiving liquid from the measuring cup",
+        "position": "center foreground",
+        "id": "blender_cup_1"
+      },
+      {
+        "desc": "pink plastic measuring cup",
+        "action": "being tilted to pour liquid",
+        "position": "center, above the blender cup",
+        "id": "measuring_tools_1"
+      },
+      {
+        "desc": "yellowish liquid",
+        "action": "pouring from the cup into the blender",
+        "position": "inside the measuring cup and falling into the blender cup",
+        "id": "blender_cup_1"
+      },
+      {
+        "desc": "decorative pumpkins (white, orange, yellow)",
+        "action": "sitting on a wooden board",
+        "position": "background center",
+        "id": "pumpkin_decor_1"
+      },
+      {
+        "desc": "small cactus in a pot",
+        "action": "sitting on the table",
+        "position": "background center, behind the pumpkins",
+        "id": "pumpkin_decor_1"
+      },
+      {
+        "desc": "wooden chair with patterned cushion",
+        "action": "stationary",
+        "position": "right background",
+        "id": "chair_1"
+      },
+      {
+        "desc": "white table surface",
+        "action": "supporting the objects",
+        "position": "bottom and foreground",
+        "id": "table_surface_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is pouring a yellowish liquid from a pink measuring cup into a clear blender cup.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The blender cup already contains some yellowish liquid at the bottom.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Decorative pumpkins and a cactus are visible in the background on a wooden board.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "A hand on the left holds a black pot and a pink measuring cup, pouring liquid into a clear blender cup in the center foreground. In the background, decorative pumpkins and a cactus sit on a wooden board on the white table, with a chair visible to the right.",
+    "parse_success": true,
+    "chunk_idx": 54,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      110,
+      112
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 55,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      112,
+      114
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 56,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      114,
+      116
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      116,
+      118
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 58,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      118,
+      120
+    ],
+    "visible_entities": [
+      {
+        "desc": "yellow spiral-shaped pasta coated in thick yellow sauce",
+        "action": "being stirred",
+        "position": "center and filling most of the frame",
+        "id": "pasta_dish_1"
+      },
+      {
+        "desc": "wooden spoon or spatula",
+        "action": "stirring the pasta",
+        "position": "right side, partially submerged in the pasta",
+        "id": "wooden_spoon_1"
+      },
+      {
+        "desc": "white cooking pot or bowl",
+        "action": "containing the pasta",
+        "position": "surrounding the pasta, visible at the edges",
+        "id": "cooking_pot_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The pasta is fusilli or a similar spiral shape.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The sauce is a uniform yellow color, consistent with cheese sauce.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A wooden utensil is actively mixing the contents of the pot.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The pot appears to be white on the inside.",
+        "confidence": 0.85,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The frame is a close-up shot looking down into a white pot. The pot is filled with yellow, sauced spiral pasta. A wooden spoon enters from the right side of the frame and is positioned within the pasta, indicating a stirring motion.",
+    "parse_success": true,
+    "chunk_idx": 59,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      120,
+      122
+    ],
+    "visible_entities": [
+      {
+        "desc": "Yellow fusilli pasta coated in creamy cheese sauce",
+        "action": "being stirred",
+        "position": "filling the center and bottom of the pot",
+        "id": "pasta_dish_1"
+      },
+      {
+        "desc": "Wooden spoon handle",
+        "action": "stirring the pasta",
+        "position": "top center, partially submerged",
+        "id": "wooden_spoon_1"
+      },
+      {
+        "desc": "White cooking pot interior",
+        "action": "containing the food",
+        "position": "surrounding the pasta, visible at edges",
+        "id": "cooking_pot_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Fusilli pasta is being mixed with a yellow sauce",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A wooden utensil is used for stirring",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The sauce appears thick and coats the pasta evenly",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "Close-up view inside a white pot, with pasta filling most of the frame and a spoon entering from the top.",
+    "parse_success": true,
+    "chunk_idx": 60,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      122,
+      124
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 61,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      124,
+      126
+    ],
+    "visible_entities": [
+      {
+        "desc": "white cooking pot with yellow sauce residue on inner walls",
+        "action": "containing pasta and sauce",
+        "position": "center and edges of frame",
+        "id": "cooking_pot_1"
+      },
+      {
+        "desc": "fusilli pasta coated in thick yellow cheese sauce",
+        "action": "being stirred",
+        "position": "filling the pot",
+        "id": "pasta_dish_1"
+      },
+      {
+        "desc": "wooden spoon with light brown color",
+        "action": "stirring the pasta mixture",
+        "position": "right side, moving through center",
+        "id": "wooden_spoon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The pasta is spiral-shaped fusilli.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The sauce is a uniform yellow color, consistent with cheese sauce.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The wooden spoon is in motion, blurring slightly as it mixes the contents.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The pot appears to be white enamel or ceramic.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The view is a close-up, high-angle shot looking down into a white pot. The pot fills most of the frame. A wooden spoon enters from the right side, partially obscuring the pasta as it stirs the mixture in the center.",
+    "parse_success": true,
+    "chunk_idx": 62,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      126,
+      128
+    ],
+    "visible_entities": [
+      {
+        "desc": "Human hand with dark nail polish",
+        "action": "Placing a white bowl onto a napkin",
+        "position": "Left side of frame, extending towards center",
+        "id": "hands_1"
+      },
+      {
+        "desc": "White ceramic bowl, shallow and wide",
+        "action": "Being placed on the table",
+        "position": "Center foreground",
+        "id": "serving_bowl_1"
+      },
+      {
+        "desc": "White napkin with red/pink plaid pattern",
+        "action": "Lying flat under the bowl",
+        "position": "Center foreground on woven mat",
+        "id": "table_surface_1"
+      },
+      {
+        "desc": "Woven placemat, light brown/tan color",
+        "action": "Serving as base for napkin and bowl",
+        "position": "Foreground and mid-ground",
+        "id": "table_surface_1"
+      },
+      {
+        "desc": "Two small orange fox figurines with white chests",
+        "action": "Sitting stationary",
+        "position": "Background center",
+        "id": "fox_figurines_1"
+      },
+      {
+        "desc": "Small decorative pumpkins (white and orange)",
+        "action": "Sitting stationary on wooden board",
+        "position": "Background right",
+        "id": "pumpkin_decor_1"
+      },
+      {
+        "desc": "Large wooden bowl",
+        "action": "Sitting stationary",
+        "position": "Background left"
+      },
+      {
+        "desc": "Red and white striped cloth runner",
+        "action": "Lying under background decorations",
+        "position": "Background mid-section",
+        "id": "table_surface_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand places a white bowl onto a plaid napkin.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Two fox figurines are visible in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'Give' and 'Thanks' is written on the chests of the fox figurines.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The placemat has a woven texture.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Give",
+      "Thanks"
+    ],
+    "spatial": "Foreground features a woven placemat with a plaid napkin and a white bowl being placed by a hand. The background contains a table setting with a wooden bowl, fox figurines, and pumpkins arranged on a striped runner.",
+    "parse_success": true,
+    "chunk_idx": 63,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      128,
+      130
+    ],
+    "visible_entities": [
+      {
+        "desc": "Hand with dark nail polish holding a wooden spoon",
+        "action": "Transferring yellow spiral pasta from a pot to a white bowl",
+        "position": "Left side of frame, extending towards center",
+        "id": "hands_1"
+      },
+      {
+        "desc": "Black cooking pot",
+        "action": "Being held above the bowl, pouring contents",
+        "position": "Top left quadrant",
+        "id": "cooking_pot_1"
+      },
+      {
+        "desc": "White oval bowl",
+        "action": "Receiving pasta",
+        "position": "Center foreground",
+        "id": "serving_bowl_1"
+      },
+      {
+        "desc": "Yellow spiral pasta",
+        "action": "Being moved from spoon to bowl",
+        "position": "On spoon and falling into bowl",
+        "id": "pasta_dish_1"
+      },
+      {
+        "desc": "Two small orange fox figurines with text",
+        "action": "Stationary decoration",
+        "position": "Background center",
+        "id": "fox_figurines_1"
+      },
+      {
+        "desc": "Small decorative pumpkins (white and orange)",
+        "action": "Stationary decoration",
+        "position": "Background right on wooden board",
+        "id": "pumpkin_decor_1"
+      },
+      {
+        "desc": "Red and white checkered cloth",
+        "action": "Underlying surface decoration",
+        "position": "Background under figurines",
+        "id": "table_surface_1"
+      },
+      {
+        "desc": "Woven placemat",
+        "action": "Surface under bowl",
+        "position": "Foreground",
+        "id": "table_surface_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is using a wooden spoon to serve yellow spiral pasta into a white bowl.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Two orange fox figurines are visible in the background with text on their bellies.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Decorative pumpkins are arranged on a wooden board in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The pasta is yellow and spiral-shaped.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Give",
+      "Thanks"
+    ],
+    "spatial": "Foreground features a white bowl on a woven mat receiving pasta. Mid-ground shows a hand and spoon transferring food. Background contains autumn-themed decorations including fox figurines and pumpkins on a wooden board over a checkered cloth.",
+    "parse_success": true,
+    "chunk_idx": 64,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      130,
+      132
+    ],
+    "visible_entities": [
+      {
+        "desc": "white pot containing yellow pasta",
+        "action": "holding food",
+        "position": "center and right",
+        "id": "pasta_dish_1"
+      },
+      {
+        "desc": "wooden spoon",
+        "action": "stirring and lifting pasta",
+        "position": "center to right",
+        "id": "wooden_spoon_1"
+      },
+      {
+        "desc": "red and white striped cloth",
+        "action": "resting on surface",
+        "position": "left edge",
+        "id": "table_surface_1"
+      },
+      {
+        "desc": "yellow spiral pasta",
+        "action": "being stirred in sauce",
+        "position": "inside pot",
+        "id": "pasta_dish_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A wooden spoon lifts a portion of yellow spiral pasta coated in sauce.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The pasta is rotini or fusilli shape.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A red and white striped kitchen towel is visible on the left side.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The pot appears to be white ceramic or enamel.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white pot dominates the center and right of the frame. A wooden spoon enters from the right, interacting with the pasta inside. A striped cloth is partially visible on the far left edge.",
+    "parse_success": true,
+    "chunk_idx": 65,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      132,
+      134
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 66,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      134,
+      136
+    ],
+    "visible_entities": [
+      {
+        "desc": "Yellow spiral pasta coated in creamy yellow sauce",
+        "action": "being lifted and stirred",
+        "position": "center and lower portion of frame",
+        "id": "pasta_dish_1"
+      },
+      {
+        "desc": "Light-colored wooden spoon",
+        "action": "lifting pasta from the pot",
+        "position": "center to right side of frame",
+        "id": "wooden_spoon_1"
+      },
+      {
+        "desc": "White cooking pot or bowl",
+        "action": "containing the pasta dish",
+        "position": "surrounding the food, edges visible",
+        "id": "cooking_pot_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A wooden spoon is lifting a portion of spiral pasta covered in yellow sauce.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The pasta is rotini or fusilli shape.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The sauce appears thick and creamy, coating the pasta evenly.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "More pasta is visible in the background within the white container.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The wooden spoon dominates the center-right, holding a clump of pasta. The rest of the pasta fills the bottom and left of the white pot, which frames the scene.",
+    "parse_success": true,
+    "chunk_idx": 67,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      136,
+      138
+    ],
+    "visible_entities": [
+      {
+        "desc": "Yellow spiral pasta coated in thick yellow sauce",
+        "action": "being lifted by a utensil and then dropped onto a plate",
+        "position": "upper right quadrant moving to center",
+        "id": "pasta_dish_1"
+      },
+      {
+        "desc": "White round plate",
+        "action": "receiving the pasta",
+        "position": "center to lower right"
+      },
+      {
+        "desc": "Blurred bowl containing more pasta",
+        "action": "sitting stationary",
+        "position": "lower left",
+        "id": "pasta_dish_1"
+      },
+      {
+        "desc": "Utensil (likely spoon or spatula)",
+        "action": "holding and transferring pasta",
+        "position": "upper right",
+        "id": "wooden_spoon_1"
+      },
+      {
+        "desc": "Pink and white checkered tablecloth",
+        "action": "stationary background",
+        "position": "left side",
+        "id": "table_surface_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A serving of yellow spiral pasta is lifted from a bowl.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The pasta is coated in a thick, creamy yellow sauce.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The pasta is dropped onto a white plate.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A bowl containing more of the same pasta is visible in the foreground.",
+        "confidence": 0.85,
+        "target_resolution_visible": false
+      },
+      {
+        "fact": "The scene takes place on a surface with a pink and white pattern.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "A bowl of pasta is in the blurry foreground on the left. A utensil lifts pasta from an unseen source (or the bowl) in the upper right and deposits it onto a white plate in the center. A checkered tablecloth is visible on the far left.",
+    "parse_success": true,
+    "chunk_idx": 68,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      138,
+      140
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 69,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      140,
+      142
+    ],
+    "visible_entities": [
+      {
+        "desc": "Hand with dark nail polish holding a silver fork",
+        "action": "stabbing into the pasta",
+        "position": "upper center",
+        "id": "hands_1"
+      },
+      {
+        "desc": "White oval bowl filled with yellow spiral pasta",
+        "action": "sitting on a napkin",
+        "position": "center foreground",
+        "id": "pasta_dish_1"
+      },
+      {
+        "desc": "Red and white checkered napkin",
+        "action": "placed under the bowl",
+        "position": "center foreground",
+        "id": "table_surface_1"
+      },
+      {
+        "desc": "Woven beige placemat",
+        "action": "underlying the napkin and bowl",
+        "position": "bottom right",
+        "id": "table_surface_1"
+      },
+      {
+        "desc": "Small orange and white ceramic fox figurines",
+        "action": "standing on the table",
+        "position": "background center",
+        "id": "fox_figurines_1"
+      },
+      {
+        "desc": "Small white and orange pumpkins/gourds",
+        "action": "sitting on a wooden board",
+        "position": "background right"
+      },
+      {
+        "desc": "Red and white striped cloth runner",
+        "action": "placed under the background items",
+        "position": "background",
+        "id": "table_surface_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A fork is inserted into a serving of yellow spiral pasta.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The pasta is contained within a white, oval-shaped bowl.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Decorative fox figurines are visible in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Small pumpkins are arranged on a wooden board in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The foreground is dominated by a bowl of pasta on a checkered napkin and woven mat. The background features a table setting with autumn-themed decorations including fox figurines and pumpkins on a striped runner.",
+    "parse_success": true,
+    "chunk_idx": 70,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      142,
+      144
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 71,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      144,
+      146
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 72,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      146,
+      148
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 73,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      148,
+      150
+    ],
+    "visible_entities": [
+      {
+        "desc": "Yellow spiral-shaped pasta (fusilli) coated in a creamy yellow sauce",
+        "action": "resting in a bowl",
+        "position": "center and right side of the frame",
+        "id": "pasta_dish_1"
+      },
+      {
+        "desc": "White ceramic bowl",
+        "action": "holding the pasta",
+        "position": "left side and bottom of the frame",
+        "id": "serving_bowl_1"
+      },
+      {
+        "desc": "Surface with a white and reddish-brown pattern",
+        "action": "underneath the bowl",
+        "position": "far left edge of the frame",
+        "id": "table_surface_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The pasta is a spiral shape, commonly known as fusilli.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The pasta is coated in a uniform yellow sauce, likely cheese-based.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The bowl containing the food is white.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The camera angle is a close-up, top-down view of the food.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "A white bowl filled with yellow macaroni and cheese occupies the majority of the frame, positioned from the center to the right. The left edge of the bowl and a small portion of the surface it rests on are visible on the far left.",
+    "parse_success": true,
+    "chunk_idx": 74,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      150,
+      152
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 75,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      152,
+      154
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 76,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      154,
+      156
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with blonde wavy hair, wearing a white t-shirt with red text, red lipstick",
+        "action": "smiling and looking at the camera, then closing mouth",
+        "position": "center foreground",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Beige macrame wall hanging",
+        "action": "hanging on wall",
+        "position": "background left",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Two round mirrors with sunburst frames",
+        "action": "mounted on wall",
+        "position": "background right",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "Metal console table with glass shelves",
+        "action": "holding books and decor",
+        "position": "background right",
+        "id": "console_table_1"
+      },
+      {
+        "desc": "White arched shelving unit",
+        "action": "holding plants and decor",
+        "position": "far left",
+        "id": "shelving_unit_1"
+      },
+      {
+        "desc": "Sofa with beige cushions and green leaf-patterned pillow",
+        "action": "stationary",
+        "position": "bottom left",
+        "id": "sofa_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is wearing a white t-shirt with red cursive text across the chest.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman has red lipstick on.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are two round mirrors with wooden sunburst frames on the wall.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A macrame wall hanging is visible behind the woman.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman's expression changes from a wide smile to a closed-mouth smile.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Sorracha"
+    ],
+    "spatial": "The woman is centered in the foreground. Behind her to the left is a macrame hanging and arched shelves. To her right in the background are two mirrors and a console table. A sofa is visible in the bottom left corner.",
+    "parse_success": true,
+    "chunk_idx": 77,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      156,
+      158
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with blonde wavy hair, wearing a white t-shirt with red text",
+        "action": "speaking with mouth open",
+        "position": "center foreground",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Beige macrame wall hanging",
+        "action": "hanging on wall",
+        "position": "background left",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Two round mirrors with sunburst frames",
+        "action": "mounted on wall",
+        "position": "background right",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "Metal console table with glass shelves",
+        "action": "holding books and decor",
+        "position": "background right",
+        "id": "console_table_1"
+      },
+      {
+        "desc": "White arched shelving unit",
+        "action": "holding plants and pots",
+        "position": "far left",
+        "id": "shelving_unit_1"
+      },
+      {
+        "desc": "Couch with pillows",
+        "action": "stationary",
+        "position": "bottom left",
+        "id": "sofa_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is wearing red lipstick.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The t-shirt has red cursive text on the chest.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are two mirrors on the wall to the right.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A macrame hanging is visible behind the woman.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Sriracha"
+    ],
+    "spatial": "The woman is centered in the foreground. Behind her to the left is a macrame hanging and arched shelves. To her right in the background are two mirrors and a console table.",
+    "parse_success": true,
+    "chunk_idx": 78,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      158,
+      160
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with shoulder-length wavy blonde hair, wearing a white t-shirt with red cursive text",
+        "action": "sitting and facing forward, mouth slightly open as if speaking",
+        "position": "center foreground",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Beige macrame wall hanging",
+        "action": "hanging on wall",
+        "position": "upper left background",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Two round mirrors with sunburst frames",
+        "action": "mounted on wall",
+        "position": "upper right background",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "Metal console table with glass shelves",
+        "action": "standing against wall",
+        "position": "mid-right background",
+        "id": "console_table_1"
+      },
+      {
+        "desc": "Books and small decorative items",
+        "action": "placed on table shelves",
+        "position": "on console table",
+        "id": "console_table_1"
+      },
+      {
+        "desc": "White arched shelving unit",
+        "action": "built into wall",
+        "position": "far left",
+        "id": "shelving_unit_1"
+      },
+      {
+        "desc": "Potted plants",
+        "action": "sitting on shelves",
+        "position": "on arched shelving unit",
+        "id": "shelving_unit_1"
+      },
+      {
+        "desc": "Sofa with beige cushions and a green leaf-patterned pillow",
+        "action": "positioned behind woman",
+        "position": "lower left",
+        "id": "sofa_1"
+      },
+      {
+        "desc": "White door",
+        "action": "closed",
+        "position": "center background",
+        "id": "door_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is wearing a white t-shirt with red text that appears to read 'Sriracha'.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are two sunburst-style mirrors on the wall to the right.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A macrame wall hanging is visible behind the woman's left shoulder.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman has red lipstick on.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are books stacked on the console table.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Sriracha"
+    ],
+    "spatial": "The woman is centered in the foreground. Behind her to the left is a sofa and an arched shelving niche. Directly behind her is a macrame hanging and a white door. To her right, in the background, is a console table against the wall with mirrors above it, and an arched doorway leading to another room.",
+    "parse_success": true,
+    "chunk_idx": 79,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      160,
+      162
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with blonde wavy hair, wearing a white t-shirt with red text, red lipstick",
+        "action": "sitting, eyes closed in first frame, mouth open speaking in second frame",
+        "position": "center foreground",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Beige macrame wall hanging",
+        "action": "hanging on wall",
+        "position": "background left of center",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Two round mirrors with sunburst frames",
+        "action": "hanging on wall",
+        "position": "background right",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "Glass console table with gold frame",
+        "action": "standing against wall",
+        "position": "background right",
+        "id": "console_table_1"
+      },
+      {
+        "desc": "White built-in shelving unit with arched niche",
+        "action": "holding potted plants",
+        "position": "far left",
+        "id": "shelving_unit_1"
+      },
+      {
+        "desc": "Couch with beige cushions and green patterned pillow",
+        "action": "stationary",
+        "position": "lower left",
+        "id": "sofa_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is wearing a white t-shirt with red cursive text on the left chest area.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman has red lipstick on.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are two sunburst-style mirrors on the wall in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A macrame wall hanging is visible behind the woman.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman's eyes are closed in the first frame and open in the second frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Sriracha"
+    ],
+    "spatial": "The woman is centered in the foreground. Behind her to the left is a macrame hanging and built-in shelves. To her right in the background are two mirrors and a console table. A couch is visible in the lower left corner.",
+    "parse_success": true,
+    "chunk_idx": 80,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      162,
+      164
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with shoulder-length blonde hair, wearing a white t-shirt with red text and red lipstick",
+        "action": "speaking and gesturing with her right hand",
+        "position": "center foreground",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Beige macrame wall hanging",
+        "action": "hanging on the wall",
+        "position": "background, behind the woman",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Two round mirrors with sunburst frames",
+        "action": "hanging on the wall",
+        "position": "background, right side",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "Console table with books and decor",
+        "action": "standing against the wall",
+        "position": "background, right side",
+        "id": "console_table_1"
+      },
+      {
+        "desc": "Arched shelving unit with plants",
+        "action": "built into the wall",
+        "position": "background, left side",
+        "id": "shelving_unit_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman with blonde hair is wearing a white t-shirt.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The t-shirt has red cursive text on the front.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman is wearing red lipstick.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There is a macrame wall hanging behind the woman.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Two sunburst-style mirrors are on the wall to the right.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman gestures with her right hand during the clip.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Sriracha"
+    ],
+    "spatial": "The woman is centered in the foreground. Behind her is a wall with a macrame hanging. To her left is an arched shelving unit. To her right is a doorway, two mirrors, and a console table.",
+    "parse_success": true,
+    "chunk_idx": 81,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      164,
+      166
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with shoulder-length blonde wavy hair, wearing a white t-shirt with red cursive text and red lipstick",
+        "action": "speaking and gesturing with hands",
+        "position": "center foreground",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Beige macrame wall hanging",
+        "action": "hanging on wall",
+        "position": "background left-center",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Two round mirrors with sunburst frames",
+        "action": "mounted on wall",
+        "position": "background right",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "Glass console table with gold frame",
+        "action": "standing against wall",
+        "position": "background right",
+        "id": "console_table_1"
+      },
+      {
+        "desc": "White arched shelving unit",
+        "action": "holding potted plants",
+        "position": "far left",
+        "id": "shelving_unit_1"
+      },
+      {
+        "desc": "Beige sofa with patterned pillow",
+        "action": "positioned behind woman",
+        "position": "left foreground",
+        "id": "sofa_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is wearing a white t-shirt with red cursive text on the chest.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Two sunburst-style mirrors are mounted on the wall to the right of the door.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A macrame wall hanging is suspended from a wooden dowel.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman has red lipstick on.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are small potted plants on the white shelves to the left.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Sincerely"
+    ],
+    "spatial": "The woman is centered in the foreground. Behind her to the left is a sofa and a white arched shelf unit. Directly behind her is a macrame hanging and a white door. To her right in the background are two mirrors on the wall and a glass console table.",
+    "parse_success": true,
+    "chunk_idx": 82,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      166,
+      168
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 83,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      168,
+      170
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 84,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      170,
+      172
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with shoulder-length blonde wavy hair, wearing a white t-shirt with red text",
+        "action": "sitting and facing forward, mouth slightly open as if speaking",
+        "position": "center foreground",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Beige macrame wall hanging",
+        "action": "hanging on wall",
+        "position": "background left",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Two round mirrors with sunburst wooden frames",
+        "action": "hanging on wall",
+        "position": "background right",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "Console table with metal frame and glass shelves",
+        "action": "standing against wall",
+        "position": "background right",
+        "id": "console_table_1"
+      },
+      {
+        "desc": "Books and decorative items",
+        "action": "placed on console table",
+        "position": "background right",
+        "id": "console_table_1"
+      },
+      {
+        "desc": "White arched shelving unit",
+        "action": "built into wall",
+        "position": "far left",
+        "id": "shelving_unit_1"
+      },
+      {
+        "desc": "Potted plants",
+        "action": "sitting on shelves",
+        "position": "far left",
+        "id": "shelving_unit_1"
+      },
+      {
+        "desc": "Sofa with beige cushions and a green leaf-patterned pillow",
+        "action": "positioned behind the woman",
+        "position": "lower left",
+        "id": "sofa_1"
+      },
+      {
+        "desc": "White door",
+        "action": "closed",
+        "position": "background center",
+        "id": "door_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is wearing a white t-shirt with the word 'Sriracha' written in red cursive script on the chest.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman has red lipstick on.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are two sunburst-style mirrors on the wall in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A macrame wall hanging is visible behind the woman's left shoulder.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Sriracha"
+    ],
+    "spatial": "The woman is centered in the foreground. Behind her to the left is a sofa and a built-in arched shelf. Directly behind her is a macrame hanging and a white door. To her right in the background is a console table with books and two round mirrors on the wall above it.",
+    "parse_success": true,
+    "chunk_idx": 85,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      172,
+      174
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with blonde wavy hair, wearing a white t-shirt with red text and red lipstick",
+        "action": "sitting and looking forward, mouth slightly open as if speaking",
+        "position": "center foreground",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Beige macrame wall hanging",
+        "action": "hanging on wall",
+        "position": "background left",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Two round mirrors with sunburst frames",
+        "action": "mounted on wall",
+        "position": "background right",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "Console table with books and decor",
+        "action": "standing against wall",
+        "position": "background right",
+        "id": "console_table_1"
+      },
+      {
+        "desc": "White built-in shelving with plants",
+        "action": "mounted in wall niche",
+        "position": "far left",
+        "id": "shelving_unit_1"
+      },
+      {
+        "desc": "Sofa with patterned pillow",
+        "action": "stationary",
+        "position": "bottom left",
+        "id": "sofa_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is wearing a white t-shirt with red cursive text on the chest.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman has red lipstick applied.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are two sunburst-style mirrors on the wall behind the woman.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A macrame wall hanging is visible behind the woman's left shoulder.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman's mouth is open in both frames, suggesting speech.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Sriracha"
+    ],
+    "spatial": "The woman is centered in the foreground. Behind her to the left is a macrame hanging and built-in shelves. To her right in the background are two mirrors and a console table. An arched doorway is visible in the far right background.",
+    "parse_success": true,
+    "chunk_idx": 86,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      174,
+      176
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with shoulder-length blonde wavy hair, wearing a white t-shirt with red text",
+        "action": "Sitting and facing forward, smiling in the second frame",
+        "position": "Center foreground",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Beige macrame wall hanging",
+        "action": "Hanging on the wall",
+        "position": "Background, behind the woman",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Two round mirrors with sunburst frames",
+        "action": "Mounted on the wall",
+        "position": "Background, right side",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "Glass console table with metal frame",
+        "action": "Holding books and decorative items",
+        "position": "Background, right side",
+        "id": "console_table_1"
+      },
+      {
+        "desc": "White arched shelving unit",
+        "action": "Holding potted plants",
+        "position": "Background, left side",
+        "id": "shelving_unit_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is wearing a white t-shirt with red cursive text on the chest.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman has red lipstick on.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are two sunburst-style mirrors on the wall to the right.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A macrame wall hanging is visible behind the woman.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Sriracha"
+    ],
+    "spatial": "The woman is centered in the foreground. Behind her to the left is an arched shelf with plants. Directly behind her is a macrame hanging. To her right in the background is a console table and two mirrors on the wall.",
+    "parse_success": true,
+    "chunk_idx": 87,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      176,
+      178
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 88,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      178,
+      180
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with blonde wavy hair, wearing a white t-shirt with red text and red lipstick",
+        "action": "speaking to the camera, holding up a large poster in the second frame",
+        "position": "center foreground",
+        "id": "woman_1"
+      },
+      {
+        "desc": "large poster featuring a photo of a person in a dark hoodie holding a sign",
+        "action": "being held up by the woman",
+        "position": "right side of the frame in the second image",
+        "id": "poster_1"
+      },
+      {
+        "desc": "beige macrame wall hanging",
+        "action": "hanging on the wall",
+        "position": "background, behind the woman",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "white door",
+        "action": "closed",
+        "position": "background, center-right",
+        "id": "door_1"
+      },
+      {
+        "desc": "two round mirrors with sunburst frames",
+        "action": "mounted on the wall",
+        "position": "background, right wall",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "glass console table with metal frame",
+        "action": "standing against the wall",
+        "position": "background, right side",
+        "id": "console_table_1"
+      },
+      {
+        "desc": "white arched shelving unit",
+        "action": "holding plants and decor",
+        "position": "background, far left",
+        "id": "shelving_unit_1"
+      },
+      {
+        "desc": "bed with beige bedding and a green leaf-patterned pillow",
+        "action": "stationary",
+        "position": "bottom left corner",
+        "id": "sofa_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is wearing a white t-shirt with the word 'Sriracha' written in red cursive script.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The poster held up in the second frame shows a person holding a sign that reads 'IF LOOKS COULD KALE'.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are two sunburst-style mirrors on the wall in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A macrame wall hanging is visible behind the woman.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Sriracha",
+      "IF LOOKS",
+      "COULD",
+      "KALE"
+    ],
+    "spatial": "The woman is centered in the foreground of a brightly lit bedroom. Behind her is a wall with a macrame hanging and a white door. To her right (viewer's left) is an arched shelving unit. To her left (viewer's right) is a wall with two mirrors and a console table. In the second frame, she holds a large poster to her left side.",
+    "parse_success": true,
+    "chunk_idx": 89,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      180,
+      182
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 90,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      182,
+      184
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 91,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      184,
+      186
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 92,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      186,
+      188
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 93,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      188,
+      190
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 94,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      190,
+      192
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 95,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      192,
+      194
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 96,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      194,
+      196
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with shoulder-length wavy blonde hair, wearing a white t-shirt with red text",
+        "action": "smiling and looking at the camera",
+        "position": "center of the frame",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Cream-colored macrame wall hanging",
+        "action": "hanging on the wall",
+        "position": "background behind the woman",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Shelving unit with plants",
+        "action": "stationary",
+        "position": "left edge of the frame",
+        "id": "shelving_unit_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is wearing a white t-shirt with red cursive text on the left chest area.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text on the shirt reads 'Sriracha'.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman has wavy blonde hair that falls to her shoulders.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There is a macrame wall hanging in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman is smiling, showing her teeth.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Sriracha"
+    ],
+    "spatial": "A woman is centered in the foreground, with a large macrame wall hanging directly behind her. To the left, a shelving unit with plants is partially visible.",
+    "parse_success": true,
+    "chunk_idx": 97,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      196,
+      198
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 98,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      198,
+      200
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with blonde wavy hair, wearing a white t-shirt with red cursive text",
+        "action": "Looking at the camera, then raising both hands to her chest area",
+        "position": "Center foreground",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Macrame wall hanging",
+        "action": "Hanging on the wall",
+        "position": "Background, behind the woman",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Console table with books and decor",
+        "action": "Stationary",
+        "position": "Background right",
+        "id": "console_table_1"
+      },
+      {
+        "desc": "Two round mirrors with sunburst frames",
+        "action": "Mounted on the wall",
+        "position": "Background right wall",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "White shelving unit with plants",
+        "action": "Stationary",
+        "position": "Background left",
+        "id": "shelving_unit_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is wearing a white t-shirt with red text across the chest.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman raises her hands towards her chest in the second frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are two sunburst-style mirrors on the wall to the right.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A macrame wall hanging is visible behind the woman.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Sriracha"
+    ],
+    "spatial": "The woman is centered in the foreground. Behind her is a wall with a macrame hanging. To her left is a white shelving unit. To her right is a console table and two mirrors on the wall.",
+    "parse_success": true,
+    "chunk_idx": 99,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      200,
+      202
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with shoulder-length blonde wavy hair, wearing a white t-shirt with red text, red lipstick, and dark nail polish",
+        "action": "Talking and gesturing with both hands raised near chest level, then lowering them slightly while looking down",
+        "position": "Center foreground",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Beige macrame wall hanging",
+        "action": "Hanging on the wall",
+        "position": "Background, behind the woman's left shoulder",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Two round mirrors with sunburst-style wooden frames",
+        "action": "Mounted on the wall",
+        "position": "Background, upper right wall",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "Metal-framed console table with glass shelves",
+        "action": "Holding books and decorative items",
+        "position": "Background, right side",
+        "id": "console_table_1"
+      },
+      {
+        "desc": "White arched shelving unit",
+        "action": "Holding potted plants and decor",
+        "position": "Background, far left edge",
+        "id": "shelving_unit_1"
+      },
+      {
+        "desc": "Sofa with patterned cushions",
+        "action": "Stationary",
+        "position": "Background, left side behind the woman",
+        "id": "sofa_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is wearing a white t-shirt with red cursive text across the chest.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman has dark, possibly black, nail polish on her fingernails.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are two round mirrors with wooden frames on the wall in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A macrame wall hanging is visible behind the woman.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman's eyes are open in the first frame and closed or looking down in the second frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Sriracha"
+    ],
+    "spatial": "The woman is centered in the foreground of a brightly lit room. Behind her to the left is a sofa and an arched shelving niche. Directly behind her is a macrame hanging and a white door. To her right, against the wall, are two round mirrors and a console table. An arched doorway is visible in the far right background.",
+    "parse_success": true,
+    "chunk_idx": 100,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      202,
+      204
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with shoulder-length blonde wavy hair, wearing a white t-shirt with red text",
+        "action": "sitting and facing the camera, speaking",
+        "position": "center foreground",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Beige macrame wall hanging",
+        "action": "hanging on the wall",
+        "position": "background left",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Two round mirrors with sunburst frames",
+        "action": "hanging on the wall",
+        "position": "background right",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "Console table with glass shelves and metal frame",
+        "action": "holding books and decor",
+        "position": "background right",
+        "id": "console_table_1"
+      },
+      {
+        "desc": "White arched shelving unit",
+        "action": "holding potted plants",
+        "position": "far left",
+        "id": "shelving_unit_1"
+      },
+      {
+        "desc": "Sofa with patterned pillows",
+        "action": "partially visible",
+        "position": "bottom left",
+        "id": "sofa_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is wearing a white t-shirt with red cursive text on the left chest area.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman has red lipstick on.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are two sunburst-style mirrors on the wall in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A macrame wall hanging is visible behind the woman.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Sriracha"
+    ],
+    "spatial": "The woman is centered in the foreground. To her left is a white arched shelf and a sofa. Behind her is a macrame hanging and a white door. To her right are two mirrors on the wall and a console table further back.",
+    "parse_success": true,
+    "chunk_idx": 101,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      204,
+      206
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with shoulder-length blonde wavy hair, wearing red lipstick, white t-shirt with red text",
+        "action": "sitting and facing forward, mouth slightly open as if speaking",
+        "position": "center foreground",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Beige macrame wall hanging",
+        "action": "hanging on wall",
+        "position": "background left of center",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Two round mirrors with sunburst frames",
+        "action": "mounted on wall",
+        "position": "background right wall",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "Metal console table with glass shelves",
+        "action": "holding books and decorative items",
+        "position": "background right",
+        "id": "console_table_1"
+      },
+      {
+        "desc": "White built-in shelving unit with arched niche",
+        "action": "holding potted plants",
+        "position": "far left background",
+        "id": "shelving_unit_1"
+      },
+      {
+        "desc": "Beige sofa with patterned throw blanket",
+        "action": "positioned behind woman",
+        "position": "left mid-ground",
+        "id": "sofa_1"
+      },
+      {
+        "desc": "Green leaf-patterned pillow",
+        "action": "resting on sofa",
+        "position": "bottom left",
+        "id": "sofa_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is wearing a white t-shirt with red cursive text on the left chest area.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text on the t-shirt reads 'Sriracha'.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are two round mirrors with wooden sunburst frames on the wall.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A macrame wall hanging is suspended from a wooden dowel.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman has blonde hair styled in loose waves.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are potted plants on the white shelves to the left.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Sriracha"
+    ],
+    "spatial": "The woman is centered in the foreground. Behind her to the left is a sofa and built-in shelving. Directly behind her is a macrame hanging. To her right in the background are two mirrors on the wall and a console table. An arched doorway is visible in the far right background.",
+    "parse_success": true,
+    "chunk_idx": 102,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      206,
+      208
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 103,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      208,
+      210
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 104,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      210,
+      212
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 105,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      212,
+      214
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 106,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      214,
+      216
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with blonde wavy hair, wearing a white t-shirt with red text, red lipstick, and dark nail polish",
+        "action": "speaking and gesturing with her right hand, pointing index finger upwards",
+        "position": "center of the frame",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Graphic overlay with pink and blue glittery background",
+        "action": "displaying social media handles",
+        "position": "bottom right corner",
+        "id": "graphics_1"
+      },
+      {
+        "desc": "Beige macrame wall hanging",
+        "action": "hanging on the wall",
+        "position": "background, behind the woman",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Two round mirrors with sunburst frames",
+        "action": "hanging on the wall",
+        "position": "background, right side",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "White shelving unit with plants",
+        "action": "standing against the wall",
+        "position": "background, left side",
+        "id": "shelving_unit_1"
+      },
+      {
+        "desc": "White door",
+        "action": "closed",
+        "position": "background, center-right",
+        "id": "door_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is wearing a white t-shirt with red cursive text partially visible on the chest.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman has dark red or maroon nail polish on her fingernails.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The graphic overlay contains Instagram and Facebook logos.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'NIKKIVVEGAN' is visible next to the Instagram logo.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'KikiVeganCakeOrDie' is visible next to the Facebook logo.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The hashtag '#NIKKIVVEGAN' is visible at the bottom of the graphic.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are small potted plants on the white shelving unit.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "You can also find me here!",
+      "NIKKIVVEGAN",
+      "KikiVeganCakeOrDie",
+      "#NIKKIVVEGAN"
+    ],
+    "spatial": "The woman is centered in the foreground. Behind her is a room with a white door, a macrame hanging, and mirrors on the wall. To her left is a shelving unit. A social media graphic is overlaid in the bottom right corner.",
+    "parse_success": true,
+    "chunk_idx": 107,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      216,
+      218
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 108,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      218,
+      220
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with shoulder-length blonde wavy hair, wearing a white t-shirt with small red text, red lipstick, and small earrings",
+        "action": "Looking at the camera, smiling, then looking down and gesturing with her right hand",
+        "position": "Center of the frame",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Graphic overlay with pink and blue glittery circles containing social media handles",
+        "action": "Static overlay",
+        "position": "Bottom right corner",
+        "id": "graphics_1"
+      },
+      {
+        "desc": "Beige macrame wall hanging",
+        "action": "Hanging on the wall",
+        "position": "Background, behind the woman",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Two circular mirrors with textured brown frames",
+        "action": "Hanging on the wall",
+        "position": "Background, upper right",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "White shelving unit with plants and decor",
+        "action": "Stationary",
+        "position": "Background, left side",
+        "id": "shelving_unit_1"
+      },
+      {
+        "desc": "Beige sofa with a green leaf-patterned pillow",
+        "action": "Stationary",
+        "position": "Background, lower left",
+        "id": "sofa_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is wearing a white t-shirt with the word 'Sriracha' written in red script on the chest.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The graphic overlay displays the Instagram handle '@NIKKIVVEGAN'.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The graphic overlay displays the Facebook handle 'NikkiVeganOnYouTube'.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The graphic overlay displays the hashtag '#NIKKIVVEGAN'.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman's expression changes from a wide smile to a more neutral look as she looks down.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "You can also find me here!",
+      "NIKKIVVEGAN",
+      "NikkiVeganOnYouTube",
+      "#NIKKIVVEGAN",
+      "Sriracha"
+    ],
+    "spatial": "The woman is centered in the foreground. The background consists of a living room setting with a sofa to her left, shelves further left, a macrame hanging directly behind her, and mirrors on the wall to her right. A social media graphic is overlaid in the bottom right corner.",
+    "parse_success": true,
+    "chunk_idx": 109,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      220,
+      222
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with shoulder-length blonde wavy hair, wearing a white t-shirt with red cursive text",
+        "action": "looking down then looking up and smiling at the camera",
+        "position": "center of the frame",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Macrame wall hanging",
+        "action": "hanging on the wall",
+        "position": "background, upper left",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Two round wicker mirrors",
+        "action": "hanging on the wall",
+        "position": "background, upper right",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "Pink and blue glittery circular graphic overlay",
+        "action": "displaying social media handles",
+        "position": "bottom right corner",
+        "id": "graphics_1"
+      },
+      {
+        "desc": "White shelving unit with plants",
+        "action": "standing against the wall",
+        "position": "far left",
+        "id": "shelving_unit_1"
+      },
+      {
+        "desc": "Beige sofa with patterned pillows",
+        "action": "positioned behind the woman",
+        "position": "lower left",
+        "id": "sofa_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman's t-shirt has the word 'Sriracha' written in red cursive script.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The graphic overlay contains Instagram and Facebook logos.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman changes her expression from looking down with eyes closed to looking at the camera and smiling.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are small potted plants on the white shelves to the left.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "You can also find me here!",
+      "NIKKIVVEGAN",
+      "NikkiVeganOnYoutube",
+      "#NIKKIVVEGAN",
+      "Sriracha"
+    ],
+    "spatial": "The woman is centered in the foreground. Behind her is a living room setting with a sofa to the left and a wall with decorations. A graphic overlay is fixed in the bottom right corner.",
+    "parse_success": true,
+    "chunk_idx": 110,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": []
+  },
+  {
+    "time": [
+      222,
+      224
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 111,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      224,
+      226
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with shoulder-length blonde wavy hair, wearing a white t-shirt with small red text on the chest",
+        "action": "Sitting and talking, smiling with eyes open in the second frame",
+        "position": "Center of the frame",
+        "id": "woman_1"
+      },
+      {
+        "desc": "Graphic overlay with pink and blue glittery texture",
+        "action": "Static display of social media handles",
+        "position": "Bottom right corner",
+        "id": "graphics_1"
+      },
+      {
+        "desc": "Beige macrame wall hanging",
+        "action": "Hanging on the wall",
+        "position": "Background, behind the woman's left shoulder",
+        "id": "macrame_1"
+      },
+      {
+        "desc": "Two round woven wall decorations",
+        "action": "Hanging on the wall",
+        "position": "Background, upper right",
+        "id": "mirrors_1"
+      },
+      {
+        "desc": "White built-in shelving unit with arched niche",
+        "action": "Holding small potted plants",
+        "position": "Left side of the frame",
+        "id": "shelving_unit_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is wearing red lipstick.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text on the woman's shirt appears to say 'Sriracha' in red script.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The graphic overlay contains Instagram and Facebook logos.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'NIKKIVVEGAN' is visible in the graphic overlay.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are small potted plants on the shelves to the left.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "You can also find me here!",
+      "NIKKIVVEGAN",
+      "KikiVeganOnIce",
+      "#NIKKIVVEGAN",
+      "Sriracha"
+    ],
+    "spatial": "The woman is centered in the foreground. To her left is a white shelving unit with plants. Directly behind her is a macrame hanging. To her right, in the background, are two round wall decorations and a doorway. A social media graphic overlay is positioned in the bottom right corner.",
+    "parse_success": true,
+    "chunk_idx": 112,
+    "video_id": "NK0xcYYEA7Q",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  }
+]

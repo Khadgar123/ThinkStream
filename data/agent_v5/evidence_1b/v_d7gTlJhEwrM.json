@@ -1,0 +1,2571 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person with blonde hair in a ponytail, wearing a bright pink long-sleeved jacket",
+        "action": "Standing, looking downwards, slightly bending forward",
+        "position": "Center-right foreground",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "Person with dark hair, wearing a dark jacket with a pink scarf or collar",
+        "action": "Standing behind the first person, looking downwards",
+        "position": "Right background",
+        "id": "person_scarf"
+      },
+      {
+        "desc": "Person wearing a light grey coat or jacket",
+        "action": "Standing, partially visible",
+        "position": "Far right edge",
+        "id": "person_grey"
+      },
+      {
+        "desc": "Vertical wooden pole or post",
+        "action": "Stationary",
+        "position": "Center, behind the person in pink",
+        "id": "pole_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person with blonde hair in a ponytail is wearing a bright pink jacket.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person in the pink jacket is looking down.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A second person with dark hair is standing behind the person in pink.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A vertical wooden pole is visible behind the main subject.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background appears to be an outdoor or stadium setting with tiered seating.",
+        "confidence": 0.7,
+        "target_resolution_visible": false
+      }
+    ],
+    "ocr": [],
+    "spatial": "The main subject in a pink jacket occupies the center-right foreground. Behind her and slightly to the right is another person. A wooden pole stands vertically between them. A third person is partially visible on the far right. The background consists of blurry, dark, tiered structures.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman wearing pink sports top and grey shorts",
+        "action": "standing with hands raised near head",
+        "position": "center",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "man wearing blue jacket and lanyard",
+        "action": "standing behind the woman",
+        "position": "center-right",
+        "id": "officials_blue"
+      },
+      {
+        "desc": "person wearing dark jacket and pink scarf",
+        "action": "standing on the left",
+        "position": "left",
+        "id": "person_scarf"
+      },
+      {
+        "desc": "person wearing red jacket",
+        "action": "sitting or crouching",
+        "position": "bottom-right",
+        "id": "person_red"
+      },
+      {
+        "desc": "person wearing grey top",
+        "action": "sitting or crouching",
+        "position": "bottom-left",
+        "id": "person_grey"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman in a pink top has a race bib with the number 140 pinned to her chest.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A man in a blue jacket is wearing a medal around his neck.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman in the center has her hands raised to her head.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background is a green grassy field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "140"
+    ],
+    "spatial": "A woman in athletic wear stands centrally with a man in a blue jacket behind her. To the left, another person stands, while two other individuals are seated or crouching in the foreground on the left and right sides.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Scene shifts to athletes preparing; woman in pink sports top standing with hands raised near head"
+    ]
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with blonde hair in a ponytail, wearing a pink sports bra and grey bikini bottoms",
+        "action": "standing with arms raised above head, hands clasped together",
+        "position": "center of frame",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "person wearing a blue jacket",
+        "action": "standing partially visible",
+        "position": "far left edge",
+        "id": "officials_blue"
+      },
+      {
+        "desc": "person with dark hair wearing a red top",
+        "action": "sitting or crouching",
+        "position": "bottom left corner",
+        "id": "person_red"
+      },
+      {
+        "desc": "yellow netting",
+        "action": "stationary barrier",
+        "position": "right side and background",
+        "id": "netting_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman in the center is wearing a pink sports bra with a white bib attached to the front.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman has her arms raised above her head with her hands clasped.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A yellow net is visible behind the woman on the right side of the frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background is a green grassy field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "140"
+    ],
+    "spatial": "A woman stands centrally in the frame against a green field background. To her right is a yellow net. On the far left, a person in a blue jacket is partially visible, and below them, another person in red is seated or crouching.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Woman's pose changes to arms raised above head with hands clasped"
+    ]
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "Female athlete with short blonde hair, wearing a pink sleeveless top with white text and dark bottoms",
+        "action": "standing with hands behind head/neck",
+        "position": "center of frame",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "Yellow triangular marker with black number 90",
+        "action": "stationary on the ground",
+        "position": "right side of frame",
+        "id": "marker_90"
+      },
+      {
+        "desc": "Yellow netting barrier",
+        "action": "stationary",
+        "position": "foreground and background",
+        "id": "netting_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The athlete is wearing a pink top with white text across the chest.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete has both hands raised behind her head or neck area.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A yellow triangular marker displays the number 90 in black.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background is a green grassy field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "90"
+    ],
+    "spatial": "The athlete is centered in the frame, standing in front of a yellow net. To her right, a yellow triangular marker with the number 90 is visible on the grass.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Woman's pose changes to hands behind head/neck; yellow marker visible"
+    ]
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "A woman with blonde hair tied back, wearing a pink sleeveless athletic top with a white Nike swoosh and a race bib.",
+        "action": "standing on a field, looking forward, and briefly raising her right hand near her face in the second frame.",
+        "position": "center of the frame",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "A yellow sign or marker with the number '90' partially visible.",
+        "action": "stationary in the background.",
+        "position": "background, right side",
+        "id": "marker_90"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman with blonde hair is wearing a pink tank top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman has a race bib attached to the front of her top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A white Nike swoosh logo is visible on the woman's top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman raises her right hand towards her face in the second frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A yellow object with the number '90' is in the background.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The setting appears to be an outdoor athletic field with green grass.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "90"
+    ],
+    "spatial": "The woman is the central subject in the foreground. Behind her is a green field with a white line, and a yellow marker is visible in the background to her right.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Woman raises right hand near face; race bib visible"
+    ]
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "A woman with blonde hair pulled back, wearing a bright pink sleeveless athletic top with a white Nike swoosh logo on the chest.",
+        "action": "Standing still, looking forward with a neutral expression, her right hand raised near the side of her head.",
+        "position": "Center-right of the frame",
+        "id": "athlete_main"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is wearing a pink tank top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A white Nike swoosh logo is visible on the front of the pink top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background is a blurry green field with a white line.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman's right hand is raised to the side of her head.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is the main subject in the foreground, positioned slightly to the right. The background is an out-of-focus green field with a white line running diagonally from the lower-left.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing a bright pink sleeveless athletic top with a white bib attached to the front",
+        "action": "standing or moving slightly, upper body visible",
+        "position": "center of frame",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "Person's lower legs and feet wearing white athletic shoes",
+        "action": "running or jogging on a track",
+        "position": "center to right of frame",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "Blue object, possibly a bag or clothing",
+        "action": "stationary or moving slightly",
+        "position": "left edge of frame",
+        "id": "object_blue"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is wearing a pink tank top with a race bib.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The race bib has text on it, including the name 'KLISHINA'.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A person's legs are visible running on a red track surface.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The runner is wearing white shoes.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There is a white line on the red track.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "KLISHINA"
+    ],
+    "spatial": "The first frame shows a close-up of a person's torso in a pink top, with a blue object to the left. The second frame shows a lower view of a person's legs and feet running on a red track with a white line.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Action transitions to running or jogging on track"
+    ]
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person with tanned skin, wearing dark bikini bottoms and white athletic shoes",
+        "action": "Standing or walking slowly on a track",
+        "position": "Center to right of frame",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "Person wearing white pants",
+        "action": "Standing in background",
+        "position": "Right edge",
+        "id": "person_white"
+      },
+      {
+        "desc": "Large digital scoreboard with orange LED numbers",
+        "action": "Displaying time/score",
+        "position": "Background left",
+        "id": "scoreboard_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is standing on a red running track surface.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person is wearing white athletic shoes.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A digital scoreboard displays orange numbers in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The visible numbers on the scoreboard include '0.0' and '400'.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person is wearing dark-colored bikini-style bottoms.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "0.0",
+      "400"
+    ],
+    "spatial": "The camera focuses on the lower body of an athlete standing on a red track. To the left, a blurred digital scoreboard is visible in the background. To the right, another person in white pants is partially visible.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Action transitions to standing or walking slowly; scoreboard visible"
+    ]
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "Female athlete wearing a pink crop top with white text and grey athletic briefs with a white swoosh logo",
+        "action": "standing with hands raised near face, then lowering them",
+        "position": "center frame",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "Person wearing a white long-sleeved top and light-colored pants",
+        "action": "standing in the background",
+        "position": "right side",
+        "id": "person_white"
+      },
+      {
+        "desc": "Large digital scoreboard with bright orange LED numbers",
+        "action": "displaying numbers",
+        "position": "left side background",
+        "id": "scoreboard_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The athlete is wearing a pink top with the name 'KLISHINA' printed on a bib.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete is wearing grey bottoms with a visible Nike swoosh logo on the left hip.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A digital scoreboard in the background displays orange numbers, partially showing '0.0'.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete has a toned midsection visible between the crop top and briefs.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "KLISHINA",
+      "0.0"
+    ],
+    "spatial": "The female athlete is the central focus. To her left is a large, out-of-focus digital scoreboard. To her right, another person in white is partially visible in the background.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Athlete standing with hands raised near face then lowering them"
+    ]
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "Female athlete with blonde hair in a ponytail, wearing a red sleeveless top",
+        "action": "bending forward with head down, possibly resting or reacting",
+        "position": "bottom right foreground",
+        "id": "athlete_red"
+      },
+      {
+        "desc": "Blurred background figures, likely spectators or officials",
+        "action": "standing or sitting",
+        "position": "background",
+        "id": "crowd_1"
+      },
+      {
+        "desc": "Digital scoreboard overlay with blue and yellow bars",
+        "action": "displaying scores and names",
+        "position": "center left",
+        "id": "scoreboard_1"
+      },
+      {
+        "desc": "Large orange digital timer digits",
+        "action": "displaying time",
+        "position": "upper center background",
+        "id": "scoreboard_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A female athlete with blonde hair is visible in the foreground wearing red.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A scoreboard overlay shows names and scores including 'LIUKIN N.' and 'JOHNSON S.'.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete is bending forward at the waist.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Large orange digits are visible in the background, likely a timer.",
+        "confidence": 0.8,
+        "target_resolution_visible": false
+      }
+    ],
+    "ocr": [
+      "1 LIUKIN N. 16.125",
+      "2 JOHNSON S. 16.075",
+      "3 LIUKIN N. 16.125",
+      "D 6.700 E 9.425",
+      "D 6.600 E 9.475",
+      "D 6.700 E 9.425"
+    ],
+    "spatial": "The athlete is positioned in the lower right foreground, partially cut off. Scoreboard graphics overlay the center-left area. Blurred background elements fill the upper portion of the frame.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "New athlete in red top bending forward; scoreboard overlay appears"
+    ]
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "Female athlete with short blonde hair, wearing a pink sleeveless athletic top with a race bib",
+        "action": "Running forward, looking down with a focused expression",
+        "position": "Center-right of the frame",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "Digital scoreboard overlay with blue and white text boxes",
+        "action": "Displaying race results and athlete information",
+        "position": "Lower-left quadrant of the frame",
+        "id": "scoreboard_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A female athlete with short blonde hair is running.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete is wearing a pink sleeveless top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A race bib is attached to the front of the athlete's top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A digital overlay in the lower-left shows race data including names and times.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The name 'KLOKINA' is visible on the athlete's bib.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background is out of focus, suggesting a stadium environment.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "KLOKINA",
+      "1 KLOKINA",
+      "2",
+      "3",
+      "4.24",
+      "6.74",
+      "9.14",
+      "11.5",
+      "13.9",
+      "16.3",
+      "RUS"
+    ],
+    "spatial": "The female runner occupies the right and center of the frame, moving towards the viewer. A semi-transparent digital scoreboard is overlaid in the lower-left corner. The background is a blurry mix of dark and light tones, indicating a crowd or stadium seating.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Athlete in pink top running forward"
+    ]
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "Female athlete with blonde hair tied back in a bun, wearing a pink sleeveless athletic top with white text on the chest.",
+        "action": "Standing still, looking downwards with a neutral expression.",
+        "position": "Right side of the frame, occupying the foreground.",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "Digital scoreboard overlay with blue and white text boxes.",
+        "action": "Displaying competition data and rankings.",
+        "position": "Left side of the frame, superimposed over the background.",
+        "id": "scoreboard_1"
+      },
+      {
+        "desc": "Blurred crowd in the background.",
+        "action": "Sitting or standing in the stands.",
+        "position": "Background, spanning the width of the frame behind the athlete and scoreboard.",
+        "id": "crowd_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The athlete is wearing a pink top with the name 'KLISHINA' printed in white capital letters across the chest.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A scoreboard on the left displays a list of names and scores, with '1. Klishina' at the top with a score of '6.82'.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The scoreboard includes flags, including those for Russia (RUS) and the USA (USA).",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete's hair is blonde and pulled back tightly from her face.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "KLISHINA",
+      "1. Klishina 6.82",
+      "2. Reese 6.76",
+      "3. Spanovic 6.71",
+      "RUS",
+      "USA",
+      "SRB"
+    ],
+    "spatial": "The frame is split, with a digital scoreboard overlay on the left third and a female athlete in a pink top on the right two-thirds. The background is a blurred stadium crowd.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Athlete transitions from running to standing still"
+    ]
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "Female athlete with blonde hair in a high ponytail, wearing a pink sleeveless athletic top with white text",
+        "action": "standing, looking down",
+        "position": "center-right foreground",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "Digital scoreboard overlay with blue and white text boxes",
+        "action": "displaying competition data",
+        "position": "lower-left quadrant",
+        "id": "scoreboard_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The athlete is wearing a pink tank top with a white Nike swoosh logo on the upper chest.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The name 'KLISHINA' is printed in large white capital letters across the front of the athlete's top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A digital overlay shows a list of names and scores, with '1. Klishina' at the top of the list.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete's hair is pulled back tightly into a high ponytail.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background is out of focus, showing blurred shapes of a crowd or stadium seating.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "KLISHINA",
+      "1. Klishina",
+      "2. Spon",
+      "3. Reed",
+      "6.79",
+      "6.74",
+      "6.68"
+    ],
+    "spatial": "The female athlete dominates the right side of the frame in the foreground. A semi-transparent digital scoreboard overlay is positioned in the lower-left area, partially obscuring the blurred background.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "Female athlete with blonde hair in a high ponytail, wearing a pink sleeveless athletic top with white text.",
+        "action": "Looking downwards, standing still.",
+        "position": "Right side of the frame, occupying the foreground.",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "Digital scoreboard overlay with blue and white text boxes.",
+        "action": "Displaying athlete names, flags, and numerical scores.",
+        "position": "Lower-left quadrant of the frame.",
+        "id": "scoreboard_1"
+      },
+      {
+        "desc": "Blurred background crowd.",
+        "action": "Sitting or standing in the stands.",
+        "position": "Background, spanning the width of the frame.",
+        "id": "crowd_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The athlete is wearing a pink tank top with a white Nike swoosh logo on the upper right chest.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The name 'KLISHINA' is printed in large white capital letters across the front of the athlete's top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The scoreboard shows a list of names including 'Klishina D.' with a score of '6.80'.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete has blonde hair tied up in a ponytail.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background is out of focus, indicating a shallow depth of field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "KLISHINA",
+      "6.80",
+      "6.78",
+      "6.73",
+      "RUS",
+      "FRA",
+      "USA"
+    ],
+    "spatial": "The female athlete is positioned prominently on the right side of the frame. A digital scoreboard overlay is situated in the lower-left area. The background consists of a blurred crowd in stadium seating.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "Female athlete with blonde hair in a high ponytail, wearing a pink sleeveless athletic top with 'KLISHINA' printed on the front and a white Nike swoosh logo.",
+        "action": "Standing still, looking downwards with a focused expression.",
+        "position": "Right side of the frame, occupying the foreground.",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "Digital scoreboard overlay with blue and white text boxes.",
+        "action": "Displaying athlete names, country flags, and performance metrics.",
+        "position": "Left side of the frame, superimposed over the background.",
+        "id": "scoreboard_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The athlete's name 'KLISHINA' is clearly visible on her top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The scoreboard shows a list of athletes with associated scores or times.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background is out of focus, suggesting a shallow depth of field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "KLISHINA",
+      "RUS",
+      "USA",
+      "6.74",
+      "6.71",
+      "6.64"
+    ],
+    "spatial": "The female athlete is positioned prominently in the right foreground, while a digital scoreboard overlay is situated on the left side of the frame. The background is blurred, indicating a stadium environment.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "Female athlete with short blonde hair, wearing a pink sleeveless athletic top with white text",
+        "action": "standing still, looking forward with a neutral expression",
+        "position": "right side of the frame",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "Digital scoreboard overlay with blue and white text boxes",
+        "action": "displaying competition results and athlete information",
+        "position": "left side of the frame",
+        "id": "scoreboard_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The athlete is wearing a pink top with the name 'KLISHINA' printed in white capital letters across the chest.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A scoreboard on the left shows a list of names and scores, with 'Klishina' listed at the top with a score of 6.91.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background is out of focus, showing blurred figures of spectators in a stadium setting.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "KLISHINA",
+      "1 Klishina 6.91",
+      "2 Reese 6.76",
+      "3 Vuleta 6.71",
+      "WORLD LEAD",
+      "6.91"
+    ],
+    "spatial": "The female athlete is positioned on the right half of the frame, facing the camera. A digital information overlay occupies the middle-left portion of the screen. The background is a blurred stadium crowd.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Athlete's gaze shifts from downwards to forward"
+    ]
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "Female athlete with blonde hair in a high ponytail, wearing a pink sleeveless athletic top with a white bib.",
+        "action": "Looking downwards with a focused expression, standing still.",
+        "position": "Center-right of the frame, occupying the foreground.",
+        "id": "athlete_main"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The athlete is wearing a pink top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete has blonde hair tied in a ponytail.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'KLISHINA' is visible on the athlete's bib.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background is out of focus, showing blurred shapes of spectators.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "KLISHINA"
+    ],
+    "spatial": "The athlete is positioned in the foreground, slightly to the right of the center. The background is a blurred crowd, suggesting a stadium setting.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Athlete's gaze shifts from forward to downwards"
+    ]
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "Female athlete with blonde hair in a high ponytail, wearing a pink sleeveless athletic top with a white bib.",
+        "action": "Looking down in the first frame, then lifting head to look forward in the second frame.",
+        "position": "Center-right foreground",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "Blurred crowd of spectators in the background.",
+        "action": "Sitting or standing in the stands.",
+        "position": "Background, left and center",
+        "id": "crowd_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The athlete is wearing a pink tank top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete has blonde hair tied up in a ponytail.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete's bib has the name 'KLISHINA' printed on it.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete changes her head position from looking down to looking forward between the two frames.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background is out of focus, indicating a shallow depth of field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "KLISHINA"
+    ],
+    "spatial": "The female athlete is the main subject, positioned in the foreground on the right side of the frame. The background consists of a blurred crowd, occupying the left and central parts of the frame behind the athlete.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Athlete lifts head to look forward"
+    ]
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "Female athlete with blonde hair tied back, wearing a pink sleeveless athletic top with a white bib",
+        "action": "standing and looking forward with a focused expression",
+        "position": "center of the frame",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "Person wearing a dark cap, partially visible",
+        "action": "standing in the background",
+        "position": "right side of the frame",
+        "id": "person_dark"
+      },
+      {
+        "desc": "Person with blonde hair, partially visible",
+        "action": "standing in the background",
+        "position": "bottom left corner of the second frame",
+        "id": "athlete_main"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The central athlete is wearing a pink top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete has a competition bib on her chest.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The name 'KLISHINA' is printed on the bib.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete has blonde hair pulled back.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background is out of focus, suggesting a stadium environment.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "KLISHINA"
+    ],
+    "spatial": "The main subject, a female athlete, is positioned in the center of the frame. Other individuals are partially visible in the background on the right and bottom left. The background is blurred, indicating depth.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "Female athlete with blonde hair pulled back, wearing a pink sleeveless athletic top with a white bib",
+        "action": "standing or walking slowly, looking forward with a focused expression",
+        "position": "center-right foreground",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "Person wearing a dark beanie and dark clothing",
+        "action": "standing in the background, facing away or to the side",
+        "position": "bottom-left background",
+        "id": "person_dark"
+      },
+      {
+        "desc": "Blurred crowd or spectators",
+        "action": "sitting or standing in the background",
+        "position": "background",
+        "id": "crowd_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The central figure is a female athlete wearing a pink top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete has a white bib attached to her chest.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'KLISHINA' is visible on the athlete's bib.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete's hair is blonde and pulled back tightly.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A person in a dark beanie is visible in the lower left corner.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "KLISHINA"
+    ],
+    "spatial": "The female athlete dominates the center-right of the frame. A blurred figure is in the lower-left foreground, and a crowd forms the out-of-focus background.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Athlete transitions from standing to walking slowly"
+    ]
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "A female athlete with blonde hair pulled back, wearing a bright pink sleeveless athletic top with a white bib.",
+        "action": "Running forward with a focused expression, arms pumping.",
+        "position": "Center-right foreground",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "Blurred crowd of spectators in the background.",
+        "action": "Sitting or standing, out of focus.",
+        "position": "Background, left and right sides",
+        "id": "crowd_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The athlete is wearing a pink top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'KLISHINA' is visible on the athlete's bib.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'MAZDA' is visible above the name on the bib.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete has blonde hair.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "MAZDA",
+      "KLISHINA"
+    ],
+    "spatial": "The athlete is the primary subject in the foreground, positioned slightly to the right of center. The background is heavily blurred, indicating a shallow depth of field, with indistinct shapes of a crowd filling the rest of the frame.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Athlete transitions to running forward"
+    ]
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      68,
+      70
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing a pink top and dark shorts",
+        "action": "Landing in the sandpit after a jump, body angled forward with legs extended",
+        "position": "Center foreground, in the sandpit area"
+      },
+      {
+        "desc": "Four individuals wearing blue jackets",
+        "action": "Sitting or crouching on the grass, observing the event",
+        "position": "Middle ground, behind the sandpit on the grass",
+        "id": "officials_blue"
+      },
+      {
+        "desc": "Person wearing dark clothing",
+        "action": "Standing and walking",
+        "position": "Far right background on the grass",
+        "id": "person_dark"
+      },
+      {
+        "desc": "White rectangular board",
+        "action": "Stationary",
+        "position": "Behind the sandpit, in front of the seated individuals",
+        "id": "white_board"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in pink is in the middle of landing a long jump or triple jump into a sandpit.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are at least four officials or observers seated on the grass behind the pit.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The event is taking place on an athletics track with a red running surface and a green grass infield.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "White lines mark the lanes or measurement areas on the track surface.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The foreground is dominated by the reddish-brown track surface and the sandpit. The middle ground consists of a green grass area where several people are seated. The background shows more of the green field.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Athlete lands in sandpit after jump"
+    ]
+  },
+  {
+    "time": [
+      70,
+      72
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      72,
+      74
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with blonde hair tied in a ponytail with a white scrunchie, wearing a bright pink sleeveless top",
+        "action": "standing in profile facing right, slight head movement",
+        "position": "center-left of the frame"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman has blonde hair pulled back into a ponytail.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A white hair tie or scrunchie is visible at the base of the ponytail.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman is wearing a bright pink top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background is a solid green field, likely grass.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A faint, blurry logo is visible in the upper right corner.",
+        "confidence": 0.6,
+        "target_resolution_visible": false
+      }
+    ],
+    "ocr": [],
+    "spatial": "A woman is positioned in the left and center of the frame against a uniform green background. A small, indistinct logo is in the top right corner.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Athlete standing in profile post-jump"
+    ]
+  },
+  {
+    "time": [
+      74,
+      76
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      76,
+      78
+    ],
+    "visible_entities": [
+      {
+        "desc": "white athletic shoe",
+        "action": "stepping onto a white surface",
+        "position": "right side of frame",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "white rectangular surface with text",
+        "action": "stationary on ground",
+        "position": "center foreground",
+        "id": "white_board"
+      },
+      {
+        "desc": "red and green bordered object",
+        "action": "stationary",
+        "position": "left side of frame",
+        "id": "object_red_green"
+      },
+      {
+        "desc": "lower legs and shoes of people",
+        "action": "standing in background",
+        "position": "top background",
+        "id": "crowd_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A white shoe is making contact with a white rectangular surface.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The word 'NORDIC' is printed in black capital letters on the white surface.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The white surface appears to be a runway or mat.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are at least two other people standing in the background.",
+        "confidence": 0.9,
+        "target_resolution_visible": false
+      }
+    ],
+    "ocr": [
+      "NORDIC"
+    ],
+    "spatial": "A white runway-like surface with the text 'NORDIC' is in the center foreground. A foot in a white shoe is stepping onto it from the right. A red and green object borders the left side. The lower legs of other individuals are visible in the blurry background.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Close-up of athletic shoe stepping onto white surface"
+    ]
+  },
+  {
+    "time": [
+      78,
+      80
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      80,
+      82
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      82,
+      84
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      84,
+      86
+    ],
+    "visible_entities": [
+      {
+        "desc": "athlete wearing pink and white uniform",
+        "action": "landing in the sand pit after a jump",
+        "position": "center-right",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "official wearing blue jacket",
+        "action": "sitting on a chair observing",
+        "position": "right side",
+        "id": "officials_blue"
+      },
+      {
+        "desc": "official wearing blue jacket",
+        "action": "sitting on a chair observing",
+        "position": "left side",
+        "id": "officials_blue"
+      },
+      {
+        "desc": "official wearing blue jacket",
+        "action": "sitting on a chair observing",
+        "position": "far left",
+        "id": "officials_blue"
+      },
+      {
+        "desc": "official wearing black and white clothing",
+        "action": "standing in the background",
+        "position": "background center"
+      },
+      {
+        "desc": "red running track with white lane markings",
+        "action": "stationary",
+        "position": "foreground",
+        "id": "track_1"
+      },
+      {
+        "desc": "green grass field",
+        "action": "stationary",
+        "position": "background",
+        "id": "grass_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "An athlete in a pink and white uniform is completing a long jump or triple jump, landing in a sand pit.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Several officials in blue jackets are seated around the sand pit area.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The event is taking place on a red athletics track with a green infield.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The foreground shows a red running track with white lines. In the mid-ground, there is a sand pit where an athlete is landing. Officials are seated on both sides of the pit. The background consists of a green grass field.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Athlete in pink/white uniform landing in sand pit"
+    ]
+  },
+  {
+    "time": [
+      86,
+      88
+    ],
+    "visible_entities": [
+      {
+        "desc": "Athlete wearing a white top and dark shorts",
+        "action": "landing in the sand pit after a jump, body angled forward with legs extended",
+        "position": "center foreground",
+        "id": "athlete_white"
+      },
+      {
+        "desc": "Person wearing a blue jacket",
+        "action": "sitting on a chair",
+        "position": "background left",
+        "id": "officials_blue"
+      },
+      {
+        "desc": "Person wearing a blue jacket",
+        "action": "sitting on a chair",
+        "position": "background center-left",
+        "id": "officials_blue"
+      },
+      {
+        "desc": "Person wearing a blue jacket",
+        "action": "sitting on a chair",
+        "position": "background center-right",
+        "id": "officials_blue"
+      },
+      {
+        "desc": "Person wearing a blue jacket",
+        "action": "sitting on a chair",
+        "position": "background right",
+        "id": "officials_blue"
+      },
+      {
+        "desc": "Person wearing dark clothing",
+        "action": "standing",
+        "position": "background far right",
+        "id": "person_dark"
+      },
+      {
+        "desc": "White rectangular board",
+        "action": "placed on the ground",
+        "position": "center background near sand pit",
+        "id": "white_board"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "An athlete is in the middle of landing in a sand pit.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Four individuals in blue jackets are seated in a row behind the sand pit.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A white board is positioned near the edge of the sand pit.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The event is taking place on an athletic track with a grass infield.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The scene shows a long jump pit in the foreground with a reddish-brown track. Behind the pit is a green grass field where several officials or spectators are seated. The athlete is the central focus, captured mid-landing.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Different athlete in white top/dark shorts landing in sand pit"
+    ]
+  },
+  {
+    "time": [
+      88,
+      90
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      90,
+      92
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      92,
+      94
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      94,
+      96
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      96,
+      98
+    ],
+    "visible_entities": [
+      {
+        "desc": "Female athlete with blonde hair in a ponytail, wearing a pink sleeveless top",
+        "action": "standing on the track, facing left",
+        "position": "right foreground",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "Person wearing a white shirt and blue cap",
+        "action": "sitting or crouching near the track",
+        "position": "bottom left foreground",
+        "id": "person_white_cap"
+      },
+      {
+        "desc": "Person in dark clothing",
+        "action": "standing on the track",
+        "position": "middle left background",
+        "id": "person_dark"
+      },
+      {
+        "desc": "Crowd of spectators",
+        "action": "sitting in stadium stands",
+        "position": "background",
+        "id": "crowd_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A female athlete with blonde hair tied in a ponytail is visible in the foreground.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete is wearing a pink sleeveless top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A scoreboard graphic is overlaid at the bottom of the screen.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The event is taking place in a stadium at night under floodlights.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The track surface is reddish-brown.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'EPSON' is visible on a banner in the background.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "EPSON"
+    ],
+    "spatial": "The female athlete is in the right foreground, with a person in a white shirt to her left in the lower foreground. The track extends behind them, with another person standing further back on the left. The background is filled with stadium seating and spectators under bright lights.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Athlete standing on track facing left"
+    ]
+  },
+  {
+    "time": [
+      98,
+      100
+    ],
+    "visible_entities": [
+      {
+        "desc": "Female athlete with blonde hair tied back, wearing a pink sleeveless top with a race bib attached",
+        "action": "standing on the track, looking slightly to the left, breathing heavily",
+        "position": "center-right foreground",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "Person in dark clothing",
+        "action": "standing in the background",
+        "position": "mid-left background",
+        "id": "person_dark"
+      },
+      {
+        "desc": "Crowd of spectators",
+        "action": "sitting in the stands",
+        "position": "background",
+        "id": "crowd_1"
+      },
+      {
+        "desc": "Digital scoreboard overlay",
+        "action": "displaying race results",
+        "position": "bottom center",
+        "id": "scoreboard_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The athlete is wearing a pink top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete has blonde hair.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The scoreboard shows 'PORTIL' at the bottom.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The scoreboard lists names including 'S. SEMENOVA' and 'M. KUCHERENKO'.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The event is taking place at night under stadium lights.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete is wearing a race bib with a number.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "S. SEMENOVA",
+      "M. KUCHERENKO",
+      "PORTIL"
+    ],
+    "spatial": "The female athlete dominates the right foreground. A digital scoreboard overlay is positioned at the bottom center of the frame. In the mid-left background, another person stands on the track. The background is filled with stadium seating and spectators under bright lights.",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Athlete breathing heavily post-exertion"
+    ]
+  },
+  {
+    "time": [
+      100,
+      102
+    ],
+    "visible_entities": [
+      {
+        "desc": "Female athlete with blonde hair tied back, wearing a pink sleeveless top and holding a white towel or cloth.",
+        "action": "Standing on a red running track, looking slightly to her left, breathing heavily.",
+        "position": "Center-right foreground",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "Person wearing dark clothing (black shirt and pants).",
+        "action": "Standing still on the track.",
+        "position": "Far left background",
+        "id": "person_dark"
+      },
+      {
+        "desc": "Crowd of spectators.",
+        "action": "Sitting in stadium stands.",
+        "position": "Background",
+        "id": "crowd_1"
+      },
+      {
+        "desc": "Digital scoreboard overlay.",
+        "action": "Displaying race results and athlete information.",
+        "position": "Lower center of the screen",
+        "id": "scoreboard_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A female athlete with blonde hair is standing on a red running track.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete is wearing a pink sleeveless top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete is holding a white cloth or towel in her left hand.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A digital overlay at the bottom of the screen displays race results.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'PORTUGAL' is visible on the scoreboard overlay.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'WOMEN 1500m' is visible on the scoreboard overlay.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Stadium lights are illuminated above the stands.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A person in dark clothing is standing on the track to the left.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "WOMEN 1500m",
+      "1. KEN 4:02.59",
+      "2. ETH 4:02.67",
+      "3. ETH 4:02.89",
+      "4. ETH 4:03.01",
+      "5. ETH 4:03.24",
+      "6. POR 4:03.32",
+      "PORTUGAL"
+    ],
+    "spatial": "The female athlete is the main subject in the foreground, positioned slightly to the right of the center. A digital scoreboard is overlaid at the bottom of the frame. In the background, stadium stands filled with spectators are visible under bright lights. Another person stands further back on the track to the far left.",
+    "parse_success": true,
+    "chunk_idx": 50,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Athlete holding a white towel or cloth"
+    ]
+  },
+  {
+    "time": [
+      102,
+      104
+    ],
+    "visible_entities": [
+      {
+        "desc": "Female athlete with blonde hair in a ponytail, wearing a pink tank top with white trim and white shorts",
+        "action": "standing on the track, looking to the right, holding a white towel or cloth",
+        "position": "center-right foreground",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "Crowd of spectators",
+        "action": "seated in stadium stands",
+        "position": "background left and center",
+        "id": "crowd_1"
+      },
+      {
+        "desc": "Stadium floodlights",
+        "action": "illuminating the track",
+        "position": "top center background",
+        "id": "lights_1"
+      },
+      {
+        "desc": "Digital scoreboard overlay",
+        "action": "displaying race results",
+        "position": "bottom center",
+        "id": "scoreboard_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A female athlete with blonde hair tied back is standing on a red running track.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete is wearing a pink sleeveless top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete is holding a white cloth or towel in her left hand.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A digital overlay at the bottom of the screen displays race results with names and times.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The word 'PORTIL' is visible in the overlay graphics.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Stadium lights are on, indicating an evening or night event.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Spectators are visible in the stands in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "PORTIL",
+      "100m",
+      "WOMEN"
+    ],
+    "spatial": "The female athlete is the primary subject in the foreground, positioned slightly to the right of center. Behind her, the red track curves away to the left. The background is filled with stadium seating occupied by spectators, rising up towards the top of the frame where bright stadium lights are visible against a dark sky. A digital information graphic is overlaid at the bottom center of the screen.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Athlete's gaze shifts to the right"
+    ]
+  },
+  {
+    "time": [
+      104,
+      106
+    ],
+    "visible_entities": [
+      {
+        "desc": "Female athlete with blonde hair in a ponytail, wearing a pink sleeveless top and white shorts",
+        "action": "standing on the track, looking to the side, then turning head forward",
+        "position": "center foreground",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "Crowd of spectators in stadium seating",
+        "action": "sitting in the background",
+        "position": "background upper left",
+        "id": "crowd_1"
+      },
+      {
+        "desc": "Stadium lights",
+        "action": "illuminating the track",
+        "position": "top center background",
+        "id": "lights_1"
+      },
+      {
+        "desc": "Digital scoreboard overlay",
+        "action": "displaying race results",
+        "position": "bottom center",
+        "id": "scoreboard_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A female athlete with blonde hair tied back is standing on a red running track.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete is wearing a pink tank top and white shorts.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A digital overlay at the bottom of the screen shows race results with names and times.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The name 'Shelly-Ann FRASER' is visible in the results list.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A yellow box with '+ 1.2' is visible in the bottom right corner.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete turns her head from looking left to looking forward between the two frames.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Shelly-Ann FRASER",
+      "JAM",
+      "10.71",
+      "Carmelita JETER",
+      "USA",
+      "10.75",
+      "Veronica CAMPBELL-BROWN",
+      "JAM",
+      "10.76",
+      "+ 1.2"
+    ],
+    "spatial": "The female athlete is the central focus in the foreground on a red track. Behind her, stadium seating with spectators rises into the background. A digital information bar is overlaid at the bottom of the frame.",
+    "parse_success": true,
+    "chunk_idx": 52,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Athlete turns head forward"
+    ]
+  },
+  {
+    "time": [
+      106,
+      108
+    ],
+    "visible_entities": [
+      {
+        "desc": "Female athlete with blonde hair tied in a ponytail, wearing a pink sleeveless top",
+        "action": "standing and looking towards the left",
+        "position": "right foreground",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "Crowd of spectators in stadium seating",
+        "action": "sitting in the background",
+        "position": "upper background",
+        "id": "crowd_1"
+      },
+      {
+        "desc": "Red running track with white lane markings",
+        "action": "stationary surface",
+        "position": "lower mid-ground",
+        "id": "track_1"
+      },
+      {
+        "desc": "Digital scoreboard overlay with colored bars and text",
+        "action": "displaying race results",
+        "position": "lower center",
+        "id": "scoreboard_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A blonde female athlete is visible in the foreground wearing a pink top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The athlete has her hair pulled back in a ponytail.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A digital scoreboard overlay is present at the bottom of the screen showing names and times.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background shows a stadium filled with spectators under artificial lighting.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The track surface is red with white lane lines.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Text on the scoreboard includes names like 'J. LUKMAN' and 'B. KOTULA'.",
+        "confidence": 0.6,
+        "target_resolution_visible": false
+      }
+    ],
+    "ocr": [
+      "J. LUKMAN",
+      "B. KOTULA",
+      "6.24",
+      "6.18",
+      "6.13",
+      "6.10",
+      "5.91"
+    ],
+    "spatial": "The female athlete dominates the right foreground, facing left. The red track stretches horizontally across the lower mid-ground. Behind the track, blurred stadium seating filled with spectators rises into the background. A digital scoreboard overlay is superimposed at the bottom center of the frame.",
+    "parse_success": true,
+    "chunk_idx": 53,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Athlete's gaze shifts towards the left"
+    ]
+  },
+  {
+    "time": [
+      108,
+      110
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 54,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      110,
+      112
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 55,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      112,
+      114
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 56,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      114,
+      116
+    ],
+    "visible_entities": [
+      {
+        "desc": "Female athlete with blonde hair in a ponytail, wearing a pink tank top with white trim",
+        "action": "standing in profile facing left",
+        "position": "right foreground",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "Crowd of spectators in stadium seating",
+        "action": "seated in background",
+        "position": "background left and center",
+        "id": "crowd_1"
+      },
+      {
+        "desc": "White advertising banners with black text",
+        "action": "displayed along track barrier",
+        "position": "mid-ground left",
+        "id": "banners_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A blonde woman in a pink top is visible in the foreground.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman has her hair tied back in a ponytail.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Advertising banners are visible along the track barrier.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'Myresjöhus' is visible on one of the banners.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Spectators are seated in the stadium stands in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Myresjöhus"
+    ],
+    "spatial": "The athlete is positioned in the right foreground, facing left towards the track. The track barrier with advertising banners runs horizontally across the mid-ground. The stadium seating filled with spectators occupies the background on the left side.",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  },
+  {
+    "time": [
+      116,
+      118
+    ],
+    "visible_entities": [
+      {
+        "desc": "A person with long blonde hair tied in a high ponytail, wearing a pink sleeveless top.",
+        "action": "Standing in profile, looking down and slightly to the left.",
+        "position": "Right foreground",
+        "id": "athlete_main"
+      },
+      {
+        "desc": "A large crowd of spectators seated in stadium stands.",
+        "action": "Watching the event.",
+        "position": "Background",
+        "id": "crowd_1"
+      },
+      {
+        "desc": "A reddish-brown running track surface.",
+        "action": "Stationary.",
+        "position": "Midground",
+        "id": "track_1"
+      },
+      {
+        "desc": "Advertising banners along the track barrier.",
+        "action": "Stationary.",
+        "position": "Midground, behind the track",
+        "id": "banners_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person with blonde hair in a ponytail is visible in the right foreground.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person is wearing a pink top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'Myresjöhus' is visible on a white banner in the background.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'i-Club' is partially visible on a banner to the left of 'Myresjöhus'.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The event is taking place in a stadium with tiered seating filled with people.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Myresjöhus",
+      "i-Club"
+    ],
+    "spatial": "The frame is dominated by a person in the right foreground. Behind them is a running track, and beyond that are advertising banners and stadium stands filled with a crowd.",
+    "parse_success": true,
+    "chunk_idx": 58,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": [
+      "Athlete looking down and slightly to the left"
+    ]
+  },
+  {
+    "time": [
+      118,
+      120
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 59,
+    "video_id": "v_d7gTlJhEwrM",
+    "state_changes": []
+  }
+]

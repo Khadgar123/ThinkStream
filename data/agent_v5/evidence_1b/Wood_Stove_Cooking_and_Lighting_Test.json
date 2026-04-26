@@ -1,0 +1,2308 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing a dark long-sleeved top and a white bracelet",
+        "action": "gesturing with right hand towards the stove top",
+        "position": "left side of frame",
+        "id": "person_1"
+      },
+      {
+        "desc": "Grey wood-burning stove with a glass door and a temperature gauge",
+        "action": "stationary",
+        "position": "center and right foreground",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Two round, grey, cushion-like objects with metal springs underneath",
+        "action": "resting on the stove top",
+        "position": "center on the stove surface",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Shiny silver metal stove pipe",
+        "action": "extending vertically from the stove",
+        "position": "center background",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Small black heat-powered fan",
+        "action": "stationary",
+        "position": "back right corner of the stove",
+        "id": "fan_1"
+      },
+      {
+        "desc": "Light-colored wooden paneling on the walls",
+        "action": "stationary",
+        "position": "background",
+        "id": "wall_1"
+      },
+      {
+        "desc": "Framed picture on the wall",
+        "action": "stationary",
+        "position": "upper left background",
+        "id": "picture_1"
+      },
+      {
+        "desc": "Woven basket",
+        "action": "stationary",
+        "position": "bottom left corner",
+        "id": "basket_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person's right hand is extended over the left cushion-like object on the stove.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The stove has a glass door on the left side and a solid door with a gauge on the right.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The two objects on the stove are identical in shape and color.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A heat-powered fan with black blades is visible on the back right of the stove.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The wall behind the stove is covered in vertical wooden planks.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "A person stands to the left, gesturing towards a grey wood stove that occupies the center and right of the frame. The stove sits against a wood-paneled wall, with a silver flue pipe rising behind it. Two cushion-like objects rest on the stove's top surface.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": [
+      "Scene content begins: Person gesturing towards stove with objects on top"
+    ]
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing a dark long-sleeved top and a light-colored bracelet",
+        "action": "reaching out and touching the top surface of the stove, then moving hand down to point at the side door",
+        "position": "left side of the frame",
+        "id": "person_1"
+      },
+      {
+        "desc": "Large grey cast-iron stove with two circular hotplates on top, a glass-fronted oven door on the left, and a solid door on the right",
+        "action": "stationary",
+        "position": "center of the frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Woven wicker basket",
+        "action": "stationary",
+        "position": "bottom left corner",
+        "id": "basket_1"
+      },
+      {
+        "desc": "Woven wicker basket containing a green object",
+        "action": "stationary",
+        "position": "bottom right corner",
+        "id": "basket_1"
+      },
+      {
+        "desc": "Small black fan",
+        "action": "stationary",
+        "position": "top right, behind the stove",
+        "id": "fan_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The stove has the word 'ESSE' embossed on the right-hand door.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'THE IRONHEART' is visible on the lower front panel of the stove.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Two round, fabric-covered objects, possibly pot holders or lids, are resting on the stovetop.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The wall behind the stove is paneled with light-colored wood.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A white electrical socket is visible on the wooden wall to the right.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "ESSE",
+      "THE IRONHEART"
+    ],
+    "spatial": "The grey stove is the central focus. A person's arm enters from the left to interact with it. Wicker baskets are on the floor on either side of the stove. The background consists of wooden paneling.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": [
+      "Person touches stove and points to door; baskets appear"
+    ]
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person's arm wearing a dark grey long-sleeved top with a white cuff or bracelet",
+        "action": "Reaching out and touching the top surface of a grey stove",
+        "position": "Left side of the frame, extending towards the center",
+        "id": "person_1"
+      },
+      {
+        "desc": "Large grey cast-iron stove with multiple doors and a flat top surface",
+        "action": "Stationary, being touched by a hand",
+        "position": "Center of the frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Two round, grey, cushion-like objects with ribbed edges",
+        "action": "Resting on top of the stove",
+        "position": "Top surface of the stove",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Woven wicker basket",
+        "action": "Sitting on the floor",
+        "position": "Bottom right corner",
+        "id": "basket_1"
+      },
+      {
+        "desc": "Woven wicker basket",
+        "action": "Sitting on the floor",
+        "position": "Bottom left, partially visible",
+        "id": "basket_1"
+      },
+      {
+        "desc": "Small metal fan on a stand",
+        "action": "Stationary on the back of the stove",
+        "position": "Top right rear of the stove",
+        "id": "fan_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person's hand is placed on one of the round objects on top of the stove.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The stove has the brand name 'ESSE' embossed on the front right door.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The stove has a glass-fronted door on the left side.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'THE IRONMASTER' is visible on the lower right door of the stove.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The walls are paneled with light-colored wood.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "ESSE",
+      "THE IRONMASTER"
+    ],
+    "spatial": "A large grey stove dominates the center of the frame. A person's arm enters from the left to touch the top of the stove. Wicker baskets are on the floor on either side of the stove. The background consists of wood-paneled walls.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "Grey metal wood-burning stove with glass door and 'ESSE' logo",
+        "action": "being opened by a hand",
+        "position": "center and right of frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Person's arm wearing dark grey long sleeve",
+        "action": "grasping and pulling the stove door handle",
+        "position": "left side of frame",
+        "id": "person_1"
+      },
+      {
+        "desc": "Two round metal lids with coiled wire handles",
+        "action": "resting on top of the stove",
+        "position": "top center of frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Dark interior of the stove oven",
+        "action": "revealed as door opens",
+        "position": "inside the stove",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Woven basket",
+        "action": "sitting on the floor",
+        "position": "bottom right corner",
+        "id": "basket_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand grasps the handle of the left-side stove door.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The stove door is opened, revealing a dark interior with a metal grate.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The brand name 'ESSE' is embossed on the right-side door.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A round temperature gauge is mounted above the 'ESSE' logo.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Two flat, round lids with spring-like handles sit on the stovetop.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Text reading 'THE IRONHEART' is visible on the bottom right panel.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "ESSE",
+      "THE IRONHEART"
+    ],
+    "spatial": "The grey stove dominates the center of the frame. A person's arm enters from the left to interact with the stove's left door. The right side of the stove features branding and a temperature gauge. A basket is partially visible in the bottom right corner against a wooden wall.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": [
+      "Person grasps and pulls stove door handle (opening)"
+    ]
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "gray metal wood-burning stove with a flat top surface and two circular burner-like objects on top",
+        "action": "stationary, firebox door open revealing interior grate and ash",
+        "position": "center and right of frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "open firebox door with a glass window pane",
+        "action": "hinged open to the left",
+        "position": "left side of frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "metal grate inside the firebox",
+        "action": "holding ash and remnants of burnt material",
+        "position": "inside the open firebox compartment",
+        "id": "grate_1"
+      },
+      {
+        "desc": "silver metal rail or handle",
+        "action": "attached horizontally along the top front edge of the stove",
+        "position": "top center of frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "wooden wall paneling",
+        "action": "stationary background",
+        "position": "upper left background",
+        "id": "wall_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The stove has a decorative 'ESS' logo embossed on the right-side door.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The firebox interior contains a bed of gray ash and charred material.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There is a small latch mechanism visible above the firebox opening.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Two circular metal objects, possibly burners or lids, sit on the stovetop.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "ESS"
+    ],
+    "spatial": "The gray stove dominates the foreground, with the open firebox door extending to the left edge. The top surface features a horizontal rail and circular objects. Wooden paneling is visible in the background on the left.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": [
+      "Stove door fully open revealing ash and grate inside"
+    ]
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "grey metal wood-burning stove with a silver rail on top",
+        "action": "standing stationary with the left door open",
+        "position": "center and right of frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "open stove door with a glass window",
+        "action": "hinged open to the left",
+        "position": "left side of frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "closed stove door with a silver handle and decorative scrollwork",
+        "action": "closed",
+        "position": "right side of the stove front",
+        "id": "stove_1"
+      },
+      {
+        "desc": "pile of grey ash and charred wood remnants",
+        "action": "resting on the grate inside the firebox",
+        "position": "inside the central firebox opening",
+        "id": "ash_1"
+      },
+      {
+        "desc": "metal grate with vertical bars",
+        "action": "supporting the ash pile",
+        "position": "bottom of the firebox",
+        "id": "grate_1"
+      },
+      {
+        "desc": "wooden wall panels",
+        "action": "forming the background",
+        "position": "left background",
+        "id": "wall_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The stove has a central firebox opening that is currently open.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Ash and burnt material are visible inside the firebox.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The stove has a polished metal rail running along the top front edge.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The left door of the stove has a glass panel that is discolored or dirty.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The right door features an ornate, scrolled metal handle.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "A grey metal stove dominates the center and right of the frame. Its left door is swung open towards the left edge, revealing the interior firebox containing ash on a grate. A second, closed door is on the right side of the stove front. A wooden wall is visible in the background on the far left.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "Grey metal wood-burning stove with a chrome rail along the top edge",
+        "action": "stationary, firebox door open revealing ash and grate inside",
+        "position": "center and right of frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Open metal door with a glass window pane",
+        "action": "hinged open to the left",
+        "position": "left side of frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Metal cooking pots or kettles",
+        "action": "sitting on the stovetop",
+        "position": "top edge of frame",
+        "id": "pot_1"
+      },
+      {
+        "desc": "Grey metal ash grate",
+        "action": "visible at the bottom of the firebox",
+        "position": "bottom center inside the stove opening",
+        "id": "grate_1"
+      },
+      {
+        "desc": "Grey ash and charred wood remnants",
+        "action": "resting on the grate inside the firebox",
+        "position": "center inside the stove opening",
+        "id": "ash_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The stove has a rectangular opening for the firebox which is currently open.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There is a bed of grey ash inside the firebox.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A chrome or polished metal rail runs horizontally along the top front of the stove.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Decorative metal script lettering is visible on the right-hand door panel.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The firebox door is hinged on the left side.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The stove dominates the frame, with an open door on the left revealing the interior ash bed. The top surface holds cookware, and a closed door with a handle is on the right side.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": [
+      "Metal cooking pots appear on stovetop"
+    ]
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "A grey metal wood-burning stove with multiple doors. The central firebox door is open, revealing a grate covered in grey ash and charred wood remnants. To the left, a glass-fronted door is swung open. To the right, a closed door with a silver handle and decorative embossed pattern is visible.",
+        "action": "stationary, displaying the interior of the firebox",
+        "position": "center and right of frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "A wicker basket",
+        "action": "sitting on the floor",
+        "position": "bottom left corner, partially visible",
+        "id": "basket_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The central firebox contains a metal grate with accumulated grey ash and blackened wood pieces.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The stove has a matte grey finish.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The door on the right features a curved silver handle and a raised decorative scroll design.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The interior walls of the firebox appear dark and soot-stained.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A wicker basket is partially visible in the lower left corner.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The stove dominates the frame. The open firebox is in the center. An open door with a glass pane is on the far left edge. A closed compartment door is on the right side. A small portion of a wicker basket is visible on the floor in the bottom left.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "grey metal stove body with open doors",
+        "action": "stationary",
+        "position": "center and right",
+        "id": "stove_1"
+      },
+      {
+        "desc": "open left door with glass window",
+        "action": "hinged open",
+        "position": "left edge",
+        "id": "stove_1"
+      },
+      {
+        "desc": "closed right door with decorative handle",
+        "action": "stationary",
+        "position": "right side",
+        "id": "stove_1"
+      },
+      {
+        "desc": "ash and debris pile inside firebox",
+        "action": "resting on grate",
+        "position": "center interior",
+        "id": "ash_1"
+      },
+      {
+        "desc": "metal grate bars",
+        "action": "supporting ash",
+        "position": "bottom of firebox",
+        "id": "grate_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The stove has a grey metallic finish.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The firebox interior contains a pile of grey ash.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A metal grate is visible at the bottom of the firebox.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The left door is open, revealing a glass pane.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The right door is closed and features a silver handle.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The stove occupies the majority of the frame. The open firebox is central, flanked by the open left door on the left edge and the closed right door on the right side.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "A human hand with light skin tone, wearing a grey sleeve cuff.",
+        "action": "Grasping and turning a metal handle on the left door of the appliance.",
+        "position": "Lower left quadrant of the frame.",
+        "id": "person_1"
+      },
+      {
+        "desc": "A large, grey metal appliance, likely a stove or oven, featuring two doors.",
+        "action": "Stationary in the frame.",
+        "position": "Center and right of the frame.",
+        "id": "stove_1"
+      },
+      {
+        "desc": "A circular temperature gauge with a white face and red needle.",
+        "action": "Mounted on the right door.",
+        "position": "Upper right quadrant of the right door.",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Raised, stylized metal lettering.",
+        "action": "Affixed to the right door.",
+        "position": "Center of the right door.",
+        "id": "stove_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is turning the handle of the left door counter-clockwise.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The right door features the brand name 'ESSE' in raised metal letters.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The appliance has a polished chrome rail along the top edge.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The left door has a glass window panel.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "ESSE"
+    ],
+    "spatial": "The frame is a close-up of a grey metal stove. The left side features a door with a glass window and a handle being operated by a hand. The right side features a solid door with a temperature gauge at the top and the brand name 'ESSE' below it. A chrome rail runs across the top of the unit.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": [
+      "Person turns metal handle on stove door"
+    ]
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "Grey metal stove with glass door on left and solid door on right, featuring silver handles and a temperature gauge",
+        "action": "stationary",
+        "position": "center and right of frame"
+      },
+      {
+        "desc": "Reflection of a person wearing a blue sleeve",
+        "action": "visible in glass reflection",
+        "position": "left side within stove glass door",
+        "id": "person_1"
+      },
+      {
+        "desc": "Woven basket material",
+        "action": "stationary",
+        "position": "bottom left edge",
+        "id": "basket_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The stove has the brand name 'ESSE' embossed on the right door.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A circular temperature gauge is mounted on the upper right door.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The stove features two distinct doors with lever-style handles.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A chrome or silver rail runs along the top edge of the stove.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "ESSE"
+    ],
+    "spatial": "The stove dominates the frame, with a glass-fronted compartment on the left and a solid oven door with a gauge on the right. A woven object is partially visible at the bottom left corner.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "Large grey metallic stove with multiple doors",
+        "action": "stationary",
+        "position": "center and right of frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Glass window on the left door of the stove",
+        "action": "showing interior",
+        "position": "left-center",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Silver metal handles/latches",
+        "action": "attached to doors",
+        "position": "center",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Round temperature gauge with red needle",
+        "action": "mounted on door",
+        "position": "upper right",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Raised silver logo text",
+        "action": "attached to door",
+        "position": "right side",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Wicker basket",
+        "action": "sitting on floor",
+        "position": "far left edge",
+        "id": "basket_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The object is a grey metal stove with the brand name ESSE.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There is a temperature gauge on the upper right door.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'THE ORIGINAL' is visible on the lower panel.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A wicker basket is partially visible to the left of the stove.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "ESSE",
+      "THE ORIGINAL"
+    ],
+    "spatial": "The frame is dominated by a grey metal stove. The left side features a door with a glass window, while the right side features a solid door with a temperature gauge and embossed logo. A wicker basket is visible on the floor to the left.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "large grey metal stove with two main compartments",
+        "action": "stationary, fire burning inside left compartment",
+        "position": "center and right of frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "rectangular glass door with grey metal frame and handle",
+        "action": "enclosing fire",
+        "position": "left side of stove front",
+        "id": "stove_1"
+      },
+      {
+        "desc": "solid grey metal door with handle, temperature gauge, and embossed logo",
+        "action": "closed",
+        "position": "right side of stove front",
+        "id": "stove_1"
+      },
+      {
+        "desc": "wicker basket",
+        "action": "stationary",
+        "position": "far left edge of frame",
+        "id": "basket_1"
+      },
+      {
+        "desc": "human hand",
+        "action": "touching top edge of stove",
+        "position": "top left corner (visible in first frame)",
+        "id": "person_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The stove features the brand name 'ESSE' in raised metal lettering on the right door.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Orange and yellow flames are visible through the glass door on the left.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A circular temperature gauge is mounted on the upper right door.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A silver metal rail runs along the top edge of the stove.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "ESSE"
+    ],
+    "spatial": "The grey stove dominates the view, split into a left glass door section and a right solid door section. A wicker basket is partially visible on the far left. A hand appears briefly at the top left.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": [
+      "Fire visible burning inside stove compartment"
+    ]
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "human hand and wrist wearing a white bracelet",
+        "action": "reaching towards and pointing at a small latch on the appliance",
+        "position": "bottom left corner",
+        "id": "person_1"
+      },
+      {
+        "desc": "large grey metallic wood stove with rectangular doors and a glass window",
+        "action": "stationary",
+        "position": "center and right, filling most of the frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "small metal latch or knob",
+        "action": "being pointed at",
+        "position": "bottom edge of the central rectangular door",
+        "id": "stove_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand points to a small latch mechanism located at the bottom center of a rectangular metal door on a stove.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The appliance is a grey metal stove with a glass door on the upper section.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'CUBIC' is visible in reverse on the upper glass door.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Partial text 'TEC' is visible on a panel to the right.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "CUBIC",
+      "TEC"
+    ],
+    "spatial": "The grey metal stove occupies the majority of the frame, with a glass door at the top and a solid rectangular door below it. A hand enters from the bottom left to interact with the lower door's latch.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "grey cast-iron stove with multiple compartments and a glass window",
+        "action": "stationary appliance",
+        "position": "center and right",
+        "id": "stove_1"
+      },
+      {
+        "desc": "human hand with light skin tone",
+        "action": "pointing finger at a latch mechanism",
+        "position": "bottom left",
+        "id": "person_1"
+      },
+      {
+        "desc": "wicker basket texture",
+        "action": "partially visible",
+        "position": "far left edge",
+        "id": "basket_1"
+      },
+      {
+        "desc": "reflection of a hand and arm",
+        "action": "visible in the glass window",
+        "position": "center left (second frame)",
+        "id": "person_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The brand name 'esse' is visible on the upper door frame",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A finger points to a small metal latch at the bottom of the middle rectangular door",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The camera moves closer and becomes blurry, focusing on the upper glass door area",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Two small metal handles are visible protruding from the right side in the blurry frame",
+        "confidence": 0.7,
+        "target_resolution_visible": false
+      }
+    ],
+    "ocr": [
+      "esse"
+    ],
+    "spatial": "The stove occupies the majority of the frame, featuring a top door with a window above a solid rectangular door. A hand enters from the bottom left to interact with the lower door's latch. A wicker basket is partially visible on the far left edge.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "A large, grey, cast-iron stove with a glass door on the left and a solid door on the right.",
+        "action": "stationary",
+        "position": "center and right of frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "A human hand and forearm with light skin tone.",
+        "action": "resting on the top edge of the stove",
+        "position": "top left corner",
+        "id": "person_1"
+      },
+      {
+        "desc": "A round, silver-rimmed temperature gauge with a red needle.",
+        "action": "displaying a temperature reading",
+        "position": "upper right section of the stove",
+        "id": "stove_1"
+      },
+      {
+        "desc": "A wicker basket.",
+        "action": "stationary",
+        "position": "bottom left background",
+        "id": "basket_1"
+      },
+      {
+        "desc": "A second wicker basket.",
+        "action": "stationary",
+        "position": "bottom right background",
+        "id": "basket_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The stove has the brand name 'ESSE' in raised lettering on the right-hand door.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'THE IRONHEART' is embossed on a lower panel on the right side of the stove.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The stove has two metal handles, one on the glass door and one on the solid door.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The reflection of a hand is visible on the glass door of the stove.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A hand is touching the top surface of the stove.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "ESSE",
+      "THE IRONHEART"
+    ],
+    "spatial": "The grey stove dominates the center and right of the frame. A hand is visible at the top left, touching the stove. Wicker baskets are partially visible in the background on the far left and right.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "A person's left hand and forearm, wearing a grey long-sleeved shirt",
+        "action": "gripping and pulling a horizontal metal handle",
+        "position": "center-left of the frame",
+        "id": "person_1"
+      },
+      {
+        "desc": "A large, grey, cast-iron stove with a flat top surface",
+        "action": "stationary",
+        "position": "filling the majority of the frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Two circular, metal hotplates with coiled spring handles",
+        "action": "resting on the stove top",
+        "position": "top center of the frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "A shiny, horizontal metal rail or handle",
+        "action": "being pulled by the hand",
+        "position": "across the middle of the frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "A square oven door with a circular temperature gauge and the word 'ESSE' in raised letters",
+        "action": "stationary on the right side",
+        "position": "bottom right of the frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "A second, partially visible door or panel to the left of the 'ESSE' door",
+        "action": "stationary",
+        "position": "bottom left of the frame",
+        "id": "stove_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is gripping a horizontal metal bar located just below the stovetop surface.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The stove has the brand name 'ESSE' visible in stylized, raised lettering on the front right door.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There is a circular temperature gauge on the 'ESSE' door with a red needle.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Two metal hotplates with distinctive coiled handles are sitting on the flat top of the stove.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The hand is pulling the horizontal bar towards the left, causing a panel or door to begin opening.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "ESSE"
+    ],
+    "spatial": "The frame is dominated by a grey cast-iron stove. The top features two hotplates. Below the stovetop is a horizontal metal rail being operated by a hand entering from the left. The lower section of the stove has two doors; the right one features a temperature gauge and the 'ESSE' logo, while the left one is partially obscured by the opening action.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": [
+      "Person grips and pulls horizontal metal handle"
+    ]
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      68,
+      70
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      70,
+      72
+    ],
+    "visible_entities": [
+      {
+        "desc": "human hand with light skin tone, fingers extended",
+        "action": "gesturing or pointing towards the stove top surface",
+        "position": "bottom left foreground",
+        "id": "person_1"
+      },
+      {
+        "desc": "two metallic, dome-shaped objects with coiled wire handles",
+        "action": "resting stationary on the stove surface",
+        "position": "center, side-by-side",
+        "id": "stove_1"
+      },
+      {
+        "desc": "dark gray metallic stove top surface with a shiny chrome trim strip",
+        "action": "stationary",
+        "position": "middle to bottom of frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "vertical metallic pipe or chimney base",
+        "action": "stationary",
+        "position": "top center background",
+        "id": "stove_1"
+      },
+      {
+        "desc": "small black fan with blades",
+        "action": "stationary",
+        "position": "top right background",
+        "id": "fan_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand enters the frame from the bottom left corner.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Two identical metallic objects with spring-like handles sit on the stove top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A heat-powered stove fan is visible in the background.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The stove has a reflective chrome strip running horizontally.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The scene is a close-up of a stove top. In the foreground (bottom left), a hand gestures. In the mid-ground, two metallic dome objects rest on the dark surface. In the background, a pipe and a small fan are visible against a wall.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      72,
+      74
+    ],
+    "visible_entities": [
+      {
+        "desc": "two round, metallic, slightly domed lids with coiled metal spring handles",
+        "action": "resting on the flat top surface",
+        "position": "center foreground",
+        "id": "stove_1"
+      },
+      {
+        "desc": "vertical cylindrical metal stove pipe",
+        "action": "extending upwards from the stove body",
+        "position": "center background",
+        "id": "stove_1"
+      },
+      {
+        "desc": "small black fan with wire cage",
+        "action": "stationary on the stove top",
+        "position": "right background",
+        "id": "fan_1"
+      },
+      {
+        "desc": "dark grey metallic stove body with a horizontal chrome rail",
+        "action": "stationary",
+        "position": "lower half of frame",
+        "id": "stove_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two round metal lids with spring handles sit side-by-side on the stove top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A small heat-powered fan is visible on the right side of the stove top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A chrome pipe extends vertically from the center of the stove.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The stove surface appears to be a dark, matte metal.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The frame is a close-up of a stove top. Two round lids are in the foreground, centered. Behind them, a stove pipe rises in the center, and a small fan sits to the right. A chrome rail runs horizontally across the lower portion of the frame.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      74,
+      76
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      76,
+      78
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person's arm and hand wearing a dark long-sleeved top and white bangles",
+        "action": "reaching towards and touching the handle of a round cooking vessel",
+        "position": "left side extending towards center-right",
+        "id": "person_1"
+      },
+      {
+        "desc": "Round flat cooking vessel with a light-colored surface and a coiled metal spring handle",
+        "action": "resting on the stove surface",
+        "position": "right side of the stove top"
+      },
+      {
+        "desc": "Grey metal stove top surface",
+        "action": "supporting various objects",
+        "position": "center and foreground",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Small fan with black blades",
+        "action": "standing stationary",
+        "position": "background right on the stove",
+        "id": "fan_1"
+      },
+      {
+        "desc": "Silver cylindrical pot or container",
+        "action": "resting on a grey stand",
+        "position": "background center",
+        "id": "pot_1"
+      },
+      {
+        "desc": "Circular reflective object (possibly a lid or mirror) on a stand",
+        "action": "propped up",
+        "position": "background left",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Light brown wooden paneling",
+        "action": "forming the wall",
+        "position": "background right",
+        "id": "wall_1"
+      },
+      {
+        "desc": "White electrical outlet",
+        "action": "mounted on the wall",
+        "position": "lower right background",
+        "id": "outlet_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand wearing white bangles touches the coiled metal handle of a round pan.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A small fan with black blades is positioned on the back of the stove.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A silver pot sits on a grey base behind the stove surface.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A round metal plate lies flat on the left side of the stove.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The scene is dominated by a grey stove top. On the left, a person's arm reaches in. On the right, a round pan with a spring handle sits on the surface. Behind these, a silver pot and a small fan are visible. To the far right, a wooden wall with an electrical outlet is seen.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": [
+      "Round cooking vessel lid propped vertically open"
+    ]
+  },
+  {
+    "time": [
+      78,
+      80
+    ],
+    "visible_entities": [
+      {
+        "desc": "human hand with light skin tone",
+        "action": "touching or gesturing near the left circular plate",
+        "position": "bottom left corner",
+        "id": "person_1"
+      },
+      {
+        "desc": "large dark grey metal stove top surface",
+        "action": "stationary",
+        "position": "center and bottom of frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "circular metal plate with a coiled spring handle",
+        "action": "resting on the stove top",
+        "position": "center right",
+        "id": "stove_1"
+      },
+      {
+        "desc": "circular metal plate (lid) propped open vertically",
+        "action": "resting on hinges",
+        "position": "top left",
+        "id": "stove_1"
+      },
+      {
+        "desc": "silver cylindrical metal container",
+        "action": "sitting on a grey base",
+        "position": "top center"
+      },
+      {
+        "desc": "small black fan with three blades",
+        "action": "stationary",
+        "position": "top right",
+        "id": "fan_1"
+      },
+      {
+        "desc": "wooden paneling or wall",
+        "action": "background structure",
+        "position": "right edge",
+        "id": "wall_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand enters the frame from the left side near a flat circular metal plate.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are two circular plates on the stove top; one is flat and one is domed with a spring handle.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A heat-powered fan sits on the back right corner of the stove.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A silver canister sits on a grey box-like base in the center back.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The scene is dominated by a dark grey stove top. On the left, a circular lid is propped open. In the center-right, a domed plate with a spring handle rests on the surface. Behind these, a silver canister and a small black fan are positioned against a wall. A hand appears in the bottom left corner.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      80,
+      82
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark grey metal wood-burning stove top",
+        "action": "stationary",
+        "position": "center and bottom of frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "round metal cooktop cover with spring handle",
+        "action": "resting on the stove surface",
+        "position": "right side of stove top",
+        "id": "stove_1"
+      },
+      {
+        "desc": "round metal cooktop cover with hinge",
+        "action": "standing upright on hinge",
+        "position": "left side of stove top",
+        "id": "stove_1"
+      },
+      {
+        "desc": "silver metal stove pipe",
+        "action": "extending upwards",
+        "position": "center back of stove",
+        "id": "stove_1"
+      },
+      {
+        "desc": "small black heat-powered fan",
+        "action": "stationary",
+        "position": "back right corner of stove",
+        "id": "fan_1"
+      },
+      {
+        "desc": "wooden wall paneling",
+        "action": "background",
+        "position": "right and left edges",
+        "id": "wall_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A round metal lid with a coiled spring handle rests on the right side of the stove top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Another round metal lid is propped open on a hinge on the left side.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A small black fan with three blades sits on the back right corner of the stove.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A silver chimney pipe rises from the center back of the stove.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The stove surface is dark grey and appears to be made of cast iron or steel.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The stove top occupies the majority of the frame. On the left, a round lid is hinged open. In the center back, a silver pipe rises. On the right, a round lid with a spring handle lies flat, and a small fan sits behind it. Wooden walls are visible in the background on the sides.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      82,
+      84
+    ],
+    "visible_entities": [
+      {
+        "desc": "round dark metal lid",
+        "action": "propped vertically on small metal legs",
+        "position": "left side of the stove surface",
+        "id": "stove_1"
+      },
+      {
+        "desc": "shiny chrome cylinder",
+        "action": "resting on a grey rectangular base",
+        "position": "center rear",
+        "id": "pot_1"
+      },
+      {
+        "desc": "small fan with black blades",
+        "action": "standing upright",
+        "position": "right rear corner",
+        "id": "fan_1"
+      },
+      {
+        "desc": "round light grey metal lid",
+        "action": "lying flat with a coiled spring handle attached",
+        "position": "right foreground",
+        "id": "stove_1"
+      },
+      {
+        "desc": "hand holding a wire mesh tool",
+        "action": "holding the handle of the tool",
+        "position": "far left edge",
+        "id": "person_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A round metal plate is standing upright on the left side.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A chrome cylindrical object sits on a grey base in the center.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A small fan with black blades is positioned on the right.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A second round metal plate lies flat on the surface with a spring handle.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A person's hand is visible holding a wire mesh object on the left edge.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The view is a close-up of a dark grey metal stove top. On the left, a round lid is propped up vertically. In the center back, a chrome cylinder sits on a base. To the right back, a small fan stands. In the right foreground, another round lid lies flat. A hand holding a wire tool is visible at the far left edge.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": [
+      "Person holding wire mesh tool"
+    ]
+  },
+  {
+    "time": [
+      84,
+      86
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      86,
+      88
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      88,
+      90
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      90,
+      92
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      92,
+      94
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person's arm wearing a dark grey long-sleeved garment",
+        "action": "holding the top chrome rail and opening the oven door",
+        "position": "left side of the frame",
+        "id": "person_1"
+      },
+      {
+        "desc": "Large grey metal stove with a chrome rail across the top",
+        "action": "stationary, door being opened",
+        "position": "center and majority of the frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Oven door with embossed lettering and a circular temperature gauge",
+        "action": "swinging open to the right to reveal the interior",
+        "position": "center front of the stove",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Metal wire racks inside the oven",
+        "action": "visible inside the cavity",
+        "position": "interior of the stove",
+        "id": "grate_1"
+      },
+      {
+        "desc": "Wicker basket containing a green object",
+        "action": "sitting on the floor",
+        "position": "bottom right corner",
+        "id": "basket_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The stove door features the embossed brand name 'ESSE'",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A circular temperature gauge is mounted above the brand name on the door",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The interior of the oven contains metal wire racks",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The inside of the door is lined with a silvery insulation material",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "ESSE"
+    ],
+    "spatial": "A large grey stove occupies the center. A person's arm is on the left interacting with it. A wicker basket is in the bottom right corner against a wooden wall.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": [
+      "Person opens oven door revealing wire racks"
+    ]
+  },
+  {
+    "time": [
+      94,
+      96
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand holding top rail",
+        "action": "gripping the chrome handle",
+        "position": "top left",
+        "id": "person_1"
+      },
+      {
+        "desc": "grey long-sleeved shirt",
+        "action": "worn by person reaching into frame",
+        "position": "bottom left extending to center",
+        "id": "person_1"
+      },
+      {
+        "desc": "hand with ring",
+        "action": "gesturing near the open door",
+        "position": "bottom right",
+        "id": "person_1"
+      },
+      {
+        "desc": "grey cast iron stove",
+        "action": "stationary with central compartment open",
+        "position": "center",
+        "id": "stove_1"
+      },
+      {
+        "desc": "metal wire racks",
+        "action": "sitting inside the oven compartment",
+        "position": "center inside stove",
+        "id": "grate_1"
+      },
+      {
+        "desc": "open oven door",
+        "action": "swung open to the right side",
+        "position": "right",
+        "id": "stove_1"
+      },
+      {
+        "desc": "wooden paneling",
+        "action": "background wall",
+        "position": "right background",
+        "id": "wall_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is gripping the chrome rail at the top of the stove.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The central oven compartment is open, revealing two metal wire racks inside.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A person wearing a grey long-sleeved shirt reaches their arm towards the open oven.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'THE IRONHEART' is partially visible on the bottom panel of the stove.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "An open door with a textured inner surface is swung out to the right.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "THE IRONHEART"
+    ],
+    "spatial": "A grey stove occupies the majority of the frame. To the left is a closed door with a glass window. In the center is an open oven compartment with racks. To the right, an oven door is swung open. A person's arm in a grey sleeve reaches from the bottom left towards the right side of the stove. Wooden paneling is visible in the background on the right.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      96,
+      98
+    ],
+    "visible_entities": [
+      {
+        "desc": "A person's arm wearing a dark grey, long-sleeved shirt with a textured fabric.",
+        "action": "Reaching towards the open oven door, hand extended with palm facing slightly upward.",
+        "position": "Foreground, extending from the bottom left towards the center right.",
+        "id": "person_1"
+      },
+      {
+        "desc": "A grey metal oven or stove with a chrome handle bar on top.",
+        "action": "Sitting stationary with its door open, revealing interior racks.",
+        "position": "Center and background of the frame.",
+        "id": "stove_1"
+      },
+      {
+        "desc": "An open oven door, light grey on the inside with a visible hinge mechanism.",
+        "action": "Held open to the right side.",
+        "position": "Right side of the frame.",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Metal wire racks inside the oven.",
+        "action": "Stationary inside the oven cavity.",
+        "position": "Inside the oven, visible through the open door.",
+        "id": "grate_1"
+      },
+      {
+        "desc": "Light-colored wooden paneling on the wall.",
+        "action": "Stationary background element.",
+        "position": "Upper right background.",
+        "id": "wall_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person's arm is extended towards an open oven.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The oven door is open, revealing at least two levels of wire racks inside.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person is wearing a dark grey, long-sleeved garment.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The oven has a horizontal chrome handle across the top front.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The wall in the background is made of vertical wooden planks.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The camera is positioned close to a person's arm, which dominates the foreground. The arm reaches from the lower-left towards an open oven that occupies the center and right of the frame. The background consists of a wooden wall.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      98,
+      100
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  },
+  {
+    "time": [
+      100,
+      102
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person's arm and hand wearing a dark grey long-sleeved garment",
+        "action": "Grasping the handle of the stove door and pulling it open",
+        "position": "Left side of the frame, extending towards the center",
+        "id": "person_1"
+      },
+      {
+        "desc": "Large grey cast-iron stove with a chrome rail on top and embossed lettering",
+        "action": "Stationary object being interacted with",
+        "position": "Center and left of the frame",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Round temperature gauge with a white face and red needle",
+        "action": "Mounted on the stove door",
+        "position": "Upper center of the stove door",
+        "id": "stove_1"
+      },
+      {
+        "desc": "Woven wicker basket containing green netting",
+        "action": "Sitting on the floor",
+        "position": "Bottom right corner",
+        "id": "basket_1"
+      },
+      {
+        "desc": "Light-colored wooden paneling on the wall",
+        "action": "Background structure",
+        "position": "Right side of the frame",
+        "id": "wall_1"
+      },
+      {
+        "desc": "Metal kettle or pot",
+        "action": "Sitting on the stovetop",
+        "position": "Top center",
+        "id": "pot_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person's hand is pulling the handle of the main stove door outward.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The stove features the brand name 'ESSE' in raised metal lettering on the door.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'THE IRONHEART' is visible on the lower section of the stove.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A white electrical outlet is mounted on the wooden wall.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A long metal poker or tool leans against the wall near the basket.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "ESSE",
+      "THE IRONHEART"
+    ],
+    "spatial": "The grey stove dominates the left and center of the frame. To its right is a wooden wall with a basket on the floor. A person's arm enters from the left to open the stove door.",
+    "parse_success": true,
+    "chunk_idx": 50,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": [
+      "Person grasps and pulls stove door handle open"
+    ]
+  },
+  {
+    "time": [
+      102,
+      104
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "Wood_Stove_Cooking_and_Lighting_Test",
+    "state_changes": []
+  }
+]

@@ -1,0 +1,2591 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "3D text logo with white faces and grey sides, featuring a stylized 'v' in the top word",
+        "action": "displayed statically with a glowing blue outline effect",
+        "position": "center of the frame",
+        "id": "logo_3d"
+      },
+      {
+        "desc": "background consisting of vertical teal and blue stripes with bokeh light effects",
+        "action": "static background pattern",
+        "position": "behind the text",
+        "id": "background_teal"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'clevver' is displayed in lowercase letters on the top line.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'NEWS' is displayed in uppercase letters on the bottom line.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The logo has a 3D appearance with visible depth on the sides of the letters.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A cyan/blue glow surrounds the text elements.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "clevver",
+      "NEWS"
+    ],
+    "spatial": "The 'clevver' text is positioned above the 'NEWS' text, both centered horizontally and vertically against a striped background.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "A young man with dark hair, wearing a black baseball cap backwards, a black leather biker-style jacket with silver zippers and snaps, and a white t-shirt with a graphic print.",
+        "action": "standing and looking slightly to the left, mouth slightly pursed",
+        "position": "center-right foreground",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "A person partially visible in the background, wearing a dark beanie.",
+        "action": "standing",
+        "position": "far right background",
+        "id": "person_background"
+      },
+      {
+        "desc": "A green plastic bottle.",
+        "action": "sitting on a surface",
+        "position": "far left mid-ground",
+        "id": "object_bottle"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A bright blue and white graphic with the text 'clevver NEWS' is overlaid on the bottom right corner.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The man in the foreground is wearing a black leather jacket with epaulets on the shoulders.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background appears to be an indoor space with framed items on the wall and a red and white striped banner.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The man's white t-shirt has a circular graphic with text, partially obscured.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "clevver NEWS"
+    ],
+    "spatial": "The main subject is a man in a leather jacket positioned in the center-right of the frame. To his left, in the background, is a cluttered indoor setting with a green bottle on a counter. Another person is partially visible on the far right edge. A digital watermark is present in the bottom right corner.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "Scene transition from 3D logo to young man standing"
+    ]
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "Young man with dark hair, wearing a white and black baseball cap backwards, a black leather jacket, and a white t-shirt.",
+        "action": "Walking forward, looking slightly down and to the left.",
+        "position": "Center/foreground of the first frame.",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "Woman with long blonde wavy hair, wearing a black long-sleeved crop top, black shorts, and a wide black belt.",
+        "action": "Walking forward in a group, looking towards the right.",
+        "position": "Center of the second frame."
+      },
+      {
+        "desc": "Woman with long reddish-brown hair, wearing a black sleeveless top and a long necklace.",
+        "action": "Walking behind the blonde woman.",
+        "position": "Left of the blonde woman in the second frame.",
+        "id": "person_red_hair"
+      },
+      {
+        "desc": "Man with dark hair and a beard, wearing a black polo shirt.",
+        "action": "Walking behind the blonde woman, appearing to guide or protect the group.",
+        "position": "Behind the blonde woman in the second frame.",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "Person with short brown hair, wearing sunglasses and a light blue denim jacket.",
+        "action": "Walking in the foreground, looking down.",
+        "position": "Right foreground of the second frame.",
+        "id": "person_male_celebrity"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A young man wearing a backwards baseball cap and a leather jacket is shown in a close-up shot.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A group of people, including two women and a man who appears to be security, are walking on a city sidewalk.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The blonde woman is wearing a black crop top and shorts with a prominent belt.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The logo 'clevver NEWS' is visible in the bottom right corner of both frames.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "clevver NEWS"
+    ],
+    "spatial": "The first frame is a tight close-up on one individual. The second frame is a medium-wide shot showing a group of people walking outdoors on a paved surface, with buildings and other pedestrians in the background.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "Action change from standing to walking, group of people appears"
+    ]
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long blonde hair, wearing black top and black jacket",
+        "action": "walking forward, extending right arm",
+        "position": "center foreground",
+        "id": "person_female_celebrity"
+      },
+      {
+        "desc": "man with dark hair, wearing black polo shirt",
+        "action": "walking behind blonde woman, extending right arm",
+        "position": "center right",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "woman with long red hair, wearing black top",
+        "action": "walking, looking forward",
+        "position": "left foreground",
+        "id": "person_red_hair"
+      },
+      {
+        "desc": "woman with long red hair, wearing glasses and maroon jacket",
+        "action": "walking, looking right",
+        "position": "right mid-ground",
+        "id": "person_red_hair"
+      },
+      {
+        "desc": "person in striped shirt and blue shorts",
+        "action": "walking, holding phone",
+        "position": "left mid-ground",
+        "id": "person_striped"
+      },
+      {
+        "desc": "person in purple dress",
+        "action": "walking, holding phone",
+        "position": "left background",
+        "id": "person_purple"
+      },
+      {
+        "desc": "black SUV",
+        "action": "parked or moving slowly",
+        "position": "background center",
+        "id": "vehicle_suv"
+      },
+      {
+        "desc": "double-decker bus",
+        "action": "visible in distance",
+        "position": "background right",
+        "id": "vehicle_bus"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A blonde woman in black clothing is walking forward while extending her right arm.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A man in a black polo shirt is walking closely behind the blonde woman.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Multiple people are holding up phones, likely taking photos or videos.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A 'Clevver NEWS' watermark is visible in the bottom right corner.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A double-decker bus with 'NEW YORK' text is visible in the background.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Clevver NEWS",
+      "NEW Y",
+      "BUS NEW Y"
+    ],
+    "spatial": "The scene is a crowded city street. The main subjects (blonde woman and man in black) are in the center foreground, moving towards the camera. Fans and onlookers surround them on the left and right. Vehicles and buildings form the background.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "Scene cuts to empty/black"
+    ]
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "Group of four young men in black suits and jackets",
+        "action": "standing on a red carpet, looking down or at interviewers",
+        "position": "center and left of frame 1",
+        "id": "group_men"
+      },
+      {
+        "desc": "Person holding a microphone with a blue 'Capital FM' logo",
+        "action": "interviewing the men",
+        "position": "bottom left of frame 1",
+        "id": "person_microphone"
+      },
+      {
+        "desc": "Cameras and hands holding recording equipment",
+        "action": "filming the men",
+        "position": "foreground right of frame 1",
+        "id": "object_cameras"
+      },
+      {
+        "desc": "White backdrop with logos",
+        "action": "stationary background",
+        "position": "background of frame 1",
+        "id": "background_white"
+      },
+      {
+        "desc": "Group of four young women walking arm-in-arm",
+        "action": "walking down a sidewalk, smiling",
+        "position": "center of frame 2",
+        "id": "group_women"
+      },
+      {
+        "desc": "Woman in grey coat and white skirt",
+        "action": "walking",
+        "position": "left of the group in frame 2",
+        "id": "person_female_celebrity"
+      },
+      {
+        "desc": "Woman in maroon coat",
+        "action": "walking",
+        "position": "center-left of the group in frame 2",
+        "id": "person_red_hair"
+      },
+      {
+        "desc": "Woman in black coat and checkered pants",
+        "action": "walking",
+        "position": "center-right of the group in frame 2",
+        "id": "person_female_celebrity"
+      },
+      {
+        "desc": "Woman in white blazer and white pants",
+        "action": "walking",
+        "position": "right of the group in frame 2",
+        "id": "person_female_celebrity"
+      },
+      {
+        "desc": "Person in a purple puffy coat",
+        "action": "taking a photo with a phone",
+        "position": "far left of frame 2",
+        "id": "person_purple"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video cuts between a red carpet event and a street scene.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'BRIT AWARDS 2014' is visible on the backdrop in the first scene.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The women in the second scene are walking arm-in-arm.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A 'clever NEWS' watermark is present in the bottom right corner of both frames.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "2014",
+      "MasterCard",
+      "BRIT AWARDS 2014",
+      "Capital FM",
+      "clever NEWS",
+      "TIONAL: Preventive Care and Wellness Specialists Since 1933"
+    ],
+    "spatial": "The first frame shows a crowded red carpet interview scene with a white logo wall in the background. The second frame shows a wide shot of a sidewalk with a building facade in the background.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "New scene with men on red carpet and women walking"
+    ]
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with dark hair wearing a dark purple hooded coat, black pants, and white sneakers with red accents",
+        "action": "walking and clapping hands",
+        "position": "far left"
+      },
+      {
+        "desc": "Woman with blonde hair in a ponytail wearing a long grey coat over a black top and white skirt",
+        "action": "walking forward with group",
+        "position": "center-left",
+        "id": "person_female_celebrity"
+      },
+      {
+        "desc": "Woman with long dark hair wearing a maroon coat over a black dress",
+        "action": "walking forward with group",
+        "position": "center",
+        "id": "person_red_hair"
+      },
+      {
+        "desc": "Woman with blonde wavy hair wearing a black coat over a black and white checkered outfit",
+        "action": "walking forward with group",
+        "position": "center-right",
+        "id": "person_female_celebrity"
+      },
+      {
+        "desc": "Woman with voluminous curly dark hair wearing a white blazer over a silver top and white pants",
+        "action": "walking forward with group",
+        "position": "far right",
+        "id": "person_curly_dark_hair"
+      },
+      {
+        "desc": "Storefront with large glass windows",
+        "action": "stationary background element",
+        "position": "background",
+        "id": "structure_storefront"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Five women are walking together in a line on a paved sidewalk.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman on the far left is clapping her hands.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman on the far right is wearing a white blazer.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Text reading 'INTERNATIONAL' is visible on the window behind the group.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A logo reading 'clever NEWS' is visible in the bottom right corner.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "INTERNATIONAL",
+      "clever NEWS"
+    ],
+    "spatial": "The group of five women occupies the center foreground, walking from left to right. Behind them is a building facade with large glass windows displaying text. The sidewalk is grey pavement.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "Focus shifts to women walking, men disappear from scene"
+    ]
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "Scene cuts to empty/black"
+    ]
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with long blonde hair, wearing black-rimmed glasses, a light pink sleeveless top, and a gold fringe necklace.",
+        "action": "Speaking and gesturing with hands raised in the first frame, then hands lowered and open in the second frame.",
+        "position": "Left side of the split screen.",
+        "id": "person_presenter"
+      },
+      {
+        "desc": "A still photograph showing a blonde woman in a black top and a man with dark hair and a beard in a grey t-shirt with a red pocket.",
+        "action": "Posing together, looking down at a fluffy grey and white cat held between them.",
+        "position": "Right side of the split screen.",
+        "id": "person_female_celebrity"
+      },
+      {
+        "desc": "A fluffy, long-haired cat with grey and white fur and a flat face.",
+        "action": "Being held by the people in the photograph.",
+        "position": "Center of the photograph on the right.",
+        "id": "animal_cat"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video uses a split-screen layout with a presenter on the left and a static image on the right.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A lower-third graphic displays the Twitter handle '@mistykingma' and the name 'MISTY KINGMA' in the first frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A different lower-third graphic appears in the second frame with the text 'clevver NEWS' and 'ZAYN & PERRIE MARRIED?!'.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The presenter's facial expression changes from an excited, open-mouthed smile to a more serious, questioning look.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "@mistykingma",
+      "MISTY KINGMA",
+      "clevver NEWS",
+      "ZAYN & PERRIE MARRIED?!"
+    ],
+    "spatial": "The frame is divided vertically. The left half shows a female presenter against a blue, vertically striped background. The right half displays a warm-toned photograph. Text overlays are present at the bottom of the screen, changing between the two frames.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "New scene with female presenter and photograph"
+    ]
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with long blonde hair, wearing black-rimmed glasses, a light pink sleeveless top, and a gold fringe necklace",
+        "action": "standing and speaking, hands clasped in front",
+        "position": "left side of the frame",
+        "id": "person_presenter"
+      },
+      {
+        "desc": "Woman with blonde hair wearing a black top",
+        "action": "posing for a photo, looking at the camera",
+        "position": "upper right quadrant, within an inset image",
+        "id": "person_female_celebrity"
+      },
+      {
+        "desc": "Man with short dark hair and beard, wearing a grey t-shirt with a red pocket",
+        "action": "looking down at a cat, holding it",
+        "position": "upper right quadrant, within an inset image",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "Small fluffy grey and white cat",
+        "action": "being held",
+        "position": "center right, within an inset image",
+        "id": "animal_cat"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman in a pink top is presenting on the left side of the screen.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "An inset image on the right shows a couple and a cat.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'clevver NEWS' is visible in the bottom right corner of the inset image.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'ZAYN & PERRIE MARRIED?!' is displayed in a banner at the bottom of the screen.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The presenter is wearing a gold necklace with fringe details.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "clevver NEWS",
+      "ZAYN & PERRIE MARRIED?!"
+    ],
+    "spatial": "The frame is split vertically; the left side features a presenter against a blue background, while the right side displays a large photograph of a couple and a cat. A text banner runs across the bottom of the entire frame.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with long blonde hair, wearing black-rimmed glasses, a light pink sleeveless dress, and a gold fringe necklace",
+        "action": "standing and facing forward, hands clasped in front",
+        "position": "left side of the frame",
+        "id": "person_presenter"
+      },
+      {
+        "desc": "Photo of a blonde woman in a black top",
+        "action": "posing for a photo",
+        "position": "right side of the frame, left portion of the photo",
+        "id": "person_female_celebrity"
+      },
+      {
+        "desc": "Photo of a man with dark hair and beard, wearing a grey t-shirt with a red pocket",
+        "action": "posing for a photo, looking down",
+        "position": "right side of the frame, right portion of the photo",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "Small fluffy cat with grey and white fur",
+        "action": "being held by the couple in the photo",
+        "position": "center of the photo on the right",
+        "id": "animal_cat"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video frame features a split-screen layout with a presenter on the left and an image on the right.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The presenter is wearing a light pink dress with a V-neckline.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'ZAYN & PERRIE MARRIED?!' is displayed in a lower-third banner.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The logo 'clevver NEWS' is visible in the bottom right corner of the photo.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The man in the photo has a visible tattoo on his neck.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "clevver NEWS",
+      "ZAYN & PERRIE MARRIED?!"
+    ],
+    "spatial": "The frame is divided vertically. The left half shows a news presenter against a blue background with vertical lines. The right half displays a photograph of a couple holding a cat. A black banner with blue text runs across the bottom of the screen, overlaying both sections.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with long blonde hair, wearing black-rimmed glasses, a light pink sleeveless dress, and a gold statement necklace.",
+        "action": "standing and speaking, gesturing with hands open",
+        "position": "left side of the frame",
+        "id": "person_presenter"
+      },
+      {
+        "desc": "Woman with blonde wavy hair wearing a black top.",
+        "action": "posing for a photo, looking at the camera",
+        "position": "right side of the frame (inset image)",
+        "id": "person_female_celebrity"
+      },
+      {
+        "desc": "Man with dark hair and beard, wearing a grey t-shirt with a red pocket.",
+        "action": "posing for a photo, looking down at a cat",
+        "position": "right side of the frame (inset image)",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "Small fluffy grey and white cat.",
+        "action": "being held by the man and woman",
+        "position": "center of the inset image",
+        "id": "animal_cat"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A news graphic overlay is present at the bottom right.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'ZAYN & PERRIE MARRIED?!' is displayed in a blue banner.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The logo 'clevver NEWS' is visible above the text banner.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background behind the presenter is a blue digital set with vertical lines.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "clevver NEWS",
+      "ZAYN & PERRIE MARRIED?!"
+    ],
+    "spatial": "The frame is split vertically. The left side features a presenter standing against a blue background. The right side displays a large inset photograph of a couple and a cat. A lower-third graphic overlay spans the bottom right portion of the screen.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "Instagram profile interface with a grid of photos",
+        "action": "displayed on screen",
+        "position": "full frame",
+        "id": "ui_instagram_profile"
+      },
+      {
+        "desc": "Profile picture showing a man with dark hair and facial hair",
+        "action": "static image",
+        "position": "bottom left",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "Username text 'niazkilam'",
+        "action": "displayed",
+        "position": "bottom left, next to profile picture",
+        "id": "ui_instagram_profile"
+      },
+      {
+        "desc": "Blue 'Follow' button",
+        "action": "displayed",
+        "position": "bottom left, below profile picture",
+        "id": "ui_instagram_profile"
+      },
+      {
+        "desc": "Statistics bar showing '43', '479,331', and '8'",
+        "action": "displayed",
+        "position": "bottom right",
+        "id": "ui_instagram_profile"
+      },
+      {
+        "desc": "Logo 'clevver NEWS'",
+        "action": "displayed",
+        "position": "bottom right corner",
+        "id": "logo_clevver"
+      },
+      {
+        "desc": "Photo of a white teepee tent outdoors",
+        "action": "displayed in grid",
+        "position": "top left",
+        "id": "structure_teepee"
+      },
+      {
+        "desc": "Photo of a shirtless person with dark hair sitting and tattooing their leg",
+        "action": "displayed in grid",
+        "position": "center, largest photo"
+      },
+      {
+        "desc": "Photo of a crowd at a concert with a performer on stage",
+        "action": "displayed in grid",
+        "position": "top middle right",
+        "id": "scene_concert"
+      },
+      {
+        "desc": "Photo of a man with dark hair in profile view",
+        "action": "displayed in grid",
+        "position": "top right",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "Photo of a group of four young men posing together",
+        "action": "displayed in grid",
+        "position": "bottom right",
+        "id": "group_men"
+      },
+      {
+        "desc": "Photo of several handheld gaming devices stacked",
+        "action": "displayed in grid",
+        "position": "bottom middle right",
+        "id": "object_gaming"
+      },
+      {
+        "desc": "Photo of a man making a hand gesture near his face",
+        "action": "displayed in grid",
+        "position": "middle left",
+        "id": "person_male_celebrity"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The screen displays an Instagram profile page.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The username displayed is 'niazkilam'.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The follower count is 479,331.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The central photo shows a person using a tattoo gun on their own leg.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A 'clevver NEWS' watermark is present in the bottom right corner.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The photo grid contains at least 7 distinct images.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "niazkilam",
+      "Follow",
+      "43",
+      "479,331",
+      "8",
+      "clevver NEWS"
+    ],
+    "spatial": "The frame is dominated by a screenshot of an Instagram profile. A large central photo is surrounded by smaller photos in a grid layout. The profile header with the username and follow button is at the bottom left. Statistics and a news logo are at the bottom right.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "Scene changes to Instagram profile interface"
+    ]
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "Social media profile interface showing a grid of photos and user stats",
+        "action": "displaying a static webpage layout",
+        "position": "entire frame",
+        "id": "ui_instagram_profile"
+      },
+      {
+        "desc": "Profile picture of a man with dark hair and beard",
+        "action": "displayed in a small square",
+        "position": "bottom left",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "Username text 'niazkilam'",
+        "action": "displayed next to profile picture",
+        "position": "bottom left",
+        "id": "ui_instagram_profile"
+      },
+      {
+        "desc": "Large central photo of a shirtless man with dark hair sitting and looking down",
+        "action": "displayed in the center of the grid",
+        "position": "center",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "Photo of a white teepee tent outdoors",
+        "action": "displayed in the top left corner",
+        "position": "top left",
+        "id": "structure_teepee"
+      },
+      {
+        "desc": "Photo of a crowd at a concert with a performer on stage",
+        "action": "displayed in the top middle-right",
+        "position": "top middle-right",
+        "id": "scene_concert"
+      },
+      {
+        "desc": "Photo of a man with dark hair in profile view",
+        "action": "displayed in the top right corner",
+        "position": "top right",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "Photo of a group of four men posing together",
+        "action": "displayed in the bottom right corner",
+        "position": "bottom right",
+        "id": "group_men"
+      },
+      {
+        "desc": "Photo of gaming consoles and controllers",
+        "action": "displayed below the concert photo",
+        "position": "middle right",
+        "id": "object_gaming"
+      },
+      {
+        "desc": "Logo text 'Clevver NEWS'",
+        "action": "displayed as a watermark",
+        "position": "bottom right corner",
+        "id": "logo_clevver"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The social media profile shows 479,331 followers.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The username displayed is 'niazkilam'.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The central image features a shirtless individual.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A 'Follow' button is visible below the profile picture.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The photo grid contains at least 7 distinct images.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "niazkilam",
+      "Follow",
+      "43",
+      "479,331",
+      "8",
+      "Clevver NEWS"
+    ],
+    "spatial": "The frame is dominated by a social media profile layout. A large central image is surrounded by smaller thumbnail images in a grid. The user's profile picture and username are in the bottom left, with follower counts in the bottom right. A news logo overlays the bottom right corner.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "Scene cuts to empty/black"
+    ]
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "Young male with dark hair, facial hair (beard/goatee), tattoos on chest and left arm/hand, wearing a necklace and a ring on his left hand.",
+        "action": "Posing for a selfie, touching his temple with his left index finger, looking at the camera.",
+        "position": "Center and foreground of the frame.",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "Dark clothing or fabric.",
+        "action": "Being worn or draped behind the person.",
+        "position": "Background, behind the person's head and shoulders.",
+        "id": "object_dark_fabric"
+      },
+      {
+        "desc": "Shelving unit with various small items on it.",
+        "action": "Stationary in the background.",
+        "position": "Upper left background.",
+        "id": "object_shelving"
+      },
+      {
+        "desc": "Logo watermark.",
+        "action": "Overlaying the video.",
+        "position": "Bottom right corner.",
+        "id": "logo_clevver"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The image is in black and white or heavily desaturated.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person has tattoos visible on their chest and left forearm/hand.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person is wearing a chain necklace.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person is wearing a ring on the ring finger of their left hand.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'clevver NEWS' is visible in the bottom right corner.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person's left index finger is touching their temple/forehead area.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "clevver NEWS"
+    ],
+    "spatial": "A person is centered in the foreground, taking up most of the frame. Behind them, to the upper left, is a shelving unit. The rest of the background is dark and indistinct. A logo is overlaid in the bottom right corner.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "New scene with young male selfie video"
+    ]
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "Scene cuts to empty/black"
+    ]
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with long blonde hair, wearing black-rimmed glasses, a light pink halter dress, and a gold statement necklace.",
+        "action": "standing and gesturing with hands while speaking",
+        "position": "left side of the frame"
+      },
+      {
+        "desc": "Man with dark hair and beard, wearing a grey sweatshirt with a Mickey Mouse graphic.",
+        "action": "standing next to a woman, smiling",
+        "position": "right side of the frame (in photo)",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "Woman with blonde hair, wearing a beige beanie and a black coat.",
+        "action": "standing next to a man, smiling",
+        "position": "right side of the frame (in photo)",
+        "id": "person_female_celebrity"
+      },
+      {
+        "desc": "Pink and blue castle structure.",
+        "action": "stationary background element",
+        "position": "background of the photo on the right",
+        "id": "structure_castle"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman in a pink dress is presenting on the left side of the screen.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A photo of a couple is displayed on the right side of the screen.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'ZAYN & PERRIE MARRIED?!' is displayed at the bottom of the screen.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The logo 'clevver NEWS' is visible in the bottom right corner of the photo.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "clevver NEWS",
+      "ZAYN & PERRIE MARRIED?!"
+    ],
+    "spatial": "The frame is split vertically. The left side features a presenter against a blue background. The right side shows a still photograph of a couple in front of a castle. A news ticker with text runs along the bottom.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "New scene with presenter and couple at castle"
+    ]
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with long blonde hair, wearing black-rimmed glasses, a pale pink halter-neck dress, and a large gold fringe necklace.",
+        "action": "Gesturing with both hands open, palms facing up, while speaking.",
+        "position": "Left side of the frame",
+        "id": "person_presenter"
+      },
+      {
+        "desc": "Man with dark hair and beard, wearing a grey sweatshirt with a Mickey Mouse graphic.",
+        "action": "Standing next to a woman, smiling at the camera.",
+        "position": "Right side of the frame, within an inset image",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "Woman with blonde hair, wearing a beige beanie and a black coat.",
+        "action": "Standing next to the man, smiling at the camera.",
+        "position": "Right side of the frame, within an inset image",
+        "id": "person_female_celebrity"
+      },
+      {
+        "desc": "Pink and blue castle structure.",
+        "action": "Serving as a background.",
+        "position": "Background of the inset image on the right",
+        "id": "structure_castle"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A news segment is displayed with a presenter on the left and a photo on the right.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'clevver NEWS' is visible in the bottom right corner of the inset image.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'ZAYN & PERRIE MARRIED?!' is displayed in a banner at the bottom of the screen.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The presenter is wearing a lavalier microphone clipped to her dress.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The man in the photo is wearing a sweatshirt with a large letter 'N' and Mickey Mouse on it.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "clevver NEWS",
+      "ZAYN & PERRIE MARRIED?!"
+    ],
+    "spatial": "The frame is split into two main sections. The left two-thirds show a female presenter against a blue striped background. The right third shows a still photograph of a couple in front of a castle. A text banner runs across the bottom of the entire frame.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with long blonde hair, wearing black-rimmed glasses, a light pink halter-neck dress, and a gold fringe necklace",
+        "action": "standing with arms raised and palms facing forward, mouth open as if speaking",
+        "position": "left side of the frame",
+        "id": "person_presenter"
+      },
+      {
+        "desc": "Man with dark hair and beard, wearing a grey sweatshirt with a Mickey Mouse graphic",
+        "action": "standing next to a woman, smiling at the camera",
+        "position": "right side of the frame, in the background image",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "Woman with blonde hair, wearing a beige beanie and a black coat",
+        "action": "standing next to the man, smiling at the camera",
+        "position": "right side of the frame, in the background image",
+        "id": "person_female_celebrity"
+      },
+      {
+        "desc": "Pink and blue castle structure",
+        "action": "stationary background element",
+        "position": "background of the right-side image",
+        "id": "structure_castle"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman in a pink dress is presenting on the left side of the screen.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A split-screen layout is used, with the presenter on the left and a photo on the right.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'ZAYN & PERRIE MARRIED?!' is displayed at the bottom of the screen.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The logo 'clevver NEWS' is visible in the bottom right corner of the photo.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The man in the photo is wearing a sweatshirt featuring Mickey Mouse.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "clevver NEWS",
+      "ZAYN & PERRIE MARRIED?!"
+    ],
+    "spatial": "The frame is split vertically. The left two-thirds show a female presenter against a blue striped background. The right third displays a photograph of a couple in front of a castle. A black banner with text overlays the bottom of the entire frame.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "Scene cuts to empty/black"
+    ]
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long blonde hair, wearing glasses, a pink sleeveless dress, and a gold statement necklace",
+        "action": "speaking and gesturing with hands",
+        "position": "left side of frame 2",
+        "id": "person_presenter"
+      },
+      {
+        "desc": "woman with long blonde hair, wearing a white grid-patterned blazer and matching pants over a black crop top",
+        "action": "standing and posing",
+        "position": "far left of frame 1",
+        "id": "person_female_celebrity"
+      },
+      {
+        "desc": "woman with long blonde hair, wearing a black patterned dress with sheer sleeves",
+        "action": "standing and posing",
+        "position": "center-left of frame 1",
+        "id": "person_female_celebrity"
+      },
+      {
+        "desc": "woman with long dark curly hair, wearing a white strapless crop top and red patterned pants",
+        "action": "standing and smiling",
+        "position": "center-right of frame 1",
+        "id": "person_curly_dark_hair"
+      },
+      {
+        "desc": "woman with long dark red hair, wearing a black leather-look jumpsuit with a deep V-neck",
+        "action": "standing with hand on hip",
+        "position": "far right of frame 1",
+        "id": "person_red_hair"
+      },
+      {
+        "desc": "man with dark curly hair in a white shirt",
+        "action": "kissing a woman on the cheek",
+        "position": "inset image, left side of frame 2",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "woman with pink/purple hair in a black dress",
+        "action": "smiling while being kissed",
+        "position": "inset image, right side of frame 2",
+        "id": "person_pink_hair"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Four women are standing in a row against a white backdrop with logos.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A news anchor is presenting in a studio setting.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A picture-in-picture graphic shows a couple in a dimly lit setting.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'clevver NEWS' is visible in the bottom right corner of both frames.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'ZAYN & PERRIE MARRIED?!' is displayed at the bottom of the second frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The backdrop in the first frame includes logos for 'Capital FM' and 'Vodafone'.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "clevver NEWS",
+      "ZAYN & PERRIE MARRIED?!",
+      "Capital FM",
+      "Vodafone",
+      "HELP A CAPITAL CHILD"
+    ],
+    "spatial": "The first frame shows a full shot of four women standing side-by-side. The second frame is a split screen with a news anchor on the left and an inset photo on the right, with a text banner at the bottom.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "New scene with presenter and montage of photos"
+    ]
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "Female presenter with long blonde hair, wearing black-rimmed glasses, a pale pink sleeveless top, and a gold statement necklace.",
+        "action": "Standing and gesturing with hands while speaking",
+        "position": "Left side of the frame",
+        "id": "person_presenter"
+      },
+      {
+        "desc": "Male figure with dark curly hair, wearing a white shirt.",
+        "action": "Kissing the cheek of the female figure next to him",
+        "position": "Right side of the frame, within an inset image",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "Female figure with short pink/purple hair, wearing a black sleeveless top.",
+        "action": "Smiling at the camera while being kissed on the cheek",
+        "position": "Right side of the frame, within an inset image",
+        "id": "person_pink_hair"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A news graphic displays the text 'ZAYN & PERRIE MARRIED?!' at the bottom right.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The logo 'clevver NEWS' is visible in the bottom right corner of the inset image.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The presenter is wearing a lavalier microphone clipped to her top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background behind the presenter is a blue graphic with vertical lines.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "clevver NEWS",
+      "ZAYN & PERRIE MARRIED?!"
+    ],
+    "spatial": "The frame is split, with a female presenter occupying the left two-thirds against a blue background. The right third features a still image of a couple, with a news banner overlaying the bottom of the entire frame.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with long blonde hair, wearing glasses, a light pink sleeveless dress, and a gold statement necklace",
+        "action": "gesturing with both hands raised near chest level, mouth open as if speaking",
+        "position": "left side of frame",
+        "id": "person_presenter"
+      },
+      {
+        "desc": "Man with dark hair and facial hair, wearing a white t-shirt",
+        "action": "leaning in to kiss the cheek of the woman next to him",
+        "position": "right side of frame, background image",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "Woman with blonde hair, wearing a black sleeveless top",
+        "action": "smiling at the camera while being kissed on the cheek",
+        "position": "right side of frame, background image",
+        "id": "person_female_celebrity"
+      },
+      {
+        "desc": "Man with dark hair and beard, visible tattoos on hand and arm, wearing a chain necklace",
+        "action": "touching face near eye with right hand, looking at camera",
+        "position": "left side of frame (second image)",
+        "id": "person_male_celebrity"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video features a split-screen layout with diagonal white bars overlaying the content.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Text 'clevver NEWS' is visible in the bottom right corner.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Text 'ZAYN & PERRIE MARRIED?!' is visible in the lower right overlay.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "An Instagram interface is visible on the right side of the second frame, showing comments and likes.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The username 'niazklam' is visible at the top of the Instagram post.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The caption 'Blah' is visible under the username.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman on the left is wearing a lavalier microphone clipped to her dress.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "clevver NEWS",
+      "ZAYN & PERRIE MARRIED?!",
+      "niazklam",
+      "Blah",
+      "have_a_cigar_love, daimondsea21, soraiaricardo and 167k others like this.",
+      "jackienicholex",
+      "@trishii13 this is zayns insta you need to follow it right now hahahaha",
+      "coramaguire1",
+      "ur so beautiful",
+      "arindadwi14",
+      "Finally~",
+      "ceciliekofedandersen",
+      "@_a_m_a_r",
+      "fxrelsket",
+      "zayn nagkacamera 360 kaba or flawless kalang talaga",
+      "dannymalikx",
+      "Thanks for not being private anymore Zayn!",
+      "fxrelsket",
+      "lmao",
+      "lovemetomm",
+      "@heyits_c",
+      "Leave a comment..."
+    ],
+    "spatial": "The first frame shows a split screen with a presenter on the left against a blue background and a photo of a couple on the right. Diagonal white bars transition across the screen. The second frame shows a close-up black and white photo of a man on the left and an Instagram comment section on the right.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "Scene cuts to empty/black"
+    ]
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person with dark hair, beard, and tattoos on hand and chest, wearing a ring and necklace",
+        "action": "posing for a selfie, touching face near eye with fingers",
+        "position": "left side of frame, occupying majority of the left half"
+      },
+      {
+        "desc": "Instagram interface overlay with comments and likes",
+        "action": "displaying social media interaction",
+        "position": "right side of frame",
+        "id": "ui_instagram_profile"
+      },
+      {
+        "desc": "Clevver News logo watermark",
+        "action": "overlaying bottom right corner",
+        "position": "bottom right corner",
+        "id": "logo_clevver"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The image is in black and white.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person has visible tattoos on their left hand and chest area.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The Instagram post has 167k likes.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The caption of the post reads 'Blah'.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person is wearing a ring on their finger.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person is wearing a chain necklace.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Blah",
+      "have_a_cigar_love, daimondsea21, soraiaricardo and 167k others like this.",
+      "jackienicholex",
+      "@trishii13 this is zayns insta you need to follow it right now hahahaha",
+      "coramaguire1",
+      "ur so beautiful",
+      "arindadwi14",
+      "Finally^",
+      "ceciliekofuedandersen",
+      "@_a_m_a_r",
+      "fxrelsket",
+      "zayn nagkacamera 360 kaba or flawless kalang talaga",
+      "dannymalikx",
+      "Thanks for not being private anymore Zayn!",
+      "fxrelsket",
+      "lmao",
+      "lovemetomorrow",
+      "@heyits_c",
+      "Clevver NEWS"
+    ],
+    "spatial": "The frame is split, with a black and white selfie of a person on the left and a screenshot of an Instagram comment section on the right. The Clevver News logo is in the bottom right corner.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "New scene with selfie video and Instagram overlay"
+    ]
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "Man with dark hair, beard, tattoos on arm and chest, wearing a ring",
+        "action": "posing for a selfie, touching face with hand",
+        "position": "left side of frame 1",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "Woman with long blonde hair, wearing glasses, a pink dress, and a gold necklace",
+        "action": "standing and smiling",
+        "position": "left side of frame 2",
+        "id": "person_presenter"
+      },
+      {
+        "desc": "Man with dark hair, beard, wearing a black leather jacket over a white t-shirt",
+        "action": "smiling and looking to the side",
+        "position": "right side of frame 2",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "Social media interface with profile pictures and text comments",
+        "action": "displayed on screen",
+        "position": "right side of frame 1",
+        "id": "ui_instagram_profile"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a split screen with a social media post on the left and a news segment on the right.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The social media post has 167k likes.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The news segment has a banner that reads 'ZAYN & PERRIE MARRIED?!'.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The logo 'Clevver NEWS' is visible in the bottom right corner of both frames.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Blah",
+      "have_a_cigar_love, daimondsea21, soraiaricardo and 167k others like this.",
+      "jackienicholex @trishii13 this is zayns insta you need to follow it right now hahahaha",
+      "coramaguire1 ur so beautiful",
+      "arindadwi14 Finally^",
+      "ceciliekofodandersen @_a_m_a_r",
+      "fxrelsket zayn nagkacamera 360 kaba or flawless kalang talaga",
+      "dannymalikx Thanks for not being private anymore Zayn!",
+      "fxrelsket lmao",
+      "lovemetomorrow @heyits_c",
+      "Clevver NEWS",
+      "ZAYN & PERRIE MARRIED?!"
+    ],
+    "spatial": "Frame 1 is split diagonally, with a black and white photo on the left and a social media feed on the right. Frame 2 is split vertically, with a female presenter on the left and a photo of a man on the right, with a news banner at the bottom.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "Presenter and additional man appear in scene"
+    ]
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "Scene cuts to empty/black"
+    ]
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "Young man with dark hair, beard, and mustache, shirtless with visible tattoos on chest and shoulders, wearing a thin necklace and an ear gauge",
+        "action": "lying down with head resting on a dark surface, looking towards the camera",
+        "position": "center of frame",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "Dark fabric or cushion",
+        "action": "supporting the man's head",
+        "position": "behind the man's head, extending to the left",
+        "id": "object_dark_fabric"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man has dark hair styled with volume on top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The man has a beard and mustache.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The man is shirtless, revealing tattoos on his chest and shoulders.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The man is wearing a thin chain necklace.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The man has a gauge earring in his left ear.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A 'Clevver NEWS' logo is visible in the bottom right corner.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Clevver NEWS"
+    ],
+    "spatial": "The man's face and upper torso dominate the center of the frame. His head rests on a dark object to the left. A logo is overlaid in the bottom right corner.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "New scene with shirtless man lying down"
+    ]
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "A shirtless male with dark hair, a beard, and visible tattoos on his chest and shoulders. He is wearing a thin necklace.",
+        "action": "Looking towards the camera while reclining against a dark surface.",
+        "position": "Center of the frame",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "A blurred, bright background with indistinct shapes and colors.",
+        "action": "Static background.",
+        "position": "Surrounding the central figure",
+        "id": "background_blurred"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A male figure with dark hair and facial hair is visible in the center of the frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The figure is shirtless and has tattoos on his upper chest and shoulders.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'clevver NEWS' is visible in the bottom right corner.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The figure is wearing a thin chain necklace.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The figure has a piercing in his left ear.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "clevver NEWS"
+    ],
+    "spatial": "A close-up shot of a person centered in the frame, with a logo in the bottom right corner.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "Scene cuts to empty/black"
+    ]
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "A social media profile card featuring a black and white portrait of a man with dark hair and facial hair, a 'Follow' button, and the username 'niazkilam'.",
+        "action": "displayed as a static graphic overlay",
+        "position": "center of the frame"
+      },
+      {
+        "desc": "A man wearing a red beanie, a plaid shirt over a black t-shirt, and dark pants.",
+        "action": "standing and holding a young child",
+        "position": "center of the frame",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "A woman with long blonde hair, wearing a white blouse with sheer sleeves and denim overalls.",
+        "action": "standing next to the man with her arm around him",
+        "position": "left side of the frame",
+        "id": "person_female_celebrity"
+      },
+      {
+        "desc": "A young girl with dark hair in pigtails, wearing a pink jacket and blue jeans.",
+        "action": "being held by the man",
+        "position": "right side of the frame",
+        "id": "person_young_girl"
+      },
+      {
+        "desc": "A logo for 'Clevver NEWS' in white and blue text.",
+        "action": "displayed as a watermark",
+        "position": "bottom right corner",
+        "id": "logo_clevver"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The first frame shows a social media profile with the username 'niazkilam'.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The second frame shows a man, a woman, and a child posing for a photo outdoors on a grassy area.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The man in the second frame is wearing a red beanie.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman in the second frame is wearing denim overalls.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The 'Clevver NEWS' logo is present in the bottom right corner of both frames.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "niazkilam",
+      "Follow",
+      "clevver NEWS"
+    ],
+    "spatial": "The clip transitions from a centered graphic overlay of a social media profile to a full-screen shot of three people standing on a lawn. The 'Clevver NEWS' logo remains in the bottom right corner throughout.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "New scene with social media card and family photo"
+    ]
+  },
+  {
+    "time": [
+      68,
+      70
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "Scene cuts to empty/black"
+    ]
+  },
+  {
+    "time": [
+      70,
+      72
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair and beard, wearing a grey t-shirt with a Superman logo, blue jeans, and a red wristband",
+        "action": "standing, smiling, with his arm around the woman's waist",
+        "position": "left side of the frame",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "woman with long blonde hair, wearing a white crochet maxi dress and a headband",
+        "action": "standing between the two men, holding a drink with a straw",
+        "position": "center of the frame",
+        "id": "person_female_celebrity"
+      },
+      {
+        "desc": "man with dark hair, wearing a red beanie, a black t-shirt, a sleeveless plaid shirt, and black skinny jeans",
+        "action": "standing, smiling, with his arm around the woman's shoulder",
+        "position": "right side of the frame",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "red amusement park ride structure",
+        "action": "stationary in the background",
+        "position": "upper background",
+        "id": "structure_ride"
+      },
+      {
+        "desc": "white food or game stall with a striped awning",
+        "action": "stationary in the background",
+        "position": "upper right background",
+        "id": "structure_stall"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left is wearing a grey t-shirt with a visible Superman logo.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman is wearing a long, white, open-knit or crochet dress.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The man on the right is wearing a red beanie.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman is holding a clear cup with a dark liquid and a black straw.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The man on the left has a tattoo on his right arm.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The man on the right has tattoos on his left arm.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A 'Clevver NEWS' logo is visible in the bottom right corner.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Clevver NEWS"
+    ],
+    "spatial": "Three people are standing close together in the foreground on a grassy field. Behind them, in the background, are red amusement park ride structures and a white stall.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "New scene with group at amusement park"
+    ]
+  },
+  {
+    "time": [
+      72,
+      74
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "Scene cuts to empty/black"
+    ]
+  },
+  {
+    "time": [
+      74,
+      76
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person with long blonde hair wearing a white beanie, white coat, black pants, and white ice skates",
+        "action": "standing on ice, smiling, looking at camera",
+        "position": "left side of frame",
+        "id": "person_female_celebrity"
+      },
+      {
+        "desc": "Person with dark hair wearing a blue hooded sweatshirt with white drawstrings, black pants, and white ice skates",
+        "action": "standing on ice, smiling, looking at camera",
+        "position": "right side of frame",
+        "id": "person_male_celebrity"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two people are standing on an ice rink.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Both individuals are wearing white ice skates.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person on the left is wearing a white coat and a white beanie.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person on the right is wearing a blue hoodie.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A logo reading 'clevver NEWS' is visible in the bottom right corner.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "String lights are visible along the barrier in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "clevver NEWS"
+    ],
+    "spatial": "Two people stand side-by-side in the center of the frame on an ice surface. A barrier with lights runs horizontally behind them. A news logo overlay is in the bottom right corner.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "New scene with people ice skating"
+    ]
+  },
+  {
+    "time": [
+      76,
+      78
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with long blonde hair, wearing black-rimmed glasses, a light pink sleeveless top, and a gold statement necklace.",
+        "action": "Standing and speaking, hands clasped in front of her.",
+        "position": "Left side of the frame",
+        "id": "person_presenter"
+      },
+      {
+        "desc": "Close-up of a hand with dark nail polish wearing a large diamond ring.",
+        "action": "Resting against black beaded fabric.",
+        "position": "Right side of the frame",
+        "id": "object_hand_ring"
+      },
+      {
+        "desc": "Person wearing a blue jacket and black pants.",
+        "action": "Standing, partially visible.",
+        "position": "Center-right background",
+        "id": "person_blue_jacket"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman with blonde hair and glasses is presenting on the left side of the screen.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A close-up image of a hand wearing a large engagement-style ring is displayed on the right.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'ZAYN & PERRIE MARRIED?!' is visible in the lower right corner.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The logo 'clevver NEWS' is visible in the lower right corner.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background behind the presenter is a light blue wall with vertical stripes.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "clevver NEWS",
+      "ZAYN & PERRIE MARRIED?!"
+    ],
+    "spatial": "Split screen layout. The presenter occupies the left half against a blue background. The right half displays a collage of images, primarily featuring a close-up of a hand with a ring. Text overlays are present in the bottom right corner.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "Scene changes to presenter and close-up of ring"
+    ]
+  },
+  {
+    "time": [
+      78,
+      80
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with long blonde hair, wearing black-rimmed glasses, a light pink halter-neck dress, and a large gold fringe necklace.",
+        "action": "standing and gesturing with hands while speaking",
+        "position": "left side of the frame",
+        "id": "person_presenter"
+      },
+      {
+        "desc": "Close-up of a hand with dark nail polish wearing a large diamond ring on the ring finger.",
+        "action": "resting against a black beaded garment",
+        "position": "right side of the frame",
+        "id": "object_hand_ring"
+      },
+      {
+        "desc": "Black garment with intricate beading and sequins.",
+        "action": "being touched by the hand",
+        "position": "right side of the frame, background of the hand",
+        "id": "object_beaded_fabric"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman with blonde hair and glasses is presenting on the left side of the screen.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A close-up image on the right shows a hand wearing a prominent diamond ring.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'clevver NEWS' is visible in the bottom right corner.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'ZAYN & PERRIE MARRIED?!' is displayed in a banner at the bottom.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman is wearing a light pink dress with a halter neckline.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman is wearing a gold-colored statement necklace with fringe details.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "clevver NEWS",
+      "ZAYN & PERRIE MARRIED?!"
+    ],
+    "spatial": "The frame is split into two main sections. The left two-thirds show a female presenter against a blue striped background. The right third displays a close-up image of a hand with a ring. A text banner runs across the bottom of the entire frame.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      80,
+      82
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "Scene cuts to empty/black"
+    ]
+  },
+  {
+    "time": [
+      82,
+      84
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long blonde hair, wearing black-rimmed glasses, a gold fringe necklace, and a light pink halter dress",
+        "action": "speaking and gesturing with hands",
+        "position": "left side of frame",
+        "id": "person_presenter"
+      },
+      {
+        "desc": "close-up of a hand with dark nail polish wearing a large diamond ring",
+        "action": "resting against black beaded fabric",
+        "position": "right side of frame",
+        "id": "object_hand_ring"
+      },
+      {
+        "desc": "black beaded and sequined fabric",
+        "action": "being touched by hand",
+        "position": "right side of frame, background of hand",
+        "id": "object_beaded_fabric"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman on the left is wearing a light pink dress.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The hand on the right is wearing a large ring with multiple stones.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'clevver NEWS' is visible in the bottom right corner.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'ZAYN & PERRIE MARRIED?!' is visible in a banner at the bottom.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman on the left is wearing black-framed glasses.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "clevver NEWS",
+      "ZAYN & PERRIE MARRIED?!"
+    ],
+    "spatial": "Split screen layout. Left side features a woman presenting against a blue background. Right side shows a close-up of a hand with a ring on black fabric. A text banner runs across the bottom of the entire frame.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "Scene returns to presenter and ring close-up"
+    ]
+  },
+  {
+    "time": [
+      84,
+      86
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "Scene cuts to empty/black"
+    ]
+  },
+  {
+    "time": [
+      86,
+      88
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      88,
+      90
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      90,
+      92
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      92,
+      94
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": []
+  },
+  {
+    "time": [
+      94,
+      96
+    ],
+    "visible_entities": [
+      {
+        "desc": "Woman with long blonde hair, wearing black-rimmed glasses, a gold fringe necklace, and a light pink sleeveless top.",
+        "action": "standing and facing forward, mouth slightly open as if speaking",
+        "position": "left side of the frame"
+      },
+      {
+        "desc": "Man with short brown hair, wearing a denim jacket over a dark hoodie.",
+        "action": "smiling with mouth open, looking at the camera",
+        "position": "inside a rectangular video inset on the right",
+        "id": "person_male_celebrity"
+      },
+      {
+        "desc": "Yellow rectangular button with black text.",
+        "action": "displayed statically",
+        "position": "top right, above the video inset",
+        "id": "ui_button_yellow"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman with blonde hair and glasses is wearing a pink top.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A yellow button with the word 'SUBSCRIBE' is visible.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A smaller video frame shows a man in a denim jacket.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background is blue with vertical stripes.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "SUBSCRIBE"
+    ],
+    "spatial": "The frame is split with a presenter on the left and a graphic overlay on the right. The graphic consists of a 'SUBSCRIBE' button at the top and a video inset below it.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "New scene with presenter and man in denim jacket"
+    ]
+  },
+  {
+    "time": [
+      96,
+      98
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long blonde hair, wearing black-rimmed glasses, a gold statement necklace, and a light pink sleeveless dress",
+        "action": "standing and speaking, hands clasped in front",
+        "position": "left side of the frame",
+        "id": "person_presenter"
+      },
+      {
+        "desc": "yellow rectangular button with black text",
+        "action": "displayed as a graphic overlay",
+        "position": "upper right quadrant",
+        "id": "ui_button_yellow"
+      },
+      {
+        "desc": "split-screen video insert showing a man's face on the left and a high-angle view of legs dangling over a building on the right",
+        "action": "displayed as a graphic overlay",
+        "position": "right side of the frame, below the yellow button",
+        "id": "person_male_celebrity"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman with blonde hair and glasses is wearing a pink dress.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The word 'SUBSCRIBE' is written in black capital letters on a yellow background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A video insert shows a man with short brown hair making an excited facial expression.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A video insert shows a first-person perspective of someone sitting on the edge of a tall building.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background consists of vertical blue and teal stripes.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "SUBSCRIBE"
+    ],
+    "spatial": "The frame is split, with a female presenter on the left against a blue striped background. On the right, there is a large yellow 'SUBSCRIBE' button above a rectangular video insert containing two smaller video feeds side-by-side.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "Split-screen video insert appears"
+    ]
+  },
+  {
+    "time": [
+      98,
+      100
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "ytb_bCz3VY9wjFY",
+    "state_changes": [
+      "Scene cuts to empty/black"
+    ]
+  }
+]

@@ -1,0 +1,4463 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person with curly brown hair, wearing a black t-shirt and a blue lanyard",
+        "action": "smiling slightly, holding a white cylindrical object",
+        "position": "foreground, center-right",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Person in dark clothing",
+        "action": "hanging from a vertical metal pole",
+        "position": "background, left",
+        "id": "other_people"
+      },
+      {
+        "desc": "Blurred figures",
+        "action": "standing or moving",
+        "position": "background, far right",
+        "id": "other_people"
+      },
+      {
+        "desc": "White house and green trees",
+        "action": "stationary",
+        "position": "background, upper left",
+        "id": "misc_objects"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The first frame is completely black.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A person with curly hair is visible in the foreground wearing a blue lanyard.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person in the foreground is holding a white object.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A person is hanging from a pole in the background on a green field.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There is a house on a hill in the background.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The main subject is in the foreground right. Behind them is a green sports field. To the left background, a person hangs from a pole. Further back is a hill with trees and a house. Blurry figures are on the far right.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "Young person with curly brown hair, wearing a black t-shirt with blue text and black shorts",
+        "action": "playing a snare drum with drumsticks",
+        "position": "center foreground",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Man wearing sunglasses and a light grey t-shirt with blue text",
+        "action": "playing a snare drum, smiling",
+        "position": "right of center",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Man wearing sunglasses and a light grey t-shirt",
+        "action": "playing a snare drum",
+        "position": "mid-right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Man wearing sunglasses and a light grey t-shirt",
+        "action": "playing a snare drum",
+        "position": "far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Man wearing sunglasses and a light grey t-shirt",
+        "action": "playing a snare drum",
+        "position": "far right edge",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Man wearing sunglasses and a light grey t-shirt",
+        "action": "holding drumsticks",
+        "position": "left foreground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "White snare drums with black hardware and Pearl logo",
+        "action": "being played",
+        "position": "foreground and mid-ground",
+        "id": "drums"
+      },
+      {
+        "desc": "Blue and white water coolers",
+        "action": "sitting on the ground",
+        "position": "lower left",
+        "id": "coolers_bags"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A group of people are playing snare drums in a line on a green field",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums have the brand name 'Pearl' visible on the white shell wrap",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Most of the adult drummers are wearing matching light grey t-shirts with a blue logo",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The central young drummer is wearing a black t-shirt, distinct from the others",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Palm trees are visible in the background behind the field",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'BLUE EXPERIENCE' is partially visible on the grey shirts",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Pearl",
+      "BLUE",
+      "EXPERIENCE"
+    ],
+    "spatial": "The scene is set on a green athletic field with a line of drummers extending from the left foreground towards the right background. A young drummer is positioned centrally in the foreground, flanked by adult drummers. Palm trees and a hillside with houses are visible in the distant background.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "young male with curly brown hair wearing a black t-shirt with blue text, black shorts, and a blue lanyard",
+        "action": "playing a white snare drum with drumsticks",
+        "position": "center-left foreground",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "tall male with short brown hair and sunglasses wearing a light grey t-shirt with a blue logo and black shorts with white stripes",
+        "action": "playing a white snare drum and smiling",
+        "position": "center-right foreground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "line of males wearing matching light grey t-shirts and sunglasses",
+        "action": "playing snare drums in a row",
+        "position": "right background",
+        "id": "grey_black_group"
+      },
+      {
+        "desc": "white snare drums with black hardware and 'Pearl' logo",
+        "action": "being played by the individuals",
+        "position": "foreground and mid-ground",
+        "id": "drums"
+      },
+      {
+        "desc": "partial view of a person's arm and drum on the far left",
+        "action": "holding a drumstick",
+        "position": "far left edge",
+        "id": "drums"
+      },
+      {
+        "desc": "blue and white water coolers and bags",
+        "action": "sitting on the grass",
+        "position": "ground near the boy",
+        "id": "coolers_bags"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The drums have the brand name 'Pearl' written in black script on the white shell.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The boy in the black shirt has a blue lanyard around his neck.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The tall man in the grey shirt is wearing sunglasses.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A stick bag attached to a drum has the text 'PROMARK' visible vertically.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The boy's t-shirt has text that includes 'SYSTEM BLUE' and 'EXPERIENCE'.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are palm trees visible in the background behind the field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A scoreboard is visible in the far background right.",
+        "confidence": 0.9,
+        "target_resolution_visible": false
+      }
+    ],
+    "ocr": [
+      "Pearl",
+      "BLUE",
+      "SYSTEM BLUE",
+      "EXPERIENCE",
+      "PROMARK"
+    ],
+    "spatial": "The scene is set on a green athletic field with white lines. In the foreground, a boy and a tall man are playing drums side-by-side. To their right, a line of other drummers extends into the background. To the left, equipment like coolers and bags sits on the grass. The background features trees, buildings, and a scoreboard.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "Young male with curly brown hair, wearing a black t-shirt with blue text and black shorts",
+        "action": "Playing a snare drum with drumsticks",
+        "position": "Foreground left",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Tall male wearing sunglasses, a light grey t-shirt with a blue logo, and black shorts with white stripes",
+        "action": "Playing a snare drum",
+        "position": "Center mid-ground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Three males in a line wearing matching light grey t-shirts and sunglasses",
+        "action": "Playing snare drums in unison",
+        "position": "Mid-ground to background, right of center",
+        "id": "grey_black_group"
+      },
+      {
+        "desc": "Male wearing a light grey t-shirt",
+        "action": "Playing a set of tenor drums",
+        "position": "Far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "White snare drums with black hardware and white shells",
+        "action": "Being played by the drummers",
+        "position": "In front of each drummer",
+        "id": "drums"
+      },
+      {
+        "desc": "Black stick bags attached to the drums",
+        "action": "Holding drumsticks",
+        "position": "Attached to the side of the drums",
+        "id": "drums"
+      },
+      {
+        "desc": "Blue and white water coolers and bags",
+        "action": "Sitting on the grass",
+        "position": "Bottom left corner",
+        "id": "coolers_bags"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The boy in the foreground is actively striking a snare drum with drumsticks",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The white drum shells feature the brand name 'Pearl' in black script",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Black stick bags attached to the drums have 'PROBANK' written vertically in white text",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The line of drummers in the background are wearing matching light grey shirts with a blue circular logo containing the word 'BLUE'",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A scoreboard in the far background displays the text 'SCOTS TIGERS'",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The boy in the foreground wears a black shirt with blue text that includes the word 'BLUE' and 'EXPERI'",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "BLUE",
+      "Pearl",
+      "PROBANK",
+      "SCOTS TIGERS",
+      "EXPERI"
+    ],
+    "spatial": "The scene takes place on a green athletic field with white lines. In the foreground left, a young boy plays a snare drum near water coolers on the ground. Extending from the center towards the right background is a line of older drummers playing snare drums. Further to the right in the background, another drummer plays tenor drums. Trees and a scoreboard are visible in the distance.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "man wearing sunglasses, white beaded necklace, and grey t-shirt with blue text",
+        "action": "playing a snare drum with white drumsticks",
+        "position": "left foreground"
+      },
+      {
+        "desc": "boy with curly brown hair wearing a black t-shirt and blue lanyard",
+        "action": "playing a snare drum with white drumsticks",
+        "position": "center foreground",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "man wearing sunglasses and grey t-shirt with blue text",
+        "action": "playing a drum",
+        "position": "right mid-ground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "white snare drums with black rims and cursive logo",
+        "action": "being struck by drumsticks",
+        "position": "foreground",
+        "id": "drums"
+      },
+      {
+        "desc": "green athletic field with white yard lines",
+        "action": "providing the surface for the activity",
+        "position": "background and ground",
+        "id": "field"
+      },
+      {
+        "desc": "tall palm trees and vegetation on a hill",
+        "action": "lining the background",
+        "position": "background",
+        "id": "vegetation"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left wears a shirt with the text 'SYSTEM BLUE EXPERIENCE'",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums feature the brand name 'Pearl' in script on the white shell",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The boy in the center wears a black shirt with a blue logo similar to the adults",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The man on the right wears black shorts with white vertical stripes",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Multiple palm trees are visible in the distance against a hillside",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "SYSTEM BLUE",
+      "EXPERIENCE",
+      "Pearl"
+    ],
+    "spatial": "A man stands in the left foreground playing a drum, with a boy standing slightly behind him to the right also playing a drum. Another man stands further back on the right side. They are positioned on a green field with bleachers and a hill with palm trees in the background.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "Young person with shoulder-length brown hair, wearing a black t-shirt with blue text and black shorts",
+        "action": "playing a snare drum with drumsticks",
+        "position": "center foreground",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Adult male wearing a light grey t-shirt with blue text, black shorts with white stripes, and sunglasses",
+        "action": "playing a snare drum with drumsticks",
+        "position": "center right",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Adult male wearing a light grey t-shirt and sunglasses",
+        "action": "playing a snare drum with drumsticks",
+        "position": "right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Adult male wearing a light grey t-shirt and sunglasses",
+        "action": "playing a snare drum with drumsticks",
+        "position": "far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Adult male wearing a light grey t-shirt and sunglasses",
+        "action": "playing a snare drum with drumsticks",
+        "position": "far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Partial view of a person wearing a light grey t-shirt with blue text",
+        "action": "playing a snare drum with drumsticks",
+        "position": "left foreground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "White snare drums with black hardware and 'Pearl' logo",
+        "action": "being played",
+        "position": "foreground and midground",
+        "id": "drums"
+      },
+      {
+        "desc": "Blue and white water coolers",
+        "action": "sitting on the ground",
+        "position": "lower left",
+        "id": "coolers_bags"
+      },
+      {
+        "desc": "Green athletic field with white lines",
+        "action": "stationary",
+        "position": "background",
+        "id": "field"
+      },
+      {
+        "desc": "Palm trees and other foliage",
+        "action": "stationary",
+        "position": "distant background",
+        "id": "vegetation"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A young person in a black shirt is playing a snare drum in the center of the frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Several adults in matching grey shirts are playing snare drums in a line.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums have the brand name 'Pearl' written on the white shell.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person in the center is wearing a blue lanyard around their neck.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are blue and white water coolers on the ground near the drummer in the black shirt.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The scene takes place on a green athletic field with white lines.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Palm trees are visible in the distant background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The adults playing drums are wearing sunglasses.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person in the center right is wearing black shorts with three white stripes down the side.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Pearl",
+      "BLUE",
+      "EXPERIENCE"
+    ],
+    "spatial": "The scene is set on a green athletic field. In the foreground and midground, a line of drummers is arranged from left to right. A young person in a black shirt is centrally located, flanked by adults in grey shirts. Water coolers and bags are on the ground to the left. The background features the rest of the field, bleachers, and a line of trees including palm trees against the sky.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "young boy with brown hair, wearing a black t-shirt with blue text and black shorts",
+        "action": "playing a snare drum with drumsticks",
+        "position": "center-left foreground",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "man wearing sunglasses, grey t-shirt with blue logo, and black shorts with white stripes",
+        "action": "playing a snare drum with drumsticks",
+        "position": "center-right foreground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "man wearing sunglasses and a grey t-shirt",
+        "action": "playing a snare drum with drumsticks",
+        "position": "right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "man wearing sunglasses and a grey t-shirt",
+        "action": "playing a snare drum with drumsticks",
+        "position": "far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "man wearing a cap and a grey t-shirt",
+        "action": "playing a snare drum with drumsticks",
+        "position": "far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "person wearing a grey t-shirt, partially visible",
+        "action": "playing a snare drum with drumsticks",
+        "position": "far left foreground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "white snare drums with black hardware and 'Pearl' logo",
+        "action": "being played",
+        "position": "foreground and mid-ground",
+        "id": "drums"
+      },
+      {
+        "desc": "blue and white water coolers",
+        "action": "sitting on the ground",
+        "position": "bottom left",
+        "id": "coolers_bags"
+      },
+      {
+        "desc": "people in the distance on the field",
+        "action": "standing or walking",
+        "position": "background",
+        "id": "other_people"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A line of drummers is playing snare drums on a green field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums have the word 'Pearl' written on the white shell covers.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The boy in the black shirt is wearing a blue lanyard around his neck.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The man in the center-right is wearing black shorts with three white vertical stripes.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are palm trees visible in the background behind the field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drummers are holding white drumsticks.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A scoreboard is partially visible in the far right background.",
+        "confidence": 0.9,
+        "target_resolution_visible": false
+      }
+    ],
+    "ocr": [
+      "Pearl",
+      "BLUE",
+      "PRO MARK"
+    ],
+    "spatial": "The scene is set on a green athletic field. In the foreground and extending to the right, a line of drummers is positioned, playing snare drums mounted on stands. A young boy is prominent in the center-left, with several adult men to his right. In the background, there are bleachers, trees, and other people on the field.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "young person with shoulder-length brown hair, wearing a black t-shirt with blue text and black shorts",
+        "action": "playing a snare drum with drumsticks",
+        "position": "center-left foreground",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "man wearing sunglasses, grey t-shirt with blue logo, and black shorts with white stripes",
+        "action": "playing a snare drum",
+        "position": "center-right foreground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "man wearing sunglasses and grey t-shirt",
+        "action": "playing a snare drum",
+        "position": "right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "man wearing sunglasses and grey t-shirt",
+        "action": "playing a snare drum",
+        "position": "right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "man wearing a cap and grey t-shirt",
+        "action": "playing a snare drum",
+        "position": "far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "person wearing grey t-shirt (partial view)",
+        "action": "playing a snare drum",
+        "position": "far left foreground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "white snare drums with black hardware and 'Pearl' logo",
+        "action": "being played",
+        "position": "foreground and mid-ground",
+        "id": "drums"
+      },
+      {
+        "desc": "blue and white water coolers",
+        "action": "sitting on the ground",
+        "position": "bottom left",
+        "id": "coolers_bags"
+      },
+      {
+        "desc": "group of people in red and white uniforms",
+        "action": "practicing on the field",
+        "position": "background center",
+        "id": "other_people"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A line of drummers is performing on a green athletic field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums have the brand name 'Pearl' written in script on the white shell covers.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The central young drummer is wearing a blue lanyard around their neck.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Most of the adult drummers are wearing sunglasses.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Palm trees are visible in the distant background behind the field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Pearl",
+      "BLUE",
+      "EXPERIENCE",
+      "PRODARK"
+    ],
+    "spatial": "The scene is set on a green athletic field with white yard lines. A line of drummers extends from the left foreground towards the right background. In the immediate foreground, a young drummer and a partial view of another drummer are visible. Behind them, several adult drummers stand in a row. To the left on the ground are water coolers and bags. In the far background, other performers are visible on the field, with trees and a hill beyond.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "Young person with curly brown hair wearing a black t-shirt with blue text and a blue lanyard",
+        "action": "playing a snare drum with white drumsticks",
+        "position": "center foreground",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Tall male wearing sunglasses, grey t-shirt with blue logo, and black shorts with white stripes",
+        "action": "playing a snare drum with white drumsticks",
+        "position": "center right",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Male wearing sunglasses and a grey t-shirt",
+        "action": "playing a snare drum",
+        "position": "right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Male wearing sunglasses and a grey t-shirt",
+        "action": "playing a snare drum",
+        "position": "far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Male wearing a cap and grey t-shirt",
+        "action": "playing a snare drum",
+        "position": "far right edge",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing a grey t-shirt (partial view)",
+        "action": "playing a snare drum",
+        "position": "far left edge",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "White snare drums with black hardware and 'Pearl' logo",
+        "action": "being played",
+        "position": "foreground and mid-ground",
+        "id": "drums"
+      },
+      {
+        "desc": "Blue and white water coolers",
+        "action": "sitting on the ground",
+        "position": "bottom left",
+        "id": "coolers_bags"
+      },
+      {
+        "desc": "Green artificial turf field with white lines",
+        "action": "static background surface",
+        "position": "entire ground area",
+        "id": "field"
+      },
+      {
+        "desc": "Palm trees and other greenery",
+        "action": "static background elements",
+        "position": "background horizon",
+        "id": "vegetation"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The drummers are arranged in a line facing right.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The word 'Pearl' is visible in script font on the white drum shells.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The central drummer is wearing a blue lanyard around their neck.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Multiple drummers are wearing sunglasses.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are people visible in the far background on the field.",
+        "confidence": 0.9,
+        "target_resolution_visible": false
+      },
+      {
+        "fact": "The drumsticks are white.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Pearl",
+      "BLUE",
+      "EXPERIENCE",
+      "PRODARK"
+    ],
+    "spatial": "The scene is an outdoor sports field with a line of drummers extending from the left foreground towards the right background. The central focus is a young drummer in black, flanked by older drummers in grey shirts. Water coolers and bags are on the ground near the left edge. Palm trees and a hillside are visible in the distant background.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "young boy with curly brown hair, wearing a black t-shirt with blue text and black shorts, wearing a blue lanyard",
+        "action": "playing a snare drum with drumsticks",
+        "position": "center-left foreground",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "man wearing sunglasses, grey t-shirt with blue logo, and black shorts with white stripes",
+        "action": "playing a snare drum with drumsticks",
+        "position": "center-right mid-ground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "man wearing sunglasses and a grey t-shirt",
+        "action": "playing a snare drum",
+        "position": "right mid-ground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "man wearing sunglasses and a grey t-shirt",
+        "action": "playing a snare drum",
+        "position": "right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "man wearing a cap and grey t-shirt",
+        "action": "playing a snare drum",
+        "position": "far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "person's arm and torso in grey shirt",
+        "action": "playing a drum",
+        "position": "far left edge",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "white snare drums with black hardware and 'Pearl' logo",
+        "action": "being played",
+        "position": "foreground and mid-ground",
+        "id": "drums"
+      },
+      {
+        "desc": "blue and white water coolers",
+        "action": "sitting on the ground",
+        "position": "bottom left",
+        "id": "coolers_bags"
+      },
+      {
+        "desc": "brown bag",
+        "action": "sitting on the ground",
+        "position": "bottom left near coolers",
+        "id": "coolers_bags"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A line of drummers is practicing on a green athletic field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums have the brand name 'Pearl' written in script on the white shell cover.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The boy in the center is wearing a black shirt with 'SYSTEM BLUE EXPERIENCE' text visible.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The adult drummers are wearing matching grey t-shirts with a blue circular logo.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are palm trees visible in the background behind the field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Other people are visible in the distant background on the field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Pearl",
+      "SYSTEM BLUE",
+      "EXPERIENCE",
+      "BLUE",
+      "PRO MARK"
+    ],
+    "spatial": "The scene is an outdoor athletic field with a line of snare drummers arranged from left to right. A young boy is in the foreground, slightly left of center, with adult drummers extending to the right. Water coolers and bags are on the ground near the boy. The background shows the rest of the green field, bleachers, trees, and a scoreboard.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "Young boy with curly brown hair, wearing a black t-shirt with blue text and black shorts",
+        "action": "playing a snare drum with drumsticks",
+        "position": "center foreground",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Adult male with short brown hair and sunglasses, wearing a grey t-shirt and black shorts with white stripes",
+        "action": "playing a snare drum with drumsticks",
+        "position": "center right",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Adult male with dark hair and sunglasses, wearing a grey t-shirt",
+        "action": "playing a snare drum with drumsticks",
+        "position": "right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Adult male with a shaved head and sunglasses, wearing a grey t-shirt",
+        "action": "playing a snare drum with drumsticks",
+        "position": "far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Adult male wearing a grey t-shirt and a cap",
+        "action": "playing a snare drum with drumsticks",
+        "position": "far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing a grey t-shirt, partially visible",
+        "action": "playing a drum, arm raised",
+        "position": "far left foreground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "White snare drums with black hardware and 'Pearl' logo",
+        "action": "being played",
+        "position": "foreground and mid-ground",
+        "id": "drums"
+      },
+      {
+        "desc": "Blue and white water coolers and bags",
+        "action": "sitting on the ground",
+        "position": "bottom left",
+        "id": "coolers_bags"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A group of people are playing snare drums in a line on a green field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums have the brand name 'Pearl' written on the white shell covers.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The boy in the center is wearing a blue lanyard around his neck.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The man in the center-right is wearing black shorts with three white vertical stripes.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text on the boy's shirt includes the words 'SYSTEM BLUE' and 'EXPERIENCE'.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are palm trees and other trees in the background behind the field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Pearl",
+      "SYSTEM BLUE",
+      "EXPERIENCE",
+      "BLUE"
+    ],
+    "spatial": "The scene is set on a green athletic field. In the foreground and extending to the right, a line of drummers is positioned. A young boy is centrally located in the foreground, with several adult men to his right. To the far left, another drummer is partially visible. In the background, there are bleachers, trees, and other people on the field.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing a grey t-shirt with a blue logo, black shorts with white stripes, and sunglasses",
+        "action": "playing a snare drum with drumsticks",
+        "position": "center-right",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Young person with curly brown hair wearing a black t-shirt with a blue logo and a blue lanyard",
+        "action": "playing a snare drum with drumsticks",
+        "position": "center-left",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Person wearing a grey t-shirt with a blue logo and sunglasses",
+        "action": "playing a snare drum with drumsticks",
+        "position": "right",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing a grey t-shirt with a blue logo and sunglasses",
+        "action": "playing a snare drum with drumsticks",
+        "position": "far right",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing a grey t-shirt with a blue logo and a cap",
+        "action": "playing a snare drum with drumsticks",
+        "position": "far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing a grey t-shirt with a blue logo",
+        "action": "playing a snare drum with drumsticks",
+        "position": "far left",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "White snare drums with black hardware and 'Pearl' logo",
+        "action": "being played",
+        "position": "foreground and mid-ground",
+        "id": "drums"
+      },
+      {
+        "desc": "Blue and white water coolers",
+        "action": "sitting on the ground",
+        "position": "bottom left",
+        "id": "coolers_bags"
+      },
+      {
+        "desc": "Brown bag",
+        "action": "sitting on the ground",
+        "position": "bottom left",
+        "id": "coolers_bags"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A group of people are playing snare drums in a line on a green field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums have the brand name 'Pearl' written on them in black script.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Most of the drummers are wearing matching grey t-shirts with a blue circular logo.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One drummer in the foreground is wearing a black t-shirt.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are palm trees visible in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drummers are using drumsticks to hit the drums.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drummers are standing on a green athletic field with white lines.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Pearl",
+      "PROBARK",
+      "BLUE",
+      "EXPERIENCE"
+    ],
+    "spatial": "The scene is set on a green athletic field. In the foreground and mid-ground, a line of drummers is arranged from left to right. The closest drummer is on the far left, partially out of frame. Next is a young person in a black shirt, followed by several adults in grey shirts. The drums are positioned in front of each person. In the background, there are bleachers, trees, and a scoreboard.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "Young person with curly brown hair wearing a black t-shirt with blue text and black shorts",
+        "action": "playing a snare drum with drumsticks",
+        "position": "center foreground"
+      },
+      {
+        "desc": "Tall male wearing sunglasses, grey t-shirt with blue logo, and black shorts with white stripes",
+        "action": "playing a snare drum with drumsticks",
+        "position": "center right",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Male wearing sunglasses and grey t-shirt",
+        "action": "playing a snare drum",
+        "position": "right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Male wearing sunglasses and grey t-shirt",
+        "action": "playing a snare drum",
+        "position": "far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Male wearing a cap and grey t-shirt",
+        "action": "playing a snare drum",
+        "position": "far right edge",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing grey t-shirt (partially visible)",
+        "action": "playing a snare drum",
+        "position": "far left edge",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "White snare drums with black hardware and 'Pearl' logo",
+        "action": "being played",
+        "position": "foreground and mid-ground",
+        "id": "drums"
+      },
+      {
+        "desc": "Blue and white water coolers and bags",
+        "action": "sitting on the ground",
+        "position": "lower left",
+        "id": "coolers_bags"
+      },
+      {
+        "desc": "Green athletic field with white lines",
+        "action": "static background",
+        "position": "background",
+        "id": "field"
+      },
+      {
+        "desc": "Palm trees and other vegetation",
+        "action": "static background",
+        "position": "distant background",
+        "id": "vegetation"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A line of drummers is performing on a green field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums are white with the brand name 'Pearl' visible in black script.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Most of the adult drummers are wearing matching grey t-shirts with a blue circular logo.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The young drummer in the center is wearing a black t-shirt that differs from the others.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Several drummers are wearing sunglasses.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drummers are holding white drumsticks.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are blue and white water coolers on the ground near the drums.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Palm trees are visible in the distant background against a clear sky.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Pearl",
+      "BLUE",
+      "SYSTEM BLUE",
+      "EXPERIENCE",
+      "PROBEARK"
+    ],
+    "spatial": "The scene is an outdoor athletic field. A line of drummers is arranged diagonally from the lower left to the upper right. The main focus is a young drummer in the center foreground, with adult drummers extending behind him to the right. Equipment like water coolers is on the ground to the left. The background consists of the green field, bleachers, trees, and a distant scoreboard.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing a grey t-shirt with a blue logo, black shorts with white stripes, and sunglasses",
+        "action": "Standing and playing a snare drum with drumsticks",
+        "position": "Center-right of the frame",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Young person with curly brown hair wearing a black t-shirt with blue text and a blue lanyard",
+        "action": "Standing and playing a snare drum with drumsticks",
+        "position": "Center-left of the frame",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Person wearing a grey t-shirt with a blue logo and sunglasses",
+        "action": "Standing and playing a snare drum with drumsticks",
+        "position": "Right of the center person",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing a grey t-shirt with a blue logo and sunglasses",
+        "action": "Standing and playing a snare drum with drumsticks",
+        "position": "Far right of the frame",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing a grey t-shirt with a blue logo and a cap",
+        "action": "Standing and playing a snare drum with drumsticks",
+        "position": "Far right, partially obscured",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing a grey t-shirt with a blue logo",
+        "action": "Standing and playing a snare drum with drumsticks",
+        "position": "Far left, partially visible",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "White snare drums with black hardware and 'Pearl' logo",
+        "action": "Being played by the drummers",
+        "position": "In front of each drummer",
+        "id": "drums"
+      },
+      {
+        "desc": "Blue and white water coolers",
+        "action": "Sitting on the ground",
+        "position": "Bottom left of the frame",
+        "id": "coolers_bags"
+      },
+      {
+        "desc": "Green athletic field with white lines",
+        "action": "Serving as the ground surface",
+        "position": "Throughout the frame",
+        "id": "field"
+      },
+      {
+        "desc": "Palm trees and other trees",
+        "action": "Standing in the background",
+        "position": "Background of the frame",
+        "id": "vegetation"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A group of people are playing snare drums in a line on an athletic field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums have the brand name 'Pearl' visible on the white drum wraps.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Most of the drummers are wearing matching grey t-shirts with a blue circular logo.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One drummer, a younger individual, is wearing a black t-shirt.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drummers are holding white drumsticks.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are blue and white water coolers on the ground near the drummers.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The setting appears to be an outdoor athletic field with palm trees in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Pearl",
+      "BLUE",
+      "EXPERT",
+      "PRODARK"
+    ],
+    "spatial": "The scene is set on a green athletic field. A line of drummers is arranged from the left to the right side of the frame, facing slightly towards the right. In the foreground, there are water coolers and bags on the ground. The background features a fence, trees, and palm trees against a clear sky.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "Young person with shoulder-length brown hair, wearing a black t-shirt with blue text and black shorts",
+        "action": "playing a snare drum with drumsticks",
+        "position": "center-left foreground",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Tall male wearing sunglasses, grey t-shirt with blue logo, and black shorts with white stripes",
+        "action": "playing a snare drum with drumsticks",
+        "position": "center-right midground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Male wearing sunglasses and grey t-shirt",
+        "action": "playing a snare drum with drumsticks",
+        "position": "right midground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Male wearing sunglasses and grey t-shirt",
+        "action": "playing a snare drum with drumsticks",
+        "position": "far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Male wearing a cap and grey t-shirt",
+        "action": "playing a snare drum with drumsticks",
+        "position": "far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Partial view of person in grey t-shirt",
+        "action": "playing a drum with drumsticks",
+        "position": "far left foreground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "White snare drums with black hardware and 'Pearl' logo",
+        "action": "being played",
+        "position": "foreground and midground",
+        "id": "drums"
+      },
+      {
+        "desc": "Blue and white water coolers and bags",
+        "action": "sitting on the ground",
+        "position": "bottom left",
+        "id": "coolers_bags"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A group of drummers is performing on a green sports field with white lines.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums are white with the brand name 'Pearl' visible in black script.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Most of the adult drummers are wearing matching grey t-shirts with a blue circular logo.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The central young drummer is wearing a black t-shirt with blue text that includes 'BLUE' and 'EXPERIENCE'.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Palm trees and a hillside with houses are visible in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The lighting suggests it is late afternoon or early evening.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Pearl",
+      "BLUE",
+      "EXPERIENCE",
+      "PROBECK"
+    ],
+    "spatial": "The scene is set on a green athletic field. In the foreground and midground, a line of drummers stands facing slightly right. A young drummer is prominent in the center-left, flanked by adult drummers extending to the right. Equipment like coolers and bags rests on the ground to the left. The background features a running track, bleachers, palm trees, and a residential hillside.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person with curly brown hair wearing a black t-shirt with blue text and a lanyard",
+        "action": "standing and holding drumsticks, looking down at a drum",
+        "position": "center-left foreground",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Tall person wearing sunglasses, light grey t-shirt, and black shorts with white stripes",
+        "action": "standing and playing a snare drum",
+        "position": "center-right",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing sunglasses and a light grey t-shirt",
+        "action": "standing and playing a snare drum",
+        "position": "right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing sunglasses and a light grey t-shirt",
+        "action": "standing and playing a snare drum",
+        "position": "far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing a light grey t-shirt",
+        "action": "standing and playing a snare drum",
+        "position": "far right edge",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing a light grey t-shirt",
+        "action": "holding a drumstick over a drum",
+        "position": "far left edge",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "White snare drums with black hardware and 'Pearl' logo",
+        "action": "being played or stood next to",
+        "position": "foreground and mid-ground",
+        "id": "drums"
+      },
+      {
+        "desc": "Blue and white water coolers",
+        "action": "sitting on the ground",
+        "position": "bottom left",
+        "id": "coolers_bags"
+      },
+      {
+        "desc": "Green athletic field with white lines",
+        "action": "serving as the ground surface",
+        "position": "background",
+        "id": "field"
+      },
+      {
+        "desc": "Palm trees and other foliage",
+        "action": "visible in the distance",
+        "position": "far background",
+        "id": "vegetation"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A line of drummers is arranged on a green field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums have the brand name 'Pearl' written on the white shell covers.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Most of the drummers are wearing matching light grey t-shirts with a blue logo.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person in the center is wearing a black t-shirt that says 'SYSTEM BLUE EXPERIENCE'.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drummers are holding drumsticks and appear to be in the middle of a practice or performance.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are water coolers and bags on the ground near the drummers.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Pearl",
+      "SYSTEM BLUE",
+      "EXPERIENCE",
+      "PROMARK"
+    ],
+    "spatial": "The scene is set on a green athletic field. In the foreground and extending to the right, a line of snare drummers is positioned. A person in a black shirt stands slightly apart in the center-left. In the background, there are bleachers, trees, and a scoreboard.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing a grey t-shirt with blue text, partially visible on the left",
+        "action": "Holding a drumstick, standing near a drum",
+        "position": "Left edge of frame",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Young person with curly brown hair, wearing a black t-shirt with blue text and black shorts",
+        "action": "Holding drumsticks vertically, looking down",
+        "position": "Center-left foreground",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Person wearing a grey t-shirt, black shorts with white stripes, and sunglasses",
+        "action": "Holding drumsticks, standing behind a drum",
+        "position": "Center-right mid-ground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing a grey t-shirt and sunglasses",
+        "action": "Holding drumsticks, standing behind a drum",
+        "position": "Right mid-ground"
+      },
+      {
+        "desc": "Person wearing a grey t-shirt and sunglasses",
+        "action": "Holding drumsticks, standing behind a drum",
+        "position": "Right background"
+      },
+      {
+        "desc": "Person wearing a grey t-shirt and a cap",
+        "action": "Holding drumsticks, standing behind a drum",
+        "position": "Far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "White marching snare drums with black hardware and 'Pearl' logo",
+        "action": "Stationary on stands",
+        "position": "Foreground to background, right side",
+        "id": "drums"
+      },
+      {
+        "desc": "Blue and white water coolers",
+        "action": "Sitting on the ground",
+        "position": "Bottom left foreground",
+        "id": "coolers_bags"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A line of people are standing with marching snare drums on a green athletic field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums are white with the brand name 'Pearl' written in black script on the shell.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Most of the people in the line are wearing matching grey t-shirts with a blue circular logo.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One person in the foreground is wearing a black t-shirt that contrasts with the others.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Palm trees are visible in the background behind the athletic field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person in the black shirt is holding two drumsticks together in one hand.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Pearl",
+      "BLUE",
+      "EXPERIENCE",
+      "PROMARK"
+    ],
+    "spatial": "The scene is an outdoor athletic field with a running track. In the foreground and extending to the right, a line of drummers stands with their instruments. A young person in a black shirt is positioned slightly in front of the main line. To the left, another person is partially visible. In the background, there are bleachers, trees, and a scoreboard.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      68,
+      70
+    ],
+    "visible_entities": [
+      {
+        "desc": "Young person with shoulder-length brown hair wearing a black t-shirt with blue text, black shorts, and a blue lanyard with a white tag",
+        "action": "standing in front of a snare drum, holding drumsticks, looking down at the drum",
+        "position": "center-left foreground",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Tall young man wearing sunglasses, a light grey t-shirt with blue text, and black shorts with white stripes",
+        "action": "standing behind a snare drum, holding drumsticks, smiling",
+        "position": "center-right midground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Young man wearing sunglasses and a light grey t-shirt with blue text",
+        "action": "standing behind a snare drum, holding drumsticks, looking to the right",
+        "position": "right midground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Man wearing sunglasses and a light grey t-shirt with blue text",
+        "action": "standing behind a snare drum, holding drumsticks",
+        "position": "right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Man wearing a light grey t-shirt",
+        "action": "standing behind a snare drum, partially visible",
+        "position": "far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Arm and shoulder of a person wearing a light grey t-shirt",
+        "action": "standing near a snare drum",
+        "position": "far left edge",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "White snare drums with black hardware and 'Pearl' logo",
+        "action": "mounted on stands",
+        "position": "foreground and midground in a line",
+        "id": "drums"
+      },
+      {
+        "desc": "Blue and white water coolers and bags",
+        "action": "sitting on the grass",
+        "position": "bottom left foreground",
+        "id": "coolers_bags"
+      },
+      {
+        "desc": "Green athletic field with white lines",
+        "action": "static background",
+        "position": "entire background",
+        "id": "field"
+      },
+      {
+        "desc": "Palm trees and other trees",
+        "action": "static background",
+        "position": "distant background",
+        "id": "vegetation"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A young person in a black shirt is standing in front of a Pearl snare drum.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Several people are wearing matching light grey t-shirts with a blue circular logo.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums are white with the word 'Pearl' written in black script.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The scene takes place on a green athletic field during the daytime.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are palm trees visible in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person in the black shirt is holding drumsticks in their right hand.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text on the grey shirts appears to say 'BLUE'.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person in the black shirt has a blue lanyard around their neck.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Pearl",
+      "BLUE",
+      "EXPERIENCE"
+    ],
+    "spatial": "The scene is set on a green athletic field. In the foreground and midground, a line of people stands behind white snare drums. A young person in a black shirt is closest to the camera on the left, with several individuals in matching grey shirts lined up to the right. Water coolers and bags are on the ground to the left. The background shows the rest of the field, bleachers, trees, and palm trees against a bright sky.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      70,
+      72
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing a light grey t-shirt with blue text, partially visible on the far left",
+        "action": "Standing, holding a drumstick in the right hand",
+        "position": "Far left edge of the frame",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Young person with shoulder-length brown hair, wearing a black t-shirt with blue text, black shorts, and a blue lanyard with a white tag",
+        "action": "Standing still, looking towards the right",
+        "position": "Center-left of the frame",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Tall person wearing a light grey t-shirt, black shorts with white stripes, and sunglasses",
+        "action": "Smiling, holding drumsticks, standing behind a drum",
+        "position": "Center-right of the frame",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing a light grey t-shirt, sunglasses, and dark shorts",
+        "action": "Standing behind a drum, holding drumsticks",
+        "position": "Right of center",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing a light grey t-shirt and sunglasses",
+        "action": "Standing behind a drum, holding drumsticks",
+        "position": "Far right, partially obscured",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing a light grey t-shirt and a cap",
+        "action": "Standing behind a drum, holding drumsticks",
+        "position": "Far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Multiple white bass drums with black hardware and 'Pearl' logo",
+        "action": "Stationary on stands",
+        "position": "Arranged in a line across the foreground and mid-ground",
+        "id": "drums"
+      },
+      {
+        "desc": "Blue and white water coolers and bags on the ground",
+        "action": "Stationary",
+        "position": "On the grass behind the drums in the foreground",
+        "id": "coolers_bags"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A group of people are standing on a green athletic field with white lines.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums are white with the brand name 'Pearl' written in black script.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Most of the individuals are wearing matching light grey t-shirts with a blue circular logo.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One individual in the center is wearing a black t-shirt that contrasts with the others.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Palm trees and other foliage are visible in the background beyond the field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person in the center-right is wearing sunglasses.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Pearl",
+      "BLUE",
+      "EXPERIENCE",
+      "PROMARK"
+    ],
+    "spatial": "The scene is set on a green football field. In the foreground and extending to the right, a line of people stands behind large white bass drums. A young person in a black shirt stands slightly apart in the center-left. In the background, there are bleachers, trees, and a scoreboard.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      72,
+      74
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      74,
+      76
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing grey t-shirt with blue text, holding drumstick",
+        "action": "standing at drum",
+        "position": "far left",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Young person with curly brown hair wearing black t-shirt with blue logo and lanyard",
+        "action": "holding drumsticks near drum",
+        "position": "center left",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Person wearing grey t-shirt with blue text, black shorts, sunglasses",
+        "action": "standing smiling",
+        "position": "center right",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing grey t-shirt, sunglasses",
+        "action": "playing drum",
+        "position": "right",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing grey t-shirt, sunglasses",
+        "action": "playing drum",
+        "position": "far right",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing grey t-shirt, cap",
+        "action": "playing drum",
+        "position": "background right",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "White Pearl snare drums on stands",
+        "action": "stationary",
+        "position": "foreground to background",
+        "id": "drums"
+      },
+      {
+        "desc": "Blue and white water coolers",
+        "action": "sitting on ground",
+        "position": "bottom left",
+        "id": "coolers_bags"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Multiple people are wearing matching grey t-shirts with blue circular logos",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums have the brand name Pearl visible on the white shell covers",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The setting is an outdoor sports field with green turf",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Palm trees are visible in the background",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The young person in the center is wearing a black t-shirt with a blue logo",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Pearl",
+      "BLUE",
+      "EXPERIENCE",
+      "PRODARK"
+    ],
+    "spatial": "A line of drummers extends from the left foreground to the right background on a green sports field. A young person stands centrally among the drummers. Water coolers and bags are on the ground in the bottom left corner. Trees and buildings are visible in the distant background.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      76,
+      78
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      78,
+      80
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing grey t-shirt with blue logo, holding drumsticks",
+        "action": "standing, holding drumsticks horizontally",
+        "position": "far left edge, partially cropped",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Young person with curly brown hair, wearing black t-shirt with blue logo and black shorts, blue lanyard around neck",
+        "action": "standing, holding drumsticks vertically then horizontally",
+        "position": "center-left foreground",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Tall person wearing sunglasses, grey t-shirt with blue logo, black shorts with white stripes",
+        "action": "standing, looking to the right",
+        "position": "center-right",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing sunglasses, grey t-shirt, white sneakers",
+        "action": "standing behind drum, holding drumsticks",
+        "position": "right mid-ground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing sunglasses, grey t-shirt",
+        "action": "standing behind drum",
+        "position": "right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing cap, grey t-shirt",
+        "action": "standing behind drum",
+        "position": "far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "White marching snare drums with black hardware and Pearl logo",
+        "action": "stationary on stands",
+        "position": "foreground to background right",
+        "id": "drums"
+      },
+      {
+        "desc": "Blue and white water coolers, brown bag",
+        "action": "sitting on grass",
+        "position": "bottom left near drums",
+        "id": "coolers_bags"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A line of people are standing behind marching snare drums on a green athletic field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums have the brand name 'Pearl' written in script on the white shell wrap.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Most individuals are wearing matching grey t-shirts with a blue circular logo.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person in the black shirt is holding drumsticks and appears to be participating with the group.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Palm trees and a scoreboard are visible in the distant background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Pearl",
+      "BLUE",
+      "PRODARK"
+    ],
+    "spatial": "The scene is arranged in a diagonal line receding from the bottom left to the top right. A young person in black stands prominently in the foreground left, next to a drum. To their right, a line of drummers in grey shirts extends into the background. Equipment like coolers and bags are clustered on the ground near the front drums.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      80,
+      82
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      82,
+      84
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      84,
+      86
+    ],
+    "visible_entities": [
+      {
+        "desc": "Young person with curly brown hair wearing a black t-shirt with blue text and black shorts",
+        "action": "playing a snare drum with drumsticks",
+        "position": "center-left foreground"
+      },
+      {
+        "desc": "Man wearing sunglasses, grey t-shirt with blue logo, and black shorts with white stripes",
+        "action": "playing a snare drum",
+        "position": "center-right foreground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Man wearing sunglasses and grey t-shirt",
+        "action": "playing a snare drum",
+        "position": "right middle ground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Man wearing sunglasses and grey t-shirt",
+        "action": "playing a snare drum",
+        "position": "right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Man wearing a cap and grey t-shirt",
+        "action": "playing a snare drum",
+        "position": "far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing grey t-shirt with blue logo",
+        "action": "holding drumsticks, partially visible",
+        "position": "far left edge",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "White snare drums with black hardware and 'Pearl' logo",
+        "action": "being played",
+        "position": "foreground and middle ground",
+        "id": "drums"
+      },
+      {
+        "desc": "Blue and white water coolers",
+        "action": "sitting on the ground",
+        "position": "bottom left near the drums",
+        "id": "coolers_bags"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A group of people are playing snare drums in a line on a green field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums have the brand name 'Pearl' written in script on the white shell covers.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person in the center-left is wearing a blue lanyard around their neck.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Most of the adult drummers are wearing sunglasses.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are palm trees and other trees on a hill in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drummers are wearing matching grey t-shirts with a blue circular logo.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Pearl",
+      "BLUE",
+      "SYSTEM",
+      "EXPERIENCE",
+      "PRODIBACK"
+    ],
+    "spatial": "The scene is set on a green athletic field with white lines. In the foreground and extending to the right, a line of drummers stands playing their instruments. A younger person is positioned slightly forward of the main line on the left. In the background, there is a grassy hill with trees, palm trees, and some buildings. To the far left, bleachers are visible in the distance.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      86,
+      88
+    ],
+    "visible_entities": [
+      {
+        "desc": "Young person with curly brown hair, wearing a black t-shirt with blue text, black shorts, and a blue lanyard",
+        "action": "holding drumsticks, appearing to play or practice drumming motions",
+        "position": "center-left foreground",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Tall young man with short brown hair, wearing sunglasses, a light grey t-shirt with blue text, and black shorts with white stripes",
+        "action": "holding drumsticks, standing behind a snare drum",
+        "position": "center-right foreground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Three men wearing matching light grey t-shirts and sunglasses",
+        "action": "standing in a line, holding drumsticks, playing snare drums",
+        "position": "right background",
+        "id": "grey_black_group"
+      },
+      {
+        "desc": "Person partially visible on the far left edge, wearing a light grey t-shirt",
+        "action": "arm extended, holding a drumstick",
+        "position": "far left edge",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "White snare drums with black hardware and white drumheads",
+        "action": "mounted on metal stands",
+        "position": "arranged in a line from center to right",
+        "id": "drums"
+      },
+      {
+        "desc": "Blue and white water coolers and bags",
+        "action": "sitting on the grass",
+        "position": "ground near the center-left drummer",
+        "id": "coolers_bags"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The drums feature the brand name 'Pearl' in black script on the white shell cover.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drummers in grey shirts have 'SYSTEM BLUE' text visible on their chests.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Black stick bags labeled 'PROBANK' are attached to the side of the drums.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The setting is an outdoor athletic field with green turf and palm trees in the distance.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The young person in the black shirt is holding drumsticks in both hands.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Pearl",
+      "SYSTEM BLUE",
+      "EXPERIENCE",
+      "PROBANK"
+    ],
+    "spatial": "A line of drummers extends from the center foreground towards the right background. A younger individual in black stands slightly apart to the left of the main line. Equipment and coolers are on the ground near the left foreground. The background shows a green field, bleachers, and a hill with trees.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      88,
+      90
+    ],
+    "visible_entities": [
+      {
+        "desc": "Young person with curly brown hair, wearing a black t-shirt with blue text and black shorts, holding drumsticks",
+        "action": "playing a snare drum",
+        "position": "center-left foreground",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Tall person with short brown hair, wearing sunglasses, a light grey t-shirt, and black shorts with white stripes",
+        "action": "playing a snare drum",
+        "position": "center-right midground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person with short dark hair, wearing sunglasses and a light grey t-shirt",
+        "action": "playing a snare drum",
+        "position": "right midground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person with short hair, wearing sunglasses and a light grey t-shirt",
+        "action": "playing a snare drum",
+        "position": "right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing a cap and a light grey t-shirt",
+        "action": "playing a snare drum",
+        "position": "far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person's arm and torso visible, wearing a light grey t-shirt",
+        "action": "holding drumsticks near a drum",
+        "position": "far left edge",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "White snare drums with black hardware and 'Pearl' logo",
+        "action": "being played",
+        "position": "foreground and midground",
+        "id": "drums"
+      },
+      {
+        "desc": "Green athletic field with white lines",
+        "action": "static background",
+        "position": "background",
+        "id": "field"
+      },
+      {
+        "desc": "Palm trees and other foliage",
+        "action": "static background",
+        "position": "distant background",
+        "id": "vegetation"
+      },
+      {
+        "desc": "Blue and white water coolers and bags",
+        "action": "sitting on the ground",
+        "position": "lower left foreground",
+        "id": "coolers_bags"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A line of drummers is arranged on an athletic field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drummers are wearing matching light grey t-shirts, except for one person in a black shirt.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums have the brand name 'Pearl' written on the white shell wrap.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person in the black shirt is wearing a blue lanyard with an ID badge.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Several drummers are wearing sunglasses.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The setting appears to be a sports stadium or track field during the daytime.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Pearl",
+      "SYSTEM BLUE",
+      "EXPERIENCE",
+      "PRODIBACK"
+    ],
+    "spatial": "The scene is composed of a line of drummers arranged diagonally from the left foreground to the right background on a green athletic field. The main subject in the black shirt is positioned centrally in the foreground, with other drummers receding into the distance to the right. In the far background, there are trees, bleachers, and other people on the field.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      90,
+      92
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      92,
+      94
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing a grey t-shirt with a blue logo, partially visible on the far left",
+        "action": "holding a white drumstick over a snare drum",
+        "position": "far left edge of frame",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Young person with brown hair wearing a black t-shirt with a blue logo and black shorts",
+        "action": "playing a snare drum with white drumsticks",
+        "position": "center-left foreground",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Tall person wearing sunglasses, a light grey t-shirt with a blue logo, and black shorts with white stripes",
+        "action": "playing a snare drum with white drumsticks",
+        "position": "center-right foreground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing sunglasses and a light grey t-shirt with a blue logo",
+        "action": "playing a snare drum",
+        "position": "right mid-ground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing sunglasses and a light grey t-shirt with a blue logo",
+        "action": "playing a snare drum",
+        "position": "right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing a cap and a light grey t-shirt",
+        "action": "playing a snare drum",
+        "position": "far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "White Pearl brand snare drums with black hardware and white drumheads",
+        "action": "being played by the individuals",
+        "position": "arranged in a line across the foreground and mid-ground",
+        "id": "drums"
+      },
+      {
+        "desc": "Blue and white water coolers and bags on the ground",
+        "action": "sitting on the turf",
+        "position": "bottom left corner",
+        "id": "coolers_bags"
+      },
+      {
+        "desc": "Green artificial turf field with white lines",
+        "action": "serving as the ground surface",
+        "position": "entire lower half of the frame",
+        "id": "field"
+      },
+      {
+        "desc": "Palm trees and other foliage on a hill in the background",
+        "action": "stationary background elements",
+        "position": "upper background",
+        "id": "vegetation"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A line of at least six individuals are playing snare drums on a green field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums are white with the brand name 'Pearl' written in black script.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Most of the drummers are wearing matching light grey t-shirts with a blue circular logo.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person in the center-left is wearing a black t-shirt, distinguishing them from the others.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drummers are holding white drumsticks.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The setting appears to be an outdoor sports field, possibly a football or track field, with bleachers visible in the distance.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'RHYTHM BLUE EXPERIENCE' is visible on the black t-shirt.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'BLUE' is visible inside the logo on the grey t-shirts.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Pearl",
+      "BLUE",
+      "RHYTHM",
+      "EXPERIENCE",
+      "PROMARK"
+    ],
+    "spatial": "The scene is composed of a line of drummers arranged diagonally from the bottom-left to the mid-right of the frame. The foreground is dominated by the drums and the lower bodies of the drummers. The background consists of a green athletic field, distant bleachers, and a tree-lined hill under a bright sky.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      94,
+      96
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      96,
+      98
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing a grey t-shirt with a blue logo, black shorts with white stripes, and sunglasses",
+        "action": "playing a snare drum with drumsticks",
+        "position": "center-right foreground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Young person with long brown hair wearing a black t-shirt with blue text and a blue lanyard",
+        "action": "playing a snare drum with drumsticks",
+        "position": "center-left foreground",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Person wearing a grey t-shirt with a blue logo",
+        "action": "playing a snare drum with drumsticks",
+        "position": "far left, partially visible",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing a grey t-shirt with a blue logo and sunglasses",
+        "action": "playing a snare drum with drumsticks",
+        "position": "right mid-ground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing a grey t-shirt with a blue logo and sunglasses",
+        "action": "playing a snare drum with drumsticks",
+        "position": "right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing a grey t-shirt with a blue logo and a cap",
+        "action": "playing a snare drum with drumsticks",
+        "position": "far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "White snare drums with black hardware and 'Pearl' logo",
+        "action": "being played",
+        "position": "in front of each drummer",
+        "id": "drums"
+      },
+      {
+        "desc": "Blue and white water coolers and bags",
+        "action": "sitting on the ground",
+        "position": "bottom left corner",
+        "id": "coolers_bags"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A line of at least six people are playing snare drums on a green athletic field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums have the brand name 'Pearl' written in black script on the white shell.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Most of the adult drummers are wearing matching grey t-shirts with a blue circular logo.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One younger drummer is wearing a black t-shirt that says 'RHYTHM BLUE EXPERIENCE'.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drummers are holding white drumsticks.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are palm trees and other trees on a hill in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A scoreboard is partially visible in the far right background.",
+        "confidence": 0.8,
+        "target_resolution_visible": false
+      }
+    ],
+    "ocr": [
+      "Pearl",
+      "Pearl",
+      "Pearl",
+      "Pearl",
+      "Pearl",
+      "Pearl",
+      "BLUE",
+      "RHYTHM BLUE EXPERIENCE",
+      "PRODARK"
+    ],
+    "spatial": "The scene is an outdoor athletic field with a line of drummers arranged from left to right, receding into the background. The camera is positioned at an angle, capturing the line of performers. In the foreground on the left, there are water coolers and bags on the ground. The background consists of a grassy hill with trees and a scoreboard.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      98,
+      100
+    ],
+    "visible_entities": [
+      {
+        "desc": "Young woman with dark hair, wearing a black t-shirt and blue lanyard",
+        "action": "sitting on the grass, smiling, looking to the left",
+        "position": "foreground right",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Young man with short dark hair, wearing a black t-shirt, blue lanyard, and white sneakers",
+        "action": "sitting on the grass with knees pulled up, looking to the left",
+        "position": "mid-ground center",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Young man wearing a grey t-shirt with 'BLUE' logo and a red cap",
+        "action": "sitting on the grass, looking forward",
+        "position": "mid-ground right",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Group of people in white and grey shirts",
+        "action": "sitting and standing in the background",
+        "position": "background",
+        "id": "grey_black_group"
+      },
+      {
+        "desc": "Silver brass instrument (tuba/euphonium)",
+        "action": "resting on the grass",
+        "position": "mid-ground center",
+        "id": "misc_objects"
+      },
+      {
+        "desc": "Red and black backpack",
+        "action": "lying on the grass",
+        "position": "mid-ground left",
+        "id": "coolers_bags"
+      },
+      {
+        "desc": "Percussion equipment and stands",
+        "action": "stationary",
+        "position": "background right",
+        "id": "drums"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A young woman in the foreground is smiling and looking towards the left side of the frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A young man in the center is sitting with his knees pulled up to his chest.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Several individuals are wearing lanyards around their necks.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A silver brass instrument is resting on the ground near the center group.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'BLUE' is visible on the grey t-shirt of a man in the mid-ground.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The people are sitting on a green artificial turf field marked with a white line.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "BLUE"
+    ],
+    "spatial": "The scene is set on a green football field with a white yard line running diagonally. In the foreground right, a young woman sits smiling. To her left in the mid-ground, a young man sits with knees up. Behind them, other band members are seated in rows. In the background, more people are standing near percussion equipment and bleachers.",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      100,
+      102
+    ],
+    "visible_entities": [
+      {
+        "desc": "Group of young people, mostly wearing grey or black t-shirts with 'BLUE' logo, shorts or pants",
+        "action": "sitting or kneeling on the grass field",
+        "position": "foreground and midground",
+        "id": "grey_black_group"
+      },
+      {
+        "desc": "Group of people standing behind percussion instruments",
+        "action": "standing near xylophones and drums",
+        "position": "background right",
+        "id": "other_people"
+      },
+      {
+        "desc": "Person in black shirt with 'SC' text",
+        "action": "standing",
+        "position": "far left edge",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Person in white shirt and khaki shorts",
+        "action": "standing near xylophone",
+        "position": "midground left",
+        "id": "other_people"
+      },
+      {
+        "desc": "Red and black backpack",
+        "action": "lying on the grass",
+        "position": "foreground center",
+        "id": "coolers_bags"
+      },
+      {
+        "desc": "Silver brass instrument (mellophone or similar)",
+        "action": "held by person sitting",
+        "position": "midground right",
+        "id": "misc_objects"
+      },
+      {
+        "desc": "Bleachers with red accents",
+        "action": "stationary structure",
+        "position": "background upper right",
+        "id": "bleachers_scoreboard"
+      },
+      {
+        "desc": "Trees and hillside",
+        "action": "stationary background",
+        "position": "background upper left",
+        "id": "vegetation"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Multiple individuals are wearing grey t-shirts with a blue 'BLUE' logo on the front.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A large bass drum is visible standing upright in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Several people are wearing lanyards around their necks.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A sign reading 'HOME OF THE' is partially visible on the stadium structure.",
+        "confidence": 0.85,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Drumsticks are lying on the grass near a person in the foreground.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A water bottle is lying on the grass near the drumsticks.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "BLUE",
+      "SC",
+      "HOME OF THE"
+    ],
+    "spatial": "The scene is an outdoor athletic field with green turf. In the foreground and midground, a large group of people are sitting or kneeling on the grass in loose rows. Behind them, towards the right, is a percussion section with instruments set up on stands. To the left, more people are standing near xylophones. In the background, stadium bleachers rise up on the right side, and a tree-lined hill is visible on the left.",
+    "parse_success": true,
+    "chunk_idx": 50,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      102,
+      104
+    ],
+    "visible_entities": [
+      {
+        "desc": "Group of young people, mostly wearing grey or black t-shirts with blue logos, shorts, and sneakers",
+        "action": "sitting or kneeling on the grass field, some holding instruments or drumsticks",
+        "position": "foreground and mid-ground, spread across the green field",
+        "id": "grey_black_group"
+      },
+      {
+        "desc": "Percussion instruments including snare drums, bass drums, and cymbals on stands",
+        "action": "stationary, set up for playing",
+        "position": "background right, near the bleachers",
+        "id": "drums"
+      },
+      {
+        "desc": "Bleachers with red railings and concrete steps",
+        "action": "stationary structure",
+        "position": "background, spanning the upper portion of the frame",
+        "id": "bleachers_scoreboard"
+      },
+      {
+        "desc": "Person in black t-shirt and black cap sitting cross-legged",
+        "action": "looking towards the right",
+        "position": "foreground left",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Person in grey t-shirt with 'BLUE' logo sitting on knees",
+        "action": "looking forward",
+        "position": "mid-ground right",
+        "id": "grey_black_group"
+      },
+      {
+        "desc": "Red and black backpack",
+        "action": "lying on the grass",
+        "position": "foreground center",
+        "id": "coolers_bags"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Multiple individuals are wearing t-shirts with a blue circular logo containing text",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A large bass drum is visible standing upright in the background",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "White yard lines are painted on the green artificial turf",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Some individuals are holding drumsticks",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A sign reading 'HOME OF THE' is partially visible on the bleachers",
+        "confidence": 0.7,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "BLUE",
+      "HOME OF THE"
+    ],
+    "spatial": "The scene is an outdoor football field with green turf. In the foreground and mid-ground, a large group of people are seated on the grass in a semi-circle formation. Behind them, towards the right, is a percussion section with instruments set up. In the background, stadium bleachers rise up, with a few people scattered in the seats. Trees and a hillside are visible in the far background.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      104,
+      106
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 52,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      106,
+      108
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 53,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      108,
+      110
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 54,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      110,
+      112
+    ],
+    "visible_entities": [
+      {
+        "desc": "man wearing light blue t-shirt with 'SYSTEM BLUE' logo, dark shorts, white sneakers, black cap",
+        "action": "playing snare drum with drumsticks",
+        "position": "far left foreground",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "man wearing light blue t-shirt, dark shorts, sunglasses",
+        "action": "playing snare drum with drumsticks",
+        "position": "left foreground",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "child wearing black t-shirt, dark shorts",
+        "action": "playing snare drum with drumsticks",
+        "position": "center foreground",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "man wearing light blue t-shirt, dark shorts, sunglasses",
+        "action": "playing snare drum with drumsticks",
+        "position": "center right",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "man wearing light blue t-shirt, dark shorts",
+        "action": "playing snare drum with drumsticks",
+        "position": "center right background",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "man wearing light blue t-shirt, dark shorts",
+        "action": "playing snare drum with drumsticks",
+        "position": "right background",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "man wearing light blue t-shirt, dark shorts",
+        "action": "playing snare drum with drumsticks",
+        "position": "far right background",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "man wearing light blue t-shirt",
+        "action": "playing tenor drums",
+        "position": "far right background",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "man wearing light blue t-shirt",
+        "action": "playing tenor drums",
+        "position": "far right background",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "white Pearl brand snare drums mounted on stands",
+        "action": "being played",
+        "position": "foreground line",
+        "id": "drums"
+      },
+      {
+        "desc": "white Pearl brand tenor drums mounted on stands",
+        "action": "being played",
+        "position": "background right",
+        "id": "drums"
+      },
+      {
+        "desc": "green artificial turf field with white yard lines and large orange/white '50' marking",
+        "action": "stationary",
+        "position": "ground",
+        "id": "field"
+      },
+      {
+        "desc": "scoreboard with 'ROC TIGERS' text",
+        "action": "stationary",
+        "position": "background right",
+        "id": "bleachers_scoreboard"
+      },
+      {
+        "desc": "palm trees and green foliage",
+        "action": "stationary",
+        "position": "background",
+        "id": "vegetation"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A line of percussionists is arranged on a football field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Most performers wear matching light blue t-shirts with a circular logo.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums are white with black hardware and 'Pearl' branding visible.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The field has a large '50' yard line marker painted in orange and white.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One child performer is significantly shorter than the surrounding adults.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Drumsticks are held in both hands by the performers.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A scoreboard is visible in the distance behind the performers.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "SYSTEM BLUE",
+      "Pearl",
+      "ROC TIGERS"
+    ],
+    "spatial": "Performers are arranged in a slightly curved line across the middle ground of the frame on a green football field. The '50' yard line is prominent in the foreground. Trees and a scoreboard form the background.",
+    "parse_success": true,
+    "chunk_idx": 55,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      112,
+      114
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing a light blue t-shirt with 'SYSTEM BLUE' logo, dark shorts, and a dark baseball cap",
+        "action": "playing a snare drum with drumsticks",
+        "position": "far left foreground",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "Person wearing a light blue t-shirt, dark shorts, and sunglasses",
+        "action": "playing a snare drum with drumsticks",
+        "position": "left-center foreground",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "Child wearing a black t-shirt and dark shorts",
+        "action": "playing a snare drum with drumsticks",
+        "position": "center foreground",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Person wearing a light blue t-shirt, dark shorts, and sunglasses",
+        "action": "playing a snare drum with drumsticks",
+        "position": "center-right mid-ground",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "Person wearing a light blue t-shirt and dark shorts",
+        "action": "playing a snare drum with drumsticks",
+        "position": "right mid-ground",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "Person wearing a light blue t-shirt and dark shorts",
+        "action": "playing a snare drum with drumsticks",
+        "position": "right mid-ground",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "Person wearing a light blue t-shirt and dark shorts",
+        "action": "playing a snare drum with drumsticks",
+        "position": "right mid-ground",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "Person wearing a light blue t-shirt and dark shorts",
+        "action": "playing a snare drum with drumsticks",
+        "position": "right mid-ground",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "Person wearing a light blue t-shirt and dark shorts",
+        "action": "playing a snare drum with drumsticks",
+        "position": "right mid-ground",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "Person wearing a light blue t-shirt and dark shorts",
+        "action": "playing a snare drum with drumsticks",
+        "position": "right mid-ground",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "Person wearing a light blue t-shirt and dark shorts",
+        "action": "playing a snare drum with drumsticks",
+        "position": "right mid-ground",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "White snare drums with 'Pearl' logo on the shell",
+        "action": "being played",
+        "position": "in front of each drummer",
+        "id": "drums"
+      },
+      {
+        "desc": "White tenor drums (quads) with 'Pearl' logo",
+        "action": "being played",
+        "position": "right background",
+        "id": "drums"
+      },
+      {
+        "desc": "Green artificial turf field with white yard lines and a large '50' yard marker",
+        "action": "stationary",
+        "position": "ground",
+        "id": "field"
+      },
+      {
+        "desc": "Scoreboard in the distance with 'ROC TIGERS' text",
+        "action": "stationary",
+        "position": "background right",
+        "id": "bleachers_scoreboard"
+      },
+      {
+        "desc": "Palm trees and other vegetation",
+        "action": "stationary",
+        "position": "background",
+        "id": "vegetation"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A line of drummers is performing on a football field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Most drummers are wearing matching light blue t-shirts with a 'SYSTEM BLUE' logo.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums are white with black hardware and have the 'Pearl' brand name visible.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drummers are standing on or near the 50-yard line of the field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One child in a black shirt is playing among the adult drummers.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are tenor drums (quads) visible on the right side of the line.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The scoreboard in the background reads 'ROC TIGERS'.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "SYSTEM BLUE",
+      "Pearl",
+      "ROC TIGERS"
+    ],
+    "spatial": "A line of drummers is arranged diagonally from the left foreground to the right mid-ground on a green football field. The 50-yard line marker is prominent in the foreground. In the background, there are trees, a scoreboard, and other field structures.",
+    "parse_success": true,
+    "chunk_idx": 56,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      114,
+      116
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing a light blue t-shirt with 'SYSTEM BLUE' logo, dark shorts, and a dark baseball cap",
+        "action": "standing and holding drumsticks, looking forward",
+        "position": "far left foreground",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "Person wearing a light blue t-shirt, dark shorts, and sunglasses",
+        "action": "standing and playing a snare drum",
+        "position": "left-center foreground",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "Child wearing a dark t-shirt and dark shorts",
+        "action": "standing and playing a snare drum",
+        "position": "center foreground",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Person wearing a light blue t-shirt, dark shorts, and sunglasses",
+        "action": "standing and playing a snare drum",
+        "position": "center-right mid-ground",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "Multiple people wearing light blue t-shirts",
+        "action": "standing in a line playing drums",
+        "position": "right background",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "White snare drums with 'Pearl' logo",
+        "action": "being played on stands",
+        "position": "foreground and mid-ground",
+        "id": "drums"
+      },
+      {
+        "desc": "White tenor drums with 'Pearl' logo",
+        "action": "being played on stands",
+        "position": "right background",
+        "id": "drums"
+      },
+      {
+        "desc": "Green artificial turf field with white and orange markings",
+        "action": "serving as the ground surface",
+        "position": "entire lower frame",
+        "id": "field"
+      },
+      {
+        "desc": "Scoreboard with 'ROC TIGERS' text",
+        "action": "stationary in background",
+        "position": "far right background",
+        "id": "bleachers_scoreboard"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A group of people are playing drums on a sports field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums are white with black hardware and have the brand name 'Pearl' visible.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Most of the drummers are wearing matching light blue t-shirts with a 'SYSTEM BLUE' logo.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There is a large '50' yard line marking painted on the field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Palm trees are visible in the background behind the field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person on the far left is holding drumsticks but not actively striking the drum in these frames.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "SYSTEM BLUE",
+      "Pearl",
+      "ROC TIGERS"
+    ],
+    "spatial": "The scene is set on a green football field with a large '50' yard line marker in the foreground. A line of drummers extends from the left foreground towards the right background. The drummers in the foreground are playing snare drums, while those further back on the right are playing tenor drums. A scoreboard and palm trees are visible in the distant background.",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      116,
+      118
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing a light blue t-shirt with 'SYSTEM BLUE' logo, dark shorts, and a baseball cap",
+        "action": "playing a large bass drum with drumsticks",
+        "position": "far left foreground",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "Person wearing a light blue t-shirt, dark shorts, and sunglasses",
+        "action": "playing a snare drum",
+        "position": "left-center foreground",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "Young person wearing a dark t-shirt and shorts",
+        "action": "playing a snare drum",
+        "position": "center foreground",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Multiple people wearing matching light blue t-shirts",
+        "action": "playing various drums in a line",
+        "position": "extending from center to right background",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "White Pearl brand drums mounted on stands",
+        "action": "being played",
+        "position": "in front of each person",
+        "id": "drums"
+      },
+      {
+        "desc": "Green artificial turf field with white yard lines and a large orange and white '50' yard marker",
+        "action": "serving as the ground surface",
+        "position": "entire ground plane",
+        "id": "field"
+      },
+      {
+        "desc": "Scoreboard in the distance",
+        "action": "displaying text 'ROC TIGERS'",
+        "position": "background right",
+        "id": "bleachers_scoreboard"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A line of percussionists is rehearsing on a football field.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Most performers are wearing matching light blue t-shirts with a 'SYSTEM BLUE' logo.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums are white with the brand name 'Pearl' visible in black script.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The group is positioned on and around the 50-yard line of the field.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Palm trees are visible in the background behind the field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "SYSTEM BLUE",
+      "Pearl",
+      "ROC TIGERS"
+    ],
+    "spatial": "The scene is a wide shot of a drumline on a football field. The performers are arranged in a staggered line from the left foreground to the right background. A large '50' yard line marker is prominent in the foreground. In the background, there are trees, a fence, and a scoreboard.",
+    "parse_success": true,
+    "chunk_idx": 58,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      118,
+      120
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 59,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      120,
+      122
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 60,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      122,
+      124
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 61,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      124,
+      126
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 62,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      126,
+      128
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 63,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      128,
+      130
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 64,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      130,
+      132
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 65,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      132,
+      134
+    ],
+    "visible_entities": [
+      {
+        "desc": "Man wearing sunglasses, grey t-shirt with blue logo, black shorts",
+        "action": "playing snare drum with drumsticks",
+        "position": "left foreground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Young boy wearing black t-shirt with blue logo, black shorts",
+        "action": "playing snare drum with drumsticks",
+        "position": "center-left foreground",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Man wearing sunglasses, grey t-shirt with blue logo, black shorts with white stripes",
+        "action": "playing snare drum with drumsticks",
+        "position": "center-right midground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Man wearing sunglasses, grey t-shirt with blue logo, black shorts",
+        "action": "playing snare drum with drumsticks",
+        "position": "right midground",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Man wearing sunglasses, grey t-shirt with blue logo, black shorts",
+        "action": "playing snare drum with drumsticks",
+        "position": "right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Man wearing cap, grey t-shirt with blue logo",
+        "action": "playing snare drum with drumsticks",
+        "position": "far right background",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "White snare drums with black hardware and 'Pearl' logo",
+        "action": "being played",
+        "position": "in front of each drummer",
+        "id": "drums"
+      },
+      {
+        "desc": "Green artificial turf field with white and orange markings",
+        "action": "stationary",
+        "position": "ground",
+        "id": "field"
+      },
+      {
+        "desc": "Palm trees and green foliage",
+        "action": "stationary",
+        "position": "background",
+        "id": "vegetation"
+      },
+      {
+        "desc": "Construction crane",
+        "action": "stationary",
+        "position": "far right background",
+        "id": "misc_objects"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A line of drummers is performing on a sports field",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Most drummers are wearing matching grey t-shirts with a blue circular logo",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums have the brand name 'Pearl' visible on the white shell covers",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drummers are holding drumsticks in both hands",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The field has a large white and orange letter or logo painted on it",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are water coolers and bags on the ground near the drummers",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "BLUE",
+      "Pearl"
+    ],
+    "spatial": "The drummers are arranged in a line extending from the left foreground to the right background on a green sports field. The camera is positioned at an angle, capturing the line of performers. In the background, there are trees, a fence, and some construction equipment.",
+    "parse_success": true,
+    "chunk_idx": 66,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      134,
+      136
+    ],
+    "visible_entities": [
+      {
+        "desc": "Man wearing sunglasses, light blue t-shirt with 'SYSTEM BLUE' logo, and dark shorts",
+        "action": "standing and holding drumsticks over a snare drum",
+        "position": "far left foreground",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "Young boy with long hair wearing a black t-shirt and dark shorts",
+        "action": "standing and playing a snare drum",
+        "position": "center left, next to the first man",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "Several men wearing matching light blue t-shirts and sunglasses",
+        "action": "standing in a line playing snare drums",
+        "position": "center to right mid-ground",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "White snare drums with black hardware mounted on stands",
+        "action": "being played by the line of drummers",
+        "position": "in front of each person",
+        "id": "drums"
+      },
+      {
+        "desc": "Green athletic field with white painted lines and a large letter 'O'",
+        "action": "static background surface",
+        "position": "ground level",
+        "id": "field"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A line of percussionists is performing on a green turf field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Most drummers are wearing light blue t-shirts with 'SYSTEM BLUE EXPERIENCE' text.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One younger drummer is wearing a black t-shirt.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drums are white Pearl brand snare drums.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The camera undergoes rapid movement causing extreme motion blur in the second frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "SYSTEM BLUE",
+      "EXPERIENCE",
+      "Pearl"
+    ],
+    "spatial": "The drummers are arranged in a horizontal line across the mid-ground of the frame. A large white letter 'O' is painted on the grass in the immediate foreground. Trees and a building are visible in the background.",
+    "parse_success": true,
+    "chunk_idx": 67,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      136,
+      138
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 68,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      138,
+      140
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing grey tank top and dark shorts",
+        "action": "standing and clapping",
+        "position": "far left",
+        "id": "other_people"
+      },
+      {
+        "desc": "Person wearing white t-shirt and plaid shorts",
+        "action": "standing and clapping",
+        "position": "left",
+        "id": "other_people"
+      },
+      {
+        "desc": "Person wearing grey t-shirt and grey shorts",
+        "action": "standing and clapping",
+        "position": "center-left",
+        "id": "other_people"
+      },
+      {
+        "desc": "Person wearing grey t-shirt and dark shorts",
+        "action": "standing and clapping",
+        "position": "center",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing grey t-shirt and dark shorts",
+        "action": "standing and clapping",
+        "position": "center-right",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing teal tank top and black shorts",
+        "action": "standing and clapping",
+        "position": "right",
+        "id": "other_people"
+      },
+      {
+        "desc": "Person wearing grey t-shirt and dark shorts",
+        "action": "standing and clapping",
+        "position": "far right",
+        "id": "main_instructor"
+      },
+      {
+        "desc": "Person wearing red top and dark bottoms",
+        "action": "standing and clapping",
+        "position": "far right background",
+        "id": "other_people"
+      },
+      {
+        "desc": "White poles with red, white, and blue flags",
+        "action": "held upright",
+        "position": "scattered among the group",
+        "id": "misc_objects"
+      },
+      {
+        "desc": "Metal bleachers",
+        "action": "stationary",
+        "position": "background",
+        "id": "bleachers_scoreboard"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A group of people are standing on a green field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Most individuals are holding white poles with flags attached.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The people are clapping their hands.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are empty metal bleachers in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Some people are sitting on the ground near the bleachers on the right.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "A line of people stands across the middle ground of a green field, facing slightly right. Behind them are large, empty metal bleachers. To the far right, a few people sit on the ground near the track.",
+    "parse_success": true,
+    "chunk_idx": 69,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      140,
+      142
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 70,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      142,
+      144
+    ],
+    "visible_entities": [
+      {
+        "desc": "group of people sitting on grass, mostly wearing black t-shirts",
+        "action": "sitting and observing",
+        "position": "center and right foreground",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "person standing, wearing black t-shirt and dark shorts",
+        "action": "bending over near seated group",
+        "position": "center left",
+        "id": "young_drummer"
+      },
+      {
+        "desc": "line of drummers wearing light blue t-shirts, dark shorts, and sunglasses",
+        "action": "standing and playing snare drums",
+        "position": "mid-ground right",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "white marching snare drums on metal stands",
+        "action": "being played",
+        "position": "in front of drummers",
+        "id": "drums"
+      },
+      {
+        "desc": "people standing on raised wooden platform wearing white t-shirts",
+        "action": "standing and observing",
+        "position": "background left",
+        "id": "other_people"
+      },
+      {
+        "desc": "large painted letter O on grass, white with red outline",
+        "action": "static ground marking",
+        "position": "bottom right foreground",
+        "id": "field"
+      },
+      {
+        "desc": "red and blue coolers and bags",
+        "action": "sitting on ground",
+        "position": "near seated group and drummers",
+        "id": "coolers_bags"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A line of percussionists is standing on a green athletic field",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Several people are sitting on the grass in the foreground",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The drummers are wearing sunglasses",
+        "confidence": 0.85,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There is a large white and red painted symbol on the field",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "People in white shirts are standing on a raised platform in the background",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The scene is an outdoor athletic field with green turf. In the foreground and center, a group of people sits on the grass. To the right, a line of drummers stands facing right. In the background left, people stand on a raised platform. A running track and bleachers are visible in the far background.",
+    "parse_success": true,
+    "chunk_idx": 71,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      144,
+      146
+    ],
+    "visible_entities": [
+      {
+        "desc": "Group of individuals wearing matching light blue t-shirts with 'BLUE' text and dark shorts",
+        "action": "standing in a line playing white snare drums",
+        "position": "across the foreground of the first frame on a green field",
+        "id": "light_blue_group"
+      },
+      {
+        "desc": "White snare drums with black hardware and 'Pearl' logo",
+        "action": "being struck by drumsticks",
+        "position": "attached to the drummers via harnesses",
+        "id": "drums"
+      },
+      {
+        "desc": "Man with curly hair wearing sunglasses, grey polo shirt, and khaki cargo shorts",
+        "action": "adjusting a video camera mounted on a tripod",
+        "position": "left section of the second frame",
+        "id": "other_people"
+      },
+      {
+        "desc": "Woman with blonde hair in a ponytail wearing sunglasses, black tank top, and white pants",
+        "action": "kneeling on grass while operating a video camera",
+        "position": "center section of the second frame",
+        "id": "other_people"
+      },
+      {
+        "desc": "Marching band member wearing a white uniform and tall white shako hat with a plume",
+        "action": "holding a brass instrument to mouth",
+        "position": "right section of the second frame",
+        "id": "other_people"
+      },
+      {
+        "desc": "Large bronze-colored graphic logo with film strip perforations",
+        "action": "overlaying the center of the second frame",
+        "position": "center foreground of the second frame",
+        "id": "misc_objects"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The word 'BLUE' is printed on the front of the drummers' shirts",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The brand name 'Pearl' is written in script on the white drums",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Palm trees are visible in the background against a dim sky",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A large white number '50' is painted on the green turf",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'dc FILMS' appears in the bronze logo overlay",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "BLUE",
+      "Pearl",
+      "dc FILMS"
+    ],
+    "spatial": "The first frame depicts a drumline arranged horizontally on a football field with palm trees in the background. The second frame is a split-screen composition featuring camera operators and a band member, dominated by a central logo overlay.",
+    "parse_success": true,
+    "chunk_idx": 72,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      146,
+      148
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 73,
+    "video_id": "v_r7kQ1sko74M",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  }
+]

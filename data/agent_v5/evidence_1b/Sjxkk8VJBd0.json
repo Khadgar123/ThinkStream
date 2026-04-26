@@ -1,0 +1,5044 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing dark swimwear and fins",
+        "action": "swimming underwater, legs kicking",
+        "position": "far right side of frame, near surface",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person wearing dark swimwear and fins",
+        "action": "swimming underwater, legs kicking",
+        "position": "far left side of frame, near surface",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Dark circular markers on pool wall",
+        "action": "stationary",
+        "position": "middle depth along the far wall",
+        "id": "pool_wall_markers"
+      },
+      {
+        "desc": "Black lane lines on pool floor",
+        "action": "stationary",
+        "position": "bottom of frame, extending towards the wall",
+        "id": "pool_lane_lines"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The scene is underwater in a swimming pool.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "At least two swimmers are visible near the surface on opposite sides.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Four dark circular markers are visible on the far pool wall.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Black lane lines are painted on the light blue pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The water is clear with a blue tint.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "Underwater view looking towards the end of a swimming pool. Lane lines on the floor lead towards a wall with circular markers. Swimmers are visible near the surface on the left and right peripheries.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "dark roof structure with white support beams",
+        "action": "stationary",
+        "position": "bottom left corner",
+        "id": "background_structures"
+      },
+      {
+        "desc": "white and grey clouds",
+        "action": "drifting slowly across the sky",
+        "position": "center and right side of frame"
+      },
+      {
+        "desc": "blue sky",
+        "action": "visible between clouds",
+        "position": "background, primarily left side",
+        "id": "background_sky_clouds"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The sky is partially covered by white and grey clouds.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A portion of a building's roof is visible in the bottom left corner.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The camera angle is looking upwards towards the sky.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The clouds appear to be moving slightly between the two frames.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The view is dominated by the sky, filled with clouds. A small section of a building's roof occupies the bottom left corner, providing a sense of perspective and upward-looking angle.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "Blue sky with scattered white cumulus clouds",
+        "action": "filling the majority of the view",
+        "position": "upper and center frame (Frame 1)",
+        "id": "background_sky_clouds"
+      },
+      {
+        "desc": "Dark angular structure with a white support beam",
+        "action": "stationary",
+        "position": "bottom left corner (Frame 1)",
+        "id": "background_structures"
+      },
+      {
+        "desc": "Person wearing a blue cap and snorkel mask",
+        "action": "floating with head above water",
+        "position": "center middle ground (Frame 2)",
+        "id": "swimmers_generic_blue_cap"
+      },
+      {
+        "desc": "Person wearing a white cap and yellow snorkel tube",
+        "action": "floating with head above water",
+        "position": "right side (Frame 2)",
+        "id": "player_white_cap_yellow_snorkel"
+      },
+      {
+        "desc": "Person wearing dark snorkel gear",
+        "action": "floating in water",
+        "position": "left middle ground (Frame 2)",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Red rectangular goal frame with netting",
+        "action": "stationary",
+        "position": "background right (Frame 2)",
+        "id": "goal_red"
+      },
+      {
+        "desc": "Tall palm trees and green foliage",
+        "action": "stationary",
+        "position": "background horizon (Frame 2)",
+        "id": "background_trees_foliage"
+      },
+      {
+        "desc": "Blue swimming pool water",
+        "action": "rippling with reflections",
+        "position": "foreground and lower frame (Frame 2)",
+        "id": "pool_water"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera angle shifts from a low-angle shot of the sky to a water-level shot of a pool.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "At least three individuals are visible wearing snorkeling masks and breathing tubes.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One swimmer has a distinct yellow snorkel tube.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A red goal post stands on the deck behind the swimmers.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Palm trees are visible behind a fence in the background.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The first frame is dominated by the sky with a structure fragment in the bottom left. The second frame shows a pool surface in the foreground, swimmers in the middle ground, and a grassy bank with trees and equipment in the background.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing a white swim cap, black goggles, and a yellow snorkel",
+        "action": "swimming at the surface, head above water",
+        "position": "upper left quadrant",
+        "id": "player_white_cap_yellow_snorkel"
+      },
+      {
+        "desc": "Person underwater wearing dark swimwear and long brown fins",
+        "action": "swimming underwater, legs kicking",
+        "position": "center to lower right",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Pool lane lines (dark lines on the bottom)",
+        "action": "stationary",
+        "position": "bottom center",
+        "id": "pool_lane_lines"
+      },
+      {
+        "desc": "Pool structure with metal fencing and a covered area",
+        "action": "stationary background",
+        "position": "upper right background",
+        "id": "background_structures"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera is positioned at the water surface, capturing a split view of above and below water.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Bubbles are visible in the water, indicating movement.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Palm trees are visible in the background behind the pool fence.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The water is a clear turquoise color.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The frame is split horizontally by the water surface. Above the water in the upper left, a swimmer's head is visible. The majority of the frame is underwater, showing another swimmer's legs and fins in the center and right. The pool bottom with lane markers is visible below. In the background above the water, a poolside structure with fencing and trees can be seen.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing a white swim cap, black diving mask, and a yellow snorkel tube",
+        "action": "floating on the water surface with head above water",
+        "position": "center foreground",
+        "id": "player_white_cap_yellow_snorkel"
+      },
+      {
+        "desc": "Person wearing a blue swim cap and a blue/white snorkel",
+        "action": "floating on the water surface",
+        "position": "left mid-ground",
+        "id": "swimmers_generic_blue_cap"
+      },
+      {
+        "desc": "Tall palm trees with green fronds",
+        "action": "standing stationary in the background",
+        "position": "background left and center",
+        "id": "background_trees_foliage"
+      },
+      {
+        "desc": "White structure with a roof and metal supports",
+        "action": "stationary",
+        "position": "background right",
+        "id": "background_structures"
+      },
+      {
+        "desc": "Black lane lines painted on the white tiled pool floor",
+        "action": "stationary",
+        "position": "bottom of the frame in underwater view",
+        "id": "pool_lane_lines"
+      },
+      {
+        "desc": "Black circular targets mounted on the pool wall",
+        "action": "stationary",
+        "position": "mid-distance on the wall in underwater view",
+        "id": "pool_wall_markers"
+      },
+      {
+        "desc": "Legs of a swimmer",
+        "action": "treading water near the surface",
+        "position": "top left corner in underwater view",
+        "id": "swimmer_limbs"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera captures a view from the water surface before submerging underwater.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Two individuals are visible on the surface wearing snorkeling gear.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The underwater view reveals a swimming pool with marked lanes and wall targets.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A fence runs along the perimeter of the pool area behind the swimmers.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The water is clear enough to see the pool floor and wall markings.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The first frame presents a surface-level perspective with swimmers in the immediate foreground and a background consisting of palm trees, fencing, and a poolside structure. The second frame shifts to a submerged perspective, looking horizontally across the pool floor towards the far wall, showing lane dividers and targets.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "Blurry human figure, partially visible",
+        "action": "swimming or floating underwater",
+        "position": "far left edge of frame"
+      },
+      {
+        "desc": "Human figure wearing dark swimwear",
+        "action": "swimming underwater, body horizontal",
+        "position": "upper right quadrant",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Dark circular pool markers/targets",
+        "action": "stationary on pool wall",
+        "position": "mid-distance along the far wall",
+        "id": "pool_wall_markers"
+      },
+      {
+        "desc": "Black lane lines",
+        "action": "painted on pool floor",
+        "position": "bottom foreground extending towards center",
+        "id": "pool_lane_lines"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The scene is an underwater view of a swimming pool.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Multiple black lane lines are visible on the pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Dark circular markers are attached to the far pool wall.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A swimmer is visible in the upper right, moving horizontally.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Water surface ripples are visible at the top of the frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "Underwater perspective looking down the length of a swimming pool. Lane lines on the floor converge towards the center distance. A far wall with circular markers spans the mid-ground. A swimmer is present in the upper right, and another figure is partially visible on the far left edge.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "swimmer wearing dark fins and light-colored swimwear",
+        "action": "diving vertically downward with arms extended",
+        "position": "center of frame",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "swimmer wearing dark fins and light-colored swimwear",
+        "action": "swimming horizontally near surface",
+        "position": "left side of frame",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "swimmer wearing dark fins and light-colored swimwear",
+        "action": "swimming horizontally near surface",
+        "position": "right side of frame",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "dark circular markers attached to pool wall",
+        "action": "stationary",
+        "position": "mid-depth along back wall",
+        "id": "pool_wall_markers"
+      },
+      {
+        "desc": "black lane lines on pool floor",
+        "action": "stationary",
+        "position": "bottom of frame extending toward background",
+        "id": "pool_lane_lines"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Three swimmers are visible in the pool",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The central swimmer is oriented vertically with head pointing down",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Dark circular markers are spaced along the pool wall",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Lane lines converge toward the center background due to perspective",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Water surface ripples are visible at the top of the frame",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "Underwater view of a swimming pool with lane lines on the floor converging toward the background. A central swimmer dives vertically downward while two other swimmers move horizontally near the surface on the left and right sides. Dark circular markers are visible along the far pool wall at mid-depth.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing black one-piece swimsuit, black swim cap, white face mask, and black fins",
+        "action": "swimming underwater, reaching forward with arms extended, body angled diagonally downward",
+        "position": "center-left to center"
+      },
+      {
+        "desc": "Person wearing patterned blue and white swimsuit, purple cap with number '3', snorkel, and black fins",
+        "action": "lying on pool floor, holding a red ball, reaching out with left arm",
+        "position": "center-right to right",
+        "id": "player_helmet_3"
+      },
+      {
+        "desc": "Person wearing dark shorts and blue cap, partially visible",
+        "action": "swimming near surface in background",
+        "position": "top right",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person's legs and fins, partially visible",
+        "action": "swimming",
+        "position": "top left edge",
+        "id": "swimmer_limbs"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two main swimmers are interacting underwater near the pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The swimmer on the right is holding a red ball against their chest/stomach area.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The swimmer on the left has their hands extended towards the swimmer on the right.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The number '3' is visible on the purple cap of the swimmer on the right.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Black lane lines are visible on the tiled pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Bubbles are rising towards the surface near the swimmers.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "3"
+    ],
+    "spatial": "The scene is underwater in a swimming pool. The main action occurs in the center, with one swimmer in black descending from the upper left towards a swimmer in a patterned suit lying on the pool floor on the right. Lane markers run diagonally across the bottom left. Other swimmers are visible in the background near the surface.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing a blue swim cap and patterned blue/white swimsuit",
+        "action": "holding a red ball with both hands while underwater",
+        "position": "foreground right",
+        "id": "swimmers_generic_blue_cap"
+      },
+      {
+        "desc": "Person wearing a black swimsuit, mask, snorkel, and black fins",
+        "action": "grappling with the person holding the ball",
+        "position": "foreground center",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person wearing a blue cap, white shirt, black bottoms, and fins",
+        "action": "swimming underwater towards the foreground group",
+        "position": "background upper right",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person wearing dark shorts and fins",
+        "action": "swimming near the surface",
+        "position": "background upper left",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Multiple swimmers wearing fins and snorkels",
+        "action": "swimming in various directions in the pool",
+        "position": "background",
+        "id": "swimmers_group"
+      },
+      {
+        "desc": "Red ball",
+        "action": "being held by a player",
+        "position": "foreground right",
+        "id": "game_object_ball_puck"
+      },
+      {
+        "desc": "Dark spherical objects",
+        "action": "sitting on the pool floor",
+        "position": "background floor"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two individuals are physically grappling underwater in the immediate foreground.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One player is clutching a red ball against their chest.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Most visible participants are wearing swim fins and snorkels.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Black lane markers are visible on the tiled pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Several dark balls are resting on the bottom of the pool in the wider shot.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The view is underwater. The first frame focuses closely on a struggle between two players on the right side, while the second frame zooms out to show a wider perspective of the pool with players scattered across multiple lanes.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "Multiple swimmers wearing dark swimwear, masks, snorkels, and fins (mostly black, one pair yellow)",
+        "action": "swimming underwater, diving, and maneuvering near the pool floor",
+        "position": "distributed throughout the water column, from surface to bottom",
+        "id": "swimmers_group"
+      },
+      {
+        "desc": "Swimming pool environment with blue water and light tiled floor",
+        "action": "static background",
+        "position": "entire frame",
+        "id": "pool_environment_general"
+      },
+      {
+        "desc": "Black lane lines",
+        "action": "marking swimming lanes",
+        "position": "running horizontally along the pool floor",
+        "id": "pool_lane_lines"
+      },
+      {
+        "desc": "Dark circular objects",
+        "action": "fixed on the pool wall",
+        "position": "mid-depth on the far wall",
+        "id": "pool_wall_markers"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Several individuals are swimming underwater wearing fins and masks.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Black lane lines are clearly visible on the pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One swimmer near the bottom right is wearing bright yellow fins.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Swimmers are oriented in various directions, with some horizontal near the surface and others diving downwards.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Dark circular markers or drains are visible on the pool wall in the background.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The scene is an underwater view of a swimming pool. Swimmers are scattered across the frame, with some near the surface at the top and a cluster of activity near the bottom right. Black lane lines run horizontally along the light blue tiled floor.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "Multiple swimmers wearing swimwear, masks, and long fins (black and yellow visible)",
+        "action": "swimming underwater in various orientations, some horizontal and some vertical",
+        "position": "distributed across the mid-water column and near the surface",
+        "id": "swimmers_group"
+      },
+      {
+        "desc": "Dark spherical objects",
+        "action": "floating or resting near the bottom",
+        "position": "scattered near the pool floor"
+      },
+      {
+        "desc": "Swimming pool floor with light blue tiles",
+        "action": "static background",
+        "position": "bottom of the frame",
+        "id": "pool_floor_tiles"
+      },
+      {
+        "desc": "Black lane lines",
+        "action": "marking the pool floor",
+        "position": "running longitudinally along the bottom",
+        "id": "pool_lane_lines"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Several individuals are swimming underwater wearing long fins.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Dark, round objects are visible near the pool floor.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Black lane lines are clearly visible on the tiled pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The water is clear and blue.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The first frame shows a group of swimmers active in the water column above the pool floor, which is marked with black lane lines. The second frame shifts perspective to show mostly the pool floor and lane lines, with a swimmer partially visible on the right edge.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing blue swim trunks",
+        "action": "swimming upside down with knees bent",
+        "position": "center foreground",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person wearing dark swimwear",
+        "action": "swimming near surface",
+        "position": "top left",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person wearing snorkel mask and blue trunks",
+        "action": "swimming underwater",
+        "position": "center background",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person wearing black fins",
+        "action": "swimming",
+        "position": "bottom right"
+      },
+      {
+        "desc": "Person wearing dark shorts and blue fins",
+        "action": "swimming near boat hull",
+        "position": "bottom center",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Large light blue boat hull",
+        "action": "stationary underwater structure",
+        "position": "left side",
+        "id": "background_structures"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Multiple people are swimming underwater near a boat",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One person is oriented upside down with legs bent",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Swimmers are wearing fins and swim trunks",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Sunlight is filtering through the water surface",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "Underwater view looking up towards the surface, with a boat hull on the left and swimmers dispersed around the center and right.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing a black one-piece swimsuit, white swim cap, and snorkel mask",
+        "action": "reaching forward with a short stick towards the center cluster",
+        "position": "bottom left",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person wearing a blue swim cap with a white logo, snorkel, and bare torso",
+        "action": "reaching into the central group",
+        "position": "bottom right",
+        "id": "swimmers_generic_blue_cap"
+      },
+      {
+        "desc": "Person wearing dark swimwear and long blue fins",
+        "action": "kicking legs and interacting with others near the pool floor",
+        "position": "center",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person wearing a black swim cap and mask",
+        "action": "grappling or reaching in the center",
+        "position": "center right",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Light blue pool floor with dark lane markers",
+        "action": "static background",
+        "position": "background",
+        "id": "pool_lane_lines"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The scene takes place underwater in a swimming pool.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Dark lane lines run diagonally across the pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Multiple individuals are wearing snorkels and masks.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One individual is holding a short stick, likely for underwater hockey.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Bubbles are rising from the cluster of people.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One person is wearing long blue fins.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The camera is positioned underwater, looking slightly downward at the pool floor. Lane markers create diagonal lines across the background. A cluster of players is grouped in the lower center and right, while another player approaches from the left side.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing a dark swimsuit with white patterns and a white cap",
+        "action": "holding a dark ball or puck underwater",
+        "position": "bottom left in frame 1",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person wearing a blue swim cap with a white mark and a blue fin",
+        "action": "reaching out with an arm towards the ball",
+        "position": "bottom center in frame 1",
+        "id": "swimmers_generic_blue_cap"
+      },
+      {
+        "desc": "Person wearing a black swimsuit, black cap, and snorkel mask",
+        "action": "swimming and observing",
+        "position": "right side in frame 1",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person's leg wearing a long black fin",
+        "action": "floating vertically",
+        "position": "top right in frame 2",
+        "id": "swimmer_limbs"
+      },
+      {
+        "desc": "Hand holding a reddish-brown ball",
+        "action": "holding the object near the pool floor",
+        "position": "bottom left in frame 2",
+        "id": "game_object_ball_puck"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The scene is underwater in a swimming pool with visible lane markers on the floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Multiple people are wearing swim fins and masks/snorkels.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Bubbles are rising through the water.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A ball or puck is being handled by the swimmers.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "Underwater view looking diagonally across the pool floor where dark lane lines run from bottom left to top right. Swimmers are clustered near the bottom.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a white cap with black snorkel gear",
+        "action": "holding a red ball, first with two hands then extending it forward with the right hand",
+        "position": "left side of the frame",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "person wearing a blue cap with white markings and a black snorkel",
+        "action": "swimming underwater with arm extended downwards",
+        "position": "upper right quadrant",
+        "id": "swimmers_generic_blue_cap"
+      },
+      {
+        "desc": "red ball",
+        "action": "being held and maneuvered underwater",
+        "position": "in the hands of the person on the left",
+        "id": "game_object_ball_puck"
+      },
+      {
+        "desc": "black lane lines",
+        "action": "marking the swimming lanes on the pool floor",
+        "position": "running diagonally across the tiled bottom",
+        "id": "pool_lane_lines"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person wearing a white cap is underwater holding a red ball.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person transitions from holding the ball with two hands to extending it with one hand.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A second person wearing a blue cap appears in the upper right frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The pool floor is tiled with light blue squares.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The view is underwater within a swimming pool. The primary subject holding the ball is positioned on the left side. A second swimmer is visible in the upper right. Dark lane lines traverse the pool floor diagonally from the bottom left towards the top right.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing blue and white helmet with snorkel, black swim trunks",
+        "action": "reaching for a dark ball underwater",
+        "position": "center-left foreground",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person wearing black swim trunks, snorkel mask",
+        "action": "swimming horizontally near surface",
+        "position": "center-right",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "Person with yellow fins and red cap",
+        "action": "diving or swimming near pool floor",
+        "position": "lower-left background",
+        "id": "player_red_cap"
+      },
+      {
+        "desc": "Dark spherical ball",
+        "action": "being touched or held by hand",
+        "position": "center",
+        "id": "game_object_ball_puck"
+      },
+      {
+        "desc": "Pool floor with black lane lines",
+        "action": "stationary",
+        "position": "bottom",
+        "id": "pool_lane_lines"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A player in a blue helmet is reaching for a ball near the pool floor.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Multiple players are wearing snorkels and masks.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Yellow fins are visible on a player in the background.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The water is clear blue.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The scene is underwater in a swimming pool. The main action is centered around a player reaching for a ball near the bottom left, while another player swims horizontally above them. Lane markers are visible on the pool floor.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "shirtless male wearing a blue swim cap, snorkel mask, black swim trunks, and black fins",
+        "action": "swimming horizontally near the surface, looking at the camera with mouth open",
+        "position": "center foreground",
+        "id": "swimmers_generic_blue_cap"
+      },
+      {
+        "desc": "shirtless male wearing a snorkel mask",
+        "action": "treading water upright",
+        "position": "background right",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "person wearing a black and white zebra-striped swimsuit and blue fins",
+        "action": "treading water near the surface",
+        "position": "top center",
+        "id": "player_zebra_trunks"
+      },
+      {
+        "desc": "person wearing patterned dark swim trunks and a white swim cap",
+        "action": "diving headfirst towards the bottom",
+        "position": "center lower area",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "person wearing dark swim trunks and yellow fins",
+        "action": "standing or treading water",
+        "position": "left edge",
+        "id": "swimmers_generic_other"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Dark lane lines are visible on the light blue pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Sunlight is filtering through the water surface from above.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Bubbles surround the divers and swimmers.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Multiple swimmers are wearing fins of varying colors including black, blue, and yellow.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The scene is underwater. The first view shows swimmers near the surface with light coming from above. The second view shows the pool bottom with lane markers, with swimmers at various depths, including one inverted diver near the floor.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing black patterned swim trunks, white swim cap, black snorkel mask, and black fins",
+        "action": "swimming underwater and reaching towards a hoop on the pool floor with a dark object in hand",
+        "position": "left to center",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "circular hoop with black and white segments",
+        "action": "resting on the pool floor",
+        "position": "center right",
+        "id": "game_object_ball_puck"
+      },
+      {
+        "desc": "small dark object (puck)",
+        "action": "being held by the swimmer near the hoop",
+        "position": "in swimmer's right hand",
+        "id": "game_object_ball_puck"
+      },
+      {
+        "desc": "black lane line",
+        "action": "marking the pool floor",
+        "position": "left side",
+        "id": "pool_lane_lines"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is swimming underwater wearing a snorkel mask and fins.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The swimmer is holding a dark object near a striped hoop on the bottom of the pool.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The pool floor is covered in light blue square tiles.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A thick black line runs diagonally across the left side of the pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The swimmer is positioned on the left side, extending horizontally towards the center-right where a hoop lies on the tiled floor. A black lane line runs diagonally from the top left towards the bottom left.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing blue swim cap with white markings, black goggles, black snorkel, and blue patterned swim trunks",
+        "action": "swimming underwater, facing right",
+        "position": "left side of frame",
+        "id": "swimmers_generic_blue_cap"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is swimming underwater wearing a blue cap and goggles.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background consists of light blue tiled pool floor/wall.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Small white particles are floating in the water.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A dark line or seam runs diagonally across the upper right portion of the pool structure.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The swimmer is positioned on the left side, moving towards the right. The background is dominated by the light blue tiled surface of the pool, with a diagonal structural line visible in the upper right.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "shirtless person wearing black and white zebra-striped swim trunks and blue fins",
+        "action": "swimming underwater with arms bent",
+        "position": "center foreground",
+        "id": "player_zebra_trunks"
+      },
+      {
+        "desc": "shirtless person wearing blue swim trunks and black fins",
+        "action": "swimming underwater",
+        "position": "mid-ground left",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "shirtless person wearing black and white swim trunks",
+        "action": "swimming near the surface",
+        "position": "background left",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "group of swimmers wearing fins",
+        "action": "swimming near the surface",
+        "position": "top of frame",
+        "id": "swimmers_group"
+      },
+      {
+        "desc": "metal drain structure",
+        "action": "fixed on the pool floor",
+        "position": "center bottom",
+        "id": "pool_drains_fixtures"
+      },
+      {
+        "desc": "partial view of a leg",
+        "action": "visible",
+        "position": "bottom left corner",
+        "id": "swimmer_limbs"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is wearing zebra-patterned swim shorts.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Multiple individuals are wearing swim fins.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Black lane markers are visible on the pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A drain is located in the center of the pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The water is clear and blue.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The view is underwater. The first frame focuses on swimmers in the mid-water column, while the second frame shows the pool floor with a central drain and swimmers near the surface above.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing dark swim trunks and blue fins",
+        "action": "swimming horizontally near the pool floor",
+        "position": "center foreground",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "person wearing dark swimwear and black fins",
+        "action": "diving vertically downwards",
+        "position": "center mid-ground",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "person wearing dark swimwear and yellow fins",
+        "action": "diving vertically downwards",
+        "position": "left mid-ground",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "person wearing dark swimwear and black fins",
+        "action": "diving vertically downwards",
+        "position": "far left",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "person wearing dark swimwear",
+        "action": "swimming horizontally near the surface",
+        "position": "upper right background",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "person wearing dark swimwear",
+        "action": "swimming horizontally near the surface",
+        "position": "upper right background, below the first swimmer",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "metal drain cover",
+        "action": "stationary on the pool floor",
+        "position": "center foreground",
+        "id": "pool_drains_fixtures"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Multiple people are swimming underwater in a pool.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The pool floor is tiled with light-colored square tiles.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Dark lane lines are visible on the pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A metal drain cover is located in the center of the frame on the pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Some swimmers are wearing fins of different colors (blue, yellow, black).",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The water is clear and blue-green.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The scene is an underwater view of a swimming pool. In the foreground, a swimmer is near the tiled floor, close to a central drain cover. Several other swimmers are positioned in the mid-ground and background, some diving downwards and others swimming near the surface. Lane lines are visible on the pool floor extending into the background.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      68,
+      70
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      70,
+      72
+    ],
+    "visible_entities": [
+      {
+        "desc": "Group of players wearing swimwear, masks, snorkels, and fins",
+        "action": "clustered together in a scrum, grappling or competing for position",
+        "position": "left side of the frame, near the pool floor",
+        "id": "swimmers_group"
+      },
+      {
+        "desc": "Player wearing black swim trunks",
+        "action": "diving vertically downwards towards the group",
+        "position": "upper center of the frame",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "Player wearing dark swimwear",
+        "action": "swimming horizontally near the surface",
+        "position": "upper right corner",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Player wearing light swimwear",
+        "action": "swimming mid-water",
+        "position": "center background",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Metal pool drain or fixture",
+        "action": "stationary",
+        "position": "bottom center foreground",
+        "id": "pool_drains_fixtures"
+      },
+      {
+        "desc": "Pool floor tiles",
+        "action": "stationary grid pattern",
+        "position": "bottom of the frame",
+        "id": "pool_floor_tiles"
+      },
+      {
+        "desc": "Black lane lines",
+        "action": "stationary markings",
+        "position": "pool floor in the background",
+        "id": "pool_lane_lines"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Multiple players are wearing long fins on their feet.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The water is clear blue with light refraction visible on the surface.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A cluster of at least five players is physically interacting near the pool bottom.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One player is oriented vertically with head pointing down.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The camera is positioned low near the pool floor, looking slightly up and across the pool. A metal fixture is in the immediate foreground center. The main action involving a group of players is on the left side. Other individual players are scattered in the upper mid-ground and background.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      72,
+      74
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing black swim trunks, snorkel mask, and yellow fins",
+        "action": "swimming underwater, legs kicking",
+        "position": "left side of frame",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "Person wearing patterned swim trunks, snorkel mask, and blue fins",
+        "action": "reaching out with arms, swimming",
+        "position": "center-left",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Group of people clustered together",
+        "action": "engaged in underwater activity, wearing fins and masks",
+        "position": "center",
+        "id": "swimmers_group"
+      },
+      {
+        "desc": "Person wearing dark swim trunks and black fins",
+        "action": "swimming near the surface",
+        "position": "top right",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "Person wearing dark swim trunks",
+        "action": "swimming underwater",
+        "position": "center-right",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Pool floor with light blue tiles and dark lane markers",
+        "action": "stationary",
+        "position": "bottom of frame",
+        "id": "pool_lane_lines"
+      },
+      {
+        "desc": "Metal pool drain or fixture",
+        "action": "stationary",
+        "position": "center bottom",
+        "id": "pool_drains_fixtures"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Multiple people are swimming underwater in a pool.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The people are wearing snorkeling gear including masks and fins.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The pool has lane markers on the bottom.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A metal fixture is visible on the pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The water is clear and blue.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The scene is an underwater view of a swimming pool. Several people are scattered throughout the frame, mostly in the upper half, engaged in swimming. The pool floor with tiles and lane markers occupies the bottom third of the frame. A metal fixture is centered at the bottom.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      74,
+      76
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      76,
+      78
+    ],
+    "visible_entities": [
+      {
+        "desc": "A person's arm and hand, light skin tone",
+        "action": "moving through water, partially submerged",
+        "position": "right side of frame",
+        "id": "swimmer_limbs"
+      },
+      {
+        "desc": "Dark blue or black object, possibly a swim fin or part of a wetsuit",
+        "action": "submerged underwater, moving",
+        "position": "center to bottom of frame"
+      },
+      {
+        "desc": "Water surface with ripples and bubbles",
+        "action": "reflecting light, moving",
+        "position": "top and left of frame",
+        "id": "pool_water"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera is positioned underwater, looking up towards the surface.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A person's arm is visible on the right side of the frame.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There are bubbles and ripples on the water's surface.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A dark object, possibly swim gear, is visible underwater.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The view is from underwater looking up. The water surface with light reflections occupies the top and left portions of the frame. A person's arm is on the right edge. A dark object is in the lower center.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      78,
+      80
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      80,
+      82
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      82,
+      84
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing white swim briefs and black swim fins",
+        "action": "kicking legs upward and grappling with others",
+        "position": "center to upper left",
+        "id": "swimmers_generic_white_trunks"
+      },
+      {
+        "desc": "Person wearing black swim briefs, blue patterned swim cap, and snorkel mask",
+        "action": "reaching arms toward the central group",
+        "position": "right side",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "Person wearing a red swim cap and holding a short stick",
+        "action": "positioned behind the central swimmer",
+        "position": "center background",
+        "id": "player_red_cap"
+      },
+      {
+        "desc": "Light blue tiled pool floor with black lane lines",
+        "action": "stationary background",
+        "position": "bottom and left",
+        "id": "pool_floor_tiles"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Multiple individuals are submerged underwater in a swimming pool",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The individuals are wearing swim fins and masks or snorkels",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One individual is holding a short stick",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Black lane markers run diagonally across the tiled pool floor",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The swimmers are clustered together in physical contact",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "Underwater camera angle looking slightly upward. A group of swimmers is clustered in the upper right and center of the frame, while the tiled pool bottom with lane lines occupies the lower left quadrant.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      84,
+      86
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing white swim briefs and black fins",
+        "action": "swimming underwater with legs extended",
+        "position": "center foreground",
+        "id": "swimmers_generic_white_trunks"
+      },
+      {
+        "desc": "Person wearing black swim briefs and blue/white fins",
+        "action": "swimming near surface",
+        "position": "upper right",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "Person wearing snorkel mask and white swimwear",
+        "action": "swimming underwater",
+        "position": "left side",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person wearing snorkel mask",
+        "action": "swimming in background",
+        "position": "lower right",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Pool floor with light blue tiles and dark lane markers",
+        "action": "stationary",
+        "position": "bottom left",
+        "id": "pool_lane_lines"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Multiple people are swimming underwater in a pool",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "At least four individuals are visible in the frame",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Swimmers are wearing fins and snorkel masks",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The pool has lane markers on the bottom",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Water is clear with a blue tint",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "Pool floor occupies bottom left quadrant with swimmers distributed across center and right portions of frame, some near surface and others deeper underwater",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      86,
+      88
+    ],
+    "visible_entities": [
+      {
+        "desc": "swimmer wearing white trunks and black fins",
+        "action": "swimming upside down with legs extended upwards",
+        "position": "left foreground",
+        "id": "swimmers_generic_white_trunks"
+      },
+      {
+        "desc": "swimmer wearing black trunks and blue fins",
+        "action": "swimming diagonally downwards",
+        "position": "center",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "swimmer wearing black and white striped shorts and blue fins",
+        "action": "reaching towards a ball near the pool wall",
+        "position": "left side",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "swimmer wearing a bright yellow vest with black straps",
+        "action": "diving downwards towards the ball",
+        "position": "center",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "swimmer legs in black shorts",
+        "action": "swimming very close to the camera lens",
+        "position": "right foreground",
+        "id": "swimmer_limbs"
+      },
+      {
+        "desc": "dark spherical ball",
+        "action": "floating or resting near the pool floor",
+        "position": "bottom center",
+        "id": "game_object_ball_puck"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The scene takes place underwater in a swimming pool with blue water.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Multiple individuals are wearing swim fins on their feet.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One individual is wearing a high-visibility yellow life vest or buoyancy aid.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A dark ball is visible near the bottom of the pool.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Pool tiles and a black lane line are visible on the pool floor/wall.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The camera is submerged, capturing a chaotic underwater scene. In the first frame, the perspective looks somewhat upward toward the surface with limbs and bodies overhead. In the second frame, the camera angle shifts to look down toward the pool floor and wall where swimmers are converging on a ball.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      88,
+      90
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      90,
+      92
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing a black swimsuit, blue swim cap, and yellow snorkel",
+        "action": "swimming underwater and holding a ball",
+        "position": "left to center",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person wearing a black swimsuit",
+        "action": "swimming underwater",
+        "position": "right background",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person with blue fins",
+        "action": "reaching out with an arm",
+        "position": "right",
+        "id": "swimmer_limbs"
+      },
+      {
+        "desc": "Reddish-brown ball",
+        "action": "being held underwater",
+        "position": "center left",
+        "id": "game_object_ball_puck"
+      },
+      {
+        "desc": "Yellow snorkel",
+        "action": "attached to swim cap",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person wearing a blue swim cap and yellow snorkel is visible underwater.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A person is holding a reddish-brown ball underwater.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Another person is reaching towards the person with the ball.",
+        "confidence": 0.85,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Blue swim fins are visible on a person's feet.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Bubbles are rising in the water.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "Underwater scene with a person on the left holding a ball and another person on the right reaching towards them. Bubbles surround the swimmers.",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      92,
+      94
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      94,
+      96
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing white swim briefs with blue text, white helmet with black straps, and orange goggles",
+        "action": "swimming underwater near the pool floor, reaching forward with right arm",
+        "position": "center-left foreground",
+        "id": "swimmers_generic_white_trunks"
+      },
+      {
+        "desc": "Person wearing white swim briefs, white helmet with black markings, and yellow fins",
+        "action": "swimming underwater, body angled diagonally upwards",
+        "position": "upper right background",
+        "id": "swimmers_generic_white_trunks"
+      },
+      {
+        "desc": "Person wearing white swim briefs and blue fins",
+        "action": "swimming near the pool floor, legs extended",
+        "position": "lower center",
+        "id": "swimmers_generic_white_trunks"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The pool floor is tiled with light-colored square tiles and dark grout lines.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Bubbles are visible in the water around the swimmers.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A dark line, likely a lane marker, runs along the pool floor.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The swimmer in the foreground has text on their swim briefs, partially legible as '...nergy'.",
+        "confidence": 0.6,
+        "target_resolution_visible": false
+      }
+    ],
+    "ocr": [],
+    "spatial": "The scene is underwater in a swimming pool. One swimmer is prominent in the foreground near the bottom, another is in the mid-ground to the right, and a third is lower down near the pool floor. The pool tiles and lane markers provide a grid-like background.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      96,
+      98
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing white swim briefs and a white helmet with the number 11 on the back",
+        "action": "swimming underwater horizontally and reaching forward with arms",
+        "position": "center-left in frame 1, bottom-center in frame 2",
+        "id": "player_helmet_11"
+      },
+      {
+        "desc": "Person wearing a blue helmet with a snorkel and yellow fins",
+        "action": "swimming underwater facing left, interacting with the person in white",
+        "position": "center-right in frame 1, center in frame 2",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person wearing dark striped swim trunks",
+        "action": "swimming near the surface above the others",
+        "position": "top-right in frame 2",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Shirtless person wearing a mask and snorkel",
+        "action": "treading water or swimming upright observing the scene",
+        "position": "far right background in frame 1",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Blurry human limbs (legs and arms)",
+        "action": "moving very close to the camera lens",
+        "position": "foreground bottom and right in frame 2",
+        "id": "swimmer_limbs"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The scene takes place underwater in a swimming pool with light blue tiles visible on the bottom.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Multiple individuals are wearing protective helmets with attached snorkels.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One white helmet clearly displays the number 11 in black text.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Participants are wearing swim fins of various colors including yellow, black, and blue.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Bubbles are visible in the water around the swimmers.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "11"
+    ],
+    "spatial": "In the first frame, a player in white is on the left reaching towards a player in blue on the right, with an observer in the background right. In the second frame, the camera angle shifts closer to the pool floor, showing a player in a blue helmet positioned above a player in a white helmet, with large foreground limbs obscuring the bottom and right edges of the view.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      98,
+      100
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      100,
+      102
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing white swim briefs with text and large blue fins",
+        "action": "swimming underwater near the bottom",
+        "position": "foreground bottom",
+        "id": "swimmers_generic_white_trunks"
+      },
+      {
+        "desc": "person wearing black swim trunks, snorkel mask, and yellow/black fins",
+        "action": "holding a long black pole and swimming horizontally",
+        "position": "center mid-ground",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "person wearing blue headgear and yellow fins",
+        "action": "swimming underwater",
+        "position": "background left",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "person wearing dark swim trunks",
+        "action": "swimming near the surface",
+        "position": "background top right",
+        "id": "swimmers_generic_other"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the foreground has 'Sinnugger' written vertically on the side of their white swim briefs.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person in the center is holding a long black pole or rope with both hands.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Black lane lines are visible on the tiled pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person in the center is wearing a snorkel mask with a tube extending upwards.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person in the foreground is wearing large blue fins.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "Sinnugger"
+    ],
+    "spatial": "A person in white briefs occupies the immediate foreground. A person in black trunks holding a pole is positioned centrally in the mid-ground. Other swimmers are visible further back on the left and near the surface on the right.",
+    "parse_success": true,
+    "chunk_idx": 50,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      102,
+      104
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      104,
+      106
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 52,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      106,
+      108
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 53,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      108,
+      110
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing black swim briefs, blue and black long fins, red swim cap, and a snorkel mask",
+        "action": "swimming horizontally underwater, arms extended forward",
+        "position": "center to bottom right",
+        "id": "player_red_cap"
+      },
+      {
+        "desc": "Person wearing black swimwear and black fins",
+        "action": "diving downwards vertically",
+        "position": "upper right background",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "Person's legs and blue fins",
+        "action": "swimming",
+        "position": "upper left",
+        "id": "swimmer_limbs"
+      },
+      {
+        "desc": "Pool floor with light blue tiles and dark lane markers",
+        "action": "stationary",
+        "position": "bottom",
+        "id": "pool_lane_lines"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The main swimmer is wearing a red swim cap.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The main swimmer is using long blue and black fins.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A second diver is visible in the background wearing black fins.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The pool has dark lane markers on the bottom.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The main swimmer is wearing a snorkel mask.",
+        "confidence": 0.85,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The camera follows a swimmer moving from left to right across the pool floor. Another diver is visible further away in the upper right, and parts of another swimmer are in the upper left.",
+    "parse_success": true,
+    "chunk_idx": 54,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      110,
+      112
+    ],
+    "visible_entities": [
+      {
+        "desc": "swimmer wearing blue and black long fins and black swim bottoms",
+        "action": "swimming underwater near the pool floor",
+        "position": "bottom right in first frame, bottom left in second frame",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "swimmer wearing a black swimsuit and black fins",
+        "action": "swimming vertically with head down",
+        "position": "top right in first frame, center top in second frame",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "distant swimmer with fins",
+        "action": "swimming in the background",
+        "position": "top right background in second frame",
+        "id": "swimmers_generic_other"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video takes place underwater in a swimming pool.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Black lane lines are visible on the white tiled pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One swimmer is wearing distinct blue and black long fins.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Circular markers are visible on the pool wall.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The scene is an underwater view of a swimming pool. The tiled floor with black lane lines is at the bottom. Swimmers are positioned in the mid-water column and near the bottom. A pool wall with circular markers is visible on the left side.",
+    "parse_success": true,
+    "chunk_idx": 55,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      112,
+      114
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 56,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      114,
+      116
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      116,
+      118
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing black swimwear and snorkel gear",
+        "action": "swimming near surface, creating bubbles",
+        "position": "upper left corner",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "Person wearing black fins",
+        "action": "diving vertically downwards",
+        "position": "center right"
+      },
+      {
+        "desc": "Person wearing blue fins and black swimwear",
+        "action": "swimming horizontally along pool floor",
+        "position": "lower center",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "Person wearing patterned swimwear",
+        "action": "swimming near bottom",
+        "position": "lower left corner",
+        "id": "swimmers_generic_other"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The scene takes place underwater in a swimming pool with lane markers visible on the floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Multiple swimmers are present at different depths.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One swimmer is performing a vertical dive towards the pool bottom.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Bubbles are visible near the surface swimmer.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The view is underwater looking slightly upwards and across the pool. One swimmer is near the surface in the top left. Another is diving down in the middle distance. Two others are swimming along the pool floor in the foreground and lower middle area. Lane lines are visible on the pool bottom.",
+    "parse_success": true,
+    "chunk_idx": 58,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      118,
+      120
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing black swim fins and dark swimwear",
+        "action": "diving vertically downwards towards the pool floor",
+        "position": "center-left",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "Person wearing blue swim fins and light-colored swimwear",
+        "action": "swimming horizontally near the bottom",
+        "position": "lower-left",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person partially visible wearing dark swimwear",
+        "action": "raising arm, partially submerged",
+        "position": "bottom-left corner",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person partially visible at surface",
+        "action": "floating or treading water",
+        "position": "top-left corner",
+        "id": "swimmers_generic_other"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The scene takes place underwater in a swimming pool with blue water.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Dark lane lines are visible on the pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One diver is oriented head-down with fins pointing up.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The water surface is visible at the top of the frame with light refraction patterns.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The pool floor occupies the bottom half with dark lane markers. Divers are distributed across the left and center. The water surface is visible at the top.",
+    "parse_success": true,
+    "chunk_idx": 59,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      120,
+      122
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing black swim trunks",
+        "action": "swimming near the water surface",
+        "position": "top left corner",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "person wearing a blue swim cap and dark swim trunks",
+        "action": "swimming near the pool floor",
+        "position": "bottom left",
+        "id": "swimmers_generic_blue_cap"
+      },
+      {
+        "desc": "person wearing black fins",
+        "action": "swimming near the pool floor",
+        "position": "bottom left, adjacent to the person with the blue cap",
+        "id": "swimmer_limbs"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video shows an underwater view of a swimming pool.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Dark lane lines are painted on the bottom of the pool.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The water is a clear turquoise blue color.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One swimmer near the bottom is wearing black fins.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One swimmer near the bottom is wearing a blue cap.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The camera is submerged, looking diagonally across the pool. The water surface with ripples is visible in the upper right quadrant. The pool floor occupies the lower left and center, marked with dark lane lines.",
+    "parse_success": true,
+    "chunk_idx": 60,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      122,
+      124
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing black and white zebra-patterned swim trunks, blue swim cap, and blue fins",
+        "action": "swimming underwater, angled downwards",
+        "position": "left side of frame",
+        "id": "player_zebra_trunks"
+      },
+      {
+        "desc": "Person wearing black swim trunks, blue swim cap, and black fins",
+        "action": "swimming horizontally near the surface",
+        "position": "top center",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "Person wearing dark swim trunks, blue swim cap, and black fins",
+        "action": "swimming underwater near the pool floor",
+        "position": "center right",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "Person wearing blue swim cap and blue fins",
+        "action": "swimming underwater near the pool floor",
+        "position": "center bottom",
+        "id": "swimmers_generic_blue_cap"
+      },
+      {
+        "desc": "Person wearing black swim trunks",
+        "action": "swimming near the surface",
+        "position": "top left (partial view)",
+        "id": "swimmers_generic_black_trunks"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Multiple people are swimming underwater in a pool.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The water is clear and blue.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A black lane line is visible on the pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Swimmers are wearing fins and swim caps.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One swimmer is wearing zebra-patterned trunks.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The scene is underwater in a swimming pool. A black lane line runs diagonally from the bottom left towards the center. Several swimmers are distributed across the frame, with some near the surface and others closer to the pool floor.",
+    "parse_success": true,
+    "chunk_idx": 61,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      124,
+      126
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing black and white zebra-striped swim shorts, blue swim cap, and snorkel mask",
+        "action": "standing or treading water, gesturing with hands forward",
+        "position": "bottom left",
+        "id": "player_zebra_trunks"
+      },
+      {
+        "desc": "Person wearing black swim trunks, blue swim cap, and snorkel mask",
+        "action": "swimming horizontally near the surface",
+        "position": "top center",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "Person wearing black swim briefs, blue swim cap, and snorkel",
+        "action": "swimming away from camera towards the right",
+        "position": "right side",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "Person wearing black swim trunks and long black fins",
+        "action": "swimming or floating, legs visible",
+        "position": "top left",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "Person wearing dark swim trunks, white cap, and mask",
+        "action": "crouching or sitting near the pool floor",
+        "position": "bottom center"
+      },
+      {
+        "desc": "Turbulent water surface with yellow and white reflections",
+        "action": "churning/bubbling",
+        "position": "entire frame (second image)",
+        "id": "pool_water"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Multiple individuals are underwater in a swimming pool wearing snorkeling gear",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One individual is wearing distinctive black and white striped shorts",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "At least one person is wearing long fins typically used for freediving or underwater sports",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The second frame shows a view obscured by surface turbulence and bubbles",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The first frame shows a wide underwater view with people distributed across the pool depth and width. The second frame is a close-up, chaotic view of the water surface.",
+    "parse_success": true,
+    "chunk_idx": 62,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      126,
+      128
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 63,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      128,
+      130
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing white swim cap with black design and goggles",
+        "action": "swimming in pool",
+        "position": "center foreground",
+        "id": "swimmers_generic_white_trunks"
+      },
+      {
+        "desc": "person wearing blue snorkel mask",
+        "action": "floating in water",
+        "position": "left mid-ground",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "multiple swimmers (heads visible)",
+        "action": "floating/swimming",
+        "position": "background",
+        "id": "swimmers_group"
+      },
+      {
+        "desc": "person sitting on pool edge (partial view)",
+        "action": "sitting",
+        "position": "far left edge",
+        "id": "swimmer_limbs"
+      },
+      {
+        "desc": "red brick building with white trim",
+        "action": "standing",
+        "position": "background right",
+        "id": "background_structures"
+      },
+      {
+        "desc": "chain-link fence",
+        "action": "enclosing pool area",
+        "position": "background left",
+        "id": "background_structures"
+      },
+      {
+        "desc": "blurry teal and beige shapes (likely water/skin)",
+        "action": "obscuring view",
+        "position": "entire frame (first frame)",
+        "id": "pool_water"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The clip begins with a blurry, abstract view dominated by teal and beige colors, likely underwater or a splash.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The view clears to show an outdoor swimming pool with several people.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A central swimmer wears a white cap with a black design resembling a panda face.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A red brick building with a white roof structure is visible in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The sky is cloudy and overcast.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The camera is positioned at water level. In the immediate foreground is blue pool water. Swimmers are scattered in the mid-ground. The background consists of a pool deck area, a tall chain-link fence on the left, and a two-story red brick building with trees on the right.",
+    "parse_success": true,
+    "chunk_idx": 64,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      130,
+      132
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 65,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      132,
+      134
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 66,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      134,
+      136
+    ],
+    "visible_entities": [
+      {
+        "desc": "multiple swimmers wearing fins and snorkels",
+        "action": "swimming underwater in various directions",
+        "position": "throughout the water column",
+        "id": "swimmers_group"
+      },
+      {
+        "desc": "swimmer with bright blue fins",
+        "action": "swimming near the pool floor",
+        "position": "center bottom",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "swimmer with yellow fins",
+        "action": "swimming near the surface",
+        "position": "top left",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "swimmers with black fins",
+        "action": "swimming and diving",
+        "position": "various locations",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "black lane lines",
+        "action": "marking swimming lanes",
+        "position": "pool floor",
+        "id": "pool_lane_lines"
+      },
+      {
+        "desc": "dark circular markers",
+        "action": "fixed on the pool wall",
+        "position": "mid-depth on walls",
+        "id": "pool_wall_markers"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video shows an underwater view of a swimming pool.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Several individuals are swimming wearing fins and snorkels.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Black lane markers are visible on the light blue tiled floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A cluster of swimmers is interacting near the bottom center lane line.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Dark circular objects are attached to the pool walls at mid-depth.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Some swimmers are near the surface while others are deep near the floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The scene is an underwater shot of a swimming pool. The bottom is tiled light blue with distinct black lane lines running longitudinally. Swimmers are distributed vertically, with some near the rippling surface and a group grappling or swimming near the bottom lane line. Dark circular markers are visible on the side walls.",
+    "parse_success": true,
+    "chunk_idx": 67,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      136,
+      138
+    ],
+    "visible_entities": [
+      {
+        "desc": "Multiple swimmers wearing swimwear, fins, and snorkels",
+        "action": "swimming underwater, some diving towards the bottom, others near the surface",
+        "position": "distributed throughout the pool volume",
+        "id": "swimmers_group"
+      },
+      {
+        "desc": "A puck-like object on the pool floor",
+        "action": "stationary or being contested near the goal area",
+        "position": "bottom center of the pool",
+        "id": "game_object_ball_puck"
+      },
+      {
+        "desc": "Pool lane markers (black lines)",
+        "action": "marking lanes on the pool floor",
+        "position": "bottom of the pool",
+        "id": "pool_lane_lines"
+      },
+      {
+        "desc": "Circular dark objects on the pool wall",
+        "action": "fixed markers or targets",
+        "position": "mid-height on the far pool wall",
+        "id": "pool_wall_markers"
+      },
+      {
+        "desc": "A metal goal structure",
+        "action": "stationary on the pool floor",
+        "position": "bottom center, near the puck",
+        "id": "goal_white_metal"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "At least six individuals are visible swimming underwater with fins.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The water is clear blue, allowing visibility of the pool floor and walls.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Black lane lines are visible on the light-colored tiled pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Several dark circular markers are attached to the far pool wall.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One swimmer is positioned directly above a metal structure on the pool floor.",
+        "confidence": 0.85,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The scene is an underwater view of a swimming pool. Swimmers are distributed at various depths, with some near the surface and others diving towards the pool floor. The pool floor features black lane lines and a central metal structure. The far wall has circular markers.",
+    "parse_success": true,
+    "chunk_idx": 68,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      138,
+      140
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 69,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      140,
+      142
+    ],
+    "visible_entities": [
+      {
+        "desc": "multiple people wearing swimwear and long fins",
+        "action": "swimming near the surface",
+        "position": "upper half of the frame",
+        "id": "swimmers_group"
+      },
+      {
+        "desc": "pool floor with light blue tiles and dark lane markers",
+        "action": "stationary",
+        "position": "lower half of the frame",
+        "id": "pool_lane_lines"
+      },
+      {
+        "desc": "drain or pool fixture",
+        "action": "stationary",
+        "position": "center bottom of the frame",
+        "id": "pool_drains_fixtures"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video shows an underwater view of a swimming pool.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Several people are swimming near the water's surface.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The swimmers are wearing long fins.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The pool floor has dark lane markers.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A pool drain or fixture is visible on the bottom of the pool.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The camera is positioned at the bottom of the pool, looking up towards the surface where several people are swimming. The pool floor with its tiles and lane markers occupies the lower portion of the frame.",
+    "parse_success": true,
+    "chunk_idx": 70,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      142,
+      144
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 71,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      144,
+      146
+    ],
+    "visible_entities": [
+      {
+        "desc": "Multiple individuals wearing swimwear (black/dark shorts or bikinis) and long swim fins (black, yellow, blue)",
+        "action": "swimming and maneuvering underwater near the surface",
+        "position": "upper half of the frame, clustered near the water surface",
+        "id": "swimmers_group"
+      },
+      {
+        "desc": "Swimming pool floor with light blue square tiles and dark lane markers",
+        "action": "stationary background structure",
+        "position": "bottom half of the frame",
+        "id": "pool_floor_tiles"
+      },
+      {
+        "desc": "Metal pool drain or outlet fixture",
+        "action": "fixed to the pool floor",
+        "position": "center bottom of the frame",
+        "id": "pool_drains_fixtures"
+      },
+      {
+        "desc": "Individual wearing light-colored swim trunks and blue fins",
+        "action": "diving or swimming downwards alone",
+        "position": "mid-left area, below the main group",
+        "id": "swimmers_generic_other"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The scene takes place underwater in a swimming pool.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "At least six individuals are visible in the water.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Most individuals are wearing long fins suitable for freediving or snorkeling.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The water is clear with light refraction visible on the pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A metal grate structure is centered on the pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The camera is positioned underwater looking slightly upwards and forwards. The pool floor occupies the lower third with lane lines receding into the distance. A group of swimmers is clustered near the surface in the upper center and right, while one swimmer is isolated lower down on the left side.",
+    "parse_success": true,
+    "chunk_idx": 72,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      146,
+      148
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 73,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      148,
+      150
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing black swim trunks and black fins",
+        "action": "swimming near surface, angled downwards",
+        "position": "upper left",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "Person wearing dark swimwear and black fins",
+        "action": "swimming near surface, angled downwards",
+        "position": "upper center-left",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "Person wearing dark swimwear",
+        "action": "swimming vertically downwards",
+        "position": "upper center",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person wearing dark swimwear and blue/black fins",
+        "action": "swimming horizontally near surface",
+        "position": "upper right",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person wearing dark swimwear and bright yellow fins",
+        "action": "swimming horizontally near pool floor",
+        "position": "lower right",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person wearing dark swim trunks",
+        "action": "swimming horizontally near pool floor, reaching towards center",
+        "position": "lower center-left",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person wearing dark swimwear",
+        "action": "crouched or kneeling near pool floor",
+        "position": "lower center",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Metal goal structure",
+        "action": "stationary on pool floor",
+        "position": "bottom center",
+        "id": "goal_white_metal"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Multiple people are swimming underwater in a pool.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Several individuals are wearing swim fins on their feet.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A metal goal structure is visible on the tiled pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Dark lane lines are painted on the pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The water is clear and blue-green.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Some swimmers are wearing snorkels.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The scene is an underwater view of a swimming pool. A metal goal sits centrally on the tiled floor in the foreground. Several swimmers are distributed throughout the water column; some are near the surface in the upper half of the frame, while others are active near the pool floor around the goal in the lower half. Lane markers are visible on the pool bottom extending into the background.",
+    "parse_success": true,
+    "chunk_idx": 74,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      150,
+      152
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 75,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      152,
+      154
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing white swim briefs, black long fins, and a snorkel mask",
+        "action": "swimming horizontally towards the right near the pool floor",
+        "position": "lower right quadrant",
+        "id": "swimmers_generic_white_trunks"
+      },
+      {
+        "desc": "Person wearing dark patterned or striped swim trunks and blue fins",
+        "action": "diving downwards diagonally",
+        "position": "middle right area",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person wearing blue swim trunks and blue fins",
+        "action": "diving downwards",
+        "position": "middle right area (visible in first frame)",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Multiple people (legs and fins visible)",
+        "action": "swimming or treading water at the surface",
+        "position": "top edge of the frame",
+        "id": "swimmers_group"
+      },
+      {
+        "desc": "Metal structure with a grate",
+        "action": "stationary on the pool floor",
+        "position": "center bottom",
+        "id": "pool_drains_fixtures"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video is shot underwater in a swimming pool.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The pool floor is tiled in light blue with dark lane markers.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Several individuals are wearing snorkeling gear including masks and long fins.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A metal drain or cleaning mechanism is visible on the pool floor.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The camera is positioned underwater near the pool floor, looking slightly upwards and forwards. The tiled pool bottom with lane markers occupies the lower half. A metal fixture is centered at the bottom. Swimmers are distributed throughout the water column, with some near the surface (top edge) and others diving or swimming in the mid-to-low water column on the right side.",
+    "parse_success": true,
+    "chunk_idx": 76,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      154,
+      156
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 77,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      156,
+      158
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing blue swim trunks with white text",
+        "action": "positioned upside down near the pool wall",
+        "position": "center-left",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "White cage-like goal structure with black stripes",
+        "action": "stationary at the bottom containing a dark ball",
+        "position": "bottom center",
+        "id": "goal_white_metal"
+      },
+      {
+        "desc": "Person wearing a snorkel mask and snorkel",
+        "action": "swimming underwater facing forward",
+        "position": "center background",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person's arms",
+        "action": "reaching towards the central figure",
+        "position": "right foreground",
+        "id": "swimmer_limbs"
+      },
+      {
+        "desc": "Legs wearing black swim fins",
+        "action": "swimming in the background",
+        "position": "top right",
+        "id": "swimmer_limbs"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is inverted underwater wearing blue trunks with the word 'snuggler' printed on the back.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A white goal cage with vertical bars and black tape stripes sits on the pool floor.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A dark spherical ball is visible inside the goal cage.",
+        "confidence": 0.85,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Another swimmer is wearing a clear mask and black snorkel.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "snuggler"
+    ],
+    "spatial": "The scene takes place underwater in a pool with turquoise water. An inverted player dominates the left foreground above a goal cage. Other players surround the action, with a snorkeler visible in the mid-ground and fins in the upper right background.",
+    "parse_success": true,
+    "chunk_idx": 78,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      158,
+      160
+    ],
+    "visible_entities": [
+      {
+        "desc": "large black swim fin",
+        "action": "dominating foreground left",
+        "position": "left foreground"
+      },
+      {
+        "desc": "person wearing blue swim cap with white text",
+        "action": "swimming underwater",
+        "position": "upper left",
+        "id": "swimmers_generic_blue_cap"
+      },
+      {
+        "desc": "person wearing blue patterned swim trunks and blue fins",
+        "action": "swimming near surface",
+        "position": "upper right",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "person wearing black swimsuit and mask",
+        "action": "floating/swimming",
+        "position": "upper center",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "white metal goal structure with vertical bars",
+        "action": "resting on pool floor",
+        "position": "bottom center",
+        "id": "goal_white_metal"
+      },
+      {
+        "desc": "person wearing black fins and dark shorts",
+        "action": "positioning near goal",
+        "position": "center right",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "person swimming horizontally with snorkel",
+        "action": "swimming",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A large black fin obscures the left side of the view in the first frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Text 'buddy smuggler' is visible on a blue swim cap.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A white metal cage-like structure is on the tiled pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Multiple swimmers are wearing fins and snorkels.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One swimmer wears bright blue fins.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "buddy smuggler"
+    ],
+    "spatial": "The view is underwater. In the first frame, a large fin is in the foreground with other swimmers in the background near the surface. In the second frame, the view shifts to the pool floor where a goal structure is located and players are interacting near it.",
+    "parse_success": true,
+    "chunk_idx": 79,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      160,
+      162
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 80,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      162,
+      164
+    ],
+    "visible_entities": [
+      {
+        "desc": "swimmer wearing dark patterned swim bottoms",
+        "action": "swimming above a metal structure",
+        "position": "center and top right",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "swimmer wearing blue top and black fins",
+        "action": "swimming underwater near the structure",
+        "position": "left side",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "metal cage structure with vertical bars and blue rim",
+        "action": "positioned at the bottom",
+        "position": "bottom center"
+      },
+      {
+        "desc": "snorkel mask with blue frame and orange tip",
+        "action": "visible near the swimmer's hand",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A swimmer's lower body is visible in the foreground wearing dark patterned bottoms.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A metal cage-like structure with vertical bars and a blue rim is located at the bottom of the frame.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Another swimmer is visible in the background on the left wearing blue swimwear.",
+        "confidence": 0.85,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Black swim fins are visible on the swimmer to the left.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The water is clear and turquoise in color.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The foreground is dominated by a swimmer's body close to the camera. Below them is a metal cage structure. To the left, another swimmer is visible underwater near the surface.",
+    "parse_success": true,
+    "chunk_idx": 81,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      164,
+      166
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 82,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      166,
+      168
+    ],
+    "visible_entities": [
+      {
+        "desc": "shirtless person in white swim trunks",
+        "action": "holding a red ball with both hands",
+        "position": "center foreground in frame 1",
+        "id": "swimmers_generic_white_trunks"
+      },
+      {
+        "desc": "person wearing blue swim trunks with white text, blue helmet, and black flippers",
+        "action": "swimming away from the camera",
+        "position": "right side in frame 2",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "person wearing blue gear and flippers",
+        "action": "reaching towards the pool floor near a lane marker",
+        "position": "bottom left in frame 2",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "multiple swimmers",
+        "action": "wearing blue flippers and swimwear, some with snorkels",
+        "position": "background and upper areas in both frames",
+        "id": "swimmers_group"
+      },
+      {
+        "desc": "red ball",
+        "action": "being held by a player",
+        "position": "center in frame 1",
+        "id": "game_object_ball_puck"
+      },
+      {
+        "desc": "dark spherical objects",
+        "action": "floating in the water column",
+        "position": "mid-left area in frame 2",
+        "id": "game_object_ball_puck"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video shows an underwater scene in a swimming pool.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Participants are equipped with snorkels, masks, and flippers.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Black lane markers are visible on the light blue pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A red ball is being contested or held in the first frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Dark balls are floating freely in the water in the second frame.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The scene is underwater. Frame 1 shows a close-up cluster of players, with one holding a red ball centrally. Frame 2 shows a wider view with players swimming near the pool bottom where lane lines are visible, and balls floating in the mid-water.",
+    "parse_success": true,
+    "chunk_idx": 83,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      168,
+      170
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing blue swim trunks with white stars and black fins",
+        "action": "swimming underwater",
+        "position": "center right",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person wearing a white helmet and dark gear",
+        "action": "swimming underwater",
+        "position": "far right",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person wearing a blue helmet with the number 3",
+        "action": "floating at the water surface",
+        "position": "center",
+        "id": "player_helmet_3"
+      },
+      {
+        "desc": "Yellow floating barrier",
+        "action": "floating",
+        "position": "middle ground",
+        "id": "background_structures"
+      },
+      {
+        "desc": "Covered pavilion structure with metal roof",
+        "action": "stationary",
+        "position": "background right",
+        "id": "background_structures"
+      },
+      {
+        "desc": "Palm trees",
+        "action": "stationary",
+        "position": "background left",
+        "id": "background_trees_foliage"
+      },
+      {
+        "desc": "Black lane lines",
+        "action": "stationary on pool floor",
+        "position": "bottom left",
+        "id": "pool_lane_lines"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video shows both underwater and above-water perspectives of a pool.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One swimmer is wearing blue trunks with a white star pattern.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A swimmer at the surface wears a blue helmet with the number 3 visible.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There is a large yellow floating object in the pool.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Palm trees are visible behind a black fence.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "3"
+    ],
+    "spatial": "The first frame is an underwater shot showing swimmers near the pool wall with lane markers. The second frame is an above-water shot showing a swimmer in a blue helmet near a yellow barrier, with a pavilion and palm trees in the background against a cloudy sky.",
+    "parse_success": true,
+    "chunk_idx": 84,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      170,
+      172
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a patterned black, white, and grey one-piece swimsuit",
+        "action": "swimming underwater, facing right",
+        "position": "foreground right",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "person wearing blue swim trunks and a yellow and black snorkel mask",
+        "action": "swimming underwater horizontally from left to right with arms extended",
+        "position": "center mid-ground",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "person wearing dark shorts and a light top",
+        "action": "submerged, holding a camera device",
+        "position": "background left",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "legs and feet of multiple people",
+        "action": "visible at the water surface",
+        "position": "top edge",
+        "id": "swimmer_limbs"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The scene is filmed underwater in a swimming pool with blue water.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Black lane lines and circular drains are visible on the pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "One swimmer is wearing a snorkel mask.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Multiple people are treading water or swimming at the surface in the first frame.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "Underwater perspective showing swimmers at different depths; the first frame shows activity near the surface and a person in the foreground, while the second frame focuses on a swimmer near the pool floor.",
+    "parse_success": true,
+    "chunk_idx": 85,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      172,
+      174
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 86,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      174,
+      176
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 87,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      176,
+      178
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing white swim trunks and a brown wristband",
+        "action": "swimming underwater with legs bent at the knee",
+        "position": "foreground right",
+        "id": "swimmers_generic_white_trunks"
+      },
+      {
+        "desc": "Person wearing a blue swim cap and a black snorkel with an orange tip",
+        "action": "swimming underwater, facing left",
+        "position": "mid-ground left",
+        "id": "swimmers_generic_blue_cap"
+      },
+      {
+        "desc": "Person wearing a blue swim cap and black fins",
+        "action": "swimming near the surface",
+        "position": "background right",
+        "id": "swimmers_generic_blue_cap"
+      },
+      {
+        "desc": "Pool floor covered in light blue square tiles",
+        "action": "stationary background",
+        "position": "entire background",
+        "id": "pool_floor_tiles"
+      },
+      {
+        "desc": "Thick black lane lines",
+        "action": "marking lanes on the pool floor",
+        "position": "diagonal across the frame",
+        "id": "pool_lane_lines"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Multiple individuals are submerged underwater in a swimming pool",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "At least one swimmer is wearing fins",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The pool floor features a grid of blue tiles",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Black lane markers run parallel on the pool bottom",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The view is underwater. In the first frame, a swimmer's legs and torso occupy the right foreground, while another swimmer with a snorkel is visible in the middle left. Other swimmers are partially visible near the surface in the background. The second frame shows a close-up of the pool floor tiles and black lane lines.",
+    "parse_success": true,
+    "chunk_idx": 88,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      178,
+      180
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 89,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      180,
+      182
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 90,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      182,
+      184
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing white swim briefs, blue fins, and a snorkel mask",
+        "action": "swimming upright facing right",
+        "position": "right side of the frame",
+        "id": "swimmers_generic_white_trunks"
+      },
+      {
+        "desc": "Person wearing black swim trunks, blue swim cap, and black fins",
+        "action": "positioned upside down near the pool wall",
+        "position": "left side near the wall (Frame 1)",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "Person wearing white swim briefs and black fins",
+        "action": "swimming horizontally near the surface",
+        "position": "upper center (Frame 2)",
+        "id": "swimmers_generic_white_trunks"
+      },
+      {
+        "desc": "Person wearing striped swim trunks and black fins",
+        "action": "swimming near the surface",
+        "position": "upper center (Frame 2)",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Multiple swimmers with various colored fins (black, blue, yellow)",
+        "action": "swimming near the water surface",
+        "position": "top edge of the frame",
+        "id": "swimmers_group"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The scene takes place underwater in a swimming pool with tiled flooring and black lane markers.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Several dark, circular objects are visible floating or resting in the water.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A metal grate or cage structure is visible near the pool wall on the left.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Swimmers are wearing snorkeling gear including masks and fins.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The camera is submerged underwater looking slightly upwards and across the pool. The pool floor with lane lines is at the bottom. Swimmers are distributed from the bottom left near the wall to the surface across the top.",
+    "parse_success": true,
+    "chunk_idx": 91,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      184,
+      186
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 92,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      186,
+      188
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 93,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      188,
+      190
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 94,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      190,
+      192
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing blue swimwear, black fins, and a snorkel mask",
+        "action": "diving downwards with arms extended",
+        "position": "top left quadrant",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person's arm and hand",
+        "action": "reaching down into the water",
+        "position": "top center",
+        "id": "swimmer_limbs"
+      },
+      {
+        "desc": "Dark spherical ball",
+        "action": "floating near the pool floor",
+        "position": "mid-left, near the black lane line",
+        "id": "game_object_ball_puck"
+      },
+      {
+        "desc": "Dark spherical ball",
+        "action": "floating near the wall",
+        "position": "mid-right",
+        "id": "game_object_ball_puck"
+      },
+      {
+        "desc": "Dark spherical ball",
+        "action": "floating",
+        "position": "far right edge",
+        "id": "game_object_ball_puck"
+      },
+      {
+        "desc": "Metal goal structure",
+        "action": "stationary on the pool floor",
+        "position": "far left",
+        "id": "goal_white_metal"
+      },
+      {
+        "desc": "Square wall marker",
+        "action": "attached to the pool wall",
+        "position": "mid-right wall",
+        "id": "pool_wall_markers"
+      },
+      {
+        "desc": "Black lane lines",
+        "action": "painted on the pool floor",
+        "position": "running diagonally across the floor",
+        "id": "pool_lane_lines"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The scene is underwater in a swimming pool with light blue tiled flooring.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A person equipped with fins and a snorkel is diving towards the bottom.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Multiple dark balls are visible in the water.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A metal goal frame is visible on the left side.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Black lines mark lanes on the pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "Underwater view of a pool. The floor is tiled with a grid pattern. A thick black lane line runs diagonally from the bottom left towards the top center. Another black line is visible on the right side. The pool wall is on the right. A metal goal is on the far left. A diver is descending on the left side.",
+    "parse_success": true,
+    "chunk_idx": 95,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      192,
+      194
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 96,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      194,
+      196
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 97,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      196,
+      198
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing white swim briefs and a white helmet with black markings",
+        "action": "crouching on the pool floor with left hand on hip",
+        "position": "bottom left foreground",
+        "id": "swimmers_generic_white_trunks"
+      },
+      {
+        "desc": "Person wearing blue swim briefs, a blue helmet with yellow accents and an orange-tipped snorkel, and black fins",
+        "action": "kneeling on the pool floor facing slightly left",
+        "position": "center foreground",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person wearing black swim briefs and blue fins",
+        "action": "swimming underwater away from the camera",
+        "position": "center background",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "Multiple pairs of swim fins (yellow, black)",
+        "action": "visible near the water surface",
+        "position": "top background",
+        "id": "swimmers_group"
+      },
+      {
+        "desc": "Metal grate structure",
+        "action": "attached to the pool wall/floor junction",
+        "position": "top left in second frame",
+        "id": "pool_drains_fixtures"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two individuals are positioned on the tiled pool floor in the foreground.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The person in the center foreground wears a blue helmet with a snorkel extending upwards.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Black lane lines are painted on the white tiled pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A swimmer in the background is propelling themselves with blue fins.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The second frame focuses on the pool floor tiles and a black lane line.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The scene is underwater in a swimming pool with white tiles and black lane markers. In the first frame, two players are on the bottom in the foreground, while another swims away in the mid-ground and fins are visible at the surface. The second frame shows a close-up of the pool floor and lane line, with a swimmer's legs visible near the surface above.",
+    "parse_success": true,
+    "chunk_idx": 98,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      198,
+      200
+    ],
+    "visible_entities": [
+      {
+        "desc": "large, blurry human arm and hand",
+        "action": "obscuring the foreground view",
+        "position": "center to right foreground",
+        "id": "swimmer_limbs"
+      },
+      {
+        "desc": "legs wearing black swim fins",
+        "action": "standing or treading water near the pool floor",
+        "position": "mid-right background",
+        "id": "swimmer_limbs"
+      },
+      {
+        "desc": "person wearing a black one-piece swimsuit, snorkel mask, and black fins",
+        "action": "swimming or floating vertically near the pool wall",
+        "position": "center left",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "person wearing dark swim trunks and black fins",
+        "action": "hovering underwater above the other swimmer",
+        "position": "upper center right",
+        "id": "swimmers_generic_black_trunks"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video is filmed underwater in a swimming pool with white tiled flooring.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A black lane line is visible on the pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Multiple individuals are wearing black swim fins.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The first frame is significantly obstructed by a close-up body part.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "Underwater environment. Frame 1 is dominated by a foreground obstruction with pool tiles and legs visible in the distance. Frame 2 shows a clearer view of two swimmers near a white pool wall on the left and a black lane marker on the right.",
+    "parse_success": true,
+    "chunk_idx": 99,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      200,
+      202
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing a blue, black, and white patterned one-piece swimsuit with an open back design",
+        "action": "swimming underwater, facing away from the camera",
+        "position": "center-right foreground",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person wearing a black swimsuit bottom and black fins",
+        "action": "swimming underwater, legs visible kicking",
+        "position": "bottom-left foreground",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person swimming in the distance",
+        "action": "swimming underwater",
+        "position": "background left",
+        "id": "swimmers_generic_other"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The water is clear blue with visible bubbles near the surface.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Black lane markers are visible on the pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The central swimmer's swimsuit has a leaf-like pattern.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The swimmer in the foreground left is wearing black swim fins.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The main subject is a swimmer in a patterned suit occupying the center-right. To their left and slightly behind, another swimmer's legs and fins are visible. In the background to the left, a third swimmer is further away. Lane lines run along the bottom of the pool.",
+    "parse_success": true,
+    "chunk_idx": 100,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      202,
+      204
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 101,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      204,
+      206
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 102,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      206,
+      208
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 103,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      208,
+      210
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing dark swim trunks and black fins",
+        "action": "treading water near the pool wall",
+        "position": "left side",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "Person wearing a dark swimsuit and fins",
+        "action": "swimming underwater",
+        "position": "center",
+        "id": "swimmers_generic_other"
+      },
+      {
+        "desc": "Person wearing dark swim trunks and long black fins",
+        "action": "standing or treading water",
+        "position": "center-right",
+        "id": "swimmers_generic_black_trunks"
+      },
+      {
+        "desc": "Person wearing a patterned blue and white one-piece swimsuit and fins",
+        "action": "swimming towards the right",
+        "position": "right side",
+        "id": "swimmers_generic_other"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The scene is filmed underwater in a swimming pool",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Multiple individuals are wearing swim fins",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Black lane markers are visible on the pool floor",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The water surface is visible at the top of the frame with light reflections",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "Underwater view of a pool with people distributed horizontally. Lane lines run along the bottom. The surface is above.",
+    "parse_success": true,
+    "chunk_idx": 104,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      210,
+      212
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 105,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      212,
+      214
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 106,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      214,
+      216
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 107,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      216,
+      218
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 108,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  },
+  {
+    "time": [
+      218,
+      220
+    ],
+    "visible_entities": [
+      {
+        "desc": "Underwater environment of a swimming pool with light blue water and tiled floor featuring dark lane markers",
+        "action": "stationary background",
+        "position": "entire frame",
+        "id": "pool_environment_general"
+      },
+      {
+        "desc": "Metal structure resembling a goal base or drain cover with a vertical pole",
+        "action": "resting on the pool floor",
+        "position": "bottom center",
+        "id": "pool_drains_fixtures"
+      },
+      {
+        "desc": "White text overlays providing club name, location, and contact details",
+        "action": "displayed on screen",
+        "position": "center and bottom portions",
+        "id": "text_overlay"
+      },
+      {
+        "desc": "Large semi-transparent text watermark",
+        "action": "overlaying the background",
+        "position": "bottom background",
+        "id": "text_overlay"
+      },
+      {
+        "desc": "Air bubbles",
+        "action": "rising towards the surface",
+        "position": "upper center near surface",
+        "id": "pool_water"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The scene is filmed underwater in a swimming pool.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Text identifies the group as 'UNSW Underwater Rugby' based in Sydney, Australia.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Contact information is provided for Facebook ('unsw underwater rugby') and email ('uwrugby@underwaterclub.org').",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A metal object, likely part of a goal, is visible on the pool floor.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "UNSW Underwater Rugby",
+      "(Sydney, Australia)",
+      "UNSW UNDERWATER RUGBY",
+      "More information on...",
+      "facebook,",
+      "unsw underwater rugby",
+      "email,",
+      "uwrugby@underwaterclub.org"
+    ],
+    "spatial": "The camera is submerged, looking slightly down at the pool floor where lane lines converge towards a central metal structure. Text overlays appear in the foreground, transitioning from the club title to contact information.",
+    "parse_success": true,
+    "chunk_idx": 109,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      220,
+      222
+    ],
+    "visible_entities": [
+      {
+        "desc": "underwater swimming pool with light blue tiles and lane markers",
+        "action": "stationary background",
+        "position": "entire frame",
+        "id": "pool_environment_general"
+      },
+      {
+        "desc": "dark pool drain or fixture on the pool floor",
+        "action": "stationary",
+        "position": "bottom center",
+        "id": "pool_drains_fixtures"
+      },
+      {
+        "desc": "white text overlay with contact information",
+        "action": "displayed statically",
+        "position": "center of frame",
+        "id": "text_overlay"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video shows an underwater view of a swimming pool.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Text on screen provides contact details for 'unsw underwater rugby'.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "An email address 'uwrugby@underwaterclub.org' is displayed.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Bubbles are visible rising towards the surface in the upper portion of the frame.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "More information on...",
+      "facebook,",
+      "unsw underwater rugby",
+      "email,",
+      "uwrugby@underwaterclub.org"
+    ],
+    "spatial": "The scene is an underwater shot looking across the bottom of a tiled swimming pool. Text is superimposed over the center of the image, layered on top of the pool background.",
+    "parse_success": true,
+    "chunk_idx": 110,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": [
+      "entity_count_changed"
+    ]
+  },
+  {
+    "time": [
+      222,
+      224
+    ],
+    "visible_entities": [
+      {
+        "desc": "underwater swimming pool environment with blue water, tiled floor, and lane markers",
+        "action": "static background scene",
+        "position": "entire frame",
+        "id": "pool_environment_general"
+      },
+      {
+        "desc": "white text overlay with drop shadow",
+        "action": "displaying contact information",
+        "position": "center and upper portion of frame",
+        "id": "text_overlay"
+      },
+      {
+        "desc": "dark pool drain or fixture on the floor",
+        "action": "stationary",
+        "position": "bottom center",
+        "id": "pool_drains_fixtures"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The scene is filmed underwater in a swimming pool.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Text overlay provides contact details for 'unsw underwater rugby'.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "An email address 'uwrugby@underwaterclub.org' is displayed.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Bubbles are visible rising towards the surface in the background.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Lane lines are visible on the pool floor.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "More information on...",
+      "facebook,",
+      "unsw underwater rugby",
+      "email,",
+      "uwrugby@underwaterclub.org"
+    ],
+    "spatial": "The frame is dominated by an underwater view of a pool with light blue tiles. Text is superimposed over the center and upper half of the image. A pool drain is visible at the bottom center.",
+    "parse_success": true,
+    "chunk_idx": 111,
+    "video_id": "Sjxkk8VJBd0",
+    "state_changes": []
+  }
+]

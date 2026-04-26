@@ -1,0 +1,2452 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "Blurry metallic surface with diamond plate pattern and orange top section",
+        "action": "stationary in foreground",
+        "position": "left side",
+        "id": "trailer_orange"
+      },
+      {
+        "desc": "Tall sign on a red pole featuring the Harley-Davidson bar and shield logo",
+        "action": "standing upright",
+        "position": "center mid-ground",
+        "id": "building_1"
+      },
+      {
+        "desc": "Commercial building with an orange entrance facade and a beige brick wall",
+        "action": "stationary",
+        "position": "background",
+        "id": "building_1"
+      },
+      {
+        "desc": "Group of people wearing dark jackets and blue jeans",
+        "action": "standing near motorcycles",
+        "position": "in front of the building entrance",
+        "id": "person_3"
+      },
+      {
+        "desc": "Several motorcycles, some with white fairings",
+        "action": "parked in a row",
+        "position": "center foreground",
+        "id": "motorcycle_group"
+      },
+      {
+        "desc": "Green trees and grass",
+        "action": "stationary",
+        "position": "background",
+        "id": "environment_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A tall sign displays the text 'MOTOR' and 'HARLEY-DAVIDSON'",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The building entrance features a rectangular sign reading 'HARLEY-DAVIDSON' flanked by logos",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A script font sign reading 'Harley-Davidson' is mounted on the beige brick wall",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Circular tire marks are visible on the concrete pavement in front of the building",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "At least three people are standing near the parked motorcycles",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "MOTOR",
+      "HARLEY-DAVIDSON",
+      "CYC",
+      "Harley-Davidson"
+    ],
+    "spatial": "The view shifts from a close-up of a roadside sign partially obscured by a foreground object to a wider shot of the dealership building with motorcycles and people gathered in the parking lot.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Scene starts with motorcycles and people"
+    ]
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Scene cuts to empty"
+    ]
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "Rider wearing blue jeans and brown boots, dark upper clothing",
+        "action": "riding a motorcycle out of a trailer",
+        "position": "center frame 1, left/center frame 2",
+        "id": "person_3"
+      },
+      {
+        "desc": "Motorcycle with chrome exhaust pipes, black engine, red frame accents, headlight on",
+        "action": "being ridden",
+        "position": "center frame 1, left frame 2",
+        "id": "motorcycle_red"
+      },
+      {
+        "desc": "Enclosed trailer with white walls and a metal ramp",
+        "action": "stationary",
+        "position": "surrounding frame 1, background right frame 2",
+        "id": "trailer_white"
+      },
+      {
+        "desc": "Building with orange facade and signage",
+        "action": "stationary",
+        "position": "background center frame 1",
+        "id": "building_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A motorcycle is being maneuvered out of an enclosed trailer.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The rider is wearing blue denim jeans and brown boots.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The motorcycle features prominent chrome dual exhaust pipes.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The trailer interior is dark with white panel walls.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A building with an orange sign is visible in the distance outside the trailer.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The first frame is shot from inside a dark trailer looking out towards a rider. The second frame is a low-angle close-up of the motorcycle's side and the rider's legs, with the trailer ramp visible in the background right.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Rider exits trailer on motorcycle"
+    ]
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing blue jeans and a blue plaid shirt",
+        "action": "sitting on a motorcycle, holding handlebars",
+        "position": "left side of frame",
+        "id": "person_2"
+      },
+      {
+        "desc": "Red motorcycle with chrome engine and spoked front wheel",
+        "action": "stationary on pavement",
+        "position": "foreground left",
+        "id": "motorcycle_red"
+      },
+      {
+        "desc": "Black motorcycle",
+        "action": "parked",
+        "position": "background left",
+        "id": "motorcycle_group"
+      },
+      {
+        "desc": "Red octagonal sign",
+        "action": "standing on a post",
+        "position": "background right",
+        "id": "environment_1"
+      },
+      {
+        "desc": "Green trees",
+        "action": "stationary",
+        "position": "background",
+        "id": "environment_1"
+      },
+      {
+        "desc": "Utility pole",
+        "action": "standing vertically",
+        "position": "background right",
+        "id": "environment_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is seated on a red motorcycle in the foreground.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The motorcycle has a large, spoked front wheel with a disc brake.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The rider is wearing blue jeans and a plaid shirt.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A red octagonal sign is visible in the distance.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The sky is clear and blue.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Another motorcycle is parked in the background to the left.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The scene is dominated by a red motorcycle and its rider in the left foreground. The background consists of a paved area, green trees, a utility pole, and a red sign on the right side under a clear blue sky.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Rider stationary on motorcycle"
+    ]
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Scene cuts to empty"
+    ]
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a blue collared shirt",
+        "action": "speaking with mouth open, eyes squinting slightly",
+        "position": "right foreground",
+        "id": "person_1"
+      },
+      {
+        "desc": "large orange structure with silver metal corner trim and rivets",
+        "action": "stationary background object",
+        "position": "center and left background",
+        "id": "trailer_orange"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man's mouth is open in a speaking position.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The orange structure has a silver metal corner piece attached with visible rivets.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The sky in the background is clear and blue.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There is a blurry green horizon line visible in the lower left.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "A man in a blue shirt occupies the right side of the frame in the foreground. Behind him and to the left is a large orange object with silver trim. The background shows a blue sky and a distant green landscape.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Man speaking in front of trailer"
+    ]
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a blue collared shirt",
+        "action": "looking towards the camera, mouth slightly open as if speaking",
+        "position": "right side of the frame",
+        "id": "person_1"
+      },
+      {
+        "desc": "large orange container or trailer with silver metal corner trim and rivets",
+        "action": "stationary",
+        "position": "center and left background",
+        "id": "trailer_orange"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man with brown hair is in the foreground on the right.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The man is wearing a blue collared shirt.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A large orange object with silver metal hardware is behind the man.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The sky in the background is clear and blue.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The man's mouth is open in the second frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is positioned in the right foreground, partially obscuring a large orange structure that occupies the center and left of the frame. The blue sky is visible in the upper left corner.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "Young man with short brown hair, wearing a blue collared shirt",
+        "action": "standing in front of the trailer, looking towards the camera",
+        "position": "right foreground",
+        "id": "person_1"
+      },
+      {
+        "desc": "Large enclosed cargo trailer, primarily bright orange with a black rear section and silver aluminum trim/rock guard",
+        "action": "parked stationary on pavement",
+        "position": "center and background",
+        "id": "trailer_orange"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The trailer features a curved orange body with a black graphic on the rear side.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The trailer has a silver diamond-plate rock guard along the bottom front.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The trailer has dual axles with black rims.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A logo with the text 'NEO' is visible on the upper front side of the trailer.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The sky is clear and blue.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "NEO"
+    ],
+    "spatial": "The man is positioned in the right foreground, partially obscuring the front corner of the orange trailer which dominates the center and left of the frame. The trailer is parked on a paved surface with a grassy field and tree line visible in the distant background under a blue sky.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Scene cuts to empty"
+    ]
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "Silver metal plate with multiple circular holes arranged in rows",
+        "action": "lying flat on a textured surface",
+        "position": "center to bottom right of frame",
+        "id": "plate_1"
+      },
+      {
+        "desc": "Dark gray textured surface with a woven or diamond plate pattern",
+        "action": "serving as the base surface",
+        "position": "bottom left and background"
+      },
+      {
+        "desc": "Small silver screws or bolts",
+        "action": "securing the metal plate",
+        "position": "along the edges of the metal plate",
+        "id": "plate_1"
+      },
+      {
+        "desc": "Dark structure, possibly a vehicle or trailer interior",
+        "action": "stationary in the background",
+        "position": "top left corner",
+        "id": "trailer_white"
+      },
+      {
+        "desc": "Green grass and trees in the distance",
+        "action": "visible in the background",
+        "position": "top right corner",
+        "id": "environment_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A silver metal plate with circular holes is visible on a textured surface.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The metal plate has at least two rows of holes.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Small screws are visible securing the plate to the surface.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background shows an outdoor scene with green grass.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The surface beneath the plate has a distinct textured pattern.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The camera is positioned at a low angle, looking along the length of a silver metal plate with holes. The plate is on a dark, textured surface. The background shows a dark structure on the left and an outdoor scene with grass on the right.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Close-up of metal plate"
+    ]
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Scene cuts to empty"
+    ]
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "Man with brown hair, wearing a long-sleeved blue button-down shirt and black pants with a black belt",
+        "action": "Standing still, looking forward, hands resting near hips",
+        "position": "Center foreground",
+        "id": "person_1"
+      },
+      {
+        "desc": "Large orange trailer with silver metal trim and diamond plate accents",
+        "action": "Stationary",
+        "position": "Background, filling most of the frame behind the man",
+        "id": "trailer_orange"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man is standing in front of an orange trailer.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The trailer has a logo with the text 'NEO' in black letters with a green swoosh.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The man is wearing a blue shirt.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The trailer has a silver diamond plate rock guard at the bottom.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background shows a paved surface and a field with trees in the distance.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "NEO"
+    ],
+    "spatial": "The man stands centrally in the foreground, positioned directly in front of the side of a large orange trailer which dominates the background. The trailer's logo is visible in the upper right quadrant relative to the man.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Man standing in front of trailer"
+    ]
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "A person's hands and forearms, wearing a blue short-sleeved shirt",
+        "action": "grasping and pulling a metal pin or latch mechanism on the trailer frame",
+        "position": "left side of the frame, interacting with the central vertical metal beam",
+        "id": "person_1"
+      },
+      {
+        "desc": "A silver metallic trailer frame with welded seams and a red reflector light",
+        "action": "stationary structure being manipulated",
+        "position": "center and right side of the frame",
+        "id": "trailer_orange"
+      },
+      {
+        "desc": "A black tire partially visible underneath the trailer",
+        "action": "stationary",
+        "position": "bottom left, mostly obscured by shadow",
+        "id": "trailer_orange"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person's hands are manipulating a locking pin on the trailer frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'NAM' is printed in black on the silver metal panel.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A red rectangular reflector is mounted on the lower part of the trailer frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The metal frame shows visible weld beads along the vertical seams.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "NAM"
+    ],
+    "spatial": "The camera is focused on the rear corner of a silver trailer. A person's hands enter from the left to interact with a latch mechanism on a vertical metal post. The text 'NAM' and a red reflector are visible on the right side of the frame.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Close-up of latch manipulation"
+    ]
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Scene cuts to empty"
+    ]
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "A human hand with light skin tone",
+        "action": "grasping and turning a metal latch handle",
+        "position": "right side of the frame",
+        "id": "person_1"
+      },
+      {
+        "desc": "A silver metal latch mechanism with a rotating handle",
+        "action": "being manipulated by the hand",
+        "position": "center-right, attached to a vertical metal panel",
+        "id": "latch_1"
+      },
+      {
+        "desc": "A vertical metal panel with a white sealant strip and screws",
+        "action": "stationary",
+        "position": "center and left of the frame"
+      },
+      {
+        "desc": "A red rectangular reflector or light",
+        "action": "stationary",
+        "position": "bottom left corner",
+        "id": "trailer_orange"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is turning a metal latch handle on a silver panel.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The latch handle is in a horizontal position in the second frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A white, textured sealant runs vertically along the edge of the metal panel.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Two silver screws are visible securing the panel.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The scene is a close-up of a metal structure, likely a vehicle door or compartment. A hand enters from the right to operate a latch located in the center-right. To the left of the latch is a vertical seam with sealant and screws. A red light is visible at the bottom left.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Latch manipulation close-up"
+    ]
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "Man with grey hair wearing a plaid short-sleeved shirt, blue jeans, and black boots",
+        "action": "riding a motorcycle up a ramp",
+        "position": "on the motorcycle, center to right",
+        "id": "person_2"
+      },
+      {
+        "desc": "Red and black cruiser motorcycle with chrome exhaust and spoked wheels",
+        "action": "being driven up a metal ramp into a trailer",
+        "position": "center, angled upwards on the ramp",
+        "id": "motorcycle_red"
+      },
+      {
+        "desc": "White trailer with a black side panel and a metal loading ramp",
+        "action": "stationary, receiving the motorcycle",
+        "position": "left side of the frame",
+        "id": "trailer_white"
+      },
+      {
+        "desc": "Beige building with an orange stripe and white lettering",
+        "action": "stationary background structure",
+        "position": "background right",
+        "id": "building_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man rides a red motorcycle up a metal ramp attached to a trailer.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'NAM' is visible on the side of the white trailer.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The letters 'HA' are visible on the building in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The motorcycle has a large spoked front wheel and chrome engine components.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The ramp is lowered to the ground to allow the motorcycle to enter the trailer.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "NAM",
+      "HA"
+    ],
+    "spatial": "The trailer is positioned on the left side of the frame with its ramp extending diagonally downwards to the right. The motorcycle is on the ramp, facing towards the trailer interior. A building is visible in the background on the right.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Motorcycle loading starts"
+    ]
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "Silver aluminum trailer with black side paneling and a deployed ramp",
+        "action": "stationary with ramp lowered to the ground",
+        "position": "left and center foreground",
+        "id": "trailer_white"
+      },
+      {
+        "desc": "Beige commercial building with an orange stripe and a large open bay door",
+        "action": "stationary in the background",
+        "position": "right background",
+        "id": "building_1"
+      },
+      {
+        "desc": "Bicycle wheel (partial view)",
+        "action": "rolling up the ramp",
+        "position": "far right edge",
+        "id": "motorcycle_red"
+      },
+      {
+        "desc": "Person in blue jeans",
+        "action": "standing inside the open bay door",
+        "position": "background center-right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A silver metal ramp is extended from the rear of the trailer down to the pavement.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'NAM' is visible on the rear left corner of the trailer.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'HAM' is partially visible on the upper right facade of the building.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A bicycle wheel enters the frame from the right side, moving onto the ramp.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The trailer has a vertical support leg extended to the ground.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "NAM",
+      "HAM"
+    ],
+    "spatial": "The trailer dominates the left and center foreground, with its ramp extending towards the right. The building is situated in the background on the right side. A bicycle wheel appears on the far right edge.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Scene cuts to empty"
+    ]
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "Hand and forearm with fair skin, gripping a black handle",
+        "action": "pulling or holding the trailer door handle",
+        "position": "center foreground",
+        "id": "person_1"
+      },
+      {
+        "desc": "Hand with fair skin, holding a silver latch mechanism",
+        "action": "manipulating a latch on the left side",
+        "position": "left edge",
+        "id": "person_1"
+      },
+      {
+        "desc": "Arm wearing a blue long-sleeved shirt and red wristband",
+        "action": "reaching towards the trailer side",
+        "position": "lower left background",
+        "id": "person_1"
+      },
+      {
+        "desc": "Large black trailer door with silver aluminum frame and green logo",
+        "action": "being opened or secured",
+        "position": "center and right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is gripping a vertical black handle attached to the silver frame of a trailer door.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A green and white logo reading 'NEO TRAILERS' is visible on the upper part of the black door panel.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A license plate is partially visible on the left side of the trailer.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Another person's arm wearing a blue sleeve is visible in the background near the trailer wall.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The trailer has a shiny silver aluminum frame surrounding the black panel.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "NEO TRAILERS",
+      "2ES"
+    ],
+    "spatial": "The camera is positioned close to the rear corner of a trailer. A hand dominates the foreground center holding a door handle. The black door panel with the logo fills the upper center. To the left, another hand interacts with a latch near a license plate. In the lower left background, another person's arm is visible against the side of the trailer.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Trailer door handling"
+    ]
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "large white enclosed cargo trailer with open rear ramp door",
+        "action": "stationary with ramp door open revealing interior",
+        "position": "center and foreground of frame",
+        "id": "trailer_white"
+      },
+      {
+        "desc": "silver corrugated metal ceiling inside trailer",
+        "action": "static structural component",
+        "position": "upper interior of trailer",
+        "id": "trailer_white"
+      },
+      {
+        "desc": "white interior walls of trailer",
+        "action": "static structural component",
+        "position": "left, right, and rear interior of trailer",
+        "id": "trailer_white"
+      },
+      {
+        "desc": "black floor with white tie-down tracks",
+        "action": "static surface",
+        "position": "bottom interior of trailer",
+        "id": "trailer_white"
+      },
+      {
+        "desc": "paved road surface",
+        "action": "static background element",
+        "position": "right side and background",
+        "id": "environment_1"
+      },
+      {
+        "desc": "green grass field",
+        "action": "static background element",
+        "position": "left side and background",
+        "id": "environment_1"
+      },
+      {
+        "desc": "distant building structure",
+        "action": "static background element",
+        "position": "far right background",
+        "id": "building_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The rear ramp door of the white trailer is fully open and lowered.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The interior ceiling of the trailer is made of corrugated metal.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "White tie-down tracks are visible along the black floor of the trailer.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Vertical text is visible on the right door frame of the trailer.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The trailer is parked on the side of a paved road next to a grassy field.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "ENCLOSED"
+    ],
+    "spatial": "The camera is positioned behind the open rear ramp of a white cargo trailer, looking directly into the empty interior. The corrugated metal ceiling and white walls form a V-shape perspective leading to the front of the trailer. Outside, a paved road runs along the right side and a green field is on the left.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "View of trailer interior"
+    ]
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Scene cuts to empty"
+    ]
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with brown hair, wearing a blue button-down shirt and black pants",
+        "action": "standing with hands on hips, facing forward",
+        "position": "center-left foreground",
+        "id": "person_1"
+      },
+      {
+        "desc": "large orange trailer with silver metal trim and diamond plate accents",
+        "action": "stationary",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is wearing a long-sleeved blue shirt.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The trailer has a 'NEO' logo on the upper right side.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The man has his hands placed on his hips.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The trailer is primarily orange with silver aluminum trim along the top and bottom.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background shows a flat, grassy field under a blue sky.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "NEO"
+    ],
+    "spatial": "A man stands in the foreground, slightly left of center, in front of a large orange trailer that occupies the right side and background of the frame.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Man standing in front of trailer"
+    ]
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "Man with brown hair wearing a blue long-sleeved button-down shirt and black pants with a black belt",
+        "action": "standing with hands on hips facing forward",
+        "position": "center foreground",
+        "id": "person_1"
+      },
+      {
+        "desc": "Bright orange trailer exterior with silver metal trim at the top corners",
+        "action": "stationary background object",
+        "position": "background",
+        "id": "trailer_orange"
+      },
+      {
+        "desc": "Silver metal cargo track (E-track) bolted to the floor with a D-ring attached",
+        "action": "stationary on the floor",
+        "position": "foreground floor (second frame)"
+      },
+      {
+        "desc": "Black textured flooring and black walls",
+        "action": "stationary interior surface",
+        "position": "entire frame (second frame)",
+        "id": "trailer_white"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a blue shirt stands in front of an orange trailer.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The trailer exterior features a logo with the text 'NEO' and a green swoosh.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The interior floor is covered in black material.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A metal track with a D-ring is installed on the floor near the wall.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "NEO"
+    ],
+    "spatial": "The first frame is a medium shot outdoors with a man in the foreground and a trailer behind him. The second frame is a low-angle close-up shot inside the trailer, focusing on the floor track near a corner.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "Silver metal bar with scalloped edge and bolt holes",
+        "action": "lying detached on black textured surface",
+        "position": "bottom left foreground",
+        "id": "plate_1"
+      },
+      {
+        "desc": "Silver metal bar with scalloped edge and bolt holes",
+        "action": "attached horizontally to black surface",
+        "position": "center right mid-ground",
+        "id": "plate_1"
+      },
+      {
+        "desc": "Silver metal ring attached to bracket",
+        "action": "hanging from attached bar",
+        "position": "center left",
+        "id": "bracket_1"
+      },
+      {
+        "desc": "Silver metal bracket",
+        "action": "attached vertically",
+        "position": "left edge"
+      },
+      {
+        "desc": "Black textured surface",
+        "action": "background",
+        "position": "entire frame",
+        "id": "trailer_white"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A detached metal bar lies on the black surface below the attached bar.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The attached metal bar is secured with at least three visible bolts.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A metal ring is attached to the horizontal bar via a bracket.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The metal bars have a repeating scalloped or wavy cutout pattern along their length.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background surface has a fine, woven or textured pattern.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "A vertical metal bracket is on the left edge. A horizontal metal bar is attached to it, extending right. A detached piece of the same bar lies below it in the foreground. A metal ring hangs from the attached bar.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Focus shift to trailer accessories"
+    ]
+  },
+  {
+    "time": [
+      68,
+      70
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Scene cuts to empty"
+    ]
+  },
+  {
+    "time": [
+      70,
+      72
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      72,
+      74
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      74,
+      76
+    ],
+    "visible_entities": [
+      {
+        "desc": "Person wearing a blue long-sleeved shirt and dark pants",
+        "action": "standing on a roof, reaching forward with right hand, holding a rope or cable with left hand",
+        "position": "upper center background",
+        "id": "person_1"
+      },
+      {
+        "desc": "Large black rectangular panel or flap attached to a wooden board",
+        "action": "being lifted or propped open at an angle",
+        "position": "center left foreground",
+        "id": "wood_1"
+      },
+      {
+        "desc": "Metal bracket with a white label attached",
+        "action": "mounted on the edge of the roof structure",
+        "position": "bottom left foreground",
+        "id": "bracket_1"
+      },
+      {
+        "desc": "Silver metal roof edge or gutter system",
+        "action": "stationary structural element",
+        "position": "bottom foreground",
+        "id": "building_1"
+      },
+      {
+        "desc": "Thin white rope or cable",
+        "action": "extending from the lifted panel towards the person",
+        "position": "diagonally across center",
+        "id": "cable_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a blue shirt is standing on a sloped roof surface.",
+        "confidence": 0.95,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A black panel is hinged or attached to a piece of plywood.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A white label with black text is attached to a metal bracket in the foreground.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The roof surface appears to be dark asphalt shingles or similar material.",
+        "confidence": 0.8,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Green text overlay appears in the second frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "ProFlap",
+      "PRO FLAP"
+    ],
+    "spatial": "The camera is positioned low, looking up along the edge of a roof. In the immediate foreground (bottom left), a metal bracket with a label is visible. Extending from the bottom right towards the center is the metal edge of the roof. In the mid-ground, a black panel attached to wood is propped open. In the background, a person stands further up the roof slope against a white building wall and blue sky.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Person working on roof"
+    ]
+  },
+  {
+    "time": [
+      76,
+      78
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Scene cuts to empty"
+    ]
+  },
+  {
+    "time": [
+      78,
+      80
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      80,
+      82
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      82,
+      84
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's forearm and hand wearing a red wristband",
+        "action": "lifting a wooden board upwards",
+        "position": "upper right",
+        "id": "person_1"
+      },
+      {
+        "desc": "rectangular piece of wood (plywood/lumber)",
+        "action": "being lifted from a flat position to an angle",
+        "position": "center",
+        "id": "wood_1"
+      },
+      {
+        "desc": "silver metal bracket assembly with a white label",
+        "action": "mounted on a dark surface",
+        "position": "lower left foreground",
+        "id": "bracket_1"
+      },
+      {
+        "desc": "thin white cable or string",
+        "action": "extending from the mechanism upwards",
+        "position": "center to upper right",
+        "id": "cable_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is lifting a wooden board attached to a metal hinge mechanism.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The metal mechanism has a label reading 'ProFlap'.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The wooden board pivots upwards from a horizontal position.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A thin cable is attached to the assembly.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "ProFlap"
+    ],
+    "spatial": "A metal mechanism labeled 'ProFlap' is mounted on a dark roof surface in the foreground. A wooden board attached to it is being lifted by a hand in the upper right, moving from flat to an angled position. A white building and blue sky are visible in the background.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Roof panel lifting"
+    ]
+  },
+  {
+    "time": [
+      84,
+      86
+    ],
+    "visible_entities": [
+      {
+        "desc": "silver metal bracket with a white label",
+        "action": "attached to a black panel",
+        "position": "left foreground in first frame",
+        "id": "bracket_1"
+      },
+      {
+        "desc": "thin metal cable",
+        "action": "extending diagonally upward",
+        "position": "center in first frame",
+        "id": "cable_1"
+      },
+      {
+        "desc": "man with brown hair wearing a blue long-sleeved button-up shirt",
+        "action": "standing and looking slightly down",
+        "position": "center in second frame",
+        "id": "person_1"
+      },
+      {
+        "desc": "orange trailer wall with a logo",
+        "action": "stationary background",
+        "position": "background in second frame",
+        "id": "trailer_orange"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A white label on the metal bracket reads 'ProFlap' vertically",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A logo on the upper right of the orange wall reads 'NEO' with a green swoosh",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A wooden beam is visible underneath a silver rail in the first frame",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "ProFlap",
+      "NEO"
+    ],
+    "spatial": "The first frame shows a close-up of a mechanical hinge assembly with a black flap and silver rail. The second frame shows a man standing centrally in front of a large orange vertical surface.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      86,
+      88
+    ],
+    "visible_entities": [
+      {
+        "desc": "Man with brown hair wearing a long-sleeved blue button-up shirt",
+        "action": "standing and facing forward",
+        "position": "center foreground",
+        "id": "person_1"
+      },
+      {
+        "desc": "Large orange trailer or vehicle side panel",
+        "action": "stationary background object",
+        "position": "background",
+        "id": "trailer_orange"
+      },
+      {
+        "desc": "Silver metal plate with three holes",
+        "action": "attached to the trailer",
+        "position": "center of the second frame",
+        "id": "plate_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a blue shirt stands in front of an orange surface.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The orange surface has a 'NEO' logo in the upper right corner.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A silver metal plate with the text 'NEO' is visible on the trailer.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The trailer has silver trim along the top and bottom edges.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "NEO",
+      "NEO"
+    ],
+    "spatial": "The man is centered in the foreground against a large orange trailer wall. The camera cuts to a close-up of a metal plate on the trailer in the second frame.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Scene change back to man standing"
+    ]
+  },
+  {
+    "time": [
+      88,
+      90
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Scene cuts to empty"
+    ]
+  },
+  {
+    "time": [
+      90,
+      92
+    ],
+    "visible_entities": [
+      {
+        "desc": "rectangular silver metal plate with multiple circular holes arranged in columns",
+        "action": "resting on a dark textured surface",
+        "position": "center of frame",
+        "id": "plate_1"
+      },
+      {
+        "desc": "dark grey textured mat or surface with a woven pattern",
+        "action": "stationary background",
+        "position": "entire frame",
+        "id": "trailer_white"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A silver metal plate with holes is visible in the center of the frame.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'NEO' is engraved or printed on the bottom section of the metal plate.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The metal plate has two small screws or rivets near the bottom corners.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background surface has a distinct cross-hatch or woven texture.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "NEO"
+    ],
+    "spatial": "A vertical silver metal plate is centered on a dark grey textured surface. The camera angle is slightly elevated, looking down at the plate.",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Metal plate detail"
+    ]
+  },
+  {
+    "time": [
+      92,
+      94
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Scene cuts to empty"
+    ]
+  },
+  {
+    "time": [
+      94,
+      96
+    ],
+    "visible_entities": [
+      {
+        "desc": "Man with short brown hair, wearing a blue button-down shirt",
+        "action": "standing and speaking",
+        "position": "center foreground",
+        "id": "person_1"
+      },
+      {
+        "desc": "Large orange trailer or vehicle side with silver trim and black handle",
+        "action": "stationary background object",
+        "position": "background",
+        "id": "trailer_orange"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man is standing in front of an orange surface.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The man is wearing a blue long-sleeved shirt.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The orange surface has a logo with the text 'NEO' and a green swoosh.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The man's mouth is moving, indicating speech.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "NEO"
+    ],
+    "spatial": "A man stands centrally in the foreground against a large orange trailer wall that fills the background.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Man speaking in front of trailer"
+    ]
+  },
+  {
+    "time": [
+      96,
+      98
+    ],
+    "visible_entities": [
+      {
+        "desc": "Man with short brown hair, wearing a long-sleeved blue button-down shirt",
+        "action": "Standing still, facing forward, mouth slightly open as if speaking",
+        "position": "Center foreground",
+        "id": "person_1"
+      },
+      {
+        "desc": "Large orange trailer or vehicle side panel with silver trim along the top edge",
+        "action": "Stationary background object",
+        "position": "Background, filling most of the frame"
+      },
+      {
+        "desc": "Black handle or latch mechanism",
+        "action": "Attached to the trailer",
+        "position": "Upper right side of the trailer",
+        "id": "trailer_orange"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man is standing in front of an orange surface.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The orange surface has a logo with the text 'NEO' in the upper right area.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The man is wearing a blue collared shirt.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There is a silver metal trim running horizontally along the top edge of the orange panel.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "NEO"
+    ],
+    "spatial": "The man is centered in the foreground, blocking the lower middle portion of a large orange trailer wall that dominates the background. The trailer has a silver top rail and a logo in the upper right corner.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      98,
+      100
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a long-sleeved blue button-down shirt",
+        "action": "standing still, facing forward",
+        "position": "center foreground",
+        "id": "person_1"
+      },
+      {
+        "desc": "large orange trailer or vehicle side panel",
+        "action": "stationary background object",
+        "position": "background, filling most of the frame"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man is standing in front of an orange surface.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The man is wearing a blue collared shirt.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The orange surface has a logo with the text 'NEO' in the upper right.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "There is a silver metal corner bracket on the top left of the orange surface.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A black handle or latch is visible on the right edge of the orange surface.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "NEO"
+    ],
+    "spatial": "The man is centered in the foreground, blocking the lower middle portion of a large orange trailer wall that dominates the background. The 'NEO' logo is in the upper right quadrant.",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      100,
+      102
+    ],
+    "visible_entities": [
+      {
+        "desc": "motorcycle front wheel with a red fender, chrome rim, wire spokes, and disc brake",
+        "action": "shown in close-up",
+        "position": "foreground left and center",
+        "id": "motorcycle_red"
+      },
+      {
+        "desc": "interior walls of a trailer, white upper panels and black lower panels",
+        "action": "framing the shot",
+        "position": "foreground left and right",
+        "id": "trailer_white"
+      },
+      {
+        "desc": "motorcyclist on a bike",
+        "action": "riding towards the trailer ramp",
+        "position": "center background",
+        "id": "person_3"
+      },
+      {
+        "desc": "commercial building with an orange facade and large windows",
+        "action": "standing in the background",
+        "position": "center background",
+        "id": "building_1"
+      },
+      {
+        "desc": "several parked motorcycles",
+        "action": "stationary",
+        "position": "background left and right",
+        "id": "motorcycle_group"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A close-up view shows the front wheel of a motorcycle featuring a red fender and chrome wire spokes.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The perspective shifts to inside a dark trailer looking out through an open ramp door.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A rider on a motorcycle is approaching the open trailer ramp.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A building with a 'HARLEY-DAVIDSON' sign is visible in the background.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "HARLEY-DAVIDSON"
+    ],
+    "spatial": "The clip begins with a low-angle close-up of a motorcycle wheel. It then cuts to a view from inside a dark trailer looking out into a sunny parking lot, with the trailer walls framing the sides and a dealership building visible in the distance.",
+    "parse_success": true,
+    "chunk_idx": 50,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Motorcycle approaching ramp"
+    ]
+  },
+  {
+    "time": [
+      102,
+      104
+    ],
+    "visible_entities": [
+      {
+        "desc": "Man with short brown hair, wearing a blue collared shirt",
+        "action": "standing and looking towards the camera",
+        "position": "right foreground",
+        "id": "person_1"
+      },
+      {
+        "desc": "Large orange trailer with silver metal trim and corner guards",
+        "action": "stationary",
+        "position": "background left",
+        "id": "trailer_orange"
+      },
+      {
+        "desc": "Man wearing a black and white plaid shirt and blue jeans",
+        "action": "sitting on a motorcycle",
+        "position": "right foreground",
+        "id": "person_2"
+      },
+      {
+        "desc": "Red and black motorcycle",
+        "action": "being positioned inside a trailer",
+        "position": "center",
+        "id": "motorcycle_red"
+      },
+      {
+        "desc": "Silver enclosed trailer with open rear ramp",
+        "action": "stationary",
+        "position": "left background",
+        "id": "trailer_white"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a blue shirt is visible in front of an orange trailer.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A man in a plaid shirt is on a motorcycle inside a silver trailer.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The motorcycle is red and black.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The plaid shirt has a logo on the back with the number 12.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "12"
+    ],
+    "spatial": "The first frame shows a man in the foreground with an orange trailer behind him. The second frame shows a different man on a motorcycle, viewed from behind, inside a silver trailer.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Motorcycle loaded into trailer"
+    ]
+  },
+  {
+    "time": [
+      104,
+      106
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 52,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Scene cuts to empty"
+    ]
+  },
+  {
+    "time": [
+      106,
+      108
+    ],
+    "visible_entities": [
+      {
+        "desc": "motorcycle with large front tire, chrome forks, and round headlight",
+        "action": "stationary inside trailer",
+        "position": "center",
+        "id": "motorcycle_red"
+      },
+      {
+        "desc": "rider wearing dark pants and boots",
+        "action": "sitting on motorcycle",
+        "position": "center",
+        "id": "person_3"
+      },
+      {
+        "desc": "white trailer interior with black lower panels",
+        "action": "enclosing the motorcycle",
+        "position": "background and sides",
+        "id": "trailer_white"
+      },
+      {
+        "desc": "building with orange facade visible through trailer opening",
+        "action": "stationary in background",
+        "position": "background right",
+        "id": "building_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The motorcycle's headlight is illuminated.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The trailer door is open, revealing an outdoor scene.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The motorcycle has a large, treaded front tire.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The rider's feet are on the footpegs.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The motorcycle is positioned centrally within a narrow trailer. The camera view shifts from a direct front-on perspective to a low-angle side view, focusing on the engine and rider's legs. The trailer opening is visible in the background, showing a bright outdoor environment.",
+    "parse_success": true,
+    "chunk_idx": 53,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Motorcycle inside trailer"
+    ]
+  },
+  {
+    "time": [
+      108,
+      110
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 54,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Scene cuts to empty"
+    ]
+  },
+  {
+    "time": [
+      110,
+      112
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 55,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      112,
+      114
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 56,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      114,
+      116
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      116,
+      118
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 58,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      118,
+      120
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 59,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      120,
+      122
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 60,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      122,
+      124
+    ],
+    "visible_entities": [
+      {
+        "desc": "Large black rubber tire with a black and silver five-spoke alloy rim",
+        "action": "rolling on the pavement",
+        "position": "foreground left",
+        "id": "trailer_orange"
+      },
+      {
+        "desc": "Smaller black rubber tire with a black and silver five-spoke alloy rim",
+        "action": "rolling on the pavement",
+        "position": "mid-ground center",
+        "id": "trailer_orange"
+      },
+      {
+        "desc": "Black trailer body with a white lower trim panel",
+        "action": "moving forward",
+        "position": "upper center and right"
+      },
+      {
+        "desc": "Grey asphalt road surface",
+        "action": "stationary",
+        "position": "bottom",
+        "id": "environment_1"
+      },
+      {
+        "desc": "Clear blue sky",
+        "action": "stationary",
+        "position": "upper right background",
+        "id": "environment_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two wheels are visible on the side of a trailer.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The wheels have a five-spoke design with black centers and machined silver faces.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The trailer is moving on a paved surface under a clear sky.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A red reflector is visible on the lower rear corner of the trailer.",
+        "confidence": 0.9,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The camera is positioned at a low angle, close to the ground.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The shot is a low-angle close-up focusing on the wheels of a trailer. The front wheel dominates the left foreground, while the rear wheel is visible further back in the center. The trailer's body extends above and behind the wheels. The background consists of a flat horizon line with distant greenery and a large expanse of blue sky.",
+    "parse_success": true,
+    "chunk_idx": 61,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Trailer being towed"
+    ]
+  },
+  {
+    "time": [
+      124,
+      126
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": true,
+    "chunk_idx": 62,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Scene cuts to empty"
+    ]
+  },
+  {
+    "time": [
+      126,
+      128
+    ],
+    "visible_entities": [
+      {
+        "desc": "A large, bold, black text logo reading 'NEO' centered in the frame.",
+        "action": "static display",
+        "position": "center",
+        "id": "logo_1"
+      },
+      {
+        "desc": "A green, brush-stroke style graphic element curving around the left and top of the text.",
+        "action": "static display",
+        "position": "center-left to top-right",
+        "id": "logo_1"
+      },
+      {
+        "desc": "A metallic, silver-grey background surface with a repeating pattern of vertical wavy lines and small circular indentations.",
+        "action": "static background",
+        "position": "entire frame"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'NEO' is clearly visible in black capital letters.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A green swoosh graphic partially encircles the text from the left side.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background has a textured, metallic appearance with a grid of small dots.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The image remains static across the two frames provided.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [
+      "NEO"
+    ],
+    "spatial": "The text 'NEO' is centrally located, overlaid on a green brush-stroke graphic. This entire logo composition is centered against a full-frame metallic, textured background.",
+    "parse_success": true,
+    "chunk_idx": 63,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "End logo display"
+    ]
+  },
+  {
+    "time": [
+      128,
+      130
+    ],
+    "visible_entities": [],
+    "atomic_facts": [
+      {
+        "fact": "The frame is completely black with no visible visual content.",
+        "confidence": 1.0,
+        "target_resolution_visible": true
+      }
+    ],
+    "ocr": [],
+    "spatial": "The entire frame is uniformly black; no spatial layout or objects are distinguishable.",
+    "parse_success": true,
+    "chunk_idx": 64,
+    "video_id": "hXdY04WJyUg",
+    "state_changes": [
+      "Scene cuts to empty"
+    ]
+  }
+]
