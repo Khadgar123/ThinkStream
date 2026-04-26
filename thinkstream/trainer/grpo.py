@@ -693,18 +693,23 @@ REWARD_DICT_KEYS = (
 #   - silent_quality is ALWAYS counted (Dispider double-signal): explicitly
 #     supervises both "should-be-silent → silent +0.1" and
 #     "should-respond → silent -0.3" to prevent silent collapse.
+# v10 weights — RL focuses on what SFT *cannot* learn well:
+# the timing of silent ↔ respond/recall transitions and the recall query choice.
+# Response-text quality and compression entity-retention are SFT's job
+# (StreamingVLM / LiveCC saturated those with SFT alone), so they are
+# under-weighted in RL to avoid reward hacking on the text head.
+#
+# Refs: T-GRPO (Video-R1, 2503.21776), C-GRPO (MARC, 2510.07915),
+# Posterior-GRPO (2508.05170), GRPO-as-PRM (2509.21154). All converge on
+# gated process rewards + outcome ORM, no separate PRM, narrow process scope.
 DEFAULT_REWARD_WEIGHTS = {
-    "format": 0.10,            # gate (also small contribution when passed)
-    "response": 0.50,          # primary: answer correctness
-    "timing": 0.15,            # gated: response was at right time
-    "think_len": 0.05,         # gated: think length near target
-    "recall_quality": 0.10,    # gated: recall query well-formed + necessary
-    "compress_quality": 0.10,  # gated: compression preserves entities
-    # silent_quality: ALWAYS counted. Bumped 0.15→0.20 so the always-on
-    # silent signal stays comparable in magnitude to the SFT silent loss
-    # weights (1.0–1.2× for response/silent, 0.3–0.5 for transition silents).
-    # Without this, RL slowly weakens the SFT-learned silent behavior.
-    "silent_quality": 0.20,
+    "format": 0.10,            # gate (small contribution when passed)
+    "response": 0.30,          # ↓ 0.50→0.30 (SFT teaches text; RL just signals correctness)
+    "timing": 0.30,            # ↑ 0.15→0.30 (RL's main lever for streaming agents)
+    "think_len": 0.05,         # gated
+    "recall_quality": 0.15,    # ↑ 0.10→0.15 (recall-query format is RL territory)
+    "compress_quality": 0.05,  # ↓ 0.10→0.05 (entity retention is SFT's job)
+    "silent_quality": 0.20,    # ALWAYS counted (Dispider double-signal)
 }
 # Format gate threshold: below this, the entire sample is rejected with -1.0.
 FORMAT_GATE_THRESHOLD = 0.7

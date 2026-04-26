@@ -150,6 +150,49 @@ def read_jsonl(path: str) -> list:
         return [json.loads(line) for line in f]
 
 
+def _estimate_sample_tokens(sample: Dict) -> int:
+    """Cheap text+vision token estimate (no tokenizer call).
+
+    Used by Dataset.lengths for HF Trainer's group_by_length sampler and to
+    drop overlong samples before they hit the GPU. Accuracy ±15% is fine —
+    we only need correct ranking among samples.
+
+    Vision token cost per frame at the configured resolution is ~256 tokens
+    (Qwen2.5-VL/Qwen3-VL with merge_size=2 at ~150k pixels).
+    """
+    inp = sample.get("input", {})
+    out = sample.get("output", "")
+
+    # ── Text characters → ~3 chars/token for English+JSON (Qwen tokenizer) ──
+    text_chars = (
+        len(inp.get("system", ""))
+        + len(out)
+        + len(inp.get("user_input", "") or "")
+    )
+    # memory is a dict; serialize to estimate
+    mem = inp.get("memory", {}) or {}
+    for seg in mem.get("compressed_segments", []):
+        text_chars += len(json.dumps(seg, ensure_ascii=False))
+    for t in mem.get("recent_thinks", []):
+        text_chars += len(t) if isinstance(t, str) else len(json.dumps(t, ensure_ascii=False))
+    for q in inp.get("queries", []) or []:
+        text_chars += len(json.dumps(q, ensure_ascii=False))
+    rr = inp.get("recall_result")
+    if rr:
+        text_chars += len(json.dumps(rr, ensure_ascii=False))
+
+    text_tokens = text_chars // 3
+
+    # ── Vision tokens ──
+    n_frames = inp.get("visual_window", {}).get("frames", 12)
+    rf = inp.get("recalled_frames")
+    if rf:
+        n_frames += rf.get("n_frames", 0)
+    visual_tokens = n_frames * 256
+
+    return text_tokens + visual_tokens
+
+
 # ---------------------------------------------------------------------------
 # Processor configuration
 # ---------------------------------------------------------------------------
@@ -430,7 +473,9 @@ def _resolve_chat_template_ids(tokenizer) -> tuple:
         )
 
     # The Qwen chat template emits "<|im_start|>assistant\n" — the role token
-    # immediately follows <|im_start|>. Probe by encoding the template.
+    # immediately follows <|im_start|>. Probe by encoding the template and
+    # require exactly 2 tokens — anything else means "assistant" got split
+    # into sub-tokens and our mask logic would point at the wrong span.
     probe_ids = tokenizer.encode("<|im_start|>assistant", add_special_tokens=False)
     im_start_id = vocab.get("<|im_start|>")
     if im_start_id is None or im_start_id not in probe_ids:
@@ -438,12 +483,14 @@ def _resolve_chat_template_ids(tokenizer) -> tuple:
             f"Tokenizer drift: probe ids {probe_ids!r} do not contain "
             f"<|im_start|> ({im_start_id}). Cannot locate assistant role token."
         )
-    idx = probe_ids.index(im_start_id)
-    if idx + 1 >= len(probe_ids):
+    if len(probe_ids) != 2:
         raise RuntimeError(
-            "Tokenizer drift: '<|im_start|>assistant' did not tokenize to "
-            "[<|im_start|>, assistant_role_token]."
+            f"Tokenizer drift: '<|im_start|>assistant' tokenized to "
+            f"{len(probe_ids)} tokens ({probe_ids!r}); expected exactly 2 "
+            f"([<|im_start|>, assistant]). The 'assistant' role token may not "
+            f"be registered as a single chat-template token in this tokenizer."
         )
+    idx = probe_ids.index(im_start_id)
     assistant_id = probe_ids[idx + 1]
 
     _CHAT_TEMPLATE_ID_CACHE[cache_key] = (assistant_id, im_end_id)
@@ -581,15 +628,24 @@ class PerTimestepDataset(Dataset):
                 )
             all_samples.extend(annotations)
 
+        # Estimate num_tokens for every sample (used for length-based filtering
+        # AND HF Trainer's group_by_length sampler). Skipping this leaves every
+        # sample with default 3500 → batches are wildly heterogeneous → padding
+        # waste + silent overflow.
+        for s in all_samples:
+            if "num_tokens" not in s:
+                s["num_tokens"] = _estimate_sample_tokens(s)
+
         # Filter overlong samples (P0-4: no silent truncation in collator)
         max_tokens = getattr(data_args, "max_sample_tokens", None)
         if max_tokens:
             before = len(all_samples)
-            all_samples = [s for s in all_samples
-                           if s.get("num_tokens", 0) < max_tokens]
+            all_samples = [
+                s for s in all_samples if s.get("num_tokens", 0) < max_tokens
+            ]
             filtered = before - len(all_samples)
             if filtered > 0:
-                rank0_print(f"  Filtered {filtered} samples > {max_tokens} tokens")
+                rank0_print(f"  Filtered {filtered} overlong (>{max_tokens} tok)")
 
         rank0_print(f"Total training samples: {len(all_samples)}")
 
@@ -603,24 +659,31 @@ class PerTimestepDataset(Dataset):
 
     @property
     def lengths(self):
-        return [s.get("num_tokens", 3500) for s in self.samples]
+        # num_tokens is now populated in __init__ for every sample.
+        return [s["num_tokens"] for s in self.samples]
 
     @property
     def modality_lengths(self):
-        return [s.get("num_tokens", 3500) for s in self.samples]
+        return [s["num_tokens"] for s in self.samples]
 
     def __getitem__(self, i) -> Dict[str, torch.Tensor]:
-        for attempt in range(3):
+        # Try sample i, then walk forward up to MAX_LOOKAHEAD if it keeps
+        # failing. Avoids unbounded recursion on systemic data corruption.
+        MAX_LOOKAHEAD = 16
+        last_err = None
+        for offset in range(MAX_LOOKAHEAD):
+            j = (i + offset) % len(self.samples)
             try:
-                return self._get_item(i)
+                return self._get_item(j)
             except Exception as e:
-                logging.warning(f"[Attempt {attempt}] Failed sample {i}: {e}")
-                time.sleep(0.5)
-                if attempt == 2:
-                    # Try next sample
-                    i = min(i + 1, len(self.samples) - 1)
-
-        return self._get_item(i)
+                last_err = e
+                if offset == 0:
+                    logging.warning(f"[sample {j}] failed: {e}")
+                continue
+        raise RuntimeError(
+            f"All {MAX_LOOKAHEAD} samples after idx {i} failed to load. "
+            f"Last error: {last_err}"
+        )
 
     def _get_item(self, i) -> Dict[str, torch.Tensor]:
         sample = self.samples[i]
@@ -787,6 +850,100 @@ class PerTimestepDataCollator:
         batch["sample_meta"] = [inst.get("sample_meta", {}) for inst in instances]
 
         return batch
+
+
+# ---------------------------------------------------------------------------
+# Class-balanced distributed sampler
+# ---------------------------------------------------------------------------
+
+class ClassBalancedDistributedSampler(torch.utils.data.Sampler):
+    """Sample indices with weights inversely proportional to sample_type freq.
+
+    Why we need this:
+      Empirically samples are silent 70% / compress 25% / recall 4% / response
+      ~3-10% (after pass3c fix). A uniform sampler trains the model overwhelmingly
+      on `silent`, leaving recall/response under-fit. WeightedRandomSampler with
+      inv-freq weights gives every action class a comparable per-batch share.
+
+    Distributed-aware:
+      Each rank draws (num_samples_per_epoch / world_size) indices independently
+      using its own seed-offset RNG. Indices may overlap across ranks — this is
+      fine because `WeightedRandomSampler` is stochastic and the gradient mean
+      across ranks is unbiased w.r.t. the sampling distribution. (Strict
+      partitioning gives tighter epochs but loses the inv-freq benefit on the
+      tail; the looser variant is what BalancedDistributedSampler does in
+      Hugging Face's own RLHF stack.)
+
+    Args:
+        sample_types: list[str] — per-sample class label
+        num_samples: int — total draws per epoch (across all ranks)
+        rank, world_size: standard distributed args (auto-detected if None)
+        seed: base RNG seed; each rank adds its rank to derive its own
+        replacement: True (default) — match WeightedRandomSampler semantics
+        smoothing: optional damping on inv-freq weights to avoid over-emphasizing
+            ultra-rare classes (e.g., one freak class). 1.0 = pure inv-freq,
+            0.5 = √(inv-freq), 0.0 = uniform. Default 0.7.
+    """
+
+    def __init__(
+        self,
+        sample_types: List[str],
+        num_samples: Optional[int] = None,
+        rank: Optional[int] = None,
+        world_size: Optional[int] = None,
+        seed: int = 0,
+        replacement: bool = True,
+        smoothing: float = 0.7,
+    ):
+        from collections import Counter
+        if rank is None or world_size is None:
+            try:
+                import torch.distributed as dist
+                if dist.is_available() and dist.is_initialized():
+                    rank = dist.get_rank() if rank is None else rank
+                    world_size = dist.get_world_size() if world_size is None else world_size
+            except Exception:
+                pass
+        self.rank = rank if rank is not None else 0
+        self.world_size = world_size if world_size is not None else 1
+
+        self.n_total = len(sample_types)
+        self.num_samples = num_samples or self.n_total
+        # Per-rank sample count
+        self.per_rank = self.num_samples // self.world_size
+        self.seed = seed
+        self.replacement = replacement
+        self.epoch = 0
+
+        # Inverse-frequency weights with smoothing
+        cls_counts = Counter(sample_types)
+        n_classes = len(cls_counts)
+        cls_weights = {}
+        for cls, cnt in cls_counts.items():
+            inv = self.n_total / (n_classes * cnt)  # uniform-targeting weight
+            cls_weights[cls] = inv ** smoothing
+        # Normalize so mean weight = 1.0 (preserves overall scale)
+        mean_w = sum(cls_weights.values()) / len(cls_weights)
+        cls_weights = {k: v / mean_w for k, v in cls_weights.items()}
+        self._cls_weights_summary = cls_weights  # for logging
+
+        self.weights = torch.tensor(
+            [cls_weights[t] for t in sample_types], dtype=torch.double
+        )
+
+    def __iter__(self):
+        g = torch.Generator()
+        g.manual_seed(self.seed + self.epoch * 1000 + self.rank)
+        idxs = torch.multinomial(
+            self.weights, self.per_rank, replacement=self.replacement, generator=g
+        ).tolist()
+        return iter(idxs)
+
+    def __len__(self) -> int:
+        return self.per_rank
+
+    def set_epoch(self, epoch: int) -> None:
+        self.epoch = epoch
 
 
 # ---------------------------------------------------------------------------

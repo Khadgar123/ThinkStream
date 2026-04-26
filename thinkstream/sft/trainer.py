@@ -62,6 +62,52 @@ class WeightedSFTTrainer(Trainer):
         self._audit_every = max(1, int(getattr(self.args, "audit_log_every", 1)))
         return 0
 
+    def _get_train_sampler(self, train_dataset=None):
+        """Override default sampler to enable class-balanced sampling.
+
+        With --class_balanced_sampler (default True), build a distributed
+        WeightedRandomSampler so action types like recall/compress/response
+        are not drowned by silent (~70% of mixed-phase data).
+        """
+        ds = train_dataset if train_dataset is not None else self.train_dataset
+        use_balanced = getattr(self.args, "class_balanced_sampler", False)
+        if ds is None or not use_balanced:
+            try:
+                return super()._get_train_sampler(train_dataset)
+            except TypeError:
+                return super()._get_train_sampler()
+
+        from thinkstream.sft.data_processor import ClassBalancedDistributedSampler
+        try:
+            sample_types = [s.get("sample_type", "silent") for s in ds.samples]
+        except AttributeError:
+            try:
+                return super()._get_train_sampler(train_dataset)
+            except TypeError:
+                return super()._get_train_sampler()
+
+        sampler = ClassBalancedDistributedSampler(
+            sample_types=sample_types,
+            num_samples=len(sample_types),
+            seed=self.args.seed,
+            smoothing=getattr(self.args, "class_balance_smoothing", 0.7),
+        )
+        if self._audit_step_writer is not None:
+            try:
+                self._audit_step_writer.write({
+                    "event": "class_balanced_sampler_init",
+                    "n_total": len(sample_types),
+                    "per_rank": len(sampler),
+                    "world_size": sampler.world_size,
+                    "class_weights": {
+                        k: round(v, 3)
+                        for k, v in sampler._cls_weights_summary.items()
+                    },
+                })
+            except Exception:
+                pass
+        return sampler
+
     def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
         sample_weights = inputs.pop("sample_weights", None)
         token_loss_weight = inputs.pop("token_loss_weight", None)

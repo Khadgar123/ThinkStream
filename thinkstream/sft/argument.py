@@ -39,8 +39,14 @@ class DataArguments:
     agent_chunk_sec: float = field(default=2.0)
     visual_window_chunks: int = field(default=12)
     max_sample_tokens: Optional[int] = field(
-        default=8192,
-        metadata={"help": "Filter samples exceeding this token count in Dataset init (P0-4)."},
+        default=12000,
+        metadata={
+            "help": "Filter samples exceeding this token count in Dataset init "
+            "(P0-4). v10 raised 8192→12000 because visual-window samples with "
+            "24 frames + memory + queries average ~7900 tokens (p50) and "
+            "8192 was filtering 35% of data. With model_max_length=16384, "
+            "12000 leaves ~4K margin for collator padding."
+        },
     )
     require_pre_extracted_frames: bool = field(
         default=True,
@@ -62,6 +68,25 @@ class DataArguments:
     audit_log_every: int = field(
         default=1,
         metadata={"help": "Write audit log every N steps (1 = every step)."},
+    )
+
+    # Class-balanced sampler (single-phase mixed SFT)
+    class_balanced_sampler: bool = field(
+        default=True,
+        metadata={
+            "help": "Use ClassBalancedDistributedSampler so rare actions "
+            "(recall/compress/response) are not drowned by silent. "
+            "Recommended for single-phase mixed SFT. Set False to use the "
+            "default HF distributed sampler (uniform)."
+        },
+    )
+    class_balance_smoothing: float = field(
+        default=0.7,
+        metadata={
+            "help": "Smoothing exponent on inv-freq weights. "
+            "1.0 = pure inverse frequency (most aggressive rebalance), "
+            "0.5 = √(inv-freq), 0.0 = uniform. Default 0.7."
+        },
     )
 
 
