@@ -1,13 +1,18 @@
 """
-Select batch 2 videos: 400 stratified by subdataset × duration.
+Select batch 2 videos: 400 stratified for ThinkStream training.
+
+v2: Lifts the conservative `used_in_streamo` exclusion (it only marks dataset
+overlap with a sibling project — the videos themselves aren't contaminated)
+and re-balances strata to favor procedural / instructional content, the
+content type that best exercises ThinkStream's 14 question families and the
+streaming agent's memory + recall + compress mechanisms.
+
+Also reserves 100 disjoint videos as a held-out eval split.
 
 Reads:  data/video_catalog_30s_plus.csv
-        data/agent_v5/video_registry.jsonl   (batch 1, to exclude)
-Writes: data/agent_v5/batch2_videos.jsonl    (same schema as batch 1)
-
-Strategy: per-stratum reproducible random sample (seed=42).
-- Excludes videos used by streamo, batch 1, or invalid (codec/duration).
-- Stratification by subdataset (or filename for Koala_raw) AND duration bucket.
+        data/agent_v5/video_registry.jsonl   (batch 1, excluded)
+Writes: data/agent_v5/batch2_videos.jsonl    (400 train videos)
+        data/agent_v5/eval_videos.jsonl      (100 held-out videos)
 """
 
 import csv
@@ -19,43 +24,70 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 CATALOG = PROJECT_ROOT / "data" / "video_catalog_30s_plus.csv"
 BATCH1 = PROJECT_ROOT / "data" / "agent_v5" / "video_registry.jsonl"
-OUT = PROJECT_ROOT / "data" / "agent_v5" / "batch2_videos.jsonl"
+OUT_TRAIN = PROJECT_ROOT / "data" / "agent_v5" / "batch2_videos.jsonl"
+OUT_EVAL = PROJECT_ROOT / "data" / "agent_v5" / "eval_videos.jsonl"
 
 SEED = 42
-TARGET = 400
+TRAIN_TARGET = 400
+EVAL_TARGET = 100
 
-# Per-stratum quotas (subdataset → count)
-STRATA = {
-    "VideoMind-Dataset/cosmo_cap":            70,
-    "VideoMind-Dataset/internvid_vtime":      50,
+# Procedural / instructional → universal training value:
+# they exercise F1 (OCR / recipe text), F4 (spatial layouts), E1/E2 (action +
+# state change), P1 (procedure), C1 (compare before/after), R1 (chef reappears),
+# F5 (repetitive stir/chop), F6 (predictable next step), M1 (multi-step
+# commentary), N1 (plausible-but-absent), and S1 (multi-entity scenes).
+#
+# We weight these heavily; cap auto-captioned / generic web video, since they
+# add quantity but not the structural variety the agent needs.
+STRATA_TRAIN = {
+    # ── Tier S: procedural / instructional ──
+    "how_to_step":                            80,   # NEW (was streamo-locked)
+    "Koala_raw":                              60,
+    "Koala":                                  50,   # NEW (was streamo-locked)
+    "VideoMind-Dataset/coin":                 40,   # COIN: explicit step structure
+    "how_to_caption":                         30,   # NEW (was streamo-locked)
+    "VideoMind-Dataset/hirest":               30,   # tutorial highlights
+    # ── Tier A: activity / daily action (F5 / E1 friendly) ──
     "VideoMind-Dataset/charades_sta":         25,
-    "VideoMind-Dataset/didemo":               15,
-    "VideoMind-Dataset/coin":                 20,
+    "tarsier2_unzip/Charades":                15,
     "VideoMind-Dataset/activitynet":          20,
-    "VideoMind-Dataset/qvhighlights":         10,
-    "VideoMind-Dataset/queryd":               15,
-    "VideoMind-Dataset/hirest":               15,
-    "LLaVA-Video-178K/2_3_m_youtube_v0_1":    50,
-    "LLaVA-Video-178K/30_60_s_youtube_v0_1":  10,
-    "LLaVA-Video-178K/30_60_s_academic_v0_1": 10,
-    "tarsier2_unzip/VATEX":                   18,
-    "tarsier2_unzip/Charades":                12,
-    "tarsier2_unzip/WebVid-10M_part-1":       10,
-    "tarsier2_unzip/WebVid-10M_part-2":       10,
-    "Koala_raw":                              10,   # match-by-dataset (subdataset=filename)
-    "Koala":                                  10,
-    "how_to_step":                            10,
-    "how_to_caption":                         10,
+    # ── Tier B: long YouTube — natural streaming length ──
+    "LLaVA-Video-178K/2_3_m_youtube_v0_1":    20,
+    "LLaVA-Video-178K/1_2_m_youtube_v0_1":    10,
+    # ── Tier C: time-grounded / multi-entity ──
+    "VideoMind-Dataset/didemo":               10,
+    "VideoMind-Dataset/queryd":               10,
 }
-assert sum(STRATA.values()) == TARGET, f"strata sum={sum(STRATA.values())} != {TARGET}"
+assert sum(STRATA_TRAIN.values()) == TRAIN_TARGET, \
+    f"strata sum={sum(STRATA_TRAIN.values())} != {TRAIN_TARGET}"
 
-# Within each stratum, oversample shorter then truncate to enforce mix
+# Eval split: same domain mix as training so eval distribution matches train,
+# but disjoint videos.
+STRATA_EVAL = {
+    "how_to_step":                            20,
+    "Koala_raw":                              15,
+    "Koala":                                  15,
+    "VideoMind-Dataset/coin":                 10,
+    "how_to_caption":                         10,
+    "VideoMind-Dataset/hirest":                8,
+    "VideoMind-Dataset/charades_sta":          5,
+    "VideoMind-Dataset/activitynet":           5,
+    "LLaVA-Video-178K/2_3_m_youtube_v0_1":     5,
+    "tarsier2_unzip/Charades":                 4,
+    "VideoMind-Dataset/didemo":                3,
+}
+assert sum(STRATA_EVAL.values()) == EVAL_TARGET, \
+    f"eval strata sum={sum(STRATA_EVAL.values())} != {EVAL_TARGET}"
+
+# Duration mix favors lengths where the streaming agent's memory mechanisms
+# actually trigger (compression at ~30 chunks ≈ 60s; recall meaningful at
+# >12 chunks separation ≈ 24s).
 DURATION_MIX_PCT = {
-    "30-60":   0.12,
-    "60-120":  0.30,
-    "120-240": 0.35,
-    "240-600": 0.18,
-    "600+":    0.05,
+    "30-60":    0.10,   # quick warm-up samples; not enough for compress
+    "60-120":   0.25,   # compression begins to matter
+    "120-240":  0.40,   # main trajectory band
+    "240-600":  0.20,   # long recall / multi-compress
+    "600+":     0.05,   # extreme cases for memory-overflow training
 }
 
 
@@ -72,140 +104,126 @@ def is_valid_codec(c: str) -> bool:
     return c in ("h264", "hevc", "h265", "vp9", "av1") or c.startswith("h26")
 
 
-def video_id_from_path(path: str, dataset: str) -> str:
-    """Match batch 1's id convention: filename stem (no extension)."""
+def video_id_from_path(path: str) -> str:
     name = Path(path).name
     return name.rsplit(".", 1)[0] if "." in name else name
 
 
 def stratum_key(dataset: str, sub: str) -> str:
-    """Unify Koala_raw / Koala / how_to_*: subdataset is per-file there."""
+    """Per-file datasets bucket by dataset name; others by `dataset/sub`."""
     if dataset in ("Koala_raw", "Koala", "how_to_step", "how_to_caption", "how_to_captio.mp4"):
         return dataset
     return f"{dataset}/{sub}"
 
 
-def main():
-    rng = random.Random(SEED)
-
-    # --- Load batch 1 exclusion set ---
-    excluded_paths = set()
-    excluded_ids = set()
-    if BATCH1.exists():
-        with open(BATCH1) as f:
-            for line in f:
-                v = json.loads(line)
-                excluded_paths.add(v["video_path"])
-                excluded_ids.add(v["video_id"])
-    print(f"[exclude] batch 1 videos: {len(excluded_paths)}")
-
-    # --- Bucket the catalog by (stratum, duration_bucket) ---
-    by_stratum: dict = defaultdict(lambda: defaultdict(list))
-    skipped_reasons = Counter()
+def load_candidate_pool(excluded_paths):
+    """Bucket the catalog into (stratum → bucket → [video])."""
+    pool = defaultdict(lambda: defaultdict(list))
+    skipped = Counter()
+    target_strata = set(STRATA_TRAIN) | set(STRATA_EVAL)
     with open(CATALOG, newline="") as f:
         for r in csv.DictReader(f):
             path = r["video_path"]
             if path in excluded_paths:
-                skipped_reasons["batch1_dup"] += 1
+                skipped["batch1_dup"] += 1
                 continue
-            if r.get("used_in_streamo") == "1":
-                skipped_reasons["streamo_used"] += 1
-                continue
+            # NOTE: we no longer drop streamo-flagged videos. Streamo just
+            # used these in a sibling project — videos themselves are clean.
             if r.get("used_in_thinkstream") == "1":
-                skipped_reasons["thinkstream_flag"] += 1
+                skipped["thinkstream_already"] += 1
                 continue
             try:
                 dur = float(r["duration_sec"])
             except (ValueError, TypeError):
-                skipped_reasons["bad_duration"] += 1
+                skipped["bad_duration"] += 1
                 continue
             if dur < 30 or dur > 1800:
-                skipped_reasons["duration_out_of_range"] += 1
+                skipped["duration_oor"] += 1
                 continue
             try:
-                w = int(r["width"]); h = int(r["height"])
-                if w * h < 320 * 240:
-                    skipped_reasons["resolution_too_low"] += 1
+                if int(r["width"]) * int(r["height"]) < 320 * 240:
+                    skipped["res_low"] += 1
                     continue
             except (ValueError, TypeError):
-                pass  # missing res — accept
+                pass
             if not is_valid_codec(r.get("codec", "")):
-                skipped_reasons["bad_codec"] += 1
+                skipped["bad_codec"] += 1
                 continue
-
-            sub = r.get("subdataset", "")
-            stratum = stratum_key(r["dataset"], sub)
-            if stratum not in STRATA:
-                continue  # not a target stratum
-            by_stratum[stratum][duration_bucket(dur)].append({
+            stratum = stratum_key(r["dataset"], r.get("subdataset", ""))
+            if stratum not in target_strata:
+                continue
+            pool[stratum][duration_bucket(dur)].append({
                 "video_path": path,
-                "video_id": video_id_from_path(path, r["dataset"]),
+                "video_id": video_id_from_path(path),
                 "duration_sec": round(dur, 2),
                 "dataset": r["dataset"],
-                "subdataset": sub,
+                "subdataset": r.get("subdataset", ""),
             })
+    return pool, skipped
 
-    print(f"[catalog] candidates per stratum:")
-    for s, q in STRATA.items():
-        total = sum(len(v) for v in by_stratum[s].values())
-        bucket_sizes = {b: len(by_stratum[s][b]) for b in DURATION_MIX_PCT}
-        print(f"  {s:48s} total={total:6d} target={q:3d}   buckets={bucket_sizes}")
-    print(f"[catalog] skipped: {dict(skipped_reasons)}")
 
-    # --- Sample within each stratum, respecting duration mix ---
+def sample_strata(pool, strata, rng, claimed: set):
+    """Sample per-stratum with duration-mix targets. claimed is mutated."""
     selected = []
-    for stratum, quota in STRATA.items():
-        target_per_bucket = {b: max(1, round(quota * pct)) for b, pct in DURATION_MIX_PCT.items()}
-        # Adjust so they sum to quota
-        diff = quota - sum(target_per_bucket.values())
-        # Distribute diff into the largest buckets
-        sorted_buckets = sorted(target_per_bucket.items(), key=lambda x: -x[1])
+    for stratum, quota in strata.items():
+        # split quota across duration buckets
+        per_bucket = {b: max(1, round(quota * pct)) for b, pct in DURATION_MIX_PCT.items()}
+        diff = quota - sum(per_bucket.values())
+        sorted_b = sorted(per_bucket.items(), key=lambda x: -x[1])
         i = 0
-        while diff != 0 and sorted_buckets:
-            b, _ = sorted_buckets[i % len(sorted_buckets)]
-            target_per_bucket[b] += 1 if diff > 0 else -1
+        while diff != 0 and sorted_b:
+            b = sorted_b[i % len(sorted_b)][0]
+            per_bucket[b] += 1 if diff > 0 else -1
             diff += -1 if diff > 0 else 1
             i += 1
 
         picked = []
-        unmet_carryover = 0
-        for bucket, want in target_per_bucket.items():
-            pool = list(by_stratum[stratum][bucket])
-            rng.shuffle(pool)
-            take = pool[:want]
+        carry = 0
+        for bucket, want in per_bucket.items():
+            avail = [v for v in pool[stratum][bucket] if v["video_id"] not in claimed]
+            rng.shuffle(avail)
+            take = avail[:want]
             picked.extend(take)
-            unmet_carryover += max(0, want - len(take))
-
-        # Fill carryover from any bucket in the same stratum
-        if unmet_carryover > 0:
-            taken_ids = {p["video_id"] for p in picked}
+            carry += max(0, want - len(take))
+        # carry-over from same stratum
+        if carry > 0:
+            taken = {v["video_id"] for v in picked}
             spare = [
-                v for b in by_stratum[stratum].values() for v in b
-                if v["video_id"] not in taken_ids
+                v for b in pool[stratum].values() for v in b
+                if v["video_id"] not in taken and v["video_id"] not in claimed
             ]
             rng.shuffle(spare)
-            picked.extend(spare[:unmet_carryover])
+            picked.extend(spare[:carry])
 
-        # Safety cap to quota
         picked = picked[:quota]
+        for v in picked:
+            claimed.add(v["video_id"])
         selected.extend(picked)
 
-    # If totals fall short of TARGET (some stratum exhausted), top up from the
-    # largest remaining pools.
-    if len(selected) < TARGET:
-        chosen = {v["video_id"] for v in selected}
-        leftover = []
-        for stratum_buckets in by_stratum.values():
-            for bucket_list in stratum_buckets.values():
-                leftover.extend(v for v in bucket_list if v["video_id"] not in chosen)
-        rng.shuffle(leftover)
-        need = TARGET - len(selected)
-        selected.extend(leftover[:need])
+    # global fill if we are below target
+    return selected
 
-    # --- Write output (same schema as batch 1 video_registry) ---
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    with open(OUT, "w") as f:
-        for v in selected:
+
+def topup_to_target(selected, pool, target, rng, claimed):
+    if len(selected) >= target:
+        return selected[:target]
+    leftover = []
+    for stratum_buckets in pool.values():
+        for vs in stratum_buckets.values():
+            leftover.extend(v for v in vs if v["video_id"] not in claimed)
+    rng.shuffle(leftover)
+    need = target - len(selected)
+    extras = leftover[:need]
+    for v in extras:
+        claimed.add(v["video_id"])
+    selected.extend(extras)
+    return selected
+
+
+def write_jsonl(out_path, videos):
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(out_path, "w") as f:
+        for v in videos:
             f.write(json.dumps({
                 "video_id":     v["video_id"],
                 "video_path":   v["video_path"],
@@ -213,28 +231,67 @@ def main():
                 "dataset":      v["dataset"],
             }, ensure_ascii=False) + "\n")
 
-    # --- Distribution summary ---
-    print(f"\n[output] {OUT}  ({len(selected)} videos)")
-    by_ds = Counter(v["dataset"] for v in selected)
-    by_sub = Counter(stratum_key(v["dataset"], v["subdataset"]) for v in selected)
-    by_bucket = Counter(duration_bucket(v["duration_sec"]) for v in selected)
-    print(f"\n[summary] by dataset:")
-    for k, n in by_ds.most_common():
-        print(f"  {k:20s} {n:4d}")
-    print(f"\n[summary] by stratum (subdataset):")
-    for k, n in by_sub.most_common():
-        print(f"  {k:48s} {n:4d}  (target {STRATA.get(k,'?')})")
-    print(f"\n[summary] by duration bucket:")
-    for b in DURATION_MIX_PCT:
-        n = by_bucket[b]
-        print(f"  {b:8s} {n:4d}  ({100*n/len(selected):.1f}%)")
 
-    durations = [v["duration_sec"] for v in selected]
-    durations.sort()
-    print(f"\n[summary] duration: min={durations[0]:.0f}s, "
-          f"p50={durations[len(durations)//2]:.0f}s, "
-          f"p95={durations[int(len(durations)*.95)]:.0f}s, "
-          f"max={durations[-1]:.0f}s")
+def report(name, videos):
+    by_ds = Counter(v["dataset"] for v in videos)
+    by_sub = Counter(stratum_key(v["dataset"], v["subdataset"]) for v in videos)
+    by_bk = Counter(duration_bucket(v["duration_sec"]) for v in videos)
+    durs = sorted(v["duration_sec"] for v in videos)
+    print(f"\n=== {name}: {len(videos)} videos ===")
+    print(f"  duration: min={durs[0]:.0f}s, p50={durs[len(durs)//2]:.0f}s, "
+          f"p95={durs[int(len(durs)*.95)]:.0f}s, max={durs[-1]:.0f}s")
+    print(f"  buckets:")
+    for b in DURATION_MIX_PCT:
+        n = by_bk[b]
+        print(f"    {b:8s} {n:3d}  ({100*n/len(videos):.1f}%)")
+    print(f"  by stratum:")
+    for k, n in by_sub.most_common():
+        print(f"    {k:48s} {n:3d}")
+    print(f"  by dataset:")
+    for k, n in by_ds.most_common():
+        print(f"    {k:25s} {n:4d}")
+
+
+def main():
+    rng = random.Random(SEED)
+
+    # Exclude batch 1
+    excluded = set()
+    if BATCH1.exists():
+        with open(BATCH1) as f:
+            for line in f:
+                excluded.add(json.loads(line)["video_path"])
+    print(f"[exclude] batch 1: {len(excluded)}")
+
+    pool, skipped = load_candidate_pool(excluded)
+    print(f"[catalog] skip reasons: {dict(skipped)}")
+
+    # Sanity: print pool sizes
+    print(f"\n[pool sizes per stratum]")
+    for s in set(STRATA_TRAIN) | set(STRATA_EVAL):
+        total = sum(len(b) for b in pool[s].values())
+        bsizes = {b: len(pool[s][b]) for b in DURATION_MIX_PCT}
+        print(f"  {s:48s} total={total:>7d}  buckets={bsizes}")
+
+    claimed = set()
+    # Sample TRAIN first (priority), then EVAL on what remains
+    train_videos = sample_strata(pool, STRATA_TRAIN, rng, claimed)
+    train_videos = topup_to_target(train_videos, pool, TRAIN_TARGET, rng, claimed)
+    eval_videos = sample_strata(pool, STRATA_EVAL, rng, claimed)
+    eval_videos = topup_to_target(eval_videos, pool, EVAL_TARGET, rng, claimed)
+
+    write_jsonl(OUT_TRAIN, train_videos)
+    write_jsonl(OUT_EVAL, eval_videos)
+
+    print(f"\n[output] {OUT_TRAIN}")
+    print(f"[output] {OUT_EVAL}")
+
+    report("BATCH 2 (train)", train_videos)
+    report("EVAL (held-out)", eval_videos)
+
+    overlap = {v["video_id"] for v in train_videos} & {v["video_id"] for v in eval_videos}
+    assert not overlap, f"train/eval overlap: {overlap}"
+    print(f"\n[check] train/eval overlap: 0  ✓")
 
 
 if __name__ == "__main__":
