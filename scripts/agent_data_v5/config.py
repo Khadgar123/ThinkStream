@@ -45,8 +45,11 @@ VISUAL_WINDOW_FRAMES = VISUAL_WINDOW_CHUNKS * FRAMES_PER_CHUNK  # 24 帧
 # 3. Think & memory parameters
 # ---------------------------------------------------------------------------
 
-THINK_TOKENS = (40, 60)             # student think 长度范围
-THINK_TOKEN_AVG = 50                # think 平均 token 数（用于估算）
+# Think length: relaxed to match teacher's natural distribution (p50≈83 tok).
+# Used for budget estimation (avg) and as a soft target. Pass 4 verification
+# applies its own additional margin (see verify_think_token_length).
+THINK_TOKENS = (40, 100)            # student think 长度范围 (relaxed from (40,60))
+THINK_TOKEN_AVG = 70                # think 平均 token 数（用于估算）
 
 # Token-based compression trigger with hysteresis
 RECENT_THINKS_TOKEN_BUDGET = 600    # recent_thinks 总 token 预算
@@ -381,9 +384,24 @@ Based on the frames above, output a STRICT JSON object:
 Rules:
 - Only describe what is VISIBLE in these frames (no comparison to other clips)
 - Describe entities by appearance, not by ID or assumed identity
-- confidence < 0.7 for uncertain observations (small text, fast motion, partial occlusion)
-- target_resolution_visible: false if detail would be too small/blurry at training resolution
+- Use a CONSISTENT phrase for the same entity across clips when its appearance
+  matches (e.g., "the man in the black polo shirt") so downstream entity
+  linking can match by string. Do not paraphrase the same entity differently.
 - Do NOT include sounds, smells, emotions, or inferred intentions
+
+confidence calibration (CRITICAL — do not default to 1.0):
+- 0.95-1.0: clear, sharp, central-frame observation, full duration
+- 0.80-0.94: clear but partial occlusion, off-center, or brief duration
+- 0.60-0.79: small detail, motion blur, or only one frame shows it
+- 0.40-0.59: low-resolution detail, fast camera motion, edge of frame
+- < 0.40: borderline visible, you would not bet on it
+About 30-50% of facts in a typical clip should fall below 0.95. If every fact
+you list is 1.0, you are over-claiming.
+
+target_resolution_visible:
+- false when the detail (text under ~12px, fine pattern, distant object)
+  would be unreadable for a student model at standard training resolution
+- aim for ~10-30% of facts marked false in a typical clip — not 0%
 
 Output JSON only:"""
 
@@ -397,16 +415,19 @@ Recent thinks:
 
 Visual window: t={window_start}-{window_end}s (frames above).
 
-Describe what is NEW or CHANGED in the latest 2 seconds (t={start}-{end}s) in 40-60 tokens.
+Describe what is NEW or CHANGED in the latest 2 seconds (t={start}-{end}s).
+Be concise but complete (target 50-90 tokens, never exceed 120).
 
 Rules:
 - Only observable visual facts
-- Describe entities by appearance (clothing, color, material), not by ID
+- Describe entities by appearance (clothing, color, material). If a similar
+  entity already appears in recent thinks, REUSE the same descriptive phrase
+  (e.g., "the man in the black polo shirt") so downstream linking can match it
 - Focus: entities+attributes, actions, state changes, OCR, spatial
 - NO meta-reasoning, NO "I notice", NO sounds/smells/emotions
-- If nothing new: brief ongoing state
+- If nothing new: one short sentence on ongoing state
 
-Output (one paragraph, 40-60 tokens):"""
+Output one paragraph:"""
 
 COMPRESS_PROMPT = """Compress these observations into a structured summary.
 

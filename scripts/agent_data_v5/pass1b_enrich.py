@@ -37,14 +37,34 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 
 ENTITY_LINK_PROMPT = """Below are entity descriptions from different chunks of the same video.
-Group descriptions that refer to the SAME entity (same person/object, even if action or angle differs).
+Each line lists a description AND the chunk indices where it appeared.
+
+Group descriptions that refer to the SAME entity (same person/object), even if
+the wording, action, or camera angle differs. This is CRITICAL for downstream
+recall: if the same person appears in chunks 0, 5, 12, all three descriptions
+MUST end up in one group with one id.
 
 {entity_list}
 
-Output JSON array:
+Aggressive merging rules:
+- Same body / clothing / hair color in nearby chunks → same person, even if
+  the wording differs ("man in black polo" / "person in dark shirt").
+- Hands, arms, or partial views of an already-named person → merge into that
+  person's group (use a consistent id like person_chef_1, not hand_1).
+- Same object with stable color / shape across chunks → same id (e.g.
+  pot_silver_1) even if action differs ("stirring pot" / "pot on stove").
+- Only create a NEW id when the entity is genuinely new (different visible
+  attributes, not just different wording).
+- An entity that is mentioned in ≥2 chunks should always end up grouped —
+  isolated single-chunk ids are a sign of under-merging.
+
+Use stable, descriptive ids: person_chef_1, person_blonde_1, pot_silver_1,
+chair_wooden_1. Avoid generic ids like person_1, object_1.
+
+Output JSON array (group everything; do not omit any input desc):
 [
-  {{"id": "person_1", "descs": ["person wearing red apron, standing", "person in red apron, chopping", "hand stirring pot"]}},
-  {{"id": "pot_1", "descs": ["stainless steel pot", "pot with reddish sauce"]}}
+  {{"id": "person_chef_1", "descs": ["person wearing red apron, standing", "person in red apron, chopping", "hand stirring pot"]}},
+  {{"id": "pot_silver_1", "descs": ["stainless steel pot", "pot with reddish sauce"]}}
 ]"""
 
 STATE_CHANGE_PROMPT = """Below is a per-chunk entity/action summary for a video.
@@ -90,16 +110,23 @@ async def run_pass1b(
         return enriched
 
     # --- Call 1: Entity linking ---
-    all_descs = set()
+    # Build desc → sorted chunk-index list so the teacher can see WHICH chunks
+    # each desc appeared in. Cross-chunk co-occurrence is the strongest signal
+    # for merging (same person reappears in chunks 0, 5, 12 → one entity).
+    desc_chunks: Dict[str, List[int]] = {}
     for cap in enriched:
+        cidx = cap.get("chunk_idx", -1)
         for entity in cap.get("visible_entities", []):
             desc = entity.get("desc", "")
             if desc and desc != "unknown":
-                all_descs.add(desc)
+                desc_chunks.setdefault(desc, []).append(cidx)
 
     desc_to_id = {}
-    if len(all_descs) >= 2:
-        entity_list = "\n".join(f"- {d}" for d in sorted(all_descs))
+    if len(desc_chunks) >= 2:
+        entity_list = "\n".join(
+            f"- chunks={sorted(set(chunks))} | desc: {desc}"
+            for desc, chunks in sorted(desc_chunks.items())
+        )
         prompt = ENTITY_LINK_PROMPT.format(entity_list=entity_list)
 
         raw_el = await _call_with_semaphore(

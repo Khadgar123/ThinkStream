@@ -38,6 +38,13 @@ FAMILY_TARGETS = {
     "N1": 2,  # hallucination negative (OVO HLD)
 }
 
+# Families that MUST be attempted on every video, even when classify_chunks
+# returns zero chunks for them. v9.1 audit found F5=4 cards across 312 videos
+# because most videos lack a 3-chunk same-action run; here we let the teacher
+# look at the whole video and decide whether it can construct a question.
+# Without this, OVOBench REC/FPD/HLD coverage is structurally absent.
+FAMILY_FORCE_ATTEMPT = {"F5", "F6", "N1", "F3", "E2", "S1"}
+
 # Retention class derived from family (not from 397B)
 RETENTION_CLASS = {
     "F1": "low", "F2": "low", "F3": "low",
@@ -572,12 +579,28 @@ async def generate_cards(
     """
     family_chunks = classify_chunks(evidence)
 
-    # Build tasks for families that have candidates
+    # Whole-video fallback chunk list for families in FAMILY_FORCE_ATTEMPT
+    # (when their structural classification yields nothing). We sample evenly
+    # across the timeline so the teacher sees a representative cross-section.
+    all_chunk_idxs = [cap["chunk_idx"] for cap in evidence]
+    fallback_chunks: List[int] = []
+    if all_chunk_idxs:
+        n_total = len(all_chunk_idxs)
+        step = max(1, n_total // 8)  # ~8 evenly-spaced chunks
+        fallback_chunks = sorted(set(all_chunk_idxs[::step]))[:12]
+
+    # Build tasks for families that have candidates OR are force-attempt
     tasks = []
     family_order = []
-    for family, chunk_list in family_chunks.items():
-        if family != "M1" and not chunk_list:
-            continue
+    for family in FAMILY_TARGETS:
+        chunk_list = family_chunks.get(family, [])
+        if not chunk_list and family != "M1":
+            if family in FAMILY_FORCE_ATTEMPT and fallback_chunks:
+                # Use whole-video fallback so teacher can decide if a question
+                # is possible (e.g. F5 needs ≥3 same-action chunks somewhere).
+                chunk_list = fallback_chunks
+            else:
+                continue
         tasks.append(_generate_family_cards(family, chunk_list, evidence, client, video_id))
         family_order.append(family)
 

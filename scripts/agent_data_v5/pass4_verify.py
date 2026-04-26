@@ -329,8 +329,9 @@ def verify_think_token_length(sample: Dict) -> Tuple[bool, str]:
         return True, "pass"
 
     tok_count = _count_tokens(think_text)
-    min_tok = THINK_TOKENS[0] - 10  # 30
-    max_tok = THINK_TOKENS[1] + 15  # 75
+    # Margins: teacher tends to overshoot, so widen on the high side.
+    min_tok = max(15, THINK_TOKENS[0] - 15)   # 25 by default
+    max_tok = THINK_TOKENS[1] + 30            # 130 by default — covers p99 of teacher
 
     if tok_count < min_tok:
         return False, f"think_tokens_too_few ({tok_count} < {min_tok})"

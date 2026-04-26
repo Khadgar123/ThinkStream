@@ -306,11 +306,29 @@ def compute_placement(
         if followup_r:
             key_chunks["post_silent"] = min(followup_r[-1] + 1, num_chunks - 1)
 
+    # Persist support_chunks + family + a derived availability hint on the
+    # placement so downstream audits and Pass 4 don't have to re-join cards.
+    # v9.1 audit (Pass 3-B) couldn't verify legality without joining cards
+    # because these fields were absent.
+    sup = card.get("support_chunks", []) or []
+    if not sup:
+        availability = "unknown"
+    elif min(sup) > ask_chunk:
+        availability = "in_future"
+    elif max(sup) >= ask_chunk - VISUAL_WINDOW_CHUNKS:
+        availability = "in_visual"
+    else:
+        availability = "in_history_only"
+
     return {
         "card_id": card["card_id"],
         "ask_chunk": ask_chunk,
         "sequence_type": sequence_type,
         "key_chunks": key_chunks,
+        # audit fields — denormalized from the card for traceability
+        "family": card.get("family", ""),
+        "support_chunks": list(sup),
+        "availability": availability,
     }
 
 
@@ -552,6 +570,17 @@ def _score_placement(
     if p["sequence_type"] not in used_seq_types:
         score += 2.0
 
+    # 5b. OVOBench-relevant rare-sequence boost.
+    # v9.1 audit found event_watch=3.2% across the dataset — too low for AAR/EPM
+    # tasks. Add a per-placement bonus (independent of "unseen") so multiple
+    # event_watch placements survive tie-breaking against immediate_response.
+    RARE_SEQ_BONUS = {
+        "event_watch": 1.5,             # AAR/EPM
+        "recall_fail_then_found": 0.6,  # mixed mechanism, harder
+        "multi_response": 0.5,          # M1 family
+    }
+    score += RARE_SEQ_BONUS.get(p["sequence_type"], 0.0)
+
     # 6. Spread: distance from nearest used ask_chunk
     if used_ask_chunks:
         min_dist = min(abs(p["ask_chunk"] - c) for c in used_ask_chunks)
@@ -643,9 +672,15 @@ def plan_trajectories(
         cards_map = {}
     rng = random.Random(seed)
 
-    # Dynamic target: ~1 trajectory per 20 chunks, clamped to [2, MAX]
-    target = min(max(2, num_chunks // 20), MAX_TRAJECTORIES_PER_VIDEO)
-    max_placements_per_traj = min(max_placements_per_traj, MAX_QUESTIONS_PER_TRAJECTORY)
+    # Dynamic target: ~1 trajectory per 12 chunks (was 20).
+    # v9.1 audit: previous 20-chunk divisor gave only 30% capacity utilization
+    # (avg 3.5/video vs MAX=10). Tightening the divisor + bumping per-traj cap
+    # roughly doubles trajectories per video, increasing fork-sample volume.
+    target = min(max(3, num_chunks // 12), MAX_TRAJECTORIES_PER_VIDEO)
+    max_placements_per_traj = min(
+        max(max_placements_per_traj, 6),  # was effectively 5
+        MAX_QUESTIONS_PER_TRAJECTORY,
+    )
 
     # --- Phase 1: Greedy selection of best placements ---
     used_families: Set[str] = set()
