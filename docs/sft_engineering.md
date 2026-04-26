@@ -810,29 +810,35 @@ if is_qwen3vl:
 
 ## 7. 训练课程（Curriculum）
 
-### 7.1 六阶段课程 (SFT + RL)
+### 7.1 两阶段流水线（v9.2 简化）
+
+> **v9.2 (2026-04-27)** 把旧 6 阶段（P1 → P2 → C1 → C2 → P5 → RL）合并为 **1 SFT + 1 GDPO RL**，依据 `data_construction_zh.md` §4 的同期工作调研（8/8 papers 零使用 DAgger 或多阶段 RL）。
+> Phase1-5 数据文件仍然产出（用于 per-category 诊断和分桶 eval），但**训练只跑一次 SFT**（混合数据）+ 一次 RL。
 
 **SFT 和 RL 使用不同的视频集**（详见 `data_batch1_plan.md` §2）：
-- SFT: 184 条视频 → teacher 轨迹 per-timestep 样本
-- RL: 75 条视频 → 模型自己 rollout + GRPO reward
+- SFT: 184 条视频 → teacher 轨迹 per-timestep 样本（all phases mixed）
+- RL: 75 条视频 → 模型自己 rollout + GDPO reward
 
 | 阶段 | 数据集 | 样本量 | 训练目标 | 超参 |
 |------|--------|--------|---------|------|
-| **Phase 1** 协议对齐 | P1: silent + response(from_frames) | ~1,700 | 学会 think + action 格式 | lr=1e-5, epochs=3, 79 steps |
-| **Phase 2** Recall 学习 | P2: + recall + pending + uncertain | ~2,600 | 学会判断 recall 时机 | lr=5e-6, epochs=3, from P1 ckpt |
-| **Phase C1** 压缩行为 | C1: + compress(system指定) + compress_recall | ~800 | 学会按指定范围压缩 | lr=3e-6, epochs=2, from P2 ckpt |
-| **Phase C2** 自选压缩 | C2: + compress(自选范围) | ~630 | 学会自选压缩窗口 | lr=2e-6, epochs=2, from C1 ckpt |
-| **Phase 5** 混合训练 | P5: 所有类型按比例混合 | ~5,700 | 综合能力对齐 | lr=1e-6, epochs=1, from C2 ckpt |
-| **Phase 6** RL/GRPO | 75 条 RL 视频, ~2,050 (视频,task) 对 | on-policy | 决策优化 | lr=5e-7, epochs=2, group=4, from P5 ckpt |
+| **Stage 1: SFT** | `STREAM_AGENT_ALL`（P1+P2+C1+C2+P5 全部混合） | ~11,500 | 4 action 格式 + summary 写法 + recall 时机 + 系统触发时按 teacher gold range 压缩 | lr=1e-5 → 1e-6 cosine, epochs=2, batch=16, ~1,440 steps, ZeRO-3 |
+| **Stage 2: GDPO RL** | 75 RL 视频, ~2,050 (video,task) 对 | on-policy | 6 路 reward 决策优化（含 overflow_pen 监督模型自选 compress range） | lr=5e-7, epochs=2, G=4, batch=16, ~500 steps, from Stage 1 ckpt |
 
-SFT 总计 333 steps (~4 min)，RL 总计 256 steps (~34 min)，8×H100。
+SFT 总计 ~1,440 steps (~18 min on 8×H100)，RL 总计 ~500 steps (~67 min)。
+
+**为什么不再分阶段 SFT**：
+- 数据是单一质量层（397B teacher 蒸馏），无 streaming-VLM 那种粗→精退火需求
+- 4 action 类型彼此无明显课程关系；混合训练让模型同时见到所有上下文，避免阶段切换的灾难性遗忘
+- 旧 P1→P2→...→P5 的"难度递增"假设未经实验验证；同期工作 5/8 直接 0 SFT + 1 RL，证明该假设过强
+
+**为什么不再分阶段 RL**：
+- 旧 C1→C2 拆分的本意（"先学固定 range，再学自选 range"）已被 GDPO + `overflow_pen` reward 替代：模型从 SFT 起就见过 teacher gold range，RL 阶段直接让 reward 信号引导自选偏离
+- 同期 8 篇 paper 0/8 用 DAgger 链；GDPO RL 在 student rollout 上算 reward 本身就是 DAgger 的目标
 
 **Eval 检查点**：
-- P1 结束 → val action F1 (silent/response)
-- P2 结束 → val action F1 + recall 准确率
-- C2 结束 → val 压缩质量
-- P5 结束 → val 全量指标 → **决定是否进 RL**
-- RL 每 50 steps → val reward + action F1
+- SFT 中：每 ~360 steps（25%、50%、75%、100%）跑 val per-phase 分桶 F1（虽然不分阶段训练，但分桶 eval 仍有诊断价值）
+- SFT 结束 → val 全量指标 → **决定是否进 RL**
+- RL 每 50 steps → val reward + action F1 + `mask_*_rate` from `THINKSTREAM_AUDIT_DIR/grpo_step.jsonl`
 - 最终 → test 30 条视频全量评估
 
 ### 7.2 数据集文件与注册（P1-4）

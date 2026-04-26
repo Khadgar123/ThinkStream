@@ -540,4 +540,10 @@ class StreamingAgentLoop:
             if user_question:
                 self.memory.resolve_pending(user_question)
 
+        # Expose post-step memory size so RL rollouts can detect overflow
+        # (recent_thinks tokens; compressed_segments are bounded by design).
+        parsed["memory_token_count"] = self.memory.count_recent_tokens()
+        parsed["compress_threshold"] = COMPRESS_TOKEN_THRESHOLD
+        parsed["compress_budget"] = RECENT_THINKS_TOKEN_BUDGET
+
         return parsed

@@ -193,6 +193,7 @@ def grpo_scope():
             "rollout_data": Ref[dict]("step.rollout_data"),
             "rewards": Ref[torch.Tensor]("step.rewards"),
             "rewards_dict": Ref("step.rewards_dict"),
+            "rewards_masks": Ref[torch.Tensor]("step.rewards_masks"),
             "advantages": Ref[torch.Tensor]("step.advantages"),
             "step_advantages": Ref[torch.Tensor]("step.micro.advantages"),
             "step_diag_accum": Ref[dict]("step.diag_accum"),

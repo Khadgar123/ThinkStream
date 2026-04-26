@@ -1,16 +1,16 @@
 #!/bin/bash
 # Per-timestep agent SFT training script.
 #
-# v10 RECOMMENDED: PHASE=mixed — single-phase SFT on full mixed data with
-# class-balanced sampler. Backed by NVIDIA Front-Loading + ICML'25 Data
-# Mixing studies showing quality-weighted single-phase ≈ tuned curriculum,
-# and 2025 streaming-VLM literature (StreamingVLM / LiveCC) reaching SOTA
-# without phase-by-phase curriculum.
+# v9.2 (2026-04-27): PHASE=mixed is the ONLY production path. The 5-phase
+# curriculum (1→2→C1→C2→5) is kept ONLY as an ablation knob — confirmed
+# unnecessary by the 2026 paper survey (8/8 same-era memory/streaming
+# agents use single-stage SFT or skip SFT entirely). After this SFT,
+# proceed to GDPO RL via the GRPO launcher (see docs/data_batch1_plan.md §8).
 #
-# Usage (recommended):
+# Usage (production):
 #   PHASE=mixed bash scripts/sft_per_timestep.sh
 #
-# Legacy 5-phase curriculum (kept for ablation only):
+# Ablation only (do NOT use for production):
 #   PHASE=1  bash scripts/sft_per_timestep.sh
 #   PHASE=C1 LLM=output/agent-phase2 bash scripts/sft_per_timestep.sh
 #
