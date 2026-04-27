@@ -147,27 +147,46 @@ def resolve_video_path(sample, video_root):
     return str(base / vp)
 
 
-def build_messages(video_path, video_start, video_end, max_frames, question):
+def build_messages(video_input, question, is_frame_paths=False):
+    """Build messages for base model eval.
+
+    Args:
+        video_input: either a video file path (offline mode) or a list of
+            pre-extracted frame paths (streaming mode).
+        question: user question text.
+        is_frame_paths: if True, video_input is a list of frame paths and
+            we pass it directly to the processor (no online decoding).
+    """
+    video_content: dict
+    if is_frame_paths:
+        video_content = {
+            "type": "video",
+            "video": video_input,
+        }
+    else:
+        video_content = {
+            "type": "video",
+            "video": video_input,
+        }
     return [
         {
             "role": "system",
-            "content": (
-                "You are a helpful video understanding assistant. Watch the "
-                "video carefully and answer questions based on what you observe. "
-                "If the question is yes/no, answer with Yes or No. If the "
-                "question asks for a count, answer with the integer."
-            ),
+            "content": [
+                {
+                    "type": "text",
+                    "text": (
+                        "You are a helpful video understanding assistant. Watch the "
+                        "video carefully and answer questions based on what you observe. "
+                        "If the question is yes/no, answer with Yes or No. If the "
+                        "question asks for a count, answer with the integer."
+                    ),
+                }
+            ],
         },
         {
             "role": "user",
             "content": [
-                {
-                    "type": "video",
-                    "video": video_path,
-                    "video_start": float(video_start),
-                    "video_end": float(video_end),
-                    "max_frames": int(max_frames),
-                },
+                video_content,
                 {"type": "text", "text": question},
             ],
         },
@@ -218,13 +237,15 @@ def main():
     model = Cls.from_pretrained(
         args.ckpt,
         dtype=torch.bfloat16 if not args.no_bf16 else None,
-        device_map="auto",
         attn_implementation="flash_attention_2",
     )
+    model = model.cuda()
     model.eval()
 
     processor = AutoProcessor.from_pretrained(args.ckpt)
     processor = update_processor_pixels(processor, DataArguments())
+    if hasattr(processor, "video_processor") and hasattr(processor.video_processor, "do_sample_frames"):
+        processor.video_processor.do_sample_frames = False
     pad_id = processor.tokenizer.pad_token_id or processor.tokenizer.eos_token_id
 
     # Filter test.jsonl to scorable response samples
@@ -249,31 +270,61 @@ def main():
     results = []
     skipped = 0
     t0 = time.time()
+    root_path = Path(args.test_jsonl).resolve().parent.parent.parent.parent  # .../ThinkStream
     for i, (s, gold, kind) in enumerate(scorable):
         try:
-            video_path = resolve_video_path(s, args.video_root)
-            if not video_path or not Path(video_path).exists():
-                skipped += 1
-                continue
-
             chunk_idx = int(s.get("chunk_idx", 0))
             decision_end = (chunk_idx + 1) * args.agent_chunk_sec
-            if args.mode == "offline":
-                video_start = 0.0
-                video_end = decision_end
-            else:  # streaming: visual_window slice
-                window_sec = args.visual_window_chunks * args.agent_chunk_sec
-                video_start = max(0.0, decision_end - window_sec)
-                video_end = decision_end
-
             question = extract_question(s)
             if not question:
                 skipped += 1
                 continue
 
-            messages = build_messages(
-                video_path, video_start, video_end, args.max_frames, question,
-            )
+            if args.mode == "offline":
+                video_path = resolve_video_path(s, args.video_root)
+                if not video_path:
+                    skipped += 1
+                    continue
+                # Infer pre-extracted frame directory from video basename
+                video_basename = Path(video_path).stem
+                frame_dir = root_path / "data" / "agent_v5" / "frames" / video_basename
+                if not frame_dir.exists():
+                    # fallback: infer from sample's existing frame_paths
+                    inp = s.get("input", {})
+                    vw = inp.get("visual_window", {})
+                    frame_paths = vw.get("frame_paths", [])
+                    if frame_paths:
+                        frame_dir = root_path / Path(frame_paths[0]).parent
+                    else:
+                        skipped += 1
+                        continue
+                all_frames = sorted(frame_dir.glob("*.jpg"))
+                if not all_frames:
+                    skipped += 1
+                    continue
+                n_frames = len(all_frames)
+                if n_frames > args.max_frames:
+                    indices = [int(i * (n_frames - 1) / (args.max_frames - 1)) for i in range(args.max_frames)]
+                    sampled = [str(all_frames[i]) for i in indices]
+                else:
+                    sampled = [str(f) for f in all_frames]
+                messages = build_messages(sampled, question, is_frame_paths=True)
+            else:  # streaming: use pre-extracted frame_paths from visual_window
+                inp = s.get("input", {})
+                vw = inp.get("visual_window", {})
+                frame_paths = vw.get("frame_paths", [])
+                if not frame_paths:
+                    skipped += 1
+                    continue
+                # Resolve relative paths to absolute
+                abs_paths = []
+                for fp in frame_paths:
+                    p = Path(fp)
+                    if p.is_absolute():
+                        abs_paths.append(str(p))
+                    else:
+                        abs_paths.append(str(root_path / fp))
+                messages = build_messages(abs_paths, question, is_frame_paths=True)
             inputs = processor.apply_chat_template(
                 messages,
                 tokenize=True, return_dict=True, return_tensors="pt",
@@ -296,13 +347,18 @@ def main():
             text = processor.tokenizer.decode(new_tokens, skip_special_tokens=True)
 
             correct = score(text, gold, kind)
+            if args.mode == "offline":
+                vw_start, vw_end = 0.0, float(decision_end)
+            else:
+                vw_start = float(decision_end - args.visual_window_chunks * args.agent_chunk_sec)
+                vw_end = float(decision_end)
             results.append({
                 "idx": i,
                 "sample_id": s.get("sample_id") or s.get("trajectory_id"),
                 "sample_type": s.get("sample_type"),
                 "kind": kind,
                 "gold": gold,
-                "video_window": [video_start, video_end],
+                "video_window": [vw_start, vw_end],
                 "pred": text[:300],
                 "correct": correct,
             })

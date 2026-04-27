@@ -146,10 +146,6 @@ def main():
         model_max_length=16384,
         do_train=False,
         do_eval=True,
-        # The audit writer keys off output_dir; harmless to point it here
-        audit_log_dir=None,
-        # Skip class-balanced sampler — eval uses sequential anyway
-        class_balanced_sampler=False,
     )
 
     collator = PerTimestepDataCollator(tokenizer)
