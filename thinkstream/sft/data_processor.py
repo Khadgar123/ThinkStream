@@ -632,6 +632,61 @@ def _build_token_loss_weight(
     return weight
 
 
+def _extract_eval_positions(
+    input_ids_flat: List[int],
+    ans_start: int,
+    ans_end: int,
+    span_ids: Dict[str, Dict],
+    seq_len: int,
+    sample_type: str,
+) -> Dict:
+    """Locate token positions used by trainer.evaluate() for accuracy metrics.
+
+    Returns:
+        {
+            "action_keyword_positions": [int, ...]
+                # tokens between <action> and </action>; argmax match here
+                # gives eval/action_accuracy.
+            "post_action_position": int | None
+                # first token after </action>; for silent samples, this
+                # should equal <|im_end|>. argmax match gives
+                # eval/silent_eos_rate (filtered to silent samples).
+            "sample_type": str
+                # passed through so trainer can bucket per class.
+        }
+    """
+    meta: Dict = {
+        "action_keyword_positions": [],
+        "post_action_position": None,
+        "sample_type": sample_type,
+    }
+    if "action" not in span_ids:
+        return meta
+
+    action_open_id = span_ids["action"]["open"]
+    action_close_id = span_ids["action"]["close"]
+
+    in_action = False
+    upper = min(ans_end + 2, seq_len)
+    for i in range(ans_start, upper):
+        tok = input_ids_flat[i]
+        if tok == action_open_id:
+            in_action = True
+            continue
+        if tok == action_close_id:
+            in_action = False
+            # Position immediately after </action>: the transition token
+            # that determines whether to continue (response/query/summary)
+            # or stop (<|im_end|>).
+            if i + 1 < seq_len:
+                meta["post_action_position"] = i + 1
+            break
+        if in_action:
+            meta["action_keyword_positions"].append(i)
+
+    return meta
+
+
 def preprocess_per_timestep(sample: Dict, processor) -> Dict:
     """Tokenize a per-timestep sample and mask labels.
 
@@ -712,6 +767,15 @@ def preprocess_per_timestep(sample: Dict, processor) -> Dict:
 
     # Per-sample loss weight (context-aware, not just sample_type)
     full_result["sample_weight"] = _get_sample_weight(sample)
+
+    # Eval-time accuracy probes: positions of action keyword token(s) +
+    # the post-action transition token. Used by trainer.evaluate() to
+    # compute eval/action_accuracy and eval/silent_eos_rate without
+    # running generation. Inference time = teacher-forced argmax match.
+    full_result["eval_meta"] = _extract_eval_positions(
+        input_ids_flat, ans_start, ans_end, span_ids, L,
+        sample_type=sample.get("sample_type", "?"),
+    )
 
     return full_result
 
@@ -1017,6 +1081,9 @@ class PerTimestepDataCollator:
 
         # Per-sample metadata (audit logging only; popped before model.forward)
         batch["sample_meta"] = [inst.get("sample_meta", {}) for inst in instances]
+
+        # Eval-time accuracy probes (popped before model.forward in trainer)
+        batch["eval_meta"] = [inst.get("eval_meta", {}) for inst in instances]
 
         return batch
 

@@ -12,7 +12,10 @@ Removed from Qwen3-VL official finetune:
 """
 
 import torch
+import torch.distributed as dist
+from collections import defaultdict
 from pathlib import Path
+from typing import Dict
 from transformers import Trainer
 from transformers.models.qwen2_5_vl.modeling_qwen2_5_vl import (
     Qwen2_5_VisionTransformerPretrainedModel,
@@ -46,6 +49,7 @@ class WeightedSFTTrainer(Trainer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._audit_step = self._init_audit_writers()
+        self._reset_eval_accumulator()
 
     def _init_audit_writers(self):
         """Open <audit_dir>/sft_step.jsonl + sft_sample.jsonl. Rank-0 only."""
@@ -112,6 +116,9 @@ class WeightedSFTTrainer(Trainer):
         sample_weights = inputs.pop("sample_weights", None)
         token_loss_weight = inputs.pop("token_loss_weight", None)
         sample_meta = inputs.pop("sample_meta", None)
+        eval_meta = inputs.pop("eval_meta", None)
+        # Keep input_ids handy for argmax-vs-gold accumulation during eval
+        eval_input_ids = inputs["input_ids"] if not self.model.training else None
 
         outputs = model(**inputs)
 
@@ -151,6 +158,16 @@ class WeightedSFTTrainer(Trainer):
                 loss = (per_sample_loss * sample_weights).sum() / sample_weights.sum()
             else:
                 loss = per_sample_loss.mean()
+
+        # ── Eval-time accuracy accumulation (teacher-forced argmax) ──
+        # Done before audit because audit guard requires model.training=True
+        # and this branch is the eval path.
+        if not self.model.training and eval_meta is not None and eval_input_ids is not None:
+            try:
+                self._accumulate_eval_argmax(outputs.logits, eval_input_ids, eval_meta)
+            except Exception as e:
+                import logging as _logging
+                _logging.getLogger(__name__).debug("eval argmax accum skipped: %s", e)
 
         # ── Audit log: per-step aggregate + per-sample breakdown ──
         # Skip during eval — model.training=False means HF Trainer is in
@@ -245,6 +262,130 @@ class WeightedSFTTrainer(Trainer):
             return float(self.optimizer.param_groups[0]["lr"])
         except Exception:
             return -1.0
+
+    # -----------------------------------------------------------------
+    # Eval-time argmax accuracy (teacher-forced) — see data_processor's
+    # _extract_eval_positions. Tracks per-class:
+    #   - action_match / action_total  → eval/action_acc[_<class>]
+    #   - post_match   / post_total    → eval/post_action_acc[_<class>]
+    # silent_eos_rate is just post_action_acc filtered to silent samples.
+    # -----------------------------------------------------------------
+
+    def _reset_eval_accumulator(self):
+        self._eval_acc = {
+            "action_match": defaultdict(int),
+            "action_total": defaultdict(int),
+            "post_match":   defaultdict(int),
+            "post_total":   defaultdict(int),
+        }
+
+    def _accumulate_eval_argmax(self, logits, input_ids, eval_meta) -> None:
+        """Teacher-forced argmax match at known structural positions."""
+        with torch.no_grad():
+            preds = logits.argmax(dim=-1)  # (B, L)
+            B, L = preds.shape
+            for b, meta in enumerate(eval_meta):
+                if not meta:
+                    continue
+                stype = meta.get("sample_type", "?") or "?"
+
+                kw_positions = meta.get("action_keyword_positions") or []
+                if kw_positions:
+                    self._eval_acc["action_total"][stype] += 1
+                    self._eval_acc["action_total"]["_all"] += 1
+                    all_match = True
+                    for p in kw_positions:
+                        # logits[p-1] predicts token at position p
+                        if p <= 0 or p >= L:
+                            all_match = False
+                            break
+                        if preds[b, p - 1].item() != int(input_ids[b, p].item()):
+                            all_match = False
+                            break
+                    if all_match:
+                        self._eval_acc["action_match"][stype] += 1
+                        self._eval_acc["action_match"]["_all"] += 1
+
+                pp = meta.get("post_action_position")
+                if pp is not None and 0 < pp < L:
+                    self._eval_acc["post_total"][stype] += 1
+                    self._eval_acc["post_total"]["_all"] += 1
+                    if preds[b, pp - 1].item() == int(input_ids[b, pp].item()):
+                        self._eval_acc["post_match"][stype] += 1
+                        self._eval_acc["post_match"]["_all"] += 1
+
+    def _all_reduce_eval_acc(self) -> None:
+        """Sum per-rank counters across DDP world. No-op if not distributed."""
+        if not (dist.is_available() and dist.is_initialized()):
+            return
+        device = next(self.model.parameters()).device
+        # Union of keys across ranks (each rank may have seen different sample types)
+        local_keys = set()
+        for d in self._eval_acc.values():
+            local_keys.update(d.keys())
+        # Gather union across ranks
+        gathered: list = [None for _ in range(dist.get_world_size())]
+        dist.all_gather_object(gathered, sorted(local_keys))
+        all_keys = sorted({k for ks in gathered for k in ks})
+        if not all_keys:
+            return
+        # Pack 4 counters × len(all_keys) into one tensor for a single all_reduce
+        n = len(all_keys)
+        buf = torch.zeros(4 * n, dtype=torch.long, device=device)
+        bands = ["action_match", "action_total", "post_match", "post_total"]
+        for bi, band in enumerate(bands):
+            d = self._eval_acc[band]
+            for ki, k in enumerate(all_keys):
+                buf[bi * n + ki] = int(d.get(k, 0))
+        dist.all_reduce(buf, op=dist.ReduceOp.SUM)
+        for bi, band in enumerate(bands):
+            self._eval_acc[band] = defaultdict(int)
+            for ki, k in enumerate(all_keys):
+                self._eval_acc[band][k] = int(buf[bi * n + ki].item())
+
+    def _finalize_eval_metrics(self) -> Dict[str, float]:
+        out: Dict[str, float] = {}
+        # Overall action accuracy
+        tot_a = self._eval_acc["action_total"].get("_all", 0)
+        if tot_a > 0:
+            out["eval/action_accuracy"] = (
+                self._eval_acc["action_match"].get("_all", 0) / tot_a
+            )
+        # Per-class action accuracy
+        for stype, tot in self._eval_acc["action_total"].items():
+            if stype == "_all" or tot == 0:
+                continue
+            out[f"eval/action_acc_{stype}"] = (
+                self._eval_acc["action_match"].get(stype, 0) / tot
+            )
+        # Per-class post-action transition accuracy (silent_eos_rate is
+        # the silent slice — surfaced as its own metric for visibility).
+        for stype, tot in self._eval_acc["post_total"].items():
+            if stype == "_all" or tot == 0:
+                continue
+            acc = self._eval_acc["post_match"].get(stype, 0) / tot
+            out[f"eval/post_action_acc_{stype}"] = acc
+            if stype == "silent":
+                out["eval/silent_eos_rate"] = acc
+        return out
+
+    def evaluate(self, *args, **kwargs):
+        """Wrap HF eval to inject custom argmax-accuracy metrics into wandb.
+
+        Trainer.evaluate() already calls self.log(metrics) inside before
+        returning, so we add our extras AFTER super() and re-log them so
+        wandb picks up `eval/action_accuracy`, `eval/silent_eos_rate`, etc.
+        """
+        self._reset_eval_accumulator()
+        metrics = super().evaluate(*args, **kwargs)
+        self._all_reduce_eval_acc()
+        extra = self._finalize_eval_metrics()
+        if extra:
+            # Stamp with the same global_step the eval loop just used so
+            # the extras show up on the same wandb x-axis tick as eval_loss.
+            self.log(extra)
+            metrics.update(extra)
+        return metrics
 
 
 # ---------------------------------------------------------------------------
