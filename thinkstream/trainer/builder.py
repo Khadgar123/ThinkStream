@@ -40,7 +40,6 @@ from deepslyme.node.sft import (
     compute_loss,
 )
 from deepslyme.node.metric import collect_metrics, reduce_and_log_metrics
-from deepslyme.node.rl.grpo import calc_grpo_advantages
 
 # Import SFT components
 from thinkstream.trainer.sft import (
@@ -69,6 +68,7 @@ from thinkstream.trainer.grpo import (
     unwrap_model_for_generation,
     rollout,
     calc_rewards,
+    compute_gdpo_advantages,
     build_grpo_inputs,
     apply_liger_kernel_for_grpo,
     compute_grpo_loss,
@@ -222,7 +222,7 @@ def build_grpo_train() -> Node:
                             unwrap_model_for_generation(scope),
                         ),
                         calc_rewards(scope),
-                        calc_grpo_advantages(scope),
+                        compute_gdpo_advantages(scope),
                         prepare_grpo_micro_batches(scope),
                     ],
                     micro_step_nodes=[
@@ -261,9 +261,22 @@ def build_grpo_train() -> Node:
                                 "avg_think_len": "mean",
                                 "grad_norm": "latest",
                                 "learning_rate": "latest",
+                                # Per-reward raw means
                                 **{
                                     f"reward_{k}_mean": "mean" for k in REWARD_DICT_KEYS
                                 },
+                                # GDPO per-reward advantage diagnostics
+                                **{
+                                    f"adv_{k}_mean": "mean" for k in REWARD_DICT_KEYS
+                                },
+                                **{
+                                    f"adv_{k}_std": "mean" for k in REWARD_DICT_KEYS
+                                },
+                                **{
+                                    f"mask_{k}_rate": "mean" for k in REWARD_DICT_KEYS
+                                },
+                                "adv_total_mean": "mean",
+                                "adv_total_var": "mean",
                             },
                         ),
                         update_progress(scope),

@@ -128,38 +128,39 @@ RL 不预造 per-timestep 样本。模型对 RL 视频做完整 rollout，用 go
 
 ---
 
-## 5. 训练步数
+## 5. 训练步数（v9.2 简化为 1 SFT + 1 GDPO RL）
 
-### 5.1 SFT（8×H100, global_batch=64）
+> 旧 5 阶段 SFT (P1→P2→C1→C2→P5) 已合并为单次混合 SFT。依据见 `data_construction_zh.md` §4 + `sft_engineering.md` §7.1。Phase 数据文件仍产出，仅用于 per-category 诊断 eval。
+
+### 5.1 SFT（8×H100, global_batch=64, one-shot mixed）
 
 | 阶段 | 样本数 | epochs | steps | LR | 基模型 |
 |------|--------|--------|-------|----|--------|
-| Phase 1 | 2,066 | 3 | 96 | 1e-5 | Qwen2.5-VL-3B |
-| Phase 2 | 3,168 | 3 | 147 | 5e-6 | ← P1 ckpt |
-| Phase C1 | 964 | 2 | 30 | 3e-6 | ← P2 ckpt |
-| Phase C2 | 757 | 2 | 22 | 2e-6 | ← C1 ckpt |
-| Phase 5 | 6,888 | 1 | 107 | 1e-6 | ← C2 ckpt |
-| **SFT 小计** | | | **402** | | **~5 min** |
+| **SFT** (P1+P2+C1+P5 全混合，无 C2) | 6,888 | 2 | 215 | 1e-5 → 1e-6 cosine | Qwen2.5-VL-3B |
+| **SFT 小计** | | | **215** | | **~3 min** |
 
-### 5.2 RL/GRPO（8×H100, global_batch=16, group_size=4）
+### 5.2 RL/GDPO（8×H100, global_batch=16, group_size=4）
 
 | 阶段 | (视频,task) 对 | epochs | steps | LR | 基模型 |
 |------|---------------|--------|-------|----|--------|
-| GRPO | 2,346 | 2 | 292 | 5e-7 | ← P5 ckpt |
+| **GDPO RL** (single stage) | 2,346 | 2 | 292 | 5e-7 | ← SFT ckpt |
 | **RL 小计** | | | **292** | | **~39 min** |
 
-**总训练**: 694 steps, ~44 min（RL 的 rollout 是时间瓶颈）
+**总训练**: 507 steps, ~42 min（RL rollout 仍是时间瓶颈）。
 
-### 5.3 GRPO Reward 设计
+### 5.3 GDPO Reward 设计（v11，6 路）
 
-| 分量 | 权重 | 信号 |
-|------|------|------|
-| R_format | 0.15 | think/action tag 格式正确 |
-| R_action | 0.20 | 选对 action 类型 vs gold_action |
-| R_correctness | 0.30 | 答案 vs gold_answer |
-| R_timing | 0.15 | 在正确时间步响应 |
-| R_think_len | 0.10 | think 长度在 40-60 tok |
-| R_compress | 0.10 | 压缩后 entity retention |
+| 分量 | 权重 | 信号 | 应用条件 (mask) |
+|------|------|------|-----------------|
+| R_correctness | 0.30 | 答案 vs gold_answer (exact match for V1-V4) | 仅有 gold_answer 的样本 |
+| R_silent_quality | 0.20 | 该 silent 是否 silent / 该 respond 是否 respond | 始终 |
+| R_timing | 0.20 | 在正确时间步响应（4 chunk 容忍窗口） | 仅 trajectory 含 response action |
+| R_recall_quality | 0.10 | recall query 格式 + 无答案泄漏 | 仅 trajectory 含 recall action |
+| R_format | 0.10 | think/action tag 格式正确 | 始终（不再硬门控） |
+| R_overflow_pen | 0.10 | memory 溢出（自选 compress range 失败）→ -1.0 | 始终 |
+
+**Aggregation (NVIDIA GDPO 模式)**：per-reward group-norm（mean-only） → weighted sum → batch-whiten。
+代码：`thinkstream/trainer/gdpo_advantage.py` + `compute_gdpo_advantages` in `grpo.py`。
 
 ---
 
@@ -176,15 +177,13 @@ RL 不预造 per-timestep 样本。模型对 RL 视频做完整 rollout，用 go
 
 val/test 按视频粒度划分，同一视频的所有样本只在一个 split。按长度分层确保覆盖全 action type。
 
-### 6.1 Eval 时间点
+### 6.1 Eval 时间点（v9.2 简化）
 
 | 时间点 | 数据 | 评什么 |
 |--------|------|--------|
-| SFT P1 结束 | val 30 条 | action F1 (silent/response) |
-| SFT P2 结束 | val 30 条 | action F1 + recall 准确率 |
-| SFT C2 结束 | val 30 条 | 压缩质量 (entity retention) |
-| SFT P5 结束 | val 30 条 | 全量指标 → **决定是否进 RL** |
-| RL 每 50 steps | val 30 条 | reward 均值 + action F1 |
+| SFT 25%/50%/75% | val 30 条 | per-phase 分桶 F1（silent/response/recall/compress 各自） + 压缩质量 |
+| SFT 结束 | val 30 条 | 全量指标 → **决定是否进 RL** |
+| RL 每 50 steps | val 30 条 | reward 均值 + action F1 + `mask_*_rate` from `grpo_step.jsonl` |
 | RL 结束 | val 30 条 | 全量指标 |
 | **最终** | test 30 条 | 全量 + 端到端 rollout |
 
@@ -226,15 +225,14 @@ python -m scripts.agent_data_v5 run \
     --video_root /path/to/videos \
     --num_videos 319
 
-# SFT
-PHASE=1 bash scripts/sft_per_timestep.sh
-PHASE=2 LLM=output/agent-phase1 bash scripts/sft_per_timestep.sh
-PHASE=C1 LLM=output/agent-phase2 bash scripts/sft_per_timestep.sh
-PHASE=C2 LLM=output/agent-c1 bash scripts/sft_per_timestep.sh
-PHASE=5 LLM=output/agent-c2 bash scripts/sft_per_timestep.sh
+# SFT (v9.2: one-shot, 全混合数据 + class-balanced sampler)
+PHASE=mixed bash scripts/sft_per_timestep.sh   # → output/agent-mixed/
 
-# RL (从 Phase 5 checkpoint 继续)
-# TODO: 迁移 grpo.py rollout 到 per-timestep agent_loop
+# RL/GDPO (从 SFT checkpoint 继续；audit log 自动开到 OUTPUT/audit/)
+LLM=output/agent-mixed bash scripts/grpo_train.sh   # → output/agent-grpo/
+
+# 训练中 tail GDPO 诊断：
+tail -f output/agent-grpo/audit/grpo_step.jsonl | jq .
 ```
 
 ---

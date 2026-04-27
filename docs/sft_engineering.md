@@ -810,29 +810,35 @@ if is_qwen3vl:
 
 ## 7. 训练课程（Curriculum）
 
-### 7.1 六阶段课程 (SFT + RL)
+### 7.1 训练流水线（v11，单 SFT + 单 GDPO RL）
+
+> **v9.2/v11 (2026-04-27)** 把旧 6 阶段（P1 → P2 → C1 → C2 → P5 → RL）合并为 **1 次 SFT + 1 次 GDPO RL**（共 2 个训练 run，**RL 阶段只有 1 个**），依据 `data_construction_zh.md` §4 的同期工作调研（8/8 papers 零使用 DAgger 或多阶段 RL）。
+> Phase1-5 数据文件仍然产出（用于 per-category 诊断和分桶 eval），但**训练只跑一次 SFT**（混合数据）+ **一次 RL**。
 
 **SFT 和 RL 使用不同的视频集**（详见 `data_batch1_plan.md` §2）：
-- SFT: 184 条视频 → teacher 轨迹 per-timestep 样本
-- RL: 75 条视频 → 模型自己 rollout + GRPO reward
+- SFT: 184 条视频 → teacher 轨迹 per-timestep 样本（all phases mixed）
+- RL: 75 条视频 → 模型自己 rollout + GDPO reward
 
-| 阶段 | 数据集 | 样本量 | 训练目标 | 超参 |
-|------|--------|--------|---------|------|
-| **Phase 1** 协议对齐 | P1: silent + response(from_frames) | ~1,700 | 学会 think + action 格式 | lr=1e-5, epochs=3, 79 steps |
-| **Phase 2** Recall 学习 | P2: + recall + pending + uncertain | ~2,600 | 学会判断 recall 时机 | lr=5e-6, epochs=3, from P1 ckpt |
-| **Phase C1** 压缩行为 | C1: + compress(system指定) + compress_recall | ~800 | 学会按指定范围压缩 | lr=3e-6, epochs=2, from P2 ckpt |
-| **Phase C2** 自选压缩 | C2: + compress(自选范围) | ~630 | 学会自选压缩窗口 | lr=2e-6, epochs=2, from C1 ckpt |
-| **Phase 5** 混合训练 | P5: 所有类型按比例混合 | ~5,700 | 综合能力对齐 | lr=1e-6, epochs=1, from C2 ckpt |
-| **Phase 6** RL/GRPO | 75 条 RL 视频, ~2,050 (视频,task) 对 | on-policy | 决策优化 | lr=5e-7, epochs=2, group=4, from P5 ckpt |
+| 训练 run | 数据集 | 样本量 | 训练目标 | 超参 |
+|----------|--------|--------|---------|------|
+| **SFT** | `stream_agent_p5`（P1+P2+C1+P5 全部混合） | ~11,500 | 4 action 格式 + summary 写法 + recall 时机 + 系统触发时按 teacher gold range 压缩 | lr=1e-5 → 1e-6 cosine, epochs=2, batch=16, ~1,440 steps, ZeRO-3 |
+| **GDPO RL** | 75 RL 视频, ~2,050 (video,task) 对 | on-policy | 6 路 reward 决策优化（含 overflow_pen 监督模型自选 compress range） | lr=5e-7, epochs=2, G=4, batch=16, ~500 steps, from SFT ckpt |
 
-SFT 总计 333 steps (~4 min)，RL 总计 256 steps (~34 min)，8×H100。
+SFT 总计 ~1,440 steps (~18 min on 8×H100)，RL 总计 ~500 steps (~67 min)。
+
+**为什么不再分阶段 SFT**：
+- 数据是单一质量层（397B teacher 蒸馏），无 streaming-VLM 那种粗→精退火需求
+- 4 action 类型彼此无明显课程关系；混合训练让模型同时见到所有上下文，避免阶段切换的灾难性遗忘
+- 旧 P1→P2→...→P5 的"难度递增"假设未经实验验证；同期工作 5/8 直接 0 SFT + 1 RL，证明该假设过强
+
+**为什么不再分阶段 RL**：
+- 旧 C1→C2 拆分的本意（"先学固定 range，再学自选 range"）已被 GDPO + `overflow_pen` reward 替代：模型从 SFT 起就见过 teacher gold range，RL 阶段直接让 reward 信号引导自选偏离
+- 同期 8 篇 paper 0/8 用 DAgger 链；GDPO RL 在 student rollout 上算 reward 本身就是 DAgger 的目标
 
 **Eval 检查点**：
-- P1 结束 → val action F1 (silent/response)
-- P2 结束 → val action F1 + recall 准确率
-- C2 结束 → val 压缩质量
-- P5 结束 → val 全量指标 → **决定是否进 RL**
-- RL 每 50 steps → val reward + action F1
+- SFT 中：每 ~360 steps（25%、50%、75%、100%）跑 val per-phase 分桶 F1（虽然不分阶段训练，但分桶 eval 仍有诊断价值）
+- SFT 结束 → val 全量指标 → **决定是否进 RL**
+- RL 每 50 steps → val reward + action F1 + `mask_*_rate` from `THINKSTREAM_AUDIT_DIR/grpo_step.jsonl`
 - 最终 → test 30 条视频全量评估
 
 ### 7.2 数据集文件与注册（P1-4）
@@ -840,144 +846,57 @@ SFT 总计 333 steps (~4 min)，RL 总计 256 steps (~34 min)，8×H100。
 **Pipeline 同时输出两种文件**：
 
 ```
-data/agent/final/
-├── train.jsonl              # 全量训练集（所有 phase 混合）
-├── val.jsonl                # 全量验证集
-├── test.jsonl               # 全量测试集
-├── phase1_train.jsonl       # 按 phase 拆分的训练集
-├── phase2_train.jsonl
-├── c1_train.jsonl
-├── c2_train.jsonl
-├── phase5_train.jsonl
-└── pipeline_stats.json      # 含每个 phase 的样本量统计
+data/agent_v5/final/
+├── train.jsonl              # 全量训练集（生产用）
+├── val.jsonl                # 验证集
+├── test.jsonl               # 测试集
+├── phase5_train.jsonl       # = train.jsonl（生产 SFT 读这个）
+├── phase1_train.jsonl       # 诊断切分：silent + 基础 response
+├── phase2_train.jsonl       # 诊断切分：recall 样本
+├── c1_train.jsonl           # 诊断切分：compress 样本
+└── pipeline_stats.json      # 各 phase 样本量统计
 ```
 
-Pipeline Pass 5 结尾新增拆分逻辑：
+`pipeline.py` 用 `assign_phase()` 给每条 train sample 打 phase 标签，然后写出 5 个文件（生产文件 + 3 个诊断切分）。**`c2_train.jsonl` 在 v11 已废除**：旧的"模型自选 range" SFT 数据已被 RL 阶段的 `overflow_pen` reward 替代。
+
+**Dataset 注册**（`thinkstream/sft/data_list.py`）：
 
 ```python
-# pipeline.py Pass 5 结尾
-for phase in ["1", "2", "C1", "C2", "5"]:
-    phase_samples = [s for s in train_samples if s["phase"] == phase]
-    phase_name = {"1": "phase1", "2": "phase2", "C1": "c1", "C2": "c2", "5": "phase5"}[phase]
-    path = FINAL_DIR / f"{phase_name}_train.jsonl"
-    with open(path, "w") as f:
-        for s in phase_samples:
-            f.write(json.dumps(s, ensure_ascii=False) + "\n")
-    logger.info(f"  {phase_name}: {len(phase_samples)} samples → {path}")
-    stats[f"{phase_name}_count"] = len(phase_samples)
-```
+DATASET_REGISTRY = {
+    # 生产
+    "stream_agent_p5":  ".../final/phase5_train.jsonl",   # SFT + RL 都用
+    "stream_agent_all": ".../final/train.jsonl",          # 别名
 
-**SFT 数据集注册**（`data_list.py`）：
-
-```python
-STREAM_AGENT_P1 = {
-    "annotation_path": ".../agent/final/phase1_train.jsonl",
-    "data_path": "./",
-}
-STREAM_AGENT_P2 = {
-    "annotation_path": ".../agent/final/phase2_train.jsonl",
-    "data_path": "./",
-}
-STREAM_AGENT_C1 = {
-    "annotation_path": ".../agent/final/c1_train.jsonl",
-    "data_path": "./",
-}
-STREAM_AGENT_C2 = {
-    "annotation_path": ".../agent/final/c2_train.jsonl",
-    "data_path": "./",
-}
-STREAM_AGENT_P5 = {
-    "annotation_path": ".../agent/final/phase5_train.jsonl",
-    "data_path": "./",
-}
-# 全量（用于调试或混合训练）
-STREAM_AGENT_ALL = {
-    "annotation_path": ".../agent/final/train.jsonl",
-    "data_path": "./",
+    # 诊断 ablation
+    "stream_agent_p1":  ".../final/phase1_train.jsonl",   # 基础 silent+response
+    "stream_agent_p2":  ".../final/phase2_train.jsonl",   # recall
+    "stream_agent_c1":  ".../final/c1_train.jsonl",       # compress
 }
 ```
 
-训练脚本直接 `--args.data.dataset_use stream_agent_p1`，不需要在代码中过滤 phase 字段。
+训练脚本直接 `--args.data.dataset_use stream_agent_p5`（生产）或 `_p1` / `_p2` / `_c1`（per-category 诊断 ablation），不需要在代码中过滤 phase 字段。
 
 ### 7.3 训练脚本
 
+实际脚本以代码为准；本节只列入口和典型用法。
+
+| 训练 run | 脚本 | 入口 | 默认输出 |
+|----------|------|------|---------|
+| SFT | `scripts/sft_per_timestep.sh` | `thinkstream/sft/train.py` (HfArgumentParser) | `output/agent-mixed/` |
+| GDPO RL | `scripts/grpo_train.sh` | `thinkstream/train.py grpo` (slyme `parse_and_inject`) | `output/agent-grpo/` + `audit/` |
+
 ```bash
-#!/bin/bash
-# scripts/sft_per_timestep.sh
-# 用法: PHASE=1 bash scripts/sft_per_timestep.sh
+# SFT one-shot mixed (~3 min on 8×H100)
+PHASE=mixed bash scripts/sft_per_timestep.sh
 
-PHASE=${PHASE:-1}
-NPROC_PER_NODE=8
-deepspeed=./scripts/zero3.json
-entry_file=thinkstream/train.py
+# GDPO RL from SFT checkpoint (single stage, ~40 min)
+LLM=output/agent-mixed bash scripts/grpo_train.sh
 
-case $PHASE in
-    1)
-        llm=${LLM:-Qwen/Qwen2.5-VL-3B-Instruct}
-        datasets=stream_agent_p1
-        lr=1e-5; epochs=3
-        run_name="agent-phase1"
-        ;;
-    2)
-        llm=${LLM:?'Set LLM to Phase 1 checkpoint'}
-        datasets=stream_agent_p2
-        lr=5e-6; epochs=3
-        run_name="agent-phase2"
-        ;;
-    C1)
-        llm=${LLM:?'Set LLM to Phase 2 checkpoint'}
-        datasets=stream_agent_c1
-        lr=3e-6; epochs=2
-        run_name="agent-c1"
-        ;;
-    C2)
-        llm=${LLM:?'Set LLM to C1 checkpoint'}
-        datasets=stream_agent_c2
-        lr=2e-6; epochs=2
-        run_name="agent-c2"
-        ;;
-    5)
-        llm=${LLM:?'Set LLM to C2 checkpoint'}
-        datasets=stream_agent_p5
-        lr=1e-6; epochs=1
-        run_name="agent-phase5"
-        ;;
-esac
-
-output_dir=./output/${run_name}
-batch_size=${BSZ:-8}
-grad_accum_steps=${GRAD_ACCUM:-1}
-
-args="
-    sft \
-    --args.train.deepspeed ${deepspeed} \
-    --args.model.name_or_path ${llm} \
-    --args.model.model_type ${MODEL_TYPE:-qwen2.5vl} \
-    --args.model.max_length 16384 \
-    --args.data.dataset_use ${datasets} \
-    --args.data.flatten False \
-    --args.data.video_max_pixels 150528 \
-    --args.data.video_min_pixels 100352 \
-    --args.train.bf16 True \
-    --args.train.output_dir ${output_dir} \
-    --args.train.num_train_epochs ${epochs} \
-    --args.train.per_device_train_batch_size ${batch_size} \
-    --args.train.gradient_accumulation_steps ${grad_accum_steps} \
-    --args.train.save_steps 500 \
-    --args.train.learning_rate ${lr} \
-    --args.train.weight_decay 0.0 \
-    --args.train.warmup_ratio 0.03 \
-    --args.train.max_grad_norm 1.0 \
-    --args.train.lr_scheduler_type cosine \
-    --args.train.torch_empty_cache_steps 1 \
-    --args.train.dataloader.num_workers 4
-"
-
-TOKENIZERS_PARALLELISM=false \
-PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
-torchrun --nproc_per_node=${NPROC_PER_NODE} \
-         ${entry_file} ${args}
+# 训练中实时看 GDPO 信号
+tail -f output/agent-grpo/audit/grpo_step.jsonl | jq .
 ```
+
+环境变量覆盖（两脚本都支持）：`NPROC` / `LR` / `EPOCHS` / `BSZ` / `LLM`。GRPO 额外有 `GROUP_SIZE` / `MICRO_BATCH` / `ROLLOUT_MAX_CHUNKS` / `BETA` / `DATASET`。详见各脚本头部注释。
 
 ### 7.4 max_length 降低
 

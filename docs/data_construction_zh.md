@@ -1,9 +1,13 @@
 # 流视频 Agent 数据构造方案
 
-> 版本: v9.1 | 日期: 2026-04-24
+> 版本: v9.2 | 日期: 2026-04-27
 >
 > 核心设计：Per-timestep 独立样本 | 统一时间线记忆 | 视频在前文本在后 | MROPE 时间对齐
-> 80% token 触发压缩 (C1→C2) | Recall 两步 (query→response) | 3 专用 Prompt
+> 80% token 系统触发压缩 | Recall 两步 (query→response) | 3 专用 Prompt
+>
+> **训练流水线（v9.2 简化）**：1 轮 SFT + 1 轮 GDPO RL（共 2 阶段）。
+> 旧版 5 阶段（SFT + C1 + C1-D + C2 + C2-D）已废弃 —— 同期 2026 工作（ReMemR1 / Mem-α / SUMER / Memex 等 8/8）零使用 DAgger 链式阶段，最复杂的 Memex 也只用 1 SFT + 1 RL。
+> 详见 §4。
 >
 > 配套：`sft_engineering.md` (SFT v3.0) | `streaming_position_encoding.md` (位置编码 v1.0)
 
@@ -83,7 +87,7 @@ queries = [{question: "...", answers: [...]}]                ← 独立追踪区
 
 **触发**：thinks 总 token ≥ 80% budget (~480 tok)。Hysteresis: 压缩后降至 55% (~330 tok)。
 
-**C1 范围选择**：5 维归一化评分（content 0.30 / merge 0.20 / boundary 0.15 / recency 0.20 / token 0.15），选最低分范围压缩。C2: 模型自选范围。
+**Range 选择**：SFT 阶段用 teacher 5 维归一化评分（content 0.30 / merge 0.20 / boundary 0.15 / recency 0.20 / token 0.15）选最低分范围作为 gold 标签；RL 阶段模型自选 range，由 `overflow_pen` + `correctness` reward 监督（v9.2 起合并旧 C1/C2 阶段）。
 
 **二级压缩**：summary > 5 段时合并最老两段（≤200 tok）。
 
@@ -252,17 +256,53 @@ TaskCard = {
 
 ---
 
-## 4. RL 阶段 (GRPO)
+## 4. 训练流水线 (1 SFT + 1 GDPO RL)
 
-SFT Phase 5 完成后，在独立 RL 视频集（75 条）上 GRPO 训练。
+### 4.1 阶段总览（v9.2 简化）
 
-**Reward**：R_format(0.15) + R_action(0.20) + R_correctness(0.30) + R_timing(0.15) + R_think_len(0.10) + R_compress(0.10)。答案验证 V1-V4 自动（binary/MC/number/short_exact ≥60%），V5-V6 LLM judge。
+```
+SFT (one-shot)            ← 学格式 + 基本动作 + summary 写法
+   ↓
+GDPO RL (single stage)    ← 学 timing + recall query + 自选 compress range
+```
 
-**配置**：75 videos / ~2050 (video,task) 对 / G=4 / batch=16 / 2 epochs / ~256 steps / LR=5e-7。
+注意：流水线只有 **2 个训练 run**（1 个 SFT + 1 个 RL），**RL 阶段只跑 1 次**，不分 stage。
 
-**迁移**：`grpo.py` rollout 需从多轮 KV cache 迁移到 per-timestep re-render。
+旧版 5 阶段（SFT + C1 + C1-D + C2 + C2-D）已废弃。理由：
+- 同期 8 篇 2026 工作（ReMemR1 / Mem-α / MARC / AgeMem / SUMER / Memex / Dispider / StreamingVLM）**零使用** DAgger 链式阶段
+- 5/8 内存类工作直接 0 SFT + 1 RL；最复杂的 Memex 也只 1 SFT + 1 RL
+- 我们的 GDPO + `overflow_pen` reward 已经覆盖 DAgger 想解决的"student rollout 偏离 teacher 分布"
+- 数据是单一质量层（397B teacher 蒸馏），无 streaming-VLM 那种粗→精退火需求
+
+### 4.2 SFT
+
+全部 teacher 数据混训，**不分 C1/C2**：
+- 4 action 全类型（silent / response / recall / compress）
+- 系统触发 compress 时使用 teacher gold range 作为 SFT 标签
+- Per-timestep 独立样本（详见 §1.1）
+- LR 1e-5 / 1-2 epoch / batch=16 / DeepSpeed ZeRO-3 / FP/V1-V4 ≥60%
+
+模型学到：格式合规 + 系统 trigger 时如何写 summary + 基本 action 选择。
+
+### 4.3 GDPO RL（单阶段）
+
+从 SFT checkpoint 起步：
+- **Reward 6 路**：correctness(0.30) + silent_quality(0.20) + timing(0.20) + recall_quality(0.10) + format(0.10) + overflow_pen(0.10)
+- **Aggregation**：per-reward group-norm + weighted sum + batch-whiten（NVIDIA GDPO 2601.05242 模式）
+- **无 hard gate**：format/correctness 都是软项；GDPO batch-whiten 自然处理 scale
+- 系统仍 80% 触发 compress；**range 由模型自决**（即旧 C2 行为）
+- `overflow_pen` 给"range 选错→memory 没瘦下去"的负反馈，替代旧的 C2 stage 单独训练
+- **配置**：75 videos / ~2050 (video,task) 对 / G=4 / batch=16 / ~500 steps / LR=5e-7
+- 详见 `thinkstream/trainer/grpo.py` + `gdpo_advantage.py`
 
 **评估**：action macro-F1 / recall@1,3 / entity retention / QA accuracy (frame/memory/compressed/recall) / latency/chunk。
+
+### 4.4 阶段切换信号（从 audit log）
+
+GDPO RL 收敛指标（来自 `THINKSTREAM_AUDIT_DIR/grpo_step.jsonl`）：
+- `mask_correctness_rate` 稳定 > 0.7（学生答对率高）
+- `adv_correctness_std` < 0.5（group 内分歧小）
+- `mask_overflow_pen_rate` 单调下降到 < 0.05（学会自决 range）
 
 ---
 
@@ -310,14 +350,14 @@ JSON 放在 tag 内，不用 XML attribute。
 | 4 | compress range 不含当前 think | `pre_action_thinks` |
 | 5 | 先替换→再 append 当前 think | `memory.compress()` 后 `add_think()` |
 | 6 | summary 只引用 thinks + 可见帧 | `verify_summary_provenance()` |
-| 7 | C1 teacher 评分选范围，C2 模型自选 | `score_range_for_compression()` |
+| 7 | SFT 用 teacher 评分选 range；RL 阶段模型自选（GDPO+overflow_pen 监督） | `score_range_for_compression()` + `_compute_overflow_penalty()` |
 | 8 | action 优先级：用户问题 > query 触发 > silent | Pass 3-C |
 | 9 | recall_result 不含 teacher/未来内容 | `_simulate_recall_result()` |
 | 10 | recall fail 时 response 表达不确定 | `verify_information_flow()` |
 | 11 | query generator 不接收 gold_answer | `RECALL_QUERY_PROMPT` |
 | 12 | summary >5 段时合并最老两段 | `MemoryState.compress()` |
 | 13 | 压缩比 ≥ 2.5 | `verify_compression_ratio()` |
-| 14 | C1/C2 拆开训练 | 独立 prompt |
+| 14 | ~~C1/C2 拆开训练~~ → v9.2 合并：1 SFT + 1 GDPO RL | 见 §4 |
 | 15 | teacher 信息只用于选 gold | evidence 不进 student 路径 |
 | 16 | summary 不含当前 think 独有事实 | `verify_summary_no_current_think_leak()` |
 | 17 | Pass 2 question-blind | 无 question/task 参数 |

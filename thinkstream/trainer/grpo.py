@@ -4,14 +4,50 @@ import re
 import types
 import math
 import logging
-import deepspeed
 from pathlib import Path
 from typing import List, Any, Dict, Optional, Tuple
 import torch
-from transformers import PreTrainedModel
-from slyme.context import Context, Ref
-from slyme.node import Node, node, wrapper, Auto, expression
-from deepslyme.utils.accelerator import empty_cache
+
+# deepspeed / transformers / slyme are only required for the training nodes
+# (rollout / loss / model loading). The pure-tensor reward + advantage helpers
+# (`_gdpo_per_reward_group_norm`, `_compute_*_reward`) must remain importable
+# without these heavy deps so unit tests can exercise them on CPU-only envs.
+try:
+    import deepspeed                                       # noqa: F401
+    from transformers import PreTrainedModel               # noqa: F401
+    from slyme.context import Context, Ref                 # noqa: F401
+    from slyme.node import Node, node, wrapper, Auto, expression  # noqa: F401
+    from deepslyme.utils.accelerator import empty_cache    # noqa: F401
+    _SLYME_AVAILABLE = True
+except ImportError:
+    _SLYME_AVAILABLE = False
+    # Stubs so module-level @node / @wrapper / @expression decorators don't
+    # blow up at import time. These will fail loudly if anyone tries to
+    # actually invoke a training node without slyme installed.
+    PreTrainedModel = object  # type: ignore[assignment,misc]
+    Context = object          # type: ignore[assignment,misc]
+    Node = object             # type: ignore[assignment,misc]
+
+    def _identity_decorator(*args, **kwargs):
+        if len(args) == 1 and callable(args[0]) and not kwargs:
+            return args[0]
+        def _wrap(fn):
+            return fn
+        return _wrap
+
+    node = wrapper = expression = _identity_decorator  # type: ignore[assignment]
+
+    def Ref(*_args, **_kwargs):  # type: ignore[no-redef]
+        return None
+
+    class _AutoMeta(type):
+        def __getitem__(cls, _item):
+            return cls
+    class Auto(metaclass=_AutoMeta):  # type: ignore[no-redef]
+        pass
+
+    def empty_cache():  # type: ignore[no-redef]
+        pass
 
 # Import thinkstream specifics
 from thinkstream.model.inference import (
@@ -221,6 +257,9 @@ def _collect_think_lengths(
 ) -> List[int]:
     """Collect token lengths of <think>...</think> spans for one (chunk_results, gen_idx).
     One length per chunk that contains a think block.
+
+    Retained for diagnostics/audit only — no longer feeds a reward in v11
+    (think_len reward removed: redundant with format check, hard to tune).
     """
     lengths: List[int] = []
     for cr in chunk_results:
@@ -237,35 +276,6 @@ def _collect_think_lengths(
             think_ids = tokenizer.encode(think_part, add_special_tokens=False)
             lengths.append(len(think_ids))
     return lengths
-
-
-def _avg_think_len_for_generation(
-    chunk_results: List[Dict[str, Any]], gen_idx: int, tokenizer: Any
-) -> float:
-    """Average number of think tokens (inside <think>...</think>) for one (sample, gen_idx) across chunks."""
-    lengths = _collect_think_lengths(chunk_results, gen_idx, tokenizer)
-    return sum(lengths) / len(lengths) if lengths else 0.0
-
-
-def _compute_think_length_factor(
-    avg_think_len: float, target_tokens: int, step_window: int = 5
-) -> float:
-    """
-    Compute a discrete, step-wise reward for the thinking token length.
-    The reward increases in discrete steps of `step_window`.
-    Any length >= (target_tokens - step_window) receives the maximum reward of 1.0.
-    """
-    if target_tokens <= 0:
-        return 1.0
-    step_window = max(1, step_window)
-    threshold = max(0, target_tokens - step_window)
-    if avg_think_len >= threshold:
-        return 1.0
-    if threshold == 0:
-        return 1.0
-    step_idx = int(avg_think_len // step_window)
-    total_steps = int(threshold // step_window) + 1
-    return float(step_idx) / float(total_steps)
 
 
 def _extract_literal_answer(text: str) -> Optional[str]:
@@ -463,6 +473,7 @@ def unwrap_model_for_generation(
     rollout_sync_per_step: Auto[int] = 1,
 ) -> Context:
     """Sync weights from ZeRO-3 model_for_training to CPU model_for_generation before rollout."""
+    import deepspeed  # heavy dep; imported here so unit tests don't need it
     # With raw DeepSpeed, unwrapped model is accessed via .module
     unwrapped_model = (
         model_for_training.module
@@ -643,6 +654,11 @@ def rollout(
                     "generated_tokens": tokenizer.encode(
                         result.get("raw_output", ""), add_special_tokens=False,
                     ),
+                    # Post-step memory bookkeeping (used by overflow_pen reward).
+                    "memory_token_count": int(result.get("memory_token_count", 0)),
+                    "compress_budget": int(
+                        result.get("compress_budget", 0)
+                    ),
                     "window_start": chunk_idx * 2,
                     "window_end": (chunk_idx + 1) * 2,
                 })
@@ -652,6 +668,7 @@ def rollout(
             per_gen_results.append(chunk_results_g)
 
         # Merge into the expected format: chunk_results with generated_tokens[G]
+        # and per-gen memory_token_count list (used by overflow_pen reward).
         max_chunks_seen = max(len(g) for g in per_gen_results)
         merged_chunk_results = []
         for ci in range(max_chunks_seen):
@@ -660,15 +677,22 @@ def rollout(
                 "window_start": ci * 2,
                 "window_end": (ci + 1) * 2,
                 "generated_tokens": [],
+                "memory_token_count": [],   # per-gen post-step memory size
+                "compress_budget": [],      # per-gen budget (constant within a run, kept per-gen for symmetry)
             }
             for g in range(group_size):
                 if ci < len(per_gen_results[g]):
+                    cr_g = per_gen_results[g][ci]
                     merged["generated_tokens"].append(
-                        torch.tensor(per_gen_results[g][ci]["generated_tokens"])
+                        torch.tensor(cr_g["generated_tokens"])
                     )
+                    merged["memory_token_count"].append(cr_g.get("memory_token_count", 0))
+                    merged["compress_budget"].append(cr_g.get("compress_budget", 0))
                 else:
                     # Pad with empty if this gen finished early
                     merged["generated_tokens"].append(torch.tensor([]))
+                    merged["memory_token_count"].append(0)
+                    merged["compress_budget"].append(0)
             merged_chunk_results.append(merged)
 
         all_rollout_results.append({
@@ -680,41 +704,18 @@ def rollout(
     return ctx.set(rollout_data, all_rollout_results)
 
 
-REWARD_DICT_KEYS = (
-    "format", "response", "timing", "think_len",
-    "recall_quality", "compress_quality", "silent_quality",
-)
-
-# v9.0 gated additive design (T-GRPO + DeepSeek-R1 + Dispider):
-#   - format is a HARD GATE: format fail → total = -1.0 (Open-R1-Video).
-#   - response (correctness) is the primary signal.
-#   - process rewards (timing/think_len/recall/compress) are GATED on correctness:
-#       only counted when response is fully correct (resp_r >= 1.0).
-#   - silent_quality is ALWAYS counted (Dispider double-signal): explicitly
-#     supervises both "should-be-silent → silent +0.1" and
-#     "should-respond → silent -0.3" to prevent silent collapse.
-# v10 weights — RL focuses on what SFT *cannot* learn well:
-# the timing of silent ↔ respond/recall transitions and the recall query choice.
-# Response-text quality and compression entity-retention are SFT's job
-# (StreamingVLM / LiveCC saturated those with SFT alone), so they are
-# under-weighted in RL to avoid reward hacking on the text head.
+# v11 GDPO-style design — see docs/streaming_position_encoding.md (RL section)
+# and /Users/hzh/.claude/plans/fuzzy-plotting-valiant.md for rationale.
 #
-# Refs: T-GRPO (Video-R1, 2503.21776), C-GRPO (MARC, 2510.07915),
-# Posterior-GRPO (2508.05170), GRPO-as-PRM (2509.21154). All converge on
-# gated process rewards + outcome ORM, no separate PRM, narrow process scope.
-DEFAULT_REWARD_WEIGHTS = {
-    "format": 0.10,            # gate (small contribution when passed)
-    "response": 0.30,          # ↓ 0.50→0.30 (SFT teaches text; RL just signals correctness)
-    "timing": 0.30,            # ↑ 0.15→0.30 (RL's main lever for streaming agents)
-    "think_len": 0.05,         # gated
-    "recall_quality": 0.15,    # ↑ 0.10→0.15 (recall-query format is RL territory)
-    "compress_quality": 0.05,  # ↓ 0.10→0.05 (entity retention is SFT's job)
-    "silent_quality": 0.20,    # ALWAYS counted (Dispider double-signal)
-}
-# Format gate threshold: below this, the entire sample is rejected with -1.0.
-FORMAT_GATE_THRESHOLD = 0.7
-# Correctness gate: process rewards unlocked when resp_r >= this.
-CORRECT_GATE_THRESHOLD = 1.0
+# Reward keys + weights + the pure-tensor aggregation algorithm live in
+# ``gdpo_advantage.py`` so unit tests can import them without dragging in
+# transformers / deepspeed / slyme. We re-export here for backward compat.
+from thinkstream.trainer.gdpo_advantage import (
+    REWARD_DICT_KEYS,
+    DEFAULT_REWARD_WEIGHTS,
+    per_reward_group_norm as _gdpo_per_reward_group_norm,
+    aggregate_gdpo as _gdpo_aggregate,
+)
 
 
 def _compute_silent_quality_reward(
@@ -765,43 +766,30 @@ def _compute_silent_quality_reward(
     return 0.0       # responded — correctness reward handles quality
 
 
-def _compute_compress_reward(
-    chunk_texts: List[str],
-    compressed_segments: List[Dict],
+def _compute_overflow_penalty(
+    chunk_results: List[Dict[str, Any]], gen_idx: int
 ) -> float:
-    """Evaluate compression quality: entity retention in summary.
+    """Sparse compress-timing reward (Memex(RL) 2603.04257 soft-trigger pattern).
 
-    Checks how many entity names from the source compressed segments
-    appear in the model's generated summary.
+    Returns -1.0 if any post-step memory_token_count exceeds the agent's
+    own compress_budget; 0.0 otherwise. The agent learns "compress before
+    overflow" purely from this penalty — no positive reward for "compressed
+    at the right time" (SUMER 2511.21726 evidence: search > compress).
+
+    Both fields are populated by ``StreamingAgentLoop.step()``; if missing
+    (e.g., legacy chunk_results) the function returns 0.0 (no signal, not
+    an error).
     """
-    # Find compress actions in generated text
-    summaries = []
-    for text in chunk_texts:
-        m = _SUMMARY_RE.search(text)
-        if m:
-            try:
-                s = json.loads(m.group(1))
-                summaries.append(s.get("text", ""))
-            except (json.JSONDecodeError, ValueError):
-                pass
-    if not summaries:
-        return 0.0  # no compress action taken
-
-    # Entity names from compressed segments (ground truth)
-    entity_words = set()
-    for seg in compressed_segments:
-        words = re.findall(r'\b[a-zA-Z_]+\d*\b', seg.get("text", ""))
-        entity_words.update(w.lower() for w in words if "_" in w or w[0].isupper())
-
-    if not entity_words:
-        return 1.0  # no entities to check, pass
-
-    # Check retention across all summaries
-    retained = 0
-    for summary_text in summaries:
-        summary_words = set(w.lower() for w in re.findall(r'\b[a-zA-Z_]+\d*\b', summary_text))
-        retained += len(entity_words & summary_words)
-    return min(1.0, retained / len(entity_words))
+    for cr in chunk_results:
+        sizes = cr.get("memory_token_count", [])
+        budgets = cr.get("compress_budget", [])
+        if gen_idx >= len(sizes) or gen_idx >= len(budgets):
+            continue
+        budget = budgets[gen_idx]
+        size = sizes[gen_idx]
+        if budget > 0 and size > budget:
+            return -1.0
+    return 0.0
 
 
 @node
@@ -812,28 +800,37 @@ def calc_rewards(
     rollout_data: Auto[Dict[str, Any]],
     rewards: Ref[torch.Tensor],
     rewards_dict: Ref[Dict[str, torch.Tensor]],
+    rewards_masks: Ref[torch.Tensor],
     group_size: Auto[int],
     tokenizer: Auto[Any],
     time_reward_window: Auto[int],
     time_reward_slack: Auto[float],
     rollout_max_think_tokens: Auto[int],
 ) -> Context:
-    """Compute per-generation rewards for per-timestep streaming agent.
+    """Compute per-trajectory rewards + per-reward applicability masks.
 
-    v9.0 reward design (SFT teaches mechanism, RL teaches decisions):
-    - format: think/action tag structure correct
-    - response: PRIMARY — answer correctness + appropriate silence (soft, no hard gold_action)
-    - timing: responded at reasonable time (softened)
-    - think_len: think length near target
-    - recall_quality: query format + necessity + no answer leakage
-    - compress_quality: entity retention in compression summaries
+    v11 design (NVIDIA GDPO + Memex(RL) + ReMemR1 hybrid):
+      - 6 reward components, each producing a scalar in [-1, 1] per
+        (sample, generation) trajectory.
+      - For sparse rewards (timing only fires if any rollout responded;
+        recall_quality only if any rollout recalled), an applicability
+        mask is emitted alongside. Downstream ``compute_gdpo_advantages``
+        masks those rows to NaN before per-reward group-norm so masked
+        rollouts contribute 0 to that reward's advantage.
+      - No hard gates. Hard gates create bimodal advantage distributions
+        that batch-whiten cannot recover from (see plan rationale).
 
-    Key change from v8: NO gold_action hard label. Model is free to choose
-    any action path. Reward is based on OUTCOME (correct answer, good query,
-    good summary), not on matching a predetermined action sequence.
+    Outputs:
+      rewards:       [B] = [N_samples * G] weighted sum of raw rewards
+                          (logging-only; the GDPO node recomputes from
+                           rewards_dict + rewards_masks).
+      rewards_dict:  {key: [B]} per-component raw rewards.
+      rewards_masks: [B, num_rewards] applicability mask (1=apply, 0=skip).
+                     Column order matches REWARD_DICT_KEYS.
     """
     weights = DEFAULT_REWARD_WEIGHTS
     all_rewards = {k: [] for k in REWARD_DICT_KEYS}
+    all_masks = {k: [] for k in REWARD_DICT_KEYS}
 
     for sample_data in rollout_data:
         raw_sample = sample_data["raw_sample"]
@@ -843,8 +840,6 @@ def calc_rewards(
         metadata = raw_sample.get("metadata", {})
         gt_answer = metadata.get("gold_answer", "")
         answer_form = metadata.get("answer_form", "")
-        compressed_segments = raw_sample.get("input", {}).get(
-            "memory", {}).get("compressed_segments", [])
 
         # Timing: use chunk_idx from sample
         gt_chunk_idx = raw_sample.get("chunk_idx")
@@ -861,10 +856,10 @@ def calc_rewards(
                 video_start = chunk_results[0]["window_start"]
                 gt_chunk_idx = int((gt_timestamp - video_start) / time_per_chunk) if time_per_chunk > 0 else None
 
-        # Sanity: if the sample's gold_action expects a response but no gt_answer
-        # is available from any source, the recall/response reward gates will
-        # silently stay closed. Warn loudly so we notice rather than train on
-        # half-supervised samples. (Pure silent / compress samples are exempt.)
+        # Sanity: if the sample's gold_action expects a response but no
+        # gt_answer is available, correctness/timing/recall_quality masks
+        # will be 0 → the trajectory contributes nothing to those signals.
+        # Warn loudly so half-supervised samples don't silently pass.
         gold_action = metadata.get("gold_action") or raw_sample.get("action") or ""
         if not gt_answer and gold_action in (
             "response", "recall_query", "recall_response"
@@ -878,10 +873,12 @@ def calc_rewards(
             logger.warning(
                 "[grpo.calc_rewards] sample=%s gold_action=%s but gt_answer is "
                 "empty (metadata.gold_answer + conversations[1] both missing). "
-                "Recall/response rewards will be unavailable for this sample. "
-                "Re-run Pass4 with the metadata_complete check enabled.",
+                "Correctness/timing/recall_quality will be masked-out for this "
+                "sample. Re-run Pass4 with the metadata_complete check enabled.",
                 sid, gold_action,
             )
+
+        gt_present = bool(gt_answer)
 
         for g in range(group_size):
             chunk_texts: List[str] = []
@@ -890,101 +887,103 @@ def calc_rewards(
                 chunk_texts.append(tokenizer.decode(tokens, skip_special_tokens=False))
 
             predicted_actions = [_extract_action(t) for t in chunk_texts]
-            model_answer, response_chunk_idx, num_responses = (
+            model_answer, response_chunk_idx, _ = (
                 _scan_responses_for_answer(chunk_results, g, tokenizer)
             )
+            did_respond = "response" in predicted_actions
+            did_recall = "recall" in predicted_actions
 
-            # R_format
+            # ─── R_format (dense, always applies) ───
             fmt_r = _compute_format_reward(chunk_texts, agent_mode=True)
 
-            # R_response (primary: outcome-based, no hard gold_action)
-            resp_r = _compute_response_reward(
-                model_answer, gt_answer, predicted_actions, answer_form)
+            # ─── R_correctness (dense, applies only if gold_answer present) ───
+            corr_r = _compute_response_reward(
+                model_answer, gt_answer, predicted_actions, answer_form
+            )
 
-            # R_timing (softened)
-            if gt_chunk_idx is not None and gt_answer:
+            # ─── R_timing (sparse, applies only if rollout responded AND gt available) ───
+            if gt_chunk_idx is not None and gt_present:
                 slack_window_chunks = (
-                    int(time_reward_slack / time_per_chunk) if time_per_chunk > 0 else 0
+                    int(time_reward_slack / time_per_chunk)
+                    if time_per_chunk > 0
+                    else 0
                 )
                 time_r = _compute_time_reward(
                     response_chunk_idx, gt_chunk_idx,
                     time_reward_window, slack_window_chunks,
                 )
             else:
-                time_r = 1.0 if "response" not in predicted_actions else 0.5
+                # Silent-only sample: no timing signal
+                time_r = 0.0
 
-            # R_think_len
-            avg_think_len = _avg_think_len_for_generation(chunk_results, g, tokenizer)
-            think_r = _compute_think_length_factor(avg_think_len, rollout_max_think_tokens)
-
-            # R_recall_quality (derived from outcome, not forced)
+            # ─── R_recall_quality (sparse, applies only if rollout recalled) ───
             recall_r = _compute_recall_quality_reward(
-                predicted_actions, chunk_texts, gt_answer, model_answer)
+                predicted_actions, chunk_texts, gt_answer, model_answer
+            )
 
-            # R_compress_quality
-            compress_r = _compute_compress_reward(chunk_texts, compressed_segments)
-
-            # R_silent_quality (v9: explicit silent supervision, never gated)
+            # ─── R_silent_quality (dense, always applies — streaming-specific) ───
             silent_r = _compute_silent_quality_reward(
-                predicted_actions, gt_answer, model_answer, answer_form)
+                predicted_actions, gt_answer, model_answer, answer_form
+            )
+
+            # ─── R_overflow_pen (dense, always applies — Memex soft-trigger pattern) ───
+            overflow_r = _compute_overflow_penalty(chunk_results, g)
 
             all_rewards["format"].append(fmt_r)
-            all_rewards["response"].append(resp_r)
+            all_rewards["correctness"].append(corr_r)
             all_rewards["timing"].append(time_r)
-            all_rewards["think_len"].append(think_r)
-            all_rewards["recall_quality"].append(recall_r)
-            all_rewards["compress_quality"].append(compress_r)
             all_rewards["silent_quality"].append(silent_r)
+            all_rewards["recall_quality"].append(recall_r)
+            all_rewards["overflow_pen"].append(overflow_r)
 
-    # v9 gated aggregation:
-    #   - format < threshold → entire sample rejected (-1.0)
-    #   - resp_r < CORRECT_GATE → only format + response + silent count
-    #   - resp_r >= CORRECT_GATE → all rewards counted (process unlocked)
-    totals: List[float] = []
-    n = len(all_rewards["format"])
-    for i in range(n):
-        fmt_r = all_rewards["format"][i]
-        resp_r = all_rewards["response"][i]
-        silent_r = all_rewards["silent_quality"][i]
-
-        if fmt_r < FORMAT_GATE_THRESHOLD:
-            totals.append(-1.0)
-            continue
-
-        # Always-on rewards
-        total = (
-            weights["format"] * fmt_r
-            + weights["response"] * resp_r
-            + weights["silent_quality"] * silent_r
-        )
-        # Process rewards: gated on full correctness
-        if resp_r >= CORRECT_GATE_THRESHOLD:
-            total += (
-                weights["timing"] * all_rewards["timing"][i]
-                + weights["think_len"] * all_rewards["think_len"][i]
-                + weights["recall_quality"] * all_rewards["recall_quality"][i]
-                + weights["compress_quality"] * all_rewards["compress_quality"][i]
+            # Per-reward applicability masks (downstream GDPO node masks NaN)
+            all_masks["format"].append(1.0)
+            all_masks["correctness"].append(1.0 if gt_present else 0.0)
+            all_masks["timing"].append(
+                1.0 if (did_respond and gt_present and gt_chunk_idx is not None) else 0.0
             )
-        totals.append(total)
+            all_masks["silent_quality"].append(1.0)
+            all_masks["recall_quality"].append(1.0 if did_recall else 0.0)
+            all_masks["overflow_pen"].append(1.0)
+
+    # Logging-only weighted sum (real advantage is computed in
+    # compute_gdpo_advantages from rewards_dict + rewards_masks).
+    n = len(all_rewards["format"])
+    totals: List[float] = []
+    for i in range(n):
+        s = 0.0
+        for k in REWARD_DICT_KEYS:
+            if all_masks[k][i] > 0:
+                s += weights[k] * all_rewards[k][i]
+        totals.append(s)
 
     total_tensor = torch.tensor(totals, dtype=torch.float32)
     rewards_dict_val = {
-        k: torch.tensor(v, dtype=torch.float32) for k, v in all_rewards.items()
+        k: torch.tensor(all_rewards[k], dtype=torch.float32) for k in REWARD_DICT_KEYS
     }
+    # rewards_masks columns ordered to match REWARD_DICT_KEYS
+    masks_tensor = torch.tensor(
+        [[all_masks[k][i] for k in REWARD_DICT_KEYS] for i in range(n)],
+        dtype=torch.float32,
+    )
 
     # ── Audit log: per-step aggregate + per-(sample, generation) breakdown ──
     try:
         _emit_grpo_audit(
-            rollout_data, all_rewards, totals, group_size, tokenizer,
+            rollout_data, all_rewards, all_masks, totals, group_size, tokenizer,
         )
     except Exception as e:
         logger.debug("grpo audit log skipped: %s", e)
 
-    return ctx.update({rewards: total_tensor, rewards_dict: rewards_dict_val})
+    return ctx.update({
+        rewards: total_tensor,
+        rewards_dict: rewards_dict_val,
+        rewards_masks: masks_tensor,
+    })
 
 
 def _emit_grpo_audit(
-    rollout_data, all_rewards, totals, group_size, tokenizer,
+    rollout_data, all_rewards, all_masks, totals, group_size, tokenizer,
 ) -> None:
     """Write one grpo_step record + one grpo_sample record per (sample, gen)."""
     global _GRPO_STEP_COUNTER
@@ -1003,11 +1002,7 @@ def _emit_grpo_audit(
                 "min": float(min(xs)),
                 "max": float(max(xs)),
             }
-        format_passed = sum(1 for r in all_rewards["format"] if r >= FORMAT_GATE_THRESHOLD)
-        correct_passed = sum(
-            1 for r in all_rewards["response"] if r >= CORRECT_GATE_THRESHOLD
-        )
-        step_w.write({
+        record = {
             "step": _GRPO_STEP_COUNTER,
             "n": n,
             "total": {
@@ -1015,16 +1010,11 @@ def _emit_grpo_audit(
                 "min": float(min(totals)),
                 "max": float(max(totals)),
             },
-            "format": _stats("format"),
-            "response": _stats("response"),
-            "silent_quality": _stats("silent_quality"),
-            "timing": _stats("timing"),
-            "think_len": _stats("think_len"),
-            "recall_quality": _stats("recall_quality"),
-            "compress_quality": _stats("compress_quality"),
-            "format_gate_pass_rate": format_passed / n,
-            "correct_gate_pass_rate": correct_passed / n,
-        })
+        }
+        for k in REWARD_DICT_KEYS:
+            record[k] = _stats(k)
+            record[f"mask_{k}_rate"] = float(sum(all_masks[k]) / n)
+        step_w.write(record)
 
     if sample_w is not None:
         # Reconstruct (sample, generation) pairing — rewards are flattened in the
@@ -1067,24 +1057,90 @@ def _emit_grpo_audit(
                     "answer_form": metadata.get("answer_form"),
                     "predicted_actions": actions,
                     "model_output": full_out,
-                    "rewards": {
-                        "format": all_rewards["format"][i],
-                        "response": all_rewards["response"][i],
-                        "timing": all_rewards["timing"][i],
-                        "think_len": all_rewards["think_len"][i],
-                        "recall_quality": all_rewards["recall_quality"][i],
-                        "compress_quality": all_rewards["compress_quality"][i],
-                        "silent_quality": all_rewards["silent_quality"][i],
-                    },
+                    "rewards": {k: all_rewards[k][i] for k in REWARD_DICT_KEYS},
+                    "masks": {k: all_masks[k][i] for k in REWARD_DICT_KEYS},
                     "total": totals[i],
-                    "format_gate_passed": (
-                        all_rewards["format"][i] >= FORMAT_GATE_THRESHOLD
-                    ),
-                    "correct_gate_passed": (
-                        all_rewards["response"][i] >= CORRECT_GATE_THRESHOLD
-                    ),
                 })
                 i += 1
+
+
+# ---------------------------------------------------------------------------
+# v11 GDPO-style advantage aggregation
+# ---------------------------------------------------------------------------
+#
+# Replaces the external ``calc_grpo_advantages`` from ``deepslyme.node.rl.grpo``
+# (which does single-reward, single group-norm). The new flow:
+#
+#   1. Per-reward group-norm within G rollouts of the same sample.
+#      - Mean-only normalization (ReMemR1 grpo_use_adv=False precedent;
+#        avoids std=0 group blow-ups when bimodal).
+#      - Masked rows → NaN → ignored by nanmean → contribute 0 advantage.
+#   2. Stack [B, num_rewards] → weighted sum → [B].
+#   3. Batch-wide whiten ((x - μ) / σ). Critical to keep advantage scale
+#      stable when adding/removing reward components.
+#   4. Output [B] scalar advantage; downstream ``compute_grpo_loss`` tiles
+#      to per-token advantage via the existing completion_mask.
+
+# Stash for grpo_global_metrics — populated each step by the GDPO node.
+_LAST_GDPO_DIAG: Dict[str, float] = {}
+
+
+def _gdpo_per_reward_group_norm(
+    reward_col: torch.Tensor,
+    mask_col: torch.Tensor,
+    group_size: int,
+) -> torch.Tensor:
+    """Mean-only group-norm with mask handling.
+
+    reward_col, mask_col: [B] = [N_samples * G]
+    Returns: [B] per-sample normalized advantage; masked-out rows are 0.
+
+    A "group" is the G rollouts sharing the same sample_id. Empty groups
+    (all rows masked) produce all zeros — no gradient signal from that
+    sample for this reward, which is the desired behavior.
+    """
+    B = reward_col.shape[0]
+    assert B % group_size == 0, f"reward_col len {B} not divisible by G={group_size}"
+    N = B // group_size
+
+    # Mask rewards as NaN so nanmean ignores them
+    masked = torch.where(
+        mask_col > 0,
+        reward_col,
+        torch.full_like(reward_col, float("nan")),
+    )
+    grouped = masked.view(N, group_size)                              # [N, G]
+    g_mean = torch.nanmean(grouped, dim=1, keepdim=True)              # [N, 1]
+    # Empty groups (all NaN) → nanmean returns NaN; replace with 0 so the
+    # subtraction below produces NaN → nan_to_num → 0.
+    g_mean = torch.nan_to_num(g_mean, nan=0.0)
+    adv = (grouped - g_mean).flatten()                                # [B]
+    adv = torch.nan_to_num(adv, nan=0.0, posinf=0.0, neginf=0.0)
+    return adv
+
+
+@node
+def compute_gdpo_advantages(
+    ctx: Context,
+    /,
+    *,
+    rewards_dict: Auto[Dict[str, torch.Tensor]],
+    rewards_masks: Auto[torch.Tensor],
+    advantages: Ref[torch.Tensor],
+    group_size: Auto[int],
+) -> Context:
+    """v11 advantage: per-reward group-norm + weighted sum + batch-whiten.
+
+    Pure-tensor algorithm in ``gdpo_advantage.aggregate_gdpo``. Per-reward
+    diagnostics are stashed in module-level ``_LAST_GDPO_DIAG`` so
+    ``grpo_global_metrics`` can log them without adding another slyme Ref.
+    """
+    adv, diag = _gdpo_aggregate(rewards_dict, rewards_masks, group_size)
+
+    global _LAST_GDPO_DIAG
+    _LAST_GDPO_DIAG = diag
+
+    return ctx.set(advantages, adv)
 
 
 def _build_rollout_messages(
@@ -1363,6 +1419,10 @@ def compute_grpo_loss(
 
 
 def _avg_think_len_per_chunk_micro(micro_items, rollout_data_, tokenizer):
+    """Diagnostic-only: average think token length across micro-batch.
+
+    Not a reward in v11 (think_len reward removed); kept for visibility.
+    """
     all_lengths = []
     for item in micro_items:
         chunk_results = rollout_data_[item["sample_idx"]].get("chunk_results", [])
@@ -1409,29 +1469,32 @@ def grpo_global_metrics(
         grad_norm = grad_norm.item()
     lr = optimizer.param_groups[0]["lr"]
 
-    # Global reward mean
+    # Global reward mean (raw weighted sum, logging-only)
     reward_mean = rewards.float().mean().item()
 
-    # Calculate intra-group variance, then inter-group mean
-    # rewards shape is [B * G], reshape to [B, G]
+    # Intra-group variance, averaged across groups (sanity: should NOT be 0
+    # — if it is, all rollouts in each group got identical raw reward and
+    # GDPO's per-reward group-norm has nothing to differentiate).
     if rewards.numel() > 1 and group_size > 1:
         grouped_rewards = rewards.float().view(-1, group_size)
-        # var(dim=1) computes variance within each prompt group
         reward_var = grouped_rewards.var(dim=1).mean().item()
     else:
         reward_var = 0.0
 
-    # Component-wise average rewards
+    # Component-wise raw reward means
     component_means = {
         f"reward_{k}_mean": v.float().mean().item() for k, v in rewards_dict.items()
     }
 
+    # GDPO per-reward advantage stats + post-whiten total (populated by
+    # compute_gdpo_advantages on the same step). Stash → log; harmless if empty.
     return {
         "grad_norm": grad_norm,
         "learning_rate": lr,
         "reward_mean": reward_mean,
         "reward_var": reward_var,
         **component_means,
+        **dict(_LAST_GDPO_DIAG),
     }
 
 
