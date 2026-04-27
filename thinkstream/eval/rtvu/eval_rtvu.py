@@ -11,6 +11,7 @@ from eval_common import (
     cleanup_distributed,
     load_model_and_processor,
     mcq_predict_streaming,
+    mcq_predict_agent_loop,
     build_results,
     save_results,
 )
@@ -100,22 +101,41 @@ if __name__ == "__main__":
 
     options = ["A", "B", "C", "D"]
 
-    predictions, datums, process_index = mcq_predict_streaming(
-        model=model,
-        processor=processor,
-        benchmark_path=benchmark_path,
-        options=options,
-        frames_per_chunk=args.frames_per_chunk,
-        max_new_tokens=args.max_new_tokens,
-        remaining_seconds=args.remaining_seconds,
-        think_budget=args.think_budget,
-        rank=rank,
-        world_size=world_size,
-        model_type=args.model_type,
-        min_pixels=args.min_pixels,
-        max_pixels=args.max_pixels,
-        slack_time=args.slack_time,
-    )
+    if args.use_agent_loop:
+        # See eval_ovo.py for rationale: StreamingAgentLoop matches the
+        # SFT/RL training format byte-for-byte, including the system-side
+        # <compress_trigger range="X-Y"/> injection.
+        from eval_common import MCQDataset
+        dataset = MCQDataset(benchmark_path)
+        predictions, datums, process_index = mcq_predict_agent_loop(
+            model,
+            processor,
+            dataset,
+            args.model_type,
+            max_new_tokens=args.max_new_tokens,
+            min_pixels=args.min_pixels,
+            max_pixels=args.max_pixels,
+            rank=rank,
+            world_size=world_size,
+        )
+    else:
+        predictions, datums, process_index = mcq_predict_streaming(
+            model=model,
+            processor=processor,
+            benchmark_path=benchmark_path,
+            options=options,
+            frames_per_chunk=args.frames_per_chunk,
+            max_new_tokens=args.max_new_tokens,
+            remaining_seconds=args.remaining_seconds,
+            think_budget=args.think_budget,
+            rank=rank,
+            world_size=world_size,
+            model_type=args.model_type,
+            min_pixels=args.min_pixels,
+            max_pixels=args.max_pixels,
+            slack_time=args.slack_time,
+            agent_model=args.agent_model,
+        )
 
     if process_index == 0:
         results = build_results(datums, predictions, options)

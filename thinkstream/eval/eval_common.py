@@ -264,6 +264,18 @@ def add_common_args(parser):
         action="store_true",
         help="Use 3-action agent protocol (think+action{silent|response|recall}).",
     )
+    parser.add_argument(
+        "--use_agent_loop",
+        action="store_true",
+        help=(
+            "Drive eval through StreamingAgentLoop (per-timestep, system "
+            "compress_trigger injection, recall orchestration) — matches "
+            "the SFT/RL training format byte-for-byte. Recommended for "
+            "models trained on agent_v5 data. Without this flag eval falls "
+            "back to mcq_predict_streaming (token-budget sampler, no "
+            "compress/recall protocol)."
+        ),
+    )
     return parser
 
 
