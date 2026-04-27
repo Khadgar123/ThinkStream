@@ -206,7 +206,7 @@ def build_single_step_messages(
     )
 
     return [
-        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "system", "content": [{"type": "text", "text": SYSTEM_PROMPT}]},
         {"role": "user", "content": user_content},
     ]
 
@@ -312,27 +312,19 @@ def make_generate_fn(
         max_new_tokens=256,
         **kwargs,
     ) -> str:
-        # 1. Apply chat template
-        text_prompt = processor.apply_chat_template(
-            messages, tokenize=False, add_generation_prompt=True,
-        )
-
-        # 2. Process with vision
-        inputs = processor(
-            text=[text_prompt],
+        # 1. Apply chat template + process vision (tokenize=True handles images/videos)
+        inputs = processor.apply_chat_template(
+            messages,
+            tokenize=True,
+            return_dict=True,
             return_tensors="pt",
+            add_generation_prompt=True,
         )
 
-        # 3. Compute position IDs
-        inputs_for_rope = dict(inputs)
-        inputs_for_rope["video_chunk_size"] = 2.0  # AGENT_CHUNK_SEC
-        inputs["position_ids"] = compute_position_ids(
-            inputs_for_rope, processor, model_type,
-        )
+        # 2. Move to device
+        inputs = {k: v.to(device) if hasattr(v, "to") else v for k, v in inputs.items()}
 
-        inputs = inputs.to(device)
-
-        # 4. Generate
+        # 3. Generate
         output_ids = model.generate(
             **inputs,
             max_new_tokens=max_new_tokens,
@@ -342,7 +334,7 @@ def make_generate_fn(
             top_p=kwargs.get("top_p", 0.95),
         )
 
-        # 5. Decode (only new tokens)
+        # 4. Decode (only new tokens)
         input_len = inputs["input_ids"].shape[1]
         new_ids = output_ids[0, input_len:]
         return processor.tokenizer.decode(new_ids, skip_special_tokens=False)
@@ -456,16 +448,16 @@ class StreamingAgentLoop:
         n_frames = (chunk_idx - window_start + 1) * FRAMES_PER_CHUNK
 
         vp = Path(video_path)
-        # Try relative path under video_root, fallback to basename
+        # Try relative path under video_root, fallback to full relative path
         if self.video_root:
             try:
                 rel = vp.relative_to(Path(self.video_root))
                 stem = rel.with_suffix("")
                 frame_dir = Path(self.frames_root) / stem
             except ValueError:
-                frame_dir = Path(self.frames_root) / vp.stem
+                frame_dir = Path(self.frames_root) / vp.with_suffix("")
         else:
-            frame_dir = Path(self.frames_root) / vp.stem
+            frame_dir = Path(self.frames_root) / vp.with_suffix("")
 
         if not frame_dir.exists():
             return None
