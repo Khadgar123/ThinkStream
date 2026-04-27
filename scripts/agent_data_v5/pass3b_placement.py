@@ -350,13 +350,28 @@ async def compute_all_placements(
 ) -> List[Dict]:
     """Compute all valid placements for all cards.
 
+    v9.3 — DIFFICULTY TIERS for transient cards:
+      Tier 1 (easy_in_visual):   ask ∈ [support_end+1, support_end+11]
+                                 — answer in recent_thinks, model copies from window
+      Tier 2 (medium_in_compressed): ask ∈ [support_end+14, support_end+28]
+                                 — answer just past visual window, in compressed memory
+      Tier 3 (hard_history_only): ask near end of video (support_end+30..num-2)
+                                 — long-distance, requires recall (50% recall_fail_then_found)
+
+    For each transient card with sufficient runway, we sample one ask per tier
+    (when feasible). This forces a 1:1:1 difficulty mix instead of batch1's
+    skew toward in_visual, which let the model "look up" answers in the window
+    without ever exercising compression / recall.
+
     When client is provided, uses 397B to judge student visibility at
-    history chunks (each call is independent → high concurrency).
-    When client is None, falls back to keyword-based retention check.
+    history chunks. Tier 2 always goes through LLM check; tier 3 splits 50/50
+    between recall_fail_then_found and LLM-judged recall_success.
     """
     num_chunks = rollout["num_chunks"]
     immediate_placements = []
-    candidates_needing_llm = []  # (card, ask_chunk) pairs for batch LLM check
+    # v9.3: tuples are (card, ask_chunk, tier) — tier carries through to
+    # placement metadata so audits / pass3d can balance the difficulty mix.
+    candidates_needing_llm: List[Tuple[Dict, int, str]] = []
     rng = random.Random(seed)
 
     for card in cards:
@@ -376,6 +391,7 @@ async def compute_all_placements(
                 p = compute_placement(card, ask_f5, "immediate_response",
                                        rollout, evidence)
                 if p:
+                    p["difficulty_tier"] = "easy_in_visual"
                     immediate_placements.append(p)
             continue
 
@@ -386,46 +402,107 @@ async def compute_all_placements(
                 p = compute_placement(card, support_end, "immediate_response",
                                        rollout, evidence)
                 if p:
+                    p["difficulty_tier"] = "easy_in_visual"
                     immediate_placements.append(p)
             continue
 
-        # N1 (HLD): negative — absence holds everywhere. Spread asks across
-        # the timeline so the model learns to refuse at any moment.
+        # N1 (HLD, MC v9.3): the correct option appears in support_chunks; the
+        # 3 distractors don't appear anywhere. Asking AT support is easy
+        # (option visible); asking far past support exercises memory of which
+        # of the 4 options actually appeared. Spread 3 asks: one at support
+        # (easy), one mid-history (medium), one near end (hard).
         if family == "N1":
-            for frac in (0.25, 0.5, 0.75):
-                ask_n1 = int(num_chunks * frac)
-                ask_n1 = max(1, min(ask_n1, num_chunks - 1))
+            tier_asks = []
+            ask_easy = min(support_end + 2, num_chunks - 1)
+            if ask_easy > support_end:
+                tier_asks.append((ask_easy, "easy_in_visual"))
+            ask_med = min(support_end + VISUAL_WINDOW_CHUNKS + 4, num_chunks - 2)
+            if ask_med > ask_easy:
+                tier_asks.append((ask_med, "medium_in_compressed"))
+            ask_hard = num_chunks - 2
+            if ask_hard > ask_med + 6:
+                tier_asks.append((ask_hard, "hard_history_only"))
+            for ask_n1, tier in tier_asks:
                 p = compute_placement(card, ask_n1, "immediate_response",
                                        rollout, evidence)
                 if p:
+                    p["difficulty_tier"] = tier
                     immediate_placements.append(p)
             continue
+
+        # ─── v9.4 reasoning families (CR2/CR4 force tier 2/3 only) ───
+        # CR2 (temporal ordering): 3 events spread across support_chunks.
+        # If we placed an ask in the visual window, the LATEST event would
+        # be visible and the model could "look up" 2/3 of the answer instead
+        # of recalling the order. Force ask past visual window so all 3
+        # events are out of visual (in summaries / compressed segments).
+        if family == "CR2":
+            comp_lo = support_end + VISUAL_WINDOW_CHUNKS + 2  # +14
+            comp_hi = min(support_end + VISUAL_WINDOW_CHUNKS + 16, num_chunks - 2)
+            if comp_hi > comp_lo:
+                ask_med = comp_lo + (comp_hi - comp_lo) // 2
+                candidates_needing_llm.append((card, ask_med, "medium_in_compressed"))
+            hist_lo = support_end + VISUAL_WINDOW_CHUNKS + 18  # +30
+            if num_chunks - 2 >= hist_lo and num_chunks - 2 >= num_chunks * 2 // 3:
+                ask_hard = num_chunks - 2
+                if rng.random() < 0.5:
+                    p = compute_placement(card, ask_hard, "recall_fail_then_found",
+                                           rollout, evidence)
+                    if p:
+                        p["difficulty_tier"] = "hard_history_only"
+                        immediate_placements.append(p)
+                else:
+                    candidates_needing_llm.append((card, ask_hard, "hard_history_only"))
+            continue
+
+        # CR4 (compositional): 2+ observations whose conjunction is the answer.
+        # Same logic as CR2: support chunks may be only 4-6 apart, so a tier-1
+        # ask sees both → trivial. Force tier 2/3.
+        if family == "CR4":
+            comp_lo = support_end + VISUAL_WINDOW_CHUNKS + 2
+            comp_hi = min(support_end + VISUAL_WINDOW_CHUNKS + 16, num_chunks - 2)
+            if comp_hi > comp_lo:
+                ask_med = comp_lo + (comp_hi - comp_lo) // 2
+                candidates_needing_llm.append((card, ask_med, "medium_in_compressed"))
+            hist_lo = support_end + VISUAL_WINDOW_CHUNKS + 18
+            if num_chunks - 2 >= hist_lo and num_chunks - 2 >= num_chunks * 2 // 3:
+                ask_hard = num_chunks - 2
+                if rng.random() < 0.5:
+                    p = compute_placement(card, ask_hard, "recall_fail_then_found",
+                                           rollout, evidence)
+                    if p:
+                        p["difficulty_tier"] = "hard_history_only"
+                        immediate_placements.append(p)
+                else:
+                    candidates_needing_llm.append((card, ask_hard, "hard_history_only"))
+            continue
+
+        # CR1 (causal why) and CR3 (intent) — fall through to default
+        # transient/persistent path. CR1 is transient (cause/effect both in
+        # specific chunks); CR3 should be tagged persistent by the teacher
+        # (goal holds once revealed). Default 3-tier / 3-spread path is correct.
         # ---- end v9 new families -----------------------------------------
 
         if vis_type == "persistent":
-            # Pure math: persistent → always immediate_response.
-            # Soft window: sample 3 evenly-spaced ask_chunks across timeline.
+            # Persistent: answer always visible → always immediate_response.
+            # Sample 3 evenly-spaced ask_chunks. Label tier as "persistent_spread"
+            # for stats; difficulty is uniformly easy regardless of ask position.
             candidates = [num_chunks // 4, num_chunks // 2, 3 * num_chunks // 4]
             for ask in candidates:
                 if 0 <= ask < num_chunks:
-                    p = compute_placement(card, ask, "immediate_response", rollout, evidence)
+                    p = compute_placement(card, ask, "immediate_response",
+                                           rollout, evidence)
                     if p:
+                        p["difficulty_tier"] = "persistent_spread"
                         immediate_placements.append(p)
 
-        else:  # transient
-            # ----------------------------------------------------------------
-            # v9 SOFT ASK_WINDOW (StreamBridge-style):
-            # Instead of a single ask_chunk = visual_mid, sample 1-2 ask_chunks
-            # within the in-visual window. This trains the model to be robust
-            # over a range of timing offsets, not a single rigid moment.
-            # ----------------------------------------------------------------
-            # in_visual window: [support_end + 1, support_end + VISUAL_WINDOW_CHUNKS - 1]
-            #   (support is in window throughout this range)
+        else:  # transient — 3-tier sampling
+            # ─── Tier 1: easy_in_visual (answer in window, ~24s after support) ───
             visual_lo = support_end + 1
             visual_hi = min(support_end + VISUAL_WINDOW_CHUNKS - 1, num_chunks - 1)
             if visual_hi > visual_lo:
-                # Sample 2 ask_chunks: ~1/3 and ~2/3 of window (deterministic + diverse)
                 span = visual_hi - visual_lo
+                # Sample 2 within visual window for SoftAsk diversity.
                 visual_asks = sorted(set([
                     visual_lo + max(1, span // 3),
                     visual_lo + max(1, (2 * span) // 3),
@@ -438,27 +515,47 @@ async def compute_all_placements(
                         continue
                     window_start = snapshot["visual_window_start"]
                     window_end = snapshot["chunk_idx"]
-                    # Only emit if support actually falls inside the visual window at ask time.
                     if any(window_start <= c <= window_end for c in support_chunks):
                         seq = determine_sequence_type(card, "in_visual")
                         p = compute_placement(card, ask, seq, rollout, evidence)
                         if p:
+                            p["difficulty_tier"] = "easy_in_visual"
                             immediate_placements.append(p)
 
-            # history_chunk: needs retention check (LLM or keyword fallback).
-            # 30% of cards get recall_fail_then_found INSTEAD of the LLM check
-            # (mutually exclusive — same card can't have both at same chunk).
-            history_chunk = min(support_end + VISUAL_WINDOW_CHUNKS + 5, num_chunks - 1)
-            if history_chunk < num_chunks and support_end < history_chunk:
-                if rng.random() < 0.3:
-                    # recall_fail variant: skip LLM check, always recall_fail
-                    p = compute_placement(card, history_chunk, "recall_fail_then_found",
+            # ─── Tier 2: medium_in_compressed (just past visual window) ───
+            # 14..28 chunks past support_end ≈ 28..56 s. By this distance
+            # the supporting chunks have rolled out of the visual window
+            # and (with COMPRESS_TOKEN_THRESHOLD~480) typically been
+            # compressed into a summary segment. Model must read summary,
+            # not visual frames.
+            comp_lo = support_end + VISUAL_WINDOW_CHUNKS + 2     # +14
+            comp_hi = min(support_end + VISUAL_WINDOW_CHUNKS + 16,
+                          num_chunks - 2)                         # +28 cap
+            if comp_hi > comp_lo:
+                ask_med = comp_lo + (comp_hi - comp_lo) // 2
+                # Always LLM-checked: outcome is immediate_response (if
+                # answerable from compressed) or recall_success.
+                candidates_needing_llm.append((card, ask_med, "medium_in_compressed"))
+
+            # ─── Tier 3: hard_history_only (very far past, requires recall) ───
+            # Place near end of video AND at least 30 chunks past support.
+            # 50% become recall_fail_then_found (mixed mechanism), 50% go
+            # through LLM check (recall_success or in_compressed).
+            hist_min_gap = VISUAL_WINDOW_CHUNKS + 18   # 30 chunks = 60s
+            hist_lo = support_end + hist_min_gap
+            hist_hi = num_chunks - 2
+            # Only emit tier-3 if there's actually room (video long enough,
+            # support not already near end).
+            if hist_hi >= hist_lo and hist_hi >= num_chunks * 2 // 3:
+                ask_hard = hist_hi
+                if rng.random() < 0.5:
+                    p = compute_placement(card, ask_hard, "recall_fail_then_found",
                                            rollout, evidence)
                     if p:
+                        p["difficulty_tier"] = "hard_history_only"
                         immediate_placements.append(p)
                 else:
-                    # Normal path: LLM checks if student can answer
-                    candidates_needing_llm.append((card, history_chunk))
+                    candidates_needing_llm.append((card, ask_hard, "hard_history_only"))
 
         # E2 event_watch: pure math (ask before support starts)
         if card.get("family") == "E2":
@@ -467,6 +564,7 @@ async def compute_all_placements(
                 p = compute_placement(card, ask_ew,
                                        "event_watch", rollout, evidence)
                 if p:
+                    p["difficulty_tier"] = "event_watch"
                     immediate_placements.append(p)
 
         # M1 multi_response
@@ -474,28 +572,30 @@ async def compute_all_placements(
             ask = min(5, num_chunks - 1)
             p = compute_placement(card, ask, "multi_response", rollout, evidence)
             if p:
+                p["difficulty_tier"] = "multi_response"
                 immediate_placements.append(p)
 
     # --- Batch LLM visibility checks (all independent, high concurrency) ---
     llm_placements = []
     if client and candidates_needing_llm:
-        async def _check_one(card, ask_chunk):
+        async def _check_one(card, ask_chunk, tier):
             snapshot = _get_snapshot(rollout, ask_chunk)
             if not snapshot:
-                return card, ask_chunk, False
+                return card, ask_chunk, tier, False
             answerable = await _check_visibility_one(
                 card, ask_chunk, snapshot, client, video_id)
-            return card, ask_chunk, answerable
+            return card, ask_chunk, tier, answerable
 
-        tasks = [_check_one(c, a) for c, a in candidates_needing_llm]
+        tasks = [_check_one(c, a, t) for c, a, t in candidates_needing_llm]
         results = await asyncio.gather(*tasks, return_exceptions=True)
 
         n_answerable = 0
+        tier_counts = {}
         for result in results:
             if isinstance(result, Exception):
                 logger.error(f"  [{video_id}] visibility check failed: {result}")
                 continue
-            card, ask_chunk, answerable = result
+            card, ask_chunk, tier, answerable = result
             if answerable:
                 seq = "immediate_response"
                 n_answerable += 1
@@ -503,24 +603,35 @@ async def compute_all_placements(
                 seq = "recall_success"
             p = compute_placement(card, ask_chunk, seq, rollout, evidence)
             if p:
+                p["difficulty_tier"] = tier
+                tier_counts[tier] = tier_counts.get(tier, 0) + 1
                 llm_placements.append(p)
 
+        tier_str = " ".join(f"{t}:{n}" for t, n in sorted(tier_counts.items()))
         logger.info(
             f"  [{video_id}] 3-B visibility: {len(candidates_needing_llm)} checked, "
-            f"{n_answerable} answerable"
+            f"{n_answerable} answerable | tiers: {tier_str}"
         )
     elif candidates_needing_llm:
         # Fallback: keyword-based retention (no client)
-        for card, ask_chunk in candidates_needing_llm:
+        for card, ask_chunk, tier in candidates_needing_llm:
             bitmap = precompute_retention(card, rollout)
             avail = classify_availability(card, ask_chunk, rollout, bitmap)
             seq = determine_sequence_type(card, avail)
             p = compute_placement(card, ask_chunk, seq, rollout, evidence)
             if p:
+                p["difficulty_tier"] = tier
                 llm_placements.append(p)
 
     all_placements = immediate_placements + llm_placements
-    logger.info(f"  3-B: {len(all_placements)} placements from {len(cards)} cards")
+
+    # v9.3: tier distribution log so we can audit difficulty mix per video.
+    tier_dist = {}
+    for p in all_placements:
+        t = p.get("difficulty_tier", "untagged")
+        tier_dist[t] = tier_dist.get(t, 0) + 1
+    tier_str = " ".join(f"{t}:{n}" for t, n in sorted(tier_dist.items()))
+    logger.info(f"  3-B: {len(all_placements)} placements from {len(cards)} cards | tiers: {tier_str}")
     return all_placements
 
 

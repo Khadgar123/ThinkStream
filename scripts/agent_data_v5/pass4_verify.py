@@ -141,6 +141,9 @@ def verify_information_flow(sample: Dict) -> Tuple[bool, str]:
     # Response is non-empty.
     # v9.1: don't reject by character length — binary "No" is 2 chars and
     # short_exact "5" is 1. Only reject TRULY empty responses.
+    # v9.3: multiple_choice = single letter (1 char) — must also pass.
+    #       Add strict format check for binary/MC/number — these go straight
+    #       into OVO eval matching, so any drift fails eval.
     if "<response>" in output:
         response_match = re.search(r'<response>(.*?)</response>', output, re.DOTALL)
         if response_match:
@@ -149,11 +152,27 @@ def verify_information_flow(sample: Dict) -> Tuple[bool, str]:
                 return False, "empty_response"
             answer_form = metadata.get("answer_form", "")
             family = metadata.get("family", "")
-            # For non-short answer forms, require at least 3 chars (catches
-            # garbled / single-token outputs from teacher).
-            if answer_form not in ("binary", "number", "short_exact") and family != "N1":
+            # Forms whose response IS the eval-format answer — short by design.
+            short_forms = ("binary", "multiple_choice", "number", "short_exact")
+            if answer_form not in short_forms and family != "N1":
                 if len(resp_text) < 3:
                     return False, "response_too_short"
+            # Strict format match for forms that go directly into eval matching.
+            # canonical_answer (=== gold_answer for these forms) is normalized
+            # in pass3c via _normalize_exact_form_answer; the response must
+            # match exactly. Drift here = OVO eval miss.
+            if answer_form == "multiple_choice":
+                if not re.fullmatch(r'[A-D]', resp_text):
+                    return False, f"mc_response_not_single_letter: '{resp_text[:30]}'"
+                gold = (metadata.get("gold_answer", "") or "").strip().upper()
+                if gold and resp_text != gold:
+                    return False, f"mc_response_mismatch: got '{resp_text}' want '{gold}'"
+            elif answer_form == "binary":
+                if resp_text not in ("Yes", "No"):
+                    return False, f"binary_response_not_yes_no: '{resp_text[:30]}'"
+            elif answer_form == "number":
+                if not re.fullmatch(r'\d+', resp_text):
+                    return False, f"number_response_not_digits: '{resp_text[:30]}'"
 
     # recall_response after failure must show uncertainty
     if sample_type == "recall_response":
@@ -229,13 +248,30 @@ def verify_grounding(sample: Dict) -> Tuple[bool, str]:
             return False, "no_think_tag"
         check_text = obs_match.group(1).lower()
 
+    # v9.4 — narrowed blacklist (was 33 phrases, dropped to ~17). Removed:
+    #   "i think" / "i notice" / "i can see" — first-person observational
+    #     phrasing is normal English narration, not a grounding violation.
+    #   "probably" / "likely" — epistemic hedging is fine when describing
+    #     genuine visual ambiguity ("the dish is probably soup based on the
+    #     bowl shape"); rejecting these dropped 1.2k legit thinks in batch1.
+    #   "feels" / "feeling" — model can describe physical contact (chef
+    #     feels the dough); reserve "emotion" for true affect leaks.
+    # Kept the strong non-visual sensory channels (sound/smell), affect
+    # words (happy/sad/angry), and meta-language (the video shows / system
+    # triggered) — these are real grounding violations that matter.
+    # Note: per-sample rejection matches the OVO eval granularity (eval
+    # scores per chunk, not per trajectory), so a stale phrase in one
+    # sample shouldn't take down adjacent samples in the same trajectory.
     blacklist_phrases = [
+        # Sensory channels the model has no access to
         "sound", "hear", "listen", "noise", "sizzle", "sizzling",
-        "music", "speech", "said", "talking", "voice",
+        "music", "speech", "talking", "voice",
         "smell", "aroma", "scent", "fragrant", "aromatic",
-        "feels", "feeling", "emotion", "happy", "sad", "angry",
-        "probably", "likely", "seems to want", "intend",
-        "i think", "i notice", "i need", "i should", "i can see",
+        # True affect leaks (model is not a person, has no emotions)
+        "emotion", "happy", "sad", "angry",
+        # Speculative-intent leaks (the model shouldn't infer wishes)
+        "seems to want", "intend",
+        # Meta-language about the system / dataset (breaks 4th wall)
         "the user wants", "the video shows",
         "system triggered", "memory compression", "retrieved evidence",
     ]

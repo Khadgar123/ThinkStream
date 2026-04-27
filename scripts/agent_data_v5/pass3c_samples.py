@@ -58,13 +58,19 @@ RECALL_THINK_PROMPT = """You are a streaming video agent that just received reca
 
 Question: "{question}"
 Recall result: {recall_text}
-Recall source: {recall_source}
+Recall source: {recall_source}    # one of: historical_frames, distractor, failure
 
-Write a brief analysis (20-40 tokens) of the recall result.
-- If results contain relevant evidence: note what was found and how it relates to the question
-- If results are irrelevant or empty: note the recall failed to find matching evidence
-- NO meta-reasoning ("I think"), NO sounds/smells/emotions
-- Focus on factual assessment of the retrieved content
+Write a brief analysis (20-40 tokens) of the recall result. Branch by source:
+- source="historical_frames": results contain relevant evidence — note what
+  was found and how it answers the question.
+- source="distractor": results contain content but it does NOT match the
+  question (off-topic chunks). Explicitly note that the retrieved evidence
+  does not address the question, so you cannot answer from it.
+- source="failure": no results returned. Note recall found no matching
+  evidence.
+
+NO meta-reasoning ("I think"), NO sounds/smells/emotions.
+Focus on factual assessment of the retrieved content.
 
 Output (one paragraph, 20-40 tokens):"""
 
@@ -94,11 +100,59 @@ NO answer values, NO pronouns. Include entity descriptions + action anchors.
 Output JSON: {{"query": "keyword1 keyword2 keyword3", "time_range": "{time_range}"}}"""
 
 
+# v9.3: forms whose canonical_answer is ALREADY the exact eval-format answer.
+# We skip the LLM call for these — using canonical_answer directly guarantees
+# OVO-strict-match format (single letter / Yes-No / digit) and saves ~70%
+# of pass3c LLM calls. Batch1's MC training labels frequently drifted to
+# "A. eggplant" from teacher LLM despite the prompt's letter-only instruction;
+# that drift is the dominant reason SFT looks 92% accurate but OVO eval
+# would crash on strict letter matching.
+_EXACT_FORMS = {"binary", "multiple_choice", "number"}
+
+
+def _normalize_exact_form_answer(canonical: str, answer_form: str) -> str:
+    """Strict canonicalization of canonical_answer for binary/MC/number.
+
+    Card-generation prompts already enforce these formats, but extra defense
+    here turns any teacher-side drift (e.g. "A. eggplant", "Yes.") into the
+    eval-strict form. Returns "" if the canonical can't be normalized to the
+    expected shape — the caller must then skip the sample.
+    """
+    s = (canonical or "").strip()
+    if not s:
+        return ""
+    if answer_form == "binary":
+        head = s.split()[0].rstrip(".,;!?").lower()
+        if head in ("yes", "y", "true"):
+            return "Yes"
+        if head in ("no", "n", "false"):
+            return "No"
+        return ""
+    if answer_form == "multiple_choice":
+        # Pick first standalone letter A-D (handles "A", "A.", "A) eggplant",
+        # "(A)", "the answer is B").
+        m = re.search(r'(?:^|[^A-Za-z])([A-Da-d])(?:[^A-Za-z]|$)', s)
+        return m.group(1).upper() if m else ""
+    if answer_form == "number":
+        # First digit run; reject if it has letters attached ("3rd").
+        m = re.search(r'(?<![A-Za-z])(\d+)(?![A-Za-z])', s)
+        return m.group(1) if m else ""
+    return s
+
+
 async def _generate_response(card: Dict, snapshot: Dict, evidence: List[Dict],
                               client, video_id: str, chunk_idx: int,
                               prior_answers: List[str] = None,
                               recall_evidence: str = None) -> Optional[str]:
-    """Generate response text via 397B.
+    """Generate response text.
+
+    v9.3 fast path: for binary/multiple_choice/number, skip the LLM and use
+    canonical_answer directly (after strict normalization). The teacher LLM's
+    rephrased answer adds no value for these forms — the canonical IS the
+    answer in eval format. Returns None if normalization fails so caller
+    skips the placement (rare; indicates bad pass3a output).
+
+    For short_exact / descriptive: call the teacher LLM as before.
 
     Args:
         prior_answers: Previously generated answers for the same question
@@ -108,6 +162,18 @@ async def _generate_response(card: Dict, snapshot: Dict, evidence: List[Dict],
             is derived from what recall actually returned, not from the
             student's current memory state.
     """
+    answer_form = card.get("answer_form", "short_exact")
+    canonical = card.get("canonical_answer", "")
+
+    # ─── Fast path: forms where canonical_answer IS the eval-format answer ───
+    if answer_form in _EXACT_FORMS:
+        normalized = _normalize_exact_form_answer(canonical, answer_form)
+        if not normalized:
+            # Bad card — skip placement rather than emit a malformed response.
+            return None
+        return normalized
+    # ─── LLM path: short_exact / descriptive ───
+
     if recall_evidence:
         # Recall path: response must be based on recall result
         evidence_text = recall_evidence
@@ -132,8 +198,8 @@ async def _generate_response(card: Dict, snapshot: Dict, evidence: List[Dict],
     prompt = RESPONSE_GEN_PROMPT.format(
         question=card.get("question", ""),
         evidence=evidence_text,
-        canonical_answer=card.get("canonical_answer", ""),
-        answer_form=card.get("answer_form", "short_exact"),
+        canonical_answer=canonical,
+        answer_form=answer_form,
         prior_answers_section=prior_section,
         dedup_instruction=dedup,
     )
@@ -150,7 +216,7 @@ async def _generate_response(card: Dict, snapshot: Dict, evidence: List[Dict],
     if raw:
         raw = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip().strip('"')
     # Return None on failure — caller must skip this sample.
-    # Do NOT fallback to canonical_answer (format mismatch risk).
+    # Do NOT fallback to canonical_answer (format mismatch risk for descriptive).
     return raw or None
 
 
@@ -282,11 +348,61 @@ async def _generate_recall_think(
     return raw or f"Recall {'returned results' if recall_source != 'failure' else 'found no matching evidence'}."
 
 
+_STOP_WORDS_RECALL = frozenset({
+    "the", "a", "an", "is", "was", "in", "on", "at", "to", "of",
+    "and", "or", "it", "are", "were", "be", "been", "has", "have",
+    "had", "do", "does", "did", "will", "would", "can", "could",
+    "should", "may", "might", "this", "that", "there", "here",
+    "not", "but", "if", "so", "what", "which", "who", "how", "when",
+    "where", "many", "much", "any", "some", "for", "from", "by", "as",
+})
+
+
+def _extract_query_keywords(query_json: Optional[Dict]) -> set:
+    """Pull lowercased content tokens from the query string of a recall query JSON."""
+    if not query_json:
+        return set()
+    q = (query_json.get("query") or "") if isinstance(query_json, dict) else str(query_json)
+    tokens = re.findall(r'\b[a-zA-Z0-9]{2,}\b', q.lower())
+    return {t for t in tokens if t not in _STOP_WORDS_RECALL}
+
+
+def _query_overlaps_chunks(
+    query_keywords: set, returned_chunks: List[int], rollout: Dict,
+    threshold: int = 1,
+) -> bool:
+    """Does the query share at least `threshold` content keywords with the
+    text of the returned chunks?  v9.4 — this validates that the LLM-generated
+    query is actually consistent with the recall result we hand back; without
+    it the agent learns "any query string works", because the simulator
+    returns oracle chunks regardless of query quality.
+    """
+    if not query_keywords or not returned_chunks:
+        return False
+    obs_lookup = {o.get("chunk_idx"): o for o in rollout.get("thinks", [])}
+    chunk_text = " ".join(
+        (obs_lookup.get(c, {}) or {}).get("think", "")
+        for c in returned_chunks
+    ).lower()
+    chunk_tokens = set(re.findall(r'\b[a-zA-Z0-9]{2,}\b', chunk_text))
+    return len(query_keywords & chunk_tokens) >= threshold
+
+
 def _simulate_recall_result(card: Dict, rollout: Dict, ask_chunk: int,
-                             noise_type: str = "oracle") -> Dict:
+                             noise_type: str = "oracle",
+                             query_json: Optional[Dict] = None) -> Dict:
     """Simulate retrieval result from student-accessible content.
 
     noise_type: oracle(70%) / noisy(20%) / distractor(5%) / failure(5%)
+
+    v9.4 — when query_json is provided, we validate that the query keywords
+    actually overlap with the returned chunks' evidence. If the LLM-generated
+    query is bogus (no overlap with the gold chunks it should be retrieving),
+    we downgrade the noise type to "failure" so the agent learns:
+      good query → relevant evidence
+      bad query  → no result
+    Without this check, the simulator returns oracle chunks regardless of
+    query quality, teaching "any query works" — a training-inference mismatch.
     """
     observations = rollout.get("thinks", [])
     support_chunks = card.get("support_chunks", [])
@@ -314,6 +430,16 @@ def _simulate_recall_result(card: Dict, rollout: Dict, ask_chunk: int,
         if obs and ec < ask_chunk:
             parts.append(f"[{obs['time']}] {obs['think']}")
             returned.append(ec)
+
+    # v9.4 — query/result consistency check. If a query was supplied and it
+    # has zero content-token overlap with the chunks we'd return, downgrade
+    # to failure: this is a "bad query" signal the agent should learn from.
+    if query_json is not None and returned:
+        kw = _extract_query_keywords(query_json)
+        if kw and not _query_overlaps_chunks(kw, returned, rollout, threshold=1):
+            return {"source": "failure",
+                    "text_content": "No matching results found.",
+                    "returned_chunks": []}
 
     if noise_type == "noisy":
         past_obs = [o for o in observations if o["chunk_idx"] < ask_chunk]
@@ -472,17 +598,26 @@ async def generate_trajectory_samples(
 
         elif seq == "recall_success":
             _add_query(card["question"], ask)
-            # v9.1: pre-compute the synchronous recall_result first, then
-            # gather all 4 LLM calls (fork_think, recall_query, response,
-            # recall_think) — they're all input-independent.
+            # v9.4 — query→result coupling. Generate the recall query FIRST
+            # (one synchronous LLM call), then simulate the result with the
+            # query in hand so _simulate_recall_result can downgrade to
+            # "failure" when the query is bogus. This costs one
+            # serialization point (~0.5 s) but eliminates the v9.3 bug
+            # where any LLM-generated query string returned oracle chunks,
+            # teaching the agent that query content doesn't matter.
+            query_json = await _generate_recall_query(
+                card, snapshot, client, video_id, ask)
+
             noise = random.random()
             noise_type = "oracle" if noise < 0.7 else "noisy" if noise < 0.9 else "distractor" if noise < 0.95 else "failure"
-            recall_result = _simulate_recall_result(card, rollout, ask, noise_type)
-            is_failed = noise_type in ("distractor", "failure")
+            recall_result = _simulate_recall_result(
+                card, rollout, ask, noise_type, query_json=query_json)
+            # Source may have been downgraded to "failure" by the consistency
+            # check, so re-derive is_failed from the actual result.
+            is_failed = recall_result.get("source") in ("distractor", "failure")
 
             tasks = [
                 _generate_fork_think(base_think, queries_state, client, video_id, ask),
-                _generate_recall_query(card, snapshot, client, video_id, ask),
                 _generate_recall_think(card, recall_result, client, video_id, ask),
             ]
             if not is_failed:
@@ -491,13 +626,12 @@ async def generate_trajectory_samples(
                     recall_evidence=recall_result.get("text_content", "")))
             results = await asyncio.gather(*tasks)
             think = results[0]
-            query_json = results[1]
-            recall_think = results[2]
+            recall_think = results[1]
             if is_failed:
                 resp = "I could not find enough evidence to answer."
                 post_action = "silent"
             else:
-                resp = results[3]
+                resp = results[2]
                 if resp is None:
                     resp = "I could not find enough evidence to answer."
                     post_action = "silent"

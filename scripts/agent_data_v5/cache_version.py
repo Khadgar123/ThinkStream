@@ -39,15 +39,28 @@ STAGE_VERSIONS: Dict[str, str] = {
     "1a": "v9.1",
     "1b": "v9.1",   # tightened state_changes fallback
     "2":  "v9.1",
-    "3a": "v9.2",   # v9.2: F5/F6 prompts rewritten (SCAN + empty-array
-                    # fallback), _action_verb_lemma() added so cross-tense
-                    # F5 detection ("stirring"/"stirs"/"stirred" all match)
-    "3b": "v9.2",   # v9.2: seed plumbing — plan_trajectories now seeded
-                    # per-video instead of constant 42, results differ
-    "3c": "v9.1",   # gold_caption, fork_think optimization
-    "4":  "v9.2",   # v9.2: adaptive summary_retention threshold by
-                    # n_unique (was flat 0.5), and per-(video, traj_id)
-                    # grouping for stats (was traj_id alone)
+    "3a": "v9.4.1", # v9.3: 8 family prompts MC-primary, N1 → MC, F5/F6
+                    #       targets bumped, F6 verify range +8 forward.
+                    # v9.4: 4 reasoning families CR1/CR2/CR3/CR4 added
+                    #       (FAMILY_TARGETS / RETENTION_CLASS / FORCE_ATTEMPT
+                    #       / FAMILY_PROMPTS / classify_chunks all touched).
+                    # v9.4.1: HLD/N1 prompt corrected — gt is now literally
+                    #       "Unable to answer" (matches OVO HLD 186/186
+                    #       samples). Previous v9.4 had the inverse design
+                    #       (gt = real visible option), which would teach the
+                    #       wrong refusal direction at HLD eval.
+    "3b": "v9.4",   # v9.3: 3-tier difficulty for transient (easy_in_visual
+                    #       / medium_in_compressed / hard_history_only) +
+                    #       N1 multi-tier asks; difficulty_tier on placement.
+                    # v9.4: CR2/CR4 force tier 2/3 (no in_visual ask).
+    "3c": "v9.2",   # v9.3 (renamed v9.2 in 3c numbering): _normalize_exact_form_answer
+                    #       fast path — binary/MC/number response = canonical_answer
+                    #       directly (no LLM call).
+    "4":  "v9.4",   # v9.3: MC short-response whitelist + strict format match
+                    #       on response (single letter = canonical for MC,
+                    #       Yes/No for binary, digits for number).
+                    # v9.4: no schema change vs 3a/3b — bumped to keep
+                    #       version markers monotonic across the v9.4 family.
 }
 
 STAGE_DIRS: Dict[str, Path] = {

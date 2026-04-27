@@ -114,12 +114,27 @@ def format_memory_block(memory: Dict) -> str:
     return "\n".join(parts)
 
 
+# v9.4.2: eval-side caps. Default values match SFT distribution P95 and
+# fit comfortably in model_max_length=16384. The "32k" eval profile
+# (scripts/eval/eval_profiles.py) loosens these for Qwen3-VL's native
+# 32k context — see that file for per-profile budget calculation.
+QUERIES_HISTORY_CAP = 8
+RECALL_TEXT_MAX_CHARS = 800
+
+
 def format_queries_block(queries: List[Dict]) -> str:
     """Format the queries zone as a chronological event stream.
 
     Q and A events interleave on a timeline. All questions are shown
     (including unanswered/pending ones) so the model knows what it's
     tracking. Unanswered questions appear as Q without a following A.
+
+    v9.4.2 (context-overflow fix): cap to the most recent
+    QUERIES_HISTORY_CAP entries (default 8 = matches SFT max trajectory
+    queries with slack). Eval-side override: see eval_profiles.py.
+    We keep PENDING queries (unanswered) regardless of age — those are
+    the only ones the model must still attend to — and trim ANSWERED
+    queries to keep the most recent ones up to the cap.
 
     Example output:
       <queries>
@@ -132,6 +147,16 @@ def format_queries_block(queries: List[Dict]) -> str:
     """
     if not queries:
         return ""
+
+    # Split: pending queries (always kept) vs answered (cap to recent)
+    pending = [q for q in queries if not q.get("answers")]
+    answered = [q for q in queries if q.get("answers")]
+    # Keep all pending + last (cap - len(pending)) answered. If pending
+    # alone exceeds cap, that's a signal of agent malfunction; keep them
+    # all anyway — answered subset trims to 0.
+    keep_n_answered = max(0, QUERIES_HISTORY_CAP - len(pending))
+    queries = answered[-keep_n_answered:] + pending if keep_n_answered \
+        else pending
 
     # Build chronological event list: (time, "Q"/"A", text)
     events = []
@@ -268,11 +293,20 @@ def build_user_content(
             })
 
     # ── Zone C continued: Recall result (recall_response only) ──
+    # v9.4.2: cap recall text_content at RECALL_TEXT_MAX_CHARS. Default
+    # 800 (~200 tok) matches the 16k profile; 32k profile bumps to 3000
+    # via eval_profiles.apply_profile(). Top-4 retrieved thinks naturally
+    # stack to 200-480 tokens; the cap catches pathological retrievals
+    # where individual thinks were unusually long.
     if recall_result:
+        rr_text = recall_result.get("text_content",
+                                    recall_result.get("text", "")) or ""
+        if len(rr_text) > RECALL_TEXT_MAX_CHARS:
+            rr_text = rr_text[:RECALL_TEXT_MAX_CHARS] + "…"
         rr_json = json.dumps({
             "source": recall_result.get("source", ""),
             "time": recall_result.get("time", ""),
-            "text": recall_result.get("text_content", recall_result.get("text", "")),
+            "text": rr_text,
         }, ensure_ascii=False)
         user_content.append({
             "type": "text",

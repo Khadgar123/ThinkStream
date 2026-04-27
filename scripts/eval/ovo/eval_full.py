@@ -59,6 +59,7 @@ import sys
 import time
 from collections import defaultdict
 from pathlib import Path
+from typing import Dict
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
@@ -195,12 +196,16 @@ def is_no(text):
 # ─── Agent runner: shared streaming loop ─────────────────────────────────────
 
 
-def run_agent(loop, video_path, ask_chunks, max_chunk):
+def run_agent(loop, video_path, ask_chunks, max_chunk, telemetry=None):
     """Run agent through chunks 0..max_chunk, injecting questions per ask_chunks.
 
     ask_chunks: dict {chunk_idx: question_text} — question(s) to inject at
-                specific chunks. Multiple injections are supported (e.g.,
-                SSR injects fresh per probe).
+                specific chunks.
+    telemetry:  optional dict; if provided, populated with per-step stats:
+                  compress_events: list of {chunk, thinks_count, n_compressed}
+                  recall_events:   list of {chunk, returned_chunks}
+                These are the v9.4.2 stream-eval metrics (see docstring of
+                test_set_agent.walk_and_score for full breakdown).
 
     Returns: dict {chunk_idx: (action, response_text)}
     """
@@ -212,6 +217,35 @@ def run_agent(loop, video_path, ask_chunks, max_chunk):
         except Exception as e:
             per_chunk[chunk_idx] = ("error", str(e))
             continue
+
+        # v9.4.2 telemetry — record compress/recall events when they fire,
+        # plus per-step prompt/think/format/compress-success metrics.
+        if telemetry is not None:
+            ct = result.get("compress_telemetry")
+            if ct:
+                telemetry.setdefault("compress_events", []).append({
+                    "chunk": chunk_idx,
+                    "thinks_count": ct["thinks_count_at_trigger"],
+                    "n_compressed": len(ct["compressed_chunks"]),
+                    "succeeded": bool(result.get("compress_succeeded")),
+                })
+            if result.get("action") == "recall":
+                telemetry.setdefault("recall_events", []).append({
+                    "chunk": chunk_idx,
+                    "returned_chunks": list(result.get("recall_returned_chunks", [])),
+                })
+            # Per-step extras (always recorded if available)
+            if result.get("prompt_text_token_count") is not None:
+                telemetry.setdefault("prompt_tokens_per_step", []).append(
+                    result["prompt_text_token_count"])
+            if result.get("think_token_count") is not None:
+                telemetry.setdefault("think_tokens_per_step", []).append(
+                    result["think_token_count"])
+            if not result.get("format_ok", True):
+                telemetry["n_format_violations"] = (
+                    telemetry.get("n_format_violations", 0) + 1)
+            telemetry["total_steps"] = telemetry.get("total_steps", 0) + 1
+
         action = result.get("action", "?")
         payload = result.get("payload") or {}
         if action == "recall":
@@ -231,13 +265,18 @@ def run_agent(loop, video_path, ask_chunks, max_chunk):
 
 def make_loop(model, processor, tokenizer, model_type, retriever,
               compress_mode, max_new_tokens, frames_root=None, video_root=None):
+    # v9.4.2 FIX (context overflow): use SFT-aligned pixel budget. The
+    # previous values (200704 / 401408) were 2-2.7× the SFT defaults
+    # (100352 / 150528), inflating per-frame visual tokens from ~256 to
+    # ~600+, which caused 24-frame visual_window prompts to consume
+    # ~14400 tokens instead of ~6144 → overflowed model_max_length=16384.
     return StreamingAgentLoop(
         generate_fn=make_generate_fn(model, processor, model_type=model_type),
         tokenizer=tokenizer,
         processor=processor,
         model_type=model_type,
-        min_pixels=100352*2,
-        max_pixels=100352*4,
+        min_pixels=100352,    # was 100352*2 (200704)
+        max_pixels=150528,    # was 100352*4 (401408)
         max_new_tokens=max_new_tokens,
         retriever=retriever,
         compress_mode=compress_mode,
@@ -254,26 +293,45 @@ def reset_visual_index(retriever):
 # ─── Per-task evaluators ─────────────────────────────────────────────────────
 
 
-def eval_mcq(sample, loop, retriever, video_root):
-    """BT / RT: single-realtime MCQ. ask once, score the response at that chunk."""
+LENIENT_MAX_EXTRA_CHUNKS = 60   # 120s past ask_chunk; covers most BT/RT videos
+
+
+def eval_mcq(sample, loop, retriever, video_root, scoring="strict"):
+    """BT / RT: single-realtime MCQ. Inject question at ask_chunk, score the
+    first response.
+
+    scoring="strict":  walk to ask_chunk + 2; only count responses inside
+                       that window. Original OVO timing-strict behaviour.
+    scoring="lenient": walk to ask_chunk + 60 (= 120s); count any response
+                       at any later chunk. "If the model ever answered,
+                       count it" — measures format/correctness independent
+                       of response-timing. Note: this gives the model up to
+                       60 extra chunks of free observation, so it's an
+                       upper-bound metric, not directly comparable to OVO
+                       paper numbers.
+    """
     video_path = resolve_video_path(sample["video"], video_root)
     if not Path(video_path).exists():
         return None
 
     realtime = float(sample["realtime"])
     ask_chunk = int(realtime / AGENT_CHUNK_SEC)
-    # Run a couple of chunks past ask_chunk in case model was silent and
-    # responded next chunk (rare but happens).
-    max_chunk = ask_chunk + 2
+    extra = LENIENT_MAX_EXTRA_CHUNKS if scoring == "lenient" else 2
+    max_chunk = ask_chunk + extra
 
     question = build_mcq_question(sample)
     loop.reset()
     reset_visual_index(retriever)
-    per_chunk = run_agent(loop, video_path, {ask_chunk: question}, max_chunk)
+    telemetry: Dict = {}
+    per_chunk = run_agent(loop, video_path, {ask_chunk: question}, max_chunk,
+                          telemetry=telemetry)
 
-    # Find first response at or after ask_chunk
+    # Find first response at or after ask_chunk. Premature responses
+    # (chunk < ask_chunk) are flagged in telemetry but not used as the answer.
     pred_letter = None
     response_chunk = None
+    n_premature = sum(1 for c in range(0, ask_chunk)
+                      if per_chunk.get(c, ("?", ""))[0] == "response")
     for c in range(ask_chunk, max_chunk + 1):
         action, resp = per_chunk.get(c, ("missing", ""))
         if action == "response" and resp:
@@ -292,10 +350,34 @@ def eval_mcq(sample, loop, retriever, video_root):
             "realtime": realtime,
             "ask_chunk": ask_chunk,
             "response_chunk": response_chunk,
+            "response_offset_chunks": (response_chunk - ask_chunk
+                                       if response_chunk is not None else None),
             "gt": gt_letter,
             "pred": pred_letter,
             "correct": correct,
         }],
+        "telemetry": {
+            "n_compress_events": len(telemetry.get("compress_events", [])),
+            "n_recall_events": len(telemetry.get("recall_events", [])),
+            "n_premature_responses": n_premature,
+            "compress_thinks_at_trigger": [
+                e["thinks_count"] for e in telemetry.get("compress_events", [])
+            ],
+            "compress_chunks_per_event": [
+                e["n_compressed"] for e in telemetry.get("compress_events", [])
+            ],
+            "n_compress_succeeded": sum(
+                1 for e in telemetry.get("compress_events", []) if e.get("succeeded")
+            ),
+            "recall_returned_chunks": [
+                e["returned_chunks"] for e in telemetry.get("recall_events", [])
+            ],
+            # v9.4.2 extras
+            "prompt_tokens_per_step": telemetry.get("prompt_tokens_per_step", []),
+            "think_tokens_per_step": telemetry.get("think_tokens_per_step", []),
+            "n_format_violations": telemetry.get("n_format_violations", 0),
+            "total_steps": telemetry.get("total_steps", 0),
+        },
     }
 
 
@@ -445,10 +527,15 @@ def eval_crr(sample, loop, retriever, video_root):
     }
 
 
-def dispatch_eval(sample, loop, retriever, video_root):
+def dispatch_eval(sample, loop, retriever, video_root, scoring="strict"):
+    """Dispatch to per-task evaluator. Lenient `scoring` only changes MCQ
+    timing — REC/SSR/CRR have intrinsic timing semantics (cumulative count
+    / per-step state / clue-reveal delay) that don't have a meaningful
+    'time-agnostic' interpretation, so they ignore the flag and always run
+    in their natural mode."""
     task = sample.get("task")
     if task in BT_TASKS or task in RT_TASKS:
-        return eval_mcq(sample, loop, retriever, video_root)
+        return eval_mcq(sample, loop, retriever, video_root, scoring=scoring)
     if task == "REC":
         return eval_rec(sample, loop, retriever, video_root)
     if task == "SSR":
@@ -565,9 +652,28 @@ def main():
     p.add_argument("--compress_mode", default="system", choices=["system", "self"])
     p.add_argument("--max_results", type=int, default=4)
     p.add_argument("--max_new_tokens", type=int, default=128)
+    p.add_argument("--profile", default="16k", choices=["16k", "32k"],
+                   help="Eval context profile (see scripts/eval/eval_profiles.py "
+                        "for full token-budget breakdown). 16k = SFT-aligned "
+                        "(default). 32k = extended for Qwen3-VL native context, "
+                        "loosens queries cap (8→24), recall cap (800→3000 char), "
+                        "max_new_tokens (128→256).")
+    p.add_argument("--scoring", default="strict", choices=["strict", "lenient"],
+                   help="strict (default): MCQ response must come within 2 "
+                        "chunks of ask_chunk (matches OVO paper). lenient: "
+                        "walk up to 60 chunks past ask_chunk; any response "
+                        "counts. REC/SSR/CRR ignore this flag (their timing "
+                        "is the test).")
     p.add_argument("--out", default=None)
     p.add_argument("--no_bf16", action="store_true")
     args = p.parse_args()
+
+    # Apply eval profile FIRST (mutates agent_protocol globals).
+    from scripts.eval.eval_profiles import apply_profile, describe_profile
+    profile_cfg = apply_profile(args.profile)
+    print(describe_profile(args.profile))
+    if args.max_new_tokens == 128 and args.profile == "32k":
+        args.max_new_tokens = profile_cfg["max_new_tokens_default"]
 
     # Load model
     Cls, model_type = detect_model_class(args.ckpt)
@@ -586,7 +692,8 @@ def main():
         processor.video_processor.do_sample_frames = False
 
     tokenizer = AutoTokenizer.from_pretrained(
-        args.ckpt, model_max_length=16384, padding_side="right", use_fast=False
+        args.ckpt, model_max_length=profile_cfg["model_max_length"],
+        padding_side="right", use_fast=False,
     )
     tokenizer.add_tokens(
         [t for t in processor.tokenizer.get_added_vocab().keys()
@@ -628,7 +735,8 @@ def main():
     for task in sorted(by_task.keys()):
         for sample in by_task[task]:
             try:
-                r = dispatch_eval(sample, loop, retriever, args.video_root)
+                r = dispatch_eval(sample, loop, retriever, args.video_root,
+                                  scoring=args.scoring)
                 if r is not None:
                     results.append(r)
             except Exception as e:
@@ -646,7 +754,8 @@ def main():
     print_report(agg)
 
     out_path = args.out or (
-        f"{args.ckpt}/eval/ovo_full/full_{args.compress_mode}_{args.retriever}.json"
+        f"{args.ckpt}/eval/ovo_full/"
+        f"full_{args.compress_mode}_{args.retriever}_{args.scoring}_{args.profile}.json"
     )
     Path(out_path).parent.mkdir(parents=True, exist_ok=True)
     with open(out_path, "w") as f:
@@ -655,6 +764,9 @@ def main():
             "compress_mode": args.compress_mode,
             "retriever": {"kind": args.retriever, "alpha": args.alpha,
                           "siglip_path": args.siglip_path if args.retriever == "hybrid" else None},
+            "scoring": args.scoring,
+            "profile": args.profile,
+            "profile_cfg": profile_cfg,
             "tasks_evaluated": sorted(by_task.keys()),
             "n_samples": len(results),
             "summary": agg,

@@ -933,13 +933,20 @@ async def run_pipeline(
     logger.info(f"Global seq_type dist: {dict(sorted(global_seq_types.items()))}")
     logger.info(f"Global base_role dist: {dict(sorted(global_base_roles.items()))}")
 
-    # Warn if any expected family has <1% representation
+    # Warn if any expected family has <1% representation.
+    # v9.4: include reasoning families (CR1-4); 0.5% floor is more lenient
+    # because reasoning cards are scarcer per video by design.
     total_with_family = sum(global_families.values()) or 1
-    for fam in ["F1", "F2", "E1", "E2", "S1"]:
+    for fam, floor_pct in [
+        ("F1", 1.0), ("F2", 1.0), ("E1", 1.0), ("E2", 1.0), ("S1", 1.0),
+        ("CR1", 0.5), ("CR2", 0.5), ("CR3", 0.3), ("CR4", 0.5),
+    ]:
         fam_count = global_families.get(fam, 0)
         fam_pct = fam_count / total_with_family * 100
-        if fam_pct < 1.0:
-            logger.warning(f"  Family {fam} underrepresented: {fam_count} ({fam_pct:.1f}%)")
+        if fam_pct < floor_pct:
+            logger.warning(
+                f"  Family {fam} underrepresented: {fam_count} ({fam_pct:.1f}% < {floor_pct}%)"
+            )
 
     # Assign sample_id and phase AFTER render (render creates new dicts)
     for i, s in enumerate(sft_samples):

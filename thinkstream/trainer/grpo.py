@@ -337,13 +337,12 @@ def _compute_time_reward(
     return 0.0
 
 
-def _compute_correctness_reward(model_answer: Optional[str], gt_content: str) -> float:
-    if not model_answer:
-        return 0.0
-    gt_answer = _extract_literal_answer(gt_content)
-    if gt_answer is None:
-        return 0.0
-    return 1.0 if model_answer == gt_answer else 0.0
+# NOTE (v9.4 cleanup): the formerly-defined `_compute_correctness_reward`
+# (literal-only, returns 0.0 for descriptive) was DEAD CODE — `calc_rewards`
+# at L900 calls `_compute_response_reward` instead, which already handles
+# descriptive via fuzzy keyword overlap (lines 179-184). The dead helper
+# was removed to prevent future drift; if a literal-only correctness signal
+# is needed, call `_extract_literal_answer` directly at the call site.
 
 
 def _compute_num_response_reward(

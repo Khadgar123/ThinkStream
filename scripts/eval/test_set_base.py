@@ -99,26 +99,53 @@ def extract_question(sample):
     Priority: input.user_input on this chunk → most recent unanswered
     query → most recent query of any kind. Returns None if no question
     is found (then the sample is skipped).
+
+    v9.4.2: reject whitespace-only fields ("   " is truthy in Python).
     """
     inp = sample.get("input", {})
     ui = inp.get("user_input")
-    if ui:
+    if ui and ui.strip():
         return ui
     queries = inp.get("queries", []) or []
     for q in reversed(queries):
         if not q.get("answers"):
-            return q.get("question")
+            qtext = q.get("question") or ""
+            if qtext.strip():
+                return qtext
     if queries:
-        return queries[-1].get("question")
+        qtext = queries[-1].get("question") or ""
+        if qtext.strip():
+            return qtext
     return None
 
 
-def score(pred_text, gold, kind):
+def score(pred_text, gold, kind, scoring="lenient"):
+    """Score base-VLM response against gold.
+
+    scoring="lenient" (default — what previous versions did):
+      - yes_no: first occurrence of "yes" / "no" in any case wins
+      - int:    first \\d+ run anywhere in the response
+      - letter: first character (uppercased) compared to gold
+    scoring="strict": stripped response must EXACTLY equal gold token. Useful
+      for measuring whether the model NATURALLY outputs the expected format
+      without relying on extraction heuristics.
+    """
     if not pred_text or not gold:
         return False
     pred = pred_text.strip()
+    if scoring == "strict":
+        # Strict = the model NATIVELY produced the canonical token (case +
+        # exact match). Useful for measuring format adherence; lenient mode
+        # below covers semantic correctness regardless of casing.
+        if kind == "yes_no":
+            return pred in ("Yes", "No") and pred == gold
+        if kind == "int":
+            return pred.isdigit() and pred == gold
+        if kind == "letter":
+            return len(pred) == 1 and pred == gold
+        return False
+    # lenient (default)
     if kind == "yes_no":
-        # Whichever of "yes"/"no" appears first in the response
         lower = pred.lower()
         i_yes, i_no = lower.find("yes"), lower.find("no")
         i_yes = i_yes if i_yes >= 0 else 10**9
@@ -223,6 +250,17 @@ def main():
     )
     p.add_argument("--agent_chunk_sec", type=float, default=2.0)
     p.add_argument("--video_root", default=None)
+    p.add_argument("--scoring", default="lenient", choices=["lenient", "strict"],
+                   help="lenient (default): first-matching-token wins (yes/no, "
+                        "int, or A-D letter anywhere in response). strict: "
+                        "response must exactly equal gold (tests whether the "
+                        "model natively outputs the right format).")
+    p.add_argument("--profile", default="16k", choices=["16k", "32k"],
+                   help="Eval context profile (parity with agent eval). For "
+                        "base eval the only effect is on max_new_tokens "
+                        "default and output JSON metadata — base VLM doesn't "
+                        "use queries/recall caps. Stamping the profile in the "
+                        "output enables fair comparison with agent runs.")
     p.add_argument("--out", default=None)
     p.add_argument("--no_bf16", action="store_true")
     args = p.parse_args()
@@ -346,7 +384,7 @@ def main():
             new_tokens = gen[0, prompt_len:]
             text = processor.tokenizer.decode(new_tokens, skip_special_tokens=True)
 
-            correct = score(text, gold, kind)
+            correct = score(text, gold, kind, scoring=args.scoring)
             if args.mode == "offline":
                 vw_start, vw_end = 0.0, float(decision_end)
             else:
@@ -398,6 +436,8 @@ def main():
             json.dump({
                 "ckpt": args.ckpt,
                 "mode": args.mode,
+                "scoring": args.scoring,
+                "profile": args.profile,
                 "test_jsonl": args.test_jsonl,
                 "n_samples": len(results),
                 "n_skipped": skipped,
