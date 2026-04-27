@@ -56,7 +56,7 @@ case $PHASE in
         # the GDPO stage; see thinkstream/sft/data_list.py for the
         # split manifest. epochs=4 gives ~39.6k samples-seen, matching
         # the previous PHASE=mixed (12.4k × 3) corpus exposure.
-        llm=${LLM:-Qwen/Qwen3-VL-8B}
+        llm=${LLM:-/home/tione/notebook/gaozhenkun/model/Qwen3-VL-8B-Instruct}
         datasets=stream_agent_sft
         lr=2e-5; epochs=4
         run_name="agent-sft"
@@ -65,7 +65,7 @@ case $PHASE in
         # Backward-compat: full union (train.jsonl). Use this only if
         # you do NOT plan to run GDPO afterwards, or for single-stage
         # baselines where SFT-seen / RL-disjoint distinction is moot.
-        llm=${LLM:-Qwen/Qwen3-VL-8B}
+        llm=${LLM:-/home/tione/notebook/gaozhenkun/model/Qwen3-VL-8B-Instruct}
         datasets=stream_agent_p5            # already the merged mix
         lr=2e-5; epochs=3
         run_name="agent-mixed"

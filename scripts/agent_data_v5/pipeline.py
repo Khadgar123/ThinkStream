@@ -426,18 +426,26 @@ async def run_pipeline(
         uncached_1a = [v for v in videos if not load_1a(v["video_id"])]
         tracker_1a = ProgressTracker("pass1a", len(uncached_1a), AUDIT_DIR)
 
+        # Limit concurrent videos to avoid connection exhaustion.
+        # Each video creates num_chunks tasks; too many videos starting at once
+        # overwhelms the httpx connection pool and causes CLOSE_WAIT deadlocks.
+        VIDEO_CONCURRENCY_1A = 8
+        video_semaphore_1a = asyncio.Semaphore(VIDEO_CONCURRENCY_1A)
+        logger.info(f"PASS 1-A: {len(uncached_1a)} uncached videos, video_concurrency={VIDEO_CONCURRENCY_1A}, chunk_concurrency={client_1a.max_concurrent}")
+
         async def process_video_1a(video):
             vid = video["video_id"]
             cached = load_1a(vid)
             if cached:
                 return vid, cached
-            captions = await run_pass1a(
-                video_id=vid,
-                frame_paths=video_frames.get(vid, []),
-                num_chunks=video["num_chunks"],
-                client=client_1a,
-                semaphore=chunk_semaphore,
-            )
+            async with video_semaphore_1a:
+                captions = await run_pass1a(
+                    video_id=vid,
+                    frame_paths=video_frames.get(vid, []),
+                    num_chunks=video["num_chunks"],
+                    client=client_1a,
+                    semaphore=chunk_semaphore,
+                )
             save_1a(vid, captions)
             n_ok = sum(1 for c in captions if c.get("parse_success"))
             await tracker_1a.record(success=n_ok > 0, video_id=vid, chunks=len(captions), parsed=n_ok)
@@ -468,10 +476,11 @@ async def run_pipeline(
 
         # Use client_1b's internal semaphore as the single cap.
         pass1b_semaphore = client_1b.semaphore
-        logger.info(f"PASS 1-B: {len(evidence_1a_map)} videos, concurrency={client_1b.max_concurrent}")
-
+        VIDEO_CONCURRENCY_1B = 8
+        video_semaphore_1b = asyncio.Semaphore(VIDEO_CONCURRENCY_1B)
         uncached_1b = [v for v in videos if not load_1b(v["video_id"]) and v["video_id"] in evidence_1a_map]
         tracker_1b = ProgressTracker("pass1b", len(uncached_1b), AUDIT_DIR)
+        logger.info(f"PASS 1-B: {len(uncached_1b)} uncached videos, video_concurrency={VIDEO_CONCURRENCY_1B}, chunk_concurrency={client_1b.max_concurrent}")
 
         async def process_video_1b(video):
             vid = video["video_id"]
@@ -480,12 +489,13 @@ async def run_pipeline(
                 return vid, cached
             if vid not in evidence_1a_map:
                 return vid, None
-            enriched = await run_pass1b(
-                evidence=evidence_1a_map[vid],
-                client=client_1b,
-                video_id=vid,
-                semaphore=pass1b_semaphore,
-            )
+            async with video_semaphore_1b:
+                enriched = await run_pass1b(
+                    evidence=evidence_1a_map[vid],
+                    client=client_1b,
+                    video_id=vid,
+                    semaphore=pass1b_semaphore,
+                )
             save_1b(vid, enriched)
             n_sc = sum(1 for c in enriched if c.get("state_changes"))
             await tracker_1b.record(success=True, video_id=vid, state_changes=n_sc)

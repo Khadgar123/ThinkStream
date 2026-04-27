@@ -205,7 +205,9 @@ PASS_CONFIG = {
         "max_tokens": 16384,
         "temperature": 0.3,
         "thinking": True,
-        "concurrent": 256,    # vision pass, chunk-level (2 frames/req)
+        "concurrent": 64,     # vision pass, chunk-level (2 frames/req)
+                              # lowered from 256 to avoid httpx connection-pool
+                              # exhaustion (default 100 conn) + CLOSE_WAIT deadlocks
     },
     "pass1b": {
         "max_tokens": 60000,  # text-only, needs headroom for thinking explosion

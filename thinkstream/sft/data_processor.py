@@ -224,6 +224,8 @@ def update_processor_pixels(processor, data_args):
             vp.max_frames = data_args.video_max_frames
         if hasattr(vp, "fps"):
             vp.fps = data_args.video_fps
+        if hasattr(vp, "do_sample_frames"):
+            vp.do_sample_frames = False
 
     return processor
 
@@ -284,7 +286,8 @@ def build_per_timestep_messages(sample: Dict, base_path: Path) -> List[Dict]:
     chunk_sec = 2.0  # AGENT_CHUNK_SEC
 
     # ── System prompt ──
-    messages = [{"role": "system", "content": inp["system"]}]
+    # Qwen3VL processor requires all message content to be list-of-dicts format
+    messages = [{"role": "system", "content": [{"type": "text", "text": inp["system"]}]}]
 
     # ── User content (视频在前、文本在后，匹配 agent_protocol.build_user_content) ──
     user_content = []
