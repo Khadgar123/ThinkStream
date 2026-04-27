@@ -195,30 +195,36 @@ PASS_CONFIG = {
     # thinking into reasoning_content, content is clean output.
     # max_tokens covers thinking + response total. Set generously
     # to avoid truncation — data quality > token efficiency.
+    #
+    # Concurrency rationale (v11, 2026-04-27): each outer pass owns a
+    # dedicated VLLMClient with its own semaphore (see pipeline.py).
+    # Values below are tuned to avoid the orphan-cascade we hit at 1024
+    # on pass3c — same reasoning applies pass-wide. Client timeout is
+    # 5400s (90min) per VLLMClient default; do NOT shorten.
     "pass1a": {
         "max_tokens": 16384,
         "temperature": 0.3,
         "thinking": True,
-        "concurrent": 1024,   # chunk-level, 2 frames per request, high concurrency
+        "concurrent": 256,    # vision pass, chunk-level (2 frames/req)
     },
     "pass1b": {
         "max_tokens": 60000,  # text-only, needs headroom for thinking explosion
         "temperature": 0.3,
         "thinking": True,
-        "concurrent": 128,    # video-level, text-only
+        "concurrent": 64,     # video-level, longest single request — keep low
     },
     "pass2_rollout": {
         "max_tokens_observation": 16384,
         "max_tokens_compress": 16384,
         "temperature": 0.3,
         "thinking": True,
-        "concurrent_videos": 128,
+        "concurrent_videos": 256,
     },
     "pass3a": {
         "max_tokens": 16384,
         "temperature": 0.7,
         "thinking": True,
-        "concurrent": 512,    # pure text, ~17K tok/req worst case, batch budget supports ~1882
+        "concurrent": 256,    # pure text; client_3a also serves verify
     },
     "pass3c": {
         # Keep thinking + 16K — 3C outputs ARE the SFT labels (response,
@@ -229,21 +235,24 @@ PASS_CONFIG = {
         "max_tokens": 16384,
         "temperature": 0.3,
         "thinking": True,
-        "concurrent": 256,    # ↓ from 1024: at 1024 each request waits ~55min
-                              # (orphan-cascade); at 256 each gets ~14min, no
-                              # timeouts, total throughput ~unchanged.
+        "concurrent": 256,    # at 1024 each req waits ~55min (orphan-cascade);
+                              # at 256 each gets ~14min, no timeouts.
     },
+    # pass3a_verify and pass3b_visibility share their outer pass's client
+    # (client_3a and client_3b respectively). The "concurrent" entries
+    # below are no longer the binding cap — they exist for documentation
+    # only. The actual cap is on the outer client.
     "pass3a_verify": {
         "max_tokens": 16384,
         "temperature": 0.1,
         "thinking": True,
-        "concurrent": 1024,    # independent per card, high concurrency
+        "concurrent": 256,    # bound by client_3a
     },
     "pass3b_visibility": {
         "max_tokens": 16384,
         "temperature": 0.1,
         "thinking": True,
-        "concurrent": 1024,    # independent per (card, chunk), high concurrency
+        "concurrent": 512,    # bound by client_3b
     },
 }
 

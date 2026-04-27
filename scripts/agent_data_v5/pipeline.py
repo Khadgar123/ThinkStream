@@ -296,22 +296,42 @@ async def run_pipeline(
     ensure_dirs()
     skip_pass = skip_pass or []
 
-    # --- Setup ---
-    # Client cap = max safe concurrency across all passes; per-pass semaphores
-    # enforce tighter limits. NOTE: pass3c is included here (was missing) and
-    # ALSO gets its own semaphore in process_video_3c — both are required:
-    # the client-level cap is the hard ceiling, the per-pass semaphore is the
-    # actual rate limiter for that pass.
-    client = VLLMClient(
-        api_base=api_base,
-        model=model,
-        max_concurrent=max(
-            safe_concurrency_for_pass("pass1a"),
-            safe_concurrency_for_pass("pass1b"),
-            safe_concurrency_for_pass("pass2_rollout"),
-            safe_concurrency_for_pass("pass3a"),
-            safe_concurrency_for_pass("pass3c"),
-        ),
+    # ── Per-pass VLLMClients (v11) ──
+    # Each outer pass owns a dedicated client with its own semaphore — no
+    # shared 1024-cap client, no semaphore-swap hacks. Each client keeps
+    # the default 5400s (90min) timeout; do NOT shorten (it's the safety
+    # net that prevented the orphan-cascade we hit at high concurrency).
+    # Concurrency values come from PASS_CONFIG (see config.py).
+    _client_kwargs = dict(api_base=api_base, model=model, timeout=5400.0)
+    client_1a = VLLMClient(
+        **_client_kwargs,
+        max_concurrent=safe_concurrency_for_pass("pass1a"),
+    )
+    client_1b = VLLMClient(
+        **_client_kwargs,
+        max_concurrent=safe_concurrency_for_pass("pass1b"),
+    )
+    client_2 = VLLMClient(
+        **_client_kwargs,
+        max_concurrent=safe_concurrency_for_pass("pass2_rollout"),
+    )
+    client_3a = VLLMClient(
+        **_client_kwargs,
+        max_concurrent=safe_concurrency_for_pass("pass3a"),
+    )
+    client_3b = VLLMClient(
+        **_client_kwargs,
+        max_concurrent=safe_concurrency_for_pass("pass3b_visibility"),
+    )
+    client_3c = VLLMClient(
+        **_client_kwargs,
+        max_concurrent=safe_concurrency_for_pass("pass3c"),
+    )
+    logger.info(
+        "VLLMClient caps: 1a=%d 1b=%d 2=%d 3a=%d 3b=%d 3c=%d (timeout=5400s)",
+        client_1a.max_concurrent, client_1b.max_concurrent,
+        client_2.max_concurrent, client_3a.max_concurrent,
+        client_3b.max_concurrent, client_3c.max_concurrent,
     )
 
     # --- Video selection ---
@@ -343,8 +363,9 @@ async def run_pipeline(
         logger.info("PASS 1-A: Independent Chunk Annotation")
         logger.info("=" * 60)
 
-        pass1a_conc = safe_concurrency_for_pass("pass1a")
-        chunk_semaphore = asyncio.Semaphore(pass1a_conc)
+        # Per-call-site semaphore removed: client_1a's internal semaphore
+        # (sized to PASS_CONFIG["pass1a"]["concurrent"]) is the single cap.
+        chunk_semaphore = client_1a.semaphore
         uncached_1a = [v for v in videos if not load_1a(v["video_id"])]
         tracker_1a = ProgressTracker("pass1a", len(uncached_1a), AUDIT_DIR)
 
@@ -357,7 +378,7 @@ async def run_pipeline(
                 video_id=vid,
                 frame_paths=video_frames.get(vid, []),
                 num_chunks=video["num_chunks"],
-                client=client,
+                client=client_1a,
                 semaphore=chunk_semaphore,
             )
             save_1a(vid, captions)
@@ -388,9 +409,9 @@ async def run_pipeline(
         logger.info("PASS 1-B: Entity Alignment + State Changes")
         logger.info("=" * 60)
 
-        pass1b_conc = safe_concurrency_for_pass("pass1b")
-        pass1b_semaphore = asyncio.Semaphore(pass1b_conc)
-        logger.info(f"PASS 1-B: {len(evidence_1a_map)} videos, concurrency={pass1b_conc}")
+        # Use client_1b's internal semaphore as the single cap.
+        pass1b_semaphore = client_1b.semaphore
+        logger.info(f"PASS 1-B: {len(evidence_1a_map)} videos, concurrency={client_1b.max_concurrent}")
 
         uncached_1b = [v for v in videos if not load_1b(v["video_id"]) and v["video_id"] in evidence_1a_map]
         tracker_1b = ProgressTracker("pass1b", len(uncached_1b), AUDIT_DIR)
@@ -404,7 +425,7 @@ async def run_pipeline(
                 return vid, None
             enriched = await run_pass1b(
                 evidence=evidence_1a_map[vid],
-                client=client,
+                client=client_1b,
                 video_id=vid,
                 semaphore=pass1b_semaphore,
             )
@@ -436,9 +457,9 @@ async def run_pipeline(
         logger.info("PASS 2: Question-blind Streaming Rollout")
         logger.info("=" * 60)
 
-        pass2_conc = safe_concurrency_for_pass("pass2_rollout")
-        logger.info(f"PASS 2 safe concurrency={pass2_conc}")
-        semaphore = asyncio.Semaphore(pass2_conc)
+        # Use client_2's internal semaphore as the single cap.
+        semaphore = client_2.semaphore
+        logger.info(f"PASS 2 safe concurrency={client_2.max_concurrent}")
 
         uncached_p2 = [v for v in videos if not load_rollout(v["video_id"])]
         tracker_p2 = ProgressTracker("pass2", len(uncached_p2), AUDIT_DIR)
@@ -459,7 +480,7 @@ async def run_pipeline(
                     video_id=vid,
                     frame_paths=video_frames.get(vid, []),
                     num_chunks=video["num_chunks"],
-                    client=client,
+                    client=client_2,
                     evidence=evidence_map.get(vid),
                     chunk_log_path=pass2_chunk_log,
                 )
@@ -502,8 +523,8 @@ async def run_pipeline(
         logger.info("PASS 3-A: Task Card Generation")
         logger.info("=" * 60)
 
-        pass3a_conc = safe_concurrency_for_pass("pass3a")
-        semaphore_3a = asyncio.Semaphore(pass3a_conc)
+        # client_3a's internal semaphore caps both card generation AND verify.
+        semaphore_3a = client_3a.semaphore
 
         uncached_3a = [v for v in videos if not load_cards(v["video_id"]) and v["video_id"] in evidence_map]
         tracker_3a = ProgressTracker("pass3a", len(uncached_3a), AUDIT_DIR)
@@ -516,9 +537,9 @@ async def run_pipeline(
             if vid not in evidence_map:
                 return vid, []
             async with semaphore_3a:
-                cards = await generate_cards(vid, evidence_map[vid], client)
-                # Verify each card independently (high concurrency within)
-                cards = await verify_cards(vid, cards, evidence_map[vid], client)
+                cards = await generate_cards(vid, evidence_map[vid], client_3a)
+                # Verify each card independently (still bound by client_3a cap).
+                cards = await verify_cards(vid, cards, evidence_map[vid], client_3a)
                 save_cards(vid, cards)
                 await tracker_3a.record(success=len(cards) > 0, video_id=vid, n_cards=len(cards))
                 return vid, cards
@@ -561,7 +582,7 @@ async def run_pipeline(
             # LLM visibility checks inside (independent per card, high concurrency)
             placements = await compute_all_placements(
                 cards_map[vid], rollout_map[vid], evidence_map[vid],
-                client=client, video_id=vid,
+                client=client_3b, video_id=vid,
             )
             vid_cards = {c["card_id"]: c for c in cards_map[vid]}
             nc = rollout_map[vid]["num_chunks"]
@@ -603,18 +624,8 @@ async def run_pipeline(
         uncached_3c = [v for v in videos if v["video_id"] in trajectories_map]
         tracker_3c = ProgressTracker("pass3c", len(uncached_3c), AUDIT_DIR)
 
-        # ── Per-pass concurrency enforcement ──
-        # pass3c calls go through `client._call_one` which uses the client's
-        # internal semaphore (sized to `max_concurrent` of all passes — likely
-        # 1024). To enforce pass3c's tighter PASS_CONFIG limit, swap the
-        # client's semaphore for a pass3c-sized one for the duration of pass3c.
-        pass3c_conc = safe_concurrency_for_pass("pass3c")
-        logger.info(f"PASS 3-C: enforcing concurrency={pass3c_conc} "
-                    f"(was client default {client.max_concurrent})")
-        _saved_sem = client.semaphore
-        _saved_max = client.max_concurrent
-        client.semaphore = asyncio.Semaphore(pass3c_conc)
-        client.max_concurrent = pass3c_conc
+        # client_3c is dedicated to pass 3-C (no semaphore swap needed).
+        logger.info(f"PASS 3-C: client_3c.max_concurrent={client_3c.max_concurrent}")
 
         async def process_video_3c(video):
             vid = video["video_id"]
@@ -636,7 +647,7 @@ async def run_pipeline(
                     cards_map=vid_cards,
                     rollout=rollout_map[vid],
                     evidence=evidence_map[vid],
-                    client=client,
+                    client=client_3c,
                     video_id=vid,
                 )
                 for traj in trajectories
@@ -658,18 +669,11 @@ async def run_pipeline(
             await tracker_3c.record(success=len(vid_samples) > 0, video_id=vid, n_samples=len(vid_samples))
             return vid, vid_samples
 
-        # Videos are independent — run them all concurrently.
-        # Client semaphore (now pass3c-sized) limits actual API calls in flight.
-        try:
-            results_3c = await asyncio.gather(*[process_video_3c(v) for v in videos])
-            for vid, vid_samples in results_3c:
-                all_samples.extend(vid_samples)
-        finally:
-            # Restore the client's original semaphore so subsequent passes use
-            # the full client cap. (Currently pass3c is the last LLM-calling
-            # pass before render/Pass4, but be safe in case the order changes.)
-            client.semaphore = _saved_sem
-            client.max_concurrent = _saved_max
+        # Videos are independent — run them all concurrently. client_3c's
+        # internal semaphore limits actual API calls in flight.
+        results_3c = await asyncio.gather(*[process_video_3c(v) for v in videos])
+        for vid, vid_samples in results_3c:
+            all_samples.extend(vid_samples)
 
         tracker_3c.summary()
         from .cache_version import write_stage_version
