@@ -1,7 +1,18 @@
-"""Phase-based dataset registry for per-timestep agent SFT.
+"""Dataset registry for the per-timestep agent.
 
-Each phase has its own JSONL file produced by the data construction pipeline.
-Training scripts select phase via --dataset_use, e.g. "stream_agent_p1".
+Production: `stream_agent_p5` (= all train samples mixed). Used by both
+SFT (PHASE=mixed) and GDPO RL (default DATASET in grpo_train.sh).
+
+Ablation-only diagnostic splits: `stream_agent_p1`, `stream_agent_p2`,
+`stream_agent_c1`. These break the production dataset down by sample
+category (basic / recall / compress) so you can train or eval on a
+single category for ablations. Per the v9.2 paper survey
+(8/8 same-era 2026 works use single-stage SFT), these are NOT a
+training curriculum — production is a single SFT pass on `_p5`.
+
+The old `stream_agent_c2` (model-self-pick range SFT) was removed in
+v11: range exploration moved to RL stage and is supervised by the
+`overflow_pen` reward in `thinkstream/trainer/grpo.py`.
 """
 
 from pathlib import Path
@@ -19,36 +30,36 @@ def _agent_path(filename: str) -> str:
     return str(_AGENT_DATA_DIR / filename)
 
 
-# Phase-specific datasets
 DATASET_REGISTRY = {
-    # Phase 1: protocol alignment (silent + response)
-    "stream_agent_p1": {
-        "annotation_path": _agent_path("phase1_train.jsonl"),
-        "data_path": "./",
-    },
-    # Phase 2: recall learning
-    "stream_agent_p2": {
-        "annotation_path": _agent_path("phase2_train.jsonl"),
-        "data_path": "./",
-    },
-    # C1: system-specified compression
-    "stream_agent_c1": {
-        "annotation_path": _agent_path("c1_train.jsonl"),
-        "data_path": "./",
-    },
-    # C2: model-selected compression range
-    "stream_agent_c2": {
-        "annotation_path": _agent_path("c2_train.jsonl"),
-        "data_path": "./",
-    },
-    # Phase 5: mixed training (all action types)
+    # ─── Production ─────────────────────────────────────────────────
+    # All train samples mixed. SFT Stage 1 + GDPO RL Stage 2 both use this.
     "stream_agent_p5": {
         "annotation_path": _agent_path("phase5_train.jsonl"),
         "data_path": "./",
     },
-    # Full dataset (all phases, for debugging)
+    # Same content as p5, kept as an alias for explicit "everything" loads.
     "stream_agent_all": {
         "annotation_path": _agent_path("train.jsonl"),
+        "data_path": "./",
+    },
+
+    # ─── Ablation-only diagnostic splits ─────────────────────────────
+    # Per-category subsets of train samples, for category-specific eval
+    # or ablation. Do NOT chain into a curriculum — see module docstring.
+    "stream_agent_p1": {
+        # Basic silent + response samples only.
+        "annotation_path": _agent_path("phase1_train.jsonl"),
+        "data_path": "./",
+    },
+    "stream_agent_p2": {
+        # Recall samples (recall_query / recall_response / recall_silent)
+        # and query-aware silent/response.
+        "annotation_path": _agent_path("phase2_train.jsonl"),
+        "data_path": "./",
+    },
+    "stream_agent_c1": {
+        # Compress samples (system trigger + teacher gold range).
+        "annotation_path": _agent_path("c1_train.jsonl"),
         "data_path": "./",
     },
 }

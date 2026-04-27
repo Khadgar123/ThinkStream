@@ -846,64 +846,35 @@ SFT 总计 ~1,440 steps (~18 min on 8×H100)，RL 总计 ~500 steps (~67 min)。
 **Pipeline 同时输出两种文件**：
 
 ```
-data/agent/final/
-├── train.jsonl              # 全量训练集（所有 phase 混合）
-├── val.jsonl                # 全量验证集
-├── test.jsonl               # 全量测试集
-├── phase1_train.jsonl       # 按 phase 拆分的训练集
-├── phase2_train.jsonl
-├── c1_train.jsonl
-├── c2_train.jsonl
-├── phase5_train.jsonl
-└── pipeline_stats.json      # 含每个 phase 的样本量统计
+data/agent_v5/final/
+├── train.jsonl              # 全量训练集（生产用）
+├── val.jsonl                # 验证集
+├── test.jsonl               # 测试集
+├── phase5_train.jsonl       # = train.jsonl（生产 SFT 读这个）
+├── phase1_train.jsonl       # 诊断切分：silent + 基础 response
+├── phase2_train.jsonl       # 诊断切分：recall 样本
+├── c1_train.jsonl           # 诊断切分：compress 样本
+└── pipeline_stats.json      # 各 phase 样本量统计
 ```
 
-Pipeline Pass 5 结尾新增拆分逻辑：
+`pipeline.py` 用 `assign_phase()` 给每条 train sample 打 phase 标签，然后写出 5 个文件（生产文件 + 3 个诊断切分）。**`c2_train.jsonl` 在 v11 已废除**：旧的"模型自选 range" SFT 数据已被 RL 阶段的 `overflow_pen` reward 替代。
+
+**Dataset 注册**（`thinkstream/sft/data_list.py`）：
 
 ```python
-# pipeline.py Pass 5 结尾
-for phase in ["1", "2", "C1", "C2", "5"]:
-    phase_samples = [s for s in train_samples if s["phase"] == phase]
-    phase_name = {"1": "phase1", "2": "phase2", "C1": "c1", "C2": "c2", "5": "phase5"}[phase]
-    path = FINAL_DIR / f"{phase_name}_train.jsonl"
-    with open(path, "w") as f:
-        for s in phase_samples:
-            f.write(json.dumps(s, ensure_ascii=False) + "\n")
-    logger.info(f"  {phase_name}: {len(phase_samples)} samples → {path}")
-    stats[f"{phase_name}_count"] = len(phase_samples)
-```
+DATASET_REGISTRY = {
+    # 生产
+    "stream_agent_p5":  ".../final/phase5_train.jsonl",   # SFT + RL 都用
+    "stream_agent_all": ".../final/train.jsonl",          # 别名
 
-**SFT 数据集注册**（`data_list.py`）：
-
-```python
-STREAM_AGENT_P1 = {
-    "annotation_path": ".../agent/final/phase1_train.jsonl",
-    "data_path": "./",
-}
-STREAM_AGENT_P2 = {
-    "annotation_path": ".../agent/final/phase2_train.jsonl",
-    "data_path": "./",
-}
-STREAM_AGENT_C1 = {
-    "annotation_path": ".../agent/final/c1_train.jsonl",
-    "data_path": "./",
-}
-STREAM_AGENT_C2 = {
-    "annotation_path": ".../agent/final/c2_train.jsonl",
-    "data_path": "./",
-}
-STREAM_AGENT_P5 = {
-    "annotation_path": ".../agent/final/phase5_train.jsonl",
-    "data_path": "./",
-}
-# 全量（用于调试或混合训练）
-STREAM_AGENT_ALL = {
-    "annotation_path": ".../agent/final/train.jsonl",
-    "data_path": "./",
+    # 诊断 ablation
+    "stream_agent_p1":  ".../final/phase1_train.jsonl",   # 基础 silent+response
+    "stream_agent_p2":  ".../final/phase2_train.jsonl",   # recall
+    "stream_agent_c1":  ".../final/c1_train.jsonl",       # compress
 }
 ```
 
-训练脚本直接 `--args.data.dataset_use stream_agent_p1`，不需要在代码中过滤 phase 字段。
+训练脚本直接 `--args.data.dataset_use stream_agent_p5`（生产）或 `_p1` / `_p2` / `_c1`（per-category 诊断 ablation），不需要在代码中过滤 phase 字段。
 
 ### 7.3 训练脚本
 

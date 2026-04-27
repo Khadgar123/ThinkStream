@@ -3,13 +3,13 @@
 Based on Qwen3-VL official finetune, adapted for ThinkStream.
 Supports Qwen2.5-VL and Qwen3-VL (including MoE variants).
 
-Usage:
-    PHASE=1 bash scripts/sft_per_timestep.sh
+Usage (production):
+    PHASE=mixed bash scripts/sft_per_timestep.sh
     # or directly:
     torchrun --nproc_per_node=8 thinkstream/sft/train.py \
-        --model_name_or_path Qwen/Qwen2.5-VL-3B-Instruct \
-        --dataset_use stream_agent_p1 \
-        --output_dir output/agent-phase1
+        --model_name_or_path Qwen/Qwen3-VL-8B \
+        --dataset_use stream_agent_p5 \
+        --output_dir output/agent-mixed
 """
 
 import os

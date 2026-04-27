@@ -1,22 +1,24 @@
 #!/bin/bash
 # Per-timestep agent SFT training script.
 #
-# v9.2 (2026-04-27): PHASE=mixed is the ONLY production path. The 5-phase
-# curriculum (1→2→C1→C2→5) is kept ONLY as an ablation knob — confirmed
-# unnecessary by the 2026 paper survey (8/8 same-era memory/streaming
-# agents use single-stage SFT or skip SFT entirely). After this SFT,
+# v11 (2026-04-27): PHASE=mixed is the ONLY production path. Single-stage
+# SFT on the full mixed dataset (stream_agent_p5). After this SFT,
 # proceed to GDPO RL via the GRPO launcher (see docs/data_batch1_plan.md §8).
+#
+# Per-category training cases (1 | 2 | C1) are ablation-only knobs.
+# C2 was removed in v11 — model-self-pick range moved to RL.
 #
 # Usage (production):
 #   PHASE=mixed bash scripts/sft_per_timestep.sh
 #
-# Ablation only (do NOT use for production):
-#   PHASE=1  bash scripts/sft_per_timestep.sh
-#   PHASE=C1 LLM=output/agent-phase2 bash scripts/sft_per_timestep.sh
+# Ablation only (DO NOT chain into a curriculum):
+#   PHASE=1  bash scripts/sft_per_timestep.sh   # basic silent+response
+#   PHASE=2  bash scripts/sft_per_timestep.sh   # recall samples
+#   PHASE=C1 bash scripts/sft_per_timestep.sh   # compress samples
 #
 # Environment variables:
-#   PHASE       - mixed (recommended) | 1 | 2 | C1 | C2 | 5
-#   LLM         - Model path (default: Qwen/Qwen3-VL-8B for mixed/1)
+#   PHASE       - mixed (recommended) | 1 | 2 | C1
+#   LLM         - Model path (default: Qwen/Qwen3-VL-8B)
 #   NPROC       - GPUs per node (default: 8)
 #   BSZ         - Per-device batch size (default: 8)
 #   GRAD_ACCUM  - Gradient accumulation steps (default: 1)
@@ -46,43 +48,32 @@ case $PHASE in
         # class_balanced_sampler defaults to True in DataArguments;
         # set False here if you want a uniform-sampling ablation.
         ;;
+    # Ablation: train only on basic silent+response samples.
     1)
         llm=${LLM:-Qwen/Qwen2.5-VL-3B-Instruct}
         datasets=stream_agent_p1
         lr=1e-5; epochs=3
-        run_name="agent-phase1"
+        run_name="agent-ablate-p1"
         extra_args="--class_balanced_sampler False"
         ;;
+    # Ablation: train only on recall samples.
     2)
-        llm=${LLM:?'Phase 2 requires LLM= (Phase 1 checkpoint)'}
+        llm=${LLM:-Qwen/Qwen2.5-VL-3B-Instruct}
         datasets=stream_agent_p2
         lr=5e-6; epochs=3
-        run_name="agent-phase2"
+        run_name="agent-ablate-p2"
         extra_args="--class_balanced_sampler False"
         ;;
+    # Ablation: train only on compress samples (system trigger + teacher gold range).
     C1)
-        llm=${LLM:?'Phase C1 requires LLM= (Phase 2 checkpoint)'}
+        llm=${LLM:-Qwen/Qwen2.5-VL-3B-Instruct}
         datasets=stream_agent_c1
         lr=3e-6; epochs=2
-        run_name="agent-c1"
-        extra_args="--class_balanced_sampler False"
-        ;;
-    C2)
-        llm=${LLM:?'Phase C2 requires LLM= (C1 checkpoint)'}
-        datasets=stream_agent_c2
-        lr=2e-6; epochs=2
-        run_name="agent-c2"
-        extra_args="--class_balanced_sampler False"
-        ;;
-    5)
-        llm=${LLM:?'Phase 5 requires LLM= (C2 checkpoint)'}
-        datasets=stream_agent_p5
-        lr=1e-6; epochs=1
-        run_name="agent-phase5"
+        run_name="agent-ablate-c1"
         extra_args="--class_balanced_sampler False"
         ;;
     *)
-        echo "Unknown PHASE=$PHASE. Use: mixed (recommended) | 1 | 2 | C1 | C2 | 5"
+        echo "Unknown PHASE=$PHASE. Use: mixed (production) | 1 | 2 | C1 (ablation only)"
         exit 1
         ;;
 esac
