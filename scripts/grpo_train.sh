@@ -13,41 +13,59 @@
 #   - docs/data_batch1_plan.md §5.3 (reward weights and masks)
 #
 # Usage:
-#   LLM=output/agent-mixed bash scripts/grpo_train.sh
+#   LLM=output/agent-sft bash scripts/grpo_train.sh
 #
 # Required:
-#   LLM         - SFT checkpoint path (e.g., output/agent-mixed)
+#   LLM         - SFT checkpoint path. Use output/agent-sft if you ran
+#                 PHASE=sft (recommended). output/agent-mixed for the
+#                 legacy single-stage run.
 #
 # Optional environment variables (defaults shown):
 #   NPROC               - GPUs per node (8)
 #   GROUP_SIZE          - GRPO group size G (4)
 #   MICRO_BATCH         - per-device micro batch (4)
-#   ROLLOUT_MAX_CHUNKS  - max chunks per rollout (20)
+#   ROLLOUT_MAX_CHUNKS  - max chunks per rollout (30 = 60s window).
+#                         Was 20; bumped so videos hit the compress
+#                         token threshold (~10 chunks) and produce
+#                         overflow_pen / silent_quality signal at
+#                         training time. Lower if compute-bound.
 #   ROLLOUT_MAX_NEW_TOK - max new tokens per chunk generation (128)
 #   ROLLOUT_TEMP        - rollout temperature (1.0)
 #   LR                  - learning rate (5e-7)
 #   EPOCHS              - num train epochs (2)
 #   BETA                - KL beta (1e-3)
-#   DATASET             - dataset_use key from data_list.py (default: stream_agent_p5).
-#                         For a separate RL video set, register stream_agent_rl in
-#                         thinkstream/sft/data_list.py first (see data_batch1_plan.md §4).
+#   DATASET             - dataset_use key from data_list.py.
+#                         Default: stream_agent_rl (held-out 50 vids /
+#                         ~2.5k samples — disjoint from SFT). Use
+#                         stream_agent_p5 only for ablations where
+#                         RL/SFT-disjoint distinction is intentionally
+#                         dropped.
+#   SAVE_STEPS          - save every N steps (200). Total steps on
+#                         train_rl ≈ 624 → 3 ckpts at ~16GB each.
+#                         slyme has no save_total_limit; bump SAVE_STEPS
+#                         higher if disk-bound, lower for finer rollback.
 #   AUDIT_DIR           - GDPO per-step audit dir (auto: $LLM/../grpo-audit)
 #   RUN_NAME            - W&B run name (agent-grpo)
 
 set -euo pipefail
 
-LLM=${LLM:?'LLM= required (path to SFT checkpoint, e.g. output/agent-mixed)'}
+LLM=${LLM:?'LLM= required (path to SFT checkpoint, e.g. output/agent-sft)'}
 
 NPROC=${NPROC:-8}
 GROUP_SIZE=${GROUP_SIZE:-4}
 MICRO_BATCH=${MICRO_BATCH:-4}
-ROLLOUT_MAX_CHUNKS=${ROLLOUT_MAX_CHUNKS:-20}
+ROLLOUT_MAX_CHUNKS=${ROLLOUT_MAX_CHUNKS:-30}
 ROLLOUT_MAX_NEW_TOK=${ROLLOUT_MAX_NEW_TOK:-128}
 ROLLOUT_TEMP=${ROLLOUT_TEMP:-1.0}
 LR=${LR:-5e-7}
 EPOCHS=${EPOCHS:-2}
 BETA=${BETA:-1e-3}
-DATASET=${DATASET:-stream_agent_p5}   # TODO: switch to stream_agent_rl once registered
+DATASET=${DATASET:-stream_agent_rl}
+# slyme/deepslyme has no save_total_limit Ref registered — older runs had
+# unbounded ckpts. Default save_steps=200 gives ~3 ckpts over the 624-step
+# run on train_rl.jsonl (≈ 48GB on disk). Lower SAVE_STEPS for finer-grained
+# rollback at the cost of disk; manually delete old ckpts between runs.
+SAVE_STEPS=${SAVE_STEPS:-200}
 RUN_NAME=${RUN_NAME:-agent-grpo}
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -73,6 +91,7 @@ echo "Rollout temp:      ${ROLLOUT_TEMP}"
 echo "LR:                ${LR}"
 echo "Epochs:            ${EPOCHS}"
 echo "KL beta:           ${BETA}"
+echo "Save every:        ${SAVE_STEPS} steps"
 echo "====================================="
 
 # Audit dir is read by grpo.py via env var (see _grpo_audit_writers).
@@ -98,7 +117,7 @@ torchrun --nproc_per_node=${NPROC} \
     --args.train.warmup_ratio 0.03 \
     --args.train.max_grad_norm 1.0 \
     --args.train.lr_scheduler_type cosine \
-    --args.train.save_steps 50 \
+    --args.train.save_steps ${SAVE_STEPS} \
     --args.train.bf16 True \
     --args.train.group_size ${GROUP_SIZE} \
     --args.train.micro_batch_size ${MICRO_BATCH} \
