@@ -4,11 +4,12 @@ The test set is `data/agent_v5/final/test.jsonl` — 1,600 per-timestep
 samples, video-disjoint from `train_sft`, `train_rl`, and `val`. Three
 scripts mirror the OVO eval matrix.
 
-| Script | Ckpt type | Pass 1 (teacher-forced) | Pass 2 (generative) | What it measures |
-|--------|-----------|-------------------------|----------------------|------------------|
-| `run_base.sh` | base Qwen3-VL-Instruct | ❌ skipped (special tokens are untrained on base — loss is uninformative) | ✅ | Floor for action accuracy. Base will mostly produce free-form text, so action_acc near 0% expected. |
-| `run_sft.sh` | SFT ckpt | ✅ same metrics as wandb in-loop eval | ✅ | Did the model learn the agent format on test (held-out from train_sft AND from val)? |
-| `run_rl.sh` | post-GDPO RL ckpt | ✅ | ✅ | Did RL preserve / improve per-class action accuracy from SFT? **Does not** measure autonomous compress decisions (use `scripts/eval/ovo/run_rl.sh` for that). |
+| Script | Ckpt type | What runs | What it measures |
+|--------|-----------|-----------|------------------|
+| `run_base.sh --form offline` | base Qwen3-VL-Instruct | Extract Q + gold from test.jsonl response / recall_response samples, ask base offline (full video [0, video_end], 64 frames). | **Base ceiling** under full information. Yes/No, integer, letter scoring (OVO-style prefix/substring). |
+| `run_base.sh --form streaming` | base Qwen3-VL-Instruct | Same extraction, but base sees only the visual_window slice the streaming agent has at decision time (12 chunks × 2 sec = 24 sec by default). | **Apples-to-apples baseline**: base with the SAME visual context our agent uses — measures what the agent protocol adds beyond a naive sliding window. |
+| `run_sft.sh` | SFT ckpt | Pass 1: teacher-forced (loss + L2 argmax via trainer.evaluate). Pass 2: generative action keyword accuracy. | Did the model learn the agent format on held-out test? Pass 1 matches wandb in-loop eval byte-for-byte. |
+| `run_rl.sh` | post-GDPO RL ckpt | Same two-pass as SFT but on the RL ckpt path. | Did RL preserve / improve per-class action accuracy? **Does not** measure autonomous compress decisions (test.jsonl is per-timestep slices that don't trigger memory pressure — use `scripts/eval/ovo/run_rl.sh` for that). |
 
 ## Why teacher-forced + generative (two-pass)
 
@@ -22,8 +23,11 @@ scripts mirror the OVO eval matrix.
 ## Quick start (after SFT and/or RL finish)
 
 ```bash
-# 1) Base floor — generative-only (skips Pass 1 by design)
-bash scripts/eval/test_set/run_base.sh --n 200
+# 1a) Base ceiling — full video buffer (offline VLM upper bound)
+bash scripts/eval/test_set/run_base.sh --form offline --n 200
+
+# 1b) Base apples-to-apples — same 24-sec visual window as our agent
+bash scripts/eval/test_set/run_base.sh --form streaming --n 200
 
 # 2) SFT eval — the recommended post-train report
 bash scripts/eval/test_set/run_sft.sh \
@@ -35,6 +39,12 @@ bash scripts/eval/test_set/run_rl.sh \
     --ckpt output/agent-rl \
     --ngpu 8 --n_gen 200
 ```
+
+**Reading the four numbers**:
+- If `SFT generative > base streaming` → agent protocol is helping
+- If `SFT generative ≈ base offline` → agent matches the offline ceiling on this distribution
+- If `SFT generative < base streaming` → agent protocol is hurting (regressed) — investigate
+- If `RL ≈ SFT` on test set → RL preserved per-step decisions; benefit shows up in OVO (long-horizon)
 
 Reports land at:
 - `${CKPT}/eval/test_stream_agent_test/metrics.json`     (Pass 1)
