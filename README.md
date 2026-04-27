@@ -34,18 +34,18 @@ Experiments on multiple streaming video benchmarks show that ThinkStream signifi
 
 ```text
 ThinkStream/
-├── scripts/                  # Scripts for training, evaluation, and inference demos
-│   ├── eval/                 # Evaluation scripts (OVO-Bench, StreamingBench)
-│   ├── demo.py               # Inference demo code
-│   ├── rl.sh                 # Reinforcement Learning (RL) training script
-│   └── sft.sh                # Supervised Fine-Tuning (SFT) training script
-├── thinkstream/              # Core codebase
-│   ├── data/                 # Data processing logic and dataset path configuration
-│   ├── eval/                 # Evaluation code and format conversion scripts
-│   ├── model/                # Core model architecture, streaming attention mechanism, and inference engine
-│   └── trainer/              # Training logic for SFT and RL
-├── train.py                  # Main training entry point
-├── requirements.txt          # Python dependencies
+├── scripts/                       # Training, evaluation, and demo scripts
+│   ├── eval/                      # Evaluation scripts (OVO-Bench, StreamingBench)
+│   ├── demo.py                    # Inference demo
+│   ├── sft_per_timestep.sh        # Stage 1: SFT (one-shot mixed)
+│   └── grpo_train.sh              # Stage 2: GDPO RL (from SFT checkpoint)
+├── thinkstream/                   # Core codebase
+│   ├── data/                      # Data processing + dataset registry
+│   ├── eval/                      # Evaluation + format conversion
+│   ├── model/                     # Architecture, streaming attention, inference engine
+│   ├── trainer/                   # SFT + GDPO RL training nodes (gdpo_advantage.py)
+│   └── train.py                   # slyme launcher (used by grpo_train.sh)
+├── requirements.txt
 └── README.md
 ```
 
@@ -64,15 +64,22 @@ pip install -r requirements.txt
 
 *Note: The dataset path configurations are located in `thinkstream/data/__init__.py`, which follows a similar logic to `qwen-vl-finetune`.*
 
-**Run Training:**
-Simply run the corresponding training scripts (please note you need to modify the model paths inside the scripts):
+**Run Training (2-stage pipeline):**
 ```bash
-# Supervised Fine-Tuning (SFT)
-./scripts/sft.sh
+# Stage 1: SFT (one-shot mixed, ~3 min on 8×H100)
+PHASE=mixed bash scripts/sft_per_timestep.sh
+# → output/agent-mixed/
 
-# Reinforcement Learning (RL)
-./scripts/rl.sh
+# Stage 2: GDPO RL from SFT checkpoint (~40 min)
+LLM=output/agent-mixed bash scripts/grpo_train.sh
+# → output/agent-grpo/  +  output/agent-grpo/audit/grpo_step.jsonl
 ```
+
+GDPO RL uses NVIDIA-style per-reward decoupled advantage aggregation
+([2601.05242](https://arxiv.org/abs/2601.05242)) over six reward components
+(`format`, `correctness`, `timing`, `silent_quality`, `recall_quality`,
+`overflow_pen`). See `thinkstream/trainer/gdpo_advantage.py` and
+`docs/data_construction_zh.md` §4 for the full design.
 
 ### Evaluation
 

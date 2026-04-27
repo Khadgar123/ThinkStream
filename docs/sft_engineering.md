@@ -907,83 +907,25 @@ STREAM_AGENT_ALL = {
 
 ### 7.3 训练脚本
 
+实际脚本以代码为准；本节只列入口和典型用法。
+
+| 阶段 | 脚本 | 入口 | 默认输出 |
+|------|------|------|---------|
+| Stage 1: SFT | `scripts/sft_per_timestep.sh` | `thinkstream/sft/train.py` (HfArgumentParser) | `output/agent-mixed/` |
+| Stage 2: GDPO RL | `scripts/grpo_train.sh` | `thinkstream/train.py grpo` (slyme `parse_and_inject`) | `output/agent-grpo/` + `audit/` |
+
 ```bash
-#!/bin/bash
-# scripts/sft_per_timestep.sh
-# 用法: PHASE=1 bash scripts/sft_per_timestep.sh
+# Stage 1: SFT one-shot mixed (~3 min on 8×H100)
+PHASE=mixed bash scripts/sft_per_timestep.sh
 
-PHASE=${PHASE:-1}
-NPROC_PER_NODE=8
-deepspeed=./scripts/zero3.json
-entry_file=thinkstream/train.py
+# Stage 2: GDPO RL from SFT checkpoint (~40 min)
+LLM=output/agent-mixed bash scripts/grpo_train.sh
 
-case $PHASE in
-    1)
-        llm=${LLM:-Qwen/Qwen2.5-VL-3B-Instruct}
-        datasets=stream_agent_p1
-        lr=1e-5; epochs=3
-        run_name="agent-phase1"
-        ;;
-    2)
-        llm=${LLM:?'Set LLM to Phase 1 checkpoint'}
-        datasets=stream_agent_p2
-        lr=5e-6; epochs=3
-        run_name="agent-phase2"
-        ;;
-    C1)
-        llm=${LLM:?'Set LLM to Phase 2 checkpoint'}
-        datasets=stream_agent_c1
-        lr=3e-6; epochs=2
-        run_name="agent-c1"
-        ;;
-    C2)
-        llm=${LLM:?'Set LLM to C1 checkpoint'}
-        datasets=stream_agent_c2
-        lr=2e-6; epochs=2
-        run_name="agent-c2"
-        ;;
-    5)
-        llm=${LLM:?'Set LLM to C2 checkpoint'}
-        datasets=stream_agent_p5
-        lr=1e-6; epochs=1
-        run_name="agent-phase5"
-        ;;
-esac
-
-output_dir=./output/${run_name}
-batch_size=${BSZ:-8}
-grad_accum_steps=${GRAD_ACCUM:-1}
-
-args="
-    sft \
-    --args.train.deepspeed ${deepspeed} \
-    --args.model.name_or_path ${llm} \
-    --args.model.model_type ${MODEL_TYPE:-qwen2.5vl} \
-    --args.model.max_length 16384 \
-    --args.data.dataset_use ${datasets} \
-    --args.data.flatten False \
-    --args.data.video_max_pixels 150528 \
-    --args.data.video_min_pixels 100352 \
-    --args.train.bf16 True \
-    --args.train.output_dir ${output_dir} \
-    --args.train.num_train_epochs ${epochs} \
-    --args.train.per_device_train_batch_size ${batch_size} \
-    --args.train.gradient_accumulation_steps ${grad_accum_steps} \
-    --args.train.save_steps 500 \
-    --args.train.learning_rate ${lr} \
-    --args.train.weight_decay 0.0 \
-    --args.train.warmup_ratio 0.03 \
-    --args.train.max_grad_norm 1.0 \
-    --args.train.lr_scheduler_type cosine \
-    --args.train.torch_empty_cache_steps 1 \
-    --args.train.dataloader.num_workers 4
-"
-
-TOKENIZERS_PARALLELISM=false \
-PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
-torchrun --nproc_per_node=${NPROC_PER_NODE} \
-         ${entry_file} ${args}
+# 训练中实时看 GDPO 信号
+tail -f output/agent-grpo/audit/grpo_step.jsonl | jq .
 ```
+
+环境变量覆盖（两脚本都支持）：`NPROC` / `LR` / `EPOCHS` / `BSZ` / `LLM`。GRPO 额外有 `GROUP_SIZE` / `MICRO_BATCH` / `ROLLOUT_MAX_CHUNKS` / `BETA` / `DATASET`。详见各脚本头部注释。
 
 ### 7.4 max_length 降低
 
