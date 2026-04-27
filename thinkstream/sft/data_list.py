@@ -80,6 +80,16 @@ DATASET_REGISTRY = {
         "annotation_path": _agent_path("c1_train.jsonl"),
         "data_path": "./",
     },
+
+    # ─── Eval / held-out sets ────────────────────────────────────────
+    "stream_agent_val": {
+        "annotation_path": _agent_path("val.jsonl"),
+        "data_path": "./",
+    },
+    "stream_agent_test": {
+        "annotation_path": _agent_path("test.jsonl"),
+        "data_path": "./",
+    },
 }
 
 

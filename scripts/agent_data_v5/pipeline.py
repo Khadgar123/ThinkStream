@@ -420,9 +420,9 @@ async def run_pipeline(
         logger.info("PASS 1-A: Independent Chunk Annotation")
         logger.info("=" * 60)
 
-        # Per-call-site semaphore removed: client_1a's internal semaphore
-        # (sized to PASS_CONFIG["pass1a"]["concurrent"]) is the single cap.
-        chunk_semaphore = client_1a.semaphore
+        # Client_1a's internal semaphore (_call_one) is the single concurrency cap.
+        # Do NOT pass an outer semaphore to run_pass1a — annotate_chunk would nest
+        # acquire the same semaphore and halve effective concurrency / deadlock.
         uncached_1a = [v for v in videos if not load_1a(v["video_id"])]
         tracker_1a = ProgressTracker("pass1a", len(uncached_1a), AUDIT_DIR)
 
@@ -444,7 +444,6 @@ async def run_pipeline(
                     frame_paths=video_frames.get(vid, []),
                     num_chunks=video["num_chunks"],
                     client=client_1a,
-                    semaphore=chunk_semaphore,
                 )
             save_1a(vid, captions)
             n_ok = sum(1 for c in captions if c.get("parse_success"))
@@ -474,8 +473,7 @@ async def run_pipeline(
         logger.info("PASS 1-B: Entity Alignment + State Changes")
         logger.info("=" * 60)
 
-        # Use client_1b's internal semaphore as the single cap.
-        pass1b_semaphore = client_1b.semaphore
+        # Client_1b's internal semaphore is the single cap.
         VIDEO_CONCURRENCY_1B = 8
         video_semaphore_1b = asyncio.Semaphore(VIDEO_CONCURRENCY_1B)
         uncached_1b = [v for v in videos if not load_1b(v["video_id"]) and v["video_id"] in evidence_1a_map]
@@ -494,7 +492,6 @@ async def run_pipeline(
                     evidence=evidence_1a_map[vid],
                     client=client_1b,
                     video_id=vid,
-                    semaphore=pass1b_semaphore,
                 )
             save_1b(vid, enriched)
             n_sc = sum(1 for c in enriched if c.get("state_changes"))

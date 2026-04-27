@@ -70,6 +70,15 @@ class DataArguments:
         metadata={"help": "Write audit log every N steps (1 = every step)."},
     )
 
+    # Eval dataset (optional) — monitored for overfitting
+    eval_dataset_use: Optional[str] = field(
+        default="",
+        metadata={
+            "help": "Comma-separated eval dataset names from DATASET_REGISTRY. "
+            "If set, Trainer runs evaluation every eval_steps."
+        },
+    )
+
     # Class-balanced sampler (single-phase mixed SFT)
     class_balanced_sampler: bool = field(
         default=True,

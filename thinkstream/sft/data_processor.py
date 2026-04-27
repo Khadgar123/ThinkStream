@@ -958,8 +958,17 @@ def make_per_timestep_data_module(processor, data_args) -> Dict:
     train_dataset = PerTimestepDataset(processor, data_args)
     collator = PerTimestepDataCollator(processor.tokenizer)
 
+    # Build eval dataset if requested
+    eval_dataset = None
+    eval_names = getattr(data_args, "eval_dataset_use", "")
+    if eval_names:
+        from dataclasses import replace
+        eval_args = replace(data_args, dataset_use=eval_names)
+        eval_dataset = PerTimestepDataset(processor, eval_args)
+        rank0_print(f"Eval samples: {len(eval_dataset)}")
+
     return {
         "train_dataset": train_dataset,
-        "eval_dataset": None,
+        "eval_dataset": eval_dataset,
         "data_collator": collator,
     }

@@ -58,6 +58,7 @@ case $PHASE in
         # the previous PHASE=mixed (12.4k × 3) corpus exposure.
         llm=${LLM:-/home/tione/notebook/gaozhenkun/model/Qwen3-VL-8B-Instruct}
         datasets=stream_agent_sft
+        eval_datasets=stream_agent_val
         lr=2e-5; epochs=4
         run_name="agent-sft"
         ;;
@@ -107,12 +108,19 @@ echo "=== Per-timestep Agent SFT ==="
 echo "Phase:    ${PHASE}"
 echo "Model:    ${llm}"
 echo "Dataset:  ${datasets}"
+echo "Eval:     ${eval_datasets:-none}"
 echo "LR:       ${lr}"
 echo "Epochs:   ${epochs}"
 echo "Output:   ${output_dir}"
 echo "GPUs:     ${NPROC}"
 echo "Batch:    ${BSZ} × ${GRAD_ACCUM} accum"
 echo "=============================="
+
+# Build eval args if eval_datasets is set
+eval_args=""
+if [ -n "${eval_datasets:-}" ]; then
+    eval_args="--eval_dataset_use ${eval_datasets} --eval_strategy steps --eval_steps 50"
+fi
 
 TOKENIZERS_PARALLELISM=false \
 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
@@ -147,4 +155,5 @@ torchrun --nproc_per_node=${NPROC} \
     --video_fps 1.0 \
     --report_to wandb \
     --run_name "${run_name}" \
+    ${eval_args} \
     ${extra_args}
