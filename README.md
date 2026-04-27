@@ -37,7 +37,7 @@ ThinkStream/
 ├── scripts/                       # Training, evaluation, and demo scripts
 │   ├── eval/                      # Evaluation scripts (OVO-Bench, StreamingBench)
 │   ├── demo.py                    # Inference demo
-│   ├── sft_per_timestep.sh        # SFT (one-shot mixed)
+│   ├── sft_per_timestep.sh        # SFT (default PHASE=sft → train_sft.jsonl)
 │   └── grpo_train.sh              # GDPO RL (single stage, from SFT checkpoint)
 ├── thinkstream/                   # Core codebase
 │   ├── data/                      # Data processing + dataset registry
