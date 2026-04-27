@@ -1,70 +1,77 @@
 {
-  "total": 81995,
-  "passed": 43561,
-  "failed": 38434,
-  "pass_rate": 0.5312641014696018,
+  "total": 133616,
+  "passed": 114462,
+  "failed": 19154,
+  "pass_rate": 0.8566489043228356,
   "fail_reasons": {
-    "think_token_length": 30446,
-    "grounding": 2014,
-    "format": 511,
-    "summary_provenance": 3541,
-    "compression_ratio": 1781,
-    "summary_retention": 7312,
-    "summary_current_think_leak": 179,
-    "trajectory_distribution": 619
+    "grounding": 3494,
+    "information_flow": 1123,
+    "summary_provenance": 5193,
+    "compression_ratio": 2704,
+    "summary_retention": 10550,
+    "summary_current_think_leak": 252,
+    "think_token_length": 92
   },
   "action_distribution": {
-    "silent": 39048,
-    "compress": 3950,
-    "recall_query": 563
+    "silent": 97625,
+    "compress": 9477,
+    "response": 5664,
+    "recall_query": 870,
+    "recall_silent": 595,
+    "recall_response": 231
   },
   "difficulty_distribution": {
-    "medium": 4485,
-    "easy": 38865,
-    "hard": 211
+    "easy": 99539,
+    "medium": 13306,
+    "hard": 1617
   },
-  "trajectories": 9,
-  "trajectory_check_failures": 1,
-  "train_count": 11284,
-  "val_count": 1385,
-  "test_count": 1523,
+  "trajectories": 10,
+  "trajectory_check_failures": 0,
+  "train_count": 12405,
+  "val_count": 1550,
+  "test_count": 1600,
   "phase_counts": {
-    "1": 7869,
-    "2": 566,
-    "C1": 2849,
+    "1": 4291,
+    "2": 3597,
+    "C1": 4517,
     "C2": 0,
-    "5": 11284
+    "5": 12405
   },
   "split_by_video": true,
   "global_family_distribution": {
-    "E2": 167,
-    "P1": 92,
-    "C1": 135,
-    "R1": 76,
-    "E1": 176,
-    "F1": 95,
-    "F3": 51,
-    "M1": 13,
-    "F4": 27,
-    "F2": 55,
-    "S1": 6
+    "M1": 2701,
+    "N1": 445,
+    "E2": 330,
+    "S1": 173,
+    "R1": 289,
+    "F1": 717,
+    "C1": 637,
+    "E1": 884,
+    "F2": 226,
+    "F3": 281,
+    "P1": 164,
+    "F6": 10,
+    "F4": 214,
+    "F5": 3
   },
   "global_sequence_type_distribution": {
-    "event_watch": 153,
-    "base": 13299,
-    "recall_success": 459,
-    "recall_fail_then_found": 281
+    "multi_response": 2674,
+    "immediate_response": 2529,
+    "event_watch": 286,
+    "base": 8481,
+    "recall_fail_then_found": 1057,
+    "recall_success": 528
   },
   "global_base_role_distribution": {
-    "question_window": 833,
-    "compress_boundary": 6457,
-    "evidence_anchor": 5929,
-    "warmup": 80
+    "compress_boundary": 4667,
+    "evidence_anchor": 3663,
+    "warmup": 77,
+    "question_window": 74
   },
   "per_video_sample_counts": {
-    "min": 3,
+    "min": 31,
     "max": 50,
-    "avg": 45.5,
+    "avg": 49.9,
     "total_videos": 312
   }
 }
