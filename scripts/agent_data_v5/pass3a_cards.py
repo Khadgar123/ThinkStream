@@ -184,32 +184,52 @@ DO NOT write meta narration. Each clause must reference a concrete visible event
 {evidence}
 """ + _OUTPUT_SCHEMA,
 
-    "F5": """Based on the following video chunks, generate {n} questions about
+    "F5": """Based on the following video chunks, generate UP TO {n} questions about
 ACTION REPETITION COUNT (OVOBench REC).
-The action MUST repeat across multiple chunks (the chunks below show repeated occurrences).
-Question format: "How many times did the person {{verb}}?"
+
+The chunks below come from the SAME video. Your job is to SCAN them and find
+any action that visibly repeats — a person doing the same gesture/movement
+on multiple distinct occasions, an object being struck/poured/wiped multiple
+times, a recurring step in a procedure, etc. The repetitions need NOT be in
+adjacent chunks; they can be spaced out across the timeline.
+
+Question format: "How many times did the person {{verb}}?" or
+"How many {{action}} occurrences appear in the video?"
 answer_form: number (digits only, e.g. "3").
 visibility_type: "transient" (count is only complete after the last repetition).
-support_chunks MUST list every chunk where the repetition is observed.
+support_chunks MUST list EVERY chunk where the repetition is observed
+(at least 2 chunks; ideally 3+ for a meaningful count).
+
+CRITICAL — output an EMPTY JSON array `[]` ONLY IF you genuinely cannot find
+any repeating action across the chunks. If you find even ONE repetition pair,
+generate a question for it. Quality > quantity but DO try.
 
 {evidence}
 """ + _OUTPUT_SCHEMA,
 
-    "F6": """Based on the following video chunks, generate {n} questions about
+    "F6": """Based on the following video chunks, generate UP TO {n} questions about
 FUTURE PREDICTION (OVOBench FPD).
-Pick a CLEAR in-progress process where the next step is OBVIOUS from the
-visible context (e.g. "person grabs knife and tomato" → next step is cutting).
-Ask what happens NEXT (within 4-8 seconds after the chunk).
+
+The chunks below come from the SAME video, ordered by time. SCAN them for
+any moment where an in-progress process strongly implies what happens next
+(e.g. "person grabs knife and a tomato" → next step is cutting; "pours batter
+into pan on stove" → next step is cooking/setting). The predicted event must
+be observable in a LATER chunk so we can verify the gold answer.
 
 Question format: "What will the person do next?" or "What is about to happen?"
-Prefer answer_form: multiple_choice (4 plausible options, one is the actual continuation).
-Distractors should be plausible alternatives from the same domain (other steps in the procedure).
+Prefer answer_form: multiple_choice (4 plausible options, one is the actual
+continuation; distractors are plausible alternatives from the same domain —
+other steps in the procedure or visually adjacent objects).
 visibility_type: "transient".
-support_chunks MUST be the chunks BEFORE the predicted event (not the event itself).
+support_chunks: the chunks BEFORE the predicted event (the setup), NOT the
+chunks where the event actually happens.
 
-CRITICAL: if the continuation is ambiguous, novel, or you would have to GUESS,
-SKIP this question — DO NOT fabricate. Output fewer than {n} questions if needed.
-Quality > quantity. A wrong "future prediction" gold answer poisons training.
+CRITICAL — output an EMPTY JSON array `[]` ONLY IF no chunk pair in the
+evidence shows a setup → continuation relationship you are confident about.
+If the continuation is genuinely ambiguous, SKIP that case — do NOT fabricate.
+A wrong future-prediction gold answer poisons training. Quality > quantity.
+But DO scan thoroughly: a typical 2-3 minute procedural video has 1-3 valid
+prediction points.
 
 {evidence}
 """ + _OUTPUT_SCHEMA,
@@ -247,12 +267,50 @@ def _desc_overlap(desc_a: str, desc_b: str) -> float:
     return len(words_a & words_b) / min(len(words_a), len(words_b))
 
 
+_ACTION_HEAD_RE = re.compile(r"^([a-zA-Z]+)")
+
+
+def _action_verb_lemma(action: str) -> str:
+    """Extract the head verb from an action phrase (lemma-ish, no NLP dep).
+
+    "stirring the pot" → "stir"; "stirs vigorously" → "stir"; "stirred" → "stir".
+    Used to compare actions across chunks for F5 (repetition) without being
+    tripped by tense / objects / adverbs. Handles the doubled-consonant
+    variant ("stirring" → "stirr" → "stir") which is common in cooking
+    captions. Does NOT handle silent-e drop ("hated" → "hat" not "hate"),
+    but as long as both chunks use the same tense the comparison still works.
+    """
+    if not action:
+        return ""
+    a = action.lower().strip()
+    m = _ACTION_HEAD_RE.match(a)
+    if not m:
+        return a
+    head = m.group(1)
+    # Strip a single inflectional suffix, longest first.
+    for suf, doubled in (("ing", True), ("ed", True), ("s", False)):
+        if head.endswith(suf) and len(head) > len(suf) + 2:
+            stem = head[: -len(suf)]
+            # "stirring" → "stirr" → "stir": collapse doubled trailing
+            # consonant introduced by -ing / -ed gerund formation.
+            if (doubled and len(stem) >= 2
+                    and stem[-1] == stem[-2]
+                    and stem[-1] not in "aeiou"):
+                stem = stem[:-1]
+            return stem
+    return head
+
+
 def _get_primary_action(cap: Dict) -> str:
-    """Extract the primary entity action from a chunk (1-A direct field)."""
+    """Extract the primary entity action from a chunk (1-A direct field).
+
+    Returns the lemma-ish head verb so consecutive chunks of "stirring" /
+    "stirs" / "stirred" all match for F5 repetition detection.
+    """
     for e in cap.get("visible_entities", []):
         action = e.get("action", "")
         if action:
-            return action.lower().strip()
+            return _action_verb_lemma(action)
     return ""
 
 
@@ -582,12 +640,15 @@ async def generate_cards(
     # Whole-video fallback chunk list for families in FAMILY_FORCE_ATTEMPT
     # (when their structural classification yields nothing). We sample evenly
     # across the timeline so the teacher sees a representative cross-section.
+    # Note: F5/F6 need to *scan* a wide span to find repetition / process
+    # setups, so this fallback set caps at the prompt's 10-chunk format limit
+    # (see _format_evidence_for_prompt) but spans the whole video.
     all_chunk_idxs = [cap["chunk_idx"] for cap in evidence]
     fallback_chunks: List[int] = []
     if all_chunk_idxs:
         n_total = len(all_chunk_idxs)
-        step = max(1, n_total // 8)  # ~8 evenly-spaced chunks
-        fallback_chunks = sorted(set(all_chunk_idxs[::step]))[:12]
+        step = max(1, n_total // 10)  # 10 evenly-spaced chunks
+        fallback_chunks = sorted(set(all_chunk_idxs[::step]))[:10]
 
     # Build tasks for families that have candidates OR are force-attempt
     tasks = []

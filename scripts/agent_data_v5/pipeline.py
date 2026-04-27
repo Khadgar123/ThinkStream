@@ -108,23 +108,32 @@ def select_videos(
     3. Filesystem scan (slow fallback)
     """
     registry_path = DATA_ROOT / "video_registry.jsonl"
+    existing: List[Dict] = []
+    existing_ids: set = set()
     if registry_path.exists():
-        videos = []
         with open(registry_path, "r") as f:
             for line in f:
-                videos.append(json.loads(line))
-        # Validate registry against current parameters
-        valid = [v for v in videos
-                 if min_duration <= v.get("duration_sec", 0) <= max_duration]
-        if len(valid) >= num_videos:
-            logger.info(f"Loaded {len(valid)} videos from registry "
-                        f"({len(videos) - len(valid)} filtered by duration).")
-            return valid[:num_videos]
-        else:
-            logger.warning(
-                f"Registry has {len(valid)} valid videos (need {num_videos}), "
-                f"re-selecting from catalog."
-            )
+                v = json.loads(line)
+                if min_duration <= v.get("duration_sec", 0) <= max_duration:
+                    existing.append(v)
+                    existing_ids.add(v["video_id"])
+        if len(existing) >= num_videos:
+            # Cache hit — return the prefix.
+            logger.info(f"Loaded {len(existing)} videos from registry "
+                        f"(cap to {num_videos}).")
+            return existing[:num_videos]
+        # Cache miss for the requested num_videos. Instead of throwing the
+        # existing selection away (the old behavior), KEEP it and top up
+        # from the catalog with NEW video_ids only. This lets you grow the
+        # dataset across batches without re-picking the same videos:
+        #   batch 1: --num_videos 312  → registry has 312
+        #   batch 2: --num_videos 712  → keeps the 312, picks 400 new
+        # The pipeline's per-stage cache (evidence_1a/, task_cards/, ...)
+        # then hits for batch 1 and runs fresh for batch 2 only.
+        logger.info(
+            f"Registry has {len(existing)} valid videos, want {num_videos} — "
+            f"will keep existing and top up {num_videos - len(existing)} new."
+        )
 
     # --- Source: CSV catalog (fast) ---
     if catalog_csv is None:
@@ -179,18 +188,40 @@ def select_videos(
         logger.error(f"No videos found with duration {min_duration}-{max_duration}s")
         return []
 
-    # --- Duration-stratified selection ---
-    # Split videos into duration buckets, then sample proportionally
+    # --- Cross-batch dedup ---
+    # If the registry already had `existing` videos selected by a prior run,
+    # exclude them from the candidate pool so we top up with NEW ids only.
+    if existing_ids:
+        before = len(videos)
+        videos = [v for v in videos if v["video_id"] not in existing_ids]
+        logger.info(
+            f"Excluded {before - len(videos)} prior-batch videos from catalog "
+            f"({len(videos)} candidates remain)."
+        )
+
+    # How many we still need to reach `num_videos`.
+    n_needed = max(0, num_videos - len(existing))
+    if n_needed == 0:
+        return existing[:num_videos]
+    if len(videos) < n_needed:
+        logger.warning(
+            f"Only {len(videos)} NEW candidates available, need {n_needed}. "
+            f"Will return {len(existing) + len(videos)} videos total."
+        )
+
+    # --- Duration-stratified selection on the NEW pool ---
+    # Split candidates into duration buckets, then sample proportionally
+    # to the *needed* count (not original num_videos).
     short = [v for v in videos if v["duration_sec"] < 120]          # 60-120s
     medium = [v for v in videos if 120 <= v["duration_sec"] < 240]  # 120-240s
     long = [v for v in videos if v["duration_sec"] >= 240]          # 240-400s
 
-    # Target mix: 30% short, 60% medium, 10% long
-    n_short = min(int(num_videos * 0.3), len(short))
-    n_long = min(int(num_videos * 0.1), len(long))
-    n_medium = min(num_videos - n_short - n_long, len(medium))
+    # Target mix: 30% short, 60% medium, 10% long, applied to n_needed.
+    n_short = min(int(n_needed * 0.3), len(short))
+    n_long = min(int(n_needed * 0.1), len(long))
+    n_medium = min(n_needed - n_short - n_long, len(medium))
     # Fill any shortfall from medium
-    n_medium += num_videos - n_short - n_medium - n_long
+    n_medium += n_needed - n_short - n_medium - n_long
 
     logger.info(
         f"Duration mix target: {n_short} short (60-120s) + "
@@ -224,22 +255,48 @@ def select_videos(
         return result[:n]
 
     random.seed(seed)
-    selected = (
+    new_selected = (
         _stratified_sample(short, n_short, seed)
         + _stratified_sample(medium, n_medium, seed + 1)
         + _stratified_sample(long, n_long, seed + 2)
     )
 
-    random.shuffle(selected)
-    selected = selected[:num_videos]
+    # If duration-stratified quotas couldn't hit n_needed (e.g. the short
+    # bucket was exhausted by an earlier batch and only medium/long
+    # candidates remain), top up from any remaining videos. Without this,
+    # cross-batch top-ups silently under-deliver after the first run.
+    if len(new_selected) < n_needed:
+        chosen = {v["video_id"] for v in new_selected}
+        leftover = [v for v in videos if v["video_id"] not in chosen]
+        rng = random.Random(seed + 3)
+        rng.shuffle(leftover)
+        shortfall = n_needed - len(new_selected)
+        new_selected.extend(leftover[:shortfall])
+        if shortfall > len(leftover):
+            logger.warning(
+                f"Catalog exhausted: only {len(new_selected)} new videos "
+                f"available (wanted {n_needed})."
+            )
 
-    # Save registry
+    random.shuffle(new_selected)
+    new_selected = new_selected[:n_needed]
+
+    # Final list = prior batches' videos + this batch's new pick.
+    # Order: existing first (so per-stage iteration matches batch order).
+    selected = existing + new_selected
+
+    # Save union registry. Pipeline cache (evidence_1a/, task_cards/, ...)
+    # already keys off video_id, so cached batch-1 stages auto-hit and
+    # only the new batch-2 ids need fresh API calls.
     registry_path.parent.mkdir(parents=True, exist_ok=True)
     with open(registry_path, "w") as f:
         for v in selected:
             f.write(json.dumps(v, ensure_ascii=False) + "\n")
 
-    logger.info(f"Selected {len(selected)} videos (min {min_duration}s)")
+    logger.info(
+        f"Registry: {len(existing)} existing + {len(new_selected)} new "
+        f"= {len(selected)} videos (min {min_duration}s)"
+    )
     return selected
 
 
@@ -586,9 +643,13 @@ async def run_pipeline(
             )
             vid_cards = {c["card_id"]: c for c in cards_map[vid]}
             nc = rollout_map[vid]["num_chunks"]
+            # Stable per-video seed so two runs with the same global `seed`
+            # arg produce identical trajectories without coupling videos.
+            traj_seed = seed * 10_000 + (hash(vid) & 0xFFFFFF)
             trajectories = plan_trajectories(
                 placements, cards_map=vid_cards,
-                num_chunks=nc, evidence=evidence_map[vid])
+                num_chunks=nc, evidence=evidence_map[vid],
+                seed=traj_seed)
             data = {"placements": placements, "trajectories": trajectories}
             save_placements(vid, data)
             logger.info(f"  [{vid}] 3-B: {len(placements)} placements → {len(trajectories)} trajectories")
@@ -751,18 +812,64 @@ async def run_pipeline(
     per_video_stats = {}
 
     for vid, vid_samples in verified_by_vid.items():
-        # Enforce MAX_SAMPLES_PER_VIDEO cap
+        # Enforce MAX_SAMPLES_PER_VIDEO cap, family-aware.
+        #
+        # Old policy was a flat priority sort (response > recall > compress >
+        # silent) and a global truncate. That works for action balance but
+        # silently squeezes out tail families: F5/F6/N1 samples often live
+        # *as silent* (event_watch wait_silent / pre-trigger silent), so any
+        # video with 50+ non-silent samples lost all its tail-family signal
+        # at the cap.
+        #
+        # New policy: round-robin across (family, action) buckets, pulling
+        # one sample from each non-empty bucket each pass until the cap is
+        # filled. Within a bucket, sort by chunk_idx so picks span the
+        # timeline. Compress samples (which carry no family — sequence_type
+        # is "base") get bucketed by action alone.
         if MAX_SAMPLES_PER_VIDEO > 0 and len(vid_samples) > MAX_SAMPLES_PER_VIDEO:
+            from collections import defaultdict, OrderedDict
+
+            # Bucket key: (family, action). Empty family for compress/base.
+            buckets: "OrderedDict[tuple, list]" = OrderedDict()
+            # Action priority for tie-breaking when buckets are equally
+            # full: keep the high-information actions over silent.
+            action_prio = {"response": 0, "recall_query": 1,
+                           "recall_response": 1, "compress": 2,
+                           "silent": 3, "recall_silent": 3}
+            for s in vid_samples:
+                fam = s.get("metadata", {}).get("family", "") or ""
+                act = s.get("sample_type", "silent")
+                buckets.setdefault((fam, act), []).append(s)
+
+            # Order each bucket by chunk_idx so picks are temporally diverse.
+            for k in buckets:
+                buckets[k].sort(key=lambda s: s.get("chunk_idx", 0))
+
+            # Round-robin draw, prioritizing action class on tie.
+            kept: list = []
+            bucket_keys = sorted(
+                buckets.keys(),
+                key=lambda k: (action_prio.get(k[1], 4), k[0]),
+            )
+            cursors = {k: 0 for k in bucket_keys}
+            cap = MAX_SAMPLES_PER_VIDEO
+            while len(kept) < cap:
+                progressed = False
+                for k in bucket_keys:
+                    if cursors[k] < len(buckets[k]):
+                        kept.append(buckets[k][cursors[k]])
+                        cursors[k] += 1
+                        progressed = True
+                        if len(kept) >= cap:
+                            break
+                if not progressed:
+                    break  # all buckets drained
+
             logger.warning(
-                f"  [{vid}] {len(vid_samples)} samples exceeds cap {MAX_SAMPLES_PER_VIDEO}, "
-                f"truncating (keeping diverse sample types)")
-            priority = {"response": 0, "recall_query": 1, "recall_response": 1,
-                        "compress": 2, "silent": 3, "recall_silent": 3}
-            vid_samples.sort(key=lambda s: (
-                priority.get(s.get("sample_type", "silent"), 4),
-                s.get("chunk_idx", 0),
-            ))
-            vid_samples = vid_samples[:MAX_SAMPLES_PER_VIDEO]
+                f"  [{vid}] {len(vid_samples)} samples > cap {cap}, "
+                f"family-aware truncate to {len(kept)} "
+                f"({len(buckets)} buckets)")
+            vid_samples = kept
 
         # Collect per-video distribution stats
         vid_families = {}
@@ -853,7 +960,13 @@ async def run_pipeline(
     # --- Final output ---
     FINAL_DIR.mkdir(parents=True, exist_ok=True)
 
-    # Split by video for train/val/test (80/10/10)
+    # Split by video for train/val/test (80/10/10).
+    # Train videos are further split into SFT-train + RL-train (~80/20)
+    # so the RL stage has a held-out prompt pool the SFT model never saw,
+    # avoiding reward hacking via memorization on answer-grounded rewards.
+    # `train.jsonl` keeps the union for backward-compat / single-stage
+    # baselines; `train_sft.jsonl` and `train_rl.jsonl` are the disjoint
+    # pieces.
     video_ids = list(set(s.get("video_id", "") for s in passed_samples))
     video_ids = [v for v in video_ids if v]  # remove empty
     random.seed(seed)
@@ -863,12 +976,28 @@ async def run_pipeline(
     val_vids = set(video_ids[int(n * 0.8):int(n * 0.9)])
     test_vids = set(video_ids[int(n * 0.9):])
 
+    # Sub-split train into SFT and RL (deterministic on video_ids order
+    # already shuffled by `seed`). RL fraction is 20% of train videos.
+    train_vid_list = video_ids[:int(n * 0.8)]
+    sft_train_vids = set(train_vid_list[:int(len(train_vid_list) * 0.8)])
+    rl_train_vids = set(train_vid_list[int(len(train_vid_list) * 0.8):])
+    assert sft_train_vids.isdisjoint(rl_train_vids), \
+        "SFT and RL train video sets must be disjoint"
+
     train_samples = [s for s in passed_samples if s.get("video_id") in train_vids]
     val_samples = [s for s in passed_samples if s.get("video_id") in val_vids]
     test_samples = [s for s in passed_samples if s.get("video_id") in test_vids]
+    train_sft_samples = [s for s in train_samples if s.get("video_id") in sft_train_vids]
+    train_rl_samples = [s for s in train_samples if s.get("video_id") in rl_train_vids]
 
-    # Save all-in-one splits
-    for split_name, split_data in [("train", train_samples), ("val", val_samples), ("test", test_samples)]:
+    splits_to_save = [
+        ("train", train_samples),                # full union (backward compat)
+        ("train_sft", train_sft_samples),        # SFT-only
+        ("train_rl", train_rl_samples),          # RL-only (held out from SFT)
+        ("val", val_samples),
+        ("test", test_samples),
+    ]
+    for split_name, split_data in splits_to_save:
         path = FINAL_DIR / f"{split_name}.jsonl"
         with open(path, "w") as f:
             for s in split_data:
@@ -906,8 +1035,17 @@ async def run_pipeline(
     # Save comprehensive stats
     stats_path = FINAL_DIR / "pipeline_stats.json"
     stats["train_count"] = len(train_samples)
+    stats["train_sft_count"] = len(train_sft_samples)
+    stats["train_rl_count"] = len(train_rl_samples)
     stats["val_count"] = len(val_samples)
     stats["test_count"] = len(test_samples)
+    stats["video_counts"] = {
+        "train": len(train_vids),
+        "train_sft": len(sft_train_vids),
+        "train_rl": len(rl_train_vids),
+        "val": len(val_vids),
+        "test": len(test_vids),
+    }
     stats["phase_counts"] = phase_counts
     stats["split_by_video"] = True
     stats["global_family_distribution"] = global_families

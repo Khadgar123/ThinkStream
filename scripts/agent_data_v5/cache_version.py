@@ -39,10 +39,15 @@ STAGE_VERSIONS: Dict[str, str] = {
     "1a": "v9.1",
     "1b": "v9.1",   # tightened state_changes fallback
     "2":  "v9.1",
-    "3a": "v9.1",   # F5/F6/N1 added, F6/S1/M1 prompts updated
-    "3b": "v9.1",   # ask_time soft window, entity bridging
+    "3a": "v9.2",   # v9.2: F5/F6 prompts rewritten (SCAN + empty-array
+                    # fallback), _action_verb_lemma() added so cross-tense
+                    # F5 detection ("stirring"/"stirs"/"stirred" all match)
+    "3b": "v9.2",   # v9.2: seed plumbing — plan_trajectories now seeded
+                    # per-video instead of constant 42, results differ
     "3c": "v9.1",   # gold_caption, fork_think optimization
-    "4":  "v9.1",   # Check 1/7/12 thresholds
+    "4":  "v9.2",   # v9.2: adaptive summary_retention threshold by
+                    # n_unique (was flat 0.5), and per-(video, traj_id)
+                    # grouping for stats (was traj_id alone)
 }
 
 STAGE_DIRS: Dict[str, Path] = {

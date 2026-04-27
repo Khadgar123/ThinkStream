@@ -429,8 +429,30 @@ def verify_summary_provenance(sample: Dict) -> Tuple[bool, str]:
     return True, "pass"
 
 
+def _retention_threshold(n_unique: int) -> float:
+    """Adaptive retention threshold scaled by source key-item count.
+
+    A flat 0.5 floor punishes long sources unfairly: with 20 unique items,
+    natural compression drops half of them and that's fine; with 4 items,
+    losing 2 is severe. Empirically the v9.1 audit showed 55% of all
+    pass4 failures came from `summary_retention`, mostly on long sources.
+    """
+    if n_unique <= 3:
+        return 0.34   # any 1 missing on a 3-item source is acceptable
+    if n_unique <= 8:
+        return 0.50   # current default — keep strict for short
+    if n_unique <= 15:
+        return 0.45
+    return 0.40       # long lists: 40% retention is realistic
+
+
 def verify_summary_retention(sample: Dict) -> Tuple[bool, str]:
-    """Check 8: Summary retains key information from source."""
+    """Check 8: Summary retains key information from source.
+
+    Threshold is now adaptive (see `_retention_threshold`). We also
+    de-duplicate the proper-noun signal a bit better — random caps from
+    OCR overlays shouldn't inflate the key-item set.
+    """
     if sample.get("sample_type") != "compress":
         return True, "pass"
 
@@ -452,8 +474,12 @@ def verify_summary_retention(sample: Dict) -> Tuple[bool, str]:
     summary_lower = summary_text.lower()
 
     key_items = []
+    # Proper-nouns / entity tokens. Skip ALL-CAPS words (likely OCR overlay
+    # noise like "SAUSAGE" or "STREET") which inflate key-items spuriously
+    # and pull retention rate down.
     for w in re.findall(r'\b[A-Z][a-zA-Z0-9_]{2,}\b', source_combined):
-        key_items.append(w.lower())
+        if not w.isupper():
+            key_items.append(w.lower())
     for num in re.findall(r'\b\d+\.?\d*\b', source_combined):
         key_items.append(num)
 
@@ -463,10 +489,14 @@ def verify_summary_retention(sample: Dict) -> Tuple[bool, str]:
     unique_items = list(set(key_items))
     retained = sum(1 for item in unique_items if item in summary_lower)
     rate = retained / len(unique_items)
+    threshold = _retention_threshold(len(unique_items))
 
-    if rate < 0.5:
+    if rate < threshold:
         missing = [item for item in unique_items if item not in summary_lower][:3]
-        return False, f"summary_retention_low ({rate:.0%}): missing {missing}"
+        return False, (
+            f"summary_retention_low ({rate:.0%} < {threshold:.0%}, "
+            f"n={len(unique_items)}): missing {missing}"
+        )
 
     return True, "pass"
 
@@ -872,17 +902,21 @@ def filter_samples(samples: List[Dict]) -> Tuple[List[Dict], Dict]:
             else:
                 sample["output"] = ""
 
-    # Group by trajectory
+    # Group by trajectory. trajectory_id alone (e.g. "traj_0") is
+    # NOT unique across videos — every video numbers its own trajectories
+    # from 0. Combine with video_id so per-trajectory stats stay honest.
     by_traj = {}
     for s in samples:
         tid = s.get("trajectory_id", "no_traj")
-        by_traj.setdefault(tid, []).append(s)
+        vid = s.get("video_id", "no_vid")
+        by_traj.setdefault((vid, tid), []).append(s)
 
     all_passed = []
     all_stats = []
 
-    for tid, traj_samples in by_traj.items():
+    for (vid, tid), traj_samples in by_traj.items():
         passed, stats = verify_trajectory(traj_samples)
+        stats["video_id"] = vid
         all_passed.extend(passed)
         all_stats.append(stats)
 
@@ -908,6 +942,13 @@ def filter_samples(samples: List[Dict]) -> Tuple[List[Dict], Dict]:
         "fail_reasons": agg_fail,
         "action_distribution": agg_action,
         "difficulty_distribution": agg_diff,
+        # Number of distinct (video_id, trajectory_id) buckets that ran
+        # through verification. Old field "trajectories" used to count
+        # only unique trajectory_id strings, which collapsed identical
+        # IDs across videos to ~MAX_TRAJECTORIES_PER_VIDEO. Keep the old
+        # name as an alias for backward compat but the meaningful stat
+        # is `trajectories_total`.
+        "trajectories_total": len(all_stats),
         "trajectories": len(all_stats),
         "trajectory_check_failures": sum(
             1 for s in all_stats if not s["trajectory_check_passed"]),
@@ -930,6 +971,13 @@ def save_verified(video_id: str, passed: List[Dict], stats: Dict):
 
 
 def load_verified(video_id: str) -> Optional[Dict]:
+    # Stage-4 cache invalidation: if STAGE_VERSIONS["4"] was bumped (e.g.
+    # the retention threshold became adaptive in v9.2), per-video cached
+    # files from older runs would be stale — return None so pipeline.py
+    # regenerates instead of silently reusing.
+    from .cache_version import stage_version_ok
+    if not stage_version_ok("4"):
+        return None
     path = VERIFIED_DIR / f"{video_id}.json"
     if path.exists():
         with open(path, "r", encoding="utf-8") as f:

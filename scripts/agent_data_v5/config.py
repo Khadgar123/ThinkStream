@@ -98,7 +98,7 @@ MAX_CANDIDATES_PER_VIDEO = {
 # Per-video FINAL sample cap (applied after render).
 MAX_SAMPLES_PER_VIDEO = 50
 # Hard caps for trajectory planning
-MAX_TRAJECTORIES_PER_VIDEO = 10     # even for 400s videos
+MAX_TRAJECTORIES_PER_VIDEO = 15     # 240s videos (~120 chunks) need 12+ to keep //12 rule
 MAX_QUESTIONS_PER_TRAJECTORY = 6    # beyond this queries_state gets too long
 MAX_ACTIVE_QUERIES = 2              # max unanswered questions at any time
 

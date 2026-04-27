@@ -347,33 +347,55 @@ def select_samples(
 ) -> List[Dict]:
     """Run all 3 layers. Returns the selected sample subset.
 
-    all_samples: flat list across videos (each sample needs metadata.family).
-    target_count: final size after submodular selection.
-    backend: "heuristic" (default, no model) or "model" (requires kwargs).
+    Layer order is:
+      1. Score IFD on every sample (cheap heuristic by default).
+      2. Pin OVO-quota using IFD as tiebreaker — runs on ALL samples
+         so tail families (F5/F6) whose IFD lies outside [IFD_MIN, IFD_MAX]
+         can still be pinned for OVO coverage.
+      3. IFD filter on NON-PINNED samples only (drop outliers but keep
+         pinned tail-family samples even if their IFD is low).
+      4. Submodular facility-location on the surviving pool.
+
+    Earlier versions ran IFD filter (Layer 2) before quota (Layer 1), which
+    silently culled tail-family samples before they could satisfy OVO quotas.
+    Confirmed via audit: F5(REC) had only 4 cards across 312 videos and
+    fell out of the IFD window, so quota slots stayed empty.
     """
-    # Layer 2: score IFD, drop outliers
-    kept: List[Dict] = []
+    # Layer 1: score IFD on EVERY sample
     for s in all_samples:
-        ifd = score_sample_ifd(s, backend=backend, **kwargs)
-        s["_ifd"] = ifd
-        if IFD_MIN <= ifd <= IFD_MAX:
-            kept.append(s)
+        s["_ifd"] = score_sample_ifd(s, backend=backend, **kwargs)
+
+    # Layer 2: pin OVO-quota using IFD as tiebreaker, on full pool
+    pinned_global = _fill_ovo_quota(all_samples)
+    logger.info(f"  3-D quota: {len(pinned_global)} samples pinned (full pool)")
+
+    # Layer 3: IFD filter on NON-PINNED only — drop outliers but always
+    # keep pinned-quota samples regardless of IFD value.
+    kept_idx: List[int] = []
+    pinned_remap: Dict[int, int] = {}
+    for i, s in enumerate(all_samples):
+        ifd = s["_ifd"]
+        if i in pinned_global or IFD_MIN <= ifd <= IFD_MAX:
+            pinned_remap[i] = len(kept_idx) if i in pinned_global else -1
+            kept_idx.append(i)
+    kept = [all_samples[i] for i in kept_idx]
+    n_pinned_kept = sum(1 for v in pinned_remap.values() if v >= 0)
     logger.info(
-        f"  3-D layer 2 (IFD): {len(kept)}/{len(all_samples)} kept "
-        f"(IFD ∈ [{IFD_MIN}, {IFD_MAX}])"
+        f"  3-D IFD filter: {len(kept)}/{len(all_samples)} kept "
+        f"(IFD ∈ [{IFD_MIN}, {IFD_MAX}] OR pinned; "
+        f"of which {n_pinned_kept} are pinned)"
     )
 
     if not kept:
         return []
 
-    # Layer 1: pin OVO-quota survivors
-    pinned = _fill_ovo_quota(kept)
-    logger.info(f"  3-D layer 1 (quota): {len(pinned)} samples pinned")
+    # Remap pinned indices into the `kept` array for submodular.
+    pinned = {pinned_remap[i] for i in pinned_global if pinned_remap.get(i, -1) >= 0}
 
-    # Layer 3: submodular facility-location
+    # Layer 4: submodular facility-location
     selected_idx = submodular_select(kept, target_count, pinned=pinned)
     selected = [kept[i] for i in selected_idx]
-    logger.info(f"  3-D layer 3 (submodular): {len(selected)} final samples")
+    logger.info(f"  3-D submodular: {len(selected)} final samples")
     return selected
 
 
