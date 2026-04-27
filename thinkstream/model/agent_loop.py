@@ -118,7 +118,12 @@ class MemoryState:
         else:
             self.recent_thinks = self.recent_thinks[COMPRESS_RANGE_MIN:]
         self.compressed_segments.append(summary)
-        # Merge oldest two if over limit (MAX_COMPRESSED_SEGMENTS=5)
+        # Merge oldest two if over limit (MAX_COMPRESSED_SEGMENTS=5).
+        # v9.4.2: keep merged-text cap at 200 tokens (the SFT-baked value).
+        # Total compressed zone = 5 segs × 200 = 1000 tok worst case, well
+        # within budget after the visual fix freed ~8K tokens. Earlier
+        # tightening to 150 was over-defensive: SFT data was constructed
+        # with the 200-cap, so eval at <200 is fine but >200 would OOD.
         while len(self.compressed_segments) > 5:
             seg_a = self.compressed_segments.pop(0)
             seg_b = self.compressed_segments.pop(0)
@@ -424,6 +429,7 @@ class StreamingAgentLoop:
                 f"compress_mode must be 'system' or 'self', got {compress_mode!r}"
             )
         self.generate_fn = generate_fn
+        self.tokenizer = tokenizer       # v9.4.2: needed for telemetry token counts
         self.processor = processor
         self.model_type = model_type
         self.min_pixels = min_pixels
@@ -548,6 +554,11 @@ class StreamingAgentLoop:
         # encode their span. The model only learns to write the summary
         # text given a fixed range, never to choose the range itself.
         compress_trigger = ""
+        # v9.4.2: telemetry for streaming eval — record state at the moment
+        # compression FIRES so eval can stat: how many thinks were buffered
+        # (vs the 480-tok / 4-think threshold) and which chunks got rolled
+        # into the summary. Set on parsed below.
+        _compress_telemetry = None
         if self.compress_mode == "system" and self.memory.should_compress():
             oldest = self.memory.recent_thinks[:COMPRESS_RANGE_MIN]
             if oldest:
@@ -557,6 +568,12 @@ class StreamingAgentLoop:
                 compress_trigger = (
                     f'<compress_trigger range="{t_start}-{t_end}"/>'
                 )
+                _compress_telemetry = {
+                    "thinks_count_at_trigger": len(self.memory.recent_thinks),
+                    "thinks_token_count": self.memory.count_recent_tokens(),
+                    "compressed_chunks": chunks,
+                    "trigger_chunk": chunk_idx,
+                }
         # compress_mode == "self": no trigger inserted. The model is
         # expected to autonomously emit <action>compress</action> when
         # it judges memory pressure, with its own time_range in the
@@ -707,5 +724,82 @@ class StreamingAgentLoop:
         parsed["memory_token_count"] = self.memory.count_recent_tokens()
         parsed["compress_threshold"] = COMPRESS_TOKEN_THRESHOLD
         parsed["compress_budget"] = RECENT_THINKS_TOKEN_BUDGET
+        # v9.4.2 telemetry: streaming eval reads these per-step and aggregates.
+        # `compress_telemetry` is non-None ONLY when compression fired this step
+        # (regardless of whether the model produced a valid <summary> response).
+        # `recall_returned_chunks` is populated when an `action=recall` fired.
+        parsed["compress_telemetry"] = _compress_telemetry
+        if parsed.get("recall_result"):
+            parsed["recall_returned_chunks"] = parsed["recall_result"].get(
+                "returned_chunks", []
+            )
+        else:
+            parsed["recall_returned_chunks"] = []
+
+        # ── v9.4.2 extra telemetry (4 metrics) ──
+        # 1. prompt_text_token_count: text-only zones (system + memory + queries
+        #    + recall + user_input). Visual frames excluded — they're a fixed
+        #    cost the eval can compute as 24 × ~196 = ~4700. Sum the two gives
+        #    a per-step "how close are we to model_max_length" signal.
+        prompt_text_tokens = 0
+        if self.tokenizer is not None:
+            try:
+                # Concat all text-type content from messages (excludes video/image dicts).
+                text_acc = []
+                for msg in messages:
+                    content = msg.get("content")
+                    if isinstance(content, list):
+                        for item in content:
+                            if isinstance(item, dict) and item.get("type") == "text":
+                                text_acc.append(item.get("text", ""))
+                    elif isinstance(content, str):
+                        text_acc.append(content)
+                if text_acc:
+                    prompt_text_tokens = len(self.tokenizer.encode(
+                        "\n".join(text_acc), add_special_tokens=False))
+            except Exception:
+                prompt_text_tokens = 0
+        parsed["prompt_text_token_count"] = prompt_text_tokens
+
+        # 2. think_token_count: chattiness probe — does the model's <think>
+        #    grow over time? SFT trained at THINK_TOKENS [25, 130]; large
+        #    values signal verbosity drift / format breakdown.
+        think_tokens = 0
+        if parsed.get("think") and self.tokenizer is not None:
+            try:
+                think_tokens = len(self.tokenizer.encode(
+                    parsed["think"], add_special_tokens=False))
+            except Exception:
+                think_tokens = 0
+        parsed["think_token_count"] = think_tokens
+
+        # 3. format_ok: did the output have a parseable <think> AND <action>?
+        #    Action-specific payload presence is also required for non-silent.
+        VALID_ACTIONS = {"silent", "response", "recall", "compress"}
+        action = parsed.get("action") or ""
+        format_ok = bool(parsed.get("think")) and action in VALID_ACTIONS
+        if format_ok:
+            payload = parsed.get("payload") or {}
+            if action == "response":
+                format_ok = "response" in payload and bool(payload["response"])
+            elif action == "recall":
+                format_ok = "query" in payload  # parsed JSON; query_raw means JSON broke
+            elif action == "compress":
+                summary = payload.get("summary")
+                format_ok = bool(summary) and "time_range" in (summary or {})
+        parsed["format_ok"] = format_ok
+
+        # 4. compress_succeeded: when a <compress_trigger> was injected, did
+        #    the model emit action=compress with a valid <summary>? Failure =
+        #    trigger ignored or summary unparseable. Only meaningful when
+        #    compress_telemetry is set.
+        if _compress_telemetry is not None:
+            parsed["compress_succeeded"] = (
+                action == "compress"
+                and "summary" in (parsed.get("payload") or {})
+                and "time_range" in (parsed["payload"]["summary"] or {})
+            )
+        else:
+            parsed["compress_succeeded"] = None  # N/A this step
 
         return parsed
