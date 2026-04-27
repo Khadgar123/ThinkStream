@@ -65,13 +65,20 @@ pip install -r requirements.txt
 *Note: The dataset path configurations are located in `thinkstream/data/__init__.py`, which follows a similar logic to `qwen-vl-finetune`.*
 
 **Run Training (SFT → GDPO RL, both single-stage):**
-```bash
-# SFT (one-shot mixed, ~3 min on 8×H100)
-PHASE=mixed bash scripts/sft_per_timestep.sh
-# → output/agent-mixed/
 
-# GDPO RL from SFT checkpoint (single stage, ~40 min)
-LLM=output/agent-mixed bash scripts/grpo_train.sh
+The pipeline emits `train_sft.jsonl` (199 vids) + `train_rl.jsonl` (50 vids)
+as **disjoint** pools. SFT trains on the first; RL rolls out on the second
+so it cannot reward-hack via memorization on prompts the SFT model already
+mastered. (For a single-pool baseline, use `PHASE=mixed`.)
+
+```bash
+# SFT on disjoint pool (default PHASE=sft → stream_agent_sft)
+bash scripts/sft_per_timestep.sh
+# → output/agent-sft/
+
+# GDPO RL from SFT checkpoint, on the held-out RL pool
+# (default DATASET=stream_agent_rl, ROLLOUT_MAX_CHUNKS=30, save every 200 steps)
+LLM=output/agent-sft/checkpoint-616 bash scripts/grpo_train.sh
 # → output/agent-grpo/  +  output/agent-grpo/audit/grpo_step.jsonl
 ```
 
@@ -89,11 +96,21 @@ Run the respective `transfer_annotation_format.py` scripts under the `thinkstrea
 - `thinkstream/eval/ovo_bench/transfer_annotation_format.py`
 - `thinkstream/eval/rtvu/transfer_annotation_format.py`
 
-After conversion, start the evaluation script:
+After conversion, start the evaluation script. Always pass
+`--use_agent_loop` so the eval drives `StreamingAgentLoop` (the same
+per-timestep, system-trigger-injecting, recall-orchestrating runtime
+the model was trained against). Without the flag, eval falls back to a
+deprecated streaming-chat path that has no compress/recall protocol.
+
 ```bash
-bash ./scripts/eval/eval.sh
+bash scripts/eval/ovo/eval.sh \
+    --use_agent_loop \
+    --benchmark_dir /path/to/ovo_bench \
+    --model_path /path/to/ckpt \
+    --model_type qwen3vl
 ```
-*Note: You need to change the model checkpoint (`ckpt`) path to your own path.*
+*Note: You need to change the model checkpoint (`--model_path`) and
+benchmark dir to your own paths.*
 
 ### Inference
 

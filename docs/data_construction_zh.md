@@ -1,6 +1,6 @@
 # 流视频 Agent 数据构造方案
 
-> 版本: v9.2 | 日期: 2026-04-27
+> 版本: v9.2 | 日期: 2026-04-27（**v11.1 runtime/launcher 修复 2026-04-27**）
 >
 > 核心设计：Per-timestep 独立样本 | 统一时间线记忆 | 视频在前文本在后 | MROPE 时间对齐
 > 80% token 系统触发压缩 | Recall 两步 (query→response) | 3 专用 Prompt
@@ -8,6 +8,15 @@
 > **训练流水线（v9.2 简化）**：1 轮 SFT + 1 轮 GDPO RL（共 2 阶段）。
 > 旧版 5 阶段（SFT + C1 + C1-D + C2 + C2-D）已废弃 —— 同期 2026 工作（ReMemR1 / Mem-α / SUMER / Memex 等 8/8）零使用 DAgger 链式阶段，最复杂的 Memex 也只用 1 SFT + 1 RL。
 > 详见 §4。
+>
+> **v11.1 修复（2026-04-27）— 数据 pipeline + runtime 对齐**：
+> - **数据质量**：F5/F6 prompt 重写 + 词干 lemma（pass3a），pass3d 把 OVO quota 提到 IFD filter 之前，pass4 retention 阈值按源 key-item 数自适应（flat 0.5 → 0.34/0.50/0.45/0.40），50/视频 cap 改 per-(family, action) round-robin。
+> - **跨 batch 增量**：`select_videos()` 自动保留旧 video_id + 仅补差额，`STAGE_VERSIONS` 升 v9.2 让旧 cache 在 pass3a/3b/4 自动失效。
+> - **SFT/RL 拆分**：train.jsonl 按 video_id ~80/20 拆为 disjoint 的 `train_sft.jsonl` (199 vid / 9.9k 样本) + `train_rl.jsonl` (50 vid / 2.5k 样本)，避免 RL 在 SFT-seen 池上 reward-hack。
+> - **runtime 对齐**：`agent_loop.py` 的 `<compress_trigger range="X-Y"/>` 与训练 byte-equal；`<queries>` 块在推理时填充（之前 `add_query`/`answer_query` 是 dead code，多轮 Q/A 历史丢失）；删除冗余 `pending_questions` 字段（训练数据里恒空）。
+> - **Eval**：`eval_ovo.py` / `eval_rtvu.py` 加 `--use_agent_loop` flag 走 `mcq_predict_agent_loop`，原本只 hits 已弃用的 `streaming_video_chat`，trigger 修复完全到达不了 eval。
+>
+> 详见 `data_batch1_plan.md` 顶部 v11.1 changelog。
 >
 > 配套：`sft_engineering.md` (SFT v3.0) | `streaming_position_encoding.md` (位置编码 v1.0)
 
