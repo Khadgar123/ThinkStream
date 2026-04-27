@@ -1,14 +1,21 @@
 #!/bin/bash
 # Per-timestep agent SFT training script.
 #
-# v11 (2026-04-27): PHASE=mixed is the ONLY production path. Single-stage
-# SFT on the full mixed dataset (stream_agent_p5). After this SFT,
-# proceed to GDPO RL via the GRPO launcher (see docs/data_batch1_plan.md §8).
+# v11.1 (2026-04-27): PHASE=sft is the recommended production path —
+# trains on the SFT-disjoint pool (train_sft.jsonl, ~9.9k samples / 199
+# videos), leaving train_rl.jsonl held out for the GDPO stage so RL
+# cannot reward-hack via memorization on SFT-seen prompts.
+#
+# Legacy PHASE=mixed trains on the full union (train.jsonl / phase5)
+# — kept for backward compatibility and single-stage baselines.
 #
 # Per-category training cases (1 | 2 | C1) are ablation-only knobs.
 # C2 was removed in v11 — model-self-pick range moved to RL.
 #
 # Usage (production):
+#   PHASE=sft bash scripts/sft_per_timestep.sh
+#
+# Backward compat (single-stage on full data):
 #   PHASE=mixed bash scripts/sft_per_timestep.sh
 #
 # Ablation only (DO NOT chain into a curriculum):
@@ -17,15 +24,19 @@
 #   PHASE=C1 bash scripts/sft_per_timestep.sh   # compress samples
 #
 # Environment variables:
-#   PHASE       - mixed (recommended) | 1 | 2 | C1
+#   PHASE       - sft (recommended) | mixed | 1 | 2 | C1
 #   LLM         - Model path (default: Qwen/Qwen3-VL-8B)
 #   NPROC       - GPUs per node (default: 8)
 #   BSZ         - Per-device batch size (default: 8)
 #   GRAD_ACCUM  - Gradient accumulation steps (default: 1)
+#
+# Step budget reference (BSZ=8 × NPROC=8 × GRAD_ACCUM=1 → eff. batch 64):
+#   PHASE=sft   : 9,900 / 64 = 154 steps/epoch × 4 epochs = 616 steps
+#   PHASE=mixed : 12,405 / 64 = 193 steps/epoch × 3 epochs = 579 steps
 
 set -euo pipefail
 
-PHASE=${PHASE:-mixed}
+PHASE=${PHASE:-sft}
 NPROC=${NPROC:-8}
 BSZ=${BSZ:-8}
 GRAD_ACCUM=${GRAD_ACCUM:-1}
@@ -39,8 +50,21 @@ ENTRY="${PROJECT_DIR}/thinkstream/sft/train.py"
 extra_args=""
 
 case $PHASE in
+    sft)
+        # v11.1 production: SFT-disjoint pool (train_sft.jsonl).
+        # train_rl.jsonl (~2.5k samples / 50 videos) is held out for
+        # the GDPO stage; see thinkstream/sft/data_list.py for the
+        # split manifest. epochs=4 gives ~39.6k samples-seen, matching
+        # the previous PHASE=mixed (12.4k × 3) corpus exposure.
+        llm=${LLM:-Qwen/Qwen3-VL-8B}
+        datasets=stream_agent_sft
+        lr=2e-5; epochs=4
+        run_name="agent-sft"
+        ;;
     mixed)
-        # v10 single-phase: full data + class-balanced sampler from base.
+        # Backward-compat: full union (train.jsonl). Use this only if
+        # you do NOT plan to run GDPO afterwards, or for single-stage
+        # baselines where SFT-seen / RL-disjoint distinction is moot.
         llm=${LLM:-Qwen/Qwen3-VL-8B}
         datasets=stream_agent_p5            # already the merged mix
         lr=2e-5; epochs=3
@@ -73,7 +97,7 @@ case $PHASE in
         extra_args="--class_balanced_sampler False"
         ;;
     *)
-        echo "Unknown PHASE=$PHASE. Use: mixed (production) | 1 | 2 | C1 (ablation only)"
+        echo "Unknown PHASE=$PHASE. Use: sft (production) | mixed (legacy) | 1 | 2 | C1 (ablation only)"
         exit 1
         ;;
 esac
@@ -105,7 +129,7 @@ torchrun --nproc_per_node=${NPROC} \
     --num_train_epochs ${epochs} \
     --per_device_train_batch_size ${BSZ} \
     --gradient_accumulation_steps ${GRAD_ACCUM} \
-    --save_steps 500 \
+    --save_strategy epoch \
     --save_total_limit 3 \
     --learning_rate ${lr} \
     --weight_decay 0.0 \
