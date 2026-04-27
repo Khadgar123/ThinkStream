@@ -13,6 +13,7 @@ This guarantees train/inference format identity.
 import json
 import logging
 from copy import deepcopy
+from pathlib import Path
 from typing import Callable, Dict, List, Optional
 
 from thinkstream.data.agent_protocol import (
@@ -184,6 +185,7 @@ def build_single_step_messages(
     recall_result: Optional[Dict] = None,
     min_pixels: int = 100352,
     max_pixels: int = 150528,
+    frame_paths: Optional[List[str]] = None,
 ) -> List[Dict]:
     """Build single-step chat messages matching training format.
 
@@ -200,6 +202,7 @@ def build_single_step_messages(
         recall_result=recall_result,
         min_pixels=min_pixels,
         max_pixels=max_pixels,
+        frame_paths=frame_paths,
     )
 
     return [
@@ -385,6 +388,8 @@ class StreamingAgentLoop:
         retrieve_fn: Optional[Callable] = None,
         retriever=None,
         compress_mode: str = "system",
+        frames_root: Optional[str] = None,
+        video_root: Optional[str] = None,
     ):
         """
         Args:
@@ -437,7 +442,47 @@ class StreamingAgentLoop:
         # retrieve_fn kept as a thin alias for legacy access.
         self.retrieve_fn = self.retriever
         self.compress_mode = compress_mode
+        self.frames_root = frames_root
+        self.video_root = video_root
         self.memory = MemoryState(tokenizer=tokenizer)
+
+    def _get_frame_paths(self, video_path: str, chunk_idx: int) -> Optional[List[str]]:
+        """Build frame_paths for the current visual_window from pre-extracted frames."""
+        if not self.frames_root:
+            return None
+        window_start = max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1)
+        video_start = window_start * AGENT_CHUNK_SEC
+        video_end = (chunk_idx + 1) * AGENT_CHUNK_SEC
+        n_frames = (chunk_idx - window_start + 1) * FRAMES_PER_CHUNK
+
+        vp = Path(video_path)
+        # Try relative path under video_root, fallback to basename
+        if self.video_root:
+            try:
+                rel = vp.relative_to(Path(self.video_root))
+                stem = rel.with_suffix("")
+                frame_dir = Path(self.frames_root) / stem
+            except ValueError:
+                frame_dir = Path(self.frames_root) / vp.stem
+        else:
+            frame_dir = Path(self.frames_root) / vp.stem
+
+        if not frame_dir.exists():
+            return None
+
+        # ffmpeg frame_000001.jpg corresponds to t=0s, frame_000002.jpg to t=1s, ...
+        start_frame = int(video_start) + 1
+        end_frame = int(video_end) + 1
+        frame_paths = []
+        for i in range(start_frame, end_frame + 1):
+            fp = frame_dir / f"frame_{i:06d}.jpg"
+            if fp.exists():
+                frame_paths.append(str(fp))
+
+        # If too few frames found, fall back to online decoding
+        if len(frame_paths) < max(1, n_frames // 2):
+            return None
+        return frame_paths
 
     def reset(self):
         """Reset for a new video."""
@@ -532,6 +577,7 @@ class StreamingAgentLoop:
         # populated identically to the SFT input format — both for the
         # current pending question and for any past Q/A pairs that the
         # model has already produced answers for in this video.
+        frame_paths = self._get_frame_paths(video_path, chunk_idx)
         messages = build_single_step_messages(
             snapshot,
             chunk_idx,
@@ -540,6 +586,7 @@ class StreamingAgentLoop:
             queries=self.memory.queries,
             min_pixels=self.min_pixels,
             max_pixels=self.max_pixels,
+            frame_paths=frame_paths,
         )
 
         # 5. Generate

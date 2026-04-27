@@ -230,7 +230,7 @@ def run_agent(loop, video_path, ask_chunks, max_chunk):
 
 
 def make_loop(model, processor, tokenizer, model_type, retriever,
-              compress_mode, max_new_tokens):
+              compress_mode, max_new_tokens, frames_root=None, video_root=None):
     return StreamingAgentLoop(
         generate_fn=make_generate_fn(model, processor, model_type=model_type),
         tokenizer=tokenizer,
@@ -241,6 +241,8 @@ def make_loop(model, processor, tokenizer, model_type, retriever,
         max_new_tokens=max_new_tokens,
         retriever=retriever,
         compress_mode=compress_mode,
+        frames_root=frames_root,
+        video_root=video_root,
     )
 
 
@@ -551,6 +553,8 @@ def main():
     p.add_argument("--benchmark_json", required=True,
                    help="Path to ORIGINAL ovo_bench_new.json")
     p.add_argument("--video_root", required=True)
+    p.add_argument("--frames_root", default=None,
+                   help="Root dir with pre-extracted 1fps frames (skip online decode)")
     p.add_argument("--tasks", default=None,
                    help="Comma-separated subset (e.g., CRR,SSR,REC). Default: all 12.")
     p.add_argument("--n_per_task", type=int, default=None,
@@ -571,13 +575,15 @@ def main():
     model = Cls.from_pretrained(
         args.ckpt,
         dtype=torch.bfloat16 if not args.no_bf16 else None,
-        device_map="auto",
         attn_implementation="flash_attention_2",
     )
+    model = model.cuda()
     model.eval()
     processor = AutoProcessor.from_pretrained(args.ckpt)
     register_special_tokens(processor, model_type)
     processor = update_processor_pixels(processor, DataArguments())
+    if hasattr(processor, "video_processor") and hasattr(processor.video_processor, "do_sample_frames"):
+        processor.video_processor.do_sample_frames = False
 
     tokenizer = AutoTokenizer.from_pretrained(
         args.ckpt, model_max_length=16384, padding_side="right", use_fast=False
@@ -595,7 +601,8 @@ def main():
     )
 
     loop = make_loop(model, processor, tokenizer, model_type, retriever,
-                     args.compress_mode, args.max_new_tokens)
+                     args.compress_mode, args.max_new_tokens,
+                     frames_root=args.frames_root, video_root=args.video_root)
 
     with open(args.benchmark_json) as f:
         all_samples = json.load(f)
