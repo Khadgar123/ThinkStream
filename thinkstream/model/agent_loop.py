@@ -99,16 +99,39 @@ class MemoryState:
         return total
 
     def should_compress(self) -> bool:
-        """Trigger compression when recent_thinks reach 80% of token budget."""
-        return (
-            self.count_recent_tokens() >= COMPRESS_TOKEN_THRESHOLD
-            and len(self.recent_thinks) >= COMPRESS_RANGE_MIN
-        )
+        """Trigger compression when recent_thinks reach 80% of token budget.
+
+        v9.4.2: also fire compress if individual thinks are pathologically
+        long (e.g., 600+ tok each — verbose-model drift) and we have ≥2
+        thinks. Without this, a model that emits one 1000-tok think then
+        another would carry 2000 tok in recent_thinks while waiting for
+        the COMPRESS_RANGE_MIN=4 threshold; that buffer silently inflates
+        the next chunk's prompt and risks model_max_length overflow.
+        """
+        n_tokens = self.count_recent_tokens()
+        n_thinks = len(self.recent_thinks)
+        # Standard SFT-aligned trigger
+        if n_tokens >= COMPRESS_TOKEN_THRESHOLD and n_thinks >= COMPRESS_RANGE_MIN:
+            return True
+        # v9.4.2 emergency fire: tokens far over budget, even with <4 thinks.
+        # Threshold = 1.5× normal trigger; fires at len ≥ 2 to leave at
+        # least one think for compress() to do anything meaningful.
+        if n_tokens >= int(COMPRESS_TOKEN_THRESHOLD * 1.5) and n_thinks >= 2:
+            return True
+        return False
 
     def compress(self, summary: Dict, compressed_chunks: Optional[List[int]] = None):
         """Replace specified thinks with summary in model context.
 
         Raw thinks stay in _retrieval_archive for recall.
+
+        v9.4.2: cap incoming summary text at 200 tokens to match SFT data
+        construction (config.py:SUMMARY_TOKENS_MAX=180 + slack). Without
+        this, a verbose model could append 400-600 tok summaries; with 5
+        such segments stacked before merge fires, compressed_segments
+        zone alone reaches ~3000 tok — silently overflowing model_max_length.
+        Cap is matched to the SUMMARY_TOKENS_MAX constant so eval renders
+        segments at the same size SFT trained on.
         """
         if compressed_chunks is not None:
             chunk_set = set(compressed_chunks)
@@ -117,6 +140,14 @@ class MemoryState:
             ]
         else:
             self.recent_thinks = self.recent_thinks[COMPRESS_RANGE_MIN:]
+        # Cap summary text BEFORE storing
+        if self._tokenizer and isinstance(summary.get("text"), str):
+            text = summary["text"]
+            ids = self._tokenizer.encode(text, add_special_tokens=False)
+            if len(ids) > 200:
+                summary = dict(summary)  # don't mutate caller's dict
+                summary["text"] = self._tokenizer.decode(ids[:200])
+                summary["_truncated"] = True
         self.compressed_segments.append(summary)
         # Merge oldest two if over limit (MAX_COMPRESSED_SEGMENTS=5).
         # v9.4.2: keep merged-text cap at 200 tokens (the SFT-baked value).

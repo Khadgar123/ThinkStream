@@ -653,6 +653,44 @@ def test_run_matrix_runs_both_profiles():
     assert 'for prof in "${PROFILES[@]}"' in src
 
 
+def test_should_compress_emergency_trigger():
+    """v9.4.2: emergency compress trigger when individual thinks are
+    pathologically long (1.5× normal threshold + len≥2). Without this,
+    a verbose model emitting 1000-tok thinks would carry 2000+ tok in
+    recent_thinks before COMPRESS_RANGE_MIN=4 fires."""
+    src = (ROOT / "thinkstream" / "model" / "agent_loop.py").read_text()
+    sc_block = src[src.find("def should_compress("):
+                   src.find("def compress(")]
+    # Standard trigger: tokens>=480 AND len>=4
+    assert "COMPRESS_TOKEN_THRESHOLD" in sc_block
+    assert "COMPRESS_RANGE_MIN" in sc_block
+    # Emergency trigger: tokens >= 1.5× threshold AND len >= 2
+    assert "1.5" in sc_block, "emergency trigger should use 1.5× threshold"
+    assert "n_thinks >= 2" in sc_block or "len(self.recent_thinks) >= 2" in sc_block, \
+        "emergency trigger needs minimum-2 condition"
+
+
+def test_summary_capped_at_storage_time():
+    """v9.4.2: incoming <summary> text must be capped at 200 tok at compress()
+    time, NOT only when merging. Verbose model summaries used to bloat the
+    compressed_segments zone to ~2000 tok before merge fired."""
+    src = (ROOT / "thinkstream" / "model" / "agent_loop.py").read_text()
+    # Find compress() body
+    cmp_block = src[src.find("def compress("):
+                    src.find("def add_query(") if "def add_query(" in src
+                    else src.find("# --- Queries tracking")]
+    # Must encode and truncate BEFORE append
+    assert "Cap summary text BEFORE storing" in cmp_block, \
+        "compress() must cap summary text before append"
+    assert "len(ids) > 200" in cmp_block
+    assert "_tokenizer.decode(ids[:200])" in cmp_block
+    # Truncation must happen before the .append(summary) line
+    cap_pos = cmp_block.find("len(ids) > 200")
+    append_pos = cmp_block.find("self.compressed_segments.append(summary)")
+    assert cap_pos < append_pos, \
+        "cap must be applied BEFORE append, else 5 segments can stack uncapped"
+
+
 def test_compressed_segment_merge_cap_aligned_with_sft():
     """Merged compressed segments capped at 200 tokens — matches the SFT
     data construction value (config.py); going below would OOD the model
