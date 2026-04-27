@@ -276,6 +276,22 @@ def add_common_args(parser):
             "compress/recall protocol)."
         ),
     )
+    parser.add_argument(
+        "--compress_mode",
+        default="system",
+        choices=["system", "self"],
+        help=(
+            "How <action>compress</action> is triggered (only used with "
+            "--use_agent_loop). 'system' (default, SFT-trained ckpt): when "
+            "memory.should_compress() fires, system inserts a "
+            "<compress_trigger range='X-Y'/> with a fixed FIFO range and "
+            "the model only writes the <summary>. 'self' (post-GDPO RL "
+            "ckpt): system never inserts a trigger; the model decides "
+            "autonomously when to compress and which range to summarize. "
+            "Pure-SFT ckpts under 'self' will likely never compress and "
+            "overflow — only use 'self' with an RL-tuned policy."
+        ),
+    )
     return parser
 
 
@@ -561,6 +577,7 @@ def mcq_predict_agent_loop(
     frames_per_chunk: int = FRAMES_PER_CHUNK,
     question_prefix: str = "",
     question_postfix: str = "\nAnswer with a single letter.",
+    compress_mode: str = "system",
     rank: int = 0,
     world_size: int = 1,
 ):
@@ -613,6 +630,7 @@ def mcq_predict_agent_loop(
             min_pixels=min_pixels,
             max_pixels=max_pixels,
             max_new_tokens=max_new_tokens,
+            compress_mode=compress_mode,
         )
 
         answer_text = ""

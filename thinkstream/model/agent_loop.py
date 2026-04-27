@@ -383,6 +383,7 @@ class StreamingAgentLoop:
         max_pixels: int = 150528,
         max_new_tokens: int = 256,
         retrieve_fn: Optional[Callable] = None,
+        compress_mode: str = "system",
     ):
         """
         Args:
@@ -393,7 +394,21 @@ class StreamingAgentLoop:
             model_type: "qwen2.5vl" or "qwen3vl".
             retrieve_fn: Optional custom retrieval function. Defaults to
                          simple_retrieve using the memory archive.
+            compress_mode: "system" (default, used by SFT eval) — when
+                memory.should_compress() fires, system inserts a
+                <compress_trigger range="t_start-t_end"/> with a fixed
+                FIFO range; the model only writes the summary text.
+                "self" (used by RL eval after GDPO) — system never
+                inserts a trigger; the model decides autonomously when
+                to emit <action>compress</action> and which range to
+                summarize. Only enable "self" with an RL-tuned ckpt:
+                v11 SFT samples were all C1 (system-triggered fixed
+                range), so a pure-SFT model under "self" mode is OOD.
         """
+        if compress_mode not in ("system", "self"):
+            raise ValueError(
+                f"compress_mode must be 'system' or 'self', got {compress_mode!r}"
+            )
         self.generate_fn = generate_fn
         self.processor = processor
         self.model_type = model_type
@@ -401,6 +416,7 @@ class StreamingAgentLoop:
         self.max_pixels = max_pixels
         self.max_new_tokens = max_new_tokens
         self.retrieve_fn = retrieve_fn or simple_retrieve
+        self.compress_mode = compress_mode
         self.memory = MemoryState(tokenizer=tokenizer)
 
     def reset(self):
@@ -467,7 +483,7 @@ class StreamingAgentLoop:
         # encode their span. The model only learns to write the summary
         # text given a fixed range, never to choose the range itself.
         compress_trigger = ""
-        if self.memory.should_compress():
+        if self.compress_mode == "system" and self.memory.should_compress():
             oldest = self.memory.recent_thinks[:COMPRESS_RANGE_MIN]
             if oldest:
                 chunks = [t["chunk"] for t in oldest]
@@ -476,6 +492,12 @@ class StreamingAgentLoop:
                 compress_trigger = (
                     f'<compress_trigger range="{t_start}-{t_end}"/>'
                 )
+        # compress_mode == "self": no trigger inserted. The model is
+        # expected to autonomously emit <action>compress</action> when
+        # it judges memory pressure, with its own time_range in the
+        # <summary>. Only used after GDPO has trained the policy to
+        # pick ranges; pure-SFT ckpts will likely never compress in
+        # this mode and overflow.
 
         # 3. Determine user_input
         user_input = ""

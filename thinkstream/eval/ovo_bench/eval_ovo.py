@@ -105,6 +105,7 @@ if __name__ == "__main__":
             max_new_tokens=args.max_new_tokens,
             min_pixels=args.min_pixels,
             max_pixels=args.max_pixels,
+            compress_mode=args.compress_mode,
             rank=rank,
             world_size=world_size,
         )
