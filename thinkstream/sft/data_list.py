@@ -32,7 +32,10 @@ def _agent_path(filename: str) -> str:
 
 DATASET_REGISTRY = {
     # ─── Production ─────────────────────────────────────────────────
-    # All train samples mixed. Both SFT and GDPO RL read this.
+    # All train samples mixed. Legacy alias — kept for backward compat.
+    # New runs should prefer `stream_agent_sft` (SFT-only) and
+    # `stream_agent_rl` (RL-only, held out from SFT) so the GDPO stage
+    # cannot reward-hack via memorization on SFT-seen prompts.
     "stream_agent_p5": {
         "annotation_path": _agent_path("phase5_train.jsonl"),
         "data_path": "./",
@@ -40,6 +43,21 @@ DATASET_REGISTRY = {
     # Same content as p5, kept as an alias for explicit "everything" loads.
     "stream_agent_all": {
         "annotation_path": _agent_path("train.jsonl"),
+        "data_path": "./",
+    },
+
+    # ─── SFT / RL split (v11.1, 2026-04-27) ─────────────────────────
+    # train.jsonl is split by video_id (~80/20) into disjoint pools.
+    # See data/agent_v5/final/split_manifest.json for the seed and the
+    # full list of video_ids per side. The SFT pool is what the
+    # per-timestep SFT trainer should consume in production; the RL
+    # pool is the held-out prompt set for GDPO/GRPO.
+    "stream_agent_sft": {
+        "annotation_path": _agent_path("train_sft.jsonl"),
+        "data_path": "./",
+    },
+    "stream_agent_rl": {
+        "annotation_path": _agent_path("train_rl.jsonl"),
         "data_path": "./",
     },
 
