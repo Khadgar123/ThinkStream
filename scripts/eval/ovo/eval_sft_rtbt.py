@@ -82,36 +82,39 @@ def _get_frame_paths(video_path, chunk_idx, frames_root, video_root):
 
 
 def _build_mcq_question(sample):
-    """Build question text matching SFT training distribution.
+    """Build question text with options, instructing model to pick one.
 
-    SFT data uses open-ended questions without option lists.
-    We keep the raw question and do text→option matching at parse time.
+    SFT model was trained on open-ended answers. We present options in the
+    prompt so the model knows the candidate answer space, but keep the
+    instruction natural ("choose the best option") rather than forcing a
+    letter format the model has never seen.
     """
-    return sample["question"]
+    options = sample.get("options", [])
+    lines = [sample["question"]]
+    if options:
+        lines.append("Choose the best option from below:")
+        for i, opt in enumerate(options):
+            lines.append(f"- {opt}")
+        lines.append("Answer with the exact option text.")
+    return "\n".join(lines)
 
 
 def _extract_letter(text, options=None):
     """Extract predicted choice from model output.
 
-    First tries to find a single letter A-E. If that fails and options are
-    provided, performs text matching against option strings (the model was
-    trained on open-ended answers, not MCQ letters).
+    SFT model outputs open-ended text, not MCQ letters. We therefore
+    PRIORITISE text→option matching. Letter extraction is only used as a
+    fallback when the output is explicitly a single letter (e.g. "A" or
+    "Answer: B"), never from an open phrase like "A bicycle".
     """
     if not text:
         return None
     t = text.strip()
-    # 1) Direct letter match
-    if t and t[0].upper() in "ABCDE" and len(t) == 1:
-        return t[0].upper()
     import re
-    m = re.search(r"\b([A-Ea-e])\b", t)
-    if m:
-        return m.group(1).upper()
 
-    # 2) Text matching against options (training distribution is open-ended)
+    # 1) Text matching against options (primary, matches training dist)
     if options:
         t_lower = t.lower()
-        # Exact or substring match: option text in output or output in option text
         best_idx = None
         best_score = 0
         for idx, opt in enumerate(options):
@@ -126,6 +129,16 @@ def _extract_letter(text, options=None):
                     best_idx = idx
         if best_idx is not None:
             return chr(65 + best_idx)
+
+    # 2) Explicit single-letter output (e.g. the model truly output "C")
+    if t and len(t) == 1 and t[0].upper() in "ABCDE":
+        return t[0].upper()
+
+    # 3) Letter inside an explicit answer prefix (e.g. "Answer: A")
+    # Require the letter to follow a prefix, not be a standalone English word
+    m = re.search(r"(?:answer|choice|option)\s*[:\-]?\s*\b([A-Ea-e])\b", t_lower)
+    if m:
+        return m.group(1).upper()
 
     return None
 
@@ -266,9 +279,9 @@ def main():
             "parsed_response": resp_text,
         })
 
-        if (idx + 1) % 10 == 0:
+        if (idx + 1) % 10 == 0 or idx < 5:
             rate = (idx + 1) / max(1e-6, time.time() - t0)
-            print(f"[{idx + 1}/{len(samples)}] {rate * 60:.1f} samples/min")
+            print(f"[{idx + 1}/{len(samples)}] {rate * 60:.1f} samples/min", flush=True)
 
     # Aggregate
     by_task = defaultdict(lambda: {"n": 0, "correct": 0})

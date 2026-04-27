@@ -40,7 +40,7 @@ launch() {
     local tasks=$2
     local out="${OUT_BASE}/gpu${gpu}_${tasks//,/_}.json"
     echo "[GPU${gpu}] tasks=${tasks} -> ${out}"
-    CUDA_VISIBLE_DEVICES=$gpu "$PYTHON" "$SCRIPT" \
+    CUDA_VISIBLE_DEVICES=$gpu PYTHONUNBUFFERED=1 "$PYTHON" "$SCRIPT" \
         "${COMMON_ARGS[@]}" \
         --tasks "$tasks" \
         --out "$out" \
