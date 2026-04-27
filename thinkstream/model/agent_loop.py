@@ -1,7 +1,7 @@
 """Streaming Agent Loop for inference.
 
 Single-step inference loop that mirrors the data construction pipeline exactly:
-- Maintains MemoryState (compressed_segments, recent_thinks, pending_questions)
+- Maintains MemoryState (compressed_segments, recent_thinks, queries log)
 - System-triggered compression (token-count threshold)
 - Recall orchestration (parse query → retrieve → second generate)
 - Constructs per-timestep input matching SFT training format
@@ -49,7 +49,6 @@ class MemoryState:
     def __init__(self, tokenizer=None):
         self.compressed_segments: List[Dict] = []
         self.recent_thinks: List[Dict] = []
-        self.pending_questions: List[Dict] = []
         self._retrieval_archive: List[Dict] = []
         self._tokenizer = tokenizer
 
@@ -58,12 +57,20 @@ class MemoryState:
         return self._retrieval_archive
 
     def snapshot(self, chunk_idx: int) -> Dict:
-        """Snapshot of what the model sees (no archive)."""
+        """Snapshot of what the model sees (no archive).
+
+        Note: `pending_questions` was removed from this snapshot in
+        v11.1 — it was always empty across all 12,405 v9.2 SFT samples
+        (including the 184 recall_response variants). Pending question
+        state is now expressed solely through the queries log
+        (an entry with empty `answers` list = pending).
+        format_memory_block in agent_protocol.py still tolerates the
+        legacy field via .get() so older snapshots stay readable.
+        """
         return {
             "chunk_idx": chunk_idx,
             "compressed_segments": deepcopy(self.compressed_segments),
             "recent_thinks": deepcopy(self.recent_thinks),
-            "pending_questions": deepcopy(self.pending_questions),
             "visual_window_start": max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1),
         }
 
@@ -129,19 +136,14 @@ class MemoryState:
             }
             self.compressed_segments.insert(0, merged)
 
-    def add_pending(self, question: str, since_chunk: int):
-        self.pending_questions.append({
-            "question": question,
-            "since_chunk": since_chunk,
-        })
-
-    def resolve_pending(self, question: str):
-        """Remove a pending question after it's been answered."""
-        self.pending_questions = [
-            pq for pq in self.pending_questions if pq["question"] != question
-        ]
-
     # --- Queries tracking (matches SFT <queries> zone) ---
+    # The legacy add_pending / resolve_pending pair was removed in v11.1
+    # — training data had pending_questions empty across all 12,405
+    # samples, so the field was reverse-OOD at inference. "Pending" is
+    # now expressed by add_query() leaving `answers=[]`; once
+    # answer_query() runs, the entry becomes answered. format_memory_block
+    # still tolerates the legacy field via .get() for back-compat with
+    # any external snapshot dumps.
 
     def add_query(self, question: str, ask_time: float):
         """Register a question (pending until answered)."""
@@ -546,21 +548,12 @@ class StreamingAgentLoop:
                         "source": "historical_frames",
                     }
 
-                # Update snapshot with pending question
-                snapshot_with_pending = deepcopy(snapshot)
-                if user_question:
-                    snapshot_with_pending["pending_questions"] = [{
-                        "question": user_question,
-                        "since_chunk": chunk_idx,
-                        "last_action": "recall",
-                        "query": query,
-                    }]
-
-                # Build recall_response input. queries kept consistent with
-                # the first-pass call so the <queries> block doesn't flicker
-                # between the recall-emit step and the recall-result step.
+                # Build recall_response input. The pending question is
+                # already expressed via the <queries> block (entry with
+                # empty answers list); training data shows pending status
+                # this same way and never via memory.pending_questions.
                 recall_messages = build_single_step_messages(
-                    snapshot_with_pending,
+                    snapshot,
                     chunk_idx,
                     video_path,
                     user_input="Continue following the protocol to respond.",
@@ -600,13 +593,12 @@ class StreamingAgentLoop:
                     self._record_answer(answer_text, chunk_idx)
 
         elif parsed["action"] == "response":
-            # Resolve any pending question
-            if user_question:
-                self.memory.resolve_pending(user_question)
             # Log the answer in the queries log so it shows up in the
             # next chunk's <queries> block. We attribute it to the most
             # recent unanswered query, which matches how training data
-            # was generated (pass3c emits Q/A pairs in arrival order).
+            # was generated (pass3c emits Q/A pairs in arrival order)
+            # and how an unanswered query implicitly represents pending
+            # status (no separate pending_questions field needed).
             answer_text = parsed["payload"].get("response", "")
             self._record_answer(answer_text, chunk_idx)
 

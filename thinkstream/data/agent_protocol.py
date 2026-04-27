@@ -59,11 +59,17 @@ def format_memory_block(memory: Dict) -> str:
     """Format memory state as text with tags.
 
     Input can be either:
-    - A snapshot dict with "compressed_segments", "recent_thinks", "pending_questions"
-    - A pre-structured dict with "compressed", "recent_thinks", "pending"
+    - A snapshot dict with "compressed_segments", "recent_thinks"
+    - A pre-structured dict with "compressed", "recent_thinks"
       (as used in per-timestep pipeline samples)
 
-    Both paths produce identical output text.
+    Both paths produce identical output text. The legacy
+    pending_questions / pending field is still tolerated via .get() so
+    older snapshot dumps stay readable, but pending status is now
+    expressed via the queries log (entry with empty answers list)
+    in `format_queries_block` — pending_questions was empty across
+    all 12,405 v9.2 SFT samples and was removed from MemoryState in
+    v11.1.
     """
     parts = []
 
