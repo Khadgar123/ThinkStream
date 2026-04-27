@@ -33,10 +33,15 @@ SELECTED_DIR = DATA_ROOT / "selected"
 
 # OVO task → minimum samples (Layer 1 hard floor).
 # Tuned for ~3500 final samples post-submodular over 100 videos.
+# v9.4: CRR/EPM/ASI/SSR bumped — reasoning families (CR1/CR2/CR4) now
+# contribute to these, and we want a higher floor so the model gets enough
+# multi-chunk-reasoning training signal to actually do well on those tasks.
 OVO_TASK_QUOTA = {
     "OCR": 300, "ATR": 300, "STU": 300, "ACR": 300, "OJR": 300,
-    "REC": 250, "FPD": 250, "HLD": 250, "CRR": 250,
-    "EPM": 280, "ASI": 280, "SSR": 280,
+    "REC": 250, "FPD": 250, "HLD": 500,    # HLD up: N1 is now MC, more verify yield
+    "CRR": 400,                              # CRR up: E2(MC) + CR1 + CR2 contributions
+    "EPM": 380,                              # EPM up: C1(MC) + CR1 contributions
+    "ASI": 380, "SSR": 380,                  # ASI/SSR up: P1(MC) + CR2 + CR3 contributions
 }
 
 # Family → OVO task(s). A family may serve multiple OVO tasks; quota is
@@ -45,6 +50,8 @@ OVO_TASK_QUOTA = {
 # (silent before / response after the trigger chunk).
 # SSR (sequential step recognition) is co-served by P1 procedure samples
 # whose answer_form="binary" ("are we currently doing step X?").
+# v9.4: CR1/CR2/CR3/CR4 reasoning families added; mapping picks the OVO task
+# whose underlying skill the family most directly trains.
 FAMILY_TO_OVO: Dict[str, List[str]] = {
     "F1": ["OCR"],
     "F2": ["ATR"],
@@ -60,6 +67,10 @@ FAMILY_TO_OVO: Dict[str, List[str]] = {
     "F5": ["REC"],
     "F6": ["FPD"],
     "N1": ["HLD"],
+    "CR1": ["CRR", "EPM"],   # causal why = clue-reveal; effect-after-cause = EPM
+    "CR2": ["ASI", "SSR"],   # event ordering = action sequence inference
+    "CR3": ["ASI"],          # goal/intent = high-level action sequence understanding
+    "CR4": ["OJR", "CRR"],   # compositional AND/OR over observations
 }
 
 

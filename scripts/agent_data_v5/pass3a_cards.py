@@ -16,7 +16,7 @@ import json
 import logging
 import re
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 from .config import (
     AGENT_CHUNK_SEC,
@@ -29,13 +29,22 @@ logger = logging.getLogger(__name__)
 
 # Family targets per video.
 # v9.0: F5/F6/N1 added for OVOBench REC/FPD/HLD coverage.
+# v9.3: F5/F6 bumped 2→3 (under-yielded in batch1: 4 / 165 cards across 311 videos).
+# v9.4: 4 reasoning families added (CR1 causal, CR2 order, CR3 intent,
+#       CR4 compositional). These exercise multi-chunk reasoning that the
+#       Layer-0/1 perceptual families don't — specifically targeting OVO
+#       CRR/ASI/SSR/EPM tasks where batch1 had near-zero coverage.
 FAMILY_TARGETS = {
     "F1": 3, "F2": 4, "F3": 2, "F4": 2,
     "E1": 3, "E2": 2, "P1": 2, "C1": 2,
     "R1": 1, "S1": 2, "M1": 2,
-    "F5": 2,  # repetition counting (OVO REC)
-    "F6": 2,  # future prediction (OVO FPD)
-    "N1": 2,  # hallucination negative (OVO HLD)
+    "F5": 3,  # repetition counting (OVO REC) — was 2
+    "F6": 3,  # future prediction (OVO FPD) — was 2
+    "N1": 2,  # hallucination detection (OVO HLD) — MC since v9.3
+    "CR1": 2, # causal why (state_change → cause attribution) — v9.4
+    "CR2": 2, # temporal ordering (3 distinguishable events) — v9.4
+    "CR3": 1, # goal / intent inference — v9.4
+    "CR4": 2, # compositional multi-observation (AND/OR) — v9.4
 }
 
 # Families that MUST be attempted on every video, even when classify_chunks
@@ -43,9 +52,18 @@ FAMILY_TARGETS = {
 # because most videos lack a 3-chunk same-action run; here we let the teacher
 # look at the whole video and decide whether it can construct a question.
 # Without this, OVOBench REC/FPD/HLD coverage is structurally absent.
-FAMILY_FORCE_ATTEMPT = {"F5", "F6", "N1", "F3", "E2", "S1"}
+# v9.4: CR1-4 added — reasoning families need teacher to scan the whole video
+# and decide if multi-chunk reasoning is possible; structural classify_chunks
+# would miss many candidates.
+FAMILY_FORCE_ATTEMPT = {
+    "F5", "F6", "N1", "F3", "E2", "S1",
+    "CR1", "CR2", "CR3", "CR4",
+}
 
-# Retention class derived from family (not from 397B)
+# Retention class derived from family (not from 397B).
+# v9.4: CR1/CR2/CR4 = "high" (cross-chunk cause/order/composition must be
+# explicitly retained across compression); CR3 = "medium" (goal is summary-
+# level, often survives compression as gist).
 RETENTION_CLASS = {
     "F1": "low", "F2": "low", "F3": "low",
     "F4": "medium", "P1": "medium", "E2": "medium",
@@ -54,16 +72,26 @@ RETENTION_CLASS = {
     "F5": "low",      # exact count must persist
     "F6": "medium",   # process-aware
     "N1": "low",      # specific entity absence
+    "CR1": "high",    # cause needs to be retained from earlier chunk
+    "CR2": "high",    # all 3 ordered events must be retained
+    "CR3": "medium",  # goal is gist-level, survives compression
+    "CR4": "high",    # both/all observations must be retained
 }
 
-# Families whose canonical_answer="No" indicates expected silent/refusal.
-# Used by GRPO silent_quality reward and SFT label routing.
+# Families that need the "absence" verification path: standard verify checks
+# whether the answer is supported by support_chunks; these need to confirm
+# that the WRONG options (distractors) are absent from the entire video.
+# v9.3: N1 is now multiple_choice (was binary "No"); the set name is kept for
+# backward-compat in pass3a:_verify_one_card but no longer implies the answer
+# is "No". GRPO's silent_quality HLD branch (gt=="no" and form=="binary") is
+# now dead code — left in place; harmless.
 NEGATIVE_FAMILIES = {"N1"}
 
 # Shared output schema appended to every family prompt.
 # Solves: (1) inconsistent field names across families,
 #          (2) uncontrolled canonical_answer format,
-#          (3) entity_id leaking into question text.
+#          (3) entity_id leaking into question text,
+#          (4) v9.3: MC distractors must be plausible (same video, same fact-type).
 _OUTPUT_SCHEMA = """
 
 Output a JSON array. Each element MUST have exactly these fields:
@@ -75,25 +103,39 @@ Output a JSON array. Each element MUST have exactly these fields:
   "visibility_type": "persistent|transient"
 }}
 
-canonical_answer format rules:
+canonical_answer format rules (STRICT — these go directly into eval matching):
 - binary: exactly "Yes" or "No" (English, capitalized)
-- multiple_choice: exactly one letter "A", "B", "C", or "D"
-- number: digits only, no units (e.g. "3" not "3个")
-- short_exact: 1-5 English words, no articles
+- multiple_choice: exactly one letter "A", "B", "C", or "D" — nothing else
+- number: digits only, no units, no words (e.g. "3" not "3 times" not "three")
+- short_exact: 1-5 English words, no articles, lowercase unless a proper noun
 - descriptive: 1-3 sentences
 
 Entity reference rules:
 - ALWAYS refer to entities by visual appearance ("person wearing red apron"),
   NEVER by ID ("person_1") — the model cannot see IDs at inference time.
-- For multiple_choice, embed "A. ... B. ... C. ... D. ..." in the question text.
-  Distractors should come from the same video (other chunks' facts of same type).
-  Randomize the position of the correct answer among A-D."""
+
+Multiple-choice rules (MUST FOLLOW for any answer_form="multiple_choice"):
+- Embed all four options inline: "...question? A. <opt> B. <opt> C. <opt> D. <opt>"
+- The four options must be MUTUALLY EXCLUSIVE and SAME-TYPE (all colors, all
+  counts, all entities — never mix types).
+- Distractors (the 3 wrong options) MUST come from THIS video's evidence:
+  attributes/entities/actions visible in OTHER chunks. Never invent wording
+  the video does not reflect — the eval splits chunks per OVO and a fabricated
+  distractor that contradicts a non-target chunk leaks the answer.
+- Randomize the position of the correct answer across A/B/C/D — do NOT bias
+  toward A. Across one video's cards, all four positions should appear.
+- canonical_answer is the LETTER only; do not include the option text."""
 
 # Per-family prompt templates
 FAMILY_PROMPTS = {
     "F1": """Based on the following video chunks containing OCR text or numbers,
 generate {n} questions about precise values (price, count, text on screen).
-Prefer answer_form: number or short_exact.
+Aim for a 2:1 mix of multiple_choice : number across {n} cards (e.g. for n=3,
+two MC + one number; for n=2, one of each).
+- multiple_choice: 4 options drawn from numbers/texts visible elsewhere in this
+  video. canonical_answer is the LETTER only.
+- number: digits only, no units.
+- Avoid "binary" — OVO OCR is multi-way.
 visibility_type: "transient" for momentary values, "persistent" for always-visible text.
 
 {evidence}
@@ -101,58 +143,89 @@ visibility_type: "transient" for momentary values, "persistent" for always-visib
 
     "F2": """Based on the following video chunks, generate {n} questions about
 visual attributes (color, material, shape, clothing).
-Prefer answer_form: multiple_choice or binary.
+answer_form: multiple_choice ONLY (4 same-type options drawn from this video's
+attributes — e.g. all colors, or all clothing items). Do NOT use binary.
+canonical_answer is the LETTER.
 visibility_type: "persistent" for always-visible attributes, "transient" for brief appearances.
 
 {evidence}
 """ + _OUTPUT_SCHEMA,
 
     "F3": """Generate {n} questions about counts/quantities from these chunks.
-Prefer answer_form: number.
+answer_form: number (digits only, no units).
 visibility_type: usually "transient" (counts change).
+Question format: "How many X are visible?" — the count must be unambiguously
+resolvable from a single chunk's evidence.
 
 {evidence}
 """ + _OUTPUT_SCHEMA,
 
     "F4": """Generate {n} questions about spatial relationships from these chunks.
-Prefer answer_form: binary ("Is X to the left of Y?") or multiple_choice.
+answer_form: multiple_choice (4 options of the SAME relation type — e.g. all
+positions: A. left B. right C. behind D. in front; or all locations: A. on counter
+B. in bowl C. on stove D. in sink). Distractors must be locations/positions that
+appear in OTHER chunks of this video. Do NOT use binary.
 visibility_type: "persistent" for stable layouts, "transient" for moving objects.
 
 {evidence}
 """ + _OUTPUT_SCHEMA,
 
-    "E1": """Generate {n} questions about current actions from these chunks.
-Prefer answer_form: binary ("Is the person stirring?") or short_exact.
+    "E1": """Generate {n} questions about the action a person is currently performing.
+Aim for a 2:1 mix of multiple_choice : short_exact across {n} cards.
+- multiple_choice: 4 options of action verbs that appear in DIFFERENT chunks
+  of this video (e.g. A. stirring B. chopping C. pouring D. wiping). The
+  correct option is the action visible in support_chunks; distractors are
+  actions visible at OTHER times.
+- short_exact: 1-3 word verb phrase ("chopping onions", "pouring oil").
+- Avoid "binary" (Yes/No) — OVO ACR is multi-way.
 visibility_type: "transient" (actions change).
 
 {evidence}
 """ + _OUTPUT_SCHEMA,
 
-    "E2": """Generate {n} event-watch or state-change questions from these chunks.
-Question format: "Tell me when X starts" or "Has X started yet?"
-Prefer answer_form: binary or short_exact.
+    "E2": """Generate {n} event-watch / state-change questions. Aim for a balanced split:
+- ONE event_watch question, answer_form="binary": "Has X started yet?" /
+  "Is the bread already in the oven?" — answered "No" before the event chunk
+  and "Yes" after. canonical_answer reflects the state AT support_chunks.
+- THE REST as multiple_choice (clue-reveal / CRR): "What just changed?" with
+  4 options drawn from state_changes across this video; correct option = the
+  state_change at support_chunks.
+canonical_answer for MC is the LETTER.
 visibility_type: "transient".
 
 {evidence}
 """ + _OUTPUT_SCHEMA,
 
-    "P1": """Generate {n} questions about procedure/step order from these chunks.
-Prefer answer_form: number ("Which step is this?") or multiple_choice.
+    "P1": """Generate {n} questions about procedure / step order.
+answer_form: multiple_choice ONLY (4 options drawn from steps actually
+performed in this video, in different chunks). Examples:
+- "Which step is the chef performing now? A. mixing B. baking C. plating D. cleaning"
+- "What step came IMMEDIATELY before? A. ... B. ... C. ... D. ..."
+canonical_answer is the LETTER.
 visibility_type: "transient".
 
 {evidence}
 """ + _OUTPUT_SCHEMA,
 
     "C1": """Generate {n} comparison questions: how has something changed over time?
-Prefer answer_form: binary ("Has X changed since earlier?").
+answer_form: multiple_choice (4 options describing different possible state
+transitions; correct option = the actual change between earlier and later
+support_chunks). Examples:
+- "How has the pan's contents changed since the start? A. emptied B. now contains
+  meat C. now contains vegetables D. now contains liquid"
+canonical_answer is the LETTER.
 visibility_type: "transient".
 
 {evidence}
 """ + _OUTPUT_SCHEMA,
 
-    "R1": """Generate {n} re-identification questions: is a previously seen entity
-still present? Describe the entity by appearance.
-answer_form: binary.
+    "R1": """Generate {n} re-identification questions about whether a previously seen
+entity is still on screen. answer_form: multiple_choice (4 options describing
+distinct entities visible in DIFFERENT chunks of this video; correct option
+= the entity actually re-identified at support_chunks). Examples:
+- "Which of the previously seen people is back on screen? A. <person in red apron>
+  B. <person in blue cap> C. <person in white shirt> D. <person in green hoodie>"
+Describe each entity by appearance, never by ID. canonical_answer is the LETTER.
 visibility_type: "transient".
 
 {evidence}
@@ -188,21 +261,29 @@ DO NOT write meta narration. Each clause must reference a concrete visible event
 ACTION REPETITION COUNT (OVOBench REC).
 
 The chunks below come from the SAME video. Your job is to SCAN them and find
-any action that visibly repeats — a person doing the same gesture/movement
-on multiple distinct occasions, an object being struck/poured/wiped multiple
-times, a recurring step in a procedure, etc. The repetitions need NOT be in
-adjacent chunks; they can be spaced out across the timeline.
+any action / event that visibly recurs. Recurrence is BROAD — count any of:
+  • a person doing the same gesture/movement on multiple distinct occasions
+    (stirring, chopping, wiping, knocking, pouring, dipping)
+  • an object being acted on the same way repeatedly (egg cracked, dough
+    folded, ingredient added)
+  • a recurring step in a procedure (each tray placed in oven, each guest
+    served, each lap around a track)
+  • a recurring visual event (text overlay flashing, scene cut to same
+    location, same person re-entering frame)
+
+The repetitions need NOT be in adjacent chunks; they can be spaced across the
+timeline. TWO confirmed occurrences IS enough — that gives count=2.
 
 Question format: "How many times did the person {{verb}}?" or
-"How many {{action}} occurrences appear in the video?"
+"How many {{action}} occurrences appear?"
 answer_form: number (digits only, e.g. "3").
 visibility_type: "transient" (count is only complete after the last repetition).
-support_chunks MUST list EVERY chunk where the repetition is observed
-(at least 2 chunks; ideally 3+ for a meaningful count).
+support_chunks MUST list EVERY chunk where an occurrence is observed (≥2).
 
-CRITICAL — output an EMPTY JSON array `[]` ONLY IF you genuinely cannot find
-any repeating action across the chunks. If you find even ONE repetition pair,
-generate a question for it. Quality > quantity but DO try.
+CRITICAL — output an EMPTY JSON array `[]` ONLY IF you cannot find ANY
+recurring action/event across the entire video. Most procedural / cooking /
+sports / tutorial videos have at least one recurring action — TRY HARD before
+giving up. If two valid candidates exist, output two cards.
 
 {evidence}
 """ + _OUTPUT_SCHEMA,
@@ -234,19 +315,188 @@ prediction points.
 {evidence}
 """ + _OUTPUT_SCHEMA,
 
-    "N1": """Based on the following video chunks, generate {n} HALLUCINATION-NEGATIVE
+    "N1": """Based on the following video chunks, generate {n} HALLUCINATION-DETECTION
 questions (OVOBench HLD).
-The question must ask about an entity, action, or attribute that is SEMANTICALLY PLAUSIBLE
-for this video genre but DOES NOT actually appear in the video.
-Examples:
-- Video shows kitchen cooking → "Is there a microwave being used?" (No, only stovetop)
-- Video shows outdoor sports → "Is the person wearing a helmet?" (No, no helmet visible)
-Question format: "Is/Does ...?" or "What color is the X?" where X never appears.
-answer_form: binary (canonical_answer MUST be "No"), or short_exact ("not present"/"never appears").
-visibility_type: "persistent" (absence holds throughout).
-support_chunks: pick 2-3 representative chunks that show the SCENE CONTEXT (not the absent entity).
 
-CRITICAL: the asked-about entity/action/attribute must NOT appear in any chunk's evidence above.
+OVO HLD format (verified against ovo_bench_new.json: 186/186 samples):
+- The QUESTION asks about something the agent CANNOT actually answer from
+  the visible evidence (the asked-about entity / action / state is NOT
+  shown in any chunk above).
+- The four MC options consist of:
+    * THREE plausible-but-absent answers (entities / actions / attributes
+      that match the video genre but DO NOT appear in the evidence above).
+    * ONE option that is literally the string "Unable to answer".
+- The CORRECT answer is "Unable to answer" — the agent must recognize
+  that the question is unanswerable from the observed video and refuse.
+- canonical_answer: the LETTER (A/B/C/D) pointing to "Unable to answer".
+
+Examples (OVO real samples):
+  Q: "Where was the tray before I removed it from the oven?"
+     A. table  B. shelve  C. Unable to answer  D. rack       gt = "C"
+  Q: "What did I put in the black dustbin?"
+     A. empty water bottles  B. Unable to answer
+     C. old newspapers  D. food scraps                       gt = "B"
+  Q: "Where is the small grey keg?"
+     A. Unable to answer  B. floor  C. shelf  D. tool box    gt = "A"
+
+Procedure:
+1. Pick an entity / event / location that is plausibly part of the video's
+   GENRE (cooking, sports, tutorial...) but NOT visible in any chunk above.
+2. Phrase a "Where / What / Who" question about it.
+3. Make 3 distractor options that are also plausible-genre answers but
+   NONE of which appear in the evidence (so even those are wrong).
+4. Add "Unable to answer" as the 4th option.
+5. Place "Unable to answer" at a randomized A/B/C/D position; canonical_answer
+   is that letter.
+
+Question format: "Where/What/Who/When ...?" — must be a content question
+the model would normally try to answer. Never phrase as "Is X present?"
+(binary collapses the format).
+
+CRITICAL — none of the 4 options (including the 3 distractors) should
+actually appear in the evidence above. If you can't construct a question
+where all real-content options are absent, output `[]`.
+
+visibility_type: "persistent" (the absence/inability holds throughout).
+support_chunks: pick 2-3 chunks that show the SCENE CONTEXT (the genre /
+setting that makes the distractors plausible), not where the answer is
+(it isn't visible anywhere).
+
+{evidence}
+""" + _OUTPUT_SCHEMA,
+
+    # ─── v9.4 reasoning families ──────────────────────────────────────────
+    "CR1": """Based on the following video chunks, generate UP TO {n} CAUSAL-WHY
+questions (OVO CRR-style reasoning).
+
+A causal-why card has the form: an OUTCOME observable at chunk T_effect, whose
+CAUSE was visible at an earlier chunk T_cause < T_effect. The agent must
+remember the cause and use it to explain the effect.
+
+Procedure to construct one card:
+1. Find a chunk T_effect where a state_change or notable outcome occurs
+   (e.g. "pan starts smoking", "dough rises", "mixture darkens", "person
+   slips", "light turns red").
+2. Look BACKWARD up to ~10 chunks for an action / event that plausibly
+   caused it (e.g. "oil heated for 2 min", "yeast added", "heat increased",
+   "floor wet", "switch flipped").
+3. Verify both cause and effect are visible in the evidence above.
+
+Question format: "Why <effect>?" or "What caused <effect>?"
+answer_form: multiple_choice — 4 options:
+  - 1 correct cause (visible at T_cause)
+  - 3 plausible distractors drawn from OTHER actions/events visible elsewhere
+    in this video (NOT invented). Each distractor must be a real
+    same-domain action that happened in a different chunk.
+canonical_answer: the LETTER of the correct cause.
+support_chunks: [T_cause, T_effect] — both required.
+visibility_type: "transient".
+
+Bad example (don't do): cause invented from common sense ("oil is hot")
+when no chunk shows oil heating.
+Good example: chunk 12 shows chef adding water to flour; chunk 18 shows
+dough becoming sticky → "Why is the dough sticky now? A. too much water added
+B. yeast was activated C. oil was poured D. chef kneaded too long" answer="A".
+
+CRITICAL — output an EMPTY JSON array `[]` ONLY IF you cannot find any
+genuine cause→effect pair in the evidence. If you find one, generate a
+card; if two, generate two.
+
+{evidence}
+""" + _OUTPUT_SCHEMA,
+
+    "CR2": """Based on the following video chunks, generate UP TO {n} TEMPORAL
+ORDERING questions (OVO ASI / SSR style).
+
+A temporal-ordering card asks the agent to reproduce the order in which 3
+distinguishable events occurred, AFTER all 3 have been observed.
+
+Procedure:
+1. Pick THREE events from DIFFERENT chunks that are well-separated in time
+   (≥5 chunks apart between consecutive events). Each event must be
+   uniquely describable (different verb / different object / different
+   entity) so the 3 cannot be confused with each other.
+2. Phrase each event as a short clause ("cracked egg", "poured batter",
+   "added salt", "lit stove", "opened oven door").
+
+Question format:
+  "What was the order of these three events?
+   A. <ord_1> → <ord_2> → <ord_3>
+   B. <perm_b>
+   C. <perm_c>
+   D. <perm_d>"
+
+answer_form: multiple_choice. canonical_answer: the LETTER of the correct
+permutation. The 3 wrong options are 3 wrong permutations of the same 3
+events (do NOT include irrelevant events as distractors).
+support_chunks: [chunk_event_1, chunk_event_2, chunk_event_3] in order.
+visibility_type: "transient".
+
+CRITICAL — the 3 events must each be UNAMBIGUOUSLY identifiable in the chunks
+listed; otherwise the question has no ground truth. If you cannot find 3
+clearly distinct, well-separated events, output `[]`.
+
+{evidence}
+""" + _OUTPUT_SCHEMA,
+
+    "CR3": """Based on the following video chunks (early-to-mid portion of the
+video), generate UP TO {n} GOAL/INTENT questions.
+
+The card asks what overall goal the person in the video is working toward,
+inferred from a sequence of preparatory actions. Examples:
+- Cooking: "What dish is being prepared?" (omelette / pancakes / soufflé / french toast)
+- Sports: "What sport is the person training for?" (boxing / running / cycling / swimming)
+- DIY: "What is the person assembling?" (chair / table / bookshelf / cabinet)
+
+answer_form: multiple_choice — 4 options:
+  - 1 correct goal (matches what the chunks reveal)
+  - 3 plausible goals from the SAME GENRE that share early-stage actions
+    with the correct goal (e.g. all four are breakfast dishes that involve
+    cracking eggs; all four are leg exercises). Distractors must be
+    semantically close so the question requires actually integrating the
+    full action sequence — not just genre identification.
+canonical_answer: the LETTER.
+support_chunks: 3-5 chunks from the evidence that together reveal the goal
+(typically actions / ingredients / tools visible across the early sequence).
+visibility_type: "persistent" (the goal, once inferable, holds for the rest
+of the video).
+
+CRITICAL — if the chunks don't yet reveal a clear goal (too early /
+ambiguous), output `[]`. Do NOT guess.
+
+{evidence}
+""" + _OUTPUT_SCHEMA,
+
+    "CR4": """Based on the following video chunks, generate UP TO {n}
+COMPOSITIONAL questions that REQUIRE COMBINING ≥2 SEPARATE OBSERVATIONS to
+answer correctly.
+
+A compositional card has 2 (or 3) sub-conditions that are each established
+in DIFFERENT chunks. The agent cannot answer correctly by looking at one
+chunk; it must remember both observations and combine them with AND / OR /
+NEITHER logic.
+
+Procedure:
+1. Pick TWO chunks A and B (separated by ≥4 chunks) that establish two
+   distinct facts: e.g. "chef adds onions" at chunk 8, "chef adds tomatoes"
+   at chunk 22.
+2. Phrase a question that asks about the conjunction.
+
+Question format (one of):
+  - AND: "Did the chef use BOTH X AND Y?"
+    A. only X used  B. only Y used  C. both X and Y used  D. neither
+  - WHICH-PAIR: "Which two ingredients were both added?"
+    (4 options each listing a pair; correct one names X and Y)
+
+answer_form: multiple_choice. canonical_answer: the LETTER.
+support_chunks: [chunk_A, chunk_B] (or up to 3) — ALL chunks required to
+answer must be listed.
+visibility_type: "transient".
+
+CRITICAL — if the answer can be obtained from ANY single chunk alone, the
+question is NOT compositional and is INVALID. Verify the dependency: both
+sub-observations must be needed to distinguish the correct option from the
+distractors. If you cannot construct such a question, output `[]`.
 
 {evidence}
 """ + _OUTPUT_SCHEMA,
@@ -507,6 +757,93 @@ def classify_chunks(evidence: List[Dict]) -> Dict[str, List[int]]:
     if n1_candidates:
         step = max(1, len(n1_candidates) // max(n1_target, 1))
         fc["N1"] = n1_candidates[::step][:n1_target]
+
+    # ------------------------------------------------------------------
+    # v9.4 — REASONING FAMILIES: CR1 / CR2 / CR3 / CR4
+    # These need CROSS-CHUNK context, so we pass each chunk in the
+    # candidate set PLUS its preceding context (effect needs cause).
+    # All 4 are FAMILY_FORCE_ATTEMPT — even an empty candidate list
+    # falls back to whole-video evenly-spaced chunks via generate_cards.
+    # ------------------------------------------------------------------
+
+    # CR1 (causal why): chunks with state_changes ARE the effects;
+    # include them + all chunks before them so teacher can find causes.
+    # We give the teacher up to 10 chunks total: each effect chunk + a
+    # preceding window. Cap at 3 effects so the prompt isn't overloaded.
+    effect_chunks = [cap["chunk_idx"] for cap in evidence if cap.get("state_changes")]
+    if effect_chunks:
+        cr1_set = set()
+        for ec in effect_chunks[:3]:
+            for c in range(max(0, ec - 8), ec + 1):
+                cr1_set.add(c)
+        # Intersect with chunks that actually exist in evidence
+        existing = {cap["chunk_idx"] for cap in evidence}
+        fc["CR1"] = sorted(c for c in cr1_set if c in existing)
+
+    # CR2 (temporal ordering): pick high-information chunks well spread
+    # across the timeline. We want the teacher to see ≥3 distinguishable
+    # events. Score each chunk by (#facts + #state_changes + #entities)
+    # and keep up to 8 evenly distributed across the timeline.
+    scored = []
+    for cap in evidence:
+        score = (
+            len([f for f in cap.get("atomic_facts", []) if f.get("confidence", 0) >= 0.7])
+            + 2 * len(cap.get("state_changes", []))
+            + len(cap.get("visible_entities", []))
+        )
+        if score >= 2:
+            scored.append((cap["chunk_idx"], score))
+    if len(scored) >= 3:
+        # Even-distribute: bin chunks into 8 buckets across the timeline,
+        # keep the top-scoring chunk in each bucket.
+        ordered = sorted(scored, key=lambda x: x[0])
+        if len(ordered) > 8:
+            n_bins = 8
+            bins: List[List[Tuple[int, int]]] = [[] for _ in range(n_bins)]
+            min_c = ordered[0][0]
+            max_c = ordered[-1][0]
+            span = max(1, max_c - min_c)
+            for c, s in ordered:
+                b = min(n_bins - 1, (c - min_c) * n_bins // span)
+                bins[b].append((c, s))
+            picked = []
+            for b in bins:
+                if b:
+                    picked.append(max(b, key=lambda x: x[1])[0])
+            fc["CR2"] = sorted(picked)
+        else:
+            fc["CR2"] = [c for c, _ in ordered]
+
+    # CR3 (goal/intent): give the teacher the FIRST 60-70% of the video.
+    # The goal is best inferable from the early action sequence; reading
+    # the whole video would make the question trivial (the goal is
+    # explicit by the end). Cap at 10 evenly-spaced chunks.
+    if evidence:
+        all_idx = sorted(cap["chunk_idx"] for cap in evidence)
+        cutoff = max(1, int(len(all_idx) * 0.65))
+        early = all_idx[:cutoff]
+        if early:
+            step = max(1, len(early) // 10)
+            fc["CR3"] = early[::step][:10]
+
+    # CR4 (compositional): pick chunks where DIFFERENT entities or actions
+    # appear, so the teacher can construct AND-style questions across them.
+    # Heuristic: chunks whose visible_entities[0].desc differs from the
+    # previous selected chunk (forces entity diversity).
+    cr4_picks: List[int] = []
+    last_desc_set: set = set()
+    for cap in sorted(evidence, key=lambda c: c.get("chunk_idx", 0)):
+        descs = {e.get("desc", "")[:30] for e in cap.get("visible_entities", []) if e.get("desc")}
+        if not descs:
+            continue
+        # Only pick if new entities relative to last pick
+        if descs - last_desc_set:
+            cr4_picks.append(cap["chunk_idx"])
+            last_desc_set = descs
+        if len(cr4_picks) >= 8:
+            break
+    if len(cr4_picks) >= 2:
+        fc["CR4"] = cr4_picks
 
     # Deduplicate
     for f in fc:
@@ -849,29 +1186,126 @@ Output JSON only:
 If ANY check fails (not answerable, not visual-dependent, or answer leaked), output:
 {{"valid": false}}"""
 
-# N1 (hallucination) needs an inverted check: the asked-about entity must NOT
-# appear in the evidence. Standard verify would mark these "not answerable".
-VERIFY_N1_PROMPT = """Verify this HALLUCINATION-NEGATIVE question card.
-The card claims the asked-about entity/action/attribute is ABSENT from the video.
+# v9.4 — Reasoning-family verification.
+# Standard VERIFY_CARD_PROMPT only checks "is it answerable" — for CR1/CR2/CR4
+# this misses the core failure mode: the card may be answerable but doesn't
+# actually exercise reasoning (e.g. CR1 with a fabricated cause, CR2 with a
+# wrong permutation as gold, CR4 answerable from one chunk alone).
+VERIFY_REASONING_PROMPT = """Verify this REASONING question card (family={family}).
 
-Evidence chunks (ALL chunks of the video, or a representative subset):
+Evidence chunks (focused on support_chunks ± 2):
+{evidence}
+
+Card:
+- family: {family}        # CR1=causal-why, CR2=temporal-ordering, CR4=compositional
+- question: "{question}"
+- canonical_answer: "{canonical_answer}"  (a single letter A/B/C/D)
+- support_chunks: {support_chunks}
+
+Standard checks:
+1. Is the question answerable from the evidence? (grounded, not common sense)
+2. Does the question text leak the answer?
+3. Is canonical_answer exactly one letter A/B/C/D?
+
+Family-specific checks (CRITICAL — primary reason a card should be rejected):
+
+If family == "CR1" (causal-why):
+  C1. The question must name a clear EFFECT observable in the evidence.
+  C2. The option labeled by canonical_answer must be a CAUSE that is also
+      observable in the evidence (in an EARLIER chunk than the effect).
+  C3. The cause→effect link must be genuine — the cause must plausibly
+      bring about the effect (not just temporally earlier).
+  C4. The 3 distractor options must be SAME-DOMAIN actions visible elsewhere
+      in this video (not invented out of common sense).
+
+If family == "CR2" (temporal-ordering):
+  C1. The question text must list a permutation A → B → C of THREE distinct
+      events (each describable as a short phrase).
+  C2. The gold-letter permutation must match the ACTUAL chronological order
+      observed in support_chunks (cross-check timestamps).
+  C3. The 3 events must be UNAMBIGUOUSLY identifiable in the chunks (not
+      generic phrases like "person did something").
+
+If family == "CR4" (compositional):
+  C1. The question must require COMBINING ≥2 separate observations.
+  C2. Each support_chunk must contribute a SUB-FACT needed to choose the
+      correct option (no single chunk alone selects the gold letter).
+  C3. Distractors must include single-chunk-correct options (e.g. "X only",
+      "Y only") so the model is rewarded specifically for combining.
+
+Output JSON only:
+{{"valid": true, "support_chunks": [chunk_idx, ...], "visibility_type": "transient", "canonical_answer": "<letter>"}}
+If ANY family-specific check fails, output: {{"valid": false}}"""
+
+# CR3 (goal/intent) — answer is INFERRED from action sequence, not directly
+# extractable from any single chunk. Standard verify rejects these as
+# "not answerable from evidence". Use this prompt for CR3 only.
+VERIFY_INTENT_PROMPT = """Verify this GOAL/INTENT question card (CR3).
+
+Evidence chunks (early-to-mid video, the goal-revealing portion):
+{evidence}
+
+Card:
+- question: "{question}"        # asks what the person is trying to accomplish
+- canonical_answer: "{canonical_answer}"  (a single letter A/B/C/D)
+- support_chunks: {support_chunks}
+
+Goal/intent is INFERRED from the action sequence, not directly observable
+in one chunk. Verify with these checks:
+
+1. The question must explicitly ask about an OVERALL GOAL or activity
+   ("What is being prepared?", "What sport is being trained?", "What is
+   being assembled?") — NOT a single action ("What is the person doing
+   right now?"; that's an E1 question, not CR3).
+
+2. The option labeled canonical_answer must be the MOST PLAUSIBLE
+   interpretation of the action sequence in the evidence.
+   - For cooking: do the ingredients/tools shown match this dish?
+   - For sports/DIY: do the actions shown match this activity?
+
+3. The 3 distractor options must be FROM THE SAME GENRE/DOMAIN and share
+   SOME early-stage actions with the correct answer (so the question
+   actually requires integrating multiple observations, not just genre
+   identification). E.g. for cooking: 4 different breakfast dishes that
+   all involve eggs, not "guitar lesson" as a distractor.
+
+4. canonical_answer is exactly one letter A/B/C/D.
+
+Output JSON only:
+{{"valid": true, "support_chunks": [chunk_idx, ...], "visibility_type": "persistent", "canonical_answer": "<letter>"}}
+If the goal is too ambiguous, distractors are too far apart, or the
+question is really an E1 rather than a goal question, output:
+{{"valid": false}}"""
+
+# N1 (HLD) verification — v9.4.1 OVO-aligned format.
+# Card has 4 MC options: 3 plausible-but-absent + 1 "Unable to answer".
+# Correct answer is the letter of "Unable to answer".
+VERIFY_N1_PROMPT = """Verify this HALLUCINATION-DETECTION (OVO HLD) question card.
+
+Evidence chunks (representative sample of the video):
 {evidence}
 
 Card:
 - question: "{question}"
-- canonical_answer: "{canonical_answer}"  (must be "No" or equivalent absence statement)
+- canonical_answer: "{canonical_answer}"  (must be a single letter A/B/C/D)
 
-Check:
-1. Does the question ask about something specific (entity / action / attribute)?
-2. Is that thing genuinely ABSENT from every chunk of evidence above? (If it appears
-   in any chunk, the card is INVALID — answer should be Yes, not No.)
-3. Is the asked-about thing semantically plausible for this video genre (otherwise
-   the negative is too easy and not discriminative)?
-4. Is canonical_answer exactly "No" (binary) or a clear absence phrase?
+Parse the four options A/B/C/D from the question text. Then check:
+1. Does the question contain four inline options "A. ... B. ... C. ... D. ..."?
+2. Is exactly ONE option literally "Unable to answer" (case-insensitive)?
+3. Does canonical_answer point to that "Unable to answer" option?
+4. Do the OTHER THREE options (the plausible-but-absent distractors) NOT
+   appear in any chunk of the evidence above? If any distractor IS visible
+   in the evidence, the card is INVALID — the question would have a real
+   answer, defeating the "Unable to answer" gold.
+5. Are the 3 distractors semantically plausible for this video genre? If
+   they are wildly off-topic ("guitar" in a cooking video), the card is
+   too easy — reject.
+6. Is the question itself a normal content question (Where / What / Who /
+   When), not a binary "Is X present?" form?
 
 Output JSON only:
-{{"valid": true, "support_chunks": [chunk_idx, ...], "visibility_type": "persistent", "canonical_answer": "No"}}
-If the asked-about thing actually appears, or the question is trivial, output:
+{{"valid": true, "support_chunks": [chunk_idx, ...], "visibility_type": "persistent", "canonical_answer": "<letter>"}}
+If any check fails, output:
 {{"valid": false}}"""
 
 
@@ -905,6 +1339,8 @@ async def _verify_one_card(
 
     family = card.get("family", "")
     is_negative = family in NEGATIVE_FAMILIES
+    is_reasoning = family in {"CR1", "CR2", "CR4"}
+    is_intent = family == "CR3"
 
     if is_negative:
         # N1: verify against the WHOLE video (or a wide sample), not just
@@ -916,9 +1352,33 @@ async def _verify_one_card(
             sampled = all_idx[::step][:12]
         else:
             sampled = all_idx
-        ev_text = _format_evidence_for_prompt(evidence, sampled)
+        ev_text = _format_evidence_for_prompt(evidence, sorted(sampled))
+    elif family == "F6":
+        # F6 (FPD): support_chunks is the SETUP; the continuation we need to
+        # verify against is in chunks AFTER support_end. Extend the forward
+        # range to support_end + 8 so the verifier can see both setup AND
+        # actual continuation. (v9.3 — fixes batch1's 10/165 verify yield.)
+        search_range = set()
+        for sc in support:
+            for c in range(max(0, sc - 2), sc + 9):
+                search_range.add(c)
+        ev_text = _format_evidence_for_prompt(evidence, sorted(search_range))
+    elif is_intent:
+        # CR3 (intent/goal): the goal is inferred from the FULL early-to-mid
+        # action sequence, not from support_chunks alone. Pass up to 12
+        # evenly-spaced chunks from the first 70% of the video.
+        all_idx = sorted(cap.get("chunk_idx", 0) for cap in evidence)
+        cutoff = max(1, int(len(all_idx) * 0.7))
+        early = all_idx[:cutoff]
+        if len(early) > 12:
+            step = len(early) // 12
+            sampled = early[::step][:12]
+        else:
+            sampled = early
+        ev_text = _format_evidence_for_prompt(evidence, sorted(sampled))
     else:
-        # Include support chunks ± 2 for context
+        # Include support chunks ± 2 for context (works for CR1/CR2/CR4 too:
+        # all chunks needed for reasoning are listed in support_chunks).
         search_range = set()
         for sc in support:
             for c in range(max(0, sc - 2), sc + 3):
@@ -934,6 +1394,21 @@ async def _verify_one_card(
             evidence=ev_text,
             question=card.get("question", ""),
             canonical_answer=card.get("canonical_answer", ""),
+        )
+    elif is_intent:
+        prompt = VERIFY_INTENT_PROMPT.format(
+            evidence=ev_text,
+            question=card.get("question", ""),
+            canonical_answer=card.get("canonical_answer", ""),
+            support_chunks=card.get("support_chunks", []),
+        )
+    elif is_reasoning:
+        prompt = VERIFY_REASONING_PROMPT.format(
+            family=family,
+            evidence=ev_text,
+            question=card.get("question", ""),
+            canonical_answer=card.get("canonical_answer", ""),
+            support_chunks=card.get("support_chunks", []),
         )
     else:
         prompt = VERIFY_CARD_PROMPT.format(
