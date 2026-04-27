@@ -405,6 +405,23 @@ class StreamingAgentLoop:
         """Reset for a new video."""
         self.memory = MemoryState(tokenizer=self.memory._tokenizer)
 
+    def _record_answer(self, answer_text: str, chunk_idx: int) -> None:
+        """Attach an answer to the most-recent unanswered query.
+
+        Mirrors how pass3c builds queries_state when the agent produces
+        a response: walk queries in reverse, find the first one with
+        empty answers, append. If no unanswered query exists (e.g. the
+        model emitted a stray response without a pending question),
+        silently no-op rather than fabricating a Q to attach to.
+        """
+        if not answer_text:
+            return
+        response_time = chunk_idx * AGENT_CHUNK_SEC
+        for q in reversed(self.memory.queries):
+            if not q.get("answers"):
+                self.memory.answer_query(q["question"], answer_text, response_time)
+                return
+
     def step(
         self,
         chunk_idx: int,
@@ -419,6 +436,22 @@ class StreamingAgentLoop:
         """
         # 1. Snapshot BEFORE this step
         snapshot = self.memory.snapshot(chunk_idx)
+
+        # 1b. Register the new question (if any) into the queries log so
+        # it appears in the <queries> block this step. Training data has
+        # the question present in <queries> at the chunk it arrives —
+        # 7,828/12,405 v9.2 samples (63%) carry populated queries — so
+        # not registering it would leave the model in an OOD distribution
+        # for any chunk after the first question. Idempotent: same
+        # (question, ask_time) is appended only once.
+        if user_question:
+            ask_time = chunk_idx * AGENT_CHUNK_SEC
+            already_logged = any(
+                q["question"] == user_question and q.get("ask_time") == ask_time
+                for q in self.memory.queries
+            )
+            if not already_logged:
+                self.memory.add_query(user_question, ask_time)
 
         # 2. Check compression trigger (system-triggered, not model-triggered).
         #
@@ -450,12 +483,17 @@ class StreamingAgentLoop:
         elif user_question:
             user_input = user_question
 
-        # 4. Build single-step messages (matching training format)
+        # 4. Build single-step messages (matching training format).
+        # Pass `queries=self.memory.queries` so the <queries> block is
+        # populated identically to the SFT input format — both for the
+        # current pending question and for any past Q/A pairs that the
+        # model has already produced answers for in this video.
         messages = build_single_step_messages(
             snapshot,
             chunk_idx,
             video_path,
             user_input=user_input,
+            queries=self.memory.queries,
             min_pixels=self.min_pixels,
             max_pixels=self.max_pixels,
         )
@@ -518,12 +556,15 @@ class StreamingAgentLoop:
                         "query": query,
                     }]
 
-                # Build recall_response input
+                # Build recall_response input. queries kept consistent with
+                # the first-pass call so the <queries> block doesn't flicker
+                # between the recall-emit step and the recall-result step.
                 recall_messages = build_single_step_messages(
                     snapshot_with_pending,
                     chunk_idx,
                     video_path,
                     user_input="Continue following the protocol to respond.",
+                    queries=self.memory.queries,
                     recalled_frames=recalled_frames,
                     recall_result=recall_result,
                     min_pixels=self.min_pixels,
@@ -551,11 +592,23 @@ class StreamingAgentLoop:
                 if recall_parsed["action"] in ("response", "silent"):
                     parsed["final_action"] = recall_parsed["action"]
                     parsed["final_payload"] = recall_parsed["payload"]
+                # If the recall second pass emitted a response, log the
+                # answer against the most recent unanswered query so the
+                # next chunk's <queries> block carries it forward.
+                if recall_parsed["action"] == "response":
+                    answer_text = recall_parsed["payload"].get("response", "")
+                    self._record_answer(answer_text, chunk_idx)
 
         elif parsed["action"] == "response":
             # Resolve any pending question
             if user_question:
                 self.memory.resolve_pending(user_question)
+            # Log the answer in the queries log so it shows up in the
+            # next chunk's <queries> block. We attribute it to the most
+            # recent unanswered query, which matches how training data
+            # was generated (pass3c emits Q/A pairs in arrival order).
+            answer_text = parsed["payload"].get("response", "")
+            self._record_answer(answer_text, chunk_idx)
 
         # Expose post-step memory size so RL rollouts can detect overflow
         # (recent_thinks tokens; compressed_segments are bounded by design).
