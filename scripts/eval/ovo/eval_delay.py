@@ -137,7 +137,8 @@ def resolve_video_path(video_field: str, video_root: str) -> str:
 
 def eval_one_crr(sample, model, processor, tokenizer, model_type,
                  retriever, video_root, max_new_tokens=128,
-                 min_pixels=100352*2, max_pixels=100352*4):
+                 min_pixels=100352*2, max_pixels=100352*4,
+                 compress_mode="system"):
     """Run agent through CRR sample respecting ask_time. Return per-probe records."""
     video_path = resolve_video_path(sample["video"], video_root)
     if not Path(video_path).exists():
@@ -161,7 +162,7 @@ def eval_one_crr(sample, model, processor, tokenizer, model_type,
         max_pixels=max_pixels,
         max_new_tokens=max_new_tokens,
         retriever=retriever,
-        compress_mode="system",
+        compress_mode=compress_mode,
     )
     loop.reset()
     # Ensure retriever is also reset between samples (clears visual index)
@@ -255,6 +256,20 @@ def main():
     p.add_argument("--retriever", default="bm25", choices=["bm25", "hybrid"])
     p.add_argument("--alpha", type=float, default=0.5,
                    help="Hybrid alpha: 1.0=pure BM25, 0.0=pure visual")
+    p.add_argument(
+        "--compress_mode",
+        default="system",
+        choices=["system", "self"],
+        help=(
+            "How <action>compress</action> is triggered. 'system' (SFT "
+            "ckpt): when memory.should_compress() fires, system inserts "
+            "<compress_trigger range='X-Y'/> with FIFO range — model only "
+            "writes the <summary>. 'self' (RL ckpt post-GDPO): system never "
+            "inserts a trigger; the model autonomously decides when to "
+            "compress and which range to summarize. Pure-SFT under 'self' "
+            "will likely never compress and overflow on long videos."
+        ),
+    )
     p.add_argument("--siglip_path", default="google/siglip-base-patch16-224")
     p.add_argument("--max_results", type=int, default=4)
     p.add_argument("--max_new_tokens", type=int, default=128)
@@ -316,6 +331,7 @@ def main():
                 s, model, processor, tokenizer, model_type,
                 retriever, args.video_root,
                 max_new_tokens=args.max_new_tokens,
+                compress_mode=args.compress_mode,
             )
             if r is None:
                 continue
@@ -361,12 +377,16 @@ def main():
 
     out_path = args.out
     if not out_path:
-        out_path = f"{args.ckpt}/eval/ovo_delay_{args.task}_{args.retriever}.json"
+        out_path = (
+            f"{args.ckpt}/eval/ovo_delay_{args.task}_"
+            f"{args.retriever}_{args.compress_mode}.json"
+        )
     Path(out_path).parent.mkdir(parents=True, exist_ok=True)
     with open(out_path, "w") as f:
         json.dump({
             "ckpt": args.ckpt,
             "task": args.task,
+            "compress_mode": args.compress_mode,
             "retriever": {"kind": args.retriever, "alpha": args.alpha,
                           "siglip_path": args.siglip_path if args.retriever == "hybrid" else None},
             "n_samples": n_samples,
