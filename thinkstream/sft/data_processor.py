@@ -30,6 +30,35 @@ from .rope2d import get_rope_index_25, get_rope_index_3
 
 IGNORE_INDEX = -100
 
+# Token-span loss weights (v11.2).
+#
+# Streaming-video literature consensus (8/8 papers from 2024-2026 surveyed:
+# VideoLLM-online, VideoLLM-MoD, MMDuet, ViSpeak, Dispider, StreamMind,
+# Eyes Wide Open, State-Token Unified):
+#   "Decision tokens are vastly outnumbered by description tokens in
+#   typical streaming-agent training data; uniform per-token CE
+#   under-trains the action behavior."
+#
+# Two main mitigation patterns: (A) token-level weighted CE on the action
+# span [VideoLLM-online's indicator mask, StreamMind's W_s = 10·P,
+# Eyes Wide Open's ω·L_LM], or (B) auxiliary BCE classification head
+# [MMDuet, ViSpeak, Dispider]. We use (A) because it integrates with the
+# existing WeightedSFTTrainer.compute_loss path (token_loss_weight
+# infrastructure already in place at trainer.py).
+#
+# Weights below give the action keyword span ~17% of the effective
+# gradient (vs ~2% under uniform CE) on a typical response sample,
+# while keeping <think> at non-zero weight so the model still learns
+# observation grounding (don't mask think entirely — see VideoLLM-MoD).
+SPAN_WEIGHTS = {
+    "think": 0.3,        # Observation/perception — light grounding only
+    "action": 8.0,       # Core decision (silent/response/recall/compress)
+    "response": 2.0,     # Answer content — main behavioral output
+    "query": 2.0,        # Recall query content
+    "summary": 1.0,      # Summary content (RL/GDPO optimizes further)
+    "default": 1.0,      # Tokens outside any tracked span (e.g., between </think><action>)
+}
+
 # Per-sample loss weights by action type.
 #
 # Design principle (see data_batch1_plan.md §5.3):
@@ -500,6 +529,109 @@ def _resolve_chat_template_ids(tokenizer) -> tuple:
     return assistant_id, im_end_id
 
 
+# Cache so we resolve once per tokenizer (rather than per sample).
+_SPAN_TOKEN_CACHE: Dict[int, Dict[str, Dict]] = {}
+
+
+def _resolve_span_token_ids(tokenizer) -> Dict[str, Dict]:
+    """Resolve open/close token IDs for each loss-weighted span.
+
+    Returns: {"think": {"open": id, "close": id, "weight": float}, ...}
+
+    Skips spans whose tokens aren't in vocab (defensive against tokenizer
+    drift or models that don't register all SPECIAL_TOKENS_AGENT). Logs
+    once per tokenizer so missing spans surface in training output.
+    """
+    cache_key = id(tokenizer)
+    cached = _SPAN_TOKEN_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    vocab = tokenizer.get_vocab()
+    spans_def = [
+        ("think",    "<think>",    "</think>"),
+        ("action",   "<action>",   "</action>"),
+        ("response", "<response>", "</response>"),
+        ("query",    "<query>",    "</query>"),
+        ("summary",  "<summary>",  "</summary>"),
+    ]
+    result: Dict[str, Dict] = {}
+    missing: List[str] = []
+    for name, open_str, close_str in spans_def:
+        open_id = vocab.get(open_str)
+        close_id = vocab.get(close_str)
+        if open_id is None or close_id is None:
+            missing.append(name)
+            continue
+        result[name] = {
+            "open": open_id,
+            "close": close_id,
+            "weight": SPAN_WEIGHTS[name],
+        }
+
+    if missing:
+        rank0_print(
+            f"[span-weight] missing tokens for spans {missing} — "
+            f"those spans fall back to default weight 1.0."
+        )
+    rank0_print(
+        f"[span-weight] active spans: "
+        f"{ {k: v['weight'] for k, v in result.items()} }"
+    )
+
+    _SPAN_TOKEN_CACHE[cache_key] = result
+    return result
+
+
+def _build_token_loss_weight(
+    input_ids_flat: List[int],
+    ans_start: int,
+    ans_end: int,
+    span_ids: Dict[str, Dict],
+    seq_len: int,
+) -> torch.Tensor:
+    """Walk assistant span and assign per-token weight by enclosing tag.
+
+    Tokens outside [ans_start, ans_end+1] get default weight (zeroed by
+    valid_mask in compute_loss anyway, but kept consistent for safety).
+
+    Open-tag tokens are assigned the NEW span's weight; close-tag tokens
+    are assigned the CURRENT span's weight (so the closing tag itself
+    counts as part of its own span). This matches VideoLLM-online's
+    indicator-on-decision-tokens convention.
+    """
+    weight = torch.full(
+        (1, seq_len), SPAN_WEIGHTS["default"], dtype=torch.float
+    )
+    if not span_ids:
+        return weight
+
+    open_to_span = {info["open"]: name for name, info in span_ids.items()}
+    close_ids_set = {info["close"] for info in span_ids.values()}
+
+    current_span: Optional[str] = None
+    # Iterate over the same range that `labels` unmasks
+    # (labels[0, ans_start: ans_end + 2] in preprocess_per_timestep)
+    # so the weight tensor aligns 1:1 with the unmasked labels.
+    upper = min(ans_end + 2, seq_len)
+    for i in range(ans_start, upper):
+        tok = input_ids_flat[i]
+
+        # Entering a new span — token itself belongs to new span.
+        if tok in open_to_span:
+            current_span = open_to_span[tok]
+
+        if current_span is not None:
+            weight[0, i] = span_ids[current_span]["weight"]
+        # else: leave default 1.0
+
+        # Closing a span — token belongs to current span, then exit.
+        if tok in close_ids_set:
+            current_span = None
+
+    return weight
+
+
 def preprocess_per_timestep(sample: Dict, processor) -> Dict:
     """Tokenize a per-timestep sample and mask labels.
 
@@ -571,6 +703,13 @@ def preprocess_per_timestep(sample: Dict, processor) -> Dict:
     full_result["labels"] = labels
     full_result["input_ids"] = input_ids
 
+    # Per-token loss weight: <think> low, <action> high, <response>/<query>/<summary> medium.
+    # See SPAN_WEIGHTS docstring and trainer.py:compute_loss for usage.
+    span_ids = _resolve_span_token_ids(processor.tokenizer)
+    full_result["token_loss_weight"] = _build_token_loss_weight(
+        input_ids_flat, ans_start, ans_end, span_ids, L,
+    )
+
     # Per-sample loss weight (context-aware, not just sample_type)
     full_result["sample_weight"] = _get_sample_weight(sample)
 
@@ -588,10 +727,12 @@ class PerTimestepDataset(Dataset):
     optional recalled frames, and a single assistant output.
     """
 
-    def __init__(self, processor, data_args):
+    def __init__(self, processor, data_args, dataset_use_override: Optional[str] = None,
+                 max_samples: Optional[int] = None):
         super().__init__()
 
-        dataset_names = data_args.dataset_use.split(",")
+        dataset_use = dataset_use_override if dataset_use_override is not None else data_args.dataset_use
+        dataset_names = dataset_use.split(",")
         dataset_configs = data_list(dataset_names)
         rank0_print(f"Loading datasets: {dataset_configs}")
 
@@ -650,7 +791,15 @@ class PerTimestepDataset(Dataset):
             if filtered > 0:
                 rank0_print(f"  Filtered {filtered} overlong (>{max_tokens} tok)")
 
-        rank0_print(f"Total training samples: {len(all_samples)}")
+        # Optional eval-side cap: keep in-loop eval fast on large val pools.
+        # Deterministic subsample (seeded RNG) so train logs stay comparable
+        # across runs.
+        if max_samples is not None and max_samples > 0 and len(all_samples) > max_samples:
+            rng = random.Random(0)
+            all_samples = rng.sample(all_samples, max_samples)
+            rank0_print(f"  Subsampled eval set to {max_samples}")
+
+        rank0_print(f"Total samples: {len(all_samples)}")
 
         processor = update_processor_pixels(processor, data_args)
         self.processor = processor
@@ -797,6 +946,21 @@ class PerTimestepDataCollator:
         )
         position_ids = pad_and_cat(position_ids)
 
+        # Pad per-token loss weights to same shape as labels.
+        # Pad value = 0.0: padding tokens are masked by valid_mask anyway,
+        # but explicit 0 avoids accidentally weighting padding if mask logic
+        # ever changes.
+        token_loss_weights = [
+            inst["token_loss_weight"].squeeze(0) for inst in instances
+            if "token_loss_weight" in inst
+        ]
+        if len(token_loss_weights) == len(instances):
+            token_loss_weight = torch.nn.utils.rnn.pad_sequence(
+                token_loss_weights, batch_first=True, padding_value=0.0,
+            )
+        else:
+            token_loss_weight = None
+
         # P0-4: Do NOT truncate here. Overlong samples must be filtered in
         # Dataset init. Right-truncation would silently destroy output labels,
         # making the model train on input-only samples (all IGNORE_INDEX).
@@ -815,6 +979,8 @@ class PerTimestepDataCollator:
             "attention_mask": input_ids.ne(self.tokenizer.pad_token_id),
             "position_ids": position_ids,
         }
+        if token_loss_weight is not None:
+            batch["token_loss_weight"] = token_loss_weight
 
         # Concatenate vision tensors
         videos = [inst["pixel_values_videos"] for inst in instances
@@ -954,8 +1120,26 @@ class ClassBalancedDistributedSampler(torch.utils.data.Sampler):
 # ---------------------------------------------------------------------------
 
 def make_per_timestep_data_module(processor, data_args) -> Dict:
-    """Create dataset + collator for per-timestep agent SFT."""
+    """Create dataset + collator for per-timestep agent SFT.
+
+    Builds an eval_dataset when DataArguments.eval_dataset_use is set —
+    typically `stream_agent_val` (held-out video-disjoint pool). The HF
+    Trainer then runs eval on this every --eval_steps to surface
+    overfitting in real time.
+    """
     train_dataset = PerTimestepDataset(processor, data_args)
+
+    eval_dataset = None
+    eval_use = getattr(data_args, "eval_dataset_use", None)
+    if eval_use:
+        rank0_print(f"Building eval_dataset from: {eval_use}")
+        eval_dataset = PerTimestepDataset(
+            processor,
+            data_args,
+            dataset_use_override=eval_use,
+            max_samples=getattr(data_args, "eval_max_samples", None),
+        )
+
     collator = PerTimestepDataCollator(processor.tokenizer)
 
     # Build eval dataset if requested

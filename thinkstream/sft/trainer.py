@@ -153,7 +153,10 @@ class WeightedSFTTrainer(Trainer):
                 loss = per_sample_loss.mean()
 
         # ── Audit log: per-step aggregate + per-sample breakdown ──
-        if self._audit_step_writer is not None:
+        # Skip during eval — model.training=False means HF Trainer is in
+        # evaluate(); writing those rows would interleave eval-loss into
+        # the train audit stream and double-count _audit_step.
+        if self._audit_step_writer is not None and self.model.training:
             try:
                 self._write_sft_audit(
                     loss=loss,

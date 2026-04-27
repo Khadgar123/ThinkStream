@@ -29,6 +29,11 @@
 #   NPROC       - GPUs per node (default: 8)
 #   BSZ         - Per-device batch size (default: 8)
 #   GRAD_ACCUM  - Gradient accumulation steps (default: 1)
+#   EVAL_STEPS  - Eval frequency in optimizer steps (PHASE=sft, default 50)
+#   EVAL_N      - Subsample size for in-loop eval (PHASE=sft, default 300)
+#   EVAL_BSZ    - Per-device eval batch size (PHASE=sft, default = BSZ)
+#   SAVE_LIMIT  - Max retained checkpoints (PHASE=sft, default 5; ~30-50GB each
+#                 for 8B + zero-3, plus the best ckpt is always preserved)
 #
 # Step budget reference (BSZ=8 × NPROC=8 × GRAD_ACCUM=1 → eff. batch 64):
 #   PHASE=sft   : 9,900 / 64 = 154 steps/epoch × 4 epochs = 616 steps
@@ -56,11 +61,30 @@ case $PHASE in
         # the GDPO stage; see thinkstream/sft/data_list.py for the
         # split manifest. epochs=4 gives ~39.6k samples-seen, matching
         # the previous PHASE=mixed (12.4k × 3) corpus exposure.
+        #
+        # v11.2: in-loop eval on stream_agent_val (1,550-sample held-out
+        # video-disjoint pool). Subsampled to EVAL_N (default 300) so
+        # one eval pass takes ~2 min on 8×GPU instead of ~10 min.
         llm=${LLM:-/home/tione/notebook/gaozhenkun/model/Qwen3-VL-8B-Instruct}
         datasets=stream_agent_sft
         eval_datasets=stream_agent_val
         lr=2e-5; epochs=4
         run_name="agent-sft"
+        # Save aligned to eval cadence so every eval has a corresponding
+        # ckpt to roll back to. load_best_model_at_end keeps the lowest
+        # eval_loss ckpt even if it falls outside the rolling window.
+        # NB: this OVERRIDES the global --save_strategy epoch below.
+        extra_args="--eval_dataset_use stream_agent_val \
+            --eval_max_samples ${EVAL_N:-300} \
+            --eval_strategy steps \
+            --eval_steps ${EVAL_STEPS:-50} \
+            --per_device_eval_batch_size ${EVAL_BSZ:-${BSZ}} \
+            --save_strategy steps \
+            --save_steps ${EVAL_STEPS:-50} \
+            --save_total_limit ${SAVE_LIMIT:-5} \
+            --load_best_model_at_end True \
+            --metric_for_best_model eval_loss \
+            --greater_is_better False"
         ;;
     mixed)
         # Backward-compat: full union (train.jsonl). Use this only if
@@ -116,12 +140,6 @@ echo "GPUs:     ${NPROC}"
 echo "Batch:    ${BSZ} × ${GRAD_ACCUM} accum"
 echo "=============================="
 
-# Build eval args if eval_datasets is set
-eval_args=""
-if [ -n "${eval_datasets:-}" ]; then
-    eval_args="--eval_dataset_use ${eval_datasets} --eval_strategy steps --eval_steps 50"
-fi
-
 TOKENIZERS_PARALLELISM=false \
 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
 torchrun --nproc_per_node=${NPROC} \
@@ -155,5 +173,4 @@ torchrun --nproc_per_node=${NPROC} \
     --video_fps 1.0 \
     --report_to wandb \
     --run_name "${run_name}" \
-    ${eval_args} \
     ${extra_args}

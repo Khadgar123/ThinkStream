@@ -22,6 +22,25 @@ class ModelArguments:
 @dataclass
 class DataArguments:
     dataset_use: str = field(default="")
+    eval_dataset_use: Optional[str] = field(
+        default=None,
+        metadata={
+            "help": "Dataset name(s) for eval_dataset, same syntax as "
+            "dataset_use (comma-separated, %% sampling). When set, "
+            "make_per_timestep_data_module builds an eval dataset that "
+            "the HF Trainer will run on every eval_steps. Use "
+            "stream_agent_val for the held-out video-disjoint pool."
+        },
+    )
+    eval_max_samples: Optional[int] = field(
+        default=None,
+        metadata={
+            "help": "If set, randomly subsample the eval set to at most "
+            "this many samples (after overlong filtering). Speeds up "
+            "in-loop eval when val.jsonl is large; leave unset to use "
+            "all val samples."
+        },
+    )
     model_type: str = field(default="qwen2.5vl")
 
     # Image
@@ -68,15 +87,6 @@ class DataArguments:
     audit_log_every: int = field(
         default=1,
         metadata={"help": "Write audit log every N steps (1 = every step)."},
-    )
-
-    # Eval dataset (optional) — monitored for overfitting
-    eval_dataset_use: Optional[str] = field(
-        default="",
-        metadata={
-            "help": "Comma-separated eval dataset names from DATASET_REGISTRY. "
-            "If set, Trainer runs evaluation every eval_steps."
-        },
     )
 
     # Class-balanced sampler (single-phase mixed SFT)

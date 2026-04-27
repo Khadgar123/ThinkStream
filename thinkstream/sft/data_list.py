@@ -61,6 +61,14 @@ DATASET_REGISTRY = {
         "data_path": "./",
     },
 
+    # Held-out validation pool (1,550 samples, video-disjoint from
+    # train_sft / train_rl). Used as eval_dataset to monitor
+    # generalization during SFT — see eval_dataset_use in DataArguments.
+    "stream_agent_val": {
+        "annotation_path": _agent_path("val.jsonl"),
+        "data_path": "./",
+    },
+
     # ─── Ablation-only diagnostic splits ─────────────────────────────
     # Per-category subsets of train samples, for category-specific eval
     # or ablation. Do NOT chain into a curriculum — see module docstring.
@@ -82,10 +90,9 @@ DATASET_REGISTRY = {
     },
 
     # ─── Eval / held-out sets ────────────────────────────────────────
-    "stream_agent_val": {
-        "annotation_path": _agent_path("val.jsonl"),
-        "data_path": "./",
-    },
+    # stream_agent_val is defined above in the SFT/RL split section
+    # (held-out video-disjoint, used as eval_dataset). Test set added
+    # in upstream's eval-monitoring commit.
     "stream_agent_test": {
         "annotation_path": _agent_path("test.jsonl"),
         "data_path": "./",

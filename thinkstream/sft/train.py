@@ -187,6 +187,8 @@ def train(attn_implementation="flash_attention_2"):
     data_module = make_per_timestep_data_module(processor, data_args)
 
     rank0_print(f"Train samples: {len(data_module['train_dataset'])}")
+    if data_module.get("eval_dataset") is not None:
+        rank0_print(f"Eval samples: {len(data_module['eval_dataset'])}")
 
     # ── Train ──
     trainer = WeightedSFTTrainer(
