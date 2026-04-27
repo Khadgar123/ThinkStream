@@ -171,50 +171,12 @@ def safe_concurrency_for_pass(pass_name: str) -> int:
 
 
 # ---------------------------------------------------------------------------
-# 5. Action distribution targets (episode-level)
+# 5. Quality thresholds
 # ---------------------------------------------------------------------------
-
-# 按 phase 控制不同类型 episode 的比例
-PHASE_CONFIG = {
-    1: {
-        "name": "protocol_alignment",
-        "actions": ["silent", "response"],
-        "episode_mix": {"silent_only": 0.3, "response": 0.70},
-        "lr": 1e-5, "epochs": 3,
-    },
-    2: {
-        "name": "recall",
-        "actions": ["silent", "response", "recall"],
-        "episode_mix": {"silent_only": 0.1, "response": 0.4, "recall": 0.4,
-                        "negative": 0.1},
-        "lr": 5e-6, "epochs": 3,
-    },
-    "C1": {
-        "name": "fixed_compress",
-        "actions": ["silent", "response", "recall", "compress"],
-        "episode_mix": {"response": 0.3, "recall": 0.25, "compress": 0.25,
-                        "compress_recall": 0.2},
-        "lr": 3e-6, "epochs": 2,
-    },
-    "C2": {
-        "name": "adaptive_compress",
-        "actions": ["silent", "response", "recall", "compress"],
-        "episode_mix": {"response": 0.25, "recall": 0.2, "compress_adaptive": 0.3,
-                        "compress_recall": 0.25},
-        "lr": 2e-6, "epochs": 2,
-    },
-    5: {
-        "name": "mixed",
-        "actions": ["silent", "response", "recall", "compress"],
-        "episode_mix": {"response": 0.35, "recall": 0.25, "compress": 0.15,
-                        "compress_recall": 0.15, "negative": 0.1},
-        "lr": 1e-6, "epochs": 1,
-    },
-}
-
-# ---------------------------------------------------------------------------
-# 6. Quality thresholds
-# ---------------------------------------------------------------------------
+# (v11: PHASE_CONFIG removed — was unused by data construction and
+# encoded the deprecated 5-stage SFT curriculum. Production training is
+# now 1 SFT (mixed) + 1 GDPO RL; per-category labels live in
+# pipeline.assign_phase() for diagnostic file splits only.)
 
 CONFIDENCE_THRESHOLD = 0.7          # teacher fact confidence >= this to make task
 ENTITY_COVERAGE_THRESHOLD = 0.7     # grounding: obs entities vs caption entities
@@ -222,7 +184,7 @@ LEAKAGE_OVERLAP_THRESHOLD = 0.3     # keyword overlap triggering leakage flag
 PROACTIVE_RECALL_RATE = 0.05        # ~5% of chunks trigger proactive recall
 
 # ---------------------------------------------------------------------------
-# 7. 397B vLLM configuration
+# 6. 397B vLLM configuration
 # ---------------------------------------------------------------------------
 
 VLLM_MODEL = "Qwen/Qwen3.5-397B-A17B-FP8"
@@ -286,7 +248,7 @@ PASS_CONFIG = {
 }
 
 # ---------------------------------------------------------------------------
-# 8. System prompt (4-action protocol)
+# 7. System prompt (4-action protocol)
 # ---------------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------
@@ -366,7 +328,7 @@ SPECIAL_TOKENS_PER_TIMESTEP = [
 ]
 
 # ---------------------------------------------------------------------------
-# 9. Teacher prompts (397B, hidden from student)
+# 8. Teacher prompts (397B, hidden from student)
 # ---------------------------------------------------------------------------
 
 EVIDENCE_GRAPH_PROMPT = """You are annotating a 2-second video clip (t={start}-{end}s).

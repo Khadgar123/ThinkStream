@@ -29,7 +29,6 @@ from .config import (
     FINAL_DIR,
     MAX_SAMPLES_PER_VIDEO,
     PASS_CONFIG,
-    PHASE_CONFIG,
     ROLLOUT_DIR,
     VISUAL_WINDOW_CHUNKS,
     VLLM_MODEL,
@@ -46,35 +45,39 @@ logger = logging.getLogger(__name__)
 
 
 def assign_phase(sample: Dict) -> str:
-    """Assign training phase based on sample_type and sequence_type.
+    """Assign a per-category label used for diagnostic file splits.
 
-    v8.0: uses sample_type (silent/response/recall_query/recall_response/recall_silent)
-    and sequence_type (immediate_response/recall_success/recall_fail_then_found/
-    event_watch/multi_response) instead of old task_type.
+    v11 (2026-04-27): training is single-stage SFT on the merged
+    phase5_train.jsonl. The per-category labels below are NOT a training
+    curriculum; they only feed `phase{1,2,C1,5}_train.jsonl` for
+    per-category eval and ablation. The old "C2" label (model-self-pick
+    range) was removed when SFT collapsed C1+C2 into one stage that
+    always uses teacher gold range; range exploration moved to RL via
+    `overflow_pen` reward.
     """
     sample_type = sample.get("sample_type", "")
     sequence_type = sample.get("sequence_type", "")
     prompt_type = sample.get("prompt_type", "")
 
     if sample_type == "compress":
-        return "C1"
+        return "C1"  # diagnostic label: compress-trained samples
 
     if sample_type in ("recall_query", "recall_response", "recall_silent"):
-        return "2"  # Phase 2: recall training
+        return "2"  # diagnostic label: recall-trained samples
 
     if sample_type == "silent":
         if sequence_type in ("event_watch", "multi_response"):
-            return "2"  # Phase 2: query-aware silent
-        return "1"  # Phase 1: basic silent
+            return "2"  # query-aware silent
+        return "1"  # basic silent
 
     if sample_type == "response":
         if sequence_type in ("recall_fail_then_found",):
-            return "2"  # Phase 2: recovery after recall fail
+            return "2"  # recovery after recall fail
         if sequence_type in ("event_watch", "multi_response"):
-            return "2"  # Phase 2: query-triggered response
-        return "1"  # Phase 1: basic response
+            return "2"  # query-triggered response
+        return "1"  # basic response
 
-    return "5"  # Phase 5: mixed / unclassified
+    return "5"  # mixed / unclassified
 
 
 # ---------------------------------------------------------------------------
@@ -868,12 +871,15 @@ async def run_pipeline(
                 f.write(json.dumps(s, ensure_ascii=False) + "\n")
         logger.info(f"  {split_name}: {len(split_data)} samples → {path}")
 
-    # Save phase-specific train files (for SFT data_list.py)
+    # Per-category diagnostic split files (NOT a training curriculum).
+    # v11 production trains on phase5_train.jsonl (= all train samples).
+    # The 1/2/C1 splits exist only for per-category ablation eval.
+    # "C2" was removed in v11 (was always empty: assign_phase never
+    # returned "C2"; model-self-pick range moved to RL stage).
     phase_map = {
         "1": "phase1_train.jsonl",
         "2": "phase2_train.jsonl",
         "C1": "c1_train.jsonl",
-        "C2": "c2_train.jsonl",
     }
     phase_counts = {}
     for phase_key, filename in phase_map.items():
@@ -885,7 +891,7 @@ async def run_pipeline(
         phase_counts[phase_key] = len(phase_data)
         logger.info(f"  phase {phase_key}: {len(phase_data)} train samples → {path}")
 
-    # Phase 5 = ALL train samples (mixed training, not a separate phase)
+    # Phase 5 = ALL train samples (the production SFT dataset).
     p5_path = FINAL_DIR / "phase5_train.jsonl"
     with open(p5_path, "w") as f:
         for s in train_samples:
