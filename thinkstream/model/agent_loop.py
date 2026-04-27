@@ -383,6 +383,7 @@ class StreamingAgentLoop:
         max_pixels: int = 150528,
         max_new_tokens: int = 256,
         retrieve_fn: Optional[Callable] = None,
+        retriever=None,
         compress_mode: str = "system",
     ):
         """
@@ -392,8 +393,16 @@ class StreamingAgentLoop:
             tokenizer: Tokenizer for token counting.
             processor: HuggingFace processor for tokenization + vision.
             model_type: "qwen2.5vl" or "qwen3vl".
-            retrieve_fn: Optional custom retrieval function. Defaults to
-                         simple_retrieve using the memory archive.
+            retrieve_fn: Optional custom retrieval function (legacy
+                         interface). Use `retriever` instead for new code.
+                         Kept for backward compat with callers that pass a
+                         plain (query, archive) -> dict callable.
+            retriever:   Optional Retriever instance (BM25Retriever or
+                         HybridRetriever from thinkstream.model.retrieval).
+                         Takes precedence over retrieve_fn. Stateful — its
+                         index_chunk() is called after each chunk's think
+                         is added so dense backends can build a visual index
+                         on the fly.
             compress_mode: "system" (default, used by SFT eval) — when
                 memory.should_compress() fires, system inserts a
                 <compress_trigger range="t_start-t_end"/> with a fixed
@@ -415,7 +424,18 @@ class StreamingAgentLoop:
         self.min_pixels = min_pixels
         self.max_pixels = max_pixels
         self.max_new_tokens = max_new_tokens
-        self.retrieve_fn = retrieve_fn or simple_retrieve
+        # Resolve retriever: explicit `retriever` > `retrieve_fn` > BM25 default.
+        # The new Retriever API has both __call__ and index_chunk; legacy
+        # retrieve_fn callables are wrapped via coerce_retriever.
+        from thinkstream.model.retrieval import coerce_retriever, BM25Retriever
+        if retriever is not None:
+            self.retriever = coerce_retriever(retriever)
+        elif retrieve_fn is not None:
+            self.retriever = coerce_retriever(retrieve_fn)
+        else:
+            self.retriever = BM25Retriever()
+        # retrieve_fn kept as a thin alias for legacy access.
+        self.retrieve_fn = self.retriever
         self.compress_mode = compress_mode
         self.memory = MemoryState(tokenizer=tokenizer)
 
@@ -536,6 +556,17 @@ class StreamingAgentLoop:
         # 7. Update memory state based on action
         if parsed["think"]:
             self.memory.add_think(chunk_idx, parsed["think"])
+            # Stateful retrievers (e.g. HybridRetriever) hook here to
+            # encode the chunk's frames into their visual index. BM25Retriever
+            # no-ops. Failures are swallowed so retrieval doesn't break the
+            # main agent loop.
+            try:
+                self.retriever.index_chunk(chunk_idx, video_path, parsed["think"])
+            except Exception as e:
+                import logging as _logging
+                _logging.getLogger(__name__).debug(
+                    "retriever index_chunk failed (chunk=%d): %s", chunk_idx, e
+                )
 
         if parsed["action"] == "compress":
             summary = parsed["payload"].get("summary", {})
@@ -554,7 +585,7 @@ class StreamingAgentLoop:
             # Orchestrate recall: retrieve → build recall_response input → second generate
             query = parsed["payload"].get("query", {})
             if query:
-                recall_result = self.retrieve_fn(
+                recall_result = self.retriever(
                     query, self.memory.retrieval_archive
                 )
                 returned_chunks = recall_result.get("returned_chunks", [])
