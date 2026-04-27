@@ -261,10 +261,12 @@ TaskCard = {
 ### 4.1 阶段总览（v9.2 简化）
 
 ```
-Stage 1: SFT (one-shot)            ← 学格式 + 基本动作 + summary 写法
+SFT (one-shot)            ← 学格式 + 基本动作 + summary 写法
    ↓
-Stage 2: GDPO RL (one-shot)        ← 学 timing + recall query + 自选 compress range
+GDPO RL (single stage)    ← 学 timing + recall query + 自选 compress range
 ```
+
+注意：流水线只有 **2 个训练 run**（1 个 SFT + 1 个 RL），**RL 阶段只跑 1 次**，不分 stage。
 
 旧版 5 阶段（SFT + C1 + C1-D + C2 + C2-D）已废弃。理由：
 - 同期 8 篇 2026 工作（ReMemR1 / Mem-α / MARC / AgeMem / SUMER / Memex / Dispider / StreamingVLM）**零使用** DAgger 链式阶段
@@ -272,7 +274,7 @@ Stage 2: GDPO RL (one-shot)        ← 学 timing + recall query + 自选 compre
 - 我们的 GDPO + `overflow_pen` reward 已经覆盖 DAgger 想解决的"student rollout 偏离 teacher 分布"
 - 数据是单一质量层（397B teacher 蒸馏），无 streaming-VLM 那种粗→精退火需求
 
-### 4.2 Stage 1: SFT
+### 4.2 SFT
 
 全部 teacher 数据混训，**不分 C1/C2**：
 - 4 action 全类型（silent / response / recall / compress）
@@ -282,9 +284,9 @@ Stage 2: GDPO RL (one-shot)        ← 学 timing + recall query + 自选 compre
 
 模型学到：格式合规 + 系统 trigger 时如何写 summary + 基本 action 选择。
 
-### 4.3 Stage 2: GDPO RL
+### 4.3 GDPO RL（单阶段）
 
-从 Stage 1 checkpoint 起步：
+从 SFT checkpoint 起步：
 - **Reward 6 路**：correctness(0.30) + silent_quality(0.20) + timing(0.20) + recall_quality(0.10) + format(0.10) + overflow_pen(0.10)
 - **Aggregation**：per-reward group-norm + weighted sum + batch-whiten（NVIDIA GDPO 2601.05242 模式）
 - **无 hard gate**：format/correctness 都是软项；GDPO batch-whiten 自然处理 scale
@@ -297,7 +299,7 @@ Stage 2: GDPO RL (one-shot)        ← 学 timing + recall query + 自选 compre
 
 ### 4.4 阶段切换信号（从 audit log）
 
-Stage 2 收敛指标（来自 `THINKSTREAM_AUDIT_DIR/grpo_step.jsonl`）：
+GDPO RL 收敛指标（来自 `THINKSTREAM_AUDIT_DIR/grpo_step.jsonl`）：
 - `mask_correctness_rate` 稳定 > 0.7（学生答对率高）
 - `adv_correctness_std` < 0.5（group 内分歧小）
 - `mask_overflow_pen_rate` 单调下降到 < 0.05（学会自决 range）

@@ -136,14 +136,14 @@ RL 不预造 per-timestep 样本。模型对 RL 视频做完整 rollout，用 go
 
 | 阶段 | 样本数 | epochs | steps | LR | 基模型 |
 |------|--------|--------|-------|----|--------|
-| **Stage 1: SFT** (P1+P2+C1+C2+P5 全混合) | 6,888 | 2 | 215 | 1e-5 → 1e-6 cosine | Qwen2.5-VL-3B |
+| **SFT** (P1+P2+C1+P5 全混合，无 C2) | 6,888 | 2 | 215 | 1e-5 → 1e-6 cosine | Qwen2.5-VL-3B |
 | **SFT 小计** | | | **215** | | **~3 min** |
 
 ### 5.2 RL/GDPO（8×H100, global_batch=16, group_size=4）
 
 | 阶段 | (视频,task) 对 | epochs | steps | LR | 基模型 |
 |------|---------------|--------|-------|----|--------|
-| **Stage 2: GDPO** | 2,346 | 2 | 292 | 5e-7 | ← Stage 1 ckpt |
+| **GDPO RL** (single stage) | 2,346 | 2 | 292 | 5e-7 | ← SFT ckpt |
 | **RL 小计** | | | **292** | | **~39 min** |
 
 **总训练**: 507 steps, ~42 min（RL rollout 仍是时间瓶颈）。

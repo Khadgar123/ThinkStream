@@ -32,7 +32,7 @@ def _agent_path(filename: str) -> str:
 
 DATASET_REGISTRY = {
     # ─── Production ─────────────────────────────────────────────────
-    # All train samples mixed. SFT Stage 1 + GDPO RL Stage 2 both use this.
+    # All train samples mixed. Both SFT and GDPO RL read this.
     "stream_agent_p5": {
         "annotation_path": _agent_path("phase5_train.jsonl"),
         "data_path": "./",

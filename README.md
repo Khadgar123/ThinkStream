@@ -37,8 +37,8 @@ ThinkStream/
 ├── scripts/                       # Training, evaluation, and demo scripts
 │   ├── eval/                      # Evaluation scripts (OVO-Bench, StreamingBench)
 │   ├── demo.py                    # Inference demo
-│   ├── sft_per_timestep.sh        # Stage 1: SFT (one-shot mixed)
-│   └── grpo_train.sh              # Stage 2: GDPO RL (from SFT checkpoint)
+│   ├── sft_per_timestep.sh        # SFT (one-shot mixed)
+│   └── grpo_train.sh              # GDPO RL (single stage, from SFT checkpoint)
 ├── thinkstream/                   # Core codebase
 │   ├── data/                      # Data processing + dataset registry
 │   ├── eval/                      # Evaluation + format conversion
@@ -64,13 +64,13 @@ pip install -r requirements.txt
 
 *Note: The dataset path configurations are located in `thinkstream/data/__init__.py`, which follows a similar logic to `qwen-vl-finetune`.*
 
-**Run Training (2-stage pipeline):**
+**Run Training (SFT → GDPO RL, both single-stage):**
 ```bash
-# Stage 1: SFT (one-shot mixed, ~3 min on 8×H100)
+# SFT (one-shot mixed, ~3 min on 8×H100)
 PHASE=mixed bash scripts/sft_per_timestep.sh
 # → output/agent-mixed/
 
-# Stage 2: GDPO RL from SFT checkpoint (~40 min)
+# GDPO RL from SFT checkpoint (single stage, ~40 min)
 LLM=output/agent-mixed bash scripts/grpo_train.sh
 # → output/agent-grpo/  +  output/agent-grpo/audit/grpo_step.jsonl
 ```

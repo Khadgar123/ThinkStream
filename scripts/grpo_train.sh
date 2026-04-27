@@ -1,5 +1,5 @@
 #!/bin/bash
-# GDPO-style GRPO training launcher (Stage 2 of v9.2 pipeline).
+# GDPO-style GRPO training launcher (single RL stage; runs after SFT).
 #
 # Reads from a SFT checkpoint produced by `scripts/sft_per_timestep.sh`
 # (PHASE=mixed) and runs the slyme `grpo` builder defined in
@@ -60,7 +60,7 @@ AUDIT_DIR=${AUDIT_DIR:-${OUTPUT_DIR}/audit}
 
 mkdir -p "${OUTPUT_DIR}" "${AUDIT_DIR}"
 
-echo "=== ThinkStream GDPO RL (Stage 2) ==="
+echo "=== ThinkStream GDPO RL (single stage) ==="
 echo "Checkpoint:        ${LLM}"
 echo "Dataset:           ${DATASET}"
 echo "Output:            ${OUTPUT_DIR}"

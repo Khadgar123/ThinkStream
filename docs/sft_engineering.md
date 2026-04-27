@@ -810,19 +810,19 @@ if is_qwen3vl:
 
 ## 7. 训练课程（Curriculum）
 
-### 7.1 两阶段流水线（v9.2 简化）
+### 7.1 训练流水线（v11，单 SFT + 单 GDPO RL）
 
-> **v9.2 (2026-04-27)** 把旧 6 阶段（P1 → P2 → C1 → C2 → P5 → RL）合并为 **1 SFT + 1 GDPO RL**，依据 `data_construction_zh.md` §4 的同期工作调研（8/8 papers 零使用 DAgger 或多阶段 RL）。
-> Phase1-5 数据文件仍然产出（用于 per-category 诊断和分桶 eval），但**训练只跑一次 SFT**（混合数据）+ 一次 RL。
+> **v9.2/v11 (2026-04-27)** 把旧 6 阶段（P1 → P2 → C1 → C2 → P5 → RL）合并为 **1 次 SFT + 1 次 GDPO RL**（共 2 个训练 run，**RL 阶段只有 1 个**），依据 `data_construction_zh.md` §4 的同期工作调研（8/8 papers 零使用 DAgger 或多阶段 RL）。
+> Phase1-5 数据文件仍然产出（用于 per-category 诊断和分桶 eval），但**训练只跑一次 SFT**（混合数据）+ **一次 RL**。
 
 **SFT 和 RL 使用不同的视频集**（详见 `data_batch1_plan.md` §2）：
 - SFT: 184 条视频 → teacher 轨迹 per-timestep 样本（all phases mixed）
 - RL: 75 条视频 → 模型自己 rollout + GDPO reward
 
-| 阶段 | 数据集 | 样本量 | 训练目标 | 超参 |
-|------|--------|--------|---------|------|
-| **Stage 1: SFT** | `STREAM_AGENT_ALL`（P1+P2+C1+C2+P5 全部混合） | ~11,500 | 4 action 格式 + summary 写法 + recall 时机 + 系统触发时按 teacher gold range 压缩 | lr=1e-5 → 1e-6 cosine, epochs=2, batch=16, ~1,440 steps, ZeRO-3 |
-| **Stage 2: GDPO RL** | 75 RL 视频, ~2,050 (video,task) 对 | on-policy | 6 路 reward 决策优化（含 overflow_pen 监督模型自选 compress range） | lr=5e-7, epochs=2, G=4, batch=16, ~500 steps, from Stage 1 ckpt |
+| 训练 run | 数据集 | 样本量 | 训练目标 | 超参 |
+|----------|--------|--------|---------|------|
+| **SFT** | `stream_agent_p5`（P1+P2+C1+P5 全部混合） | ~11,500 | 4 action 格式 + summary 写法 + recall 时机 + 系统触发时按 teacher gold range 压缩 | lr=1e-5 → 1e-6 cosine, epochs=2, batch=16, ~1,440 steps, ZeRO-3 |
+| **GDPO RL** | 75 RL 视频, ~2,050 (video,task) 对 | on-policy | 6 路 reward 决策优化（含 overflow_pen 监督模型自选 compress range） | lr=5e-7, epochs=2, G=4, batch=16, ~500 steps, from SFT ckpt |
 
 SFT 总计 ~1,440 steps (~18 min on 8×H100)，RL 总计 ~500 steps (~67 min)。
 
@@ -880,16 +880,16 @@ DATASET_REGISTRY = {
 
 实际脚本以代码为准；本节只列入口和典型用法。
 
-| 阶段 | 脚本 | 入口 | 默认输出 |
-|------|------|------|---------|
-| Stage 1: SFT | `scripts/sft_per_timestep.sh` | `thinkstream/sft/train.py` (HfArgumentParser) | `output/agent-mixed/` |
-| Stage 2: GDPO RL | `scripts/grpo_train.sh` | `thinkstream/train.py grpo` (slyme `parse_and_inject`) | `output/agent-grpo/` + `audit/` |
+| 训练 run | 脚本 | 入口 | 默认输出 |
+|----------|------|------|---------|
+| SFT | `scripts/sft_per_timestep.sh` | `thinkstream/sft/train.py` (HfArgumentParser) | `output/agent-mixed/` |
+| GDPO RL | `scripts/grpo_train.sh` | `thinkstream/train.py grpo` (slyme `parse_and_inject`) | `output/agent-grpo/` + `audit/` |
 
 ```bash
-# Stage 1: SFT one-shot mixed (~3 min on 8×H100)
+# SFT one-shot mixed (~3 min on 8×H100)
 PHASE=mixed bash scripts/sft_per_timestep.sh
 
-# Stage 2: GDPO RL from SFT checkpoint (~40 min)
+# GDPO RL from SFT checkpoint (single stage, ~40 min)
 LLM=output/agent-mixed bash scripts/grpo_train.sh
 
 # 训练中实时看 GDPO 信号
