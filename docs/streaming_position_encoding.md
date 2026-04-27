@@ -175,7 +175,7 @@ Zone D: 重新 prefill                              ~50 tok prefill
 ```
 Zone A: 不变 → 复用                              0 tok prefill
 Zone B: 正常 evict/append + 追加 recalled frames ~128 + 256 tok prefill
-Zone C: pending_questions 变化 + recall_result 追加
+Zone C: queries 块更新（新 Q 或 answers 填充）+ recall_result 追加
         → 部分重新 prefill                       ~200 tok prefill
 Zone D: 重新 prefill                              ~50 tok prefill
 ───────────────────────────────────────────

@@ -63,13 +63,15 @@ def format_memory_block(memory: Dict) -> str:
     - A pre-structured dict with "compressed", "recent_thinks"
       (as used in per-timestep pipeline samples)
 
-    Both paths produce identical output text. The legacy
-    pending_questions / pending field is still tolerated via .get() so
-    older snapshot dumps stay readable, but pending status is now
-    expressed via the queries log (entry with empty answers list)
-    in `format_queries_block` — pending_questions was empty across
-    all 12,405 v9.2 SFT samples and was removed from MemoryState in
-    v11.1.
+    Both paths produce identical output text.
+
+    Pending status is NOT rendered here — it lives in
+    `format_queries_block` as a query entry with empty answers list.
+    All 12,405 v9.2 SFT samples were rendered with `pending_questions`
+    empty (it was unused in production), so the model has never seen
+    a `<pending>` tag. We assert the legacy field is empty here so
+    any future caller accidentally populating it fails loudly instead
+    of injecting an OOD tag the model can't interpret.
     """
     parts = []
 
@@ -97,21 +99,17 @@ def format_memory_block(memory: Dict) -> str:
             text = item.get("text", item.get("obs", ""))
             parts.append(f"[{time_str}] {text}")
 
-    # Pending questions
-    pending = memory.get("pending_questions", memory.get("pending", []))
-    for pq in pending:
-        since = pq.get("since_chunk", pq.get("since", 0))
-        if isinstance(since, int) and since > 100:
-            # Already in seconds (from pipeline "since" field)
-            since_sec = since
-        else:
-            # Chunk index → seconds
-            since_sec = int(since * AGENT_CHUNK_SEC) if isinstance(since, int) else int(since)
-        pq_json = json.dumps(
-            {"since": since_sec, "question": pq["question"]},
-            ensure_ascii=False,
+    # Defensive: SFT data has no <pending> tags; runtime no longer
+    # populates pending_questions. If anyone smuggles in a non-empty
+    # field, refuse to render rather than silently emit an OOD tag.
+    legacy_pending = memory.get("pending_questions") or memory.get("pending")
+    if legacy_pending:
+        raise ValueError(
+            f"format_memory_block received populated pending_questions "
+            f"({len(legacy_pending)} entries). v11.1 represents pending "
+            f"questions via the queries log (empty answers list), not "
+            f"via a memory field. Caller must migrate."
         )
-        parts.append(f"<pending>{pq_json}</pending>")
 
     return "\n".join(parts)
 

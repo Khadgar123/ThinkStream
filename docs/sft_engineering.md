@@ -34,9 +34,11 @@ memory_state = {
         {"time": "40-42", "text": "Sauce simmering, chef covers pot."},
         {"time": "42-44", "text": "Chef retrieves basil from fridge."},
     ],
-    "pending_questions": [],             # 待解决的 event-watch 请求
     "_retrieval_archive": [...],         # 系统侧全部历史 thinks（模型不可见）
 }
+# v11.1: pending_questions 字段已删除。pending（待解答）状态由
+# 独立的 queries log 表达——一个 entry 的 answers=[] 即 pending。
+# 见 agent_loop.py:MemoryState.add_query / answer_query。
 ```
 
 ### 0.2 每步推理流程
@@ -51,10 +53,12 @@ def inference_step(chunk_idx, video_path, memory_state, user_question=None):
         text_parts.append(f'<compressed>{json.dumps(seg)}</compressed>')
     for think in memory_state["recent_thinks"]:
         text_parts.append(f'[{think["time"]}] {think["text"]}')
-    for pq in memory_state["pending_questions"]:
-        text_parts.append(f'<pending since="{pq["since"]}">{pq["question"]}</pending>')
-    
-    # 压缩触发（C1: 带 range; C2: 不带）
+
+    # v11.1: 不再渲染 <pending> 标签。pending Q 通过独立 <queries> 块表达
+    # （见 format_queries_block）。format_memory_block 在收到 populated
+    # pending_questions 时会主动报错，防止意外注入 OOD 标签。
+
+    # 压缩触发（v11.1: 训练 + 推理一律带 range，byte-equal）
     if should_compress(memory_state):
         text_parts.append('<compress_trigger range="40-54"/>')
     
@@ -815,16 +819,18 @@ if is_qwen3vl:
 > **v9.2/v11 (2026-04-27)** 把旧 6 阶段（P1 → P2 → C1 → C2 → P5 → RL）合并为 **1 次 SFT + 1 次 GDPO RL**（共 2 个训练 run，**RL 阶段只有 1 个**），依据 `data_construction_zh.md` §4 的同期工作调研（8/8 papers 零使用 DAgger 或多阶段 RL）。
 > Phase1-5 数据文件仍然产出（用于 per-category 诊断和分桶 eval），但**训练只跑一次 SFT**（混合数据）+ **一次 RL**。
 
-**SFT 和 RL 使用不同的视频集**（详见 `data_batch1_plan.md` §2）：
-- SFT: 184 条视频 → teacher 轨迹 per-timestep 样本（all phases mixed）
-- RL: 75 条视频 → 模型自己 rollout + GDPO reward
+**SFT 和 RL 使用不同的视频集（v11.1 实测，详见 `data_batch1_plan.md` 顶部 v11.1 actuals）**：
+- SFT: 199 条视频 / 9,900 样本 → `train_sft.jsonl`（teacher 轨迹 per-timestep）
+- RL: 50 条视频 / 2,500 样本 → `train_rl.jsonl`（模型自己 rollout + GDPO reward）
+
+两池**视频 video_id 互斥**，避免 RL 在 SFT 见过的 prompt 上 reward-hack。
 
 | 训练 run | 数据集 | 样本量 | 训练目标 | 超参 |
 |----------|--------|--------|---------|------|
-| **SFT** | `stream_agent_p5`（P1+P2+C1+P5 全部混合） | ~11,500 | 4 action 格式 + summary 写法 + recall 时机 + 系统触发时按 teacher gold range 压缩 | lr=1e-5 → 1e-6 cosine, epochs=2, batch=16, ~1,440 steps, ZeRO-3 |
-| **GDPO RL** | 75 RL 视频, ~2,050 (video,task) 对 | on-policy | 6 路 reward 决策优化（含 overflow_pen 监督模型自选 compress range） | lr=5e-7, epochs=2, G=4, batch=16, ~500 steps, from SFT ckpt |
+| **SFT** | `stream_agent_sft` (199 vid / `train_sft.jsonl`) | 9,900 | 4 action 格式 + summary 写法 + recall 时机 + 系统触发时按 teacher gold range 压缩 | lr=2e-5 cosine, epochs=4, eff. batch=64, ~616 steps, save_strategy=epoch, ZeRO-3 |
+| **GDPO RL** | `stream_agent_rl` (50 vid / `train_rl.jsonl`) | 2,500 prompts × G=4 rollout | 6 路 reward 决策优化（含 overflow_pen 监督模型自选 compress range） | lr=5e-7, epochs=2, ROLLOUT_MAX_CHUNKS=30, save_steps=200, ~624 steps, from SFT ckpt |
 
-SFT 总计 ~1,440 steps (~18 min on 8×H100)，RL 总计 ~500 steps (~67 min)。
+SFT 总计 ~616 steps，RL 总计 ~624 steps（每 step 32 traj × ~25 chunk = 800 rollout forward + 32 条 loss forward）。
 
 **为什么不再分阶段 SFT**：
 - 数据是单一质量层（397B teacher 蒸馏），无 streaming-VLM 那种粗→精退火需求
@@ -863,18 +869,28 @@ data/agent_v5/final/
 
 ```python
 DATASET_REGISTRY = {
-    # 生产
-    "stream_agent_p5":  ".../final/phase5_train.jsonl",   # SFT + RL 都用
+    # v11.1 生产路径（推荐，互斥视频池）
+    "stream_agent_sft": ".../final/train_sft.jsonl",      # 199 vid SFT pool
+    "stream_agent_rl":  ".../final/train_rl.jsonl",       # 50 vid RL pool
+
+    # Legacy / 单池 baseline
+    "stream_agent_p5":  ".../final/phase5_train.jsonl",   # 全量 union（PHASE=mixed）
     "stream_agent_all": ".../final/train.jsonl",          # 别名
 
-    # 诊断 ablation
+    # 诊断 ablation（不是训练 curriculum）
     "stream_agent_p1":  ".../final/phase1_train.jsonl",   # 基础 silent+response
     "stream_agent_p2":  ".../final/phase2_train.jsonl",   # recall
     "stream_agent_c1":  ".../final/c1_train.jsonl",       # compress
 }
 ```
 
-训练脚本直接 `--args.data.dataset_use stream_agent_p5`（生产）或 `_p1` / `_p2` / `_c1`（per-category 诊断 ablation），不需要在代码中过滤 phase 字段。
+训练脚本（v11.1 推荐）：
+- SFT: `--args.data.dataset_use stream_agent_sft`（199 vid 互斥池）
+- RL: `--args.data.dataset_use stream_agent_rl`（50 vid 互斥池）
+- 单池 baseline / 历史对照: `stream_agent_p5`（PHASE=mixed）
+- per-category 诊断 ablation: `_p1` / `_p2` / `_c1`
+
+不需要在代码中过滤 phase 字段——pipeline 已经把样本切到独立文件。
 
 ### 7.3 训练脚本
 
@@ -1217,7 +1233,7 @@ def smoke_test(samples, processor, model_type, n=50):
 | 6 | post-recall response 无 `<think>` | 避免同一 chunk 两次写入 text memory | 设计 |
 | 7 | Compress 样本的 think 是当前帧观察，不是 "Compressing memory..." | think = 增量视觉记忆，与 action 无关 | 设计 |
 | 8 | 超长样本在 Dataset 预过滤，collator 不做截断 | 右截断砍 output labels | P0-4 |
-| 9 | 五阶段课程各 phase 的 ckpt 必须继承 | 不能从 base model 直接训 C1 | 设计 |
+| 9 | ~~五阶段课程各 phase 的 ckpt 必须继承~~ **【废弃 v11.1】** Phase 数据文件仅用于诊断，单 SFT + 单 GDPO RL，无 ckpt 继承链 | 历史约束，已废弃 | v9.2 |
 | 10 | 新旧方案通过 builder name 共存 | 不破坏旧实验的可复现性 | 设计 |
 | 11 | recall_result 必须在 user_input 之前序列化进 input | 否则 post-recall response 看不到检索结果 | P0-1 |
 | 12 | recalled_frames 是 `input` 顶层字段，不嵌套在 visual_window 内 | 否则 SFT loader 读不到 | P0-2 |
@@ -1228,8 +1244,8 @@ def smoke_test(samples, processor, model_type, n=50):
 | 17 | 视觉帧优先用 frame_paths 加载，fallback 到 video 重采样 | 避免 fps/rounding 不一致 | P1-3 |
 | 18 | Pipeline 同时输出分 phase 文件 + 统一文件 | 训练脚本最简单 | P1-4 |
 | 19 | 训练前必须通过 50 条 smoke test | 验证 input 可见内容 = 推理时状态机 | 验收 |
-| 20 | `recalled_frames` 必须在 `input` 顶层，pipeline 代码需修复嵌套 bug | pass4_forks.py 当前错误嵌套在 `visual_window` 内 | v2.1 审计 |
-| 21 | `build_per_timestep_messages` 为死代码，`build_sample_input` 是唯一正确路径 | pass4_forks.py 中定义但从未调用 | v2.1 审计 |
+| 20 | ~~`recalled_frames` 必须在 `input` 顶层~~ **【已修复】** v9.2 起 `render_samples.py` 已正确放置 | 历史 bug，已修复 | v2.1 审计 |
+| 21 | ~~`build_per_timestep_messages` 为死代码~~ **【已修复】** 现行 SFT 数据生产用 `render_samples.render_sample` | 历史 bug，已修复 | v2.1 审计 |
 | 22 | Pipeline 所有 Pass 均为 thinking=True（Qwen3.5 `/no_think` 无效） | 实测确认，见 `qwen35_output_format_analysis.md` | v2.1 审计 |
 | 23 | 压缩触发使用 hysteresis：触发阈值 80%，压缩后须降至 55% 以下 | 防止频繁触发/窗口过短。见 config.py `COMPRESS_HYSTERESIS_RATIO` | v2.1 |
 
