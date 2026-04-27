@@ -420,10 +420,27 @@ class StreamingAgentLoop:
         # 1. Snapshot BEFORE this step
         snapshot = self.memory.snapshot(chunk_idx)
 
-        # 2. Check compression trigger (system-triggered, not model-triggered)
+        # 2. Check compression trigger (system-triggered, not model-triggered).
+        #
+        # The trigger MUST embed a `range="t_start-t_end"` attribute that
+        # mirrors render_samples.py:174-180 exactly — every SFT compress
+        # sample saw a trigger with this attribute, so a no-attribute
+        # variant is out-of-distribution and risks (a) format drift in
+        # the summary's time_range field, (b) the model failing to copy
+        # the range and inventing one. We pick the oldest COMPRESS_RANGE_MIN
+        # thinks (FIFO, deterministic — same policy as pass2_rollout) and
+        # encode their span. The model only learns to write the summary
+        # text given a fixed range, never to choose the range itself.
         compress_trigger = ""
         if self.memory.should_compress():
-            compress_trigger = "<compress_trigger/>"
+            oldest = self.memory.recent_thinks[:COMPRESS_RANGE_MIN]
+            if oldest:
+                chunks = [t["chunk"] for t in oldest]
+                t_start = min(chunks) * AGENT_CHUNK_SEC
+                t_end = (max(chunks) + 1) * AGENT_CHUNK_SEC
+                compress_trigger = (
+                    f'<compress_trigger range="{t_start}-{t_end}"/>'
+                )
 
         # 3. Determine user_input
         user_input = ""
