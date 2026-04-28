@@ -109,15 +109,75 @@ def _extract_query_json(text: str) -> Optional[Dict]:
     return None
 
 
-def _load_samples(path: str, mode: str) -> List[Dict]:
+def _load_rollout_archive(rollout_dir: Optional[Path], video_id: str,
+                          max_chunk_inclusive: int) -> Optional[List[Dict]]:
+    """Build the TRUE retrieval archive (all raw thinks for chunks ≤ max_chunk).
+
+    At runtime, BM25 searches over MemoryState._retrieval_archive which
+    accumulates EVERY think since chunk 0 (compress only modifies the
+    visible recent_thinks; archive is never trimmed — see
+    agent_loop.py:111-121, 141-156). The SFT sample's
+    input.memory.recent_thinks is the *visible* memory snapshot post-
+    compression, NOT the retrieval archive. Using recent_thinks as the
+    audit archive artificially caps the retrieval pool to ~6 entries
+    and mismeasures retriever quality.
+
+    This loader reconstructs the true archive from the pass2 rollout
+    file, returning thinks with chunk_idx <= max_chunk_inclusive (the
+    archive state at the moment recall fires).
+
+    Returns None if the rollout file is missing.
+    """
+    if rollout_dir is None or not video_id:
+        return None
+    p = rollout_dir / f"{video_id}.json"
+    if not p.exists():
+        return None
+    try:
+        d = json.loads(p.read_text())
+    except (json.JSONDecodeError, OSError):
+        return None
+    archive: List[Dict] = []
+    for t in d.get("thinks", []):
+        if not isinstance(t, dict):
+            continue
+        c = t.get("chunk_idx")
+        if c is None or c > max_chunk_inclusive:
+            continue
+        text = t.get("think", "") or t.get("text", "")
+        if not text:
+            continue
+        # pass2 rollout stores time as [start, end] list; SFT samples use
+        # "X-Y" string. Normalize to the SFT-side format so retriever
+        # output stays consistent.
+        time_field = t.get("time", "")
+        if isinstance(time_field, (list, tuple)) and len(time_field) == 2:
+            time_field = f"{int(time_field[0])}-{int(time_field[1])}"
+        archive.append({
+            "chunk": int(c),
+            "time":  time_field,
+            "text":  text,
+        })
+    return archive or None
+
+
+def _load_samples(path: str, mode: str,
+                  rollout_dir: Optional[Path] = None) -> List[Dict]:
     """Load JSONL samples and normalize to a uniform schema.
 
     mode == "samples": pass3c output. Each line has output with a gold
-        <query>...</query>. archive built from sample.input.memory.recent_thinks.
+        <query>...</query>. Archive comes from the pass2 rollout file
+        (all thinks for chunk_idx ≤ sample.chunk_idx) when rollout_dir
+        is provided — that's the runtime BM25 search pool. Falls back
+        to sample.input.memory.recent_thinks (the visible-memory subset)
+        only if rollout_dir is unset; this fallback under-represents the
+        archive and biases retrieval scores low. Always pass --rollout_dir.
     mode == "predictions": eval-time generation output. Expects per-sample
         dict with a `generated_text` field; falls back to "output" if absent.
     """
     out = []
+    skipped_no_archive = 0
+    skipped_no_rollout = 0
     with open(path) as f:
         for line_no, line in enumerate(f, 1):
             try:
@@ -137,19 +197,28 @@ def _load_samples(path: str, mode: str) -> List[Dict]:
                 continue
 
             inp = row.get("input", {}) or {}
-            mem = inp.get("memory") or {}
-            recent_thinks = mem.get("recent_thinks") or []
-            archive = []
-            for t in recent_thinks:
-                if not isinstance(t, dict):
-                    continue
-                archive.append({
-                    "chunk": int(t.get("chunk", -1)),
-                    "time":  t.get("time", ""),
-                    "text":  t.get("text", ""),
-                })
-            archive = [a for a in archive if a["chunk"] >= 0 and a["text"]]
+            video_id = row.get("video_id") or ""
+            chunk_idx = int(row.get("chunk_idx") or 0)
+
+            # Build TRUE archive from rollout if available, else fall back
+            # to recent_thinks (under-counts but lets the script run).
+            archive = _load_rollout_archive(rollout_dir, video_id, chunk_idx)
+            if archive is None:
+                skipped_no_rollout += 1
+                mem = inp.get("memory") or {}
+                recent_thinks = mem.get("recent_thinks") or []
+                archive = []
+                for t in recent_thinks:
+                    if not isinstance(t, dict):
+                        continue
+                    archive.append({
+                        "chunk": int(t.get("chunk", -1)),
+                        "time":  t.get("time", ""),
+                        "text":  t.get("text", ""),
+                    })
+                archive = [a for a in archive if a["chunk"] >= 0 and a["text"]]
             if not archive:
+                skipped_no_archive += 1
                 continue
 
             # Gold = support_chunks if carried on the sample, else fall back
@@ -528,6 +597,14 @@ def main():
     src.add_argument("--predictions", type=str,
                      help="Generation JSONL — uses model's predicted <query>.")
     parser.add_argument("--out_dir", type=str, required=True)
+    parser.add_argument("--rollout_dir", type=str, default=None,
+                        help="Pass2 rollout dir (e.g. data/agent_v5/rollout). "
+                             "When set, retrieval archive is reconstructed "
+                             "from the FULL rollout history (chunk_idx ≤ "
+                             "sample.chunk_idx) — the true BM25 search pool. "
+                             "If unset, falls back to sample.input.memory."
+                             "recent_thinks which under-counts the archive "
+                             "by ~10× and biases all hit@k scores low.")
     parser.add_argument("--cache_dir", type=str, default=None,
                         help="Disk cache for text/visual embeddings. Reused across runs.")
     parser.add_argument("--frames_root", type=str, default=None,
@@ -571,8 +648,19 @@ def main():
 
     src_path = args.samples or args.predictions
     mode = "samples" if args.samples else "predictions"
+    rollout_dir = Path(args.rollout_dir) if args.rollout_dir else None
     logger.info(f"Loading recall samples from {src_path} (mode={mode})")
-    samples = _load_samples(src_path, mode)
+    if rollout_dir is not None:
+        logger.info(f"Archive source: pass2 rollouts at {rollout_dir} "
+                    f"(true BM25 search pool: all thinks chunk_idx ≤ sample.chunk_idx)")
+    else:
+        logger.warning(
+            "No --rollout_dir set; falling back to "
+            "sample.input.memory.recent_thinks (the visible-memory subset). "
+            "This under-counts the archive by ~10× and biases hit@k scores "
+            "low. Pass --rollout_dir data/agent_v5/rollout for accurate scores."
+        )
+    samples = _load_samples(src_path, mode, rollout_dir=rollout_dir)
     if args.limit:
         samples = samples[:args.limit]
     logger.info(f"Loaded {len(samples)} recall samples with valid query+gold")
