@@ -653,6 +653,86 @@ def test_run_matrix_runs_both_profiles():
     assert 'for prof in "${PROFILES[@]}"' in src
 
 
+def test_analyze_messages_zones_classifies_correctly():
+    """_analyze_messages_zones must bucket text items by leading tag and
+    attribute video items to the most recent visual zone (visual_window
+    or recalled_frames)."""
+    src = (ROOT / "thinkstream" / "model" / "agent_loop.py").read_text()
+    assert "def _analyze_messages_zones(" in src
+    assert "def _classify_zone_from_text(" in src
+    # Each zone tag must be checked
+    for tag in ("<visual_window>", "<recalled_frames>", "<memory>",
+                "<queries>", "<recall_result>", "<user_input>"):
+        assert tag in src, f"_classify_zone_from_text missing tag {tag}"
+    # Per-frame visual estimate constant
+    assert "EST_TOKENS_PER_FRAME" in src
+
+
+def test_step_emits_debug_trace_when_enabled():
+    """When self.debug=True, step() must populate parsed['debug_trace']
+    with memory_before, zones, memory_after, and raw_messages_summary."""
+    src = (ROOT / "thinkstream" / "model" / "agent_loop.py").read_text()
+    # debug attr set in __init__
+    assert "self.debug = " in src
+    # step end captures
+    for field in ("memory_before", "zones", "memory_after",
+                  "raw_messages_summary", "compress_trigger_text"):
+        assert f'"{field}"' in src, f"debug_trace missing {field}"
+
+
+def test_debug_streaming_script_exists_and_compiles():
+    """scripts/eval/debug_streaming.py is the single-sample debug entry."""
+    p = ROOT / "scripts" / "eval" / "debug_streaming.py"
+    assert p.exists(), "debug_streaming.py must exist"
+    # AST-parseable
+    import ast as _ast
+    _ast.parse(p.read_text())
+    # Has the human-readable print helpers
+    src = p.read_text()
+    assert "def print_step_trace" in src
+    assert "def print_summary" in src
+    assert "loop.debug = True" in src
+    assert "OVERFLOW IMMINENT" in src or "🚨" in src
+
+
+def test_should_compress_emergency_trigger():
+    """v9.4.2: emergency compress trigger when individual thinks are
+    pathologically long (1.5× normal threshold + len≥2). Without this,
+    a verbose model emitting 1000-tok thinks would carry 2000+ tok in
+    recent_thinks before COMPRESS_RANGE_MIN=4 fires."""
+    src = (ROOT / "thinkstream" / "model" / "agent_loop.py").read_text()
+    sc_block = src[src.find("def should_compress("):
+                   src.find("def compress(")]
+    # Standard trigger: tokens>=480 AND len>=4
+    assert "COMPRESS_TOKEN_THRESHOLD" in sc_block
+    assert "COMPRESS_RANGE_MIN" in sc_block
+    # Emergency trigger: tokens >= 1.5× threshold AND len >= 2
+    assert "1.5" in sc_block, "emergency trigger should use 1.5× threshold"
+    assert "n_thinks >= 2" in sc_block or "len(self.recent_thinks) >= 2" in sc_block, \
+        "emergency trigger needs minimum-2 condition"
+
+
+def test_summary_capped_at_storage_time():
+    """v9.4.2: incoming <summary> text must be capped at 200 tok at compress()
+    time, NOT only when merging. Verbose model summaries used to bloat the
+    compressed_segments zone to ~2000 tok before merge fired."""
+    src = (ROOT / "thinkstream" / "model" / "agent_loop.py").read_text()
+    # Find compress() body
+    cmp_block = src[src.find("def compress("):
+                    src.find("def add_query(") if "def add_query(" in src
+                    else src.find("# --- Queries tracking")]
+    # Must encode and truncate BEFORE append
+    assert "Cap summary text BEFORE storing" in cmp_block, \
+        "compress() must cap summary text before append"
+    assert "len(ids) > 200" in cmp_block
+    assert "_tokenizer.decode(ids[:200])" in cmp_block
+    # Truncation must happen before the .append(summary) line
+    cap_pos = cmp_block.find("len(ids) > 200")
+    append_pos = cmp_block.find("self.compressed_segments.append(summary)")
+    assert cap_pos < append_pos, \
+        "cap must be applied BEFORE append, else 5 segments can stack uncapped"
+
+
 def test_compressed_segment_merge_cap_aligned_with_sft():
     """Merged compressed segments capped at 200 tokens — matches the SFT
     data construction value (config.py); going below would OOD the model

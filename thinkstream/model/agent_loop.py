@@ -14,7 +14,7 @@ import json
 import logging
 from copy import deepcopy
 from pathlib import Path
-from typing import Callable, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from thinkstream.data.agent_protocol import (
     AGENT_CHUNK_SEC,
@@ -99,16 +99,39 @@ class MemoryState:
         return total
 
     def should_compress(self) -> bool:
-        """Trigger compression when recent_thinks reach 80% of token budget."""
-        return (
-            self.count_recent_tokens() >= COMPRESS_TOKEN_THRESHOLD
-            and len(self.recent_thinks) >= COMPRESS_RANGE_MIN
-        )
+        """Trigger compression when recent_thinks reach 80% of token budget.
+
+        v9.4.2: also fire compress if individual thinks are pathologically
+        long (e.g., 600+ tok each — verbose-model drift) and we have ≥2
+        thinks. Without this, a model that emits one 1000-tok think then
+        another would carry 2000 tok in recent_thinks while waiting for
+        the COMPRESS_RANGE_MIN=4 threshold; that buffer silently inflates
+        the next chunk's prompt and risks model_max_length overflow.
+        """
+        n_tokens = self.count_recent_tokens()
+        n_thinks = len(self.recent_thinks)
+        # Standard SFT-aligned trigger
+        if n_tokens >= COMPRESS_TOKEN_THRESHOLD and n_thinks >= COMPRESS_RANGE_MIN:
+            return True
+        # v9.4.2 emergency fire: tokens far over budget, even with <4 thinks.
+        # Threshold = 1.5× normal trigger; fires at len ≥ 2 to leave at
+        # least one think for compress() to do anything meaningful.
+        if n_tokens >= int(COMPRESS_TOKEN_THRESHOLD * 1.5) and n_thinks >= 2:
+            return True
+        return False
 
     def compress(self, summary: Dict, compressed_chunks: Optional[List[int]] = None):
         """Replace specified thinks with summary in model context.
 
         Raw thinks stay in _retrieval_archive for recall.
+
+        v9.4.2: cap incoming summary text at 200 tokens to match SFT data
+        construction (config.py:SUMMARY_TOKENS_MAX=180 + slack). Without
+        this, a verbose model could append 400-600 tok summaries; with 5
+        such segments stacked before merge fires, compressed_segments
+        zone alone reaches ~3000 tok — silently overflowing model_max_length.
+        Cap is matched to the SUMMARY_TOKENS_MAX constant so eval renders
+        segments at the same size SFT trained on.
         """
         if compressed_chunks is not None:
             chunk_set = set(compressed_chunks)
@@ -117,6 +140,14 @@ class MemoryState:
             ]
         else:
             self.recent_thinks = self.recent_thinks[COMPRESS_RANGE_MIN:]
+        # Cap summary text BEFORE storing
+        if self._tokenizer and isinstance(summary.get("text"), str):
+            text = summary["text"]
+            ids = self._tokenizer.encode(text, add_special_tokens=False)
+            if len(ids) > 200:
+                summary = dict(summary)  # don't mutate caller's dict
+                summary["text"] = self._tokenizer.decode(ids[:200])
+                summary["_truncated"] = True
         self.compressed_segments.append(summary)
         # Merge oldest two if over limit (MAX_COMPRESSED_SEGMENTS=5).
         # v9.4.2: keep merged-text cap at 200 tokens (the SFT-baked value).
@@ -177,6 +208,172 @@ class MemoryState:
 
 # format_memory_block, build_user_content, parse_agent_output are imported
 # from thinkstream.data.agent_protocol (single source of truth).
+
+
+# ---------------------------------------------------------------------------
+# Debug helpers (v9.4.2 — overflow forensics)
+# ---------------------------------------------------------------------------
+
+
+# Per-frame visual token estimate at SFT-aligned pixel budget
+# (max_pixels=150528 ≈ 388×388, 16×16 patches → 196 patches/frame post
+# spatial-merge, ~196 tokens). Used for ESTIMATING video token cost without
+# having to invoke the actual processor; exact cost depends on Qwen3-VL's
+# spatial/temporal merge config and may differ by ±30%.
+EST_TOKENS_PER_FRAME = 200
+
+
+def _classify_zone_from_text(text: str) -> str:
+    """Classify a user-content text item into a zone label by its leading tag.
+
+    Each item produced by build_user_content starts with a recognizable
+    tag (`<visual_window>`, `<recalled_frames>`, `<memory>`, `<queries>`,
+    `<recall_result>`, `<user_input>`). For debug telemetry we attribute
+    the item's tokens to the matching zone bucket.
+    """
+    s = text.lstrip()
+    if s.startswith("<visual_window>"):
+        return "visual_window_header"
+    if s.startswith("<recalled_frames>"):
+        return "recalled_frames_header"
+    if s.startswith("<memory>") or s.startswith("<compressed>") \
+            or (s and s[0] == "[" and "]" in s[:30]):
+        # `<memory>` may not appear if format_memory_block builds compressed
+        # segments raw; we also catch the "[time] text" pattern (recent_thinks
+        # rendered without a wrapper tag) and attribute it to memory.
+        return "memory"
+    if s.startswith("<queries>"):
+        return "queries"
+    if s.startswith("<recall_result>"):
+        return "recall_result"
+    if s.startswith("<user_input>"):
+        return "user_input"
+    return "other"
+
+
+def _analyze_messages_zones(messages: List[Dict], tokenizer) -> Dict[str, Any]:
+    """Decompose a build_single_step_messages output into per-zone token
+    counts. Used by the debug=True mode of step() to pinpoint which zone
+    is responsible for prompt-length overflow.
+
+    Returns:
+        {
+          "system":           {"text_tokens": N, "n_frames": 0, "est_video": 0},
+          "visual_window":    {"text_tokens": N, "n_frames": F, "est_video": F*200},
+          "recalled_frames":  {"text_tokens": N, "n_frames": F, "est_video": F*200},
+          "memory":           {"text_tokens": N, "n_frames": 0, "est_video": 0},
+          "queries":          {"text_tokens": N, "n_frames": 0, "est_video": 0},
+          "recall_result":    {"text_tokens": N, "n_frames": 0, "est_video": 0},
+          "user_input":       {"text_tokens": N, "n_frames": 0, "est_video": 0},
+          "_total_text_tokens": N,
+          "_total_est_video":   N,
+          "_total_estimated":   N,    # text + video estimate
+        }
+    """
+    zones: Dict[str, Dict[str, int]] = {}
+
+    def _bucket(name):
+        return zones.setdefault(name, {"text_tokens": 0, "n_frames": 0,
+                                        "est_video": 0})
+
+    if tokenizer is None:
+        return {"_total_text_tokens": 0, "_total_est_video": 0,
+                "_total_estimated": 0,
+                "_warning": "tokenizer not provided; analysis skipped"}
+
+    last_video_zone = "visual_window"  # default attribution
+
+    for msg in messages:
+        role = msg.get("role")
+        content = msg.get("content")
+
+        if isinstance(content, str):
+            # Plain string content (system message)
+            try:
+                tok = len(tokenizer.encode(content, add_special_tokens=False))
+            except Exception:
+                tok = len(content) // 4
+            _bucket("system" if role == "system" else "other")["text_tokens"] += tok
+            continue
+
+        if not isinstance(content, list):
+            continue
+
+        for item in content:
+            if not isinstance(item, dict):
+                continue
+            itype = item.get("type")
+
+            if itype == "text":
+                text = item.get("text", "") or ""
+                try:
+                    tok = len(tokenizer.encode(text, add_special_tokens=False))
+                except Exception:
+                    tok = len(text) // 4
+                if role == "system":
+                    zone = "system"
+                else:
+                    zone = _classify_zone_from_text(text)
+                _bucket(zone)["text_tokens"] += tok
+                # Track which video zone we're "in" so the next video block
+                # gets attributed correctly.
+                if zone == "visual_window_header":
+                    last_video_zone = "visual_window"
+                elif zone == "recalled_frames_header":
+                    last_video_zone = "recalled_frames"
+
+            elif itype == "video":
+                n_frames = item.get("nframes")
+                if n_frames is None:
+                    v = item.get("video")
+                    if isinstance(v, list):
+                        n_frames = len(v)
+                n_frames = int(n_frames or 0)
+                est = n_frames * EST_TOKENS_PER_FRAME
+                b = _bucket(last_video_zone)
+                b["n_frames"] += n_frames
+                b["est_video"] += est
+
+    total_text = sum(z["text_tokens"] for z in zones.values())
+    total_video = sum(z["est_video"] for z in zones.values())
+    out: Dict[str, Any] = dict(zones)
+    out["_total_text_tokens"] = total_text
+    out["_total_est_video"] = total_video
+    out["_total_estimated"] = total_text + total_video
+    return out
+
+
+def _summarize_msg_for_debug(msg: Dict) -> Dict:
+    """Compact representation of a single chat message for debug dumps.
+    Replaces video items with `{type: video, n_frames: F}` summaries
+    (we don't dump frame paths to keep the dump readable)."""
+    role = msg.get("role")
+    content = msg.get("content")
+    if isinstance(content, str):
+        return {"role": role, "text": content[:300] + ("…" if len(content) > 300 else "")}
+    items = []
+    if isinstance(content, list):
+        for it in content:
+            if not isinstance(it, dict):
+                continue
+            if it.get("type") == "text":
+                t = it.get("text", "")
+                items.append({
+                    "type": "text",
+                    "preview": t[:200] + ("…" if len(t) > 200 else ""),
+                    "len_chars": len(t),
+                })
+            elif it.get("type") == "video":
+                n = it.get("nframes")
+                if n is None and isinstance(it.get("video"), list):
+                    n = len(it["video"])
+                items.append({
+                    "type": "video",
+                    "n_frames": int(n or 0),
+                    "video_start": it.get("video_start"),
+                    "video_end": it.get("video_end"),
+                })
+    return {"role": role, "items": items}
 
 
 def build_single_step_messages(
@@ -424,6 +621,12 @@ class StreamingAgentLoop:
         self.tokenizer = tokenizer       # v9.4.2: needed for telemetry token counts
         self.processor = processor
         self.model_type = model_type
+        # v9.4.2 debug mode: when True, step() attaches a `debug_trace`
+        # dict (per-zone tokens, memory state before/after, message dump)
+        # to its return. Driven by the env var THINKSTREAM_DEBUG_AGENT or
+        # by setting self.debug = True from outside (e.g. the debug script).
+        import os as _os
+        self.debug = _os.environ.get("THINKSTREAM_DEBUG_AGENT", "").lower() in ("1", "true", "yes")
         self.min_pixels = min_pixels
         self.max_pixels = max_pixels
         self.max_new_tokens = max_new_tokens
@@ -545,6 +748,17 @@ class StreamingAgentLoop:
         # thinks (FIFO, deterministic — same policy as pass2_rollout) and
         # encode their span. The model only learns to write the summary
         # text given a fixed range, never to choose the range itself.
+        # v9.4.2 debug snapshot — capture memory state BEFORE this step's
+        # mutations (add_think / compress). Used by debug_trace at end.
+        if self.debug:
+            _pre_compressed_segments = list(self.memory.compressed_segments)
+            _pre_recent_thinks_count = len(self.memory.recent_thinks)
+            _pre_recent_tokens = self.memory.count_recent_tokens()
+            _pre_queries_count = len(self.memory.queries)
+            _pre_queries_pending = sum(
+                1 for q in self.memory.queries if not q.get("answers")
+            )
+
         compress_trigger = ""
         # v9.4.2: telemetry for streaming eval — record state at the moment
         # compression FIRES so eval can stat: how many thinks were buffered
@@ -839,5 +1053,53 @@ class StreamingAgentLoop:
             )
         else:
             parsed["compress_succeeded"] = None  # N/A this step
+
+        # 5. Debug trace — only when self.debug is True. Step-by-step zone
+        # breakdown so we can pinpoint which zone is responsible for any
+        # context overflow. Heavyweight (re-tokenizes all text content);
+        # off by default. Captures memory state before AND after this step
+        # so the debug script can show what changed.
+        if self.debug:
+            zone_breakdown = _analyze_messages_zones(messages, self.tokenizer)
+            seg_tokens = 0
+            if self.tokenizer:
+                for s in _pre_compressed_segments:
+                    try:
+                        seg_tokens += len(self.tokenizer.encode(
+                            s.get("text", ""), add_special_tokens=False))
+                    except Exception:
+                        pass
+            parsed["debug_trace"] = {
+                "chunk_idx": chunk_idx,
+                "user_question": user_question,
+                "compress_trigger_text": compress_trigger,
+                "memory_before": {
+                    "compressed_segments": len(_pre_compressed_segments),
+                    "compressed_text_tokens": seg_tokens,
+                    "recent_thinks": _pre_recent_thinks_count,
+                    "recent_thinks_tokens": _pre_recent_tokens,
+                    "queries_total": _pre_queries_count,
+                    "queries_pending": _pre_queries_pending,
+                },
+                "zones": zone_breakdown,
+                "model_output_chars": len(output_text or ""),
+                "parsed_action": action,
+                "format_ok": parsed["format_ok"],
+                "compress_succeeded": parsed["compress_succeeded"],
+                "memory_after": {
+                    "compressed_segments": len(self.memory.compressed_segments),
+                    "recent_thinks": len(self.memory.recent_thinks),
+                    "recent_thinks_tokens": self.memory.count_recent_tokens(),
+                    "queries_total": len(self.memory.queries),
+                    "queries_pending": sum(
+                        1 for q in self.memory.queries if not q.get("answers")
+                    ),
+                },
+            }
+            # Also include the raw messages for hardcore inspection (only
+            # text portions; video items just get their nframes summary).
+            parsed["debug_trace"]["raw_messages_summary"] = [
+                _summarize_msg_for_debug(m) for m in messages
+            ]
 
         return parsed
