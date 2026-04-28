@@ -233,9 +233,9 @@ def _classify_zone_from_text(text: str) -> str:
     """
     s = text.lstrip()
     if s.startswith("<visual_window>"):
-        return "visual_window_header"
+        return "visual_window"
     if s.startswith("<recalled_frames>"):
-        return "recalled_frames_header"
+        return "recalled_frames"
     if s.startswith("<memory>") or s.startswith("<compressed>") \
             or (s and s[0] == "[" and "]" in s[:30]):
         # `<memory>` may not appear if format_memory_block builds compressed
@@ -317,9 +317,9 @@ def _analyze_messages_zones(messages: List[Dict], tokenizer) -> Dict[str, Any]:
                 _bucket(zone)["text_tokens"] += tok
                 # Track which video zone we're "in" so the next video block
                 # gets attributed correctly.
-                if zone == "visual_window_header":
+                if zone == "visual_window":
                     last_video_zone = "visual_window"
-                elif zone == "recalled_frames_header":
+                elif zone == "recalled_frames":
                     last_video_zone = "recalled_frames"
 
             elif itype == "video":
@@ -408,7 +408,7 @@ def build_single_step_messages(
     )
 
     return [
-        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "system", "content": [{"type": "text", "text": SYSTEM_PROMPT}]},
         {"role": "user", "content": user_content},
     ]
 
@@ -514,27 +514,19 @@ def make_generate_fn(
         max_new_tokens=256,
         **kwargs,
     ) -> str:
-        # 1. Apply chat template
-        text_prompt = processor.apply_chat_template(
-            messages, tokenize=False, add_generation_prompt=True,
-        )
-
-        # 2. Process with vision
-        inputs = processor(
-            text=[text_prompt],
+        # 1. Apply chat template + process vision (tokenize=True handles images/videos)
+        inputs = processor.apply_chat_template(
+            messages,
+            tokenize=True,
+            return_dict=True,
             return_tensors="pt",
+            add_generation_prompt=True,
         )
 
-        # 3. Compute position IDs
-        inputs_for_rope = dict(inputs)
-        inputs_for_rope["video_chunk_size"] = 2.0  # AGENT_CHUNK_SEC
-        inputs["position_ids"] = compute_position_ids(
-            inputs_for_rope, processor, model_type,
-        )
+        # 2. Move to device
+        inputs = {k: v.to(device) if hasattr(v, "to") else v for k, v in inputs.items()}
 
-        inputs = inputs.to(device)
-
-        # 4. Generate
+        # 3. Generate
         output_ids = model.generate(
             **inputs,
             max_new_tokens=max_new_tokens,
@@ -544,7 +536,7 @@ def make_generate_fn(
             top_p=kwargs.get("top_p", 0.95),
         )
 
-        # 5. Decode (only new tokens)
+        # 4. Decode (only new tokens)
         input_len = inputs["input_ids"].shape[1]
         new_ids = output_ids[0, input_len:]
         return processor.tokenizer.decode(new_ids, skip_special_tokens=False)
@@ -665,16 +657,16 @@ class StreamingAgentLoop:
         n_frames = (chunk_idx - window_start + 1) * FRAMES_PER_CHUNK
 
         vp = Path(video_path)
-        # Try relative path under video_root, fallback to basename
+        # Try relative path under video_root, fallback to full relative path
         if self.video_root:
             try:
                 rel = vp.relative_to(Path(self.video_root))
                 stem = rel.with_suffix("")
                 frame_dir = Path(self.frames_root) / stem
             except ValueError:
-                frame_dir = Path(self.frames_root) / vp.stem
+                frame_dir = Path(self.frames_root) / vp.with_suffix("")
         else:
-            frame_dir = Path(self.frames_root) / vp.stem
+            frame_dir = Path(self.frames_root) / vp.with_suffix("")
 
         if not frame_dir.exists():
             return None
@@ -820,6 +812,52 @@ class StreamingAgentLoop:
             frame_paths=frame_paths,
         )
 
+        # 5. Debug: token count BEFORE generation
+        try:
+            debug_inputs = self.processor.apply_chat_template(
+                messages,
+                tokenize=True,
+                return_dict=True,
+                return_tensors="pt",
+                add_generation_prompt=True,
+            )
+            debug_token_count = debug_inputs["input_ids"].shape[1]
+        except Exception as e:
+            debug_token_count = -1
+            debug_err = str(e)
+
+        n_compressed = len(snapshot.get("compressed_segments", []))
+        n_recent = len(snapshot.get("recent_thinks", []))
+        recent_tok = self.memory.count_recent_tokens()
+        fp_len = len(frame_paths) if frame_paths else 0
+        fp_is_none = frame_paths is None
+
+        print(
+            f"[DEBUG step] chunk={chunk_idx} frame_paths_len={fp_len} "
+            f"frame_paths_is_none={fp_is_none} compressed={n_compressed} "
+            f"recent_thinks={n_recent} recent_tokens={recent_tok} "
+            f"prompt_tokens={debug_token_count}",
+            flush=True,
+        )
+        if debug_token_count > 20000:
+            # Dump the message structure to diagnose overflow
+            for i, m in enumerate(messages):
+                content = m.get("content", [])
+                if isinstance(content, list):
+                    for j, c in enumerate(content):
+                        ctype = c.get("type", "?")
+                        if ctype == "video":
+                            vid = c.get("video", "")
+                            if isinstance(vid, list):
+                                print(f"  msg[{i}].content[{j}] video list len={len(vid)}", flush=True)
+                            else:
+                                print(f"  msg[{i}].content[{j}] video={vid}", flush=True)
+                        elif ctype == "text":
+                            t = c.get("text", "")
+                            print(f"  msg[{i}].content[{j}] text_len={len(t)}", flush=True)
+                else:
+                    print(f"  msg[{i}] content_len={len(str(content))}", flush=True)
+
         # 5. Generate
         output_text = self.generate_fn(
             messages=messages,
@@ -868,7 +906,8 @@ class StreamingAgentLoop:
                 )
                 returned_chunks = recall_result.get("returned_chunks", [])
 
-                # Build recalled_frames info
+                # Build recalled_frames info (including frame_paths so we
+                # don't fallback to full-video decoding in recall_response).
                 recalled_frames = None
                 if returned_chunks and recall_result.get("source") == "historical_frames":
                     t_start = returned_chunks[0] * AGENT_CHUNK_SEC
@@ -878,6 +917,29 @@ class StreamingAgentLoop:
                         "n_frames": len(returned_chunks) * FRAMES_PER_CHUNK,
                         "source": "historical_frames",
                     }
+                    # Build recalled frame_paths by resolving per-chunk frames
+                    # under the same frames_root logic.
+                    vp = Path(video_path)
+                    if self.video_root:
+                        try:
+                            rel = vp.relative_to(Path(self.video_root))
+                            stem = rel.with_suffix("")
+                            frame_dir = Path(self.frames_root) / stem
+                        except ValueError:
+                            frame_dir = Path(self.frames_root) / vp.with_suffix("")
+                    else:
+                        frame_dir = Path(self.frames_root) / vp.with_suffix("")
+                    rf_paths = []
+                    if frame_dir.exists():
+                        for rc in returned_chunks:
+                            rc_start = rc * AGENT_CHUNK_SEC + 1
+                            rc_end = (rc + 1) * AGENT_CHUNK_SEC
+                            for fnum in range(rc_start, rc_end + 1):
+                                fp = frame_dir / f"frame_{fnum:06d}.jpg"
+                                if fp.exists():
+                                    rf_paths.append(str(fp))
+                    if rf_paths:
+                        recalled_frames["frame_paths"] = rf_paths
 
                 # Build recall_response input. The pending question is
                 # already expressed via the <queries> block (entry with
@@ -893,6 +955,7 @@ class StreamingAgentLoop:
                     recall_result=recall_result,
                     min_pixels=self.min_pixels,
                     max_pixels=self.max_pixels,
+                    frame_paths=frame_paths,
                 )
 
                 # Second generate (allow_recall=False to prevent infinite loop)
