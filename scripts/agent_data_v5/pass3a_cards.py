@@ -35,20 +35,21 @@ logger = logging.getLogger(__name__)
 #       Layer-0/1 perceptual families don't — specifically targeting OVO
 #       CRR/ASI/SSR/EPM tasks where batch1 had near-zero coverage.
 FAMILY_TARGETS = {
-    # v9.5: trimmed from sum=38 → sum=32 (added F7+CR5 for OVO SSR/CRR).
-    # Post-verify mean ~17-18 cards/video.
+    # v9.5: 22 families. Post-verify mean ~18-20 cards/video.
     "F1": 2, "F2": 3, "F3": 2, "F4": 2,
     "E1": 2, "E2": 2, "P1": 2, "C1": 2,
     "R1": 1, "S1": 2, "M1": 1,
     "F5": 2,  # repetition counting (OVO REC) — force-attempt
     "F6": 2,  # future prediction (OVO FPD) — force-attempt
-    "F7": 2,  # step-progress binary multi-probe (OVO SSR) — force-attempt — v9.5 new
+    "F7": 2,  # step-progress binary multi-probe (OVO SSR) — force-attempt
     "N1": 2,  # hallucination detection (OVO HLD) — force-attempt
     "CR1": 2, # causal why (state_change → cause attribution)
     "CR2": 2, # temporal ordering (3 distinguishable events)
     "CR3": 1, # goal / intent inference
     "CR4": 2, # compositional multi-observation (AND/OR)
-    "CR5": 2, # clue-delayed descriptive multi-probe (OVO CRR) — v9.5 new
+    "CR5": 2, # clue-delayed descriptive multi-probe (OVO CRR)
+    "CR6": 2, # feasibility / plausibility (STAR-Feas) — v9.5 new
+    "CR7": 2, # object permanence after occlusion (PerceptionTest) — v9.5 new
 }
 
 # Families that MUST be attempted on every video, even when classify_chunks
@@ -61,7 +62,7 @@ FAMILY_TARGETS = {
 # would miss many candidates.
 FAMILY_FORCE_ATTEMPT = {
     "F5", "F6", "F7", "N1", "F3", "E2", "S1",
-    "CR1", "CR2", "CR3", "CR4", "CR5",
+    "CR1", "CR2", "CR3", "CR4", "CR5", "CR6", "CR7",
 }
 
 # Retention class derived from family (not from 397B).
@@ -78,6 +79,8 @@ RETENTION_CLASS = {
     "F7": "low",      # per-step state — must persist exactly
     "N1": "low",      # specific entity absence
     "CR5": "high",    # clue-delayed event — both ask context + clue must be retained
+    "CR6": "medium",  # feasibility — current scene state suffices, gist survives compress
+    "CR7": "high",    # object permanence — pre-occlusion location must survive compress
     "CR1": "high",    # cause needs to be retained from earlier chunk
     "CR2": "high",    # all 3 ordered events must be retained
     "CR3": "medium",  # goal is gist-level, survives compression
@@ -546,6 +549,94 @@ expects clean before/after binary judgments.
 
 If fewer than {n} clean steps exist, output fewer cards. Output `[]` only if
 the video has no procedural structure at all.
+
+{evidence}
+""" + _OUTPUT_SCHEMA,
+
+    # v9.5 — STAR-Feasibility alignment. Plausibility judgment over what
+    # the agent has SO FAR observed (not future).
+    "CR6": """Based on the following video chunks, generate UP TO {n}
+FEASIBILITY questions aligned with STAR-Feas.
+
+Find moments where given the visible context (entities, tools, materials,
+on-screen state) it is possible to ask whether some hypothetical action
+COULD reasonably be performed. The answer must be derivable from
+visible evidence — never from world-knowledge guessing.
+
+Question format: "Given what is visible so far, could the {{actor}}
+{{hypothetical action}}?" — present 4 options where exactly one is
+plausibly supported by the evidence.
+
+Examples:
+  - "Could the chef bake cookies right now? A. Yes — flour, sugar, eggs,
+     and an oven are all present  B. No — no flour visible  C. No — no
+     oven visible  D. No — no eggs visible"
+  - "Could the cyclist start riding now? A. Yes — both wheels mounted,
+     handlebars attached  B. No — chain not connected  C. No — front
+     wheel still off  D. No — saddle missing"
+
+answer_form: "multiple_choice".
+canonical_answer: the LETTER (A/B/C/D).
+visibility_type: "persistent" (the visible state at ask_chunk supports
+the judgment).
+
+CRITICAL — the option set must include exactly one Yes-with-evidence
+and three No-with-different-missing-prerequisite. Do NOT mix Yes
+options or use vague "maybe". Distractor No options must each cite a
+DIFFERENT specific missing item that is plausibly required (so the
+student must check ALL prerequisites, not just one).
+
+If the video shows no scenario where feasibility is testable from
+visible evidence, output `[]`.
+
+{evidence}
+""" + _OUTPUT_SCHEMA,
+
+    # v9.5 — PerceptionTest object-permanence alignment. Track an entity
+    # through an occlusion / camera-cutaway and ask its post-event location
+    # or state.
+    "CR7": """Based on the following video chunks, generate UP TO {n}
+OBJECT-PERMANENCE questions aligned with PerceptionTest.
+
+Find a moment in the video where:
+  - At chunk A, an entity is visible at a specific position (e.g.,
+    "ball on left side of table", "remote on the couch").
+  - Between chunks A and B, the entity is occluded — covered by another
+    object, the camera cuts to a different angle/location, or the entity
+    moves out of frame.
+  - At chunk B (after the occlusion), the entity's location/state CAN be
+    inferred from indirect evidence (e.g., a hand still holding it,
+    a bulge under a cloth, the box now closed with it inside).
+
+Generate question:
+  "After {{occlusion event}}, where is the {{entity}} now?" with 4
+  position/state options.
+
+Examples:
+  - "After the magician covered the ball with the cup, where is the
+     ball? A. Under the cup  B. In his hand  C. On the table  D. Gone"
+  - "After the camera turned back to the kitchen, what state is the
+     bread in? A. Still in the oven  B. On the cooling rack  C. On the
+     plate  D. Still raw on the counter"
+
+answer_form: "multiple_choice".
+canonical_answer: the LETTER (A/B/C/D).
+visibility_type: "transient" (state changes through occlusion).
+
+REQUIRED extra fields:
+  "occlusion_chunk": chunk_idx where the occlusion / cutaway begins.
+  "resolve_chunk":   chunk_idx where the post-occlusion state is shown.
+
+support_chunks: [pre-occlusion chunk, resolve_chunk] — the answer needs
+both the BEFORE state and the AFTER inference signal.
+
+CRITICAL — the entity's post-occlusion location/state MUST be
+recoverable from on-screen evidence. If the model would need pure
+world-knowledge guessing (no visible cue at all), the question is
+INVALID — output a different one.
+
+If no clear occlusion-and-resolve event exists in this video,
+output `[]`.
 
 {evidence}
 """ + _OUTPUT_SCHEMA,
