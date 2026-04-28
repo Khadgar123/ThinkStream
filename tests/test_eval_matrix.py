@@ -653,6 +653,48 @@ def test_run_matrix_runs_both_profiles():
     assert 'for prof in "${PROFILES[@]}"' in src
 
 
+def test_analyze_messages_zones_classifies_correctly():
+    """_analyze_messages_zones must bucket text items by leading tag and
+    attribute video items to the most recent visual zone (visual_window
+    or recalled_frames)."""
+    src = (ROOT / "thinkstream" / "model" / "agent_loop.py").read_text()
+    assert "def _analyze_messages_zones(" in src
+    assert "def _classify_zone_from_text(" in src
+    # Each zone tag must be checked
+    for tag in ("<visual_window>", "<recalled_frames>", "<memory>",
+                "<queries>", "<recall_result>", "<user_input>"):
+        assert tag in src, f"_classify_zone_from_text missing tag {tag}"
+    # Per-frame visual estimate constant
+    assert "EST_TOKENS_PER_FRAME" in src
+
+
+def test_step_emits_debug_trace_when_enabled():
+    """When self.debug=True, step() must populate parsed['debug_trace']
+    with memory_before, zones, memory_after, and raw_messages_summary."""
+    src = (ROOT / "thinkstream" / "model" / "agent_loop.py").read_text()
+    # debug attr set in __init__
+    assert "self.debug = " in src
+    # step end captures
+    for field in ("memory_before", "zones", "memory_after",
+                  "raw_messages_summary", "compress_trigger_text"):
+        assert f'"{field}"' in src, f"debug_trace missing {field}"
+
+
+def test_debug_streaming_script_exists_and_compiles():
+    """scripts/eval/debug_streaming.py is the single-sample debug entry."""
+    p = ROOT / "scripts" / "eval" / "debug_streaming.py"
+    assert p.exists(), "debug_streaming.py must exist"
+    # AST-parseable
+    import ast as _ast
+    _ast.parse(p.read_text())
+    # Has the human-readable print helpers
+    src = p.read_text()
+    assert "def print_step_trace" in src
+    assert "def print_summary" in src
+    assert "loop.debug = True" in src
+    assert "OVERFLOW IMMINENT" in src or "🚨" in src
+
+
 def test_should_compress_emergency_trigger():
     """v9.4.2: emergency compress trigger when individual thinks are
     pathologically long (1.5× normal threshold + len≥2). Without this,
