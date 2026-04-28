@@ -166,3 +166,123 @@ def aggregate_gdpo(
     diag["adv_total_var"] = adv.var().item() if adv.numel() > 1 else 0.0
 
     return adv, diag
+
+
+def aggregate_grpo(
+    rewards_per_func: Dict[str, torch.Tensor],
+    rewards_masks: torch.Tensor,
+    group_size: int,
+    weights: Dict[str, float] = None,
+    keys: List[str] = None,
+):
+    """Vanilla GRPO aggregation: weighted scalar reward → group (z-)norm.
+
+    v11.4 alternative to ``aggregate_gdpo`` for ablation / when bimodal
+    component distributions don't matter. Standard DeepSeekMath GRPO
+    formulation (arxiv 2402.03300):
+
+      R_i = Σ_k w_k * r_k(i) * mask_k(i)         # weighted scalar per rollout
+      μ_g = mean of R within each group of G
+      σ_g = std  of R within each group of G
+      A_i = (R_i − μ_g) / (σ_g + ε)              # group z-norm
+
+    Differences from aggregate_gdpo:
+      - Components are aggregated BEFORE normalization (lossy: a small
+        but well-discriminated reward gets drowned by a large noisy one).
+      - Single group-level z-norm (uses std, not mean-only) — assumes
+        intra-group variance is non-degenerate, which holds for the
+        outcome-driven primary reward (correctness) but not for sparse
+        signals with high mask-rate.
+      - No batch-whiten — advantage scale floats with reward weights.
+
+    When to use which:
+      GDPO (default): when you care about each component pulling the
+        policy independently (the explicit goal of v11/v11.3 design;
+        every sparse signal has its own group-norm so its weight stays
+        meaningful even if it's bimodal).
+      GRPO (this fn): cleaner when the reward is dominated by a single
+        outcome (e.g. correctness >> 0.7 weight); also the standard
+        baseline most papers compare against, useful for ablations.
+
+    Args / Returns: same shape as aggregate_gdpo.
+    """
+    keys = list(keys or REWARD_DICT_KEYS)
+    weights = weights or DEFAULT_REWARD_WEIGHTS
+
+    rewards_cols = torch.stack(
+        [rewards_per_func[k].float() for k in keys], dim=1
+    )  # [B, R]
+    masks_cols = rewards_masks.float()
+    if masks_cols.shape != rewards_cols.shape:
+        raise ValueError(
+            f"rewards_masks shape {tuple(masks_cols.shape)} != "
+            f"rewards shape {tuple(rewards_cols.shape)}"
+        )
+    w = torch.tensor(
+        [weights[k] for k in keys], dtype=torch.float32, device=rewards_cols.device
+    )
+
+    # Step 1: weighted sum across components (mask-gated).
+    # Σ_k w_k * r_k * mask_k — gives a single scalar reward per rollout.
+    weighted_per_row = (rewards_cols * masks_cols * w.unsqueeze(0)).sum(dim=1)  # [B]
+
+    # Step 2: per-group z-norm.
+    B = weighted_per_row.shape[0]
+    if B % group_size != 0:
+        raise ValueError(
+            f"weighted_per_row len {B} not divisible by group_size={group_size}"
+        )
+    N = B // group_size
+    grouped = weighted_per_row.view(N, group_size)              # [N, G]
+    g_mean = grouped.mean(dim=1, keepdim=True)                  # [N, 1]
+    g_std = grouped.std(dim=1, keepdim=True, unbiased=False)    # [N, 1]
+    adv = ((grouped - g_mean) / (g_std + 1e-4)).flatten()       # [B]
+    adv = torch.nan_to_num(adv, nan=0.0, posinf=0.0, neginf=0.0)
+
+    # Diagnostics: per-component pre-aggregation stats so we can still
+    # see which signals drove the scalar advantage.
+    diag: Dict[str, float] = {}
+    for ki, k in enumerate(keys):
+        col = rewards_cols[:, ki]
+        msk = masks_cols[:, ki]
+        applied = col[msk > 0]
+        diag[f"reward_{k}_mean"] = applied.mean().item() if applied.numel() else 0.0
+        diag[f"reward_{k}_std"] = (
+            applied.std().item() if applied.numel() > 1 else 0.0
+        )
+        diag[f"mask_{k}_rate"] = msk.mean().item()
+    diag["adv_total_mean"] = adv.mean().item()
+    diag["adv_total_var"] = adv.var().item() if adv.numel() > 1 else 0.0
+
+    return adv, diag
+
+
+def aggregate_advantages(
+    rewards_per_func: Dict[str, torch.Tensor],
+    rewards_masks: torch.Tensor,
+    group_size: int,
+    *,
+    mode: str = "gdpo",
+    weights: Dict[str, float] = None,
+    keys: List[str] = None,
+):
+    """Dispatch to aggregate_gdpo or aggregate_grpo based on mode flag.
+
+    ``mode == "gdpo"`` (default): per-reward group-norm + weighted sum +
+    batch-whiten. Best when sparse signals have meaningful but bimodal
+    distributions — each component pulls advantage independently.
+
+    ``mode == "grpo"``: weighted sum first → single z-norm per group.
+    Standard DeepSeekMath formulation; cleaner ablation baseline.
+    """
+    if mode == "gdpo":
+        return aggregate_gdpo(
+            rewards_per_func, rewards_masks, group_size,
+            weights=weights, keys=keys,
+        )
+    if mode == "grpo":
+        return aggregate_grpo(
+            rewards_per_func, rewards_masks, group_size,
+            weights=weights, keys=keys,
+        )
+    raise ValueError(f"unknown advantage mode: {mode!r} (choose 'gdpo' | 'grpo')")

@@ -188,14 +188,29 @@ def _compute_response_reward(
 def _compute_recall_hit_rate(
     returned_chunks_per_chunk: List[List[int]],
     support_chunks: List[int],
+    *,
+    recall_fired: bool = False,
 ) -> Optional[float]:
     """Recall@K hit-rate over the rollout.
 
     Returns |∪returned ∩ support| / |support| ∈ [0, 1] when the rollout
-    actually recalled and support is known; None otherwise (caller treats
-    as "no signal", neutral). Union across all recall events in the
-    rollout — the agent can call recall multiple times and we credit any
-    match.
+    actually recalled and got results AND support is known.
+
+    v11.4 bug fix: previously returned None when `union` was empty,
+    silently masking out the most informative failure case ("model
+    fired recall but the retriever returned nothing"). That made the
+    column mask=0 for the worst-query case and the policy never
+    learned to write better queries. Now:
+      - support unknown:                    None (genuine "no signal")
+      - recall_fired AND union empty:       -0.2 (explicit penalty —
+                                             "your query retrieved
+                                             nothing useful")
+      - !recall_fired AND union empty:      None (sample didn't recall;
+                                             nothing to score)
+      - non-empty union:                    standard hit-rate
+
+    Union across all recall events in the rollout — the agent can call
+    recall multiple times and we credit any match.
     """
     if not support_chunks:
         return None
@@ -204,7 +219,9 @@ def _compute_recall_hit_rate(
         if chunks:
             union.update(int(c) for c in chunks)
     if not union:
-        return None  # never recalled (or recall always failed)
+        # v11.4: distinguish "didn't try" (None / mask off) from
+        # "tried and failed" (explicit penalty so advantage learns).
+        return -0.2 if recall_fired else None
     gold = set(int(c) for c in support_chunks)
     return len(union & gold) / len(gold)
 
@@ -329,7 +346,12 @@ def _compute_range_tightness_reward(
     )
     coverage = covered / max(len(support_set), 1)
     if coverage <= 0:
-        return None  # missed entirely — not worth a tightness signal
+        # v11.4 bug fix: previously returned None and the column was
+        # masked out — but coverage=0 is the WORST failure case (model
+        # asked for a window that doesn't contain any gold chunk) and
+        # is precisely what RL should learn to avoid. Returning a
+        # negative score makes the failure visible to advantage.
+        return -0.2
     tightness = max(0.0, 1.0 - range_width / video_duration)
     return tightness * coverage
 
@@ -388,9 +410,23 @@ _RESPONSE_RE = re.compile(r"<response>(.*?)(?:<\|im_end\|>|$)", re.DOTALL)
 
 def _scan_responses_for_answer(
     chunk_results: List[Dict[str, Any]], gen_idx: int, tokenizer: Any
-) -> Tuple[Optional[str], Optional[int], int]:
+) -> Tuple[Optional[str], Optional[int], int, Optional[int]]:
+    """Walk all chunks for one rollout, return both first and last response info.
+
+    v11.4: tuple extended with `last_response_chunk_idx`. Streaming agents
+    often emit response then refine in later chunks; the legacy "first
+    response only" timing reward penalized this self-correction. The
+    caller now uses `last_response_chunk_idx` for timing (the model's
+    final committed response) while `first_answer` still gates
+    correctness (so a model that keeps spamming responses can't hide a
+    wrong-then-right pattern).
+
+    Returns: (first_answer, first_response_chunk_idx, response_count,
+              last_response_chunk_idx)
+    """
     first_response_chunk_idx: Optional[int] = None
     first_answer: Optional[str] = None
+    last_response_chunk_idx: Optional[int] = None
     response_count = 0
     for cr in chunk_results:
         gen_tokens_list = cr.get("generated_tokens", [])
@@ -402,13 +438,17 @@ def _scan_responses_for_answer(
         text = tokenizer.decode(gen_tokens, skip_special_tokens=False)
         for m in _RESPONSE_RE.finditer(text):
             response_count += 1
-            if first_answer is None:
-                answer = _extract_literal_answer(m.group(1))
-                if answer is not None:
+            answer = _extract_literal_answer(m.group(1))
+            if answer is not None:
+                if first_answer is None:
                     first_answer = answer
                     if first_response_chunk_idx is None:
                         first_response_chunk_idx = cr["chunk_idx"]
-    return first_answer, first_response_chunk_idx, response_count
+                # last_response_chunk_idx tracks the latest chunk that
+                # produced ANY parseable response (refinement-aware).
+                last_response_chunk_idx = cr["chunk_idx"]
+    return (first_answer, first_response_chunk_idx,
+            response_count, last_response_chunk_idx)
 
 
 def _compute_time_reward(
@@ -870,6 +910,8 @@ from thinkstream.trainer.gdpo_advantage import (
     DEFAULT_REWARD_WEIGHTS,
     per_reward_group_norm as _gdpo_per_reward_group_norm,
     aggregate_gdpo as _gdpo_aggregate,
+    aggregate_grpo as _grpo_aggregate,
+    aggregate_advantages as _aggregate_advantages,
 )
 
 
@@ -1043,8 +1085,9 @@ def calc_rewards(
                 chunk_texts.append(tokenizer.decode(tokens, skip_special_tokens=False))
 
             predicted_actions = [_extract_action(t) for t in chunk_texts]
-            model_answer, response_chunk_idx, _ = (
-                _scan_responses_for_answer(chunk_results, g, tokenizer)
+            (model_answer, first_resp_chunk_idx, _resp_count,
+             last_resp_chunk_idx) = _scan_responses_for_answer(
+                chunk_results, g, tokenizer
             )
             did_respond = "response" in predicted_actions
             did_recall = "recall" in predicted_actions
@@ -1058,6 +1101,9 @@ def calc_rewards(
             )
 
             # ─── R_timing (sparse, applies only if rollout responded AND gt available) ───
+            # v11.4 bug fix: use last_resp_chunk_idx (model's final commitment)
+            # rather than first_resp_chunk_idx. Streaming agents that respond
+            # then refine were being penalized for self-correction.
             if gt_chunk_idx is not None and gt_present:
                 slack_window_chunks = (
                     int(time_reward_slack / time_per_chunk)
@@ -1065,7 +1111,7 @@ def calc_rewards(
                     else 0
                 )
                 time_r = _compute_time_reward(
-                    response_chunk_idx, gt_chunk_idx,
+                    last_resp_chunk_idx, gt_chunk_idx,
                     time_reward_window, slack_window_chunks,
                 )
             else:
@@ -1085,8 +1131,10 @@ def calc_rewards(
             recall_r = _compute_recall_quality_reward(
                 predicted_actions, chunk_texts, gt_answer, model_answer
             )
+            # v11.4: pass recall_fired so a fired-but-empty recall returns
+            # an explicit -0.2 instead of None (which mask=0 hid before).
             hit_rate_r = _compute_recall_hit_rate(
-                returned_per_chunk, support_chunks
+                returned_per_chunk, support_chunks, recall_fired=did_recall,
             )
             # Estimate video_duration from the last chunk window we saw.
             video_duration = (chunk_results[-1].get("window_end", 0.0)
@@ -1314,14 +1362,30 @@ def compute_gdpo_advantages(
     rewards_masks: Auto[torch.Tensor],
     advantages: Ref[torch.Tensor],
     group_size: Auto[int],
+    advantage_mode: Auto[str] = "gdpo",
 ) -> Context:
-    """v11 advantage: per-reward group-norm + weighted sum + batch-whiten.
+    """Compute per-rollout advantages from the 8-reward dict + masks.
 
-    Pure-tensor algorithm in ``gdpo_advantage.aggregate_gdpo``. Per-reward
-    diagnostics are stashed in module-level ``_LAST_GDPO_DIAG`` so
-    ``grpo_global_metrics`` can log them without adding another slyme Ref.
+    v11.4: dispatch to aggregate_gdpo (default) or aggregate_grpo based on
+    ``advantage_mode``. Pure-tensor algorithms in ``gdpo_advantage.py``.
+    Per-reward / per-component diagnostics are stashed in module-level
+    ``_LAST_GDPO_DIAG`` so ``grpo_global_metrics`` can log them without
+    adding another slyme Ref.
+
+    advantage_mode:
+      "gdpo" — per-reward group-norm → weighted sum → batch-whiten.
+               Each component pulls advantage independently; best when
+               sparse signals are meaningful but bimodal (the v11 design
+               assumption). Default.
+      "grpo" — weighted scalar reward first → group z-norm. Standard
+               DeepSeekMath formulation; useful as ablation baseline or
+               when one outcome reward dominates and you want clean,
+               interpretable advantage scaling.
     """
-    adv, diag = _gdpo_aggregate(rewards_dict, rewards_masks, group_size)
+    adv, diag = _aggregate_advantages(
+        rewards_dict, rewards_masks, group_size, mode=advantage_mode,
+    )
+    diag["advantage_mode"] = advantage_mode
 
     global _LAST_GDPO_DIAG
     _LAST_GDPO_DIAG = diag
