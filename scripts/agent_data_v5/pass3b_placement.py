@@ -190,10 +190,12 @@ async def _check_visibility_one(
         canonical_answer=card.get("canonical_answer", ""),
     )
 
+    _vis_cfg = PASS_CONFIG.get("pass3b_visibility", {})
     raw = await client._call_one(
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=PASS_CONFIG.get("pass3b_visibility", {}).get("max_tokens", 512),
-        temperature=0.1,
+        max_tokens=_vis_cfg.get("max_tokens", 256),
+        temperature=_vis_cfg.get("temperature", 0.1),
+        enable_thinking=_vis_cfg.get("thinking", False),
         request_id=f"{video_id}_vis_{card.get('card_id', '')}_{ask_chunk}",
     )
 

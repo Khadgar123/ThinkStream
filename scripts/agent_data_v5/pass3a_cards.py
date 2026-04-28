@@ -1620,10 +1620,12 @@ async def _verify_one_card(
             visibility_type=card.get("visibility_type", "transient"),
         )
 
+    _verify_cfg = PASS_CONFIG.get("pass3a_verify", {})
     raw = await client._call_one(
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=PASS_CONFIG.get("pass3a_verify", {}).get("max_tokens", 2048),
-        temperature=0.1,
+        max_tokens=_verify_cfg.get("max_tokens", 512),
+        temperature=_verify_cfg.get("temperature", 0.1),
+        enable_thinking=_verify_cfg.get("thinking", False),
         request_id=f"{video_id}_verify_{card.get('card_id', '')}",
     )
 

@@ -222,13 +222,17 @@ async def _generate_response(card: Dict, snapshot: Dict, evidence: List[Dict],
         dedup_instruction=dedup,
     )
 
-    # NOTE: keep thinking + 16K budget — this output IS the SFT label the
-    # student will mimic. Quality > speed. Timeout cascade is solved by
-    # lowering concurrency, not by crippling the teacher.
+    # v11.3: thinking=False per pass3c_response config. Reasons: (a) 70% of
+    # response calls skip the LLM entirely via canonical_answer fast-path;
+    # (b) the remaining 30% (short_exact / descriptive) are constrained
+    # generation where thinking budget went unused empirically. Quality is
+    # validated by Pass 4 leakage checks, so format-only failures fail-loud.
+    _resp_cfg = PASS_CONFIG.get("pass3c_response", {})
     raw = await client._call_one(
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=PASS_CONFIG.get("pass3c", {}).get("max_tokens", 16384),
-        temperature=0.3,
+        max_tokens=_resp_cfg.get("max_tokens", 1024),
+        temperature=_resp_cfg.get("temperature", 0.3),
+        enable_thinking=_resp_cfg.get("thinking", False),
         request_id=f"{video_id}_resp_{chunk_idx}",
     )
     if raw:
@@ -310,12 +314,18 @@ async def _generate_recall_query(card: Dict, snapshot: Dict,
         )
         fallback = {"query": card.get("question", "")[:30]}
 
-    # Keep thinking — picking discriminative keywords requires reasoning,
-    # and bad recall queries cause downstream recall failure at inference.
+    # v11.3: thinking=False per pass3c_recall_query config. Empirically the
+    # query is just 3-5 keywords + optional time_range — keyword extraction
+    # under format constraint, not multi-step reasoning. Pass 4's query/
+    # result consistency check (pass3c_samples.py:_query_overlaps_chunks)
+    # downgrades bad-query samples to "failure" anyway, so unhelpful
+    # queries get punished without needing thinking budget.
+    _rq_cfg = PASS_CONFIG.get("pass3c_recall_query", {})
     raw = await client._call_one(
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=PASS_CONFIG.get("pass3c", {}).get("max_tokens", 16384),
-        temperature=0.3,
+        max_tokens=_rq_cfg.get("max_tokens", 512),
+        temperature=_rq_cfg.get("temperature", 0.3),
+        enable_thinking=_rq_cfg.get("thinking", False),
         request_id=f"{video_id}_query_{chunk_idx}",
     )
     if not raw:
@@ -374,14 +384,16 @@ async def _generate_fork_think(
         queries_text=queries_text,
     )
 
-    # Keep thinking — fork_think must mention active question WITHOUT leaking
-    # the answer. This requires careful reasoning about what's visible vs
-    # what's been observed, otherwise the data construction's leakage check
-    # will reject the sample at Pass 4.
+    # KEEP thinking (pass3c_fork_think config) — fork_think must mention the
+    # active question WITHOUT leaking the answer. This requires careful
+    # reasoning about what's visible vs what's been observed; without CoT
+    # the leakage check at Pass 4 rejects ~40% of samples in early A/B tests.
+    _fthink_cfg = PASS_CONFIG.get("pass3c_fork_think", {})
     raw = await client._call_one(
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=PASS_CONFIG.get("pass3c", {}).get("max_tokens", 16384),
-        temperature=0.3,
+        max_tokens=_fthink_cfg.get("max_tokens", 1024),
+        temperature=_fthink_cfg.get("temperature", 0.3),
+        enable_thinking=_fthink_cfg.get("thinking", True),
         request_id=f"{video_id}_fthink_{chunk_idx}",
     )
     if raw:
@@ -407,12 +419,16 @@ async def _generate_recall_think(
         recall_source=recall_source,
     )
 
-    # Keep thinking — student learns to evaluate recall result quality;
-    # the analysis must correctly distinguish useful vs irrelevant results.
+    # v11.3: thinking=False per pass3c_recall_think config. The task is
+    # 3-way templating: recall_source ∈ {historical_frames, distractor,
+    # failure} maps to one of three rephrasing patterns. Empirically a
+    # branching task, not a reasoning task — thinking budget went unused.
+    _rt_cfg = PASS_CONFIG.get("pass3c_recall_think", {})
     raw = await client._call_one(
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=PASS_CONFIG.get("pass3c", {}).get("max_tokens", 16384),
-        temperature=0.3,
+        max_tokens=_rt_cfg.get("max_tokens", 256),
+        temperature=_rt_cfg.get("temperature", 0.3),
+        enable_thinking=_rt_cfg.get("thinking", False),
         request_id=f"{video_id}_rthink_{chunk_idx}",
     )
     if raw:
