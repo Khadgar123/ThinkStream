@@ -903,18 +903,6 @@ def test_recall_time_range_uses_support_chunks():
     assert fn({}, snap2) == "0-2"
 
 
-def test_recall_quality_reward_uses_hit_rate():
-    """_compute_recall_quality_reward folds in retrieval hit-rate when
-    support_chunks + returned_chunks are available."""
-    src = (ROOT / "thinkstream" / "trainer" / "grpo.py").read_text()
-    assert "def _compute_recall_hit_rate(" in src
-    assert "returned_chunks_per_chunk" in src
-    block = src[src.find("def _compute_recall_quality_reward("):
-                src.find("def _compute_format_reward(")]
-    assert "_compute_recall_hit_rate(" in block
-    assert "0.5 * query_quality + 0.5 * hit_rate" in block
-
-
 def test_recall_hit_rate_helper_correctness():
     """_compute_recall_hit_rate returns |union ∩ gold|/|gold|, None when
     either input is empty/missing."""
@@ -963,3 +951,97 @@ def test_eval_default_retriever_is_hybrid():
         assert m, f"{f}: --retriever flag with default not found"
         assert m.group(1) == "hybrid", \
             f"{f}: default retriever should be 'hybrid', got {m.group(1)!r}"
+
+
+def test_reward_keys_split_recall_signal():
+    """REWARD_DICT_KEYS must list recall_quality, recall_hit_rate,
+    range_tightness as three separate columns. Weights must sum to ~1.0
+    and put correctness as the largest single weight."""
+    src = (ROOT / "thinkstream" / "trainer" / "gdpo_advantage.py").read_text()
+    keys_block = src[src.find("REWARD_DICT_KEYS"):
+                     src.find("# Per-reward weights")]
+    for k in ("recall_quality", "recall_hit_rate", "range_tightness"):
+        assert f'"{k}"' in keys_block, f"REWARD_DICT_KEYS missing {k}"
+    # Weights map exists for every key
+    weights_block = src[src.find("DEFAULT_REWARD_WEIGHTS:"):
+                        src.find("def per_reward_group_norm(")]
+    for k in ("correctness", "recall_quality", "recall_hit_rate",
+              "range_tightness", "format", "timing", "silent_quality",
+              "overflow_pen"):
+        assert f'"{k}":' in weights_block, f"weights missing {k}"
+
+
+def test_recall_quality_reward_no_longer_mixes_hit_rate():
+    """After v11.3 split, _compute_recall_quality_reward must NOT mix
+    hit_rate (that lives in its own column now)."""
+    src = (ROOT / "thinkstream" / "trainer" / "grpo.py").read_text()
+    block = src[src.find("def _compute_recall_quality_reward("):
+                src.find("def _parse_query_time_range(")]
+    assert "0.5 * query_quality + 0.5 * hit_rate" not in block, \
+        "recall_quality must not mix hit_rate after the v11.3 column split"
+    # And the helper for range_tightness must exist
+    assert "def _compute_range_tightness_reward(" in src
+    assert "def _parse_query_time_range(" in src
+
+
+def test_range_tightness_reward_correctness():
+    """_compute_range_tightness_reward = (1 - range_width/duration) × coverage,
+    None when no query has time_range / no support / no coverage."""
+    h = _load_helpers_from_source(
+        str(ROOT / "thinkstream" / "trainer" / "grpo.py"),
+        ["_parse_query_time_range", "_compute_range_tightness_reward"],
+        extra_globals={"json": __import__("json")},
+    )
+    fn = h["_compute_range_tightness_reward"]
+    parse_q = h["_parse_query_time_range"]
+    # Tight range covering all support → high score
+    chunk_texts = ['<query>{"query": "x", "time_range": "10-20"}</query>']
+    # support [5,6,7] in seconds → [10-12, 12-14, 14-16] all in [10,20]
+    score = fn(chunk_texts, [5, 6, 7], video_duration=100.0, chunk_sec=2.0)
+    assert score is not None
+    # range_width=10, duration=100 → tightness=0.9, coverage=1.0 → 0.9
+    assert abs(score - 0.9) < 1e-6
+    # No support → None
+    assert fn(chunk_texts, None, 100.0) is None
+    # No time_range in query → None
+    chunk_texts_no_tr = ['<query>{"query": "x"}</query>']
+    assert fn(chunk_texts_no_tr, [5, 6], 100.0) is None
+    # Range that misses support entirely → None (don't reward width-only)
+    chunk_texts_miss = ['<query>{"query": "x", "time_range": "50-60"}</query>']
+    assert fn(chunk_texts_miss, [5, 6, 7], 100.0) is None
+
+
+def test_streaming_eval_records_query_schema_and_compress_quality():
+    """walk_and_score must record query schema (with_time_range vs
+    keyword_only), partial-compress count, and chunk-revisit count so
+    the SFT/RL eval reports can show schema-split hit rates."""
+    src = (ROOT / "scripts" / "eval" / "test_set_agent.py").read_text()
+    # Per-recall schema
+    assert '"schema": schema' in src
+    assert '"hit_fraction": hit_frac' in src
+    # Partial compress detection
+    assert "n_partial_compress" in src
+    assert "COMPRESS_RANGE_MIN" in src
+    # Chunk revisit
+    assert "n_chunks_revisited" in src
+    assert "compress_chunk_count" in src
+    # Block 3 in the report
+    assert "RECALL SCHEMA / COMPRESS QUALITY" in src
+
+
+def test_make_retriever_accepts_agent_model():
+    """make_retriever's signature exposes agent_model + agent_processor
+    so the hybrid retriever can reuse Qwen3-VL's vision tower instead of
+    loading SigLIP."""
+    src = (ROOT / "thinkstream" / "model" / "retrieval.py").read_text()
+    sig_block = src[src.find("def make_retriever("):
+                    src.find("    if kind == \"bm25\"")]
+    assert "agent_model" in sig_block
+    assert "agent_processor" in sig_block
+    # And the helper that uses them
+    assert "def _make_qwen3vl_encoders(" in src
+    # Eval scripts expose --use_agent_vision
+    for f in ("scripts/eval/ovo/eval_full.py",
+              "scripts/eval/test_set_agent.py"):
+        s = (ROOT / f).read_text()
+        assert '"--use_agent_vision"' in s, f"{f}: --use_agent_vision flag missing"

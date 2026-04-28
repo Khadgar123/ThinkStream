@@ -17,23 +17,41 @@ from typing import Dict, List
 import torch
 
 
-# v11 reward keys (must match the column order of rewards_masks emitted by
+# Reward keys (must match the column order of rewards_masks emitted by
 # calc_rewards in grpo.py).
+#
+# v11.3: split recall signal into three independent columns so per-reward
+# group-norm can normalise each separately. The previous mixed
+# `recall_quality = outcome × (0.5×query_quality + 0.5×hit_rate)` collapsed
+# two signals with different variance profiles into one column, which
+# under-weighted the smaller-magnitude one after normalisation.
+#
+#   recall_quality   — JSON well-formed + no answer leakage (always applicable
+#                      when recall fired)
+#   recall_hit_rate  — |returned ∩ support| / |support| (only when both sides
+#                      known; sparse)
+#   range_tightness  — encourages a narrow + accurate time_range (sparse;
+#                      only when recall used time_range AND hit_rate≥thresh)
 REWARD_DICT_KEYS: tuple = (
     "format", "correctness", "timing", "silent_quality",
-    "recall_quality", "overflow_pen",
+    "recall_quality", "recall_hit_rate", "range_tightness", "overflow_pen",
 )
 
 # Per-reward weights AFTER per-reward group-norm (so weights control relative
-# pull, not magnitude). See plan rationale in
-# /Users/hzh/.claude/plans/fuzzy-plotting-valiant.md.
+# pull, not magnitude). recall_quality + recall_hit_rate + range_tightness
+# sum to 0.15 — slightly bumped from the old 0.10 for `recall_quality` because
+# the three sub-signals together represent a more important objective post-v9.4.2
+# (multimodal recall + dual schema). The 0.05 came out of a balanced pull from
+# format / timing / silent_quality — see plan in fuzzy-plotting-valiant.md.
 DEFAULT_REWARD_WEIGHTS: Dict[str, float] = {
-    "correctness":    0.30,   # primary outcome
-    "silent_quality": 0.20,   # streaming-specific, never gated
-    "timing":         0.20,   # RL's main lever
-    "recall_quality": 0.10,   # recall-query format + leakage
-    "format":         0.10,   # soft component (was hard gate)
-    "overflow_pen":   0.10,   # sparse compress-timing signal (Memex pattern)
+    "correctness":     0.30,   # primary outcome
+    "silent_quality":  0.18,   # was 0.20
+    "timing":          0.18,   # was 0.20
+    "recall_quality":  0.05,   # query JSON format + leakage
+    "recall_hit_rate": 0.07,   # |returned ∩ support| / |support|
+    "range_tightness": 0.03,   # narrow + accurate time_range
+    "format":          0.09,   # was 0.10
+    "overflow_pen":    0.10,   # sparse compress-timing (Memex pattern)
 }
 
 

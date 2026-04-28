@@ -253,6 +253,65 @@ def _make_siglip_encoders(model_path: str, device: str):
     return encode_image, encode_text
 
 
+def _make_qwen3vl_encoders(model, processor, device: Optional[str] = None):
+    """Reuse the Qwen3-VL agent's own vision tower for dense retrieval.
+
+    Saves loading a separate SigLIP (~600MB + slightly different visual
+    distribution from what the agent saw at training time). The visual
+    embeddings come from the same encoder that produced the visual_window
+    features the agent was conditioned on, so retrieval similarity is in
+    the same semantic space the agent uses to reason.
+
+    Text encoding is handled by the LM's own embedding layer pooled —
+    less semantic than SigLIP's contrastive text encoder but cheap and
+    aligned with the agent's vocabulary. For tasks where text-vision
+    alignment really matters, SigLIP still wins; this path is for
+    deployment scenarios where loading a second model isn't worth the
+    accuracy delta.
+
+    Returns (encode_image, encode_text).
+    """
+    if device is None:
+        device = next(model.parameters()).device
+
+    visual = getattr(model, "visual", None) or getattr(model, "vision_tower", None)
+    if visual is None:
+        raise ValueError(
+            "Cannot find vision tower on model — expected `visual` or "
+            "`vision_tower` attribute. Pass a SigLIP path with "
+            "make_retriever(kind='hybrid') instead."
+        )
+
+    @torch.no_grad()
+    def encode_image(frames):
+        # frames: list of HWC numpy uint8 arrays. Run them through the
+        # processor's image branch then the visual tower; pool to one
+        # vector per frame.
+        from PIL import Image
+        imgs = [Image.fromarray(f) for f in frames]
+        inputs = processor(images=imgs, return_tensors="pt").to(device)
+        pixel_values = inputs.get("pixel_values")
+        # Qwen3-VL's visual tower returns (n_patches, hidden) per image
+        # already merged. Run sequentially to keep memory predictable.
+        out = []
+        for pv in pixel_values:
+            feats = visual(pv.unsqueeze(0))   # (1, T, D) or (T, D)
+            if feats.dim() == 3:
+                feats = feats.squeeze(0)
+            out.append(feats.mean(dim=0))     # (D,)
+        return torch.stack(out, dim=0)        # (n_frames, D)
+
+    @torch.no_grad()
+    def encode_text(text):
+        # Lightweight pooling: token embeddings from the LM's input
+        # embedding table, then mean-pool. Same dtype/device as visual.
+        tok = processor.tokenizer(text, return_tensors="pt").to(device)
+        emb = model.get_input_embeddings()(tok["input_ids"])  # (1, T, D)
+        return emb.mean(dim=1)                                # (1, D)
+
+    return encode_image, encode_text
+
+
 def make_retriever(
     kind: str = "bm25",
     *,
@@ -260,16 +319,26 @@ def make_retriever(
     alpha: float = 0.5,
     max_results: int = 4,
     device: str = "cuda",
+    agent_model=None,
+    agent_processor=None,
 ) -> Retriever:
     """Build a Retriever instance.
 
     kind="bm25"   stateless, no extra model. Existing v11 baseline.
-    kind="hybrid" loads SigLIP, runs BM25 + dense visual.
+    kind="hybrid" runs BM25 + dense visual. Visual encoder source:
+        - if agent_model + agent_processor provided → reuse the agent's
+          own vision tower (no extra model load)
+        - else → load SigLIP from siglip_path
     """
     if kind == "bm25":
         return BM25Retriever(max_results=max_results)
     if kind == "hybrid":
-        ei, et = _make_siglip_encoders(siglip_path, device)
+        if agent_model is not None and agent_processor is not None:
+            ei, et = _make_qwen3vl_encoders(
+                agent_model, agent_processor, device=device,
+            )
+        else:
+            ei, et = _make_siglip_encoders(siglip_path, device)
         return HybridRetriever(
             encode_image_fn=ei,
             encode_text_fn=et,

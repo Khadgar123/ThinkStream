@@ -223,16 +223,29 @@ def run_agent(loop, video_path, ask_chunks, max_chunk, telemetry=None):
         if telemetry is not None:
             ct = result.get("compress_telemetry")
             if ct:
+                from thinkstream.model.agent_loop import COMPRESS_RANGE_MIN
+                compressed_chunks = ct.get("compressed_chunks") or []
                 telemetry.setdefault("compress_events", []).append({
                     "chunk": chunk_idx,
                     "thinks_count": ct["thinks_count_at_trigger"],
-                    "n_compressed": len(ct["compressed_chunks"]),
+                    "n_compressed": len(compressed_chunks),
+                    "compressed_chunks": list(compressed_chunks),
                     "succeeded": bool(result.get("compress_succeeded")),
+                    "partial": (0 < len(compressed_chunks) < COMPRESS_RANGE_MIN),
                 })
+                # Track per-chunk compression count (revisit detection)
+                rev = telemetry.setdefault("compress_chunk_count", {})
+                for c in compressed_chunks:
+                    rev[int(c)] = rev.get(int(c), 0) + 1
             if result.get("action") == "recall":
+                payload = result.get("payload") or {}
+                q = payload.get("query") or {}
+                schema = "with_time_range" if isinstance(q, dict) and q.get("time_range") \
+                    else "keyword_only"
                 telemetry.setdefault("recall_events", []).append({
                     "chunk": chunk_idx,
                     "returned_chunks": list(result.get("recall_returned_chunks", [])),
+                    "schema": schema,
                 })
             # Per-step extras (always recorded if available)
             if result.get("prompt_text_token_count") is not None:
@@ -649,6 +662,11 @@ def main():
     p.add_argument("--retriever", default="hybrid", choices=["bm25", "hybrid"])
     p.add_argument("--alpha", type=float, default=0.5)
     p.add_argument("--siglip_path", default="google/siglip-base-patch16-224")
+    p.add_argument("--use_agent_vision", action="store_true",
+                   help="For hybrid retriever, use the agent model's own vision "
+                        "tower instead of loading SigLIP. Saves ~600MB and keeps "
+                        "the embedding space aligned with what the agent saw at "
+                        "training time. Default off (uses SigLIP) for stability.")
     p.add_argument("--compress_mode", default="system", choices=["system", "self"])
     p.add_argument("--max_results", type=int, default=4)
     p.add_argument("--max_new_tokens", type=int, default=128)
@@ -701,10 +719,13 @@ def main():
         special_tokens=True,
     )
 
-    print(f"Building retriever: kind={args.retriever}, alpha={args.alpha}")
+    print(f"Building retriever: kind={args.retriever}, alpha={args.alpha}, "
+          f"vision_source={'agent' if args.use_agent_vision else 'siglip'}")
     retriever = make_retriever(
         kind=args.retriever, siglip_path=args.siglip_path,
         alpha=args.alpha, max_results=args.max_results, device="cuda",
+        agent_model=model if args.use_agent_vision else None,
+        agent_processor=processor if args.use_agent_vision else None,
     )
 
     loop = make_loop(model, processor, tokenizer, model_type, retriever,

@@ -223,6 +223,9 @@ def walk_and_score(sample, loop, video_path, ask_chunk,
     n_compress_attempts = 0       # = how many times the trigger fired
     n_compress_succeeded = 0       # subset where model's <summary> was valid
 
+    # Compress-quality telemetry (the additional metrics)
+    compress_chunk_count: Dict[int, int] = {}   # chunk_idx → times rolled into a summary
+    n_partial_compress = 0  # events where < COMPRESS_RANGE_MIN thinks were compressed
     n_step_errors = 0  # bounded step errors (e.g. video EOF in lenient mode)
     for chunk_idx in range(max_chunk + 1):
         q = question if chunk_idx == ask_chunk else None
@@ -247,10 +250,21 @@ def walk_and_score(sample, loop, video_path, ask_chunk,
         ct = result.get("compress_telemetry")
         if ct:
             compress_thinks_at_trigger.append(ct["thinks_count_at_trigger"])
-            compress_chunks_per_event.append(len(ct["compressed_chunks"]))
+            compressed_chunks = ct.get("compressed_chunks") or []
+            compress_chunks_per_event.append(len(compressed_chunks))
             n_compress_attempts += 1
             if result.get("compress_succeeded"):
                 n_compress_succeeded += 1
+            # Track which chunks have been rolled into a summary (multi-count
+            # = the chunk has been re-compressed via merge in compressed_segments).
+            for c in compressed_chunks:
+                compress_chunk_count[int(c)] = compress_chunk_count.get(int(c), 0) + 1
+            # Partial compress: model's <summary> covered fewer chunks than
+            # the trigger's range. Symptom of summary writing the wrong
+            # time_range — bookkeeping here so streaming eval can flag it.
+            from thinkstream.model.agent_loop import COMPRESS_RANGE_MIN
+            if 0 < len(compressed_chunks) < COMPRESS_RANGE_MIN:
+                n_partial_compress += 1
         # Per-step extras
         if result.get("prompt_text_token_count") is not None:
             prompt_text_tokens_per_step.append(result["prompt_text_token_count"])
@@ -264,11 +278,23 @@ def walk_and_score(sample, loop, video_path, ask_chunk,
 
         if action == "recall":
             returned = result.get("recall_returned_chunks", []) or []
+            # Detect query schema (with_time_range vs keyword_only) and
+            # compute per-recall hit fraction (|returned ∩ gold| / |gold|).
+            q = (payload or {}).get("query") or {}
+            schema = "with_time_range" if isinstance(q, dict) and q.get("time_range") \
+                else "keyword_only"
+            if support_set:
+                returned_set = set(returned)
+                hit_frac = len(returned_set & support_set) / max(len(support_set), 1)
+            else:
+                hit_frac = None
             recall_events.append({
                 "chunk_idx": chunk_idx,
                 "returned_chunks": list(returned),
                 "hit_support": (bool(support_set & set(returned))
                                 if support_set else None),
+                "schema": schema,
+                "hit_fraction": hit_frac,
             })
             final_action = result.get("final_action") or "recall_then_silent"
             final_payload = result.get("final_payload") or {}
@@ -324,6 +350,10 @@ def walk_and_score(sample, loop, video_path, ask_chunk,
         "n_steps": len(actions),
         "n_compress_attempts": n_compress_attempts,
         "n_compress_succeeded": n_compress_succeeded,
+        # Compress-quality extras
+        "compress_chunk_count": dict(compress_chunk_count),
+        "n_chunks_revisited": sum(1 for c in compress_chunk_count.values() if c > 1),
+        "n_partial_compress": n_partial_compress,
     }
 
 
@@ -342,6 +372,9 @@ def main():
     p.add_argument("--retriever", default="hybrid", choices=["bm25", "hybrid"])
     p.add_argument("--alpha", type=float, default=0.5)
     p.add_argument("--siglip_path", default="google/siglip-base-patch16-224")
+    p.add_argument("--use_agent_vision", action="store_true",
+                   help="Reuse the agent model's own vision tower for hybrid "
+                        "retrieval (no SigLIP). Default off.")
     p.add_argument("--compress_mode", default="system",
                    choices=["system", "self"])
     p.add_argument("--max_results", type=int, default=4)
@@ -396,10 +429,13 @@ def main():
         special_tokens=True,
     )
 
-    print(f"Building retriever: kind={args.retriever}, alpha={args.alpha}")
+    print(f"Building retriever: kind={args.retriever}, alpha={args.alpha}, "
+          f"vision_source={'agent' if args.use_agent_vision else 'siglip'}")
     retriever = make_retriever(
         kind=args.retriever, siglip_path=args.siglip_path,
         alpha=args.alpha, max_results=args.max_results, device="cuda",
+        agent_model=model if args.use_agent_vision else None,
+        agent_processor=processor if args.use_agent_vision else None,
     )
 
     # v9.4.2: SFT-aligned pixel budget (see eval_full.py for rationale —
@@ -454,6 +490,15 @@ def main():
             "total_steps": 0,
             "n_compress_attempts": 0,
             "n_compress_succeeded": 0,
+            # Recall — per-schema split + fractional hit-rate distribution
+            "n_recall_schema_with_time_range": 0,
+            "n_recall_schema_with_time_range_hit": 0,
+            "n_recall_schema_keyword_only": 0,
+            "n_recall_schema_keyword_only_hit": 0,
+            "recall_hit_fractions": [],
+            # Compress quality
+            "n_chunks_revisited": 0,
+            "n_partial_compress": 0,
         }
     by = defaultdict(_empty_bucket)
 
@@ -503,6 +548,16 @@ def main():
                         bucket["n_recall_with_support_known"] += 1
                         if ev["hit_support"]:
                             bucket["n_recall_hit_support"] += 1
+                        # Per-schema split: lets us see whether
+                        # with_time_range queries actually retrieve
+                        # better than keyword_only ones (the whole point
+                        # of training the dual schema).
+                        sch = ev.get("schema", "?")
+                        bucket[f"n_recall_schema_{sch}"] += 1
+                        if ev["hit_support"]:
+                            bucket[f"n_recall_schema_{sch}_hit"] += 1
+                        if ev.get("hit_fraction") is not None:
+                            bucket["recall_hit_fractions"].append(ev["hit_fraction"])
                 # v9.4.2 extras
                 bucket["prompt_tokens_per_step"].extend(walk["prompt_text_tokens_per_step"])
                 bucket["think_tokens_per_step"].extend(walk["think_tokens_per_step"])
@@ -510,6 +565,9 @@ def main():
                 bucket["total_steps"] += walk["n_steps"]
                 bucket["n_compress_attempts"] += walk["n_compress_attempts"]
                 bucket["n_compress_succeeded"] += walk["n_compress_succeeded"]
+                # Compress-quality extras
+                bucket["n_chunks_revisited"] += walk["n_chunks_revisited"]
+                bucket["n_partial_compress"] += walk["n_partial_compress"]
             results.append({
                 "idx": i,
                 "sample_id": s.get("sample_id") or s.get("trajectory_id"),
@@ -599,6 +657,32 @@ def main():
               f"{pt['p95']:>7.0f}  {pt['max']:>7.0f}  "
               f"{th['avg']:>7.1f}  {th['p95']:>7.1f}  {fmt_err_pct:>8.1f}%")
 
+    # Block 3: recall schema split + compress quality
+    print()
+    print("=" * 80)
+    print("RECALL SCHEMA / COMPRESS QUALITY")
+    print("=" * 80)
+    header3 = (f"{'kind':<10}  {'rec_w_tr':>8}  {'hit_w_tr':>8}  "
+               f"{'rec_kw':>6}  {'hit_kw':>6}  {'hit_frac':>8}  "
+               f"{'cmp_par':>7}  {'revisit':>7}")
+    print(header3); print("-" * len(header3))
+    for k in sorted(by.keys()):
+        v = by[k]
+        if v["n"] == 0:
+            continue
+        rwt = v["n_recall_schema_with_time_range"]
+        hwt = (v["n_recall_schema_with_time_range_hit"] / rwt
+               if rwt else float("nan"))
+        rkw = v["n_recall_schema_keyword_only"]
+        hkw = (v["n_recall_schema_keyword_only_hit"] / rkw
+               if rkw else float("nan"))
+        frac = _stats(v["recall_hit_fractions"])["avg"] if v["recall_hit_fractions"] else float("nan")
+        hwt_s = f"{hwt:>8.2f}" if hwt == hwt else "       —"
+        hkw_s = f"{hkw:>6.2f}" if hkw == hkw else "     —"
+        frac_s = f"{frac:>8.2f}" if frac == frac else "       —"
+        print(f"{k:<10}  {rwt:>8d}  {hwt_s}  {rkw:>6d}  {hkw_s}  {frac_s}  "
+              f"{v['n_partial_compress']:>7d}  {v['n_chunks_revisited']:>7d}")
+
     print()
     print("Legend:")
     print("  cmp/s    = avg compress events per sample")
@@ -614,6 +698,13 @@ def main():
     print("             pt_max should stay below model_max_length - ~5000 visual budget")
     print("  th_*     = <think> token count per step (SFT trained 25-130; high = chatty drift)")
     print("  fmt_err% = format violation rate (no <think>/<action>, malformed payload)")
+    print("  rec_w_tr = # recalls whose query carried a time_range")
+    print("  hit_w_tr = hit-rate among with_time_range queries")
+    print("  rec_kw   = # recalls whose query was keyword-only")
+    print("  hit_kw   = hit-rate among keyword-only queries")
+    print("  hit_frac = avg |returned ∩ gold| / |gold| across all recalls")
+    print("  cmp_par  = # compress events where summary covered <COMPRESS_RANGE_MIN chunks")
+    print("  revisit  = # chunks that were rolled into a summary >1 time (re-compression)")
     print(f"\nSkipped: {skipped}")
 
     out = args.out or (

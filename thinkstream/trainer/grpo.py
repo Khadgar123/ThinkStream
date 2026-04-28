@@ -214,73 +214,124 @@ def _compute_recall_quality_reward(
     chunk_texts: List[str],
     gt_answer: str,
     model_answer: Optional[str],
-    returned_chunks_per_chunk: Optional[List[List[int]]] = None,
-    support_chunks: Optional[List[int]] = None,
 ) -> float:
-    """Recall quality: was recall well-used, well-formed, and necessary?
+    """Query format quality (JSON well-formed + no answer leakage).
 
-    Components:
-      query_quality   ∈ [0.2, 1.0]   — JSON well-formed, no answer leakage
-      hit_rate        ∈ [0, 1]       — |returned ∩ support| / |support|
-      outcome         scaling         — recall→correct = 1.0× ; recall→wrong = 0.5×
+    Final ∈ [-0.3, 1.0]:
+      recall fired → outcome × query_quality
+        outcome = 1.0 if response correct, else 0.5
+        query_quality = 1.0 (default), -0.3 if no `query`, -0.5 if leak,
+                        0.2 if JSON failed
+      no recall + correct response: 0.8
+      no recall + wrong response  : 0.0
+      silent-only sample + recall : -0.3   (unnecessary)
+      silent-only sample no recall: 1.0
 
-    Final = outcome × (0.5 × query_quality + 0.5 × hit_rate)  when recall fired
-                                                              and hit_rate available
-          = outcome × query_quality                           when hit_rate missing
-                                                              (legacy / silent-only)
-
-    Also penalises:
-      unnecessary recall (silent-only sample): -0.3
-      no recall + wrong response                : 0.0
-      no recall + correct response              : 0.8
+    Hit-rate and range-tightness are now separate reward columns
+    (`recall_hit_rate`, `range_tightness`) so per-reward group-norm can
+    normalise each independently.
     """
     used_recall = "recall" in predicted_actions
-
     if not gt_answer:
-        # Silent-only sample — recall is unnecessary
         return -0.3 if used_recall else 1.0
-
-    if used_recall:
-        # Check query format quality
-        query_quality = 0.5  # default
-        for text in chunk_texts:
-            query_match = re.search(r'<query>(.*?)</query>', text, re.DOTALL)
-            if query_match:
-                try:
-                    q = json.loads(query_match.group(1))
-                    has_query = bool(q.get("query", ""))
-                    # time_range is now optional (keyword_only schema is
-                    # 30% of SFT). Don't penalise its absence — the
-                    # retriever falls back to the full archive.
-                    query_text = q.get("query", "").lower()
-                    answer_in_query = gt_answer.lower() in query_text if gt_answer else False
-                    query_quality = 1.0
-                    if not has_query:
-                        query_quality -= 0.3
-                    if answer_in_query:
-                        query_quality -= 0.5  # answer leakage penalty
-                except (json.JSONDecodeError, ValueError):
-                    query_quality = 0.2  # bad JSON
-
-        # Retrieval hit-rate (sparse signal — drives the model to pick
-        # discriminative keywords / correct time_range).
-        hit_rate = _compute_recall_hit_rate(
-            returned_chunks_per_chunk or [], support_chunks or []
-        )
-        if hit_rate is not None:
-            quality = 0.5 * query_quality + 0.5 * hit_rate
-        else:
-            quality = query_quality
-
-        gt_clean = _extract_literal_answer(gt_answer) if gt_answer else None
-        answer_correct = (model_answer == gt_clean) if gt_clean and model_answer else False
-        return quality if answer_correct else quality * 0.5
-    else:
-        # No recall used
+    if not used_recall:
         gt_clean = _extract_literal_answer(gt_answer) if gt_answer else None
         if gt_clean and model_answer == gt_clean:
-            return 0.8  # correct without recall — good
-        return 0.0  # wrong without recall — maybe should have recalled
+            return 0.8
+        return 0.0
+
+    query_quality = 0.5  # default when no <query> tag found at all
+    for text in chunk_texts:
+        query_match = re.search(r'<query>(.*?)</query>', text, re.DOTALL)
+        if query_match:
+            try:
+                q = json.loads(query_match.group(1))
+                has_query = bool(q.get("query", ""))
+                query_text = q.get("query", "").lower()
+                answer_in_query = gt_answer.lower() in query_text if gt_answer else False
+                query_quality = 1.0
+                if not has_query:
+                    query_quality -= 0.3
+                if answer_in_query:
+                    query_quality -= 0.5
+            except (json.JSONDecodeError, ValueError):
+                query_quality = 0.2  # bad JSON
+
+    gt_clean = _extract_literal_answer(gt_answer) if gt_answer else None
+    answer_correct = (model_answer == gt_clean) if gt_clean and model_answer else False
+    return query_quality if answer_correct else query_quality * 0.5
+
+
+def _parse_query_time_range(chunk_texts: List[str]):
+    """Extract the LAST <query>...</query>'s time_range from rollout texts.
+
+    Returns (t_start, t_end) tuple or None when no query / no time_range /
+    malformed. Only the last query is used because earlier ones may belong
+    to prior recall events whose results were discarded.
+    """
+    last = None
+    for text in chunk_texts:
+        for m in re.finditer(r'<query>(.*?)</query>', text, re.DOTALL):
+            try:
+                q = json.loads(m.group(1))
+            except (json.JSONDecodeError, ValueError):
+                continue
+            tr = q.get("time_range")
+            if not tr:
+                continue
+            if isinstance(tr, str) and "-" in tr:
+                try:
+                    a, b = tr.split("-", 1)
+                    last = (float(a), float(b))
+                except (ValueError, AttributeError):
+                    continue
+            elif isinstance(tr, (list, tuple)) and len(tr) == 2:
+                try:
+                    last = (float(tr[0]), float(tr[1]))
+                except (TypeError, ValueError):
+                    continue
+    return last
+
+
+def _compute_range_tightness_reward(
+    chunk_texts: List[str],
+    support_chunks: Optional[List[int]],
+    video_duration: float,
+    chunk_sec: float = 2.0,
+) -> Optional[float]:
+    """Reward narrow + accurate time_range.
+
+    Only fires when (a) the rollout's last <query> had a time_range, (b)
+    we know support_chunks, and (c) the range covers ≥1 support chunk
+    (no point rewarding "tight" if it missed). Otherwise returns None
+    (mask=0 in the GDPO column).
+
+    score = (1 - range_width / video_duration) × coverage
+    where coverage = |support ∩ range| / |support|.
+
+    A range covering all of support but spanning the whole video gets
+    score ≈ 0; a range exactly matching support gets close to 1.
+    """
+    if not support_chunks or video_duration <= 0:
+        return None
+    tr = _parse_query_time_range(chunk_texts)
+    if tr is None:
+        return None
+    t0, t1 = (min(tr), max(tr))
+    range_width = max(0.0, t1 - t0)
+    if range_width <= 0:
+        return None
+    # support coverage by the range
+    support_set = set(int(c) for c in support_chunks)
+    covered = sum(
+        1 for c in support_set
+        if (c * chunk_sec + chunk_sec) > t0 and (c * chunk_sec) < t1
+    )
+    coverage = covered / max(len(support_set), 1)
+    if coverage <= 0:
+        return None  # missed entirely — not worth a tightness signal
+    tightness = max(0.0, 1.0 - range_width / video_duration)
+    return tightness * coverage
 
 
 def _compute_format_reward(chunk_texts: List[str], agent_mode: bool = False) -> float:
@@ -965,7 +1016,8 @@ def calc_rewards(
                 # Silent-only sample: no timing signal
                 time_r = 0.0
 
-            # ─── R_recall_quality (sparse, applies only if rollout recalled) ───
+            # ─── R_recall_quality / R_recall_hit_rate / R_range_tightness ───
+            # Three separate sparse signals — all gated on did_recall.
             # Per-chunk retriever output for this gen — empty list when
             # the chunk's action wasn't recall.
             returned_per_chunk = [
@@ -975,9 +1027,16 @@ def calc_rewards(
                 for cr in chunk_results
             ]
             recall_r = _compute_recall_quality_reward(
-                predicted_actions, chunk_texts, gt_answer, model_answer,
-                returned_chunks_per_chunk=returned_per_chunk,
-                support_chunks=support_chunks,
+                predicted_actions, chunk_texts, gt_answer, model_answer
+            )
+            hit_rate_r = _compute_recall_hit_rate(
+                returned_per_chunk, support_chunks
+            )
+            # Estimate video_duration from the last chunk window we saw.
+            video_duration = (chunk_results[-1].get("window_end", 0.0)
+                              if chunk_results else 0.0)
+            range_tight_r = _compute_range_tightness_reward(
+                chunk_texts, support_chunks, video_duration,
             )
 
             # ─── R_silent_quality (dense, always applies — streaming-specific) ───
@@ -993,6 +1052,12 @@ def calc_rewards(
             all_rewards["timing"].append(time_r)
             all_rewards["silent_quality"].append(silent_r)
             all_rewards["recall_quality"].append(recall_r)
+            all_rewards["recall_hit_rate"].append(
+                hit_rate_r if hit_rate_r is not None else 0.0
+            )
+            all_rewards["range_tightness"].append(
+                range_tight_r if range_tight_r is not None else 0.0
+            )
             all_rewards["overflow_pen"].append(overflow_r)
 
             # Per-reward applicability masks (downstream GDPO node masks NaN)
@@ -1003,6 +1068,12 @@ def calc_rewards(
             )
             all_masks["silent_quality"].append(1.0)
             all_masks["recall_quality"].append(1.0 if did_recall else 0.0)
+            all_masks["recall_hit_rate"].append(
+                1.0 if (did_recall and hit_rate_r is not None) else 0.0
+            )
+            all_masks["range_tightness"].append(
+                1.0 if (did_recall and range_tight_r is not None) else 0.0
+            )
             all_masks["overflow_pen"].append(1.0)
 
     # Logging-only weighted sum (real advantage is computed in
