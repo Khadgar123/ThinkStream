@@ -50,6 +50,7 @@ class WeightedSFTTrainer(Trainer):
         super().__init__(*args, **kwargs)
         self._audit_step = self._init_audit_writers()
         self._reset_eval_accumulator()
+        self._reset_train_metrics()
 
     def _init_audit_writers(self):
         """Open <audit_dir>/sft_step.jsonl + sft_sample.jsonl. Rank-0 only."""
@@ -169,6 +170,25 @@ class WeightedSFTTrainer(Trainer):
                 import logging as _logging
                 _logging.getLogger(__name__).debug("eval argmax accum skipped: %s", e)
 
+        # ── Train-time per-class metrics accumulation (flushed in log()) ──
+        # Tracks per-action-type loss, sample weight, and teacher-forced
+        # action argmax accuracy so wandb shows whether class balancing is
+        # working AND whether the action keyword is being predicted
+        # correctly per class (catches compress collapse early).
+        if self.model.training and sample_meta:
+            try:
+                self._accumulate_train_metrics(
+                    per_sample_loss=per_sample_loss_for_audit,
+                    sample_weights=sample_weights,
+                    sample_meta=sample_meta,
+                    eval_meta=eval_meta,
+                    logits=outputs.logits if eval_meta is not None else None,
+                    input_ids=inputs.get("input_ids") if eval_meta is not None else None,
+                )
+            except Exception as e:
+                import logging as _logging
+                _logging.getLogger(__name__).debug("train metrics accum skipped: %s", e)
+
         # ── Audit log: per-step aggregate + per-sample breakdown ──
         # Skip during eval — model.training=False means HF Trainer is in
         # evaluate(); writing those rows would interleave eval-loss into
@@ -273,11 +293,34 @@ class WeightedSFTTrainer(Trainer):
 
     def _reset_eval_accumulator(self):
         self._eval_acc = {
-            "action_match": defaultdict(int),
-            "action_total": defaultdict(int),
-            "post_match":   defaultdict(int),
-            "post_total":   defaultdict(int),
+            "action_match":  defaultdict(int),
+            "action_total":  defaultdict(int),
+            "post_match":    defaultdict(int),
+            "post_total":    defaultdict(int),
+            # v11.3: per-token argmax counts inside <summary>/<query> spans.
+            # Compress range coverage = summary tokens correctly predicted /
+            # total summary tokens (teacher-forced). Same idea for recall query.
+            "summary_match": defaultdict(int),
+            "summary_total": defaultdict(int),
+            "query_match":   defaultdict(int),
+            "query_total":   defaultdict(int),
         }
+
+    @staticmethod
+    def _argmax_match_at(preds, input_ids, b, positions, L) -> tuple:
+        """Return (n_match, n_total) for teacher-forced argmax over positions.
+
+        logits[p-1] predicts token at position p, so we compare preds[b, p-1]
+        against input_ids[b, p]. Positions outside [1, L) are skipped.
+        """
+        m = 0; n = 0
+        for p in positions:
+            if p <= 0 or p >= L:
+                continue
+            n += 1
+            if preds[b, p - 1].item() == int(input_ids[b, p].item()):
+                m += 1
+        return m, n
 
     def _accumulate_eval_argmax(self, logits, input_ids, eval_meta) -> None:
         """Teacher-forced argmax match at known structural positions."""
@@ -295,7 +338,6 @@ class WeightedSFTTrainer(Trainer):
                     self._eval_acc["action_total"]["_all"] += 1
                     all_match = True
                     for p in kw_positions:
-                        # logits[p-1] predicts token at position p
                         if p <= 0 or p >= L:
                             all_match = False
                             break
@@ -314,6 +356,24 @@ class WeightedSFTTrainer(Trainer):
                         self._eval_acc["post_match"][stype] += 1
                         self._eval_acc["post_match"]["_all"] += 1
 
+                # Summary span (compress samples) — token-level argmax acc.
+                summary_positions = meta.get("summary_span_positions") or []
+                if summary_positions:
+                    m, n = self._argmax_match_at(preds, input_ids, b, summary_positions, L)
+                    self._eval_acc["summary_total"][stype] += n
+                    self._eval_acc["summary_total"]["_all"] += n
+                    self._eval_acc["summary_match"][stype] += m
+                    self._eval_acc["summary_match"]["_all"] += m
+
+                # Query span (recall_query samples) — token-level argmax acc.
+                query_positions = meta.get("query_span_positions") or []
+                if query_positions:
+                    m, n = self._argmax_match_at(preds, input_ids, b, query_positions, L)
+                    self._eval_acc["query_total"][stype] += n
+                    self._eval_acc["query_total"]["_all"] += n
+                    self._eval_acc["query_match"][stype] += m
+                    self._eval_acc["query_match"]["_all"] += m
+
     def _all_reduce_eval_acc(self) -> None:
         """Sum per-rank counters across DDP world. No-op if not distributed."""
         if not (dist.is_available() and dist.is_initialized()):
@@ -329,10 +389,13 @@ class WeightedSFTTrainer(Trainer):
         all_keys = sorted({k for ks in gathered for k in ks})
         if not all_keys:
             return
-        # Pack 4 counters × len(all_keys) into one tensor for a single all_reduce
+        # Pack 8 counters × len(all_keys) into one tensor for a single all_reduce
         n = len(all_keys)
-        buf = torch.zeros(4 * n, dtype=torch.long, device=device)
-        bands = ["action_match", "action_total", "post_match", "post_total"]
+        bands = [
+            "action_match", "action_total", "post_match", "post_total",
+            "summary_match", "summary_total", "query_match", "query_total",
+        ]
+        buf = torch.zeros(len(bands) * n, dtype=torch.long, device=device)
         for bi, band in enumerate(bands):
             d = self._eval_acc[band]
             for ki, k in enumerate(all_keys):
@@ -367,6 +430,32 @@ class WeightedSFTTrainer(Trainer):
             out[f"eval/post_action_acc_{stype}"] = acc
             if stype == "silent":
                 out["eval/silent_eos_rate"] = acc
+        # v11.3: compress range coverage = token-level argmax acc inside
+        # <summary>...</summary>. Surfaced overall + per-class so a drop
+        # specifically on compress samples is visible.
+        sum_tot = self._eval_acc["summary_total"].get("_all", 0)
+        if sum_tot > 0:
+            out["eval/summary_argmax_acc"] = (
+                self._eval_acc["summary_match"].get("_all", 0) / sum_tot
+            )
+        for stype, tot in self._eval_acc["summary_total"].items():
+            if stype == "_all" or tot == 0:
+                continue
+            out[f"eval/summary_argmax_acc_{stype}"] = (
+                self._eval_acc["summary_match"].get(stype, 0) / tot
+            )
+        # v11.3: recall query format/content quality under teacher forcing.
+        q_tot = self._eval_acc["query_total"].get("_all", 0)
+        if q_tot > 0:
+            out["eval/query_argmax_acc"] = (
+                self._eval_acc["query_match"].get("_all", 0) / q_tot
+            )
+        for stype, tot in self._eval_acc["query_total"].items():
+            if stype == "_all" or tot == 0:
+                continue
+            out[f"eval/query_argmax_acc_{stype}"] = (
+                self._eval_acc["query_match"].get(stype, 0) / tot
+            )
         return out
 
     def evaluate(self, *args, **kwargs):
@@ -386,6 +475,121 @@ class WeightedSFTTrainer(Trainer):
             self.log(extra)
             metrics.update(extra)
         return metrics
+
+    # -----------------------------------------------------------------
+    # Train-time per-class metrics (flushed to wandb every logging_steps)
+    # Tracks per-action-type loss/sample-weight + teacher-forced action
+    # argmax accuracy so we can see live whether class balancing is
+    # working AND whether the model is learning the action keyword per
+    # class (catches compress collapse early).
+    # -----------------------------------------------------------------
+
+    def _reset_train_metrics(self):
+        self._train_metrics = {
+            "loss_sum":     defaultdict(float),
+            "loss_n":       defaultdict(int),
+            "weight_sum":   defaultdict(float),
+            "action_match": defaultdict(int),
+            "action_total": defaultdict(int),
+        }
+
+    def _accumulate_train_metrics(
+        self, *, per_sample_loss, sample_weights, sample_meta,
+        eval_meta, logits, input_ids,
+    ) -> None:
+        if not sample_meta:
+            return
+        psl = (
+            per_sample_loss.float().detach().cpu().tolist()
+            if per_sample_loss is not None else None
+        )
+        sw = None
+        if sample_weights is not None and sample_weights.numel() > 0:
+            sw = sample_weights.float().detach().cpu().tolist()
+
+        # Per-class loss + weight + count
+        for i, meta in enumerate(sample_meta):
+            stype = (meta.get("sample_type") or "?")
+            if psl is not None and i < len(psl):
+                self._train_metrics["loss_sum"][stype] += psl[i]
+                self._train_metrics["loss_sum"]["_all"] += psl[i]
+            self._train_metrics["loss_n"][stype] += 1
+            self._train_metrics["loss_n"]["_all"] += 1
+            w = sw[i] if sw is not None and i < len(sw) else 1.0
+            self._train_metrics["weight_sum"][stype] += w
+            self._train_metrics["weight_sum"]["_all"] += w
+
+        # Teacher-forced action argmax (mirrors eval logic). Skipped if
+        # eval_meta absent — that just means the collator didn't emit
+        # action_keyword_positions for this batch.
+        if eval_meta is None or logits is None or input_ids is None:
+            return
+        with torch.no_grad():
+            preds = logits.argmax(dim=-1)
+            B, L = preds.shape
+            for b, m in enumerate(eval_meta):
+                if not m:
+                    continue
+                stype = (m.get("sample_type") or "?")
+                kw_positions = m.get("action_keyword_positions") or []
+                if not kw_positions:
+                    continue
+                self._train_metrics["action_total"][stype] += 1
+                self._train_metrics["action_total"]["_all"] += 1
+                all_match = True
+                for p in kw_positions:
+                    if p <= 0 or p >= L:
+                        all_match = False
+                        break
+                    if preds[b, p - 1].item() != int(input_ids[b, p].item()):
+                        all_match = False
+                        break
+                if all_match:
+                    self._train_metrics["action_match"][stype] += 1
+                    self._train_metrics["action_match"]["_all"] += 1
+
+    def _flush_train_metrics(self) -> Dict[str, float]:
+        out: Dict[str, float] = {}
+        n_total = self._train_metrics["loss_n"].get("_all", 0)
+        if n_total == 0:
+            return out
+        # Per-class loss + weight + sample fraction
+        for stype, n in self._train_metrics["loss_n"].items():
+            if n == 0:
+                continue
+            suffix = "" if stype == "_all" else f"_{stype}"
+            out[f"train/loss_by_class{suffix}"] = (
+                self._train_metrics["loss_sum"][stype] / n
+            )
+            out[f"train/sw_mean{suffix}"] = (
+                self._train_metrics["weight_sum"][stype] / n
+            )
+            if stype != "_all":
+                out[f"train/n_frac_{stype}"] = n / n_total
+        # Per-class action argmax accuracy
+        for stype, tot in self._train_metrics["action_total"].items():
+            if tot == 0:
+                continue
+            suffix = "" if stype == "_all" else f"_{stype}"
+            out[f"train/action_argmax_acc{suffix}"] = (
+                self._train_metrics["action_match"].get(stype, 0) / tot
+            )
+        self._reset_train_metrics()
+        return out
+
+    def log(self, logs, *args, **kwargs):
+        """Inject per-class train metrics whenever HF Trainer logs in train mode.
+
+        log() fires from _maybe_log_save_evaluate at every logging_steps and
+        also from evaluate() with eval_loss. We only flush train accumulators
+        when self.model is actually training; otherwise the eval-loss log
+        would prematurely consume a partial bucket.
+        """
+        if self.model is not None and self.model.training:
+            extra = self._flush_train_metrics()
+            if extra:
+                logs = {**logs, **extra}
+        return super().log(logs, *args, **kwargs)
 
 
 # ---------------------------------------------------------------------------

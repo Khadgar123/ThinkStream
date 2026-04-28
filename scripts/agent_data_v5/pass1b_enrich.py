@@ -273,6 +273,10 @@ def _parse_combined_json(raw: str):
     # Fallback: extract first {...} block
     start = raw.find('{')
     if start < 0:
+        logger.warning(
+            "[1B] _parse_combined_json: no JSON object found, raw[:200]=%r",
+            raw[:200],
+        )
         return None
     depth = 0
     for i in range(start, len(raw)):
@@ -286,8 +290,16 @@ def _parse_combined_json(raw: str):
                     if isinstance(obj, dict):
                         return obj
                 except (json.JSONDecodeError, ValueError):
+                    logger.warning(
+                        "[1B] _parse_combined_json: inner JSON parse failed, "
+                        "block[:200]=%r", raw[start:i + 1][:200],
+                    )
                     return None
                 break
+    logger.warning(
+        "[1B] _parse_combined_json: outer JSON parse failed, raw[:200]=%r",
+        raw[:200],
+    )
     return None
 
 

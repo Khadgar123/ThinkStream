@@ -223,9 +223,32 @@ async def _check_visibility_one(
 
 
 def determine_sequence_type(card: Dict, availability: str) -> str:
-    """Map availability + family → behavior sequence type."""
-    if card.get("family") == "M1":
-        return "multi_response"
+    """Map availability + family → behavior sequence type.
+
+    v9.5 — multi_response dispatch widened for OVO multi-probe families:
+      * M1 (full-video summary)            — descriptive multi-probe
+      * F5 (REC repetition counting)       — number multi-probe (cumulative count)
+      * F7 (SSR step-progress)             — binary multi-probe (No→Yes flip
+                                              at step_chunk)
+      * CR5 (CRR clue-delayed descriptive) — descriptive multi-probe (silent /
+                                              "Unable" → free-text answer
+                                              at clue_chunk)
+
+    E2 stays on the (immediate / event_watch / recall) trio: once its
+    state-change happens, all later probes are the same Yes (or all earlier
+    are the same No), which event_watch's wait_silent + trigger response
+    already captures cleanly.
+    """
+    family = card.get("family", "")
+    multi_response_families = {"M1", "F5", "F7", "CR5"}
+    if family in multi_response_families:
+        # F5 / F7 / CR5 need observable evidence in the visible window;
+        # if the card's evidence is purely in_future at ask_chunk, fall
+        # back to event_watch (single trigger probe).
+        if family == "M1":
+            return "multi_response"
+        if availability != "in_future":
+            return "multi_response"
     if availability == "in_future":
         return "event_watch"
     if availability in ("in_visual", "in_recent_thinks", "in_compressed"):
@@ -262,6 +285,17 @@ def compute_placement(
 ) -> Optional[Dict]:
     """Compute behavior sequence blueprint (key_chunks)."""
     num_chunks = rollout["num_chunks"]
+
+    # v9.5 — CR7 (object permanence): force ask_chunk to resolve_chunk so
+    # the model has already seen pre-occlusion → occlusion → resolve before
+    # being asked "where is X now?". Default placement might pick ask_chunk
+    # before occlusion, making the question structurally unanswerable from
+    # what's been observed.
+    if card.get("family") == "CR7":
+        rc = card.get("resolve_chunk")
+        if isinstance(rc, int) and 0 <= rc < num_chunks:
+            ask_chunk = rc
+
     key_chunks = {"ask": ask_chunk}
 
     if sequence_type == "immediate_response":
@@ -293,18 +327,85 @@ def compute_placement(
 
     elif sequence_type == "multi_response":
         ev_by_idx = {cap.get("chunk_idx", i): cap for i, cap in enumerate(evidence)}
-        followup_r = []
-        followup_s = []
-        for c in range(ask_chunk + 1, min(num_chunks, ask_chunk + 30)):
-            cap = ev_by_idx.get(c, {})
-            if cap.get("state_changes"):
-                followup_r.append(c)
-            elif len(followup_s) < 2:
-                followup_s.append(c)
-        key_chunks["no_change_silent"] = followup_s[:2]
-        key_chunks["followup_response"] = followup_r[:5]
-        if followup_r:
-            key_chunks["post_silent"] = min(followup_r[-1] + 1, num_chunks - 1)
+        family = card.get("family", "")
+
+        # v9.5: per-family multi_response placement.
+        if family == "F5":
+            # REC: cumulative count — every support_chunk is one occurrence.
+            # Probe right AFTER each support_chunk so the count includes it.
+            support = sorted(int(c) for c in (card.get("support_chunks") or []))
+            support = [c for c in support if c >= ask_chunk]  # only in-future
+            followup_r, progressive = [], {}
+            for i, sc in enumerate(support[:5], start=1):
+                probe = min(sc + 1, num_chunks - 1)
+                if probe > ask_chunk and probe not in followup_r:
+                    followup_r.append(probe)
+                    progressive[probe] = str(i)
+            # Sprinkle a couple of silent (no-count-change) probes in between.
+            followup_s = []
+            for j, fr in enumerate(followup_r[:-1]):
+                gap_mid = (fr + followup_r[j + 1]) // 2
+                if gap_mid > fr and gap_mid < followup_r[j + 1] and len(followup_s) < 2:
+                    followup_s.append(gap_mid)
+            key_chunks["no_change_silent"] = followup_s
+            key_chunks["followup_response"] = followup_r
+            key_chunks["progressive_answers"] = progressive
+            if followup_r:
+                key_chunks["post_silent"] = min(followup_r[-1] + 1, num_chunks - 1)
+
+        elif family == "F7":
+            # SSR step-progress: probe before AND after step_chunk.
+            # Pre-step probes answer "No"; post-step probes answer "Yes".
+            step_chunk = int(card.get("step_chunk", -1))
+            if step_chunk < 0:
+                step_chunk = max((card.get("support_chunks") or [ask_chunk])[0],
+                                 ask_chunk + 1)
+            pre = [c for c in range(ask_chunk + 1, step_chunk) if c < num_chunks]
+            post = [c for c in range(step_chunk, min(num_chunks, step_chunk + 6))]
+            # Sample 2 pre + 3 post (cap at 5 total)
+            pre = pre[:: max(1, len(pre) // 2)][:2] if pre else []
+            post = post[:3]
+            followup_r = pre + post
+            progressive = {**{c: "No" for c in pre},
+                           **{c: "Yes" for c in post}}
+            key_chunks["no_change_silent"] = []
+            key_chunks["followup_response"] = followup_r
+            key_chunks["progressive_answers"] = progressive
+            if followup_r:
+                key_chunks["post_silent"] = min(followup_r[-1] + 1, num_chunks - 1)
+
+        elif family == "CR5":
+            # CRR clue-delayed: probe before AND after clue_chunk.
+            # Pre-clue: silent (Unable to answer); post-clue: descriptive answer.
+            clue_chunk = int(card.get("clue_chunk", -1))
+            if clue_chunk < 0:
+                clue_chunk = max((card.get("support_chunks") or [ask_chunk])[0],
+                                 ask_chunk + 1)
+            pre = [c for c in range(ask_chunk + 1, clue_chunk) if c < num_chunks]
+            post = [c for c in range(clue_chunk, min(num_chunks, clue_chunk + 4))]
+            pre_silent = pre[:: max(1, len(pre) // 2)][:2] if pre else []
+            post_resp = post[:3]
+            key_chunks["no_change_silent"] = pre_silent
+            key_chunks["followup_response"] = post_resp
+            # Use card.canonical_answer for every post-clue probe.
+            key_chunks["progressive_answers"] = {c: card.get("canonical_answer", "")
+                                                  for c in post_resp}
+            if post_resp:
+                key_chunks["post_silent"] = min(post_resp[-1] + 1, num_chunks - 1)
+
+        else:
+            # Default (M1 + any future family) — state-change-driven probes
+            followup_r, followup_s = [], []
+            for c in range(ask_chunk + 1, min(num_chunks, ask_chunk + 30)):
+                cap = ev_by_idx.get(c, {})
+                if cap.get("state_changes"):
+                    followup_r.append(c)
+                elif len(followup_s) < 2:
+                    followup_s.append(c)
+            key_chunks["no_change_silent"] = followup_s[:2]
+            key_chunks["followup_response"] = followup_r[:5]
+            if followup_r:
+                key_chunks["post_silent"] = min(followup_r[-1] + 1, num_chunks - 1)
 
     # Persist support_chunks + family + a derived availability hint on the
     # placement so downstream audits and Pass 4 don't have to re-join cards.

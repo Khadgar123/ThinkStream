@@ -1,6 +1,27 @@
 # v9.5 — Multi-Probe Family Design (OVO REC / CRR / SSR + OJR holding)
 
-## 1. Why this exists
+> **STATUS — DEPRECATED (Historical only)**
+>
+> This document was the original v9.5 design that proposed extending F5 / E2 /
+> P1 with optional `probes` / `step_probes` schema fields. The implementation
+> took a different path:
+>
+> - **F5 (REC)** — kept as a single-question family, added `multi_response`
+>   dispatch with `progressive_answers` map (per-probe gold = cumulative count
+>   computed in pass3b from `support_chunks`). No schema change.
+> - **SSR alignment** — implemented as a NEW family **F7** (binary "Has step X
+>   been done by now?" + `step_chunk` extra field), not as extension of P1.
+> - **CRR alignment** — implemented as a NEW family **CR5** (descriptive
+>   clue-delayed multi-probe + `ask_chunk` / `clue_chunk` extras), not as
+>   extension of E2.
+> - **OJR holding** — addressed via the v9.5 fine-grained `desc` requirement
+>   in the pass1a EVIDENCE_GRAPH_PROMPT (color + material + pattern + style +
+>   condition); F2 prompt change wasn't necessary.
+>
+> See **`docs/design.md`** for the current design. This file kept for
+> historical context; do **not** consult for live behaviour.
+
+## 1. Why this exists (historical context)
 
 After v9.4, our 18 families cover **9 of 12 OVO tasks** structurally. Three
 remaining tasks require a structural extension to the card schema, not just
