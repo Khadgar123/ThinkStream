@@ -42,6 +42,7 @@ from thinkstream.model.agent_loop import (
     COMPRESS_RANGE_MIN,
     MemoryState,
     build_single_step_messages,
+    select_compress_range_by_tokens,
 )
 
 from eval_baseline import DebugLogger, setup_eval_logging
@@ -119,12 +120,21 @@ def _resolve_frame_paths(
 
 
 def _maybe_compress_trigger(memory: MemoryState, chunk_idx: int) -> str:
-    """Return <compress_trigger range="..."/> if memory threshold fires."""
+    """Return <compress_trigger range="..."/> if memory threshold fires.
+
+    v11.3: range size selected by select_compress_range_by_tokens so eval
+    matches the post-fix agent_loop policy (variable range driven by token
+    budget, was hardcoded to first 4 thinks).
+    """
     if not memory.should_compress():
         return ""
-    oldest = memory.recent_thinks[:COMPRESS_RANGE_MIN]
-    if not oldest:
+    n = select_compress_range_by_tokens(
+        memory.recent_thinks,
+        token_count_fn=memory._token_count,
+    )
+    if n <= 0:
         return ""
+    oldest = memory.recent_thinks[:n]
     chunks = [t["chunk"] for t in oldest]
     t_start = min(chunks) * AGENT_CHUNK_SEC
     t_end = (max(chunks) + 1) * AGENT_CHUNK_SEC

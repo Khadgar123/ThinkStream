@@ -74,10 +74,21 @@ def get_tokenizer():
             _tokenizer = "unavailable"
     return _tokenizer if _tokenizer != "unavailable" else None
 
-COMPRESS_RANGE_MIN = 4              # 每次最少压缩 4 条
-COMPRESS_RANGE_MAX = 8              # 每次最多压缩 8 条
+COMPRESS_RANGE_MIN = 4              # 每次最少压缩 4 条（保证 summary 值得做）
+COMPRESS_RANGE_MAX = 12             # 每次最多压缩 12 条（v11.3: 8 → 12，配合 token-driven 选择）
+# v11.3: token-budget-driven range selection. When trigger fires, pick the
+# smallest N >= MIN such that the cumulative token count of the oldest N
+# thinks reaches this target. Aligns inference (agent_loop / streaming_vllm)
+# with pass2's range scoring, which was already implicitly token-driven via
+# COMPRESS_HYSTERESIS_THRESHOLD. 350 ≈ 80% gap (480→330) so post-compress
+# memory is comfortably below the trigger again.
+COMPRESS_REMOVE_TOKENS = 350
 SUMMARY_TOKENS_MIN = 100            # summary 最短
-SUMMARY_TOKENS_MAX = 180            # summary 最长
+# v11.3: 180 → 280. The 180 cap was being hit by 33% of pass2 summaries —
+# they're correctly merging 8-12 chunks but the cap forced truncation. 280
+# matches the p80 of teacher-generated summary lengths (mean 169, p99 ~330)
+# while still keeping memory cost bounded (5 segments × 280 = 1400 tok max).
+SUMMARY_TOKENS_MAX = 280
 COMPRESSION_RATIO_MIN = 2.5        # 最小压缩比
 RECALL_RETURN_FRAMES = 4           # recall 返回 4 帧 (4s at 1fps)
 MAX_COMPRESSED_SEGMENTS = 5        # 最多保留 5 段压缩

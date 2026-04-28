@@ -34,7 +34,38 @@ RECENT_THINKS_TOKEN_BUDGET = 600
 COMPRESS_TRIGGER_RATIO = 0.8
 COMPRESS_TOKEN_THRESHOLD = int(RECENT_THINKS_TOKEN_BUDGET * COMPRESS_TRIGGER_RATIO)  # 480
 COMPRESS_RANGE_MIN = 4
-SUMMARY_TOKENS_MAX = 180  # SFT-baked teacher max_tokens for <summary>; eval cap matches
+COMPRESS_RANGE_MAX = 12             # v11.3: was 8, raised to handle short-think edge cases
+COMPRESS_REMOVE_TOKENS = 350        # v11.3: target tokens to evict per compression
+SUMMARY_TOKENS_MAX = 280            # v11.3: 180 → 280 (matches config.py)
+
+
+def select_compress_range_by_tokens(
+    thinks: List[Dict],
+    token_count_fn,
+    *,
+    target_tokens: int = COMPRESS_REMOVE_TOKENS,
+    min_n: int = COMPRESS_RANGE_MIN,
+    max_n: int = COMPRESS_RANGE_MAX,
+) -> int:
+    """Pick how many oldest thinks to compress so cumulative tokens hit target.
+
+    Returns the smallest N in [min_n, max_n] such that the sum of the
+    first-N thinks' tokens >= target_tokens. If can't reach the target
+    within max_n thinks, returns min(len(thinks), max_n). Returns 0 when
+    len(thinks) < min_n (caller should not invoke compression in that state).
+
+    Aligns inference-time range selection with pass2's range scoring,
+    which was already implicitly token-driven via the hysteresis budget.
+    """
+    if len(thinks) < min_n:
+        return 0
+    cap = min(len(thinks), max_n)
+    cum = 0
+    for i in range(cap):
+        cum += token_count_fn(thinks[i])
+        if i + 1 >= min_n and cum >= target_tokens:
+            return i + 1
+    return cap
 
 
 # ---------------------------------------------------------------------------
@@ -89,16 +120,16 @@ class MemoryState:
         self.recent_thinks.append(item)
         self._retrieval_archive.append(item)
 
+    def _token_count(self, item: Dict) -> int:
+        """Count tokens in a single recent_think entry."""
+        text = item.get("text", "")
+        if self._tokenizer:
+            return len(self._tokenizer.encode(text, add_special_tokens=False))
+        return len(text) // 4
+
     def count_recent_tokens(self) -> int:
         """Count total tokens in recent_thinks."""
-        total = 0
-        for item in self.recent_thinks:
-            text = item.get("text", "")
-            if self._tokenizer:
-                total += len(self._tokenizer.encode(text, add_special_tokens=False))
-            else:
-                total += len(text) // 4
-        return total
+        return sum(self._token_count(item) for item in self.recent_thinks)
 
     def should_compress(self) -> bool:
         """Trigger compression when recent_thinks reach 80% of token budget."""
@@ -112,9 +143,14 @@ class MemoryState:
 
         Raw thinks stay in _retrieval_archive for recall.
 
-        Cap = SFT SUMMARY_TOKENS_MAX (180 tok) — both for incoming summary
-        text and for merged-segment text. Going above 180 is OOD relative
-        to the SFT distribution (teacher's max_tokens was 180).
+        Cap = SFT SUMMARY_TOKENS_MAX (v11.3: 280 tok). Caps both incoming
+        summary text and merged-segment text. Going above the cap is OOD
+        relative to the SFT distribution.
+
+        v11.3: When `compressed_chunks` is None (legacy fallback path),
+        select the range via select_compress_range_by_tokens so post-
+        compress memory drops by COMPRESS_REMOVE_TOKENS — aligns with
+        pass2 hysteresis instead of always cutting exactly 4 thinks.
         """
         if compressed_chunks is not None:
             chunk_set = set(compressed_chunks)
@@ -122,7 +158,11 @@ class MemoryState:
                 t for t in self.recent_thinks if t["chunk"] not in chunk_set
             ]
         else:
-            self.recent_thinks = self.recent_thinks[COMPRESS_RANGE_MIN:]
+            n = select_compress_range_by_tokens(
+                self.recent_thinks,
+                token_count_fn=self._token_count,
+            )
+            self.recent_thinks = self.recent_thinks[n:] if n > 0 else self.recent_thinks
         if self._tokenizer and isinstance(summary.get("text"), str):
             ids = self._tokenizer.encode(summary["text"], add_special_tokens=False)
             if len(ids) > SUMMARY_TOKENS_MAX:
@@ -613,10 +653,14 @@ class StreamingAgentLoop:
         # sample saw a trigger with this attribute, so a no-attribute
         # variant is out-of-distribution and risks (a) format drift in
         # the summary's time_range field, (b) the model failing to copy
-        # the range and inventing one. We pick the oldest COMPRESS_RANGE_MIN
-        # thinks (FIFO, deterministic — same policy as pass2_rollout) and
-        # encode their span. The model only learns to write the summary
-        # text given a fixed range, never to choose the range itself.
+        # the range and inventing one.
+        #
+        # v11.3: range size is token-driven via select_compress_range_by_tokens
+        # (was hardcoded to COMPRESS_RANGE_MIN=4). Pass2 already enumerated
+        # variable ranges in [4, 8] via score_range_for_compression; agent_loop
+        # now matches that variability so inference and training agree on
+        # the policy. The model still doesn't choose the range — it only
+        # writes the summary text given a system-supplied range.
         compress_trigger = ""
         # v9.4.2: telemetry for streaming eval — record state at the moment
         # compression FIRES so eval can stat: how many thinks were buffered
@@ -624,7 +668,11 @@ class StreamingAgentLoop:
         # into the summary. Set on parsed below.
         _compress_telemetry = None
         if self.compress_mode == "system" and self.memory.should_compress():
-            oldest = self.memory.recent_thinks[:COMPRESS_RANGE_MIN]
+            n_to_compress = select_compress_range_by_tokens(
+                self.memory.recent_thinks,
+                token_count_fn=self.memory._token_count,
+            )
+            oldest = self.memory.recent_thinks[:n_to_compress] if n_to_compress > 0 else []
             if oldest:
                 chunks = [t["chunk"] for t in oldest]
                 t_start = min(chunks) * AGENT_CHUNK_SEC
