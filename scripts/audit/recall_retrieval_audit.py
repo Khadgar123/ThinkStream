@@ -63,20 +63,50 @@ AGENT_CHUNK_SEC = 2.0
 # Sample loading + query extraction
 # ---------------------------------------------------------------------------
 
-_QUERY_RE = re.compile(r"<query>\s*(\{.*?\})\s*</query>", re.DOTALL)
+# Capture full <query>...</query> body (greedy + DOTALL) — non-greedy {.*?}
+# wrongly stopped at the first '}' for nested JSON like
+# {"query": "...", "time_range": {"start": 10, "end": 20}}.
+_QUERY_RE = re.compile(r"<query>(.*?)</query>", re.DOTALL)
 
 
 def _extract_query_json(text: str) -> Optional[Dict]:
-    """Pull `<query>{...}</query>` JSON out of an assistant output string."""
+    """Pull `<query>{...}</query>` JSON out of an assistant output string.
+
+    Mirrors pass1a_evidence.parse_evidence_result's robustness pattern
+    (commit 8c71b6e): strips markdown code-block wrappers, then falls
+    back to brace-balance search if direct json.loads fails.
+    """
     if not text:
         return None
     m = _QUERY_RE.search(text)
     if not m:
         return None
+    body = m.group(1).strip()
+    # Strip ```json / ``` wrappers (model occasionally formats output as a
+    # fenced code block even inside the <query> tag).
+    body = body.removeprefix("```json").removeprefix("```").strip()
+    body = body.removesuffix("```").strip()
     try:
-        return json.loads(m.group(1))
+        return json.loads(body)
     except json.JSONDecodeError:
+        pass
+    # Brace-balance fallback: find the first '{' and the matching '}'.
+    start = body.find("{")
+    if start < 0:
         return None
+    depth = 0
+    for i in range(start, len(body)):
+        ch = body[i]
+        if ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth == 0:
+                try:
+                    return json.loads(body[start:i + 1])
+                except json.JSONDecodeError:
+                    return None
+    return None
 
 
 def _load_samples(path: str, mode: str) -> List[Dict]:

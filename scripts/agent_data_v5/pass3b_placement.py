@@ -193,7 +193,7 @@ async def _check_visibility_one(
     _vis_cfg = PASS_CONFIG.get("pass3b_visibility", {})
     raw = await client._call_one(
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=_vis_cfg.get("max_tokens", 256),
+        max_tokens=_vis_cfg.get("max_tokens", 16384),
         temperature=_vis_cfg.get("temperature", 0.1),
         enable_thinking=_vis_cfg.get("thinking", False),
         request_id=f"{video_id}_vis_{card.get('card_id', '')}_{ask_chunk}",

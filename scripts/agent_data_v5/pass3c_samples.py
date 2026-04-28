@@ -230,7 +230,7 @@ async def _generate_response(card: Dict, snapshot: Dict, evidence: List[Dict],
     _resp_cfg = PASS_CONFIG.get("pass3c_response", {})
     raw = await client._call_one(
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=_resp_cfg.get("max_tokens", 1024),
+        max_tokens=_resp_cfg.get("max_tokens", 16384),
         temperature=_resp_cfg.get("temperature", 0.3),
         enable_thinking=_resp_cfg.get("thinking", False),
         request_id=f"{video_id}_resp_{chunk_idx}",
@@ -323,7 +323,7 @@ async def _generate_recall_query(card: Dict, snapshot: Dict,
     _rq_cfg = PASS_CONFIG.get("pass3c_recall_query", {})
     raw = await client._call_one(
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=_rq_cfg.get("max_tokens", 512),
+        max_tokens=_rq_cfg.get("max_tokens", 16384),
         temperature=_rq_cfg.get("temperature", 0.3),
         enable_thinking=_rq_cfg.get("thinking", False),
         request_id=f"{video_id}_query_{chunk_idx}",
@@ -391,7 +391,7 @@ async def _generate_fork_think(
     _fthink_cfg = PASS_CONFIG.get("pass3c_fork_think", {})
     raw = await client._call_one(
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=_fthink_cfg.get("max_tokens", 1024),
+        max_tokens=_fthink_cfg.get("max_tokens", 16384),
         temperature=_fthink_cfg.get("temperature", 0.3),
         enable_thinking=_fthink_cfg.get("thinking", True),
         request_id=f"{video_id}_fthink_{chunk_idx}",
@@ -426,7 +426,7 @@ async def _generate_recall_think(
     _rt_cfg = PASS_CONFIG.get("pass3c_recall_think", {})
     raw = await client._call_one(
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=_rt_cfg.get("max_tokens", 256),
+        max_tokens=_rt_cfg.get("max_tokens", 16384),
         temperature=_rt_cfg.get("temperature", 0.3),
         enable_thinking=_rt_cfg.get("thinking", False),
         request_id=f"{video_id}_rthink_{chunk_idx}",

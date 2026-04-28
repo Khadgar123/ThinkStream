@@ -262,45 +262,47 @@ PASS_CONFIG = {
     # below are no longer the binding cap — they exist for documentation
     # only. The actual cap is on the outer client.
     # v11.3: per-call thinking control. The 5 lightweight calls below were
-    # downgraded from thinking=True/16K-tokens to thinking=False/short-tokens
-    # because their tasks (verification / classification / templating /
-    # keyword extraction) don't benefit from chain-of-thought — empirically
-    # the teacher's thinking budget was unused (think outputs ≪ max_tokens).
+    # downgraded from thinking=True to thinking=False because their tasks
+    # (verification / classification / templating / keyword extraction)
+    # don't benefit from CoT — empirically the teacher's thinking budget
+    # went unused. max_tokens KEPT at 16K so a verbose response never
+    # truncates: GPU has the headroom for 16K @ 1024 concurrent and the
+    # speedup comes from disabling reasoning, not from cap reduction.
     # Card generation (pass3a) and fork_think (pass3c_fork_think) keep
     # thinking — the former needs multi-family multi-constraint reasoning,
     # the latter needs answer-leakage avoidance.
     "pass3a_verify": {
-        "max_tokens": 512,
+        "max_tokens": 16384,
         "temperature": 0.1,
-        "thinking": False,    # was True (16384 tok) — verify is a binary classifier
+        "thinking": False,
         "concurrent": 256,    # bound by client_3a
     },
     "pass3b_visibility": {
-        "max_tokens": 256,
+        "max_tokens": 16384,
         "temperature": 0.1,
-        "thinking": False,    # was True (16384 tok) — visibility is yes/no decision
+        "thinking": False,
         "concurrent": 512,    # bound by client_3b
     },
-    # v11.3: pass3c split into per-call-type sub-configs so thinking can be
-    # controlled per call. The umbrella "pass3c" entry above stays as a
+    # v11.3: pass3c split into per-call-type sub-configs so thinking can
+    # be controlled per call. The umbrella "pass3c" entry above stays as a
     # legacy fallback — new code should read these specific sub-keys.
     "pass3c_response": {
-        "max_tokens": 1024,    # short_exact ≤30 tok, descriptive ≤150 tok; 1024 covers both
+        "max_tokens": 16384,
         "temperature": 0.3,
-        "thinking": False,     # was True/16384 — 70% calls already skipped (canonical_answer fast-path)
+        "thinking": False,
     },
     "pass3c_recall_query": {
-        "max_tokens": 512,     # output is 3-5 keywords + optional time_range, ~30 tok typical
+        "max_tokens": 16384,
         "temperature": 0.3,
-        "thinking": False,     # was True/16384 — keyword extraction with light reasoning
+        "thinking": False,
     },
     "pass3c_recall_think": {
-        "max_tokens": 256,     # 3-way templating (historical_frames / distractor / failure)
+        "max_tokens": 16384,
         "temperature": 0.3,
-        "thinking": False,     # was True/16384 — branching + rephrasing, no real reasoning
+        "thinking": False,
     },
     "pass3c_fork_think": {
-        "max_tokens": 1024,    # fork_think output is 40-100 tok; 1024 covers thinking budget
+        "max_tokens": 16384,
         "temperature": 0.3,
         "thinking": True,      # KEEP — answer-leakage avoidance needs CoT
     },
