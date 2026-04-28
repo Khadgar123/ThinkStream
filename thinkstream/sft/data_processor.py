@@ -664,6 +664,15 @@ def _extract_eval_positions(
                 # first token after </action>; for silent samples, this
                 # should equal <|im_end|>. argmax match gives
                 # eval/silent_eos_rate (filtered to silent samples).
+            "summary_span_positions": [int, ...]
+                # tokens between <summary> and </summary> (compress samples
+                # only). v11.3: surfaces compress-range copying accuracy as
+                # eval/summary_argmax_acc — proxy for "did the model learn
+                # to echo the trigger's range into the JSON time_range".
+            "query_span_positions": [int, ...]
+                # tokens between <query> and </query> (recall_query samples).
+                # v11.3: gives eval/query_argmax_acc — proxy for recall query
+                # JSON format + content quality under teacher forcing.
             "sample_type": str
                 # passed through so trainer can bucket per class.
         }
@@ -671,6 +680,8 @@ def _extract_eval_positions(
     meta: Dict = {
         "action_keyword_positions": [],
         "post_action_position": None,
+        "summary_span_positions": [],
+        "query_span_positions": [],
         "sample_type": sample_type,
     }
     if "action" not in span_ids:
@@ -678,8 +689,15 @@ def _extract_eval_positions(
 
     action_open_id = span_ids["action"]["open"]
     action_close_id = span_ids["action"]["close"]
+    summary_open_id = span_ids.get("summary", {}).get("open")
+    summary_close_id = span_ids.get("summary", {}).get("close")
+    query_open_id = span_ids.get("query", {}).get("open")
+    query_close_id = span_ids.get("query", {}).get("close")
 
     in_action = False
+    in_summary = False
+    in_query = False
+    saw_action_close = False
     upper = min(ans_end + 2, seq_len)
     for i in range(ans_start, upper):
         tok = input_ids_flat[i]
@@ -688,14 +706,38 @@ def _extract_eval_positions(
             continue
         if tok == action_close_id:
             in_action = False
+            saw_action_close = True
             # Position immediately after </action>: the transition token
             # that determines whether to continue (response/query/summary)
             # or stop (<|im_end|>).
             if i + 1 < seq_len:
                 meta["post_action_position"] = i + 1
-            break
+            # Don't break — keep walking to capture summary/query spans.
+            continue
         if in_action:
             meta["action_keyword_positions"].append(i)
+            continue
+        # After </action>: scan for summary/query spans (compress/recall_query
+        # samples). These are skipped when their span tokens aren't registered
+        # (span_ids.get returned None).
+        if not saw_action_close:
+            continue
+        if summary_open_id is not None and tok == summary_open_id:
+            in_summary = True
+            continue
+        if summary_close_id is not None and tok == summary_close_id:
+            in_summary = False
+            continue
+        if query_open_id is not None and tok == query_open_id:
+            in_query = True
+            continue
+        if query_close_id is not None and tok == query_close_id:
+            in_query = False
+            continue
+        if in_summary:
+            meta["summary_span_positions"].append(i)
+        elif in_query:
+            meta["query_span_positions"].append(i)
 
     return meta
 
