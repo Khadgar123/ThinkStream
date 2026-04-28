@@ -19,6 +19,7 @@ Eval-mode constraints (matches mcq_predict_streaming + agent_loop semantics):
 import json
 import os
 import random
+import re
 import sys
 import time
 from copy import deepcopy
@@ -504,3 +505,322 @@ def streaming_predict_mcq_vllm(
 
     dbg.close()
     return np.array(predictions), datums_out
+
+
+# ───────────────────────────────────────────────────────────────────────
+# RL rollout (v11.3): chunk-lockstep × group_size cross-sample batching
+# ───────────────────────────────────────────────────────────────────────
+
+
+@dataclass
+class _RolloutRunner:
+    """Per-(sample, gen_idx) state for RL rollout.
+
+    Field names matching _SampleRunner where shared so _prepare_step_messages
+    works on this type via duck typing (runner.current_chunk, .memory, .query,
+    .ask_chunk, .video_path, .frames_root, .video_root, .min_pixels,
+    .max_pixels, ._last_trigger).
+    """
+    sample_idx: int
+    gen_idx: int
+    raw_sample: Dict
+    video_path: str
+    query: Optional[str]
+    ask_chunk: int
+    max_chunks: int
+    memory: MemoryState
+    frames_root: Optional[str]
+    video_root: Optional[str]
+    min_pixels: int
+    max_pixels: int
+    current_chunk: int = 0
+    done: bool = False
+    error: Optional[str] = None
+    _last_trigger: bool = False
+    # Per-chunk results, shape matches grpo.py:736-758 contract.
+    chunk_results: List[Dict] = field(default_factory=list)
+
+
+_USER_INPUT_RE = re.compile(r"<user_input>(.*?)</user_input>", re.DOTALL)
+
+
+def _extract_user_question(raw_sample: Dict) -> Optional[str]:
+    """Mirrors grpo.py:693-712 — pull user_question from new/legacy sample formats.
+
+    Order: input.user_input → messages.<user_input> tag → conversations[role=user].
+    Returns None when no question is present (silent-only sample).
+    """
+    inp = raw_sample.get("input")
+    if isinstance(inp, dict) and inp.get("user_input"):
+        return inp["user_input"]
+    msgs = raw_sample.get("messages")
+    if isinstance(msgs, list):
+        for msg in msgs:
+            if msg.get("role") != "user":
+                continue
+            content = msg.get("content", "")
+            if isinstance(content, list):
+                for item in content:
+                    if isinstance(item, dict) and item.get("type") == "text":
+                        text = item.get("text", "")
+                        m = _USER_INPUT_RE.search(text)
+                        if m:
+                            return m.group(1)
+    convs = raw_sample.get("conversations")
+    if isinstance(convs, list):
+        for c in convs:
+            if c.get("role") == "user":
+                return c.get("content", "")
+    return None
+
+
+def _apply_rollout_output(
+    runner: _RolloutRunner, output_text: str, tokenizer, *,
+    compress_budget: int,
+) -> None:
+    """Per-chunk state advance + chunk_results append.
+
+    Differs from _apply_step_output (eval) in two ways:
+      1. Does NOT set runner.done on response — RL rolls a few chunks past
+         ask_chunk so the model emits the full <think><action><response>
+         under post-answer pressure (matches grpo.py legacy rollout).
+      2. Records the legacy per-chunk dict (grpo.py:736-758 contract):
+         action, think, payload, raw_output, generated_tokens,
+         memory_token_count, compress_budget, recall_returned_chunks,
+         window_start, window_end.
+    """
+    chunk_idx = runner.current_chunk
+    parsed = parse_agent_output(output_text)
+
+    if parsed.get("think"):
+        runner.memory.add_think(chunk_idx, parsed["think"])
+
+    action = parsed.get("action") or "unknown"
+    if action == "compress":
+        summary = parsed.get("payload", {}).get("summary", {})
+        if summary and "time_range" in summary:
+            tr = summary["time_range"]
+            compressed_chunks = []
+            for t in runner.memory.recent_thinks:
+                cs = t["chunk"] * AGENT_CHUNK_SEC
+                ce = cs + AGENT_CHUNK_SEC
+                if cs >= tr[0] and ce <= tr[1]:
+                    compressed_chunks.append(t["chunk"])
+            runner.memory.compress(summary, compressed_chunks=compressed_chunks)
+    elif action == "response":
+        answer_text = parsed.get("payload", {}).get("response", "")
+        if answer_text:
+            response_time = chunk_idx * AGENT_CHUNK_SEC
+            for q in reversed(runner.memory.queries):
+                if not q.get("answers"):
+                    runner.memory.answer_query(q["question"], answer_text, response_time)
+                    break
+
+    runner.chunk_results.append({
+        "chunk_idx": chunk_idx,
+        "action": action,
+        "think": parsed.get("think", ""),
+        "payload": parsed.get("payload", {}),
+        "raw_output": output_text,
+        "generated_tokens": tokenizer.encode(output_text, add_special_tokens=False),
+        "memory_token_count": runner.memory.count_recent_tokens(),
+        "compress_budget": compress_budget,
+        # vLLM rollout doesn't run the retriever — recall samples that need
+        # hit-rate reward should pass --rollout_use_retriever (not yet wired)
+        # or accept that recall_returned_chunks is empty (reward_masks gate
+        # this column anyway).
+        "recall_returned_chunks": [],
+        "window_start": chunk_idx * int(AGENT_CHUNK_SEC),
+        "window_end": (chunk_idx + 1) * int(AGENT_CHUNK_SEC),
+    })
+
+
+def streaming_vllm_rollout(
+    step_inputs: List[Dict],
+    llm,
+    processor,
+    tokenizer,
+    *,
+    group_size: int,
+    max_new_tokens: int = 256,
+    rollout_max_chunks: int = 30,
+    rollout_extra_chunks: int = 5,
+    min_pixels: int = 200704,
+    max_pixels: int = 401408,
+    temperature: float = 1.0,
+    top_p: float = 0.95,
+    top_k: int = 50,
+    repetition_penalty: float = 1.0,
+    frames_root: Optional[str] = None,
+    video_root: Optional[str] = None,
+    compress_budget: Optional[int] = None,
+) -> List[Dict]:
+    """vLLM-batched RL rollout matching grpo.py:617-803 output contract.
+
+    For each raw_sample in step_inputs, runs G=group_size independent
+    trajectories. All N×G runners advance in chunk-lockstep — at each
+    chunk_idx, every live runner contributes one prompt to a single
+    llm.generate() call so the GPU stays full. Per-runner MemoryState
+    is maintained independently; the message format goes through the
+    same build_single_step_messages used by SFT and eval, guaranteeing
+    byte-identical prompts.
+
+    Returns list of dicts with the legacy shape:
+      [{"raw_sample": <dict>,
+        "chunk_results": [{
+          "chunk_idx": int, "window_start": int, "window_end": int,
+          "generated_tokens": List[Tensor]  # len = group_size,
+          "memory_token_count": List[int]   # len = group_size,
+          "compress_budget":   List[int]    # len = group_size,
+          "recall_returned_chunks": List[List[int]]  # len = group_size,
+        }, ...]
+       }, ...]
+
+    so grpo.py downstream (reward calc, GDPO advantage, loss) is unchanged.
+    """
+    import torch as _torch
+    from collections import defaultdict
+
+    # Default budget pulled from agent_loop's RECENT_THINKS_TOKEN_BUDGET to
+    # match the SFT/eval value without forcing callers to pass it.
+    if compress_budget is None:
+        from thinkstream.model.agent_loop import RECENT_THINKS_TOKEN_BUDGET
+        compress_budget = RECENT_THINKS_TOKEN_BUDGET
+
+    # ── Build N × G runners ──
+    runners: List[_RolloutRunner] = []
+    for s_idx, raw_sample in enumerate(step_inputs):
+        data_path = raw_sample.get("data_path", "")
+        rel_video = raw_sample.get("video_path", "")
+        if data_path and rel_video and not Path(rel_video).is_absolute():
+            video_path = str(Path(data_path) / rel_video)
+        else:
+            video_path = rel_video or ""
+        ask_chunk = int(raw_sample.get("chunk_idx", rollout_max_chunks - 1))
+        question = _extract_user_question(raw_sample)
+        max_chunks_this = min(ask_chunk + rollout_extra_chunks, rollout_max_chunks)
+        for g in range(group_size):
+            runners.append(_RolloutRunner(
+                sample_idx=s_idx,
+                gen_idx=g,
+                raw_sample=raw_sample,
+                video_path=video_path,
+                query=question,
+                ask_chunk=ask_chunk,
+                max_chunks=max_chunks_this,
+                memory=MemoryState(tokenizer=tokenizer),
+                frames_root=frames_root,
+                video_root=video_root,
+                min_pixels=min_pixels,
+                max_pixels=max_pixels,
+            ))
+
+    if not runners:
+        return []
+
+    sampling_params = make_sampling_params(
+        max_new_tokens=max_new_tokens,
+        temperature=temperature,
+        top_p=top_p,
+        top_k=top_k,
+        repetition_penalty=repetition_penalty,
+    )
+
+    # ── Chunk-lockstep loop ──
+    max_global_chunk = max(r.max_chunks for r in runners)
+    for chunk_idx in range(max_global_chunk):
+        live = [r for r in runners
+                if not r.done and r.current_chunk == chunk_idx]
+        if not live:
+            break
+
+        # Phase A: build messages (reuse _prepare_step_messages via duck typing)
+        messages_list: List[List[Dict]] = []
+        live_active: List[_RolloutRunner] = []
+        for r in live:
+            try:
+                messages_list.append(_prepare_step_messages(r))
+                live_active.append(r)
+            except Exception as e:
+                r.error = f"prepare:{e}"
+                r.done = True
+
+        if not live_active:
+            continue
+
+        # Phase B: vLLM input + batch generate
+        try:
+            vllm_inputs = [prepare_vllm_input(m, processor) for m in messages_list]
+        except Exception as e:
+            for r in live_active:
+                r.error = f"prep_input:{e}"
+                r.done = True
+            continue
+        outputs = llm.generate(vllm_inputs, sampling_params=sampling_params)
+
+        # Phase C: apply outputs + advance state
+        for r, out in zip(live_active, outputs):
+            try:
+                text = out.outputs[0].text
+                _apply_rollout_output(r, text, tokenizer, compress_budget=compress_budget)
+            except Exception as e:
+                r.error = f"apply:{e}"
+                r.done = True
+                continue
+            r.current_chunk += 1
+            # RL stops only when (a) the runner reached max_chunks (a few
+            # past ask_chunk) or (b) it emitted a response after ask_chunk.
+            # Mirrors grpo.py:760-761 early-stop.
+            last_action = r.chunk_results[-1]["action"]
+            if r.current_chunk >= r.max_chunks:
+                r.done = True
+            elif last_action == "response" and chunk_idx >= r.ask_chunk:
+                r.done = True
+
+    # ── Group runners back: per-sample list of G trajectories ──
+    per_sample: Dict[int, List[_RolloutRunner]] = defaultdict(list)
+    for r in runners:
+        per_sample[r.sample_idx].append(r)
+
+    all_rollout_results: List[Dict] = []
+    for s_idx in range(len(step_inputs)):
+        gens = sorted(per_sample[s_idx], key=lambda r: r.gen_idx)
+        per_gen_results = [g.chunk_results for g in gens]
+        max_chunks_seen = max((len(g) for g in per_gen_results), default=0)
+
+        merged_chunk_results = []
+        for ci in range(max_chunks_seen):
+            merged = {
+                "chunk_idx": ci,
+                "window_start": ci * int(AGENT_CHUNK_SEC),
+                "window_end": (ci + 1) * int(AGENT_CHUNK_SEC),
+                "generated_tokens": [],
+                "memory_token_count": [],
+                "compress_budget": [],
+                "recall_returned_chunks": [],
+            }
+            for g_idx in range(group_size):
+                if ci < len(per_gen_results[g_idx]):
+                    cr_g = per_gen_results[g_idx][ci]
+                    merged["generated_tokens"].append(
+                        _torch.tensor(cr_g["generated_tokens"], dtype=_torch.long)
+                    )
+                    merged["memory_token_count"].append(int(cr_g["memory_token_count"]))
+                    merged["compress_budget"].append(int(cr_g["compress_budget"]))
+                    merged["recall_returned_chunks"].append(
+                        list(cr_g["recall_returned_chunks"])
+                    )
+                else:
+                    # Pad: this gen finished early (response emitted past ask_chunk).
+                    merged["generated_tokens"].append(_torch.tensor([], dtype=_torch.long))
+                    merged["memory_token_count"].append(0)
+                    merged["compress_budget"].append(0)
+                    merged["recall_returned_chunks"].append([])
+            merged_chunk_results.append(merged)
+
+        all_rollout_results.append({
+            "raw_sample": step_inputs[s_idx],
+            "chunk_results": merged_chunk_results,
+        })
+
+    return all_rollout_results

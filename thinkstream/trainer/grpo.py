@@ -635,22 +635,40 @@ def rollout(
     rollout_max_chunks: Auto[int],
     rollout_min_pixels: Auto[int],
     rollout_max_pixels: Auto[int],
+    rollout_extra_chunks: Auto[int] = 5,
+    use_vllm_rollout: Auto[bool] = False,
+    vllm_rollout_frames_root: Auto[Optional[str]] = None,
+    vllm_rollout_video_root: Auto[Optional[str]] = None,
 ) -> Context:
     """
     GRPO rollout using streaming video inference.
 
-    For each raw sample in the batch, calls ``streaming_video_chat`` to
-    generate completions chunk-by-chunk.  Stores per-sample results
-    (generated tokens, chunk metadata, raw sample) in ``rollout_data`` for
-    downstream reward computation and loss calculation.
+    For each raw sample in the batch, generates G=group_size completions
+    chunk-by-chunk and stores per-sample results (generated tokens, chunk
+    metadata, raw sample) in ``rollout_data`` for downstream reward
+    computation and loss calculation.
 
-    Uses ``StreamingAgentLoop.step()`` for per-timestep re-render rollout,
-    matching the SFT training format exactly (explicit memory management,
-    <memory>/<visual_window> tags, 4-action protocol).
+    Two backends share an identical output contract — reward / advantage /
+    loss code below is unchanged regardless of which is used:
 
-    For each raw sample, runs the agent loop from chunk 0 to max_chunks
-    with G=group_size independent rollouts. Each rollout maintains its own
-    memory state.
+      use_vllm_rollout=False (default, legacy):
+        StreamingAgentLoop + HF model.generate per chunk per gen.
+        N×G sequential generates; safe baseline used in audit logs.
+
+      use_vllm_rollout=True (v11.3, --use_vllm_rollout):
+        streaming_vllm_rollout — chunk-lockstep cross-(sample×gen) batch
+        through one vLLM call per chunk. Same MemoryState class, same
+        build_single_step_messages, so the prompt format is byte-identical
+        to SFT and to the legacy backend. Expected 5-10× rollout speedup
+        on N×G ≥ 16 batches; on small batches the speedup is smaller but
+        never negative.
+
+    Per-chunk shape returned (both backends):
+      {chunk_idx, window_start, window_end,
+       generated_tokens: List[Tensor]  # len = G,
+       memory_token_count: List[int]   # len = G,
+       compress_budget:   List[int]    # len = G,
+       recall_returned_chunks: List[List[int]]  # len = G}
 
     NOTE: This node should be wrapped with ``unwrap_model_for_generation``
     which handles ZeRO-3 parameter gathering and inference engine cleanup.
@@ -659,6 +677,44 @@ def rollout(
 
     all_rollout_results: List[Dict[str, Any]] = []
     model_for_generation.eval()
+
+    # ─── v11.3 vLLM rollout backend ───
+    # Same prompt format (build_single_step_messages), same MemoryState
+    # advancement, same per-chunk early-stop semantics — only the inference
+    # engine differs. Reward / advantage / loss code below sees an identical
+    # contract.
+    if use_vllm_rollout:
+        try:
+            from thinkstream.eval.streaming_vllm import streaming_vllm_rollout
+        except ImportError as e:
+            raise RuntimeError(
+                "use_vllm_rollout=True but streaming_vllm not importable: "
+                f"{e}. Install vllm + qwen_vl_utils or fall back to "
+                "use_vllm_rollout=False."
+            ) from e
+        # `inference_engine` is the vLLM LLM handle owned by the trainer
+        # (unwrap_model_for_generation injects it on ZeRO-3 unwrap).
+        all_rollout_results = streaming_vllm_rollout(
+            step_inputs,
+            llm=inference_engine,
+            processor=processor,
+            tokenizer=tokenizer,
+            group_size=group_size,
+            max_new_tokens=rollout_max_new_tokens,
+            rollout_max_chunks=rollout_max_chunks,
+            rollout_extra_chunks=rollout_extra_chunks,
+            min_pixels=rollout_min_pixels,
+            max_pixels=rollout_max_pixels,
+            temperature=rollout_temperature,
+            top_p=rollout_top_p,
+            top_k=rollout_top_k,
+            frames_root=vllm_rollout_frames_root,
+            video_root=vllm_rollout_video_root,
+        )
+        model_for_generation.train()
+        return ctx.set(rollout_data, all_rollout_results)
+
+    # ─── Legacy HF rollout backend (default, kept for parity / fallback) ───
 
     def _generate_fn(messages, processor, max_new_tokens=256, **kwargs):
         """Wrap model generation for StreamingAgentLoop."""
