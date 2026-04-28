@@ -148,6 +148,48 @@ class DataArguments:
         },
     )
 
+    # v11.5: StreamMind-style focal+alpha on action keyword positions.
+    # Attacks the "collapse to silent" failure mode that span_weight + class-
+    # balanced sampler alone cannot fix: silent samples reach p=0.99 quickly
+    # but vanilla CE keeps recording loss>0 there, so its gradient continues
+    # pushing silent's logit higher → other action keywords drift to -inf.
+    # Focal (1-p)^gamma kills the gradient on already-correct silent tokens;
+    # alpha = inv_freq^softening (StreamMind §5.1) lifts rare-class signal
+    # without the over-correction of pure inverse frequency.
+    focal_alpha_action: bool = field(
+        default=True,
+        metadata={
+            "help": "v11.5: enable focal+alpha multiplier on the action "
+            "keyword token position (the token inside <action>...</action>). "
+            "Multiplies into the existing token_loss_weight, so span_weight "
+            "and class-balanced sampler still apply — focal+alpha just adds "
+            "a per-token, per-class scaling on the decision token to fight "
+            "silent collapse. Inspired by StreamMind (arXiv 2503.06220 §5.1) "
+            "ablation showing focal+alpha >> inverse-freq >> vanilla CE on "
+            "stream-decision class imbalance."
+        },
+    )
+    focal_gamma: float = field(
+        default=2.0,
+        metadata={
+            "help": "Focal exponent gamma for the (1-p_correct)^gamma factor. "
+            "2.0 is RetinaNet/StreamMind default. Higher = more aggressive "
+            "down-weighting of confident predictions (pushes harder on hard "
+            "examples). Set 0.0 to disable focal but keep alpha."
+        },
+    )
+    alpha_softening: float = field(
+        default=0.5,
+        metadata={
+            "help": "Power applied to inv-freq for the per-class alpha "
+            "weight: alpha_c = (1 / P_c)^softening, normalized so silent=1.0. "
+            "0.5 = sqrt-inv (StreamMind-style soft); 1.0 = pure inverse "
+            "frequency (over-corrects on rare classes); 0.0 = uniform "
+            "(disables alpha but keeps focal). 0.5 is the calibrated default "
+            "from long-tail literature (CB-Loss / Focal-Loss original)."
+        },
+    )
+
 
 @dataclass
 class TrainingArguments(transformers.TrainingArguments):

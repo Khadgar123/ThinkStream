@@ -75,6 +75,15 @@ class WeightedSFTTrainer(Trainer):
         are not drowned by silent (~70% of mixed-phase data).
         """
         ds = train_dataset if train_dataset is not None else self.train_dataset
+
+        # v11.5: lazy-init focal+alpha state from dataset class distribution
+        # (called here because _get_train_sampler runs once at training start
+        # and has access to the train_dataset).
+        if (getattr(self.args, "focal_alpha_action", False)
+                and not hasattr(self, "_focal_alpha")
+                and ds is not None):
+            self._init_focal_alpha(ds)
+
         use_balanced = getattr(self.args, "class_balanced_sampler", False)
         if ds is None or not use_balanced:
             try:
@@ -119,6 +128,58 @@ class WeightedSFTTrainer(Trainer):
                 pass
         return sampler
 
+    def _init_focal_alpha(self, train_dataset) -> None:
+        """Compute per-sample-type alpha = (1/P_c)^softening, normalized to silent=1.
+
+        StreamMind §5.1: alpha lifts rare-class contribution on the action
+        keyword position; softening=0.5 (sqrt-inv) is the long-tail-literature
+        default — pure inverse-freq (1.0) over-corrects on ultra-rare classes
+        (recall_query at 2.5%) and destabilizes early training.
+
+        Stored on self._focal_alpha (dict[str, float]). Lookup in compute_loss
+        by sample_meta[i]["sample_type"]; missing classes fall back to 1.0.
+        """
+        from collections import Counter
+        try:
+            sample_types = [s.get("sample_type", "silent") for s in train_dataset.samples]
+        except AttributeError:
+            self._focal_alpha = {}
+            return
+
+        softening = float(getattr(self.args, "alpha_softening", 0.5))
+        n_total = len(sample_types)
+        if n_total == 0:
+            self._focal_alpha = {}
+            return
+
+        counts = Counter(sample_types)
+        alpha_raw = {}
+        for cls, cnt in counts.items():
+            p_c = cnt / n_total
+            alpha_raw[cls] = (1.0 / max(p_c, 1e-9)) ** softening
+
+        # Anchor on silent so silent's effective gradient stays unchanged
+        # (focal will down-weight it because it's already correct; alpha=1
+        # just means "no extra rebalance for silent itself").
+        anchor = alpha_raw.get("silent", 1.0)
+        if anchor <= 0:
+            anchor = 1.0
+        self._focal_alpha = {k: v / anchor for k, v in alpha_raw.items()}
+
+        if self._audit_step_writer is not None:
+            try:
+                self._audit_step_writer.write({
+                    "event": "focal_alpha_init",
+                    "n_total": n_total,
+                    "n_classes": len(counts),
+                    "softening": softening,
+                    "gamma": float(getattr(self.args, "focal_gamma", 2.0)),
+                    "class_counts": dict(counts),
+                    "alpha": {k: round(v, 4) for k, v in self._focal_alpha.items()},
+                })
+            except Exception:
+                pass
+
     def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
         sample_weights = inputs.pop("sample_weights", None)
         token_loss_weight = inputs.pop("token_loss_weight", None)
@@ -153,6 +214,59 @@ class WeightedSFTTrainer(Trainer):
                 effective_mask = valid_mask * tw
             else:
                 effective_mask = valid_mask
+
+            # v11.5: StreamMind-style focal+alpha on action keyword positions.
+            # Multiplies into effective_mask only at the keyword token(s) inside
+            # <action>...</action>. Silent collapse mechanics:
+            #   - silent samples reach p_correct≈0.99 within 50 steps, but
+            #     vanilla CE still records loss>0 → gradient keeps strengthening
+            #     silent's logit → other action keywords drift to -inf
+            #   - focal (1-p)^gamma kills the "already-learned silent" gradient
+            #   - alpha (sqrt-inv-freq) lifts rare-class signal proportionally
+            # Only touches the decision token; content tokens (think/response/
+            # summary) are untouched so generation quality training is preserved.
+            if (self.model.training
+                    and getattr(self.args, "focal_alpha_action", False)
+                    and eval_meta is not None
+                    and sample_meta is not None
+                    and getattr(self, "_focal_alpha", None)):
+                try:
+                    gamma = float(getattr(self.args, "focal_gamma", 2.0))
+                    # p_correct = exp(-CE), focal factor = (1-p)^gamma
+                    p_correct = torch.exp(-per_token_loss).clamp(min=0.0, max=1.0)
+                    focal_factor = (1.0 - p_correct).pow(gamma)
+
+                    alpha_per_sample = torch.tensor(
+                        [self._focal_alpha.get(
+                            (m or {}).get("sample_type") or "silent", 1.0)
+                         for m in sample_meta],
+                        device=per_token_loss.device,
+                        dtype=per_token_loss.dtype,
+                    )
+
+                    # Mark action keyword positions in shifted frame.
+                    # eval_meta positions are absolute in input_ids;
+                    # logits[p-1] predicts input_ids[p], so shifted index = p-1.
+                    kw_mask = torch.zeros_like(per_token_loss, dtype=torch.bool)
+                    for b, em in enumerate(eval_meta):
+                        if not em:
+                            continue
+                        for p in (em.get("action_keyword_positions") or []):
+                            idx = p - 1
+                            if 0 <= idx < L:
+                                kw_mask[b, idx] = True
+
+                    kw_multiplier = torch.where(
+                        kw_mask,
+                        alpha_per_sample.unsqueeze(1) * focal_factor,
+                        torch.ones_like(per_token_loss),
+                    )
+                    effective_mask = effective_mask * kw_multiplier
+                except Exception as e:
+                    import logging as _logging
+                    _logging.getLogger(__name__).debug(
+                        "focal_alpha skipped: %s", e
+                    )
 
             per_sample_loss = (
                 (per_token_loss * effective_mask).sum(dim=1)
