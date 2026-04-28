@@ -44,6 +44,9 @@ def add_streaming_vllm_args(parser):
     parser.add_argument("--sample", type=int, default=None)
     parser.add_argument("--debug", action="store_true")
     parser.add_argument("--temperature", type=float, default=0.0)
+    parser.add_argument("--repetition_penalty", type=float, default=1.1,
+                        help="Suppresses think repetition loops. 1.0 disables; "
+                             "1.1 is conservative; 1.2-1.3 if loops persist.")
     # vLLM-specific
     parser.add_argument("--tensor_parallel_size", type=int, default=None)
     parser.add_argument("--gpu_memory_utilization", type=float, default=0.9)
@@ -102,6 +105,7 @@ if __name__ == "__main__":
         frames_root=args.frames_root,
         video_root=args.video_root,
         temperature=args.temperature,
+        repetition_penalty=args.repetition_penalty,
         debug=args.debug,
         debug_dir=debug_dir,
     )

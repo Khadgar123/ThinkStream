@@ -51,7 +51,11 @@ IGNORE_INDEX = -100
 # while keeping <think> at non-zero weight so the model still learns
 # observation grounding (don't mask think entirely — see VideoLLM-MoD).
 SPAN_WEIGHTS = {
-    "think": 0.3,        # Observation/perception — light grounding only
+    # v11.3 (post-eval-debug): think bumped 0.3 → 0.6 because eval ckpt
+    # showed think collapsing to 280-300 token repetitive boilerplate at
+    # inference time — span weight 0.3 was too low to teach brevity / pin
+    # the length distribution to the SFT-baked 130-token cap.
+    "think": 0.6,
     "action": 8.0,       # Core decision (silent/response/recall/compress)
     "response": 2.0,     # Answer content — main behavioral output
     "query": 2.0,        # Recall query content
@@ -61,27 +65,31 @@ SPAN_WEIGHTS = {
 
 # Per-sample loss weights by action type.
 #
-# Design principle (see data_batch1_plan.md §5.3):
-# - silent/response: timing is DETERMINISTIC (answer visible or not).
-#   SFT must strictly learn correct timing → HIGH weight.
-# - recall/compress: timing is NON-DETERMINISTIC (no single correct moment).
-#   SFT teaches mechanism (format, query/summary quality), NOT timing.
-#   Timing optimization is left to RL/GRPO → LOW weight.
+# v11.3 (post-eval-debug rebalance):
+# Original design left compress/recall at 0.8 with the rationale "timing
+# is non-deterministic, leave to RL." But the v11.2 SFT ckpt collapses to
+# silent at compress_trigger time — RL can't improve format/timing if SFT
+# never produces compress action at all. Bumped compress + recall_query
+# to compete with silent's 70% data baseline so the model learns the
+# format reliably. RL still refines exact timing; SFT now teaches the
+# trigger→action binding hard.
+#
+# Original (deprecated): compress=0.8, recall_query=0.8, recall_silent=0.8
 ACTION_WEIGHTS = {
     # ── Core behaviors (SFT teaches mechanism + timing) ──
     "response": 1.5,            # Answering visible questions — highest value
     "silent": 1.0,              # Default silent (with active queries — teaches restraint)
 
     # ── Recall mechanism (SFT teaches format, RL optimizes timing) ──
-    "recall_query": 0.8,        # Recall query format learning
-    "recall_response": 1.0,     # Post-recall response (deterministic: evidence arrived)
-    "recall_silent": 0.8,       # Post-recall silent (recall failed)
-    "proactive_recall_query": 0.8,
-    "proactive_recall_silent": 0.8,
+    "recall_query": 1.5,        # 0.8 → 1.5: format must be reliably emitted
+    "recall_response": 1.5,     # 1.0 → 1.5: post-recall response is deterministic
+    "recall_silent": 1.0,       # 0.8 → 1.0: failed-recall silent
+    "proactive_recall_query": 1.5,
+    "proactive_recall_silent": 1.0,
 
     # ── Compression mechanism (SFT teaches summary quality) ──
-    "compress": 0.8,
-    "merge_compress": 0.8,
+    "compress": 2.5,            # 0.8 → 2.5: highest priority — compress collapse fix
+    "merge_compress": 2.5,
 }
 
 
@@ -123,16 +131,21 @@ def _get_sample_weight(sample: Dict) -> float:
             return 1.0
         elif base_role == "question_window":
             # Chunks around Q&A events: context for decision boundaries.
-            return 0.8 if queries else 0.5
+            # v11.3: no_query branch 0.5 → 1.0. Original under-weighted
+            # "no question pending → still silent" examples; eval ckpt
+            # learned to leak <action>response</action> at silent chunks.
+            return 0.8 if queries else 1.0
         elif base_role == "warmup":
             # Cold-start chunks: empty memory, minimal signal.
             return 0.3
         elif base_role == "patrol":
             # Long-silent stretches: teaches sustained silence.
-            return 0.8 if queries else 0.3
+            # v11.3: no_query branch 0.3 → 0.8 (sustained silence is core).
+            return 0.8
         else:
-            # Legacy samples without base_role (backward compat)
-            return 0.8 if queries else 0.3
+            # Legacy samples without base_role (backward compat).
+            # v11.3: no_query branch 0.3 → 0.8 (same rationale as patrol).
+            return 0.8
 
     elif sequence_type == "event_watch":
         return 1.0        # "Event hasn't happened, keep watching" — teaches patience

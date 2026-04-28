@@ -315,6 +315,7 @@ def streaming_predict_mcq_vllm(
     frames_root: Optional[str] = None,
     video_root: Optional[str] = None,
     temperature: float = 0.0,
+    repetition_penalty: float = 1.1,
     debug: bool = False,
     debug_dir: Optional[str] = None,
 ):
@@ -349,10 +350,14 @@ def streaming_predict_mcq_vllm(
         f"max_chunks={max_chunks}, frames_per_chunk={frames_per_chunk}"
     )
 
+    # repetition_penalty>1.0 is critical for think generation — the v11.2
+    # SFT ckpt collapses to 280-300 token repetitive boilerplate at greedy
+    # decode without it, even though SFT training data caps think at 130.
     sampling_params = make_sampling_params(
         max_new_tokens=max_new_tokens,
         temperature=temperature,
         top_k=1 if temperature == 0.0 else -1,
+        repetition_penalty=repetition_penalty,
     )
 
     # ── Chunk-lockstep loop ──

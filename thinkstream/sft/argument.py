@@ -100,11 +100,14 @@ class DataArguments:
         },
     )
     class_balance_smoothing: float = field(
-        default=0.7,
+        default=1.0,
         metadata={
             "help": "Smoothing exponent on inv-freq weights. "
             "1.0 = pure inverse frequency (most aggressive rebalance), "
-            "0.5 = √(inv-freq), 0.0 = uniform. Default 0.7."
+            "0.5 = √(inv-freq), 0.0 = uniform. v11.3: bumped 0.7 → 1.0 "
+            "because 0.7 only delivered ~2.6× boost to compress (25% base "
+            "freq) — insufficient to overcome silent's 70% prior. Pure "
+            "inv-freq gives ~4× and unblocks compress training."
         },
     )
 
