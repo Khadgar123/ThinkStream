@@ -1,0 +1,4963 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "large green garbage truck with rear compactor open",
+        "action": "static",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "man wearing a straw hat and light blue short-sleeved shirt",
+        "action": "standing inside the truck bed",
+        "position": "center",
+        "id": "worker_blue_straw_1"
+      },
+      {
+        "desc": "man wearing a purple cap, purple t-shirt, and orange gloves",
+        "action": "standing on the ground holding a large white sack",
+        "position": "center-right",
+        "id": "worker_purple_1"
+      },
+      {
+        "desc": "man wearing a dark grey t-shirt and dark pants",
+        "action": "standing on the ground",
+        "position": "left",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "yellow plastic trash bin",
+        "action": "static",
+        "position": "center-bottom",
+        "id": "trash_bin_yellow_1"
+      },
+      {
+        "desc": "large white sack filled with refuse",
+        "action": "being held",
+        "position": "center-right",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "blue and red patterned bag",
+        "action": "static",
+        "position": "center",
+        "id": "trash_bin_blue_1"
+      },
+      {
+        "desc": "residential street with houses and fences",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "concrete utility pole with wires",
+        "action": "static",
+        "position": "left",
+        "id": "utility_pole_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a purple shirt is holding a large white sack next to the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a blue shirt and straw hat is standing inside the back of the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow trash bin is positioned on the road behind the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The date '27/12/2016' and time '06:55:54' are visible in the bottom left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The truck has a yellow license plate with the number '91-3012'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:55:54",
+      "91-3012"
+    ],
+    "spatial": "The green garbage truck is in the center of the road. The man in the purple shirt is to the right of the yellow trash bin and is holding the white sack. The man in the blue shirt is inside the truck, above the yellow bin. The man in the dark grey shirt is to the left of the truck. The utility pole is to the left of the scene, near the fence.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "green garbage truck with yellow license plate reading '91-3012'",
+        "action": "static",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "man wearing a blue shirt, dark pants, and a straw hat",
+        "action": "standing on the back of the truck",
+        "position": "center",
+        "id": "worker_blue_straw_1"
+      },
+      {
+        "desc": "man wearing a purple shirt, dark pants, and a blue cap",
+        "action": "lifting a yellow trash bin",
+        "position": "center",
+        "id": "worker_purple_1"
+      },
+      {
+        "desc": "man wearing a dark blue shirt and dark pants",
+        "action": "standing on the left side of the road",
+        "position": "left",
+        "id": "worker_dark_blue_1"
+      },
+      {
+        "desc": "yellow plastic trash bin",
+        "action": "being lifted",
+        "position": "center",
+        "id": "trash_bin_yellow_1"
+      },
+      {
+        "desc": "large white sack filled with trash",
+        "action": "hanging from the back of the truck",
+        "position": "center-right",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "blue and red patterned bag",
+        "action": "resting on the truck's lift mechanism",
+        "position": "center",
+        "id": "trash_bin_blue_1"
+      },
+      {
+        "desc": "residential houses with fences and gates",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a purple shirt is lifting a yellow trash bin towards the back of the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a blue shirt and straw hat is standing on the rear platform of the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large white sack is hanging from the right side of the truck's rear.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The license plate on the truck reads '91-3012'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a dark blue shirt is standing on the left side of the road watching the others.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "91-3012",
+      "27/12/2016 06:55:56",
+      "27/12/2016 06:55:57"
+    ],
+    "spatial": "The green garbage truck is in the center of the road. The man in the purple shirt is behind the truck, lifting the yellow bin. The man in the blue shirt is standing on the back of the truck, above the yellow bin. The man in the dark blue shirt is to the left of the truck. The white sack is to the right of the yellow bin, hanging from the truck.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "workers begin lifting yellow trash bin"
+    ]
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "green garbage truck with a rear compactor mechanism, yellow license plate reading '91-3012'",
+        "action": "static",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "man wearing a dark blue t-shirt, dark pants, and a green apron",
+        "action": "standing and watching",
+        "position": "left",
+        "id": "worker_green_apron_1"
+      },
+      {
+        "desc": "man wearing a purple t-shirt, dark pants, a purple cap, and orange gloves",
+        "action": "lifting a yellow bin",
+        "position": "center",
+        "id": "worker_purple_1"
+      },
+      {
+        "desc": "man wearing a light blue shirt inside the truck",
+        "action": "standing inside the truck bed",
+        "position": "center",
+        "id": "worker_blue_straw_1"
+      },
+      {
+        "desc": "large white sack filled with refuse",
+        "action": "hanging on the rear of the truck",
+        "position": "center",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "yellow plastic waste bin",
+        "action": "being lifted by the man in purple",
+        "position": "center",
+        "id": "trash_bin_yellow_1"
+      },
+      {
+        "desc": "blue and red patterned sack",
+        "action": "resting on the truck bumper",
+        "position": "center",
+        "id": "trash_bin_blue_1"
+      },
+      {
+        "desc": "white residential building with a balcony and green awning",
+        "action": "static",
+        "position": "left",
+        "id": "house_white_1"
+      },
+      {
+        "desc": "concrete utility pole with wires",
+        "action": "static",
+        "position": "left",
+        "id": "utility_pole_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a purple shirt is lifting a yellow waste bin towards the back of the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a blue shirt stands inside the rear compartment of the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large white sack is hanging from the rear of the green garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The license plate on the truck reads '91-3012'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp in the bottom left corner reads '27/12/2016 06:55:58' and '27/12/2016 06:55:59'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:55:58",
+      "27/12/2016 06:55:59",
+      "91-3012"
+    ],
+    "spatial": "The green garbage truck is parked in the center of the narrow road. The man in the purple shirt is standing behind the truck, holding the yellow bin. The man in the blue shirt is inside the truck, above the man lifting the bin. The white house is to the left of the truck, separated by a fence and a utility pole.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "large green garbage truck with open rear compartment and yellow license plate",
+        "action": "static",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing a blue shirt, dark pants, and a blue cap with purple straps",
+        "action": "standing and holding a large white sack",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing a dark shirt and green apron",
+        "action": "standing and holding a blue bag",
+        "position": "left",
+        "id": "worker_green_apron_1"
+      },
+      {
+        "desc": "person wearing a yellow hat and dark clothing",
+        "action": "standing near the truck",
+        "position": "right",
+        "id": "worker_camouflage_1"
+      },
+      {
+        "desc": "person wearing a blue shirt and a straw hat",
+        "action": "standing inside the truck bed",
+        "position": "center/background",
+        "id": "worker_blue_straw_1"
+      },
+      {
+        "desc": "large white sack",
+        "action": "being held",
+        "position": "center",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "blue bag with red and white graphics",
+        "action": "being held",
+        "position": "left",
+        "id": "trash_bin_blue_1"
+      },
+      {
+        "desc": "yellow bin",
+        "action": "static",
+        "position": "center",
+        "id": "trash_bin_yellow_1"
+      },
+      {
+        "desc": "residential buildings with fences and satellite dishes",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "utility poles with overhead wires",
+        "action": "static",
+        "position": "left",
+        "id": "utility_pole_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A garbage truck is stopped on a residential street.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in the center is holding a large white sack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person on the left is holding a blue bag.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person is standing inside the back of the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The license plate on the truck reads '9ก-3012'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "9ก-3012",
+      "27/12/2016 06:56:00",
+      "27/12/2016 06:56:01"
+    ],
+    "spatial": "The green garbage truck is in the center of the road. The person holding the white sack is standing behind the truck. The person holding the blue bag is to the left of the person with the white sack. The person in the yellow hat is to the right of the truck. The residential buildings are on both sides of the street, behind the fences.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "large green garbage truck with rear compactor open, yellow license plate reading '91-3012'",
+        "action": "static",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "man wearing a yellow cap, camouflage t-shirt, and dark pants",
+        "action": "lifting a green plastic bin",
+        "position": "right",
+        "id": "worker_camouflage_1"
+      },
+      {
+        "desc": "man wearing a blue shirt, dark pants, and a purple backpack",
+        "action": "standing near the truck",
+        "position": "center"
+      },
+      {
+        "desc": "man wearing a dark blue shirt and green apron",
+        "action": "holding a blue bag",
+        "position": "left",
+        "id": "worker_green_apron_1"
+      },
+      {
+        "desc": "green plastic trash bin",
+        "action": "being lifted",
+        "position": "right",
+        "id": "trash_bin_green_1"
+      },
+      {
+        "desc": "white two-story house with balcony and satellite dish",
+        "action": "static",
+        "position": "left",
+        "id": "house_white_1"
+      },
+      {
+        "desc": "metal fence with vertical bars",
+        "action": "static",
+        "position": "left",
+        "id": "fence_metal_1"
+      },
+      {
+        "desc": "utility pole with wires",
+        "action": "static",
+        "position": "left",
+        "id": "utility_pole_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a yellow cap is lifting a green trash bin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a blue shirt is holding a blue bag.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The garbage truck has its rear compartment open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The license plate on the truck reads '91-3012'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "91-3012",
+      "27/12/2016 06:56:02",
+      "27/12/2016 06:56:03"
+    ],
+    "spatial": "The green garbage truck is in the center of the road. The man in the yellow cap is to the right of the truck, lifting a bin. The man in the blue shirt is standing behind the man in the yellow cap. The man in the green apron is to the left of the truck. The white house is to the left of the road, behind a metal fence.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "worker begins lifting green plastic bin"
+    ]
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a yellow head covering, camouflage t-shirt, and dark pants",
+        "action": "lifting a green bin",
+        "position": "center foreground",
+        "id": "worker_camouflage_1"
+      },
+      {
+        "desc": "large green plastic trash bin",
+        "action": "being lifted",
+        "position": "center foreground",
+        "id": "trash_bin_green_1"
+      },
+      {
+        "desc": "person wearing a blue cap and purple uniform",
+        "action": "standing near the bin",
+        "position": "center right"
+      },
+      {
+        "desc": "person wearing a dark shirt and green apron",
+        "action": "standing near the truck",
+        "position": "center left",
+        "id": "worker_green_apron_1"
+      },
+      {
+        "desc": "large green garbage truck with rear compactor open",
+        "action": "static",
+        "position": "center background",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "white residential building with a balcony and metal fence",
+        "action": "static",
+        "position": "left",
+        "id": "house_white_1"
+      },
+      {
+        "desc": "concrete utility pole with wires",
+        "action": "static",
+        "position": "left foreground",
+        "id": "utility_pole_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a camouflage shirt is lifting a green trash bin towards the back of a garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A garbage truck is stopped in the middle of a narrow residential street.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The date '27/12/2016' and time '06:56:04' are visible in the bottom left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow license plate with the number '91-3012' is attached to the back of the truck.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:56:04",
+      "91-3012"
+    ],
+    "spatial": "The green garbage truck is positioned in the center of the road, facing away from the camera. The person in the camouflage shirt is in front of the truck, holding the green bin. To the left of the truck is a white house with a fence, and a utility pole stands in the foreground on the left side.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "green garbage truck with open rear compartment and yellow license plate",
+        "action": "static",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing a yellow head covering, camouflage t-shirt, and dark pants",
+        "action": "tilting a green trash bin",
+        "position": "center-left",
+        "id": "worker_camouflage_1"
+      },
+      {
+        "desc": "person wearing a purple apron over a dark shirt, blue cap, and grey pants",
+        "action": "holding a yellow trash bin",
+        "position": "right",
+        "id": "worker_green_apron_1"
+      },
+      {
+        "desc": "person wearing a blue shirt and a straw hat",
+        "action": "standing inside the truck compartment",
+        "position": "center/background",
+        "id": "worker_blue_straw_1"
+      },
+      {
+        "desc": "person wearing a dark shirt and dark pants",
+        "action": "standing near the left fence",
+        "position": "left",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "large green plastic trash bin",
+        "action": "being lifted",
+        "position": "center",
+        "id": "trash_bin_green_1"
+      },
+      {
+        "desc": "large yellow plastic trash bin",
+        "action": "being held",
+        "position": "right",
+        "id": "trash_bin_yellow_1"
+      },
+      {
+        "desc": "large white sack filled with refuse",
+        "action": "hanging from the truck",
+        "position": "center-right",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "yellow license plate with black text",
+        "action": "static",
+        "position": "top-center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a yellow head covering is tilting a green trash bin to empty it into the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a purple apron is holding a yellow trash bin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A worker in a straw hat is standing inside the back of the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large white sack is hanging from the rear of the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The license plate on the truck reads '91-3012'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "91-3012"
+    ],
+    "spatial": "The green garbage truck is in the center of the road. The person in the yellow head covering is to the left of the person in the purple apron. The person in the purple apron is holding the yellow bin to the right of the green bin. The worker in the straw hat is inside the truck, behind the green bin. The white sack is hanging to the right of the worker inside the truck.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "large green garbage truck with rear compactor open, yellow license plate reading '91-2012'",
+        "action": "static",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing a yellow hat, camouflage patterned shirt, and dark pants",
+        "action": "pushing a green trash bin",
+        "position": "center-left",
+        "id": "worker_camouflage_1"
+      },
+      {
+        "desc": "green plastic trash bin with white recycling logo",
+        "action": "being pushed",
+        "position": "center-left",
+        "id": "trash_bin_green_1"
+      },
+      {
+        "desc": "person wearing a dark blue shirt and dark pants",
+        "action": "standing and reaching towards the truck",
+        "position": "left",
+        "id": "worker_dark_blue_1"
+      },
+      {
+        "desc": "large white sack filled with refuse",
+        "action": "hanging from the truck's rear mechanism",
+        "position": "center-right",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "yellow plastic trash bin",
+        "action": "static",
+        "position": "right",
+        "id": "trash_bin_yellow_1"
+      },
+      {
+        "desc": "person wearing a purple shirt and blue cap",
+        "action": "standing near the yellow bin",
+        "position": "right",
+        "id": "worker_purple_1"
+      },
+      {
+        "desc": "white residential building with a balcony and green awning",
+        "action": "static",
+        "position": "left",
+        "id": "house_white_1"
+      },
+      {
+        "desc": "concrete utility pole with wires",
+        "action": "static",
+        "position": "left",
+        "id": "utility_pole_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a yellow hat pushes a green trash bin towards the back of the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large white sack hangs from the rear of the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The garbage truck has a license plate reading '91-2012'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a blue shirt stands to the left of the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow trash bin sits on the street to the right of the truck.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "91-2012",
+      "27/12/2016 06:56:08",
+      "27/12/2016 06:56:09"
+    ],
+    "spatial": "The green garbage truck is in the center of the road. To the left of the truck, a person in a yellow hat is pushing a green bin, while another person in a blue shirt stands further left near a utility pole. To the right of the truck, a large white sack hangs from the vehicle, and a yellow bin is positioned on the ground near a person in a purple shirt. The white building is to the left of the scene.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "large green garbage truck with open rear compartment, yellow license plate reading '91-3012', and orange lights on top",
+        "action": "static",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "man wearing a blue shirt and a straw hat",
+        "action": "standing inside the truck compartment",
+        "position": "center",
+        "id": "worker_blue_straw_1"
+      },
+      {
+        "desc": "person wearing a camouflage t-shirt and a yellow head covering",
+        "action": "lifting a large white sack",
+        "position": "center",
+        "id": "worker_camouflage_1"
+      },
+      {
+        "desc": "man wearing a dark blue t-shirt and dark pants",
+        "action": "standing next to a green bin",
+        "position": "left",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "large white sack filled with refuse",
+        "action": "being lifted",
+        "position": "center",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "green plastic waste bin with white text",
+        "action": "static",
+        "position": "left",
+        "id": "trash_bin_green_1"
+      },
+      {
+        "desc": "yellow plastic waste bin",
+        "action": "static",
+        "position": "right",
+        "id": "trash_bin_yellow_1"
+      },
+      {
+        "desc": "white residential building with a balcony and a Thai flag",
+        "action": "static",
+        "position": "left background",
+        "id": "house_white_1"
+      },
+      {
+        "desc": "concrete utility pole with wires",
+        "action": "static",
+        "position": "left foreground",
+        "id": "utility_pole_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a camouflage shirt is lifting a large white sack towards the back of the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a blue shirt stands inside the truck compartment, appearing to assist with loading.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a dark blue shirt stands next to a green waste bin on the left side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The license plate on the truck reads '91-3012'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow waste bin is positioned on the right side of the road near a fence.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "91-3012",
+      "27/12/2016 06:56:10",
+      "27/12/2016 06:56:11"
+    ],
+    "spatial": "The green garbage truck is in the center of the road. The person in the camouflage shirt is behind the truck, lifting a white sack into it. The man in the blue shirt is inside the truck, above the person lifting the sack. The green waste bin is to the left of the truck, and the yellow waste bin is to the right of the truck. The white house is to the left of the scene, behind the utility pole.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "worker begins lifting large white sack"
+    ]
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "green garbage truck with open rear compartment, yellow license plate reading '91-3012'",
+        "action": "static",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "man wearing dark blue shirt and dark pants",
+        "action": "lifting a green trash bin",
+        "position": "left"
+      },
+      {
+        "desc": "man wearing yellow cap, camouflage patterned shirt, and dark pants",
+        "action": "lifting a green trash bin",
+        "position": "right"
+      },
+      {
+        "desc": "man wearing light blue shirt",
+        "action": "standing inside the truck compartment",
+        "position": "center/background",
+        "id": "worker_blue_straw_1"
+      },
+      {
+        "desc": "green plastic trash bin",
+        "action": "being lifted by two men",
+        "position": "center/foreground",
+        "id": "trash_bin_green_1"
+      },
+      {
+        "desc": "large white sack filled with material",
+        "action": "hanging from the right side of the truck",
+        "position": "right",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "white residential building with balcony and green awning",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "metal fence with vertical bars",
+        "action": "static",
+        "position": "left",
+        "id": "fence_metal_1"
+      },
+      {
+        "desc": "yellow trash bin",
+        "action": "static",
+        "position": "right",
+        "id": "trash_bin_yellow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two men are lifting a green trash bin towards the back of a garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a blue shirt stands inside the open rear compartment of the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large white sack hangs from the right side of the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The license plate on the truck reads '91-3012'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "91-3012",
+      "27/12/2016 06:56:12",
+      "27/12/2016 06:56:13"
+    ],
+    "spatial": "The green garbage truck is in the center of the narrow street. Two men are in front of the truck, lifting a green bin. The man in the blue shirt is inside the truck, behind the bin. A white house with a balcony is to the left of the truck, and a metal fence runs along the left side of the road. A yellow bin is to the right of the truck, near a wall.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "large green garbage truck with open rear compartment and yellow license plate",
+        "action": "static",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing dark blue shirt and dark pants",
+        "action": "lifting a green bin",
+        "position": "center-left",
+        "id": "worker_dark_blue_1"
+      },
+      {
+        "desc": "person wearing camouflage shirt and yellow head covering",
+        "action": "holding a large white sack",
+        "position": "center-right",
+        "id": "worker_camouflage_1"
+      },
+      {
+        "desc": "person wearing blue shirt and hat",
+        "action": "standing inside the truck",
+        "position": "center-background",
+        "id": "worker_blue_straw_1"
+      },
+      {
+        "desc": "green plastic waste bin",
+        "action": "being lifted",
+        "position": "center",
+        "id": "trash_bin_green_1"
+      },
+      {
+        "desc": "large white sack",
+        "action": "being held",
+        "position": "center-right",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "white residential building with balcony and green awning",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "concrete utility pole with wires",
+        "action": "static",
+        "position": "left-foreground",
+        "id": "utility_pole_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a dark blue shirt is lifting a green bin into the back of a garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a camouflage shirt is holding a large white sack next to the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A worker is standing inside the open rear of the green garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The license plate on the truck reads '31-3012'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:56:14",
+      "31-3012"
+    ],
+    "spatial": "The green garbage truck is in the center of the road. The person in the dark blue shirt is to the left of the person in the camouflage shirt. The person in the blue shirt is inside the back of the truck, above the other workers. The white house is to the left of the truck, and the utility pole is in front of the house.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "large green garbage truck with rear compactor open, yellow license plate, orange lights",
+        "action": "static",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing dark blue uniform, short dark hair",
+        "action": "lifting a green bin",
+        "position": "center-left"
+      },
+      {
+        "desc": "person wearing blue shirt and dark pants",
+        "action": "standing inside truck bed",
+        "position": "center",
+        "id": "worker_dark_blue_1"
+      },
+      {
+        "desc": "person wearing camouflage shirt, dark pants, and yellow cap",
+        "action": "holding a large white sack",
+        "position": "center-right",
+        "id": "worker_camouflage_1"
+      },
+      {
+        "desc": "green plastic waste bin",
+        "action": "being lifted",
+        "position": "center",
+        "id": "trash_bin_green_1"
+      },
+      {
+        "desc": "large white sack filled with waste",
+        "action": "being held",
+        "position": "right",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "white two-story house with balcony and green awning",
+        "action": "static",
+        "position": "left",
+        "id": "house_white_1"
+      },
+      {
+        "desc": "concrete utility pole with wires",
+        "action": "static",
+        "position": "left",
+        "id": "utility_pole_1"
+      },
+      {
+        "desc": "yellow fire hydrant",
+        "action": "static",
+        "position": "left",
+        "id": "hydrant_yellow_1"
+      },
+      {
+        "desc": "white metal fence with decorative patterns",
+        "action": "static",
+        "position": "right",
+        "id": "fence_metal_1"
+      },
+      {
+        "desc": "timestamp text '27/12/2016 06:56:16' and '27/12/2016 06:56:17'",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "timestamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a dark blue uniform is lifting a green bin into the back of a garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a camouflage shirt is holding a large white sack next to the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a blue shirt is standing inside the open rear compartment of the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The garbage truck is parked in the middle of a narrow residential street.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp indicates the date is 27/12/2016 and the time is around 06:56 AM.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:56:16",
+      "27/12/2016 06:56:17"
+    ],
+    "spatial": "The green garbage truck is in the center of the road. The person in the blue uniform is to the left of the person in the camouflage shirt. The person in the blue shirt is inside the back of the truck, above the person lifting the bin. The white house is to the left of the truck, behind a metal fence. The yellow fire hydrant is on the left side of the road, near the utility pole.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "green garbage truck with open rear compartment, yellow license plate, and flashing amber lights",
+        "action": "stationary",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing a dark blue t-shirt and dark pants",
+        "action": "lifting a green bin",
+        "position": "center-left",
+        "id": "worker_dark_blue_1"
+      },
+      {
+        "desc": "person wearing a camouflage pattern shirt, dark pants, and a yellow cap",
+        "action": "holding a large white sack",
+        "position": "center-right",
+        "id": "worker_camouflage_1"
+      },
+      {
+        "desc": "green rectangular plastic bin",
+        "action": "being lifted",
+        "position": "center",
+        "id": "trash_bin_green_1"
+      },
+      {
+        "desc": "large white sack filled with refuse",
+        "action": "being held",
+        "position": "center-right",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "white building with a balcony and green awning",
+        "action": "static",
+        "position": "left",
+        "id": "house_white_1"
+      },
+      {
+        "desc": "concrete utility pole with attached wires",
+        "action": "static",
+        "position": "left",
+        "id": "utility_pole_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a dark blue shirt is lifting a green bin towards the back of the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a camouflage shirt is holding a large white sack next to the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The garbage truck is stopped in the middle of a narrow residential street.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp on the video reads '27/12/2016 06:56:18' and '06:56:19'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:56:18",
+      "27/12/2016 06:56:19"
+    ],
+    "spatial": "The green garbage truck is positioned in the center of the road. The person in the dark blue shirt is to the left of the person in the camouflage shirt. The person in the blue shirt is holding the green bin, while the person in the camouflage shirt is holding the white sack. The white building is to the left of the truck, and a concrete utility pole stands near the building.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "large green garbage truck with rear compactor open, amber warning lights flashing on top",
+        "action": "stationary with lights flashing",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing dark blue shirt and dark pants",
+        "action": "standing at the rear of the truck",
+        "position": "center",
+        "id": "worker_dark_blue_1"
+      },
+      {
+        "desc": "person wearing camouflage pattern shirt and yellow head covering",
+        "action": "pushing a green bin",
+        "position": "center-right",
+        "id": "worker_camouflage_1"
+      },
+      {
+        "desc": "green plastic waste bin with white text",
+        "action": "being pushed",
+        "position": "center-right",
+        "id": "trash_bin_green_1"
+      },
+      {
+        "desc": "large white sack filled with waste",
+        "action": "static",
+        "position": "center-right",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "person wearing dark clothing",
+        "action": "standing near the wall",
+        "position": "right",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "white metal fence with decorative spear tops",
+        "action": "static",
+        "position": "left",
+        "id": "fence_metal_1"
+      },
+      {
+        "desc": "concrete utility pole with tangled wires",
+        "action": "static",
+        "position": "left",
+        "id": "utility_pole_1"
+      },
+      {
+        "desc": "grey concrete wall with ventilation blocks",
+        "action": "static",
+        "position": "right",
+        "id": "wall_white_ventilation_1"
+      },
+      {
+        "desc": "white text overlay '27/12/2016 06:56:20'",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "timestamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a camouflage shirt pushes a green bin towards the back of the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The garbage truck's amber warning lights are flashing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large white sack sits on the road next to the green bin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp '27/12/2016 06:56:20' is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:56:20"
+    ],
+    "spatial": "The green garbage truck is in the center of the road, blocking the path. A person in a camouflage shirt is to the right of a person in a blue shirt, both standing behind the truck. The green bin is in front of the person in the camouflage shirt. A white metal fence is to the left of the truck, and a concrete wall is to the right of the truck.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "garbage truck amber warning lights start flashing"
+    ]
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a yellow head covering, camouflage patterned short-sleeved shirt, and dark pants",
+        "action": "pushing a green trash bin",
+        "position": "center",
+        "id": "worker_camouflage_1"
+      },
+      {
+        "desc": "green plastic trash bin with a white recycling logo on the side",
+        "action": "being pushed",
+        "position": "center",
+        "id": "trash_bin_green_1"
+      },
+      {
+        "desc": "large green garbage truck with rear lights illuminated and white bags hanging from the back",
+        "action": "static",
+        "position": "center background",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing a dark blue shirt and dark pants",
+        "action": "standing",
+        "position": "right",
+        "id": "worker_dark_blue_1"
+      },
+      {
+        "desc": "yellow plastic trash bin",
+        "action": "static",
+        "position": "right",
+        "id": "trash_bin_yellow_1"
+      },
+      {
+        "desc": "white text timestamp on a black background",
+        "action": "static",
+        "position": "bottom left",
+        "id": "timestamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a camouflage shirt is pushing a green trash bin towards the back of a garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The garbage truck has its rear lights turned on.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow trash bin is stationary on the right side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp '27/12/2016 06:56:22' is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:56:22",
+      "27/12/2016 06:56:23"
+    ],
+    "spatial": "The person in the camouflage shirt is behind the green trash bin, pushing it. The green trash bin is in front of the garbage truck. The person in the dark blue shirt is standing to the right of the garbage truck, next to a yellow trash bin. The timestamp is located in the bottom left corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "large green garbage truck with rear compactor mechanism, yellow warning lights, and license plate",
+        "action": "collecting trash",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "green plastic wheeled trash bin with white recycling logo",
+        "action": "being lifted",
+        "position": "center",
+        "id": "trash_bin_green_1"
+      },
+      {
+        "desc": "person wearing yellow head covering and dark clothing",
+        "action": "operating bin lift",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing blue shirt and dark pants",
+        "action": "standing",
+        "position": "right",
+        "id": "worker_dark_blue_1"
+      },
+      {
+        "desc": "large white sack filled with refuse",
+        "action": "being loaded",
+        "position": "center",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "yellow plastic trash bin",
+        "action": "static",
+        "position": "right",
+        "id": "trash_bin_yellow_1"
+      },
+      {
+        "desc": "white digital timestamp text",
+        "action": "static",
+        "position": "bottom",
+        "id": "timestamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The green garbage truck is stopped in the middle of the street.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A worker is lifting the green trash bin into the truck's rear compactor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large white sack of trash is being loaded into the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a blue shirt stands near a yellow bin on the right side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp reads '27/12/2016 06:56:24' and '27/12/2016 06:56:25'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:56:24",
+      "27/12/2016 06:56:25"
+    ],
+    "spatial": "The green garbage truck is in the center of the road, positioned in front of the camera vehicle. The green trash bin is directly behind the truck, being lifted by a worker. To the right of the truck, a person in a blue shirt stands near a yellow bin which is placed next to a grey brick wall. The timestamp text is located at the bottom left of the frame.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "garbage truck begins collecting trash (compactor active)"
+    ]
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "green garbage truck with rear compactor mechanism open",
+        "action": "stationary",
+        "position": "center/background",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing dark blue uniform shirt and dark pants",
+        "action": "walking towards the truck",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing dark blue uniform shirt, dark pants, and a blue cap",
+        "action": "walking towards the truck",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing a yellow cap and dark clothing",
+        "action": "standing near the truck",
+        "position": "center/right"
+      },
+      {
+        "desc": "large green plastic trash bin with white recycling logo",
+        "action": "being moved",
+        "position": "center/foreground",
+        "id": "trash_bin_green_1"
+      },
+      {
+        "desc": "yellow plastic trash bin",
+        "action": "static",
+        "position": "right",
+        "id": "trash_bin_yellow_1"
+      },
+      {
+        "desc": "concrete utility pole with electrical wires",
+        "action": "static",
+        "position": "left",
+        "id": "utility_pole_1"
+      },
+      {
+        "desc": "white wall with ventilation blocks",
+        "action": "static",
+        "position": "left",
+        "id": "wall_white_ventilation_1"
+      },
+      {
+        "desc": "grey metal gate",
+        "action": "static",
+        "position": "left",
+        "id": "fence_metal_1"
+      },
+      {
+        "desc": "grey brick wall with decorative blocks",
+        "action": "static",
+        "position": "right",
+        "id": "wall_white_ventilation_1"
+      },
+      {
+        "desc": "white text timestamp",
+        "action": "static",
+        "position": "bottom left",
+        "id": "timestamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A green garbage truck is stopped in the middle of a narrow residential street.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two workers in dark blue uniforms are walking towards the back of the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A worker is moving a large green trash bin towards the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow trash bin is stationary on the right side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp '27/12/2016 06:56:26' and '27/12/2016 06:56:27' is visible at the bottom left.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:56:26",
+      "27/12/2016 06:56:27"
+    ],
+    "spatial": "The green garbage truck is positioned in the center of the road, ahead of the workers. The workers are walking behind the truck. The green trash bin is being moved by a worker in the foreground, to the right of the other workers. The yellow trash bin is on the right side of the road, next to a grey brick wall. A concrete utility pole stands on the left side of the road, next to a white wall and a metal gate.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "large green garbage truck with rear compactor mechanism open",
+        "action": "static",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing camouflage t-shirt, dark pants, and yellow head covering",
+        "action": "pushing a green bin",
+        "position": "center-right",
+        "id": "worker_camouflage_1"
+      },
+      {
+        "desc": "large green plastic waste bin with white recycling logo",
+        "action": "being pushed",
+        "position": "center-right",
+        "id": "trash_bin_green_1"
+      },
+      {
+        "desc": "person wearing blue t-shirt and dark pants",
+        "action": "walking away",
+        "position": "center-left",
+        "id": "worker_dark_blue_1"
+      },
+      {
+        "desc": "person wearing purple t-shirt and dark pants",
+        "action": "walking away",
+        "position": "center"
+      },
+      {
+        "desc": "yellow plastic waste bin",
+        "action": "static",
+        "position": "right",
+        "id": "trash_bin_yellow_1"
+      },
+      {
+        "desc": "white concrete wall with ventilation blocks",
+        "action": "static",
+        "position": "left",
+        "id": "wall_white_ventilation_1"
+      },
+      {
+        "desc": "digital timestamp text in white font",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "timestamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a camouflage shirt is pushing a large green waste bin towards the back of the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two other workers are walking towards the open rear of the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The garbage truck is stopped in the middle of a narrow residential street.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow waste bin sits stationary on the right side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp '27/12/2016 06:56:28' is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:56:28",
+      "27/12/2016 06:56:29"
+    ],
+    "spatial": "The green garbage truck is positioned in the center of the road, blocking the path. The person in the camouflage shirt is to the right of the truck, pushing a green bin towards it. To the right of the green bin, a yellow bin stands near a fence. On the left side of the road, a white wall runs parallel to the street. The other two workers are walking in the space between the white wall and the garbage truck.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "workers begin pushing green bins away from truck"
+    ]
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "green garbage truck, large, rear-loading type",
+        "action": "static",
+        "position": "right",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing a yellow head covering, camouflage patterned shirt, and dark pants",
+        "action": "walking away",
+        "position": "center",
+        "id": "worker_camouflage_1"
+      },
+      {
+        "desc": "person wearing a dark t-shirt and dark pants",
+        "action": "walking away",
+        "position": "center",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "person wearing a blue cap, dark t-shirt, and dark pants",
+        "action": "carrying a large white sack",
+        "position": "right"
+      },
+      {
+        "desc": "green plastic trash bin with a white logo",
+        "action": "static",
+        "position": "center",
+        "id": "trash_bin_green_1"
+      },
+      {
+        "desc": "large white sack, appearing full",
+        "action": "being carried",
+        "position": "right",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "yellow plastic trash bin",
+        "action": "static",
+        "position": "right",
+        "id": "trash_bin_yellow_1"
+      },
+      {
+        "desc": "utility pole with numerous overhead wires",
+        "action": "static",
+        "position": "center",
+        "id": "utility_pole_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a blue cap is carrying a large white sack towards the green garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two other people are walking away from the camera down the street.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green trash bin is positioned on the left side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The date and time '27/12/2016 06:56:30' are displayed in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:56:30",
+      "TOT",
+      "LIS"
+    ],
+    "spatial": "The green garbage truck is parked on the right side of the road. The person carrying the white sack is walking towards the back of the truck. The green trash bin is to the left of the people walking. The utility pole is in the center background, with wires extending above the street.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a yellow head covering and a camouflage-patterned shirt",
+        "action": "pushing a green trash bin",
+        "position": "center",
+        "id": "worker_camouflage_1"
+      },
+      {
+        "desc": "large green plastic trash bin with a white pictogram of a person disposing of trash",
+        "action": "being pushed down the street",
+        "position": "center",
+        "id": "trash_bin_green_1"
+      },
+      {
+        "desc": "person wearing a dark t-shirt and dark pants",
+        "action": "walking away from the camera on the right side of the road",
+        "position": "right",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "person wearing a dark t-shirt and dark pants",
+        "action": "walking away from the camera on the right side of the road",
+        "position": "right",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "residential street with houses, fences, and utility poles with overhead wires",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "dashboard of the vehicle recording the video",
+        "action": "static",
+        "position": "bottom",
+        "id": "dashboard_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a yellow head covering is pushing a large green trash bin down the middle of the street.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two people in dark clothing are walking away from the camera on the right side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The green trash bin has a white logo depicting a person throwing away trash.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp '27/12/2016 06:56:32' is visible in the bottom left corner of the first frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp '27/12/2016 06:56:33' is visible in the bottom left corner of the second frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:56:32",
+      "27/12/2016 06:56:33"
+    ],
+    "spatial": "The person with the yellow head covering is in the center of the road, pushing the green trash bin in front of them. To the right of the person with the bin, two other people are walking further down the street. The dashboard of the recording vehicle is at the bottom of the frame, below the street scene. The houses and utility poles are on both sides of the street, in the background.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "workers begin walking away from collection area"
+    ]
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "green plastic trash bin with a white pictogram of a person disposing of trash",
+        "action": "static",
+        "position": "right foreground",
+        "id": "trash_bin_green_1"
+      },
+      {
+        "desc": "person wearing a yellow head covering and dark clothing",
+        "action": "standing behind the green trash bin",
+        "position": "right foreground",
+        "id": "worker_camouflage_1"
+      },
+      {
+        "desc": "person wearing dark clothing",
+        "action": "walking away to the right",
+        "position": "right background",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "white digital timestamp text",
+        "action": "static",
+        "position": "bottom left",
+        "id": "timestamp_1"
+      },
+      {
+        "desc": "grey car dashboard and windshield wiper",
+        "action": "static",
+        "position": "bottom",
+        "id": "dashboard_1"
+      },
+      {
+        "desc": "concrete utility poles with tangled black electrical wires",
+        "action": "static",
+        "position": "left",
+        "id": "utility_pole_1"
+      },
+      {
+        "desc": "white residential buildings with fences",
+        "action": "static",
+        "position": "background",
+        "id": "house_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person wearing a yellow head covering is standing behind a green trash bin on the right side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Another person in dark clothing is walking away on the far right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp '27/12/2016 06:56:34' is visible in the bottom left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The green trash bin features a white icon of a person throwing away trash.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:56:34",
+      "27/12/2016 06:56:35"
+    ],
+    "spatial": "The green trash bin is in the right foreground, positioned in front of the person wearing the yellow head covering. The utility poles are to the left of the road, while the residential buildings are in the background on both sides. The timestamp is located at the bottom left of the screen, below the view of the street.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a yellow head covering and a camouflage-patterned long-sleeved shirt",
+        "action": "standing near a green trash bin",
+        "position": "right foreground",
+        "id": "worker_camouflage_1"
+      },
+      {
+        "desc": "large green plastic trash bin with a white recycling logo",
+        "action": "static",
+        "position": "right foreground",
+        "id": "trash_bin_green_1"
+      },
+      {
+        "desc": "white concrete wall with decorative ventilation blocks",
+        "action": "static",
+        "position": "right background",
+        "id": "wall_white_ventilation_1"
+      },
+      {
+        "desc": "two-story white house with a wooden balcony railing and a green awning",
+        "action": "static",
+        "position": "right background",
+        "id": "house_white_1"
+      },
+      {
+        "desc": "overhead electrical wires and utility poles",
+        "action": "static",
+        "position": "top left",
+        "id": "utility_pole_1"
+      },
+      {
+        "desc": "paved residential street",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black side-view mirror of the vehicle",
+        "action": "static",
+        "position": "bottom left",
+        "id": "dashboard_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a yellow head covering is standing next to a green trash bin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The green trash bin is positioned on the side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp '27/12/2016 06:56:36' is visible in the bottom left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp changes to '27/12/2016 06:56:37' in the subsequent frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:56:36",
+      "27/12/2016 06:56:37"
+    ],
+    "spatial": "The person is standing to the right of the paved street and next to the green trash bin. The trash bin is in front of the white concrete wall. The white house is behind the wall. The overhead wires are above the street and to the left of the house.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "white concrete wall with decorative ventilation blocks and a green tarp covering the upper section",
+        "action": "static",
+        "position": "left",
+        "id": "wall_white_ventilation_1"
+      },
+      {
+        "desc": "two-story white house with a balcony featuring vertical wooden slats",
+        "action": "static",
+        "position": "center",
+        "id": "house_white_1"
+      },
+      {
+        "desc": "motorcycle with a bright headlight",
+        "action": "moving away",
+        "position": "right",
+        "id": "motorcycle_1"
+      },
+      {
+        "desc": "green trash bin",
+        "action": "static",
+        "position": "left",
+        "id": "trash_bin_green_1"
+      },
+      {
+        "desc": "white timestamp text '27/12/2016 06:56:38' and '27/12/2016 06:56:39'",
+        "action": "static",
+        "position": "bottom",
+        "id": "timestamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A motorcycle is driving down the street away from the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The camera vehicle is moving past a white concrete wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp indicates the date is December 27, 2016.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:56:38",
+      "27/12/2016 06:56:39"
+    ],
+    "spatial": "The white concrete wall is to the left of the two-story house. The motorcycle is on the road to the right of the house. The green trash bin is in front of the wall on the left side.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "motorcycle with headlight appears moving away"
+    ]
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "white concrete wall with decorative ventilation blocks and metal fencing",
+        "action": "static",
+        "position": "left",
+        "id": "wall_white_ventilation_1"
+      },
+      {
+        "desc": "white two-story residential building with brown roof trim",
+        "action": "static",
+        "position": "left",
+        "id": "house_white_1"
+      },
+      {
+        "desc": "green bus with red taillights",
+        "action": "driving away",
+        "position": "center",
+        "id": "bus_green_1"
+      },
+      {
+        "desc": "motorcycle with headlight on, ridden by a person in a white shirt and dark helmet",
+        "action": "driving towards camera",
+        "position": "right",
+        "id": "motorcycle_1"
+      },
+      {
+        "desc": "person in dark clothing walking on the road",
+        "action": "walking away",
+        "position": "center"
+      },
+      {
+        "desc": "tall white residential building with balconies",
+        "action": "static",
+        "position": "right",
+        "id": "house_white_1"
+      },
+      {
+        "desc": "car dashboard and side mirror",
+        "action": "static",
+        "position": "bottom",
+        "id": "dashboard_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A green bus is driving away down the narrow street.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A motorcycle with its headlight on is approaching the camera on the right side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person is walking on the road behind the green bus.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp '27/12/2016 06:56:40' is visible in the bottom left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp '27/12/2016 06:56:41' is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:56:40",
+      "27/12/2016 06:56:41"
+    ],
+    "spatial": "The white concrete wall is to the left of the road. The green bus is in the center of the road, driving away from the camera. The motorcycle is to the right of the bus and is moving towards the camera. The tall white building is on the right side of the street, next to the motorcycle's path. The car dashboard is at the bottom of the frame, below the view of the street.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "green bus driving away, motorcycle approaching camera"
+    ]
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "Green garbage truck with red lights on top and a large white bag hanging from the rear",
+        "action": "driving away",
+        "position": "center background",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "Person wearing dark clothing",
+        "action": "walking",
+        "position": "center"
+      },
+      {
+        "desc": "White concrete wall with decorative ventilation blocks",
+        "action": "static",
+        "position": "left",
+        "id": "wall_white_ventilation_1"
+      },
+      {
+        "desc": "Multi-story residential building with a balcony",
+        "action": "static",
+        "position": "left",
+        "id": "house_white_1"
+      },
+      {
+        "desc": "Residential house with a metal gate and fence",
+        "action": "static",
+        "position": "right",
+        "id": "house_white_1"
+      },
+      {
+        "desc": "Dashboard of the recording vehicle",
+        "action": "static",
+        "position": "bottom",
+        "id": "dashboard_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The green garbage truck is driving away down the narrow street.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in dark clothing is walking behind the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The recording vehicle is following the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp reads '27/12/2016 06:56:42' and '27/12/2016 06:56:43'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:56:42",
+      "27/12/2016 06:56:43"
+    ],
+    "spatial": "The green garbage truck is in the center of the road, ahead of the recording vehicle. The person is walking on the road behind the truck. The white concrete wall is to the left of the road, and the residential house with the gate is to the right of the road.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "garbage truck begins driving away with red lights on top"
+    ]
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "green truck with white cargo bags in the back",
+        "action": "stationary in the road",
+        "position": "center/background",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing a dark shirt and dark pants",
+        "action": "walking towards the truck",
+        "position": "center/left",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "person wearing a grey shirt and dark pants",
+        "action": "standing still",
+        "position": "right"
+      },
+      {
+        "desc": "orange building with a brown metal fence",
+        "action": "static",
+        "position": "left",
+        "id": "house_orange_1"
+      },
+      {
+        "desc": "white building with a large black metal gate",
+        "action": "static",
+        "position": "right",
+        "id": "house_white_1"
+      },
+      {
+        "desc": "wooden sign with gold lettering",
+        "action": "static",
+        "position": "left",
+        "id": "wooden_sign_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A green truck is stopped in the middle of the narrow road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person is walking on the road towards the back of the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person is standing on the sidewalk to the right of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The date 27/12/2016 and time 06:56:44 are visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:56:44",
+      "บ้านสวนทร"
+    ],
+    "spatial": "The green truck is in the center of the road, positioned in front of the person walking towards it. The person standing is to the right of the truck and the walking person. The orange building is on the left side of the road, while the white building with the black gate is on the right side. The wooden sign is attached to the fence of the orange building.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark short-sleeved shirt and dark pants",
+        "action": "walking on the left side of the road",
+        "position": "left",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "large green truck with a white bag or tarp hanging from the rear",
+        "action": "driving away down the street",
+        "position": "center"
+      },
+      {
+        "desc": "orange building with a wooden sign",
+        "action": "static",
+        "position": "left",
+        "id": "house_orange_1"
+      },
+      {
+        "desc": "wooden sign with Thai script",
+        "action": "static",
+        "position": "left",
+        "id": "wooden_sign_1"
+      },
+      {
+        "desc": "beige concrete wall with decorative ventilation blocks",
+        "action": "static",
+        "position": "right",
+        "id": "wall_white_ventilation_1"
+      },
+      {
+        "desc": "utility poles with overhead wires",
+        "action": "static",
+        "position": "right",
+        "id": "utility_pole_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is walking on the left side of the road, moving away from the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green truck is driving down the center of the road, further ahead.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden sign on the left displays Thai text reading 'บ้านพลอยนทรา'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The beige wall on the right features a row of decorative ventilation blocks.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "บ้านพลอยนทรา",
+      "27/12/2016 06:56:46",
+      "27/12/2016 06:56:47"
+    ],
+    "spatial": "The person is walking on the left side of the road, positioned to the left of the green truck. The green truck is in the center of the road, ahead of the person. The orange building and wooden sign are on the left side of the frame, while the beige wall and utility poles are on the right side.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "garbage truck driving away down street"
+    ]
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark short-sleeved shirt, dark pants, and a purple scarf or cloth draped over the head and shoulders, carrying a large black bag",
+        "action": "walking along the left side of the road",
+        "position": "left",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "large green garbage truck with a white sack hanging from the rear",
+        "action": "driving away in the center of the road",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "motorcyclist wearing a yellow shirt and helmet",
+        "action": "riding towards the camera",
+        "position": "center-right",
+        "id": "motorcycle_1"
+      },
+      {
+        "desc": "blue house with white decorative metal fencing",
+        "action": "static",
+        "position": "left",
+        "id": "fence_metal_1"
+      },
+      {
+        "desc": "beige house with a metal gate and flags",
+        "action": "static",
+        "position": "right",
+        "id": "house_beige_1"
+      },
+      {
+        "desc": "white text timestamp",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "timestamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in dark clothing with a purple head covering is walking on the left side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green garbage truck is driving down the street.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A motorcyclist in a yellow shirt is riding in the opposite direction.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp '27/12/2016 06:56:48' is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:56:48"
+    ],
+    "spatial": "The person walking is to the left of the green garbage truck. The garbage truck is in front of the motorcyclist. The blue house is to the left of the road, and the beige house is to the right of the road.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing dark clothing, dark cap, and a backpack with purple straps",
+        "action": "walking away from the camera on the left side of the road",
+        "position": "left",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "large green garbage truck with illuminated red tail lights",
+        "action": "driving away down the street",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "large white sack filled with refuse",
+        "action": "hanging from the rear of the truck",
+        "position": "center",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "motorcyclist wearing a yellow shirt and helmet",
+        "action": "riding a motorcycle towards the camera",
+        "position": "right",
+        "id": "motorcycle_1"
+      },
+      {
+        "desc": "light blue concrete wall with decorative ventilation blocks",
+        "action": "static",
+        "position": "left",
+        "id": "wall_white_ventilation_1"
+      },
+      {
+        "desc": "wooden fence made of vertical planks",
+        "action": "static",
+        "position": "left",
+        "id": "fence_wooden_1"
+      },
+      {
+        "desc": "white concrete wall with decorative ventilation blocks",
+        "action": "static",
+        "position": "right",
+        "id": "wall_white_ventilation_1"
+      },
+      {
+        "desc": "black text '27/12/2016 06:56:50' and '27/12/2016 06:56:51'",
+        "action": "static",
+        "position": "bottom",
+        "id": "timestamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person with a backpack is walking on the left side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green garbage truck is driving away in the center of the lane.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large white sack is hanging from the back of the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A motorcyclist in a yellow shirt is riding on the right side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp in the bottom left corner updates from 06:56:50 to 06:56:51.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:56:50",
+      "27/12/2016 06:56:51"
+    ],
+    "spatial": "The person with the backpack is walking to the left of the green garbage truck. The garbage truck is in front of the camera vehicle and to the left of the motorcyclist. The blue wall is on the left side of the road, while the white wall is on the right side.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark blue uniform, dark cap, and orange gloves",
+        "action": "standing and holding a black trash bag",
+        "position": "left",
+        "id": "worker_dark_blue_1"
+      },
+      {
+        "desc": "large green garbage truck with red taillights",
+        "action": "stationary in the lane",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "large white sack hanging from the back of the truck",
+        "action": "static",
+        "position": "center",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "person wearing a helmet and dark clothing",
+        "action": "riding a blue scooter",
+        "position": "right",
+        "id": "motorcycle_1"
+      },
+      {
+        "desc": "tall wooden fence made of vertical planks",
+        "action": "static",
+        "position": "left",
+        "id": "fence_wooden_1"
+      },
+      {
+        "desc": "white concrete wall with decorative ventilation blocks",
+        "action": "static",
+        "position": "right",
+        "id": "wall_white_ventilation_1"
+      },
+      {
+        "desc": "digital timestamp text in white font",
+        "action": "static",
+        "position": "bottom",
+        "id": "timestamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a blue uniform is holding a black trash bag on the left side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green garbage truck is stopped in the middle of the street.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A motorcyclist on a blue scooter is driving past the truck on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp '27/12/2016 06:56:52' is visible at the bottom left of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:56:52",
+      "27/12/2016 06:56:53"
+    ],
+    "spatial": "The person in the blue uniform is standing to the left of the green garbage truck. The wooden fence is to the left of the person. The motorcyclist is to the right of the garbage truck, moving along the white concrete wall.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "garbage truck becomes stationary in lane"
+    ]
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark blue shirt, dark pants, and a blue cap, holding a black trash bag",
+        "action": "standing near the fence",
+        "position": "left",
+        "id": "bag_black_1"
+      },
+      {
+        "desc": "green garbage truck with red lights on top and a large white sack hanging from the rear",
+        "action": "stopped in the road",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing a blue shirt and dark pants",
+        "action": "standing at the back of the truck",
+        "position": "center"
+      },
+      {
+        "desc": "motorcyclist wearing an orange safety vest",
+        "action": "riding towards the camera",
+        "position": "right",
+        "id": "motorcycle_1"
+      },
+      {
+        "desc": "motorcyclist wearing a dark jacket and helmet",
+        "action": "riding towards the camera",
+        "position": "right",
+        "id": "motorcycle_1"
+      },
+      {
+        "desc": "tall wooden fence made of vertical planks",
+        "action": "static",
+        "position": "left",
+        "id": "fence_wooden_1"
+      },
+      {
+        "desc": "white text displaying date and time",
+        "action": "static",
+        "position": "bottom",
+        "id": "timestamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a blue cap is holding a black trash bag on the left side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green garbage truck is stopped in the center of the street.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large white sack is hanging from the back of the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two motorcyclists are riding down the street in the right lane.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp '27/12/2016 06:56:54' is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:56:54",
+      "27/12/2016 06:56:55"
+    ],
+    "spatial": "The person holding the black bag is standing to the left of the green garbage truck. The garbage truck is positioned in the center of the road, in front of the camera vehicle. The motorcyclists are to the right of the garbage truck, riding in the opposite direction. The wooden fence runs along the left side of the road, next to the person in the blue cap.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "garbage truck stopped in road, motorcyclists approaching"
+    ]
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "green garbage truck with rear lights illuminated",
+        "action": "static",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing a purple shirt, dark pants, and a blue cap",
+        "action": "standing near the truck",
+        "position": "left",
+        "id": "worker_purple_1"
+      },
+      {
+        "desc": "person wearing a dark shirt and dark pants",
+        "action": "holding a large white sack",
+        "position": "center",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "large white sack",
+        "action": "being held",
+        "position": "center",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "corrugated metal fence",
+        "action": "static",
+        "position": "left",
+        "id": "fence_metal_1"
+      },
+      {
+        "desc": "blue house with a balcony",
+        "action": "static",
+        "position": "right",
+        "id": "house_blue_1"
+      },
+      {
+        "desc": "motorcyclist wearing an orange vest and helmet",
+        "action": "moving right",
+        "position": "right foreground",
+        "id": "motorcycle_1"
+      },
+      {
+        "desc": "black car",
+        "action": "static",
+        "position": "background",
+        "id": "car_black_1"
+      },
+      {
+        "desc": "timestamp text",
+        "action": "static",
+        "position": "bottom left",
+        "id": "timestamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a dark shirt is holding a large white sack in front of the green truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a purple shirt stands to the left of the person holding the sack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A motorcyclist wearing an orange vest moves past on the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp '27/12/2016 06:56:56' is visible in the bottom left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The green truck has its rear lights illuminated.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:56:56",
+      "27/12/2016 06:56:57"
+    ],
+    "spatial": "The green garbage truck is in the center of the road. To the left of the truck is a person in a purple shirt and a corrugated metal fence. To the right of the truck is a person holding a large white sack. In the background, a black car is behind the truck. On the right side of the frame, a blue house is visible behind a fence, and a motorcyclist is in the foreground.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "large green utility truck with open rear compartment and illuminated red brake lights",
+        "action": "static",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing a blue uniform and blue cap",
+        "action": "standing at the rear of the truck",
+        "position": "center-left"
+      },
+      {
+        "desc": "person wearing a dark t-shirt and dark pants",
+        "action": "standing next to a large white sack",
+        "position": "center-right",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "large white sack, appearing full and heavy",
+        "action": "being held or supported",
+        "position": "center",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "silver SUV",
+        "action": "static",
+        "position": "background",
+        "id": "car_silver_1"
+      },
+      {
+        "desc": "corrugated metal fence, weathered and brownish",
+        "action": "static",
+        "position": "left",
+        "id": "fence_metal_1"
+      },
+      {
+        "desc": "digital timestamp text in white font",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "timestamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a blue uniform stands at the back of a green truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Another person stands on the road holding a large white sack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The green truck has its rear brake lights illuminated.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver SUV is parked further down the road behind the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp '27/12/2016 06:56:58' is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:56:58",
+      "27/12/2016 06:56:59"
+    ],
+    "spatial": "The green truck is in the center of the road. The person in the blue uniform is to the left of the large white sack. The person holding the sack is to the right of the truck's rear opening. The corrugated metal fence is to the left of the truck. The silver SUV is behind the green truck in the distance.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "large green garbage truck with rear lights illuminated",
+        "action": "stationary with rear compartment open",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "man wearing a purple t-shirt, dark pants, and a blue cap",
+        "action": "standing near the truck holding a blue bag",
+        "position": "left of the truck"
+      },
+      {
+        "desc": "man wearing a dark t-shirt and dark pants",
+        "action": "standing next to a large white sack",
+        "position": "right of the truck",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "large white sack, appearing full and heavy",
+        "action": "being held or supported by the man in the dark t-shirt",
+        "position": "center-right",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "dark grey SUV",
+        "action": "stationary",
+        "position": "right background",
+        "id": "car_grey_1"
+      },
+      {
+        "desc": "corrugated metal fence, weathered and brownish",
+        "action": "static",
+        "position": "left foreground",
+        "id": "fence_metal_1"
+      },
+      {
+        "desc": "timestamp text '27/12/2016 06:57:00' and '27/12/2016 06:57:01'",
+        "action": "static overlay",
+        "position": "bottom left",
+        "id": "timestamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A green garbage truck is stopped in the middle of the road with its rear lights on.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a purple shirt is standing to the left of the truck's open rear.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a dark shirt is standing to the right of the truck, holding a large white sack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dark grey SUV is parked behind the garbage truck on the right side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp in the bottom left corner reads '27/12/2016 06:57:00' and updates to '06:57:01'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:57:00",
+      "27/12/2016 06:57:01"
+    ],
+    "spatial": "The green garbage truck is in the center of the road. To the left of the truck stands a man in a purple shirt, and to the right of the truck stands a man in a dark shirt holding a large white sack. The dark grey SUV is positioned behind and to the right of the garbage truck. A corrugated metal fence runs along the left side of the scene.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      68,
+      70
+    ],
+    "visible_entities": [
+      {
+        "desc": "man wearing a blue cap, blue short-sleeved shirt, dark pants, and orange gloves",
+        "action": "standing next to the garbage truck",
+        "position": "center-left"
+      },
+      {
+        "desc": "man wearing a dark short-sleeved shirt and dark pants",
+        "action": "holding a large white sack",
+        "position": "center-right"
+      },
+      {
+        "desc": "green garbage truck with red lights on top and an open rear compartment",
+        "action": "static",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "dark grey Mitsubishi Triton pickup truck",
+        "action": "static",
+        "position": "right",
+        "id": "car_grey_1"
+      },
+      {
+        "desc": "large white sack, appearing full and heavy",
+        "action": "being held",
+        "position": "center",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "corrugated metal fence, light brown and weathered",
+        "action": "static",
+        "position": "left",
+        "id": "fence_metal_1"
+      },
+      {
+        "desc": "blue house with white trim and a balcony",
+        "action": "static",
+        "position": "background right",
+        "id": "house_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a blue cap is standing next to the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a dark shirt is holding a large white sack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The garbage truck is stopped in the middle of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pickup truck is parked to the right of the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The date '27/12/2016' is visible on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The time '06:57:02' and '06:57:03' is visible on the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:57:02",
+      "27/12/2016 06:57:03"
+    ],
+    "spatial": "The man in the blue cap is to the left of the man holding the white sack. The garbage truck is in front of the pickup truck. The corrugated metal fence is to the left of the garbage truck. The blue house is in the background, to the right of the scene.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      70,
+      72
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue cap, dark t-shirt, dark pants, and orange gloves",
+        "action": "standing",
+        "position": "left"
+      },
+      {
+        "desc": "person wearing a dark t-shirt and dark pants",
+        "action": "standing",
+        "position": "center-right",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "large green truck with an open rear cargo area",
+        "action": "static",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "large white sack",
+        "action": "being held",
+        "position": "center",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "dark green pickup truck",
+        "action": "moving forward",
+        "position": "right",
+        "id": "car_grey_1"
+      },
+      {
+        "desc": "orange car",
+        "action": "static",
+        "position": "background",
+        "id": "car_orange_1"
+      },
+      {
+        "desc": "wooden fence",
+        "action": "static",
+        "position": "left",
+        "id": "fence_wooden_1"
+      },
+      {
+        "desc": "blue house",
+        "action": "static",
+        "position": "right background",
+        "id": "house_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person wearing a blue cap and orange gloves is standing to the left of the green truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a dark t-shirt is holding a large white sack near the rear of the green truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dark green pickup truck is driving past the green truck on the right side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp '27/12/2016 06:57:04' is visible in the bottom left corner of the first frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp '27/12/2016 06:57:05' is visible in the bottom left corner of the second frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:57:04",
+      "27/12/2016 06:57:05"
+    ],
+    "spatial": "The person with the blue cap is to the left of the green truck. The person holding the white sack is to the right of the person with the blue cap and in front of the green truck. The dark green pickup truck is to the right of the green truck and moving past it. The wooden fence is to the left of the person with the blue cap. The orange car is behind the green truck.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "dark green pickup truck begins moving forward"
+    ]
+  },
+  {
+    "time": [
+      72,
+      74
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue cap, dark t-shirt, dark pants, and orange gloves",
+        "action": "standing near the back of the truck",
+        "position": "center-left"
+      },
+      {
+        "desc": "person wearing a dark t-shirt and dark pants",
+        "action": "walking to the right",
+        "position": "center",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "large green garbage truck with an open rear compartment",
+        "action": "static",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "large white sack filled with refuse",
+        "action": "being held",
+        "position": "center",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "orange compact car",
+        "action": "static",
+        "position": "center-right background",
+        "id": "car_orange_1"
+      },
+      {
+        "desc": "person wearing a white shirt and blue cap",
+        "action": "riding a scooter",
+        "position": "right"
+      },
+      {
+        "desc": "white scooter",
+        "action": "moving forward",
+        "position": "right",
+        "id": "scooter_white_1"
+      },
+      {
+        "desc": "black pickup truck bed",
+        "action": "static",
+        "position": "right foreground",
+        "id": "car_black_1"
+      },
+      {
+        "desc": "wooden fence with corrugated metal sheet",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a dark t-shirt is holding a large white sack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person wearing orange gloves is standing next to the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A scooter is driving past the garbage truck on the right side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange car is stopped behind the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The date '27/12/2016' and time '06:57:06' are visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:57:06",
+      "27/12/2016 06:57:07"
+    ],
+    "spatial": "The green garbage truck is in the center of the road, with a wooden fence to its left. A person holding a white sack is standing behind the truck, while another person stands to the left of the truck's rear. An orange car is positioned behind the garbage truck. To the right of the garbage truck, a person on a scooter is passing by, and the bed of a black pickup truck is visible in the immediate right foreground.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "white scooter begins moving forward"
+    ]
+  },
+  {
+    "time": [
+      74,
+      76
+    ],
+    "visible_entities": [
+      {
+        "desc": "large green garbage truck with open rear compartment, yellow license plate, red taillights",
+        "action": "static",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "man wearing blue cap, dark blue t-shirt, dark pants, orange gloves",
+        "action": "standing near the truck",
+        "position": "center-left"
+      },
+      {
+        "desc": "man wearing dark t-shirt, green apron, dark pants",
+        "action": "holding a large white sack",
+        "position": "center-right",
+        "id": "worker_green_apron_1"
+      },
+      {
+        "desc": "large white sack, appearing full and heavy",
+        "action": "being held",
+        "position": "center",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "orange compact hatchback car",
+        "action": "waiting in traffic",
+        "position": "right",
+        "id": "car_orange_1"
+      },
+      {
+        "desc": "person wearing blue cap, white t-shirt, dark vest",
+        "action": "sitting on a scooter",
+        "position": "far right"
+      },
+      {
+        "desc": "white scooter with headlight on",
+        "action": "static",
+        "position": "far right",
+        "id": "scooter_white_1"
+      },
+      {
+        "desc": "wooden fence made of vertical planks, weathered brown color",
+        "action": "static",
+        "position": "left",
+        "id": "fence_wooden_1"
+      },
+      {
+        "desc": "blue house number plate with white text",
+        "action": "static",
+        "position": "left",
+        "id": "sign_blue_1"
+      },
+      {
+        "desc": "white digital timestamp text",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "timestamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a green apron is holding a large white sack in front of the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man wearing orange gloves stands next to the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange car is stopped behind the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person on a scooter is waiting on the right side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp reads '27/12/2016 06:57:08' and '27/12/2016 06:57:09'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:57:08",
+      "27/12/2016 06:57:09",
+      "54"
+    ],
+    "spatial": "The green garbage truck is in the center of the road, blocking the lane. The man in the green apron is standing to the right of the truck, holding a white sack. The man with orange gloves is to the left of the man with the sack, near the truck's rear. The orange car is to the right of the garbage truck, waiting in the adjacent lane. The wooden fence is on the left side of the road, next to the truck. The scooter rider is on the far right, near the curb.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      76,
+      78
+    ],
+    "visible_entities": [
+      {
+        "desc": "green garbage truck with open rear compartment, red lights illuminated on top",
+        "action": "static",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "man wearing a dark blue t-shirt and dark pants",
+        "action": "holding a large white sack",
+        "position": "center",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "person wearing a purple shirt and dark pants",
+        "action": "standing near the truck",
+        "position": "left",
+        "id": "worker_purple_1"
+      },
+      {
+        "desc": "large white sack, appearing full and heavy",
+        "action": "being held",
+        "position": "center",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "orange compact car",
+        "action": "static",
+        "position": "right",
+        "id": "car_orange_1"
+      },
+      {
+        "desc": "wooden fence made of vertical planks",
+        "action": "static",
+        "position": "left",
+        "id": "fence_wooden_1"
+      },
+      {
+        "desc": "blue house sign with white text",
+        "action": "static",
+        "position": "left",
+        "id": "sign_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a dark blue t-shirt is holding a large white sack behind the green truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a purple shirt is standing to the left of the man holding the sack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The green truck has its rear compartment open, revealing contents inside.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange car is parked on the right side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue house sign with the text '54 MU 5' is attached to a fence on the left.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "54 MU 5"
+    ],
+    "spatial": "The green garbage truck is in the center of the road. The man holding the white sack is standing directly behind the truck. The person in the purple shirt is to the left of the man with the sack. The orange car is to the right of the truck. The wooden fence and the blue house sign are on the left side of the scene.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      78,
+      80
+    ],
+    "visible_entities": [
+      {
+        "desc": "large green garbage truck with flashing orange lights on the roof and an open rear compartment",
+        "action": "static",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing a dark blue shirt, dark pants, and a blue cap",
+        "action": "standing near the truck",
+        "position": "center-left",
+        "id": "worker_dark_blue_1"
+      },
+      {
+        "desc": "person wearing a dark t-shirt and dark pants",
+        "action": "holding a large white sack",
+        "position": "center-right",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "large white sack, appearing full and heavy",
+        "action": "being held",
+        "position": "center-right",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "gold-colored compact hatchback car",
+        "action": "static",
+        "position": "right",
+        "id": "car_gold_1"
+      },
+      {
+        "desc": "wooden fence made of vertical planks",
+        "action": "static",
+        "position": "left",
+        "id": "fence_wooden_1"
+      },
+      {
+        "desc": "blue rectangular sign with white text",
+        "action": "static",
+        "position": "left",
+        "id": "sign_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a dark t-shirt is holding a large white sack next to the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a blue cap is standing near the rear of the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The garbage truck has its rear compartment open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A gold car is parked on the right side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp on the screen reads 27/12/2016 06:57:12.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:57:12",
+      "54 หมู่"
+    ],
+    "spatial": "The green garbage truck is in the center of the road, blocking the path. A person holding a white sack is standing to the right of the truck, while another person in a blue cap is to the left of the truck. A gold car is parked to the right of the person holding the sack. A wooden fence runs along the left side of the road, with a blue sign attached to it.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      80,
+      82
+    ],
+    "visible_entities": [
+      {
+        "desc": "green garbage truck with rear compactor open, orange warning lights on top",
+        "action": "static",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing dark blue shirt, dark pants, and a blue cap",
+        "action": "standing near the truck",
+        "position": "center-left",
+        "id": "worker_dark_blue_1"
+      },
+      {
+        "desc": "person wearing dark t-shirt and dark pants",
+        "action": "holding a large white sack",
+        "position": "center-right",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "large white sack, likely containing refuse",
+        "action": "being held",
+        "position": "center-right",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "orange compact car",
+        "action": "static",
+        "position": "right",
+        "id": "car_orange_1"
+      },
+      {
+        "desc": "wooden fence made of vertical planks",
+        "action": "static",
+        "position": "left",
+        "id": "fence_wooden_1"
+      },
+      {
+        "desc": "blue sign with white text",
+        "action": "static",
+        "position": "left",
+        "id": "sign_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a large white sack next to the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Another person stands near the rear opening of the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange car is parked on the right side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The date '27/12/2016' and time '06:57:14' are visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "54 หมู่",
+      "27/12/2016 06:57:14"
+    ],
+    "spatial": "The green garbage truck is in the center of the road. To the left of the truck is a wooden fence with a blue sign attached to it. To the right of the truck is an orange car. A person holding a white sack is standing between the truck and the orange car.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      82,
+      84
+    ],
+    "visible_entities": [
+      {
+        "desc": "large green garbage truck with rear compactor open, orange warning lights on top, yellow license plate",
+        "action": "static",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing dark blue shirt, dark pants, and a purple cap",
+        "action": "standing near the truck",
+        "position": "center-left",
+        "id": "worker_purple_1"
+      },
+      {
+        "desc": "person wearing dark grey t-shirt and dark pants",
+        "action": "walking towards the truck",
+        "position": "center-right",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "large white sack, appearing full and heavy",
+        "action": "being moved",
+        "position": "center",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "orange compact hatchback car",
+        "action": "static",
+        "position": "right",
+        "id": "car_orange_1"
+      },
+      {
+        "desc": "wooden fence made of vertical planks",
+        "action": "static",
+        "position": "left",
+        "id": "fence_wooden_1"
+      },
+      {
+        "desc": "blue house sign with white text",
+        "action": "static",
+        "position": "left",
+        "id": "sign_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a dark grey t-shirt is walking towards the rear of the green garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large white sack is positioned at the back of the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange car is parked on the right side of the road next to the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue sign on the left fence displays the number '54'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "54",
+      "27/12/2016 06:57:16",
+      "27/12/2016 06:57:17"
+    ],
+    "spatial": "The green garbage truck is in the center of the road. To the right of the truck is an orange car. To the left of the truck is a wooden fence with a blue sign attached to it. A person in a dark grey shirt is walking behind the truck, while another person stands near the left side of the truck's rear opening.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      84,
+      86
+    ],
+    "visible_entities": [
+      {
+        "desc": "green garbage truck with open rear compartment, yellow license plate, and flashing amber lights on top",
+        "action": "stopped",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing a dark blue uniform and a blue cap",
+        "action": "walking towards the truck",
+        "position": "center-left",
+        "id": "worker_dark_blue_1"
+      },
+      {
+        "desc": "person wearing a dark blue uniform and a dark cap",
+        "action": "walking behind the truck",
+        "position": "center-right",
+        "id": "worker_dark_blue_1"
+      },
+      {
+        "desc": "large white sack, appearing full and heavy",
+        "action": "being dragged",
+        "position": "center",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "orange compact hatchback car",
+        "action": "static",
+        "position": "right",
+        "id": "car_orange_1"
+      },
+      {
+        "desc": "wooden fence made of vertical planks, weathered appearance",
+        "action": "static",
+        "position": "left",
+        "id": "fence_wooden_1"
+      },
+      {
+        "desc": "blue rectangular sign with white text",
+        "action": "static",
+        "position": "left",
+        "id": "sign_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a dark blue uniform is dragging a large white sack towards the back of the green garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Another person in a dark blue uniform is walking near the rear of the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The orange car is parked on the right side of the road, facing the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The garbage truck has its rear compartment open.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "54 หมู่ 3",
+      "27/12/2016 06:57:18",
+      "27/12/2016 06:57:19"
+    ],
+    "spatial": "The green garbage truck is in the center of the road, positioned in front of the camera. To the right of the truck is an orange car. To the left of the truck is a wooden fence with a blue sign attached to it. One person is to the left of the white sack, and another person is to the right of the sack, both near the truck.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      86,
+      88
+    ],
+    "visible_entities": [
+      {
+        "desc": "green garbage truck with rear compactor open, brake lights illuminated",
+        "action": "stopped in the road",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "large white sack, appearing full and heavy",
+        "action": "being loaded into the truck",
+        "position": "center",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "person wearing a blue shirt and dark pants",
+        "action": "standing inside the back of the truck receiving the sack",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing a dark t-shirt and dark pants",
+        "action": "walking on the left side of the road towards the truck",
+        "position": "left",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "person wearing a dark uniform",
+        "action": "standing on the right side of the road",
+        "position": "right",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "gold-colored compact hatchback car",
+        "action": "waiting behind a motorcycle",
+        "position": "right",
+        "id": "car_gold_1"
+      },
+      {
+        "desc": "motorcyclist wearing a white helmet and orange shirt",
+        "action": "sitting on a motorcycle",
+        "position": "right",
+        "id": "motorcycle_1"
+      },
+      {
+        "desc": "wooden fence made of vertical planks",
+        "action": "static",
+        "position": "left",
+        "id": "fence_wooden_1"
+      },
+      {
+        "desc": "blue house number sign with white text",
+        "action": "static",
+        "position": "left",
+        "id": "sign_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a blue shirt is inside the back of the green truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large white sack is being lifted into the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a dark shirt is walking on the left side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A gold car is stopped on the right side of the road behind a motorcycle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp in the bottom left corner reads '27/12/2016 06:57:20'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "54 หมู่ 3",
+      "27/12/2016 06:57:20",
+      "27/12/2016 06:57:21"
+    ],
+    "spatial": "The green garbage truck is in the center of the road. The person in the blue shirt is inside the back of the truck, while the person in the dark shirt is walking to the left of the truck. The gold car is to the right of the truck, positioned behind the motorcyclist. The wooden fence is on the far left side of the frame, next to the blue house number sign.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "white sack being loaded into truck"
+    ]
+  },
+  {
+    "time": [
+      88,
+      90
+    ],
+    "visible_entities": [
+      {
+        "desc": "green utility truck with open rear compartment containing white sacks",
+        "action": "driving away",
+        "position": "center background",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing dark blue shirt and dark pants",
+        "action": "walking on the left side of the road",
+        "position": "left center",
+        "id": "worker_dark_blue_1"
+      },
+      {
+        "desc": "person wearing white sleeveless top and helmet",
+        "action": "riding a white scooter",
+        "position": "right foreground"
+      },
+      {
+        "desc": "person wearing orange vest and helmet",
+        "action": "riding a dark scooter",
+        "position": "right foreground"
+      },
+      {
+        "desc": "tan sedan car",
+        "action": "static",
+        "position": "right foreground",
+        "id": "car_tan_1"
+      },
+      {
+        "desc": "wooden fence made of vertical planks",
+        "action": "static",
+        "position": "left",
+        "id": "fence_wooden_1"
+      },
+      {
+        "desc": "blue sign with white text",
+        "action": "static",
+        "position": "left",
+        "id": "sign_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A green truck is driving away down the center of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two people on scooters are riding towards the camera on the right side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a blue shirt is walking along the left side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A tan car is parked on the right side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue sign on the left fence reads '54 หมู่ 3'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "54 หมู่ 3",
+      "27/12/2016 06:57:22",
+      "27/12/2016 06:57:23"
+    ],
+    "spatial": "The green truck is in the center of the road, driving away from the camera. To the left of the truck, a person in a blue shirt is walking near a wooden fence. To the right of the truck, two people on scooters are riding towards the camera. The tan car is parked on the right side of the road, in front of the scooters. The blue sign is attached to the wooden fence on the left side of the frame.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "garbage truck begins driving away"
+    ]
+  },
+  {
+    "time": [
+      90,
+      92
+    ],
+    "visible_entities": [
+      {
+        "desc": "large green garbage truck with white collection bags hanging from the rear",
+        "action": "driving away",
+        "position": "center background",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing dark blue or black clothing",
+        "action": "walking on the left side of the road",
+        "position": "left middle ground",
+        "id": "worker_dark_blue_1"
+      },
+      {
+        "desc": "person wearing a white helmet and orange safety vest",
+        "action": "riding a white scooter",
+        "position": "right foreground",
+        "id": "motorcycle_1"
+      },
+      {
+        "desc": "person wearing a dark helmet and orange safety vest",
+        "action": "riding a scooter",
+        "position": "right foreground",
+        "id": "motorcycle_1"
+      },
+      {
+        "desc": "motorcyclist with bright headlight",
+        "action": "riding towards the camera",
+        "position": "center background",
+        "id": "motorcycle_1"
+      },
+      {
+        "desc": "person wearing a white shirt and backpack",
+        "action": "standing on the right sidewalk",
+        "position": "right middle ground"
+      },
+      {
+        "desc": "person wearing dark clothing",
+        "action": "walking away on the right sidewalk",
+        "position": "right middle ground",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "white digital timestamp text",
+        "action": "static",
+        "position": "bottom left",
+        "id": "timestamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A green garbage truck is driving down the center of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in dark clothing is walking on the left side of the street.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two scooter riders wearing orange vests are moving on the right side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A motorcyclist with a bright headlight is approaching in the distance.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp '27/12/2016 06:57:24' is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:57:24",
+      "27/12/2016 06:57:25"
+    ],
+    "spatial": "The green garbage truck is in the center of the road, ahead of the camera vehicle. To the left of the truck, a pedestrian is walking along the concrete wall. To the right of the truck, two scooter riders are passing by, with one slightly behind the other. Further back, a motorcyclist is positioned between the truck and the right-side sidewalk. The timestamp text is located at the bottom left of the frame, below the view of the road.",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "garbage truck driving away, multiple motorcyclists approaching"
+    ]
+  },
+  {
+    "time": [
+      92,
+      94
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing dark clothing and a backpack",
+        "action": "walking away from the camera",
+        "position": "center-left",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "green bus with a white rear bumper",
+        "action": "driving away",
+        "position": "center-background",
+        "id": "bus_green_1"
+      },
+      {
+        "desc": "motorcyclist wearing a white helmet and dark jacket",
+        "action": "riding towards the camera",
+        "position": "right",
+        "id": "motorcycle_1"
+      },
+      {
+        "desc": "motorcycle passenger wearing a dark helmet",
+        "action": "riding towards the camera",
+        "position": "right"
+      },
+      {
+        "desc": "white motorcycle with headlights on",
+        "action": "moving forward",
+        "position": "right",
+        "id": "motorcycle_1"
+      },
+      {
+        "desc": "white concrete wall with a brown metal gate",
+        "action": "static",
+        "position": "left",
+        "id": "fence_metal_1"
+      },
+      {
+        "desc": "blue metal gate and white wall",
+        "action": "static",
+        "position": "right",
+        "id": "fence_metal_1"
+      },
+      {
+        "desc": "car dashboard and side mirror",
+        "action": "static",
+        "position": "bottom-foreground",
+        "id": "dashboard_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person with a backpack is walking on the left side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green bus is driving down the center of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A motorcycle with two riders is approaching on the right side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp '27/12/2016 06:57:26' is visible in the bottom left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp '27/12/2016 06:57:27' is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:57:26",
+      "27/12/2016 06:57:27"
+    ],
+    "spatial": "The person walking is to the left of the green bus. The motorcycle is to the right of the walking person and the bus. The white wall is on the left side of the road, while the blue gate is on the right side. The dashboard is in the foreground at the bottom of the frame.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "green bus driving away, white motorcycle moving forward"
+    ]
+  },
+  {
+    "time": [
+      94,
+      96
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing dark clothing and a purple backpack",
+        "action": "walking away from the camera",
+        "position": "left/center",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "person wearing dark clothing",
+        "action": "walking away from the camera",
+        "position": "center",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "green bus with red taillights",
+        "action": "driving away",
+        "position": "center/background",
+        "id": "bus_green_1"
+      },
+      {
+        "desc": "white wall with decorative lattice pattern",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white wall with decorative gate and lamp",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "utility poles with overhead wires",
+        "action": "static",
+        "position": "right/background",
+        "id": "utility_pole_1"
+      },
+      {
+        "desc": "dashboard of the recording vehicle",
+        "action": "static",
+        "position": "bottom/foreground",
+        "id": "dashboard_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person with a purple backpack is walking on the left side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green bus is driving down the road in the distance.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp '27/12/2016 06:57:28' is visible in the bottom left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp '27/12/2016 06:57:29' is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:57:28",
+      "27/12/2016 06:57:29"
+    ],
+    "spatial": "The person with the purple backpack is to the left of the person in dark clothing. The green bus is in front of the pedestrians and further down the road. The white wall with the lattice pattern is to the left of the road, while the wall with the gate is to the right. The utility poles are situated along the right side of the road, above the wall.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      96,
+      98
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with dark hair, wearing a dark purple or blue long-sleeved top and dark pants",
+        "action": "walking away from the camera",
+        "position": "center",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "green truck with a white tarp covering the rear cargo area",
+        "action": "driving away",
+        "position": "center background",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "black pickup truck with a metal cage structure on the bed",
+        "action": "static",
+        "position": "right",
+        "id": "car_black_1"
+      },
+      {
+        "desc": "white concrete wall with a decorative diamond lattice pattern",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "blue metal fence panels",
+        "action": "static",
+        "position": "left",
+        "id": "fence_metal_1"
+      },
+      {
+        "desc": "red circular traffic sign",
+        "action": "static",
+        "position": "left",
+        "id": "sign_red_1"
+      },
+      {
+        "desc": "white text overlay with date and time",
+        "action": "static",
+        "position": "bottom left",
+        "id": "timestamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a dark purple top is walking down the center of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green truck is driving ahead of the person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black pickup truck is parked on the right side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp reads 27/12/2016 06:57:30.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:57:30",
+      "27/12/2016 06:57:31"
+    ],
+    "spatial": "The person is walking in the center of the road, positioned behind the green truck and in front of the camera. The white lattice wall is to the left of the person, while the black pickup truck is parked to the right of the road.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "green truck with white tarp driving away, black pickup truck visible"
+    ]
+  },
+  {
+    "time": [
+      98,
+      100
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark short-sleeved shirt and dark pants, with a purple strap across their back",
+        "action": "walking away from the camera in the center of the road",
+        "position": "center"
+      },
+      {
+        "desc": "black pickup truck with a metal cargo rack on the bed",
+        "action": "static",
+        "position": "right",
+        "id": "car_black_1"
+      },
+      {
+        "desc": "green bus or large truck",
+        "action": "driving away",
+        "position": "background",
+        "id": "bus_green_1"
+      },
+      {
+        "desc": "blue wooden fence",
+        "action": "static",
+        "position": "left",
+        "id": "fence_wooden_1"
+      },
+      {
+        "desc": "white text timestamp",
+        "action": "static",
+        "position": "bottom",
+        "id": "timestamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is walking down the center of the road away from the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black pickup truck is parked on the right side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green bus is driving away in the distance.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp reads '27/12/2016 06:57:32' and '27/12/2016 06:57:33'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:57:32",
+      "27/12/2016 06:57:33"
+    ],
+    "spatial": "The person walking is in the center of the road, positioned between the blue wooden fence on the left and the black pickup truck on the right. The green bus is located in front of the walking person, further down the road in the background.",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      100,
+      102
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark short-sleeved shirt, dark pants, and a purple backpack",
+        "action": "walking away from the camera",
+        "position": "center",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "green truck with a white tarp covering the rear cargo area",
+        "action": "driving away",
+        "position": "center background",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "motorcyclist wearing a helmet and dark clothing",
+        "action": "riding towards the camera",
+        "position": "right",
+        "id": "motorcycle_1"
+      },
+      {
+        "desc": "blue wooden picket fence",
+        "action": "static",
+        "position": "left",
+        "id": "fence_wooden_1"
+      },
+      {
+        "desc": "yellow metal gate",
+        "action": "static",
+        "position": "right",
+        "id": "fence_metal_1"
+      },
+      {
+        "desc": "orange traffic cones",
+        "action": "static",
+        "position": "right",
+        "id": "cone_orange_1"
+      },
+      {
+        "desc": "white vertical banner with text and a logo",
+        "action": "static",
+        "position": "left",
+        "id": "sign_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person with a purple backpack is walking down the center of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green truck is driving ahead of the walking person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A motorcyclist is riding in the opposite lane on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The date '27/12/2016' and time '06:57:34' are visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:57:34"
+    ],
+    "spatial": "The person with the purple backpack is in the center of the road, walking behind the green truck. The blue wooden fence is to the left of the person. The motorcyclist is to the right of the person, riding near the yellow gate. The orange traffic cones are placed on the road surface near the yellow gate.",
+    "parse_success": true,
+    "chunk_idx": 50,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      102,
+      104
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark blue long-sleeved shirt, dark pants, and a backpack with purple straps",
+        "action": "walking away from the camera",
+        "position": "center",
+        "id": "worker_dark_blue_1"
+      },
+      {
+        "desc": "green truck with a white tarp covering the rear cargo area",
+        "action": "driving away",
+        "position": "center background",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing a helmet and dark clothing",
+        "action": "riding a scooter",
+        "position": "right",
+        "id": "motorcycle_1"
+      },
+      {
+        "desc": "person wearing a black shirt and black pants",
+        "action": "standing still",
+        "position": "left",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "small light-brown dog",
+        "action": "walking",
+        "position": "left foreground",
+        "id": "dog_1"
+      },
+      {
+        "desc": "green rectangular sign with white text and an arrow",
+        "action": "static",
+        "position": "right",
+        "id": "sign_green_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a dark blue shirt is walking down the center of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green truck is driving away in the distance.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person on a scooter is moving on the right side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small dog is walking near the fence on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in black is standing near a white gate on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The date stamp reads '27/12/2016'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:57:36",
+      "27/12/2016 06:57:37"
+    ],
+    "spatial": "The person walking in the center is in front of the green truck. The scooter rider is to the right of the walking person. The person in black is standing to the left of the walking person. The small dog is to the left of the person in black and near the fence.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      104,
+      106
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a black short-sleeved shirt and black pants",
+        "action": "standing on the left side of the road",
+        "position": "left",
+        "id": "worker_dark_tshirt_1"
+      },
+      {
+        "desc": "person wearing a dark blue t-shirt, blue jeans, and a blue backpack",
+        "action": "walking away from the camera in the center of the road",
+        "position": "center",
+        "id": "worker_dark_blue_1"
+      },
+      {
+        "desc": "green utility truck with a large white bag hanging from the rear",
+        "action": "driving away in the distance",
+        "position": "center background",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "white concrete wall with a small guard booth structure",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "green rectangular directional sign with white text and an arrow",
+        "action": "static",
+        "position": "right",
+        "id": "sign_green_1"
+      },
+      {
+        "desc": "motorcycle with a rider wearing a helmet",
+        "action": "moving on the right side",
+        "position": "right",
+        "id": "motorcycle_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a black outfit is standing near a white wall on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person with a blue backpack is walking down the middle of the street.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green truck is driving away in the distance.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A motorcycle is visible on the far right edge of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timestamp '27/12/2016 06:57:38' is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:57:38",
+      "27/12/2016 06:57:39"
+    ],
+    "spatial": "The person in the black outfit is standing to the left of the person walking in the center. The green truck is in front of the walking person, further down the road. The green directional sign is attached to a pole on the right side of the road, next to a white wall.",
+    "parse_success": true,
+    "chunk_idx": 52,
+    "video_id": "CFuardqNk2g",
+    "state_changes": []
+  },
+  {
+    "time": [
+      106,
+      108
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark blue short-sleeved shirt, dark pants, and a blue cap, with a purple strap across their back",
+        "action": "walking along the left side of the road",
+        "position": "left/center",
+        "id": "worker_dark_blue_1"
+      },
+      {
+        "desc": "green utility truck with red lights on top, carrying people and a large white sack in the back",
+        "action": "driving forward",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "yellow diamond-shaped traffic sign with a black 'T' symbol",
+        "action": "static",
+        "position": "left",
+        "id": "sign_yellow_1"
+      },
+      {
+        "desc": "white concrete wall with decorative ventilation blocks along the top",
+        "action": "static",
+        "position": "left",
+        "id": "wall_white_ventilation_1"
+      },
+      {
+        "desc": "two-story wooden house with a dark roof and white-framed windows",
+        "action": "static",
+        "position": "right",
+        "id": "house_wooden_1"
+      },
+      {
+        "desc": "motorcycle with a headlight on",
+        "action": "driving",
+        "position": "background/center",
+        "id": "motorcycle_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is walking on the left side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green truck is driving ahead of the camera vehicle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A motorcycle is visible in the distance behind the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The date '27/12/2016' and time '06:57:40' are displayed in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:57:40",
+      "T"
+    ],
+    "spatial": "The person is walking to the left of the green truck. The green truck is in front of the motorcycle. The yellow traffic sign is to the left of the truck and next to the white wall. The wooden house is on the right side of the road, behind a white wall.",
+    "parse_success": true,
+    "chunk_idx": 53,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "green utility truck driving forward with people and sack in back"
+    ]
+  },
+  {
+    "time": [
+      108,
+      110
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark blue t-shirt, dark pants, a blue cap, and purple suspenders/straps",
+        "action": "walking away from the camera",
+        "position": "left",
+        "id": "worker_dark_blue_1"
+      },
+      {
+        "desc": "large green utility truck with an open rear compartment containing blue bags and a large white sack hanging from the back",
+        "action": "stationary",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "yellow diamond-shaped traffic sign with a black 'T' symbol",
+        "action": "static",
+        "position": "left",
+        "id": "sign_yellow_1"
+      },
+      {
+        "desc": "motorcycle with a rider wearing a helmet",
+        "action": "driving away",
+        "position": "right",
+        "id": "motorcycle_1"
+      },
+      {
+        "desc": "wooden two-story house with white window frames",
+        "action": "static",
+        "position": "right",
+        "id": "house_wooden_1"
+      },
+      {
+        "desc": "white concrete wall with decorative ventilation blocks along the top",
+        "action": "static",
+        "position": "left",
+        "id": "wall_white_ventilation_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a blue shirt is walking on the road behind the green truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The green truck is stopped in the middle of the road with its rear lights illuminated.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A motorcycle is passing the truck on the right side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large white sack is hanging from the rear of the truck.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "27/12/2016 06:57:42",
+      "27/12/2016 06:57:43",
+      "T",
+      "055"
+    ],
+    "spatial": "The person in the blue shirt is to the left of the green truck. The green truck is in front of the person and to the left of the motorcycle. The yellow traffic sign is to the left of the truck, mounted near the white wall. The wooden house is to the right of the road and behind the utility pole.",
+    "parse_success": true,
+    "chunk_idx": 54,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "green utility truck becomes stationary"
+    ]
+  },
+  {
+    "time": [
+      110,
+      112
+    ],
+    "visible_entities": [
+      {
+        "desc": "green garbage truck with open rear compartment, red flashing lights on top, large white sack hanging from the back",
+        "action": "stationary",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing dark blue uniform, blue cap, and purple shoulder straps",
+        "action": "walking towards the truck",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing dark uniform standing by the wall",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "motorcyclist wearing a black helmet and dark clothing riding a red scooter",
+        "action": "riding past the truck",
+        "position": "right",
+        "id": "motorcycle_1"
+      },
+      {
+        "desc": "yellow diamond-shaped T-intersection sign with black 'T' symbol and Thai text below",
+        "action": "static",
+        "position": "left",
+        "id": "sign_yellow_1"
+      },
+      {
+        "desc": "white concrete wall with decorative ventilation blocks along the top",
+        "action": "static",
+        "position": "left",
+        "id": "wall_white_ventilation_1"
+      },
+      {
+        "desc": "two-story wooden house with a pointed roof",
+        "action": "static",
+        "position": "right",
+        "id": "house_wooden_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A green garbage truck is stopped in the middle of the road with its rear lights flashing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A sanitation worker in a blue uniform walks towards the back of the garbage truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A motorcyclist on a red scooter drives past the garbage truck on the right side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow T-intersection sign is visible on the left side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The date '27/12/2016' and time '06:57:44' are displayed in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "T",
+      "ระวัง",
+      "ทางแยก",
+      "27/12/2016 06:57:44"
+    ],
+    "spatial": "The green garbage truck is in the center of the road, blocking the lane. The sanitation worker is walking behind the truck. To the left of the truck, there is a white wall and a yellow traffic sign. To the right of the truck, a motorcyclist is passing by. The wooden house is located on the right side of the road, behind the motorcyclist.",
+    "parse_success": true,
+    "chunk_idx": 55,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "garbage truck stationary with red flashing lights, motorcyclist riding past"
+    ]
+  },
+  {
+    "time": [
+      112,
+      114
+    ],
+    "visible_entities": [
+      {
+        "desc": "large green garbage truck with open rear compartment, red taillights illuminated, carrying a large white sack",
+        "action": "stopped",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing dark blue uniform and cap",
+        "action": "standing near the left rear of the truck",
+        "position": "left"
+      },
+      {
+        "desc": "person wearing dark blue uniform, cap, and purple backpack straps",
+        "action": "walking towards the rear of the truck",
+        "position": "center"
+      },
+      {
+        "desc": "yellow diamond-shaped T-intersection sign with Thai text below",
+        "action": "static",
+        "position": "left",
+        "id": "sign_yellow_1"
+      },
+      {
+        "desc": "white concrete wall with decorative ventilation blocks",
+        "action": "static",
+        "position": "left",
+        "id": "wall_white_ventilation_1"
+      },
+      {
+        "desc": "yellow and black striped concrete barrier",
+        "action": "static",
+        "position": "right",
+        "id": "barrier_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The green garbage truck is stopped in the middle of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A worker in a blue uniform is walking towards the back of the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large white sack is hanging from the rear of the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The T-intersection sign displays the text 'ระวัง ทางแยก'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "T",
+      "ระวัง",
+      "ทางแยก"
+    ],
+    "spatial": "The green garbage truck is in the center of the road, positioned in front of the camera vehicle. To the left of the truck, a white wall runs along the side of the road, with a yellow T-intersection sign standing next to it. To the right of the truck, a yellow and black barrier sits near a white wall and a house.",
+    "parse_success": true,
+    "chunk_idx": 56,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "garbage truck stopped with taillights illuminated"
+    ]
+  },
+  {
+    "time": [
+      114,
+      116
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark blue short-sleeved shirt and dark pants",
+        "action": "lifting a blue bin into the truck",
+        "position": "left",
+        "id": "worker_dark_blue_1"
+      },
+      {
+        "desc": "person wearing a purple short-sleeved shirt, blue jeans, and a blue cap",
+        "action": "standing and holding a large white sack",
+        "position": "right",
+        "id": "worker_purple_1"
+      },
+      {
+        "desc": "green garbage truck with rear lights illuminated and open back compartment",
+        "action": "stationary",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "white rectangular traffic sign with a yellow diamond containing a black 'T' symbol and Thai text below",
+        "action": "static",
+        "position": "left",
+        "id": "sign_yellow_1"
+      },
+      {
+        "desc": "large white sack filled with material",
+        "action": "being held",
+        "position": "right",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "blue plastic bin",
+        "action": "being lifted",
+        "position": "left",
+        "id": "trash_bin_blue_1"
+      },
+      {
+        "desc": "green trash bin",
+        "action": "static",
+        "position": "left",
+        "id": "trash_bin_green_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a dark blue shirt is lifting a blue bin into the back of the green truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a purple shirt is holding a large white sack next to the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The green garbage truck is stopped in the middle of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The traffic sign displays a T-intersection warning symbol.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "T",
+      "ระวัง",
+      "ทางแยก",
+      "27/12/2016 06:57:48",
+      "27/12/2016 06:57:49"
+    ],
+    "spatial": "The green garbage truck is in the center of the road. The person in the dark blue shirt is to the left of the truck, lifting a blue bin. The person in the purple shirt is to the right of the truck, holding a white sack. The traffic sign is on the left side of the road, near a white wall.",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "worker begins lifting blue bin into truck"
+    ]
+  },
+  {
+    "time": [
+      116,
+      118
+    ],
+    "visible_entities": [
+      {
+        "desc": "green garbage truck with open rear compartment, brake lights illuminated",
+        "action": "stopped",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing blue shirt and dark pants, holding a large white sack",
+        "action": "standing behind truck",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing blue shirt and dark pants, holding a blue bag",
+        "action": "standing behind truck",
+        "position": "center",
+        "id": "bag_blue_1"
+      },
+      {
+        "desc": "motorcyclist wearing white helmet, purple shirt, and black backpack",
+        "action": "riding past on the right",
+        "position": "right",
+        "id": "motorcycle_1"
+      },
+      {
+        "desc": "yellow diamond-shaped traffic sign with black 'T' symbol and Thai text below",
+        "action": "static",
+        "position": "left",
+        "id": "sign_yellow_1"
+      },
+      {
+        "desc": "white concrete wall with decorative ventilation blocks",
+        "action": "static",
+        "position": "left",
+        "id": "wall_white_ventilation_1"
+      },
+      {
+        "desc": "green trash bin",
+        "action": "static",
+        "position": "left",
+        "id": "trash_bin_green_1"
+      },
+      {
+        "desc": "yellow and black striped concrete barrier",
+        "action": "static",
+        "position": "right",
+        "id": "barrier_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A green garbage truck is stopped in the middle of the road with its rear compartment open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two people are standing at the back of the truck, one holding a large white sack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A motorcyclist wearing a white helmet and purple shirt rides past the truck on the right side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow diamond-shaped traffic sign with a black 'T' symbol is visible on the left side of the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The date and time stamp '27/12/2016 06:57:50' is visible at the bottom left of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "T",
+      "ระวัง",
+      "ทางแยก",
+      "27/12/2016 06:57:50",
+      "27/12/2016 06:57:51"
+    ],
+    "spatial": "The green garbage truck is in the center of the road. Two people are standing behind the truck, with one person to the right of the other holding a large white sack. A motorcyclist is to the right of the truck, moving forward. The yellow 'T' intersection sign is on the left side of the road, next to a white wall. A green trash bin is near the base of the wall on the left. The yellow and black striped barrier is on the right side of the road, near a white wall.",
+    "parse_success": true,
+    "chunk_idx": 58,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "garbage truck brake lights illuminated, motorcyclist riding past"
+    ]
+  },
+  {
+    "time": [
+      118,
+      120
+    ],
+    "visible_entities": [
+      {
+        "desc": "large green truck, rear view, carrying passengers and cargo",
+        "action": "driving forward",
+        "position": "center",
+        "id": "garbage_truck_green_1"
+      },
+      {
+        "desc": "person wearing purple shirt, white helmet, black backpack",
+        "action": "riding a motorcycle",
+        "position": "right",
+        "id": "motorcycle_1"
+      },
+      {
+        "desc": "yellow diamond-shaped road sign with black T symbol",
+        "action": "static",
+        "position": "left",
+        "id": "sign_yellow_1"
+      },
+      {
+        "desc": "white rectangular sign with red and black Thai text",
+        "action": "static",
+        "position": "left",
+        "id": "sign_yellow_1"
+      },
+      {
+        "desc": "large white sack",
+        "action": "being carried",
+        "position": "center",
+        "id": "white_sack_1"
+      },
+      {
+        "desc": "motorcycle with two passengers",
+        "action": "moving",
+        "position": "right",
+        "id": "motorcycle_1"
+      },
+      {
+        "desc": "white concrete wall with decorative ventilation blocks",
+        "action": "static",
+        "position": "left",
+        "id": "wall_white_ventilation_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A green truck is driving down the road.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a purple shirt is riding a motorcycle on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large white sack is being held by someone at the back of the truck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A road sign indicates a T-intersection ahead.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Thai text on the sign reads 'ระวัง ทางแยก'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "T",
+      "ระวัง",
+      "ทางแยก"
+    ],
+    "spatial": "The green truck is in the center of the road, moving away from the camera. To the left of the truck is a white wall and a road sign. To the right of the truck, a person on a motorcycle is following. The large white sack is at the rear of the truck, being held by a person.",
+    "parse_success": true,
+    "chunk_idx": 59,
+    "video_id": "CFuardqNk2g",
+    "state_changes": [
+      "large green truck driving forward carrying passengers and cargo"
+    ]
+  }
+]

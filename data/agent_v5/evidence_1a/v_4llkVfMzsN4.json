@@ -1,0 +1,5938 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "Solid dark blue background",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "Light blue text in a sans-serif font",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a static title card with text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text reads 'Noah playing Men's D', 'Wilmington, NC', and 'March 2013'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Noah playing Men's D",
+      "Wilmington, NC",
+      "March 2013"
+    ],
+    "spatial": "The light blue text is centered on the dark blue background. The line 'Noah playing Men's D' is above 'Wilmington, NC', which is above 'March 2013'.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "white sans-serif text on a solid dark blue background",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a static title card with white text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text reads 'Noah playing Men's D', 'Wilmington, NC', and 'March 2013'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Noah playing Men's D",
+      "Wilmington, NC",
+      "March 2013"
+    ],
+    "spatial": "The text 'Noah playing Men's D' is at the top of the text block. The text 'Wilmington, NC' is below the first line. The text 'March 2013' is below the second line.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "white sans-serif text on a solid dark blue background",
+        "action": "static"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'Noah playing Men's D' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The location 'Wilmington, NC' is displayed below the first line.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The date 'March 2013' is displayed at the bottom of the text block.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Noah playing Men's D",
+      "Wilmington, NC",
+      "March 2013"
+    ],
+    "spatial": "The text 'Noah playing Men's D' is at the top of the text block. The text 'Wilmington, NC' is below 'Noah playing Men's D'. The text 'March 2013' is below 'Wilmington, NC'.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a light blue t-shirt, dark shorts, and athletic shoes",
+        "action": "playing racquetball",
+        "position": "center"
+      },
+      {
+        "desc": "racquetball racquet",
+        "action": "being swung",
+        "position": "center"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a blue shirt is swinging a racquetball racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is moving towards the left side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Noah playing Men's D",
+      "Wilmington, NC",
+      "March 2013"
+    ],
+    "spatial": "The person is in the center of the court, behind the glass wall. The black backpack is on the floor to the left of the person. The text overlay is superimposed over the center of the image.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a grey t-shirt and dark shorts",
+        "action": "lunging forward to hit a ball with a racquet",
+        "position": "left"
+      },
+      {
+        "desc": "child with short dark hair, wearing a red t-shirt and dark shorts",
+        "action": "standing in a ready position holding a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "racquet held by the person in grey",
+        "action": "being swung",
+        "position": "left"
+      },
+      {
+        "desc": "racquet held by the child in red",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "glass wall with black hinges and handles",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "green and white sign on the wall",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the grey t-shirt is lunging towards the left wall to hit a ball.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child in the red t-shirt is standing in the middle of the court watching.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor outside the glass court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign on the wall reads 'Sports Club'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sports Club"
+    ],
+    "spatial": "The person in the grey t-shirt is to the left of the child in the red t-shirt. The glass wall is in front of both players. The black backpack is below the person in the grey t-shirt, outside the court.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a blue t-shirt and dark shorts",
+        "action": "walking towards the left wall",
+        "position": "left"
+      },
+      {
+        "desc": "person wearing a red shirt and dark shorts",
+        "action": "standing near the back wall",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "glass wall with black hinges",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white wall with green and black text",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the blue t-shirt is walking towards the left side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the red shirt is standing near the back wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Sims Club' is visible on the back wall.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "PRIVATE & PRIVATE SCHOOL INC."
+    ],
+    "spatial": "The man in the blue t-shirt is to the left of the person in the red shirt. The black backpack is in the foreground, in front of the glass wall. The 'Sims Club' sign is on the back wall, above the person in the red shirt.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a red t-shirt with white text/graphics on the back and dark shorts",
+        "action": "swinging a racquet",
+        "position": "right"
+      },
+      {
+        "desc": "person with short dark hair, wearing a light blue t-shirt and dark shorts",
+        "action": "standing near the back wall",
+        "position": "background"
+      },
+      {
+        "desc": "reflection of a person in a light shirt",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "squash racquet with a dark frame",
+        "action": "being swung",
+        "position": "right"
+      },
+      {
+        "desc": "glass wall with black rectangular markings",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red shirt swings a squash racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor outside the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt stands near the back wall of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A reflection of a person is visible on the glass wall to the left.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the red shirt is to the right of the person in the blue shirt. The black backpack is in the foreground, positioned to the left of the glass wall. The glass wall is in front of the players.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a light blue t-shirt with a white logo on the back, black shorts, white socks, and white sneakers",
+        "action": "playing squash",
+        "position": "center"
+      },
+      {
+        "desc": "child with short dark hair, wearing a red t-shirt with white text on the back, dark shorts, and dark shoes",
+        "action": "playing squash",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "squash racket",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "squash court with wooden floor and white walls",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the blue shirt is swinging a squash racket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child in the red shirt is moving towards the right side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The squash court has a wooden floor and glass walls.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the blue shirt is to the left of the child in the red shirt. The black backpack is in the foreground, in front of the squash court. The squash racket is being held by the person in the blue shirt.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a light blue t-shirt, dark shorts, and white sneakers",
+        "action": "standing and holding a racquet",
+        "position": "center-left"
+      },
+      {
+        "desc": "child with short dark hair, wearing a red t-shirt, dark shorts, and dark shoes",
+        "action": "running towards the right wall",
+        "position": "center-right"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground-left"
+      },
+      {
+        "desc": "black router with four antennas",
+        "action": "static",
+        "position": "foreground-right"
+      },
+      {
+        "desc": "racquet with a light-colored frame and strings",
+        "action": "being held",
+        "position": "center-left"
+      },
+      {
+        "desc": "racquet with a dark frame and strings",
+        "action": "being held",
+        "position": "center-right"
+      },
+      {
+        "desc": "white poster with green and black text",
+        "action": "static",
+        "position": "background-right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The child in the red shirt is running towards the right wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt is standing still in the middle of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Both individuals are holding racquets.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A router with four antennas is on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The poster on the right wall has text that includes 'FRESH & FROZEN JUICE'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FRESH & FROZEN JUICE"
+    ],
+    "spatial": "The person in the blue shirt is to the left of the child in the red shirt. The black backpack is in the foreground, to the left of the router. The router is in the foreground, in front of the glass wall. The poster is on the right wall, behind the child.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a light blue t-shirt with a yellow graphic on the back, black shorts, white socks, and sneakers",
+        "action": "walking towards the back wall",
+        "position": "center"
+      },
+      {
+        "desc": "person with short dark hair, wearing a red t-shirt with white text on the back, black shorts, and sneakers",
+        "action": "walking towards the right wall",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "squash racquet",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "squash racquet",
+        "action": "being held",
+        "position": "right"
+      },
+      {
+        "desc": "glass wall with black handles and a white poster with text",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the blue shirt walks towards the back wall holding a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the red shirt walks towards the right wall holding a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'SQUASH & RACQUET CLUB, INC.' is visible on a poster on the right wall.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SQUASH & RACQUET CLUB, INC."
+    ],
+    "spatial": "The person in the blue shirt is to the left of the person in the red shirt. The black backpack is in the foreground, below the players. The poster is on the wall to the right of the person in the red shirt.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a red t-shirt and dark shorts",
+        "action": "walking towards the back wall of the court",
+        "position": "center"
+      },
+      {
+        "desc": "person with short brown hair, wearing a blue t-shirt and dark shorts",
+        "action": "walking towards the back wall of the court",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "black squash racket",
+        "action": "being held by the person in the red t-shirt",
+        "position": "center"
+      },
+      {
+        "desc": "squash racket",
+        "action": "being held by the person in the blue t-shirt",
+        "position": "right"
+      },
+      {
+        "desc": "electronic device with four black antennas",
+        "action": "static",
+        "position": "foreground right"
+      },
+      {
+        "desc": "white sign with black text",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two people are walking away from the camera towards the back wall of the squash court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the red t-shirt is holding a squash racket in their right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue t-shirt is holding a squash racket in their right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor outside the glass wall of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An electronic device with four antennas is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SQUASH & RACQUET CLUB INC"
+    ],
+    "spatial": "The person in the red t-shirt is to the left of the person in the blue t-shirt. The black backpack is in the foreground, to the left of the electronic device with antennas. The white sign is on the back wall, to the right of the person in the blue t-shirt.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red t-shirt with white text on the back and black shorts",
+        "action": "standing up from a crouched position",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing a blue t-shirt with a graphic on the back and dark shorts",
+        "action": "walking towards the right wall",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "electronic device with four black antennas",
+        "action": "static",
+        "position": "foreground right"
+      },
+      {
+        "desc": "white rectangular sign with dark text",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red shirt stands up from the floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt walks towards the right side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is resting on the floor outside the glass wall.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PRIVATE & PRIVATE COACHING"
+    ],
+    "spatial": "The person in the red shirt is to the left of the person in the blue shirt. The black backpack is in the foreground, positioned to the left of the electronic device with antennas. The white sign is on the wall in the background, to the right of the person in the blue shirt.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a grey t-shirt and dark shorts",
+        "action": "standing and holding a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "child with short dark hair, wearing a red t-shirt and dark shorts",
+        "action": "standing and holding a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "electronic device with multiple black antennas",
+        "action": "static",
+        "position": "foreground right"
+      },
+      {
+        "desc": "glass wall with black rectangular fixtures",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a grey t-shirt is standing on the wooden court holding a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A child in a red t-shirt is standing next to the person in grey.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor outside the glass court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The two people are inside a room with white walls and a wooden floor.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the grey t-shirt is standing to the left of the child in the red t-shirt. The black backpack is in the foreground, positioned to the left of the electronic device with antennas. Both people are behind the glass wall relative to the camera.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a grey t-shirt and dark shorts",
+        "action": "walking to the left",
+        "position": "left"
+      },
+      {
+        "desc": "child with short dark hair, wearing a red t-shirt with a white graphic on the back and dark shorts",
+        "action": "walking towards the back wall",
+        "position": "center"
+      },
+      {
+        "desc": "child with short dark hair, wearing an orange t-shirt and dark shorts",
+        "action": "standing and holding a racket",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white router with four black antennas",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "squash racket with a wooden handle",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "glass wall with black rectangular fixtures",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a grey t-shirt is walking towards the left side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A child in a red shirt is walking away from the camera towards the back wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A child in an orange shirt is standing on the right side holding a racket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white router is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PICK A FIGHT DUE ON"
+    ],
+    "spatial": "The black backpack is in the foreground, to the left of the white router. The person in the grey shirt is to the left of the child in the red shirt. The child in the orange shirt is to the right of the child in the red shirt. The glass wall is in front of all the people on the court.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a red t-shirt and black shorts",
+        "action": "running towards the right wall",
+        "position": "right"
+      },
+      {
+        "desc": "person with short dark hair, wearing a blue t-shirt and black shorts",
+        "action": "standing near the back wall",
+        "position": "center"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "black router with antennas",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "squash racquet",
+        "action": "being held",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red shirt is running across the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt is standing near the back wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A router with antennas is visible in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "THAT'S A PROPER COOL TH"
+    ],
+    "spatial": "The person in the red shirt is to the right of the person in the blue shirt. The black backpack and router are in the foreground, positioned in front of the glass wall of the squash court. The text 'Sims Club' is located on the upper right wall.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a light blue t-shirt with a yellow logo on the back and dark shorts",
+        "action": "running towards the front wall",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing a red t-shirt and dark shorts",
+        "action": "moving to the right side of the court",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "black router with antennas",
+        "action": "static",
+        "position": "foreground right"
+      },
+      {
+        "desc": "green and white sign on the wall",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the blue shirt is running towards the front wall of the squash court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the red shirt is moving towards the right side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A router with antennas is visible in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign on the wall reads 'Sam's Club'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sam's Club",
+      "PRINT & PHOTO SVC. IN"
+    ],
+    "spatial": "The person in the blue shirt is to the left of the person in the red shirt. The black backpack is in the foreground, to the left of the router. The green and white sign is on the wall in the background, to the right of the players.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a light blue t-shirt and dark shorts",
+        "action": "bending forward and swinging a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "child with short dark hair, wearing a red t-shirt and dark shorts",
+        "action": "standing and holding a racquet",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "white wall with green and blue signage",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the blue shirt bends forward to hit a ball with a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child in the red shirt stands to the right, holding a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sports Club",
+      "HIRE A PRO TO BE ON"
+    ],
+    "spatial": "The person in the blue shirt is to the left of the child in the red shirt. The black backpack is in the foreground, in front of the glass wall. The signage is on the wall to the right of the players.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a light blue t-shirt and dark shorts",
+        "action": "standing and watching",
+        "position": "left"
+      },
+      {
+        "desc": "person with short dark hair, wearing a red t-shirt and dark shorts",
+        "action": "swinging a racquet",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "white wall with green and black text",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red shirt swings a racquet to hit a ball.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt stands on the left side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor outside the glass wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Sam's Club' is visible on the wall.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sam's Club",
+      "PHOTO & PHOTO BOOKS"
+    ],
+    "spatial": "The person in the red shirt is to the right of the person in the blue shirt. The black backpack is in the foreground, below the players. The 'Sam's Club' sign is on the wall behind the person in the red shirt.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, light blue t-shirt, black shorts, black sneakers",
+        "action": "playing squash",
+        "position": "center"
+      },
+      {
+        "desc": "boy with short brown hair, red t-shirt, black shorts, black sneakers",
+        "action": "playing squash",
+        "position": "center-right"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground-left"
+      },
+      {
+        "desc": "white wireless router with four black antennas",
+        "action": "static",
+        "position": "foreground-right"
+      },
+      {
+        "desc": "green and white wall sign",
+        "action": "static",
+        "position": "background-right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the light blue t-shirt is swinging a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The boy in the red t-shirt is moving towards the right wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The two people are playing a game of squash on a wooden court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor outside the glass court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wall sign reads 'Sam's Club'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sam's Club"
+    ],
+    "spatial": "The man in the blue shirt is to the left of the boy in the red shirt. The black backpack is in the foreground, to the left of the router. The router is in the foreground, below the wall sign.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue t-shirt and dark shorts",
+        "action": "walking towards the left wall",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing a red t-shirt and dark shorts",
+        "action": "lunging to the right to hit a ball",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground bottom-left"
+      },
+      {
+        "desc": "black wireless router with antennas",
+        "action": "static",
+        "position": "foreground bottom-right"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a red shirt lunges to the right side of the court to hit a ball.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a blue shirt walks towards the left side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wireless router with antennas sits on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The court has wooden flooring and white walls.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club"
+    ],
+    "spatial": "The person in the red shirt is to the right of the person in the blue shirt. The black backpack is to the left of the wireless router in the foreground. The glass wall is in front of the players.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a blue t-shirt and dark shorts",
+        "action": "walking towards the left wall",
+        "position": "left"
+      },
+      {
+        "desc": "child with short dark hair, wearing a red t-shirt and dark shorts",
+        "action": "running towards the right wall",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack with pink accents",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "squash racket",
+        "action": "being held",
+        "position": "left"
+      },
+      {
+        "desc": "squash racket",
+        "action": "being held",
+        "position": "right"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "green and white sign on wall",
+        "action": "static",
+        "position": "right background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the blue shirt is walking to the left side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child in the red shirt is running to the right side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Both individuals are holding squash rackets.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The court has wooden flooring and white walls.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "HIRE A PROFESSIONAL"
+    ],
+    "spatial": "The person in the blue shirt is to the left of the child in the red shirt. The black backpack is in the foreground, positioned in front of the glass wall. The green sign is on the wall to the right of the child.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a light blue t-shirt and dark shorts",
+        "action": "playing squash",
+        "position": "center"
+      },
+      {
+        "desc": "child with short hair, wearing a red t-shirt and dark shorts",
+        "action": "playing squash",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "squash racket with a dark frame",
+        "action": "being swung",
+        "position": "center"
+      },
+      {
+        "desc": "small white ball",
+        "action": "moving",
+        "position": "center"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "sign with text on the wall",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the blue shirt is swinging a squash racket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child in the red shirt is standing near the back wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white ball is visible on the wooden floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene is viewed through a glass wall.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club"
+    ],
+    "spatial": "The person in the blue shirt is in the center of the court, to the left of the child in the red shirt. The black backpack is in the foreground, below the main action. The child is near the back wall of the court. The sign is on the wall to the right of the child.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short hair, wearing a blue t-shirt and dark shorts",
+        "action": "swinging a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "child with short hair, wearing a red t-shirt and dark shorts",
+        "action": "standing and watching",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground bottom left"
+      },
+      {
+        "desc": "racquet",
+        "action": "being swung",
+        "position": "center"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the blue shirt is swinging a racquet in the center of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child in the red shirt is standing in the background on the right side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is resting on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The court has a light-colored wooden floor and white walls.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sams Club",
+      "PRINTS & PHOTO SVC. INC"
+    ],
+    "spatial": "The person in the blue shirt is to the left of the child in the red shirt. The black backpack is in the foreground, below the glass wall. The racquet is held by the person in the blue shirt.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, grey t-shirt, dark shorts",
+        "action": "swinging racquet",
+        "position": "left"
+      },
+      {
+        "desc": "child with short dark hair, red t-shirt, dark shorts",
+        "action": "holding racquet",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "racquet",
+        "action": "being swung",
+        "position": "center"
+      },
+      {
+        "desc": "racquet",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person on the left swings a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child on the right holds a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sports Club",
+      "INDOOR & OUTDOOR COOLING"
+    ],
+    "spatial": "The person in the grey shirt is to the left of the child in the red shirt. The black backpack is in the foreground, below the glass wall. The racquet is held by the person on the left.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a blue t-shirt with a yellow graphic on the back, dark shorts, and dark sneakers",
+        "action": "running towards the back wall",
+        "position": "center"
+      },
+      {
+        "desc": "child with short dark hair, wearing a red t-shirt, dark shorts, and dark sneakers",
+        "action": "standing and holding a racquet",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "black wireless router with four antennas",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "racquet with a black frame and strings",
+        "action": "being held",
+        "position": "right"
+      },
+      {
+        "desc": "white wall with green and black signage",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the blue shirt is running towards the back wall of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child in the red shirt is standing still on the right side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child is holding a racquet in their right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wireless router is sitting on a surface in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Sports Club' is visible on the wall.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sports Club",
+      "TENNIS & RACQUET SPORTS, INC."
+    ],
+    "spatial": "The person in the blue shirt is to the left of the child in the red shirt. The child is holding a racquet. The backpack and router are in the foreground, in front of the glass wall of the court. The signage is on the back wall, above the floor level.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a dark blue t-shirt and dark shorts",
+        "action": "standing with arms outstretched",
+        "position": "center/background"
+      },
+      {
+        "desc": "person with short dark hair, wearing a red t-shirt with white trim and black shorts",
+        "action": "holding a racquet and moving",
+        "position": "center/background"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "bottom/foreground"
+      },
+      {
+        "desc": "glass wall with black rectangular fixtures",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "racquet with a dark frame",
+        "action": "being held",
+        "position": "center/background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a red shirt is holding a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a blue shirt is standing with arms outstretched.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The two people are on a wooden court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is resting on the floor in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sports Club",
+      "PRIVATE & GROUP BOOKING"
+    ],
+    "spatial": "The person in the red shirt is to the right of the person in the blue shirt. The black backpack is in the foreground, below the glass wall. The glass wall is in front of the two people playing on the court.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a light blue t-shirt and dark shorts",
+        "action": "swinging a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing a red t-shirt and dark shorts",
+        "action": "holding a racquet",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "bottom left foreground"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white wall with green text and logo",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the light blue shirt swings a racquet towards the front wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the red shirt stands on the right side of the court holding a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack rests on the floor outside the glass wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Sports Club' is visible on the wall in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sports Club"
+    ],
+    "spatial": "The person in the light blue shirt is to the left of the person in the red shirt. The black backpack is in the foreground, below the players and outside the glass wall. The 'Sports Club' text is on the wall behind the person in the red shirt.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a light blue t-shirt and black shorts",
+        "action": "playing squash",
+        "position": "center"
+      },
+      {
+        "desc": "person with short dark hair, wearing a red t-shirt and black shorts",
+        "action": "playing squash",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "green and white sign on the wall",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the blue shirt is swinging a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the red shirt is standing ready with a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A sign on the wall reads 'Squash Club'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Squash Club",
+      "PRIVATE & PRIVATE COACHING",
+      "308-2481"
+    ],
+    "spatial": "The person in the blue shirt is to the left of the person in the red shirt. The black backpack is in the foreground, below the players. The 'Squash Club' sign is on the wall to the right of the players.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a light blue t-shirt and dark shorts",
+        "action": "standing near the back wall",
+        "position": "center-left"
+      },
+      {
+        "desc": "person with short dark hair, wearing a red t-shirt and dark shorts",
+        "action": "lunging to the right to hit the ball",
+        "position": "center-right"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground bottom-left"
+      },
+      {
+        "desc": "green and white sign on the wall",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red shirt is lunging to the right side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt is standing near the back wall observing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor outside the glass court.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "PROPERTY & PROJECTS SDN. BHD."
+    ],
+    "spatial": "The person in the red shirt is to the right of the person in the blue shirt. The black backpack is in the foreground, below the glass wall of the court. The green sign is on the wall to the right of the players.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a light blue t-shirt and dark shorts",
+        "action": "standing and holding a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing a dark shirt and light shorts",
+        "action": "sitting on the floor",
+        "position": "center"
+      },
+      {
+        "desc": "racquet with a light-colored frame",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground bottom"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "green and white sign on the wall",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a blue shirt stands holding a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Another person is sitting on the wooden floor of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack rests on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign on the wall reads 'Sports Club'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sports Club"
+    ],
+    "spatial": "The person in the blue shirt is standing to the left of the person sitting on the floor. The black backpack is in the foreground, below the glass wall. The sign is on the wall to the right of the players.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue t-shirt and dark shorts, holding a racquet",
+        "action": "standing and observing",
+        "position": "center-left"
+      },
+      {
+        "desc": "person wearing a red t-shirt and dark shorts, holding a racquet",
+        "action": "bending down to retrieve a ball",
+        "position": "center-right"
+      },
+      {
+        "desc": "small dark ball on the floor",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "bottom-left foreground"
+      },
+      {
+        "desc": "green and white wall sign",
+        "action": "static",
+        "position": "right background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red shirt bends down to pick up the ball from the floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt stands nearby holding a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wall sign displays the text 'Sims Club'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club"
+    ],
+    "spatial": "The person in the red shirt is to the right of the person in the blue shirt. The black backpack is in the foreground, positioned in front of the glass wall. The wall sign is on the right wall, behind the players.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a blue t-shirt and dark shorts",
+        "action": "playing squash",
+        "position": "center"
+      },
+      {
+        "desc": "child with short hair, wearing a red t-shirt and dark shorts",
+        "action": "running",
+        "position": "background right"
+      },
+      {
+        "desc": "silhouette of a person with long hair",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "black squash racket",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "green and white sign on the wall",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the blue shirt is swinging a squash racket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child in the red shirt is running towards the back wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor outside the glass court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign on the wall reads 'Sims Club'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club"
+    ],
+    "spatial": "The person in the blue shirt is in the center of the court, holding a racket. The child in the red shirt is to the right of the person in the blue shirt. The silhouette of a person is in the foreground, to the left of the glass wall. The black backpack is on the floor below the silhouette. The 'Sims Club' sign is on the wall to the right of the child.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a grey t-shirt, black shorts, and white sneakers",
+        "action": "walking forward and holding a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "child with short hair, wearing a red t-shirt and dark shorts",
+        "action": "standing",
+        "position": "background"
+      },
+      {
+        "desc": "racquet with a yellow rim and black handle",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "green and white sign on the wall",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man walks from the left side of the court towards the center.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is holding a racquet in his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A child is standing in the background near the back wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign on the wall reads 'Sims Club'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "Squash & Racquetball",
+      "PRIVATE & GROUP LESSONS",
+      "300-4000"
+    ],
+    "spatial": "The man is in the center of the court, in front of the child who is standing near the back wall. The black backpack is in the foreground to the left of the man. The sign is on the wall to the right of the child.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a blue t-shirt with a yellow graphic on the back and black shorts",
+        "action": "swinging a racket and moving to the right",
+        "position": "center to right"
+      },
+      {
+        "desc": "child with short dark hair, wearing a red t-shirt and black shorts",
+        "action": "walking to the left",
+        "position": "center background"
+      },
+      {
+        "desc": "black squash racket",
+        "action": "being swung by the man",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "bottom left foreground"
+      },
+      {
+        "desc": "glass wall with black rectangular fixtures",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "green and white wall sign",
+        "action": "static",
+        "position": "right background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the blue shirt swings a racket towards the right side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A child in a red shirt walks across the back of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is positioned to the right of the child.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor outside the glass wall.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "Squash & Racketball",
+      "PRIVATE & GROUP COACHING",
+      "SQUASH & RACKETBALL",
+      "762-3301"
+    ],
+    "spatial": "The man in the blue shirt is to the right of the child in the red shirt. The child is in the background, behind the man. The black backpack is in the foreground, below the glass wall. The green sign is on the wall to the right of the players.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      68,
+      70
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red sleeveless top and black shorts",
+        "action": "moving across the court",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing a blue t-shirt and dark shorts",
+        "action": "walking to the right",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "bottom left foreground"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red top is moving across the wooden floor of the squash court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt is walking towards the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The court is enclosed by glass walls with black mounting fixtures.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Suns Club"
+    ],
+    "spatial": "The person in the red top is to the left of the person in the blue shirt. The black backpack is in the foreground, below the glass wall. The 'Suns Club' sign is on the right wall, above the person in the blue shirt.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      70,
+      72
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a blue t-shirt and dark shorts",
+        "action": "walking towards the right side of the court",
+        "position": "center-right"
+      },
+      {
+        "desc": "child with short hair, wearing a red t-shirt and dark shorts",
+        "action": "standing and holding a squash racket",
+        "position": "background right"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "bottom left foreground"
+      },
+      {
+        "desc": "squash racket",
+        "action": "being held",
+        "position": "held by the child"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "green and white wall sign",
+        "action": "static",
+        "position": "right wall background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the blue t-shirt is walking across the squash court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child in the red t-shirt is holding a squash racket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor outside the glass wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign on the wall reads 'Sims Club'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "Squash & Racketball"
+    ],
+    "spatial": "The man in the blue t-shirt is in front of the child in the red t-shirt. The child is standing near the right wall, which has a sign on it. The black backpack is on the floor in the bottom left corner, outside the glass wall that separates the viewer from the court.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      72,
+      74
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a blue t-shirt with a yellow graphic on the back and dark shorts",
+        "action": "standing on the court holding a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "child with short brown hair, wearing a red t-shirt and grey shorts",
+        "action": "standing in the background holding a racquet",
+        "position": "background"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "bottom left foreground"
+      },
+      {
+        "desc": "squash racquet",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a blue shirt stands on the squash court holding a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A child in a red shirt stands further back on the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack rests on the floor outside the glass wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Sims Club' is visible on the wall.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club"
+    ],
+    "spatial": "The man in the blue shirt is in the center of the court, in front of the child in the red shirt. The child is to the right of the man from the viewer's perspective. The black backpack is on the floor in the bottom left corner, outside the glass wall.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      74,
+      76
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a blue t-shirt with a yellow graphic on the back, black shorts, and sneakers",
+        "action": "standing and holding a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "child with dark hair, wearing a red t-shirt and dark shorts",
+        "action": "moving near the back wall",
+        "position": "background"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "racquet",
+        "action": "held by the man",
+        "position": "center"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a blue shirt stands in the center of the squash court holding a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A child in a red shirt is moving near the back wall of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor outside the glass wall in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The court has wooden flooring and white walls.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Suns Club",
+      "PHYSICS & PROGRESS COOL SA"
+    ],
+    "spatial": "The man in the blue shirt is in front of the child in the red shirt. The black backpack is to the left of the man, positioned outside the glass wall. The glass wall is in the foreground, separating the viewer from the court.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      76,
+      78
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a blue t-shirt and dark shorts",
+        "action": "swinging a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "child with short dark hair, wearing a red t-shirt and dark shorts",
+        "action": "standing and watching",
+        "position": "center"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "racquet",
+        "action": "being swung",
+        "position": "center"
+      },
+      {
+        "desc": "wall sign with text",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the blue shirt swings a racquet with his right arm raised.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child in the red shirt stands near the back wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor outside the glass wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign on the wall reads 'Sam's Club'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sam's Club",
+      "TODAY'S HOURS: 10AM - 8PM"
+    ],
+    "spatial": "The man in the blue shirt is in front of the child in the red shirt. The child is to the right of the man. The black backpack is outside the glass wall, to the left of the players. The wall sign is on the right wall, behind the child.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      78,
+      80
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a light blue t-shirt and dark shorts",
+        "action": "standing and holding a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "child with dark hair, wearing a red t-shirt and dark shorts",
+        "action": "swinging a racquet",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "bottom left foreground"
+      },
+      {
+        "desc": "racquet",
+        "action": "being swung",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a blue shirt stands in the center of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A child in a red shirt swings a racquet on the right side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "SQUASH & RACQUETBALL"
+    ],
+    "spatial": "The person in the blue shirt is to the left of the child in the red shirt. The child is holding a racquet. The black backpack is in the foreground, below the glass wall.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      80,
+      82
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a red t-shirt and black shorts",
+        "action": "swinging a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "person with short brown hair, wearing a light blue t-shirt and grey shorts",
+        "action": "moving to the right",
+        "position": "center"
+      },
+      {
+        "desc": "black racquet",
+        "action": "being swung",
+        "position": "center"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white wall with signage",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red shirt is swinging a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt is moving towards the right side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is resting on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The players are inside a squash court with wooden flooring.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "PRIVATE & PRIVATE COACHING"
+    ],
+    "spatial": "The person in the red shirt is to the left of the person in the blue shirt. The black backpack is on the floor in the foreground, below the players. The glass wall is in front of the players, separating them from the camera.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      82,
+      84
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a blue t-shirt and dark shorts",
+        "action": "standing and watching",
+        "position": "center"
+      },
+      {
+        "desc": "child with dark hair, wearing a red t-shirt and dark shorts",
+        "action": "running and swinging a racket",
+        "position": "background"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "squash racket",
+        "action": "being held",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man stands in the center of the court holding a racket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A child runs across the background of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child swings a racket while running.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "PRIVATE & GROUPS COACHING"
+    ],
+    "spatial": "The man is standing in the center of the court, positioned in front of the child who is running in the background. The black backpack is on the floor to the left of the man. The child is moving from the left side of the court towards the right side.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      84,
+      86
+    ],
+    "visible_entities": [
+      {
+        "desc": "adult male with short brown hair, wearing a blue t-shirt with a yellow graphic on the back, black shorts, and white sneakers",
+        "action": "swinging a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "child with dark hair, wearing a red t-shirt and black shorts",
+        "action": "walking to the right",
+        "position": "right"
+      },
+      {
+        "desc": "black and red backpack",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "racquet",
+        "action": "being swung",
+        "position": "center"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "green and white sign on the wall",
+        "action": "static",
+        "position": "right background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The adult male in the center swings a racquet with his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child in the red shirt walks towards the right wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A backpack sits on the floor in the bottom left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign on the right wall reads 'Sims Club'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "FIGHT A FROSTY COLD, FLU"
+    ],
+    "spatial": "The adult male is to the left of the child. The child is near the right wall. The backpack is in the foreground, below the glass wall fixtures. The sign is on the wall behind the child.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      86,
+      88
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a blue t-shirt and dark shorts",
+        "action": "walking towards the back wall",
+        "position": "center"
+      },
+      {
+        "desc": "person with short dark hair, wearing a red t-shirt and dark shorts",
+        "action": "holding a squash racket and standing",
+        "position": "right"
+      },
+      {
+        "desc": "black bag",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "green and white sign on the wall",
+        "action": "static",
+        "position": "right background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the blue shirt is walking away from the camera towards the back wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the red shirt is standing on the right side holding a racket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black bag is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Sims Club' is visible on a sign on the right wall.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club"
+    ],
+    "spatial": "The person in the blue shirt is to the left of the person in the red shirt. The person in the red shirt is holding a squash racket. The black bag is in the foreground, below the players. The 'Sims Club' sign is on the wall to the right of the players.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      88,
+      90
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a light blue t-shirt and dark shorts",
+        "action": "swinging a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "child with dark hair, wearing a red t-shirt and dark shorts",
+        "action": "standing and watching",
+        "position": "right"
+      },
+      {
+        "desc": "black racquet",
+        "action": "being swung by the man",
+        "position": "center"
+      },
+      {
+        "desc": "black bag",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "green sign on the wall",
+        "action": "static",
+        "position": "right background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the blue shirt swings a racquet towards the front wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child in the red shirt stands on the right side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black bag sits on the floor outside the glass wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign on the wall reads 'Sims Club'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "Squash & Racquet Club, Inc."
+    ],
+    "spatial": "The man in the blue shirt is to the left of the child in the red shirt. The child is standing near the right wall. The black bag is on the floor in the foreground, outside the glass wall.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      90,
+      92
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, blue t-shirt with a graphic on the back, black shorts, white socks, and white sneakers",
+        "action": "standing and watching",
+        "position": "center"
+      },
+      {
+        "desc": "person with dark hair, red t-shirt, black shorts, and dark shoes",
+        "action": "swinging a racquet",
+        "position": "center-right"
+      },
+      {
+        "desc": "black sports bag",
+        "action": "static",
+        "position": "bottom-left"
+      },
+      {
+        "desc": "racquet",
+        "action": "being swung",
+        "position": "center-right"
+      },
+      {
+        "desc": "wall sign with green and white text",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red shirt swings a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt stands still.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black bag sits on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign on the wall reads 'Suns Club'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Suns Club",
+      "PHYSICAL THERAPY ASSOC. P.A."
+    ],
+    "spatial": "The person in the red shirt is to the right of the person in the blue shirt. The black bag is in the foreground, below the players. The wall sign is on the right wall, behind the players.",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      92,
+      94
+    ],
+    "visible_entities": [
+      {
+        "desc": "child with short brown hair, wearing a red t-shirt and black shorts",
+        "action": "swinging a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "person with short brown hair, wearing a blue t-shirt and dark shorts",
+        "action": "standing and watching",
+        "position": "center-right"
+      },
+      {
+        "desc": "black bag",
+        "action": "static",
+        "position": "bottom-left"
+      },
+      {
+        "desc": "green and white sign on the wall",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The child in the red t-shirt is swinging a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue t-shirt is standing behind the child.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black bag is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign on the wall reads 'Sims Club'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club"
+    ],
+    "spatial": "The child in the red t-shirt is in front of the person in the blue t-shirt. The black bag is on the floor to the left of the child. The sign is on the wall to the right of the person in the blue t-shirt.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      94,
+      96
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red t-shirt and dark shorts, holding a racquet",
+        "action": "walking towards the back wall",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing a light blue shirt and dark shorts, holding a racquet",
+        "action": "lunging to the right",
+        "position": "center-right"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "bottom-left foreground"
+      },
+      {
+        "desc": "green and white sign on the wall",
+        "action": "static",
+        "position": "right background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a red shirt walks towards the back of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a blue shirt lunges to the right side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor outside the glass wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign on the wall reads 'Sports Club'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sports Club"
+    ],
+    "spatial": "The person in the red shirt is to the left of the person in the blue shirt. The black backpack is in the foreground, outside the glass wall on the left. The sign is on the right wall in the background.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      96,
+      98
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a grey t-shirt and dark shorts",
+        "action": "standing and holding a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "child wearing a red shirt and light-colored shorts",
+        "action": "standing and holding a racquet",
+        "position": "background"
+      },
+      {
+        "desc": "glass wall with black rectangular markings",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "racquet with a yellow rim",
+        "action": "being held",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a grey t-shirt stands in the center of the court holding a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A child in a red shirt stands behind the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene is viewed through a glass wall with black markings.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Suns",
+      "MURRAY & MURRAY SOLICITORS"
+    ],
+    "spatial": "The man in the grey t-shirt is in front of the child in the red shirt. The black backpack is on the floor in the bottom left corner, to the left of the man. The glass wall with black markings is in the foreground, separating the viewer from the court.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      98,
+      100
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a blue t-shirt and black shorts",
+        "action": "swinging a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "racquet with a dark frame",
+        "action": "being swung",
+        "position": "center"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a blue shirt is swinging a racquet inside a court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is moving towards the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor outside the glass wall.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is inside the court, positioned behind the glass wall. The backpack is on the floor to the left of the person, outside the glass wall.",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      100,
+      102
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a dark grey t-shirt, back turned to camera",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "man wearing a grey t-shirt, black shorts, and a light-colored cap",
+        "action": "standing on court",
+        "position": "center background"
+      },
+      {
+        "desc": "boy wearing a red t-shirt and dark shorts",
+        "action": "lunging to hit a ball",
+        "position": "right background"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "bottom left foreground"
+      },
+      {
+        "desc": "squash racket with a light-colored frame",
+        "action": "held by man",
+        "position": "center background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A boy in a red shirt lunges forward to hit a ball with a racket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a grey shirt stands holding a racket near the center of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a dark shirt stands outside the glass wall watching the game.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sports Club",
+      "PRIVATE & GROUP COACHING"
+    ],
+    "spatial": "The person in the dark grey shirt is in the foreground to the left of the glass court wall. Inside the court, the man in the grey shirt is to the left of the boy in the red shirt. The black backpack is on the floor below the person in the dark grey shirt. The 'Sports Club' sign is on the wall in the background to the right of the players.",
+    "parse_success": true,
+    "chunk_idx": 50,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      102,
+      104
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short blonde hair, wearing a blue t-shirt and dark shorts",
+        "action": "moving towards the back wall",
+        "position": "center"
+      },
+      {
+        "desc": "person with short dark hair, wearing a red t-shirt and dark shorts",
+        "action": "standing and watching",
+        "position": "center-right"
+      },
+      {
+        "desc": "silhouette of a person in a dark shirt",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "racquetball racquet",
+        "action": "held by the person in the blue shirt",
+        "position": "center"
+      },
+      {
+        "desc": "racquetball racquet",
+        "action": "held by the person in the red shirt",
+        "position": "center-right"
+      },
+      {
+        "desc": "glass squash court walls with black fixtures",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the blue shirt moves from the center of the court towards the back wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the red shirt stands still on the right side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Both players are holding racquetball racquets.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor outside the glass court.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Suns City"
+    ],
+    "spatial": "The person in the blue shirt is to the left of the person in the red shirt. The person in the red shirt is to the right of the person in the blue shirt. The black backpack is below the person in the dark shirt in the foreground. The players are inside the glass court.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      104,
+      106
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a red t-shirt and black shorts",
+        "action": "swinging a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "person with short light hair, wearing a grey t-shirt and dark shorts",
+        "action": "standing ready",
+        "position": "right"
+      },
+      {
+        "desc": "silhouette of a person in a dark shirt",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "racquet",
+        "action": "being swung",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red shirt is swinging a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the grey shirt is standing on the right side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor outside the glass wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The court has a wooden floor and white walls.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Suns Ca",
+      "SQUASH & RACQUETBALL"
+    ],
+    "spatial": "The person in the red shirt is to the left of the person in the grey shirt. The black backpack is below the silhouette of the person in the foreground. The glass wall is in front of the players.",
+    "parse_success": true,
+    "chunk_idx": 52,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      106,
+      108
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a red short-sleeved t-shirt and black shorts",
+        "action": "standing and holding a racquet",
+        "position": "right"
+      },
+      {
+        "desc": "person with short dark hair, wearing a light blue short-sleeved t-shirt and black shorts",
+        "action": "running towards the left wall",
+        "position": "center-left"
+      },
+      {
+        "desc": "racquet with a dark frame and handle",
+        "action": "being held by the person in red",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "bottom-left foreground"
+      },
+      {
+        "desc": "glass wall with black handles and fixtures",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white wall with a green and white sign",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the blue shirt is running towards the left side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the red shirt is standing on the right side of the court holding a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club"
+    ],
+    "spatial": "The person in the red shirt is to the right of the person in the blue shirt. The black backpack is in the foreground, below the glass wall. The sign on the wall is to the right of the person in the red shirt.",
+    "parse_success": true,
+    "chunk_idx": 53,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      108,
+      110
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue t-shirt and dark shorts",
+        "action": "walking towards the left wall",
+        "position": "left"
+      },
+      {
+        "desc": "person wearing a red t-shirt and dark shorts",
+        "action": "walking towards the right side",
+        "position": "center-right"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "bottom-left foreground"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "green and white sign on the wall",
+        "action": "static",
+        "position": "right background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the blue t-shirt is walking towards the left wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the red t-shirt is walking towards the right side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene is viewed through a glass wall.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Suns Club"
+    ],
+    "spatial": "The person in the blue t-shirt is to the left of the person in the red t-shirt. The black backpack is on the floor in the foreground, below the glass wall. The sign is on the wall to the right of the person in the red t-shirt.",
+    "parse_success": true,
+    "chunk_idx": 54,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      110,
+      112
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, grey t-shirt, black shorts, white sneakers",
+        "action": "playing racquetball",
+        "position": "center"
+      },
+      {
+        "desc": "child with short dark hair, red t-shirt, dark shorts",
+        "action": "standing and watching",
+        "position": "background right"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground bottom left"
+      },
+      {
+        "desc": "racquetball racquet",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "glass wall with black handles",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the grey t-shirt is swinging a racquetball racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man looks upwards towards the ceiling.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child in the red shirt is standing near the back wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor outside the glass court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The court has wooden flooring and white walls.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sports Club"
+    ],
+    "spatial": "The man in the grey t-shirt is in the center of the court, holding a racquet. The child in the red shirt is to the right of the man, standing further back near the wall. The black backpack is in the foreground, positioned to the left of the glass wall entrance.",
+    "parse_success": true,
+    "chunk_idx": 55,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      112,
+      114
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a blue t-shirt with a yellow graphic on the back, black shorts, and dark sneakers",
+        "action": "walking towards the back wall",
+        "position": "left/center"
+      },
+      {
+        "desc": "child with short brown hair, wearing a red t-shirt and dark shorts",
+        "action": "running towards the back wall",
+        "position": "center/background"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground/bottom-left"
+      },
+      {
+        "desc": "glass wall with black rectangular fixtures",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white wall with a green and blue sign",
+        "action": "static",
+        "position": "right/background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the blue t-shirt walks across the wooden court floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child in the red t-shirt runs ahead of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor outside the glass enclosure.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign on the right wall reads 'Sports Club'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sports Club"
+    ],
+    "spatial": "The man in the blue t-shirt is to the left of the child in the red t-shirt. The child is running in front of the man towards the back wall. The black backpack is in the foreground, positioned below and outside the glass wall relative to the people.",
+    "parse_success": true,
+    "chunk_idx": 56,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      114,
+      116
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a blue t-shirt and dark shorts",
+        "action": "walking and holding a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "child wearing a red shirt and dark shorts",
+        "action": "standing",
+        "position": "background"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "racquet with a yellow rim",
+        "action": "being held",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the blue t-shirt is walking across the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is holding a racquet in his hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A child in a red shirt is standing in the background near the wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sports Club"
+    ],
+    "spatial": "The man in the blue t-shirt is in the center of the court, holding a racquet. The child in the red shirt is standing behind the man, near the back wall. The black backpack is in the foreground, positioned below the man's position.",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      116,
+      118
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a grey t-shirt with a graphic on the back, black shorts, and black and white sneakers",
+        "action": "standing and raising left hand to head",
+        "position": "center"
+      },
+      {
+        "desc": "squash racquet with a black frame and strings",
+        "action": "held in right hand",
+        "position": "center"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "bottom left foreground"
+      },
+      {
+        "desc": "glass wall with black mounting hardware",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "light-colored wooden floor",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "white wall with a poster",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man stands in the center of the squash court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man raises his left hand to his head.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man holds a squash racquet in his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The poster on the wall reads 'Sims Club'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club"
+    ],
+    "spatial": "The man is in the center of the court, standing on the wooden floor. The glass wall is in front of the man. The backpack is on the floor in the bottom left corner, to the left of the man. The poster is on the wall in the background, to the right of the man.",
+    "parse_success": true,
+    "chunk_idx": 58,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      118,
+      120
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a blue t-shirt with a graphic on the back, black shorts, and sneakers",
+        "action": "playing squash, swinging a racket",
+        "position": "right"
+      },
+      {
+        "desc": "child with short dark hair, wearing a red t-shirt and dark shorts",
+        "action": "standing and watching",
+        "position": "center"
+      },
+      {
+        "desc": "squash racket with a dark frame and strings",
+        "action": "being swung by the man",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white wall with a green and white sign",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the blue t-shirt is swinging a squash racket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child in the red t-shirt is standing near the center of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The squash court has wooden flooring and white walls.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Suns Club"
+    ],
+    "spatial": "The man in the blue t-shirt is to the right of the child in the red t-shirt. The black backpack is in the foreground, to the left of the man. The sign on the wall is behind the man.",
+    "parse_success": true,
+    "chunk_idx": 59,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      120,
+      122
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a red t-shirt and dark shorts",
+        "action": "holding a racquet and moving across the court",
+        "position": "center"
+      },
+      {
+        "desc": "man with short brown hair, wearing a blue t-shirt and dark shorts",
+        "action": "standing and watching",
+        "position": "right"
+      },
+      {
+        "desc": "racquet with a dark frame",
+        "action": "being held by the person in the red shirt",
+        "position": "center"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a red shirt is holding a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the red shirt is moving towards the left side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a blue shirt is standing on the right side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Suns Club"
+    ],
+    "spatial": "The person in the red shirt is to the left of the man in the blue shirt. The black backpack is in the foreground, below the glass wall. The racquet is held in the hand of the person in the red shirt.",
+    "parse_success": true,
+    "chunk_idx": 60,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      122,
+      124
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with dark curly hair, wearing a red t-shirt and dark shorts",
+        "action": "swinging racquet",
+        "position": "left"
+      },
+      {
+        "desc": "person with short hair, wearing a light blue t-shirt and dark shorts",
+        "action": "standing with racquet",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "racquetball racquets",
+        "action": "being held",
+        "position": "held by players"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white wall with signage",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red shirt is swinging a racquetball racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt is standing and holding a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The players are inside a racquetball court with glass walls.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club"
+    ],
+    "spatial": "The person in the red shirt is to the left of the person in the blue shirt. The backpack is in the foreground, in front of the glass wall. The 'Sims Club' sign is on the wall in the background, to the right of the players.",
+    "parse_success": true,
+    "chunk_idx": 61,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      124,
+      126
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue t-shirt and dark shorts",
+        "action": "playing squash",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing a red t-shirt and dark shorts",
+        "action": "playing squash",
+        "position": "center"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "squash racquet",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two people are playing squash on a wooden court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt is holding a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the red shirt is moving towards the left side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor outside the glass wall.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Suns Club"
+    ],
+    "spatial": "The person in the blue shirt is to the right of the person in the red shirt. The black backpack is in the foreground, below the players and outside the glass wall. The glass wall is in front of the players.",
+    "parse_success": true,
+    "chunk_idx": 62,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      126,
+      128
+    ],
+    "visible_entities": [
+      {
+        "desc": "adult male with short brown hair, wearing a blue t-shirt with a yellow graphic on the back, black shorts, and black sneakers",
+        "action": "standing and holding a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "small child with dark hair, wearing a red t-shirt and dark shorts",
+        "action": "swinging a racquet",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "racquet held by the adult",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "racquet held by the child",
+        "action": "moving",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The child swings a racquet with their right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The adult stands in the middle of the court holding a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene takes place in an indoor court with wooden flooring and glass walls.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sports Club"
+    ],
+    "spatial": "The adult male is to the left of the child. The child is to the right of the adult. The black backpack is in the foreground, below the level of the players. The players are inside the glass-walled court.",
+    "parse_success": true,
+    "chunk_idx": 63,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      128,
+      130
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a blue t-shirt and black shorts",
+        "action": "swinging a racquet",
+        "position": "left"
+      },
+      {
+        "desc": "child with short brown hair, wearing a red t-shirt and dark shorts",
+        "action": "standing still",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "racquet",
+        "action": "being swung",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the blue t-shirt is swinging a racquet with his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child in the red t-shirt is standing in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "PRIVATE PROPERTIES ONLY"
+    ],
+    "spatial": "The man in the blue t-shirt is to the left of the child in the red t-shirt. The black backpack is in the foreground, in front of the glass wall. The child is standing near the back wall of the court.",
+    "parse_success": true,
+    "chunk_idx": 64,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      130,
+      132
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a grey t-shirt and dark shorts",
+        "action": "standing on the court holding a racquet",
+        "position": "center-right"
+      },
+      {
+        "desc": "child with short hair, wearing a red t-shirt and dark shorts",
+        "action": "standing near the back wall holding a racquet",
+        "position": "background"
+      },
+      {
+        "desc": "person with short hair, wearing a white t-shirt and light shorts",
+        "action": "standing on the left side of the court",
+        "position": "left"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground bottom-left"
+      },
+      {
+        "desc": "glass wall with black horizontal handles",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a grey t-shirt stands on the squash court holding a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A child in a red shirt stands near the back wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a white shirt stands on the left side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor outside the glass wall.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the grey t-shirt is to the right of the child in the red shirt. The person in the white shirt is to the left of the man in the grey t-shirt. The black backpack is in the foreground, below the glass wall handles.",
+    "parse_success": true,
+    "chunk_idx": 65,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      132,
+      134
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a blue t-shirt and dark shorts",
+        "action": "swinging a racquet",
+        "position": "right"
+      },
+      {
+        "desc": "child with short brown hair, wearing a red t-shirt and dark shorts",
+        "action": "standing and watching",
+        "position": "center"
+      },
+      {
+        "desc": "black racquet",
+        "action": "being swung by the man",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the blue t-shirt swings a racquet with his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child in the red t-shirt stands in the middle of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sports Club"
+    ],
+    "spatial": "The man is to the right of the child. The child is in the center of the court, behind the glass wall. The backpack is in the foreground, to the left of the man.",
+    "parse_success": true,
+    "chunk_idx": 66,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      134,
+      136
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a blue t-shirt and dark shorts",
+        "action": "standing and holding a racquet",
+        "position": "right"
+      },
+      {
+        "desc": "child with short brown hair, wearing a red t-shirt and dark shorts",
+        "action": "moving across the court holding a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "bottom left foreground"
+      },
+      {
+        "desc": "racquet",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "racquet",
+        "action": "being held",
+        "position": "right"
+      },
+      {
+        "desc": "glass wall with black hinges",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "sign with text",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The child in the red shirt is moving towards the left side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt is standing on the right side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Both individuals are holding racquets.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene takes place in an indoor court with wooden flooring and white walls.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "PRIVATE RACQUET CLUB"
+    ],
+    "spatial": "The child in the red shirt is to the left of the person in the blue shirt. The black backpack is in the foreground, below the glass wall. The sign with text is on the wall to the right of the person in the blue shirt.",
+    "parse_success": true,
+    "chunk_idx": 67,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      136,
+      138
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red t-shirt and dark shorts",
+        "action": "swinging a racquet",
+        "position": "right"
+      },
+      {
+        "desc": "person wearing a blue t-shirt and dark shorts",
+        "action": "moving towards the back wall",
+        "position": "center"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "racquet",
+        "action": "being swung",
+        "position": "right"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "wall sign with text",
+        "action": "static",
+        "position": "right background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red shirt is swinging a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt is moving towards the back wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the red shirt is to the right of the person in the blue shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene takes place in a court with wooden flooring and white walls.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sports Club",
+      "PICKLEBALL"
+    ],
+    "spatial": "The person in the red shirt is to the right of the person in the blue shirt. The black backpack is in the foreground, to the left of the players. The wall sign is on the right wall, behind the person in the red shirt.",
+    "parse_success": true,
+    "chunk_idx": 68,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      138,
+      140
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a blue t-shirt and dark shorts",
+        "action": "standing on the left side of the court",
+        "position": "left"
+      },
+      {
+        "desc": "child with short dark hair, wearing a red t-shirt and dark shorts",
+        "action": "swinging a racquet",
+        "position": "center-right"
+      },
+      {
+        "desc": "racquet with a dark frame and strings",
+        "action": "being swung by the child",
+        "position": "center-right"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "bottom-left foreground"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The child in the red shirt is swinging a racquet towards the right wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt is standing near the left wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The child in the red shirt is to the right of the person in the blue shirt. The racquet is held by the child. The black backpack is in the foreground, below the person in the blue shirt.",
+    "parse_success": true,
+    "chunk_idx": 69,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      140,
+      142
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a red t-shirt and dark shorts",
+        "action": "standing and holding a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "person with short hair, wearing a light blue t-shirt and dark shorts",
+        "action": "moving towards the right wall",
+        "position": "center-left"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground bottom-left"
+      },
+      {
+        "desc": "racquet with a dark frame and handle",
+        "action": "being held by the person in red",
+        "position": "center"
+      },
+      {
+        "desc": "glass wall with black handles and hinges",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "wall sign with a green diamond logo and text",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red t-shirt is holding a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the light blue t-shirt is moving towards the right side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene takes place inside a squash court with wooden flooring and white walls.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Suns",
+      "CLUB"
+    ],
+    "spatial": "The person in the red t-shirt is in the center of the court, holding a racquet. The person in the light blue t-shirt is to the left of the person in red. The black backpack is in the foreground, below the glass wall. The wall sign is on the right wall in the background.",
+    "parse_success": true,
+    "chunk_idx": 70,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      142,
+      144
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a red t-shirt and black shorts",
+        "action": "standing and holding a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "person with short dark hair, wearing a blue t-shirt and black shorts",
+        "action": "moving towards the right wall",
+        "position": "right"
+      },
+      {
+        "desc": "black racquet",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "glass wall with black hinges",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red shirt is holding a racquet in the center of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt is moving towards the right side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor outside the glass wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The court has light wooden flooring and white walls.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the red shirt is to the left of the person in the blue shirt. The black backpack is on the floor in the foreground, below the glass wall. The person in the red shirt is holding a racquet.",
+    "parse_success": true,
+    "chunk_idx": 71,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      144,
+      146
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue t-shirt with a yellow logo on the back, dark shorts, and dark sneakers",
+        "action": "standing and watching",
+        "position": "right"
+      },
+      {
+        "desc": "person wearing a red t-shirt and dark shorts",
+        "action": "diving onto the floor",
+        "position": "center"
+      },
+      {
+        "desc": "squash racket with a dark frame",
+        "action": "being held by the person in blue",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "bottom left foreground"
+      },
+      {
+        "desc": "glass wall with black mounting hardware",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white wall with a green and white sign",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red shirt dives forward onto the wooden floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt stands on the right side of the court holding a racket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene takes place inside a squash court with glass walls.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sams Club",
+      "SQUASH & RACQUETBALL"
+    ],
+    "spatial": "The person in the blue shirt is standing to the right of the person in the red shirt. The person in the red shirt is in the center of the court, diving towards the front wall. The black backpack is in the bottom left foreground, outside the glass wall.",
+    "parse_success": true,
+    "chunk_idx": 72,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      146,
+      148
+    ],
+    "visible_entities": [
+      {
+        "desc": "child with short dark hair, wearing a red t-shirt and dark shorts",
+        "action": "swinging a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "adult with short brown hair, wearing a light blue t-shirt and dark shorts",
+        "action": "standing and watching",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "bottom left foreground"
+      },
+      {
+        "desc": "racquet",
+        "action": "being swung",
+        "position": "center"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white wall with green and black signage",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The child in the red shirt swings a racquet forward.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The adult in the blue shirt stands to the right of the child.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor outside the glass wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The court has a wooden floor and white walls.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "SQUASH & RACQUETBALL"
+    ],
+    "spatial": "The child in the red shirt is to the left of the adult in the blue shirt. The black backpack is in the foreground, below the glass wall. The signage is on the wall to the right of the players.",
+    "parse_success": true,
+    "chunk_idx": 73,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      148,
+      150
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a red t-shirt and black shorts",
+        "action": "moving to the left",
+        "position": "left"
+      },
+      {
+        "desc": "person with short light hair, wearing a blue t-shirt and dark shorts",
+        "action": "standing and holding a racket",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "racket",
+        "action": "being held",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red shirt is moving towards the left side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt is holding a racket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the red shirt is to the left of the person in the blue shirt. The black backpack is in the foreground, in front of the glass wall. The person in the blue shirt is holding a racket.",
+    "parse_success": true,
+    "chunk_idx": 74,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      150,
+      152
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red t-shirt and dark shorts",
+        "action": "standing and holding a racquet",
+        "position": "left"
+      },
+      {
+        "desc": "person wearing a blue t-shirt and dark shorts",
+        "action": "walking towards the left",
+        "position": "center"
+      },
+      {
+        "desc": "racquet with a dark frame",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "racquet with a dark frame",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "poster with text on the wall",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a red shirt is standing on the left side of the court holding a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a blue shirt is walking across the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The court is enclosed by glass walls.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sports Club"
+    ],
+    "spatial": "The person in the red shirt is to the left of the person in the blue shirt. The black backpack is in the foreground, positioned in front of the glass wall. The poster is on the wall to the right of the players.",
+    "parse_success": true,
+    "chunk_idx": 75,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      152,
+      154
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a red short-sleeved t-shirt and dark shorts",
+        "action": "playing squash",
+        "position": "center-right"
+      },
+      {
+        "desc": "person with short light brown hair, wearing a light blue t-shirt and light-colored shorts",
+        "action": "playing squash",
+        "position": "center-left"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "bottom-left foreground"
+      },
+      {
+        "desc": "white wireless router with four black antennas",
+        "action": "static",
+        "position": "bottom-right foreground"
+      },
+      {
+        "desc": "green and white sign on the wall",
+        "action": "static",
+        "position": "top-right background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red shirt is swinging a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt is moving towards the left wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is resting on the floor outside the glass court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white router is sitting on a surface in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign on the wall reads 'Sports Club'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sports Club"
+    ],
+    "spatial": "The person in the red shirt is to the right of the person in the blue shirt. The black backpack is in the foreground, to the left of the white router. The green and white sign is on the wall in the background, above the court floor.",
+    "parse_success": true,
+    "chunk_idx": 76,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      154,
+      156
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red t-shirt and dark shorts",
+        "action": "swinging a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing a light blue t-shirt and dark shorts",
+        "action": "standing ready",
+        "position": "background"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "wireless router with antennas",
+        "action": "static",
+        "position": "foreground right"
+      },
+      {
+        "desc": "racquet",
+        "action": "being swung",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red shirt is swinging a racquet in the center of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt is standing in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Suns City"
+    ],
+    "spatial": "The person in the red shirt is in front of the person in the blue shirt. The black backpack is to the left of the wireless router in the foreground. The router is positioned below the glass wall of the court.",
+    "parse_success": true,
+    "chunk_idx": 77,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      156,
+      158
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red t-shirt and dark shorts",
+        "action": "swinging a racket",
+        "position": "left"
+      },
+      {
+        "desc": "person wearing a light blue t-shirt and dark shorts",
+        "action": "standing",
+        "position": "center-right"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground-left"
+      },
+      {
+        "desc": "white router with four antennas",
+        "action": "static",
+        "position": "foreground-right"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a red shirt is swinging a racket on the left side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a blue shirt is standing near the back wall of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor outside the glass wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white router is sitting on a surface in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims City"
+    ],
+    "spatial": "The person in the red shirt is to the left of the person in the blue shirt. The black backpack is in front of the glass wall on the left side. The white router is in front of the glass wall on the right side. The person in the blue shirt is near the back wall of the court.",
+    "parse_success": true,
+    "chunk_idx": 78,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      158,
+      160
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a red t-shirt with white graphics on the back and black shorts",
+        "action": "bending forward and swinging a racquet",
+        "position": "right foreground"
+      },
+      {
+        "desc": "person with short light hair, wearing a grey t-shirt and dark shorts",
+        "action": "standing and watching",
+        "position": "center background"
+      },
+      {
+        "desc": "black racquet",
+        "action": "being swung",
+        "position": "right foreground"
+      },
+      {
+        "desc": "glass wall with black hinges",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "black bag",
+        "action": "static",
+        "position": "bottom center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red shirt is swinging a racquet near the floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the grey shirt is standing near the back wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black bag is sitting on the floor outside the court.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the red shirt is to the right of the person in the grey shirt. The glass wall is in front of both players. The black bag is below the players in the foreground.",
+    "parse_success": true,
+    "chunk_idx": 79,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      160,
+      162
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a grey t-shirt and dark shorts",
+        "action": "standing and holding a racquet",
+        "position": "background left"
+      },
+      {
+        "desc": "person with short dark hair, wearing a red t-shirt with white graphics on the back and dark shorts",
+        "action": "standing with hands on hips",
+        "position": "background center"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "glass wall with black handles",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white sign with blue text",
+        "action": "static",
+        "position": "background right wall"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the grey t-shirt is holding a racquet in their right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the red t-shirt is standing with their hands on their hips.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene takes place in an indoor court with wooden flooring and white walls.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THERE'S A HEALTHY COOL PA"
+    ],
+    "spatial": "The person in the grey t-shirt is to the left of the person in the red t-shirt. The black backpack is in the foreground, positioned in front of the glass wall. The white sign is on the wall to the right of the players.",
+    "parse_success": true,
+    "chunk_idx": 80,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      162,
+      164
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a light blue t-shirt and dark shorts with white stripes",
+        "action": "standing on the court",
+        "position": "left background"
+      },
+      {
+        "desc": "person with short dark hair, wearing a red t-shirt and black shorts",
+        "action": "walking to the right",
+        "position": "center right"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "racquetball racquet",
+        "action": "held by the person in red",
+        "position": "center right"
+      },
+      {
+        "desc": "racquetball racquet",
+        "action": "held by the person in blue",
+        "position": "left background"
+      },
+      {
+        "desc": "green and white sign",
+        "action": "static",
+        "position": "top right background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red shirt is walking towards the right side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt is standing near the back wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor outside the glass wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign on the wall reads 'FISHER & FISHER CO., P.C.'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FISHER & FISHER CO., P.C.",
+      "10-040"
+    ],
+    "spatial": "The person in the red shirt is to the right of the person in the blue shirt. The black backpack is in the foreground, below the players on the court. The green and white sign is on the wall in the upper right corner, above the player in red.",
+    "parse_success": true,
+    "chunk_idx": 81,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      164,
+      166
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red t-shirt and dark shorts",
+        "action": "swinging a racquet",
+        "position": "right"
+      },
+      {
+        "desc": "person wearing a light blue t-shirt and dark shorts",
+        "action": "moving towards the back wall",
+        "position": "center"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground bottom left"
+      },
+      {
+        "desc": "racquet",
+        "action": "being swung",
+        "position": "right"
+      },
+      {
+        "desc": "racquet",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "glass wall with black handles",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white wall with signage",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red t-shirt is swinging a racquet on the right side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the light blue t-shirt is moving towards the back wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Sams Club' is visible on the back wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'FISHER & PROPER CO. PA' is visible on a sign on the back wall.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sams Club",
+      "FISHER & PROPER CO. PA"
+    ],
+    "spatial": "The person in the red t-shirt is to the right of the person in the light blue t-shirt. The black backpack is in the foreground, below the players on the court. The glass wall is in front of the players, separating them from the camera's viewpoint.",
+    "parse_success": true,
+    "chunk_idx": 82,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      166,
+      168
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a light blue t-shirt with a yellow graphic on the back and black shorts",
+        "action": "running towards the front wall",
+        "position": "left"
+      },
+      {
+        "desc": "child with short dark hair, wearing a red t-shirt with white text on the back and black shorts",
+        "action": "running towards the front wall",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "racquetball racquet",
+        "action": "being held",
+        "position": "left"
+      },
+      {
+        "desc": "racquetball racquet",
+        "action": "being held",
+        "position": "right"
+      },
+      {
+        "desc": "white wall sign with blue text and logo",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the blue shirt is running towards the front wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child in the red shirt is running towards the front wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Both individuals are holding racquetball racquets.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign on the wall reads 'Sam's Club'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sam's Club",
+      "FROM A PROFIT CO. PA"
+    ],
+    "spatial": "The person in the blue shirt is to the left of the child in the red shirt. Both are inside a glass-walled court. The black backpack is in the foreground, outside the court and below the players. The 'Sam's Club' sign is on the wall in the background, to the right of the players.",
+    "parse_success": true,
+    "chunk_idx": 83,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      168,
+      170
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a blue t-shirt with a graphic on the back and dark shorts",
+        "action": "walking towards the left side of the court",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing a red t-shirt and dark shorts",
+        "action": "standing near the back wall holding a racquet",
+        "position": "background"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "racquet",
+        "action": "being held by the person in red",
+        "position": "background"
+      },
+      {
+        "desc": "white sign with blue text and logo",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the blue shirt is walking across the wooden court floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the red shirt is holding a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor outside the glass wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign on the wall reads 'Sams Club'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sams Club",
+      "PROPS & PROPS, INC. PA"
+    ],
+    "spatial": "The person in the blue shirt is in front of the person in the red shirt. The black backpack is in the foreground, outside the glass wall of the court. The white sign is on the right wall, above the floor level.",
+    "parse_success": true,
+    "chunk_idx": 84,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      170,
+      172
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a grey t-shirt and dark shorts",
+        "action": "playing racquetball",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing a red shirt",
+        "action": "standing",
+        "position": "background"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "glass wall",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a grey t-shirt is swinging a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a red shirt is standing in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor outside the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The game is being played inside a glass-walled court.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "FISHER & FISHER DDS, PA"
+    ],
+    "spatial": "The man in the grey t-shirt is in the center of the court, in front of the person in the red shirt. The black backpack is on the floor in the foreground, outside the glass wall of the court.",
+    "parse_success": true,
+    "chunk_idx": 85,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      172,
+      174
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a grey t-shirt and dark shorts",
+        "action": "swinging racquet",
+        "position": "left"
+      },
+      {
+        "desc": "person with short dark hair, wearing a red t-shirt and dark shorts",
+        "action": "standing ready",
+        "position": "center"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "green sign with white text",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the grey t-shirt swings a racquet towards the left wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the red t-shirt stands in the center of the court holding a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Squash Club",
+      "PRIVATE & GROUP LESSONS",
+      "TO-DAY"
+    ],
+    "spatial": "The person in the grey t-shirt is to the left of the person in the red t-shirt. The black backpack is in the foreground, below the glass wall of the court. The green sign is on the right wall in the background.",
+    "parse_success": true,
+    "chunk_idx": 86,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      174,
+      176
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a grey t-shirt and dark shorts",
+        "action": "standing and watching the play",
+        "position": "left background"
+      },
+      {
+        "desc": "person with dark curly hair, wearing a red t-shirt and black shorts",
+        "action": "swinging a racquet",
+        "position": "right foreground"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "bottom foreground"
+      },
+      {
+        "desc": "squash racquet",
+        "action": "being swung",
+        "position": "right"
+      },
+      {
+        "desc": "green and white sign on the wall",
+        "action": "static",
+        "position": "top right background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red shirt is swinging a racquet on the right side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the grey shirt is standing near the back wall on the left side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A sign on the wall reads 'MOORE & PROFFITT, P.C.'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims",
+      "MOORE & PROFFITT, P.C.",
+      "724-4447"
+    ],
+    "spatial": "The person in the red shirt is to the right of the person in the grey shirt. The black backpack is in the foreground, below the glass wall of the court. The sign is on the wall above the person in the red shirt.",
+    "parse_success": true,
+    "chunk_idx": 87,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      176,
+      178
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a light blue t-shirt and dark shorts",
+        "action": "running towards the back wall",
+        "position": "background"
+      },
+      {
+        "desc": "person with dark curly hair, wearing a red t-shirt and black shorts",
+        "action": "swinging a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "black racquet with a long handle",
+        "action": "being swung by the person in red",
+        "position": "center"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground left"
+      },
+      {
+        "desc": "white router with four black antennas",
+        "action": "static",
+        "position": "foreground right"
+      },
+      {
+        "desc": "glass wall with black fixtures",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red shirt is swinging a racquet in the center of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt is running towards the back wall of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white router with antennas sits on a surface in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "PHYSICAL THERAPY & SPORTS MEDICINE",
+      "703-2411"
+    ],
+    "spatial": "The person in the red shirt is in front of the person in the blue shirt. The black backpack is to the left of the white router in the foreground. The glass wall is in front of the players.",
+    "parse_success": true,
+    "chunk_idx": 88,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      178,
+      180
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red short-sleeved shirt and dark shorts",
+        "action": "running towards the left wall",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing a light blue t-shirt and dark shorts",
+        "action": "standing and watching",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground bottom-left"
+      },
+      {
+        "desc": "white router with four black antennas",
+        "action": "static",
+        "position": "foreground bottom-right"
+      },
+      {
+        "desc": "glass wall with black rectangular fixtures",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red shirt is running across the wooden court floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt is standing near the right wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor outside the glass court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white router with antennas sits on a surface in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "ROGER & PHILIP COX, PA"
+    ],
+    "spatial": "The person in the red shirt is to the left of the person in the blue shirt. The black backpack is in the foreground, positioned to the left of the white router. The router is below the 'Sims Club' sign on the wall.",
+    "parse_success": true,
+    "chunk_idx": 89,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      180,
+      182
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a red t-shirt with white graphics and dark shorts",
+        "action": "playing squash",
+        "position": "left"
+      },
+      {
+        "desc": "person with short light hair, wearing a blue t-shirt and dark shorts",
+        "action": "playing squash",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white router with four black antennas",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "green sign with white text",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the red shirt is swinging a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt is moving towards the right wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The two players are inside a glass-walled squash court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor outside the court.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "PHYSIO & PILATES 2000, PA",
+      "753-0401"
+    ],
+    "spatial": "The person in the red shirt is to the left of the person in the blue shirt. The black backpack is in the foreground, below the players. The green sign is on the wall in the background, to the right of the players.",
+    "parse_success": true,
+    "chunk_idx": 90,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      182,
+      184
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue t-shirt and dark shorts",
+        "action": "walking towards the right side of the court",
+        "position": "center-right"
+      },
+      {
+        "desc": "person wearing an orange t-shirt and dark shorts",
+        "action": "moving across the court",
+        "position": "center-left"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground bottom-left"
+      },
+      {
+        "desc": "white router with black antennas",
+        "action": "static",
+        "position": "foreground bottom-right"
+      },
+      {
+        "desc": "glass wall with black handles",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white sign with blue text",
+        "action": "static",
+        "position": "background right wall"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two people are playing a racket sport inside a glass-walled court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt is walking towards the right wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the orange shirt is moving near the center of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is resting on the floor outside the glass wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white router is placed on a surface in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "ROGER & PHILIPS DDS, PA"
+    ],
+    "spatial": "The person in the blue shirt is to the right of the person in the orange shirt. The black backpack is in the foreground, below the players on the court. The white router is to the right of the backpack. The glass wall is in front of the players, separating them from the foreground objects.",
+    "parse_success": true,
+    "chunk_idx": 91,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      184,
+      186
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a light blue t-shirt and dark shorts",
+        "action": "playing squash",
+        "position": "center"
+      },
+      {
+        "desc": "child wearing a red t-shirt and black shorts",
+        "action": "playing squash",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "glass wall",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "wooden floor",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a blue shirt is playing squash in the center of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A child in a red shirt is playing squash on the right side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The players are inside a glass-walled squash court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "MOORE & MOORE, P.A."
+    ],
+    "spatial": "The person in the blue shirt is to the left of the child in the red shirt. Both players are on the wooden floor inside the glass-walled court. The black backpack is in the foreground, outside the court.",
+    "parse_success": true,
+    "chunk_idx": 92,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      186,
+      188
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short hair, wearing a grey t-shirt and dark shorts",
+        "action": "standing in the center of the court",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing a white shirt and dark shorts",
+        "action": "moving in the background",
+        "position": "background"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white router with multiple black antennas",
+        "action": "static",
+        "position": "foreground right"
+      },
+      {
+        "desc": "glass wall with black handles",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "green and white sign on the wall",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a grey t-shirt stands in the middle of a squash court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Another person is visible moving in the background of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor outside the glass wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white router is placed on a surface in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign on the wall displays the text 'Sims Club'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "SQUASH & RACQUETBALL CLUB, INC."
+    ],
+    "spatial": "The person in the grey t-shirt is in front of the person in the white shirt. The black backpack is to the left of the white router in the foreground. The glass wall is in front of the players, separating them from the camera. The sign is on the wall to the right of the players.",
+    "parse_success": true,
+    "chunk_idx": 93,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      188,
+      190
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a light blue t-shirt with a yellow graphic on the back and black shorts",
+        "action": "playing racquetball, moving towards the back wall",
+        "position": "center"
+      },
+      {
+        "desc": "child with short brown hair, wearing a red t-shirt and dark shorts",
+        "action": "running towards the left wall",
+        "position": "left"
+      },
+      {
+        "desc": "black racquetball racquet",
+        "action": "being held by the man",
+        "position": "center"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground bottom"
+      },
+      {
+        "desc": "white router with four black antennas",
+        "action": "static",
+        "position": "foreground right"
+      },
+      {
+        "desc": "glass wall with black handles",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the blue shirt is holding a racquet and moving across the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child in the red shirt is running towards the left side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The game is being played inside a glass-walled court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A backpack sits on the floor outside the court in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Suns Club",
+      "FRESH & FROZEN DOG, INC."
+    ],
+    "spatial": "The man in the blue shirt is to the right of the child in the red shirt. The backpack is in the foreground, below the players on the court. The router is to the right of the backpack. The glass wall is in front of the players, separating them from the camera.",
+    "parse_success": true,
+    "chunk_idx": 94,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      190,
+      192
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a blue t-shirt with a yellow graphic on the back and black shorts",
+        "action": "standing and watching",
+        "position": "center"
+      },
+      {
+        "desc": "child with dark hair, wearing a red t-shirt and dark shorts",
+        "action": "running towards the right wall",
+        "position": "center-right"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground-bottom"
+      },
+      {
+        "desc": "white wireless router with four black antennas",
+        "action": "static",
+        "position": "foreground-right"
+      },
+      {
+        "desc": "green and white sign on the wall",
+        "action": "static",
+        "position": "background-right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The child in the red shirt is running towards the right side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the blue shirt is standing still in the middle of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The backpack is sitting on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign on the wall reads 'Sam's Club'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sam's Club",
+      "THERE'S A PROFIT FOR ALL"
+    ],
+    "spatial": "The person in the blue shirt is to the left of the child in the red shirt. The backpack is in the foreground, below the glass court. The wireless router is to the right of the backpack. The sign is on the wall in the background, to the right of the players.",
+    "parse_success": true,
+    "chunk_idx": 95,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      192,
+      194
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a blue t-shirt with a graphic on the back, dark shorts, and sneakers",
+        "action": "standing and holding a racquet",
+        "position": "center"
+      },
+      {
+        "desc": "person wearing a red shirt and dark shorts",
+        "action": "crawling on the floor",
+        "position": "right"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white wireless router with four black antennas",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "green and white wall sign",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a blue shirt stands in the center of the court holding a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a red shirt is crawling on the floor near the right wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white router with antennas is visible in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wall sign reads 'Sims Club' and 'FRED'S PRO SHOP, INC.'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "FRED'S PRO SHOP, INC.",
+      "703-941"
+    ],
+    "spatial": "The man in the blue shirt is to the left of the person crawling on the floor. The backpack and router are in the foreground, in front of the glass wall. The green sign is on the wall in the background, to the right of the center.",
+    "parse_success": true,
+    "chunk_idx": 96,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      194,
+      196
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a blue t-shirt with a yellow graphic on the back and dark shorts",
+        "action": "swinging a racquet",
+        "position": "right"
+      },
+      {
+        "desc": "child with dark hair, wearing a red t-shirt with white text on the back and dark shorts",
+        "action": "running towards the back wall",
+        "position": "center"
+      },
+      {
+        "desc": "black backpack with pink accents",
+        "action": "static",
+        "position": "foreground bottom"
+      },
+      {
+        "desc": "white router with four black antennas",
+        "action": "static",
+        "position": "foreground bottom right"
+      },
+      {
+        "desc": "green and white sign on the wall",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the blue shirt swings a racquet on the right side of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child in the red shirt runs towards the back wall of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign on the wall reads 'Sims Club'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "HEALTH & PHYSICAL EDUC. PA"
+    ],
+    "spatial": "The person in the blue shirt is to the right of the child in the red shirt. The child is in front of the back wall. The backpack and router are in the foreground, below the glass court walls.",
+    "parse_success": true,
+    "chunk_idx": 97,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      196,
+      198
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short hair, wearing a blue t-shirt with a yellow graphic on the back and dark shorts",
+        "action": "lunging to the left side of the court",
+        "position": "left"
+      },
+      {
+        "desc": "child with short dark hair, wearing a red t-shirt and dark shorts",
+        "action": "standing and watching",
+        "position": "center-right"
+      },
+      {
+        "desc": "black backpack with red accents",
+        "action": "static",
+        "position": "foreground bottom-center"
+      },
+      {
+        "desc": "white wireless router with four black antennas",
+        "action": "static",
+        "position": "foreground bottom-right"
+      },
+      {
+        "desc": "green and white sign on the wall",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the blue shirt is lunging towards the left wall of the squash court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The child in the red shirt is standing near the center of the court.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack is sitting on the floor outside the glass wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white router is positioned to the right of the backpack.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sam's Club",
+      "THERE'S A FRESH DEAL ON",
+      "752-0407"
+    ],
+    "spatial": "The person in the blue shirt is to the left of the child in the red shirt. The child is standing in the center of the court, while the person in blue is near the left wall. The black backpack and white router are in the foreground, outside the glass wall, below the players.",
+    "parse_success": true,
+    "chunk_idx": 98,
+    "video_id": "v_4llkVfMzsN4"
+  },
+  {
+    "time": [
+      198,
+      200
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a blue t-shirt and dark shorts",
+        "action": "walking towards the left side of the court",
+        "position": "left"
+      },
+      {
+        "desc": "person with short dark hair, wearing a red t-shirt and dark shorts",
+        "action": "standing in the background",
+        "position": "background"
+      },
+      {
+        "desc": "black backpack",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "white router with four black antennas",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "green and white sign on the wall",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the blue shirt walks across the wooden floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the red shirt stands near the back wall holding a racquet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black backpack sits on the floor in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A router with antennas is visible in the bottom right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign on the wall reads 'Sims Club'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Sims Club",
+      "PHYSIO & SPORTS CLINIC"
+    ],
+    "spatial": "The person in the blue shirt is to the left of the person in the red shirt. The backpack is in front of the glass wall, near the bottom center. The router is to the right of the backpack in the foreground. The green sign is on the wall to the right of the players.",
+    "parse_success": true,
+    "chunk_idx": 99,
+    "video_id": "v_4llkVfMzsN4"
+  }
+]

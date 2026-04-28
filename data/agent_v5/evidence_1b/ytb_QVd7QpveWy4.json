@@ -1,0 +1,4510 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "white text 'CONAN' in a bold, sans-serif font",
+        "action": "static",
+        "position": "center",
+        "id": "ui_logo_conan"
+      },
+      {
+        "desc": "five small colored dots arranged horizontally (orange, orange, yellow, green, blue)",
+        "action": "static",
+        "position": "center",
+        "id": "ui_dots_colored"
+      },
+      {
+        "desc": "white text 'Weeknights 11/10c' in a sans-serif font",
+        "action": "static",
+        "position": "center",
+        "id": "ui_text_weeknights"
+      },
+      {
+        "desc": "white 'tbs' logo inside a rounded rectangular shape",
+        "action": "static",
+        "position": "center",
+        "id": "ui_logo_tbs"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'CONAN' is displayed in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Five colored dots appear below the 'CONAN' text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Weeknights 11/10c' and the 'tbs' logo appear below the colored dots.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "CONAN",
+      "Weeknights 11/10c",
+      "tbs"
+    ],
+    "spatial": "The text 'CONAN' is positioned in the center of the screen. The row of five colored dots is located directly below the 'CONAN' text. The text 'Weeknights 11/10c' and the 'tbs' logo are situated below the colored dots, with the logo to the right of the time text.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket, grey button-down shirt, dark trousers, and a watch on his left wrist",
+        "action": "sitting and listening",
+        "position": "left",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "man with reddish-brown hair, wearing a dark suit jacket, light blue shirt, and a striped tie",
+        "action": "gesturing with both hands",
+        "position": "right",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "wooden desk with a microphone and a mug on it",
+        "action": "static",
+        "position": "right foreground",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue armchair",
+        "action": "static",
+        "position": "left foreground",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "large moon graphic on a blue backdrop",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the right is gesturing with both hands while speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the left is sitting in a blue armchair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A mug is sitting on the wooden desk.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the grey shirt is sitting to the left of the man in the striped tie. The man in the striped tie is sitting behind a wooden desk. The moon graphic is in the background above the men.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": [
+      "transition from title card to interview scene with host and guest seated at desk"
+    ]
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a dark suit jacket over a grey button-down shirt and dark trousers, wearing a watch on his left wrist",
+        "action": "sitting and listening",
+        "position": "left"
+      },
+      {
+        "desc": "man with reddish-brown hair, wearing a dark suit jacket, light blue striped shirt, and a dark striped tie",
+        "action": "gesturing with both hands",
+        "position": "right",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "large wooden desk with a reddish-brown finish",
+        "action": "static",
+        "position": "right foreground",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "left",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "white mug with blue text and graphics",
+        "action": "static",
+        "position": "right foreground",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "black microphone with a red accent",
+        "action": "static",
+        "position": "center",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "large circular moon graphic on a blue background",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the right is gesturing with both hands raised and open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the left is sitting still in the blue armchair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mug on the desk reads 'I ASK FOR VOTES'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A microphone is positioned on the desk between the two men.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "I ASK FOR VOTES"
+    ],
+    "spatial": "The man in the grey shirt is seated to the left of the man in the suit. The wooden desk is in front of the man in the suit. The mug is on the desk to the right of the microphone. The moon graphic is in the background above the men.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark blazer, grey button-down shirt, and dark trousers",
+        "action": "sitting in a blue armchair",
+        "position": "left",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "man with reddish-brown hair, wearing a dark suit, light blue striped shirt, and striped tie",
+        "action": "gesturing with both hands while speaking",
+        "position": "right",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "wooden desk with a reddish-brown finish",
+        "action": "static",
+        "position": "right foreground",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "white mug with blue text and graphics",
+        "action": "static",
+        "position": "right on desk",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "large moon graphic against a dark blue background",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the right is gesturing with his hands open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the left is sitting still and looking at the man on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A mug is sitting on the wooden desk.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "I ASK FOR VOTES"
+    ],
+    "spatial": "The man in the dark blazer is seated to the left of the man in the suit. The man in the suit is sitting behind a wooden desk. The mug is on the desk in front of the man in the suit. The moon graphic is in the background above both men.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with dark hair, wearing a dark suit jacket over a grey button-down shirt and dark trousers, wearing a watch",
+        "action": "sitting in a blue armchair",
+        "position": "left",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "man with reddish-brown hair, wearing a dark suit, light blue striped shirt, and a striped tie",
+        "action": "gesturing with both hands",
+        "position": "right"
+      },
+      {
+        "desc": "wooden desk with a reddish-brown finish",
+        "action": "static",
+        "position": "right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "left",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "mug with a blue and white pattern",
+        "action": "static",
+        "position": "right",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "black microphone with a red top",
+        "action": "static",
+        "position": "center",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "large circular moon graphic",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the right gestures with both hands raised and open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the left sits with his hands resting on his legs.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A mug sits on the wooden desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A microphone stands on the desk between the two men.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the grey shirt is seated in a blue armchair to the left of the wooden desk. The man in the suit sits behind the desk on the right side of the frame. The microphone is on the desk, positioned between the two men. The large moon graphic is in the background, above the men.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark blazer over a grey button-down shirt and dark trousers, with a watch on his left wrist",
+        "action": "sitting in a blue armchair",
+        "position": "left",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "man with reddish-brown hair, wearing a dark suit, light blue shirt, and striped tie",
+        "action": "gesturing with both hands while speaking",
+        "position": "right",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "large wooden desk with a reddish-brown finish",
+        "action": "static",
+        "position": "right foreground",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue armchair with a modern design",
+        "action": "static",
+        "position": "left foreground",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "white mug with blue text and graphics",
+        "action": "static",
+        "position": "on the desk",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "black microphone with a red top",
+        "action": "static",
+        "position": "on the desk",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "large circular moon graphic",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the right is gesturing with both hands open while facing the man on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the left is sitting with his hands resting on his legs.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white mug with blue text is sitting on the wooden desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background features a large moon graphic against a blue sky.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "I ASK FOR VOTES"
+    ],
+    "spatial": "The man in the grey shirt is sitting to the left of the man in the suit. The man in the suit is seated behind a wooden desk. The mug and microphone are on top of the desk. The moon graphic is in the background behind both men.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket over a grey button-down shirt and dark trousers, with a watch on his left wrist",
+        "action": "sitting in a blue armchair",
+        "position": "left",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "man with reddish-brown hair, wearing a dark suit jacket, a light blue striped shirt, and a dark tie with diagonal stripes",
+        "action": "gesturing with both hands while sitting behind a desk",
+        "position": "right",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "large wooden desk with a reddish-brown finish",
+        "action": "static",
+        "position": "right foreground",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue armchair with a high back",
+        "action": "static",
+        "position": "left foreground",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "white mug with blue text and graphics",
+        "action": "static",
+        "position": "on the desk",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "large moon graphic against a dark blue background",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the right gestures with both hands open, palms facing each other.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the left sits with his hands resting on his legs.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is speaking to the man on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mug is on the right side of the desk.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the grey shirt is sitting in the blue armchair to the left of the man in the striped shirt. The man in the striped shirt is sitting behind the wooden desk. The mug is on top of the desk, to the right of the man sitting behind it. The moon graphic is in the background, above both men.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket over a grey button-down shirt and dark trousers, with a watch on his left wrist",
+        "action": "sitting in a blue armchair",
+        "position": "left",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "man with reddish-brown hair, wearing a dark suit jacket, a light blue striped dress shirt, and a dark striped tie",
+        "action": "gesturing with both hands while speaking",
+        "position": "right",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "large wooden desk with a reddish-brown finish",
+        "action": "static",
+        "position": "right foreground",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "left",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "white mug with blue text and graphics",
+        "action": "static",
+        "position": "right on desk",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "black microphone with a red band near the top",
+        "action": "static",
+        "position": "center on desk",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "large circular backdrop of a moon against a dark blue night sky with distant city lights",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the right gestures with both hands open while talking to the man on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the left sits with his hands resting on his legs, looking towards the man on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A mug is placed on the desk to the right of the microphone.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The two men are seated facing each other across the desk.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the grey shirt is seated in a blue armchair to the left of the wooden desk. The man in the striped tie sits behind the desk on the right. The microphone and mug are on the desk in front of the man on the right. The moon backdrop is behind both men.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark blazer, grey button-down shirt, and dark trousers",
+        "action": "sitting and listening",
+        "position": "left",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "man with reddish-brown hair, wearing a dark suit, light blue striped shirt, and striped tie",
+        "action": "gesturing with hands",
+        "position": "right",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "blue armchair",
+        "action": "static",
+        "position": "left",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "wooden desk",
+        "action": "static",
+        "position": "right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "mug with blue and white pattern",
+        "action": "static",
+        "position": "right",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "microphone with red accents",
+        "action": "static",
+        "position": "right",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "large moon graphic",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the right gestures with both hands while speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the left sits still and looks at the man on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A mug sits on the desk near the man on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A microphone is positioned on the desk between the two men.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the dark blazer is sitting in a blue armchair to the left of the wooden desk. The man in the suit is sitting behind the desk to the right. The mug is on the desk to the right of the microphone. The large moon graphic is in the background above the men.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket over a grey button-down shirt and dark trousers, with a watch on his left wrist",
+        "action": "sitting in a blue armchair and looking to the right",
+        "position": "left",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "man with reddish-brown hair, wearing a dark suit, light blue shirt, and striped tie",
+        "action": "sitting behind a wooden desk and looking to the left",
+        "position": "right",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "wooden desk with a reddish-brown finish",
+        "action": "static",
+        "position": "right foreground",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "left foreground",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "black microphone with a red top section",
+        "action": "static",
+        "position": "center",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "white mug with blue text and graphics",
+        "action": "static",
+        "position": "right foreground",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "large, textured, spherical moon prop",
+        "action": "static",
+        "position": "background top",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the dark suit is sitting in the blue armchair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man with reddish-brown hair is sitting behind the wooden desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microphone is positioned on the desk between the two men.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mug is placed on the right side of the desk.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "I ASK FOR VOTES"
+    ],
+    "spatial": "The man in the dark suit is to the left of the man with reddish-brown hair. The wooden desk is in front of the man with reddish-brown hair. The microphone is on the desk, between the two men. The large moon prop is in the background, above the men.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair and light facial stubble, wearing a dark navy blazer, a grey button-down shirt, and a silver watch on his left wrist",
+        "action": "sitting in a chair and blinking his eyes",
+        "position": "center",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "blue upholstered armchair with textured fabric",
+        "action": "static",
+        "position": "center",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "black microphone with a red top section",
+        "action": "static",
+        "position": "right",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "wooden desk with a reddish-brown finish",
+        "action": "static",
+        "position": "right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left",
+        "id": "plant_green_1"
+      },
+      {
+        "desc": "person's hand wearing a suit sleeve",
+        "action": "static",
+        "position": "right",
+        "id": "hand_person_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man sits in the blue armchair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man blinks his eyes slowly.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microphone is positioned on the wooden desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The green plant is situated to the left of the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is sitting in the blue armchair in the center of the frame. To his left is a green leafy plant. To his right is a wooden desk with a black microphone on it. The microphone is in front of the man's right arm.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket over a grey button-down shirt",
+        "action": "gesturing with hands while speaking",
+        "position": "center",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "center",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "wooden desk with a microphone",
+        "action": "static",
+        "position": "right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left",
+        "id": "plant_green_1"
+      },
+      {
+        "desc": "scenic backdrop of a coastline at night with lights",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is sitting in the blue armchair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is gesturing with his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microphone is on the wooden desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The plant is next to the armchair.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is sitting in the blue armchair in the center of the frame. The wooden desk with a microphone is to the right of the man. The green leafy plant is to the left of the armchair. The scenic backdrop is behind the man and the furniture.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark grey blazer over a grey button-down shirt",
+        "action": "gesturing with hands",
+        "position": "center",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "center",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "microphone with a red top and black stand",
+        "action": "static",
+        "position": "right",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "wooden desk with a brown leather edge",
+        "action": "static",
+        "position": "right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left",
+        "id": "plant_green_1"
+      },
+      {
+        "desc": "person's hand and arm wearing a dark sleeve",
+        "action": "static",
+        "position": "right",
+        "id": "hand_person_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the center is gesturing with both hands while speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microphone is positioned on the wooden desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The green plant is located behind the blue armchair.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is sitting in the blue armchair in the center of the frame. To his right is a wooden desk with a microphone on it. To his left, a green plant is visible behind the chair. The background features a night-time cityscape view.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark brown hair, wearing a dark charcoal blazer over a grey button-down shirt",
+        "action": "speaking",
+        "position": "center",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "center",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left",
+        "id": "plant_green_1"
+      },
+      {
+        "desc": "wooden desk with a black microphone stand",
+        "action": "static",
+        "position": "right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "nighttime cityscape backdrop with blurred lights",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is sitting in the blue armchair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is speaking with his mouth open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden desk is positioned to the right of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The green plant is located to the left of the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is sitting in the center of the frame on a blue armchair. To his left is a green leafy plant, and to his right is a wooden desk with a microphone. The nighttime cityscape backdrop is behind the man and the furniture.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket over a grey button-down shirt and dark trousers",
+        "action": "gesturing with right hand while speaking",
+        "position": "left",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "man with reddish-brown hair, wearing a dark suit, light blue shirt, and striped tie",
+        "action": "sitting behind a desk and looking at the other man",
+        "position": "right",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "large wooden desk with a reddish-brown finish",
+        "action": "static",
+        "position": "right foreground",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue armchair",
+        "action": "static",
+        "position": "left",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "white mug with blue text and graphics",
+        "action": "static",
+        "position": "right foreground",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "black microphone with a red band",
+        "action": "static",
+        "position": "center",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "large circular moon graphic against a dark blue background",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "the man on the left is gesturing with his right hand",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the man on the right is sitting behind the desk",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the mug is on the desk",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the microphone is on the desk",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "I ASK FOR VOTES"
+    ],
+    "spatial": "The man in the grey shirt is sitting in a blue armchair to the left of the wooden desk. The man in the suit is sitting behind the desk on the right. The mug is on the desk in front of the man in the suit. The moon graphic is in the background, above both men.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with reddish-brown hair, wearing a dark brown suit jacket, light blue striped shirt, and dark tie with diagonal stripes",
+        "action": "sitting at a desk and looking down",
+        "position": "center"
+      },
+      {
+        "desc": "black microphone with a red top",
+        "action": "static",
+        "position": "left",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "white mug with blue text and graphics",
+        "action": "static",
+        "position": "right",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "dark wooden desk surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "backdrop showing a night cityscape with lights and hills",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "man sits at a desk looking down",
+        "confidence": 1.0
+      },
+      {
+        "fact": "microphone is on the desk",
+        "confidence": 1.0
+      },
+      {
+        "fact": "mug is on the desk",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the mug has text on it",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "I LOOK FOR W",
+      "SHELLS",
+      "CALVES AND CREAMS",
+      "GIOTTO",
+      "SILK"
+    ],
+    "spatial": "The man is sitting behind the desk. The microphone is to the left of the man on the desk. The mug is to the right of the man on the desk. The cityscape backdrop is behind the man.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with reddish-brown hair, wearing a dark brown suit jacket, light blue striped shirt, and a dark tie with diagonal white stripes",
+        "action": "sitting at a desk looking down",
+        "position": "center",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "man with dark hair, wearing a dark jacket and dark shirt",
+        "action": "leaning forward and laughing",
+        "position": "left"
+      },
+      {
+        "desc": "white mug with blue text and graphics",
+        "action": "static",
+        "position": "right",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "black microphone with a red top",
+        "action": "static",
+        "position": "center",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "wooden desk surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "cityscape backdrop with lights and hills against a blue sky",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left leans forward and laughs.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the center sits at the desk and looks down.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mug is on the desk to the right of the man in the center.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microphone is on the desk in front of the man in the center.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "A LOSS FOR WORDS",
+      "SHELL",
+      "CALVES AND CREAM",
+      "GIOTTO",
+      "SLEEP"
+    ],
+    "spatial": "The man with dark hair is to the left of the man with reddish-brown hair. The man with reddish-brown hair is sitting behind the wooden desk. The mug is on the desk to the right of the man with reddish-brown hair. The microphone is on the desk in front of the man with reddish-brown hair.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with reddish-brown hair, wearing a dark brown suit jacket, light blue striped shirt, and a dark tie with diagonal white stripes",
+        "action": "sitting at a desk and looking down",
+        "position": "center",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "red and black microphone on a stand",
+        "action": "static",
+        "position": "left",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "white and blue mug with text",
+        "action": "static",
+        "position": "right",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "dark wooden desk",
+        "action": "static",
+        "position": "bottom",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "nighttime cityscape backdrop with lights and hills",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is sitting at a desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is looking down at the desk surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's left hand is resting on the desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's right hand is clenched into a fist on the desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mug has text that reads 'I LOST FOR WEE' and 'GIOTTO'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "I LOST FOR WEE",
+      "GIOTTO",
+      "SLEEP"
+    ],
+    "spatial": "The man is sitting behind the desk. The microphone is to the left of the man. The mug is to the right of the man. The cityscape backdrop is behind the man.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with reddish-brown hair, wearing a dark brown suit jacket, light blue striped shirt, and a dark tie with diagonal white stripes",
+        "action": "looking down at the desk",
+        "position": "center",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "black microphone with a red top panel",
+        "action": "static",
+        "position": "left foreground",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "white ceramic mug with blue text and graphics",
+        "action": "static",
+        "position": "right foreground",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "dark wooden desk surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "nighttime cityscape backdrop with lights and hills",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is looking down at the desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's left hand is resting on the desk surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's right hand is raised slightly above the desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microphone is positioned to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mug is positioned to the right of the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "A LOSS FOR WORDS?",
+      "HELLO",
+      "CALVES AND CREAM",
+      "GIOTTO",
+      "SHEEP"
+    ],
+    "spatial": "The man is sitting behind the desk in the center of the frame. The microphone is to the left of the man on the desk. The mug is to the right of the man on the desk. The cityscape backdrop is behind the man.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket, a grey button-down shirt, dark trousers, and a silver watch on his left wrist",
+        "action": "sitting and smiling",
+        "position": "left",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "man with reddish-brown hair, wearing a dark suit jacket, a light blue striped shirt, and a dark tie with diagonal stripes",
+        "action": "gesturing with hands",
+        "position": "right",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "large wooden desk with a reddish-brown finish",
+        "action": "static",
+        "position": "right foreground",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue armchair",
+        "action": "static",
+        "position": "left",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "black microphone with a red accent",
+        "action": "static",
+        "position": "on desk",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "white mug with blue text and graphics",
+        "action": "static",
+        "position": "on desk",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "large moon graphic against a dark blue background",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the right gestures with his hands while speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the left sits in a blue armchair and smiles.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A microphone is positioned on the desk between the two men.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A mug sits on the right side of the desk.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the grey shirt is seated to the left of the man in the striped shirt. The wooden desk is in front of the man on the right and to the right of the man on the left. The microphone is on the desk, positioned between the two men. The moon graphic is in the background, above the men.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket over a grey button-down shirt and dark trousers, wearing a watch on his left wrist",
+        "action": "sitting in a blue armchair and laughing",
+        "position": "left",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "man with reddish-brown hair, wearing a dark suit jacket, light blue striped shirt, and a dark tie with diagonal stripes",
+        "action": "sitting behind a desk and gesturing with his right hand",
+        "position": "right"
+      },
+      {
+        "desc": "large wooden desk with a reddish-brown finish",
+        "action": "static",
+        "position": "right foreground",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "left foreground",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "white mug with blue text and graphics",
+        "action": "static",
+        "position": "right foreground",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "black microphone with a red accent",
+        "action": "static",
+        "position": "center",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "large graphic of a full moon against a dark blue sky with a distant coastline",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left is laughing with his head tilted down.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is gesturing with his right hand towards the man on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the left is sitting in a blue armchair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is sitting behind a wooden desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A mug is placed on the desk to the right of the man in the suit.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the grey shirt is sitting in a blue armchair to the left of the wooden desk. The man in the suit is sitting behind the desk, which is to the right of the armchair. The large moon graphic is in the background, positioned above both men.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark blazer over a grey button-down shirt and dark trousers, with a watch on his left wrist",
+        "action": "sitting in a blue armchair",
+        "position": "left",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "man with reddish-brown hair, wearing a dark suit jacket, light blue striped shirt, and a dark striped tie",
+        "action": "sitting behind a wooden desk",
+        "position": "right",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "large, textured, greyish-white moon prop",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      },
+      {
+        "desc": "wooden desk with a microphone and a mug on top",
+        "action": "static",
+        "position": "right foreground",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "left foreground",
+        "id": "armchair_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left is sitting in a blue armchair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is sitting behind a wooden desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large moon prop is visible in the background above the men.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the grey shirt is sitting to the left of the man in the suit. The man in the suit is positioned behind a wooden desk. The large moon prop is located in the background, above and between the two men.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark brown hair, wearing a dark navy suit jacket over a grey button-down shirt, and a silver wristwatch on his left wrist",
+        "action": "sitting and gesturing with his right hand",
+        "position": "center",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "center",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "black microphone with a red band on top, mounted on a stand",
+        "action": "static",
+        "position": "right",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "brown wooden desk surface",
+        "action": "static",
+        "position": "bottom right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left",
+        "id": "plant_green_1"
+      },
+      {
+        "desc": "person's hand and arm wearing a light blue shirt cuff",
+        "action": "resting on the desk",
+        "position": "right",
+        "id": "hand_person_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the dark suit is sitting in a blue armchair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man gestures with his right hand while speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A microphone is positioned on the desk to the right of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green plant is visible to the left of the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is sitting in the center of the frame in a blue armchair. To his left is a green leafy plant. To his right, on a brown wooden desk, sits a black microphone with a red top. A person's hand is visible on the desk next to the microphone.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket over a grey button-down shirt, and a watch on his left wrist",
+        "action": "sitting in a blue armchair and talking",
+        "position": "center",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "blue upholstered armchair with a textured fabric",
+        "action": "static",
+        "position": "center",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "black microphone with a red band near the top, mounted on a stand",
+        "action": "static",
+        "position": "right",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "brown leather-topped desk",
+        "action": "static",
+        "position": "right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left",
+        "id": "plant_green_1"
+      },
+      {
+        "desc": "person's hand and wrist wearing a light blue shirt cuff",
+        "action": "resting near the microphone",
+        "position": "right",
+        "id": "hand_person_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is sitting in the blue armchair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is talking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microphone is on the brown desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The green plant is to the left of the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is sitting in the center of the frame in a blue armchair. To his right is a brown desk with a microphone on it. A green plant is visible to the left of the man. The hand of another person is visible on the far right, next to the microphone.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket over a grey button-down shirt",
+        "action": "speaking",
+        "position": "center",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "center",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "black microphone with a red top section",
+        "action": "static",
+        "position": "right",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "brown wooden desk",
+        "action": "static",
+        "position": "foreground",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left",
+        "id": "plant_green_1"
+      },
+      {
+        "desc": "person's hand and wrist wearing a watch",
+        "action": "static",
+        "position": "right",
+        "id": "hand_person_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is sitting in the armchair and speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microphone is positioned on the desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The plant is located behind the armchair.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is sitting in the blue armchair, which is positioned to the left of the brown wooden desk. The microphone is on the desk, in front of the man. The green plant is behind the armchair.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket, grey button-down shirt, dark trousers, and a wristwatch on his left wrist",
+        "action": "sitting in a blue armchair and smiling",
+        "position": "left",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "man with reddish-brown hair, wearing a dark suit jacket, light blue striped shirt, and a dark tie with white diagonal stripes",
+        "action": "sitting behind a wooden desk, laughing and gesturing with his right hand",
+        "position": "right",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "large, polished wooden desk with a reddish-brown finish",
+        "action": "static",
+        "position": "right foreground",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "left",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "white mug with blue text and graphics",
+        "action": "static",
+        "position": "on the desk",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "black microphone with a red top",
+        "action": "static",
+        "position": "on the desk",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "large, textured moon graphic against a dark blue background",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the right is laughing and gesturing with his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the left is smiling while looking at the man on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is sitting behind the wooden desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the left is sitting in the blue armchair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mug is on the desk to the right of the man behind the desk.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the dark suit is sitting in the blue armchair to the left of the wooden desk. The man with reddish-brown hair is sitting behind the desk to the right of the armchair. The mug is on the desk in front of the man with reddish-brown hair. The large moon graphic is in the background above both men.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket over a grey button-down shirt, and a watch on his left wrist",
+        "action": "sitting and smiling",
+        "position": "left",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "man with reddish-brown hair, wearing a dark suit jacket, a light blue striped shirt, and a dark tie with diagonal white stripes",
+        "action": "sitting and laughing",
+        "position": "right",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "large wooden desk with a reddish-brown finish",
+        "action": "static",
+        "position": "right foreground",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "left foreground",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "cylindrical mug with a light blue and white pattern",
+        "action": "static",
+        "position": "right foreground",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "black microphone with a red top section",
+        "action": "static",
+        "position": "center right",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "large circular moon graphic against a dark blue background",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left sits in the blue armchair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right sits behind the wooden desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is laughing while looking at the man on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the left is smiling while looking at the man on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mug is placed on the desk.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the grey shirt is seated in the blue armchair to the left of the man in the suit. The man in the suit is positioned behind the wooden desk on the right side of the frame. The mug sits on the desk in front of the man in the suit. The microphone is on the desk between the two men. The moon graphic is in the background above the men.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket over a grey button-down shirt and dark trousers, wearing a watch on his left wrist",
+        "action": "sitting in a blue armchair and talking",
+        "position": "left",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "man with reddish-brown hair, wearing a dark suit jacket, light blue striped shirt, and a dark striped tie",
+        "action": "sitting behind a desk and smiling",
+        "position": "right",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "large wooden desk with a reddish-brown finish",
+        "action": "static",
+        "position": "right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "left",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "black microphone with a red top section",
+        "action": "static",
+        "position": "center",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "large circular moon prop against a blue backdrop",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      },
+      {
+        "desc": "white mug with blue text and graphics",
+        "action": "static",
+        "position": "right",
+        "id": "mug_white_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left is sitting in the blue armchair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is sitting behind the wooden desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the left is gesturing with his hands while talking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is smiling and looking at the man on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microphone is positioned on the desk between the two men.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "CONAN"
+    ],
+    "spatial": "The man in the grey shirt is sitting in the blue armchair to the left of the wooden desk. The man in the striped tie is sitting behind the desk to the right of the armchair. The microphone is on the desk in front of the man in the striped tie. The moon prop is in the background above the men.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark blazer over a grey button-down shirt",
+        "action": "sitting and talking",
+        "position": "center",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "black microphone with a red top section",
+        "action": "static",
+        "position": "right",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "center",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "brown wooden desk surface",
+        "action": "static",
+        "position": "bottom right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left",
+        "id": "plant_green_1"
+      },
+      {
+        "desc": "person's hand",
+        "action": "resting near microphone",
+        "position": "right",
+        "id": "hand_person_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is sitting in a blue armchair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is talking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A microphone is positioned on the desk in front of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is visible resting near the microphone base.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is sitting in the center of the frame in a blue armchair. To his left is a green plant. To his right, on a brown wooden desk, sits a microphone. A hand is visible on the far right edge of the frame, next to the microphone.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark blazer over a grey button-down shirt, and a watch on his left wrist",
+        "action": "sitting and gesturing with right hand",
+        "position": "center",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "black microphone with a red top section",
+        "action": "static",
+        "position": "right foreground",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "brown wooden desk surface",
+        "action": "static",
+        "position": "bottom right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue upholstered chair",
+        "action": "static",
+        "position": "left",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left background",
+        "id": "plant_green_1"
+      },
+      {
+        "desc": "nighttime cityscape backdrop with blurred lights",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is sitting in a chair and gesturing with his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A microphone is positioned on the desk in front of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a watch on his left wrist.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is sitting in the center, positioned to the right of the blue chair and the green plant. The brown desk is in front of him to the right, holding the microphone. The cityscape backdrop is behind the man.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket over a grey button-down shirt, and a wristwatch",
+        "action": "sitting and talking",
+        "position": "center",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "wooden desk with a brown leather edge",
+        "action": "static",
+        "position": "foreground right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "black microphone with a red top",
+        "action": "static",
+        "position": "right",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "person's hand",
+        "action": "gesturing",
+        "position": "right",
+        "id": "hand_person_1"
+      },
+      {
+        "desc": "blue armchair",
+        "action": "static",
+        "position": "left",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left",
+        "id": "plant_green_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the dark suit is sitting in a blue chair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is talking and looking to his right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is gesturing near the microphone on the desk.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the dark suit is sitting in the center, to the right of a blue armchair and a green plant. To his right is a wooden desk with a microphone on it. A hand is visible on the right side of the frame, gesturing near the microphone.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket over a grey button-down shirt and dark trousers",
+        "action": "sitting in a blue armchair and gesturing with his right hand",
+        "position": "left",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "man with reddish-brown hair, wearing a dark suit jacket, light blue striped shirt, and a striped tie",
+        "action": "sitting behind a wooden desk and looking at the other man",
+        "position": "right"
+      },
+      {
+        "desc": "large, round, greyish-white moon prop",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      },
+      {
+        "desc": "wooden desk with a microphone and a mug on it",
+        "action": "static",
+        "position": "right foreground",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "left foreground",
+        "id": "armchair_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left is gesturing with his right hand while speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is listening and looking towards the man on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large moon prop is visible in the background above the two men.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A mug with text is sitting on the desk.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the grey shirt is sitting in a blue armchair to the left of the wooden desk. The man in the striped tie is sitting behind the desk to the right of the first man. The large moon prop is in the background, positioned above and between the two men.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with dark hair, wearing a dark blazer over a grey button-down shirt and dark trousers",
+        "action": "gesturing with hands while sitting",
+        "position": "left",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "man with reddish-brown hair, wearing a dark suit jacket, light blue striped shirt, and a dark tie with diagonal stripes",
+        "action": "sitting and listening",
+        "position": "right"
+      },
+      {
+        "desc": "large wooden desk with a reddish-brown finish",
+        "action": "static",
+        "position": "right foreground",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "left",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "mug with blue and white patterns",
+        "action": "static",
+        "position": "right on desk",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "black microphone with a red top",
+        "action": "static",
+        "position": "on desk",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "large circular moon graphic",
+        "action": "static",
+        "position": "background top",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left is gesturing with both hands while speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is sitting behind a wooden desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A mug is placed on the desk to the right of the man in the suit.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A microphone is positioned on the desk between the two men.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the grey shirt is sitting in a blue chair to the left of the wooden desk. The man in the suit is sitting behind the desk on the right side of the frame. The mug is on the desk to the right of the man in the suit. The moon graphic is in the background above the men.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark blazer over a grey button-down shirt",
+        "action": "sitting and talking",
+        "position": "center",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "black microphone with a red band near the top",
+        "action": "static",
+        "position": "right",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "center",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "wooden desk with a brown leather edge",
+        "action": "static",
+        "position": "foreground right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left",
+        "id": "plant_green_1"
+      },
+      {
+        "desc": "person's hand and wrist",
+        "action": "resting on desk",
+        "position": "right",
+        "id": "hand_person_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the dark blazer is sitting in the blue armchair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is talking with his mouth open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microphone is positioned on the wooden desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hand is resting on the desk near the microphone.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is sitting in the blue armchair, which is to the left of the wooden desk. The microphone is on the desk in front of the man. The green plant is to the left of the armchair.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      68,
+      70
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket and a grey button-down shirt",
+        "action": "sitting and talking",
+        "position": "center",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "black microphone with a red top",
+        "action": "static",
+        "position": "right",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "brown wooden desk",
+        "action": "static",
+        "position": "right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue upholstered chair",
+        "action": "static",
+        "position": "left",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left",
+        "id": "plant_green_1"
+      },
+      {
+        "desc": "person's hand",
+        "action": "resting on desk",
+        "position": "right",
+        "id": "hand_person_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the dark suit is sitting in a chair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is talking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is resting on the wooden desk next to the microphone.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green plant is placed behind the blue chair.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is sitting in the center, positioned to the right of the blue chair and the green plant. The wooden desk is to the right of the man, with a microphone and a hand resting on it.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      70,
+      72
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket over a grey button-down shirt",
+        "action": "sitting on a blue couch",
+        "position": "center",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "blue upholstered couch",
+        "action": "static",
+        "position": "center",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "black microphone with a red top band",
+        "action": "static",
+        "position": "right",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "brown wooden desk",
+        "action": "static",
+        "position": "right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left",
+        "id": "plant_green_1"
+      },
+      {
+        "desc": "person's hand",
+        "action": "resting near microphone",
+        "position": "right",
+        "id": "hand_person_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is sitting on a blue couch.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is looking towards the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A microphone is positioned on the wooden desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is visible resting on the desk near the microphone.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is sitting in the center of the frame on a blue couch. To his left, a green plant is visible. To his right, a brown wooden desk holds a black microphone, and a hand is resting on the desk next to the microphone.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      72,
+      74
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket over a grey button-down shirt",
+        "action": "sitting and looking to the right",
+        "position": "center",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "black microphone with a red band near the top",
+        "action": "static",
+        "position": "right",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "blue upholstered chair",
+        "action": "static",
+        "position": "center",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "brown wooden desk surface",
+        "action": "static",
+        "position": "bottom right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left",
+        "id": "plant_green_1"
+      },
+      {
+        "desc": "person's hand",
+        "action": "resting on the desk",
+        "position": "right",
+        "id": "hand_person_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is sitting in the blue chair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is looking towards the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microphone is positioned on the desk in front of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is visible resting on the desk near the microphone.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is sitting in the center of the frame on a blue chair. To his left is a green plant. To his right, a microphone stands on a brown desk. A hand is resting on the desk to the right of the microphone.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      74,
+      76
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark brown hair, light skin, wearing a dark navy blue suit jacket over a grey button-down shirt",
+        "action": "sitting and gesturing with right hand",
+        "position": "center",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "brown wooden desk surface",
+        "action": "static",
+        "position": "bottom right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "black microphone with red accents on a stand",
+        "action": "static",
+        "position": "right",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "left",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left background",
+        "id": "plant_green_1"
+      },
+      {
+        "desc": "blue backdrop featuring a night cityscape with blurred lights",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man sits in a blue armchair and gestures with his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A microphone is positioned on the desk to the right of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green plant is visible behind the armchair on the left.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is seated in the center of the frame, positioned to the left of the brown desk and microphone. The blue armchair is beneath the man. The green plant is behind the armchair on the left side. The cityscape backdrop is behind all foreground entities.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      76,
+      78
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark navy blazer over a grey button-down shirt",
+        "action": "sitting and talking",
+        "position": "center",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "center",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "black microphone with red accents on a stand",
+        "action": "static",
+        "position": "right",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "brown wooden desk surface",
+        "action": "static",
+        "position": "bottom right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left",
+        "id": "plant_green_1"
+      },
+      {
+        "desc": "nighttime cityscape backdrop with blurred lights",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is sitting in the blue armchair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is gesturing with his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microphone is positioned on the wooden desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The plant is located to the left of the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is sitting in the center of the frame on a blue armchair. To his right, a microphone stands on a brown wooden desk. To his left, a green plant is visible. The background features a blurred image of city lights at night.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      78,
+      80
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket and a grey button-down shirt",
+        "action": "sitting and speaking",
+        "position": "center",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "black microphone with a red top section",
+        "action": "static",
+        "position": "right",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "brown wooden desk",
+        "action": "static",
+        "position": "bottom right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue upholstered chair",
+        "action": "static",
+        "position": "left",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left background",
+        "id": "plant_green_1"
+      },
+      {
+        "desc": "nighttime cityscape backdrop with blurred lights",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is sitting in a chair and speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microphone is positioned on the desk in front of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a dark suit jacket over a grey shirt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is sitting in the center of the frame, to the right of the blue chair and the green plant. The brown desk is in front of him and to his right. The microphone is on the desk, to the right of the man. The cityscape backdrop is behind all the foreground elements.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      80,
+      82
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark brown hair, wearing a dark navy suit jacket over a grey button-down shirt",
+        "action": "sitting and looking to the right",
+        "position": "center",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "black microphone with red accents on a stand",
+        "action": "static",
+        "position": "right",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "center",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "brown leather-topped desk",
+        "action": "static",
+        "position": "right foreground",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left background",
+        "id": "plant_green_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is sitting in a blue armchair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is looking towards the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A microphone is positioned on the desk in front of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green plant is visible behind the armchair on the left.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is sitting in the center of the frame, positioned to the left of the brown desk. The microphone is on the desk, to the right of the man. The green plant is behind the armchair on the left side.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      82,
+      84
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket over a grey button-down shirt",
+        "action": "sitting on a blue couch and looking to the right",
+        "position": "center",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "black microphone with a red top section",
+        "action": "static",
+        "position": "right",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "blue textured couch",
+        "action": "static",
+        "position": "center",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "brown wooden desk",
+        "action": "static",
+        "position": "foreground right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left",
+        "id": "plant_green_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is sitting on the blue couch.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is looking towards the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microphone is positioned on the brown desk.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is sitting on the blue couch in the center of the frame. To his left is a green leafy plant. To his right, in the foreground, is a brown wooden desk with a black microphone on it.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      84,
+      86
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark brown hair, light skin, wearing a dark navy blue suit jacket over a grey button-down shirt",
+        "action": "sitting and talking",
+        "position": "center",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "blue upholstered armchair with textured fabric",
+        "action": "static",
+        "position": "center",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "black microphone with red accents on a stand",
+        "action": "static",
+        "position": "right",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "brown wooden desk surface",
+        "action": "static",
+        "position": "bottom right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left",
+        "id": "plant_green_1"
+      },
+      {
+        "desc": "scenic backdrop depicting a night coastline with water and distant city lights",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is sitting in a blue armchair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is speaking, with his mouth open in the first frame and smiling in the second.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A microphone is positioned on the desk to the man's right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green plant is visible to the left of the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is sitting in the center of the frame on a blue armchair. To his right, a microphone stands on a brown wooden desk. To his left, a green plant is visible. The scenic backdrop of a night coastline is behind the man and the furniture.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      86,
+      88
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket over a grey button-down shirt",
+        "action": "sitting and talking",
+        "position": "center",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "center",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "black microphone with a red top",
+        "action": "static",
+        "position": "right",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "brown wooden desk",
+        "action": "static",
+        "position": "right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left",
+        "id": "plant_green_1"
+      },
+      {
+        "desc": "hand holding a white card",
+        "action": "static",
+        "position": "right",
+        "id": "hand_person_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is sitting in the blue armchair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is talking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microphone is on the brown desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hand is holding a white card next to the microphone.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is sitting in the blue armchair in the center of the frame. To his left is a green plant. To his right is a brown desk with a microphone on it. A hand holding a card is visible on the far right, next to the microphone.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      88,
+      90
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair and light stubble, wearing a dark navy blazer over a grey button-down shirt",
+        "action": "speaking and looking to the right",
+        "position": "center",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "center",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "black microphone with a red top section",
+        "action": "static",
+        "position": "right",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "brown wooden desk surface",
+        "action": "static",
+        "position": "bottom right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left",
+        "id": "plant_green_1"
+      },
+      {
+        "desc": "person's hand and wrist",
+        "action": "resting near microphone",
+        "position": "right",
+        "id": "hand_person_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the dark blazer is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is seated in a blue armchair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A microphone is positioned on the desk to the right of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green plant is visible to the left of the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is seated in the center of the frame on a blue armchair. To his left is a green plant. To his right, a microphone stands on a brown wooden desk, near a person's hand.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      90,
+      92
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket over a grey button-down shirt and dark trousers",
+        "action": "gesturing with both hands while speaking",
+        "position": "left",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "man with reddish-brown hair, wearing a dark suit jacket, light blue striped shirt, and a dark striped tie",
+        "action": "sitting behind a desk and listening",
+        "position": "right",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "large wooden desk with a reddish-brown finish",
+        "action": "static",
+        "position": "right foreground",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "left",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "black microphone with a red windscreen",
+        "action": "static",
+        "position": "center",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "cylindrical mug with a blue and white pattern",
+        "action": "static",
+        "position": "right",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "large circular moon graphic backdrop",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left gestures with his hands while talking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right sits behind the desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A microphone stands on the desk between the two men.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A patterned mug sits on the desk to the right.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the grey shirt is seated in a blue armchair to the left of the wooden desk. The man in the suit is seated behind the desk to the right. The microphone is positioned on the desk between the two men. The moon graphic is in the background above the men.",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      92,
+      94
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket over a grey button-down shirt and dark trousers",
+        "action": "sitting in a blue armchair",
+        "position": "left",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "man with reddish-brown hair, wearing a dark suit jacket, light blue striped shirt, and a dark striped tie",
+        "action": "sitting behind a wooden desk",
+        "position": "right",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "large wooden desk with a reddish-brown finish",
+        "action": "static",
+        "position": "right foreground",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "left foreground",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "white mug with blue text and graphics",
+        "action": "static",
+        "position": "right foreground",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "large moon graphic against a dark blue background",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left is sitting in the blue armchair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is sitting behind the wooden desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mug is on the desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the left is looking towards the man on the right.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the grey shirt is to the left of the man in the striped tie. The man in the striped tie is sitting behind the wooden desk. The mug is on the desk to the right of the man in the striped tie. The moon graphic is in the background above both men.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      94,
+      96
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark blazer over a grey button-down shirt and dark trousers",
+        "action": "sitting in a blue armchair",
+        "position": "left",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "man with reddish-brown hair, wearing a dark suit, light blue striped shirt, and a dark striped tie",
+        "action": "sitting behind a desk",
+        "position": "right",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "wooden desk with a reddish-brown finish",
+        "action": "static",
+        "position": "right foreground",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "left",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "black microphone with a red top section",
+        "action": "static",
+        "position": "on the desk",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "mug with a blue and white pattern",
+        "action": "static",
+        "position": "on the desk",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "backdrop featuring a large moon, dark blue sky, and a body of water with distant city lights",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left is sitting in a blue armchair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is sitting behind a wooden desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A microphone is positioned on the desk between the two men.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A mug is sitting on the far right side of the desk.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the grey shirt is sitting to the left of the man in the suit. The wooden desk is in front of the man in the suit. The microphone is on the desk, positioned between the two men. The backdrop with the moon is behind both men.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      96,
+      98
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket over a grey button-down shirt",
+        "action": "speaking and gesturing with right hand",
+        "position": "center",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "black microphone with red accents on a stand",
+        "action": "static",
+        "position": "right",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "brown leather desk surface",
+        "action": "static",
+        "position": "bottom right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue upholstered chair",
+        "action": "static",
+        "position": "left",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "left background",
+        "id": "plant_green_1"
+      },
+      {
+        "desc": "person's hand holding a paper",
+        "action": "static",
+        "position": "right",
+        "id": "hand_person_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the dark suit is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man gestures with his right hand while talking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A microphone is positioned on the desk in front of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is visible holding a paper on the right side of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is seated in the center of the frame, to the right of a blue chair and a green plant. The brown desk is in front of him and to his right, supporting a microphone. A hand holding a paper is visible on the far right, next to the microphone.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      98,
+      100
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket over a grey button-down shirt and dark trousers",
+        "action": "sitting in a blue armchair",
+        "position": "left",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "man with reddish-brown hair, wearing a dark suit, light blue striped shirt, and a dark striped tie",
+        "action": "sitting behind a wooden desk",
+        "position": "right",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "wooden desk with a reddish-brown finish",
+        "action": "static",
+        "position": "right",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "black microphone with a red top section",
+        "action": "static",
+        "position": "right",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "left",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "mug with a blue and white pattern",
+        "action": "static",
+        "position": "right",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "large moon graphic in the background",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the dark suit sits in the blue armchair on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man with reddish-brown hair sits behind the wooden desk on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microphone is positioned on the desk in front of the man on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mug is placed on the desk to the right of the microphone.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the dark suit is seated to the left of the man behind the desk. The wooden desk is in front of the man on the right. The microphone is on the desk, near the man's right hand. The moon graphic is in the background, above the two men.",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      100,
+      102
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with slicked-back dark hair, wearing a black three-piece suit, white shirt, and dark tie",
+        "action": "standing and smiling at the camera",
+        "position": "left",
+        "id": "person_red_carpet_1"
+      },
+      {
+        "desc": "man with short grey hair, wearing a black suit jacket over a black turtleneck",
+        "action": "standing and looking at the camera with a surprised expression",
+        "position": "center-left",
+        "id": "person_red_carpet_2"
+      },
+      {
+        "desc": "man with dark hair, wearing a dark blue suit",
+        "action": "standing with back to the camera",
+        "position": "center",
+        "id": "person_red_carpet_3"
+      },
+      {
+        "desc": "man with short brown hair, wearing a dark blue suit",
+        "action": "standing with back to the camera",
+        "position": "center-right",
+        "id": "person_red_carpet_3"
+      },
+      {
+        "desc": "man with short brown hair, wearing a dark blue suit",
+        "action": "standing with back to the camera",
+        "position": "right",
+        "id": "person_red_carpet_3"
+      },
+      {
+        "desc": "yellow handwritten sign",
+        "action": "static",
+        "position": "background",
+        "id": "sign_yellow_1"
+      },
+      {
+        "desc": "red carpet",
+        "action": "static",
+        "position": "bottom",
+        "id": "carpet_red_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the black turtleneck places his hand on the back of the man in the center.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the far right places his arm around the shoulder of the man next to him.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two men are facing the camera while three men have their backs turned.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow sign in the background reads 'Come Say Hi To Your Aussie Fans'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Diddy Riese",
+      "Come Say Hi To Your Aussie Fans",
+      "RIA",
+      "H"
+    ],
+    "spatial": "The man in the black turtleneck is to the right of the man in the three-piece suit. The man with his back turned in the center is in front of the man in the black turtleneck. The man on the far right is next to the man in the center-right position. The yellow sign is in the background behind the group of men.",
+    "parse_success": true,
+    "chunk_idx": 50,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": [
+      "scene change from interview to red carpet event with multiple people standing"
+    ]
+  },
+  {
+    "time": [
+      102,
+      104
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with dark hair, wearing a black three-piece suit, white shirt, and dark tie",
+        "action": "standing and smiling",
+        "position": "left",
+        "id": "person_red_carpet_1"
+      },
+      {
+        "desc": "man with graying hair, wearing a black turtleneck and black jacket",
+        "action": "looking at the camera with a surprised expression",
+        "position": "center-left",
+        "id": "person_red_carpet_2"
+      },
+      {
+        "desc": "man with dark hair, wearing a dark blue suit",
+        "action": "standing with back to the camera",
+        "position": "center",
+        "id": "person_red_carpet_3"
+      },
+      {
+        "desc": "man with short brown hair, wearing a dark blue suit",
+        "action": "standing with back to the camera",
+        "position": "center-right",
+        "id": "person_red_carpet_3"
+      },
+      {
+        "desc": "man with dark hair, wearing a dark blue suit and white shirt",
+        "action": "standing with back to the camera",
+        "position": "right",
+        "id": "person_red_carpet_3"
+      },
+      {
+        "desc": "yellow sign with black text",
+        "action": "static",
+        "position": "background",
+        "id": "sign_yellow_1"
+      },
+      {
+        "desc": "red sign with white text",
+        "action": "static",
+        "position": "background",
+        "id": "sign_red_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the black turtleneck is looking at the camera with wide eyes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the far left is smiling at the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Three men are standing with their backs to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the far right has his arm around the man next to him.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the black turtleneck has his hand on the back of the man in the center.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Diddy Riese",
+      "Come Say Hi To Your Music Fans"
+    ],
+    "spatial": "The man in the black three-piece suit is to the left of the man in the black turtleneck. The man in the black turtleneck is to the left of the man in the center. The man on the far right is to the right of the man in the center-right. The yellow sign is in the background, behind the men.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      104,
+      106
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with dark hair, wearing a black three-piece suit, white dress shirt, and dark tie",
+        "action": "static",
+        "position": "left",
+        "id": "person_red_carpet_1"
+      },
+      {
+        "desc": "man with grey hair, wearing a black suit jacket and black turtleneck",
+        "action": "standing with hand on another man's back",
+        "position": "center-left",
+        "id": "person_red_carpet_2"
+      },
+      {
+        "desc": "man with dark hair, wearing a dark blue suit, back turned to the camera",
+        "action": "static",
+        "position": "center",
+        "id": "person_red_carpet_3"
+      },
+      {
+        "desc": "man with short brown hair, wearing a dark blue suit, back turned to the camera",
+        "action": "static",
+        "position": "center-right",
+        "id": "person_red_carpet_3"
+      },
+      {
+        "desc": "man with dark hair, wearing a dark suit, back turned to the camera",
+        "action": "standing with arm around another man's shoulder",
+        "position": "right"
+      },
+      {
+        "desc": "yellow sign with black text",
+        "action": "static",
+        "position": "background",
+        "id": "sign_yellow_1"
+      },
+      {
+        "desc": "red carpet",
+        "action": "static",
+        "position": "bottom",
+        "id": "carpet_red_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man with grey hair places his left hand on the back of the man in the center.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the far right places his left arm around the shoulder of the man to his left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow sign in the background reads 'Come Say HI To Your Aussie Fans'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The men are standing on a red carpet.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Come Say HI To Your Aussie Fans",
+      "Diddy Riese",
+      "RIA"
+    ],
+    "spatial": "The man with dark hair in the three-piece suit is to the left of the man with grey hair. The man with grey hair is to the left of the man in the blue suit whose back is turned. The man on the far right is to the right of the other men and has his arm around the man next to him. The yellow sign is in the background, behind the men.",
+    "parse_success": true,
+    "chunk_idx": 52,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      106,
+      108
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with dark hair, black suit, white shirt, black tie, white pocket square",
+        "action": "standing and smiling",
+        "position": "left",
+        "id": "person_red_carpet_1"
+      },
+      {
+        "desc": "man with grey hair, black suit, black turtleneck",
+        "action": "standing and looking at camera",
+        "position": "center-left",
+        "id": "person_red_carpet_2"
+      },
+      {
+        "desc": "man with dark hair, navy blue suit",
+        "action": "standing with back to camera",
+        "position": "center-right",
+        "id": "person_red_carpet_3"
+      },
+      {
+        "desc": "man with short brown hair, navy blue suit",
+        "action": "standing with back to camera",
+        "position": "right",
+        "id": "person_red_carpet_3"
+      },
+      {
+        "desc": "man with dark hair, navy blue suit, white shirt",
+        "action": "standing with arm around another man",
+        "position": "far right"
+      },
+      {
+        "desc": "yellow sign with black text",
+        "action": "static",
+        "position": "background",
+        "id": "sign_yellow_1"
+      },
+      {
+        "desc": "red carpet",
+        "action": "static",
+        "position": "bottom",
+        "id": "carpet_red_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man on the far right places his arm around the shoulder of the man next to him.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the black turtleneck places his hand on the back of the man in the navy suit.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow sign in the background reads 'Come Say HI To Your Aussie Fans'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The men are standing on a red carpet.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Come Say HI To Your Aussie Fans",
+      "Diddy Riese",
+      "RIA"
+    ],
+    "spatial": "The man in the black suit and tie is to the left of the man in the black turtleneck. The man in the black turtleneck is to the left of the man in the navy suit who has his back to the camera. The man on the far right is next to the man with his arm around him. The yellow sign is behind the men in the foreground.",
+    "parse_success": true,
+    "chunk_idx": 53,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      108,
+      110
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with dark hair, wearing a black three-piece suit, white shirt, and dark tie",
+        "action": "smiling at the camera",
+        "position": "left",
+        "id": "person_red_carpet_1"
+      },
+      {
+        "desc": "man with grey hair, wearing a black turtleneck and black jacket",
+        "action": "looking at the camera with a surprised expression",
+        "position": "center-left"
+      },
+      {
+        "desc": "man with dark hair, wearing a dark blue suit",
+        "action": "standing with back to the camera",
+        "position": "center",
+        "id": "person_red_carpet_3"
+      },
+      {
+        "desc": "man with short brown hair, wearing a dark blue suit",
+        "action": "standing with back to the camera",
+        "position": "center-right",
+        "id": "person_red_carpet_3"
+      },
+      {
+        "desc": "man with dark hair, wearing a dark blue suit",
+        "action": "standing with back to the camera",
+        "position": "right",
+        "id": "person_red_carpet_3"
+      },
+      {
+        "desc": "yellow sign with black text",
+        "action": "static",
+        "position": "background",
+        "id": "sign_yellow_1"
+      },
+      {
+        "desc": "red carpet",
+        "action": "static",
+        "position": "bottom",
+        "id": "carpet_red_1"
+      },
+      {
+        "desc": "red sign with white text",
+        "action": "static",
+        "position": "background",
+        "id": "sign_red_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man with grey hair places his hand on the back of the man in the center.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the far right places his arm around the shoulder of the man next to him.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the far left is smiling.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man with grey hair has a surprised facial expression.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Three men are standing with their backs turned to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The group is standing on a red carpet.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Diddy Riese",
+      "Come Say Hi To Your Music Fans"
+    ],
+    "spatial": "The man in the black three-piece suit is to the left of the man with grey hair. The man with grey hair is to the left of the man in the center who has his back turned. The man on the far right is to the right of the other two men with their backs turned. The yellow sign is in the background behind the men.",
+    "parse_success": true,
+    "chunk_idx": 54,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      110,
+      112
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a dark suit jacket over a grey button-down shirt",
+        "action": "sitting and smiling",
+        "position": "left",
+        "id": "person_guest_1"
+      },
+      {
+        "desc": "man with reddish-brown hair, wearing a dark suit, light blue shirt, and striped tie",
+        "action": "sitting and smiling",
+        "position": "right",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "large wooden desk with a reddish-brown finish",
+        "action": "static",
+        "position": "right foreground",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue upholstered armchair",
+        "action": "static",
+        "position": "left foreground",
+        "id": "armchair_blue_1"
+      },
+      {
+        "desc": "cylindrical mug with blue and white graphics",
+        "action": "static",
+        "position": "right on desk",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "black microphone stand with red accents",
+        "action": "static",
+        "position": "center on desk",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "backdrop featuring a large moon and a night ocean scene with city lights",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man on the left is sitting in a blue armchair.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is sitting behind a wooden desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A mug is placed on the desk near the man on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A microphone is positioned on the desk between the two men.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the grey shirt is sitting to the left of the man in the suit. The wooden desk is in front of the man in the suit. The blue armchair is to the left of the desk. The mug is on the desk to the right of the microphone.",
+    "parse_success": true,
+    "chunk_idx": 55,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      112,
+      114
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with reddish-brown hair, wearing a dark brown suit jacket, a light blue striped button-down shirt, and a purple and white striped tie",
+        "action": "sitting at a desk with eyes closed then opening them",
+        "position": "center",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "black microphone with a red top section",
+        "action": "static",
+        "position": "left",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "white mug with blue text and graphics",
+        "action": "static",
+        "position": "right",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "dark brown wooden desk",
+        "action": "static",
+        "position": "bottom",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue backdrop depicting a night scene with a moon and distant city lights",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man sits at the desk and opens his eyes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microphone is positioned on the left side of the desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mug is positioned on the right side of the desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the mug reads 'SHELLO' and 'Gloria'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SHELLO",
+      "Gloria"
+    ],
+    "spatial": "The man is sitting behind the wooden desk. The microphone is to the left of the man, and the mug is to the right of the man. The blue backdrop is behind the man.",
+    "parse_success": true,
+    "chunk_idx": 56,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      114,
+      116
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with reddish-brown hair, wearing a dark brown suit jacket, a light blue striped button-down shirt, and a dark tie with diagonal red and white stripes",
+        "action": "sitting at a desk",
+        "position": "center",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "black microphone with a red top section on a stand",
+        "action": "static",
+        "position": "left",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "white mug with blue text and graphics",
+        "action": "static",
+        "position": "right",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "dark brown wooden desk",
+        "action": "static",
+        "position": "foreground",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue backdrop featuring a night scene with a large moon, water, and distant city lights",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man sits behind a desk with his hands resting on the surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microphone is positioned on the left side of the desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mug is positioned on the right side of the desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the mug includes 'HELLO', 'SALVES NO CREAM', and 'Gloria'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "HELLO",
+      "SALVES NO CREAM",
+      "Gloria"
+    ],
+    "spatial": "The man is centered behind the desk. The microphone is to the left of the man on the desk. The mug is to the right of the man on the desk. The blue backdrop is behind the man and the desk.",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      116,
+      118
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with reddish-brown hair, wearing a dark brown suit jacket, light blue striped shirt, and a dark tie with diagonal stripes",
+        "action": "sitting at a desk",
+        "position": "center",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "white ceramic mug with blue text and graphics",
+        "action": "static",
+        "position": "right",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "black microphone with a red top section",
+        "action": "static",
+        "position": "left",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "dark brown wooden desk",
+        "action": "static",
+        "position": "bottom",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "blue backdrop featuring a night scene with a moon and distant city lights",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is sitting at the desk with his hands resting on the surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mug is placed on the desk to the right of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microphone is positioned on the desk to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the mug includes 'SHELLO' and 'GROMO'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SHELLO",
+      "GROMO"
+    ],
+    "spatial": "The man is sitting behind the desk. The microphone is to the left of the man, and the mug is to the right of the man. The blue backdrop is behind the man and the desk.",
+    "parse_success": true,
+    "chunk_idx": 58,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      118,
+      120
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with reddish-blonde hair, wearing a dark brown suit jacket, a light blue striped button-down shirt, and a purple and white striped tie",
+        "action": "sitting at a desk and changing facial expression",
+        "position": "center",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "dark brown wooden desk with a glossy finish",
+        "action": "static",
+        "position": "foreground",
+        "id": "desk_wooden_1"
+      },
+      {
+        "desc": "black microphone with a red top mounted on a stand",
+        "action": "static",
+        "position": "left",
+        "id": "microphone_1"
+      },
+      {
+        "desc": "white mug with blue text and graphics",
+        "action": "static",
+        "position": "right",
+        "id": "mug_white_blue_1"
+      },
+      {
+        "desc": "blue backdrop featuring a night sky, a large moon, and a distant coastline with lights",
+        "action": "static",
+        "position": "background",
+        "id": "backdrop_moon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man sits behind the desk with his hands resting on the surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's facial expression changes from a neutral look to a grimace with bared teeth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microphone is positioned on the left side of the desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mug is positioned on the right side of the desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the mug includes the words 'HELLO' and 'Glorio'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "HELLO",
+      "Glorio"
+    ],
+    "spatial": "The man is sitting behind the desk in the center of the frame. The microphone is to the left of the man on the desk. The mug is to the right of the man on the desk. The blue backdrop is behind the man and the desk.",
+    "parse_success": true,
+    "chunk_idx": 59,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      120,
+      122
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with reddish-blonde hair, wearing a dark suit, blue shirt, and purple striped tie",
+        "action": "standing and smiling",
+        "position": "left",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "white text 'CONAN' with five colored dots (orange, yellow, green, blue, purple) underneath",
+        "action": "static",
+        "position": "center-left",
+        "id": "ui_logo_conan"
+      },
+      {
+        "desc": "orange rectangular button with white text 'SUBSCRIBE'",
+        "action": "static",
+        "position": "center-left",
+        "id": "ui_button_subscribe"
+      },
+      {
+        "desc": "man with reddish-blonde hair, wearing a brown leather jacket and grey shirt",
+        "action": "standing and holding a remote",
+        "position": "top-right"
+      },
+      {
+        "desc": "man with a beard, wearing a blue plaid shirt",
+        "action": "standing",
+        "position": "top-right"
+      },
+      {
+        "desc": "man wearing a beige button-down shirt",
+        "action": "standing",
+        "position": "top-right"
+      },
+      {
+        "desc": "man with reddish-blonde hair, wearing a brown leather jacket and black shirt",
+        "action": "sitting and gesturing with mouth open",
+        "position": "bottom-right"
+      },
+      {
+        "desc": "man wearing a black hoodie, baseball cap, and large headphones",
+        "action": "sitting and holding a game controller",
+        "position": "bottom-right"
+      },
+      {
+        "desc": "man wearing a dark grey t-shirt",
+        "action": "sitting and holding a game controller",
+        "position": "bottom-right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The screen displays a split layout with a host on the left and two video clips on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The top-right video clip shows three men standing on a sidewalk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bottom-right video clip shows three men sitting indoors playing video games.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the bottom-right clip on the left is gesturing with his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the bottom-right clip in the middle is holding a controller with a blue light.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'CONAN' is displayed in large white letters.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'SUBSCRIBE' is visible on an orange button.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Remotes' appears as a caption in the top-right video.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Clueless Gamer' appears as a caption in the bottom-right video.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "CONAN",
+      "SUBSCRIBE",
+      "Watch Full Episodes",
+      "Like",
+      "Follow",
+      "Remotes",
+      "Clueless Gamer"
+    ],
+    "spatial": "The man in the suit is positioned to the left of the two video clips. The 'Remotes' video clip is located above the 'Clueless Gamer' video clip. Inside the top-right video, the man in the leather jacket is to the left of the man in the plaid shirt. Inside the bottom-right video, the man in the leather jacket is to the left of the man in the black hoodie.",
+    "parse_success": true,
+    "chunk_idx": 60,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": [
+      "transition to end screen montage with remote clips and UI subscription buttons"
+    ]
+  },
+  {
+    "time": [
+      122,
+      124
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with red hair, wearing a dark grey suit, light blue shirt, and a purple and blue striped tie, smiling",
+        "action": "static",
+        "position": "left",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "three shirtless men sitting in a wooden sauna, with pixelation covering their lower bodies",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "two men standing on a street next to an orange van, one in a brown jacket and the other in a purple plaid shirt",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "two men sitting indoors holding game controllers, one in a leather jacket and the other in a camouflage shirt",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "video game scene showing a dark fantasy environment with a character in armor fighting a creature",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "large white text 'CONAN' with five colored dots below it",
+        "action": "static",
+        "position": "center",
+        "id": "ui_logo_conan"
+      },
+      {
+        "desc": "orange rectangular button with white text 'SUBSCRIBE'",
+        "action": "static",
+        "position": "center",
+        "id": "ui_button_subscribe"
+      },
+      {
+        "desc": "grey rectangular button with white text 'Watch Full Episodes' and a play icon",
+        "action": "static",
+        "position": "center",
+        "id": "ui_button_watch"
+      },
+      {
+        "desc": "blue rectangular button with a white 'f' logo and text 'Like'",
+        "action": "static",
+        "position": "bottom left",
+        "id": "ui_button_like"
+      },
+      {
+        "desc": "light blue rectangular button with a white bird logo and text 'Follow'",
+        "action": "static",
+        "position": "bottom left",
+        "id": "ui_button_follow"
+      },
+      {
+        "desc": "white text 'Remotes' on a black bar",
+        "action": "static",
+        "position": "top right",
+        "id": "ui_text_remotes"
+      },
+      {
+        "desc": "white text 'Clueless Gamer' on a black bar",
+        "action": "static",
+        "position": "bottom right",
+        "id": "ui_text_clueless"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the suit stands on the left side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The screen is split, showing the host on the left and two video thumbnails on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The top right thumbnail shows three men in a sauna.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bottom right thumbnail shows two men playing video games.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'CONAN' is displayed prominently in the center.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Social media buttons for Facebook and Twitter are visible at the bottom.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "CONAN",
+      "SUBSCRIBE",
+      "Watch Full Episodes",
+      "f",
+      "Like",
+      "Follow",
+      "Remotes",
+      "Clueless Gamer"
+    ],
+    "spatial": "The man in the suit is to the left of the video thumbnails. The 'CONAN' logo is centered on the screen, above the 'SUBSCRIBE' button. The 'Remotes' thumbnail is above the 'Clueless Gamer' thumbnail on the right side of the screen. The social media buttons are below the 'Watch Full Episodes' button.",
+    "parse_success": true,
+    "chunk_idx": 61,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  },
+  {
+    "time": [
+      124,
+      126
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with reddish-blonde hair, wearing a dark pinstripe suit, light blue shirt, and purple striped tie",
+        "action": "static",
+        "position": "left",
+        "id": "person_host_1"
+      },
+      {
+        "desc": "orange rectangular button with white text",
+        "action": "static",
+        "position": "center-left",
+        "id": "ui_button_subscribe"
+      },
+      {
+        "desc": "man in a purple plaid shirt and jeans",
+        "action": "gesturing with arms",
+        "position": "top-right"
+      },
+      {
+        "desc": "orange van with wood paneling",
+        "action": "static",
+        "position": "top-right",
+        "id": "van_orange_1"
+      },
+      {
+        "desc": "man wearing a red chef's hat and black t-shirt",
+        "action": "holding a sandwich",
+        "position": "top-right"
+      },
+      {
+        "desc": "red convertible car",
+        "action": "driving",
+        "position": "bottom-right",
+        "id": "car_red_1"
+      },
+      {
+        "desc": "silver convertible car",
+        "action": "driving",
+        "position": "bottom-right",
+        "id": "car_silver_1"
+      },
+      {
+        "desc": "two men sitting on a couch, one in a dark t-shirt and one in a plaid shirt",
+        "action": "laughing",
+        "position": "bottom-right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a YouTube end screen layout.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a suit stands on the left side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'CONAN' is displayed in large white letters.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange button with the text 'SUBSCRIBE' is visible.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The top-right video thumbnail shows a man in a purple shirt gesturing near an orange van.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The top-right video thumbnail changes to show a man in a red chef's hat holding food.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bottom-right video thumbnail shows a red car and a silver car driving in a city.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bottom-right video thumbnail changes to show two men sitting on a couch laughing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Remotes' and 'Clueless Gamer' labels the video thumbnails.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "CONAN",
+      "SUBSCRIBE",
+      "Watch Full Episodes",
+      "Like",
+      "Follow",
+      "Remotes",
+      "Clueless Gamer"
+    ],
+    "spatial": "The man in the suit is positioned to the left of the video thumbnails. The 'CONAN' logo is centered above the 'SUBSCRIBE' button. The 'Remotes' video thumbnail is located above the 'Clueless Gamer' video thumbnail on the right side of the screen. The social media buttons are located below the 'Watch Full Episodes' button.",
+    "parse_success": true,
+    "chunk_idx": 62,
+    "video_id": "ytb_QVd7QpveWy4",
+    "state_changes": []
+  }
+]

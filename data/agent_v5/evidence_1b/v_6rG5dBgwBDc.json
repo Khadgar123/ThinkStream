@@ -1,0 +1,5320 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "white snowflake graphics of various sizes and intricate designs",
+        "action": "falling downwards",
+        "position": "foreground",
+        "id": "snowflake_graphics_1"
+      },
+      {
+        "desc": "white starburst graphics",
+        "action": "falling downwards",
+        "position": "foreground",
+        "id": "starburst_graphics_1"
+      },
+      {
+        "desc": "gold gradient background",
+        "action": "static",
+        "position": "background",
+        "id": "gold_background_1"
+      },
+      {
+        "desc": "white text logo 'M&S tv'",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "White snowflake graphics are falling downwards against a gold background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S tv' logo is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The white snowflake and starburst graphics are scattered across the gold gradient background. The 'M&S tv' logo is located in the top left corner, positioned above the falling snowflakes in that area.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "white text in an elegant serif font reading 'How to Decorate a Christmas Tree'",
+        "action": "fading in",
+        "position": "center",
+        "id": "title_text_1"
+      },
+      {
+        "desc": "white snowflake graphics of varying sizes and intricate designs",
+        "action": "floating upwards",
+        "position": "bottom",
+        "id": "snowflake_graphics_1"
+      },
+      {
+        "desc": "white 'M&S tv' logo",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      },
+      {
+        "desc": "solid gold background with a soft gradient",
+        "action": "static",
+        "position": "background",
+        "id": "gold_background_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'How to Decorate a Christmas Tree' fades into view in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "White snowflake graphics float upwards from the bottom of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background is a solid gold color.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "How to Decorate",
+      "a Christmas Tree"
+    ],
+    "spatial": "The 'M&S tv' logo is located in the top left corner, above the main title text. The title text 'How to Decorate a Christmas Tree' is centered on the screen. The white snowflakes are positioned at the bottom of the frame, below the text.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": [
+      "title text 'How to Decorate a Christmas Tree' fades in"
+    ]
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "Christmas tree with green needles, decorated with shiny red baubles, clear glass ornaments, and warm white string lights",
+        "action": "static",
+        "position": "background",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "Clear glass bauble with a small snowman figure inside, reflecting light",
+        "action": "static",
+        "position": "foreground",
+        "id": "ornaments_various_1"
+      },
+      {
+        "desc": "Text 'How to Decorate a Christmas Tree' in white elegant serif font",
+        "action": "static",
+        "position": "center",
+        "id": "title_text_1"
+      },
+      {
+        "desc": "Logo 'M&S tv' in white text",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'How to Decorate a Christmas Tree' is displayed in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The M&S tv logo is visible in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A clear glass bauble containing a snowman figure is visible in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background features a Christmas tree decorated with red ornaments and lights.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "How to Decorate",
+      "a Christmas Tree"
+    ],
+    "spatial": "The text 'How to Decorate a Christmas Tree' is centered on the screen. The M&S tv logo is located in the top left corner, above and to the left of the main title text. The clear glass bauble is in the foreground, in front of the Christmas tree which is in the background.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": [
+      "first live scene with decorated Christmas tree appears"
+    ]
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length wavy brown hair, wearing a black short-sleeved V-neck top and a long silver necklace with a pendant",
+        "action": "standing and speaking",
+        "position": "center",
+        "id": "person_brown_hair_1"
+      },
+      {
+        "desc": "Christmas tree decorated with lights and ornaments",
+        "action": "static",
+        "position": "left",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "white mantelpiece with lit candles and small decorative trees",
+        "action": "static",
+        "position": "background",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "table with rolls of wrapping paper and wrapped gifts",
+        "action": "static",
+        "position": "foreground",
+        "id": "wrapped_gifts_1"
+      },
+      {
+        "desc": "white text overlay reading 'Liisa Dudgeon' and 'Assistant Design Manager, Christmas'",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "presenter_name_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman stands in the center of the frame speaking to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text overlay identifies the woman as Liisa Dudgeon, Assistant Design Manager, Christmas.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A decorated Christmas tree is visible on the left side of the room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Candles are lit on the mantelpiece behind the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S.tv",
+      "Liisa Dudgeon",
+      "Assistant Design Manager, Christmas"
+    ],
+    "spatial": "The woman is standing in the center of the room, in front of a white mantelpiece. To her left is a Christmas tree. In front of her, in the foreground, is a table covered with wrapping paper and gifts.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": [
+      "first presenter (Liisa Dudgeon) appears with name overlay"
+    ]
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length wavy brown hair, wearing a black short-sleeved top and a long silver necklace with a pendant",
+        "action": "standing and speaking",
+        "position": "center",
+        "id": "person_brown_hair_1"
+      },
+      {
+        "desc": "Christmas tree decorated with red and gold baubles, lights, and ornaments",
+        "action": "static",
+        "position": "left",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "white shelf with lit candles, small wrapped gifts, and a wooden tree decoration",
+        "action": "static",
+        "position": "background",
+        "id": "shelf_1"
+      },
+      {
+        "desc": "stack of wrapped gifts with patterned paper (reindeer, red patterns) and rolls of wrapping paper",
+        "action": "static",
+        "position": "right",
+        "id": "wrapped_gifts_1"
+      },
+      {
+        "desc": "text overlay with white sans-serif font reading 'Liisa Dudgeon' and 'Assistant Design Manager, Christmas'",
+        "action": "static",
+        "position": "bottom left",
+        "id": "presenter_name_1"
+      },
+      {
+        "desc": "logo 'M&S tv' in white text",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is standing in the center of the frame and speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text overlay identifies the woman as 'Liisa Dudgeon, Assistant Design Manager, Christmas'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A decorated Christmas tree is positioned to the left of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Wrapped gifts and wrapping paper rolls are on the table to the right of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "Liisa Dudgeon",
+      "Assistant Design Manager, Christmas"
+    ],
+    "spatial": "The woman is standing in the center of the frame. To her left is a decorated Christmas tree. To her right, on a table, is a pile of wrapped gifts and wrapping paper. Behind her is a white shelf with candles and decorations. The text overlay is at the bottom left of the screen.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length wavy blonde hair, wearing a black short-sleeved top and a long pendant necklace",
+        "action": "standing behind a table",
+        "position": "center",
+        "id": "person_blonde_hair_1"
+      },
+      {
+        "desc": "Christmas tree with green needles, decorated with red baubles and lights",
+        "action": "static",
+        "position": "left",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "white text overlay with a semi-transparent dark background",
+        "action": "static",
+        "position": "bottom-left"
+      },
+      {
+        "desc": "white M&S.tv logo",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      },
+      {
+        "desc": "table surface with various Christmas decorations including candles and ornaments",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman stands behind a table filled with Christmas decorations.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Text on the screen identifies the woman as 'Liisa Dudgeon, Assistant Design Manager, Christmas'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A decorated Christmas tree is visible to the left of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The M&S.tv logo is displayed in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S.tv",
+      "Liisa Dudgeon",
+      "Assistant Design Manager, Christmas"
+    ],
+    "spatial": "The woman is standing in the center of the frame, behind a table. To her left is a decorated Christmas tree. The text identifying her name and title is located in the bottom-left corner, overlaying the scene. The M&S.tv logo is positioned above the Christmas tree in the top-left corner.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": [
+      "different presenter with blonde hair appears"
+    ]
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length blonde hair, wearing a black long-sleeved top and black trousers",
+        "action": "adjusting the branches of the Christmas tree",
+        "position": "center",
+        "id": "person_blonde_hair_1"
+      },
+      {
+        "desc": "tall artificial green Christmas tree with a white fabric base",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "black leather armchair with a white 'NOEL' pillow and a red patterned pillow",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "wooden tripod floor lamp with a rectangular beige shade",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "open cardboard box filled with red and silver Christmas baubles",
+        "action": "static",
+        "position": "bottom-right",
+        "id": "cardboard_box_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "white 'M&S tv' logo",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman is standing in front of a Christmas tree and adjusting its branches.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A box of ornaments sits on the floor next to the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'M&S tv' is visible in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pillow with the word 'NOEL' is on the armchair.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The woman is standing in front of the Christmas tree, which is positioned in front of the white window shutters. To the left of the woman is a wooden tripod lamp and a black armchair. To the right of the tree, on the floor, is an open box of ornaments.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": [
+      "active tree branch adjusting begins"
+    ]
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with short blonde hair, wearing a black short-sleeved top and black trousers",
+        "action": "decorating the Christmas tree",
+        "position": "center-right",
+        "id": "person_blonde_hair_1"
+      },
+      {
+        "desc": "tall artificial green Christmas tree with a white fabric base cover",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "open cardboard box filled with red Christmas baubles",
+        "action": "static",
+        "position": "bottom-right",
+        "id": "cardboard_box_1"
+      },
+      {
+        "desc": "black leather sofa with a white pillow reading 'NOEL' and a red patterned cushion",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "tripod floor lamp with wooden legs and a beige cylindrical shade",
+        "action": "static",
+        "position": "left-background",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "white fireplace mantel with a garland and red stockings",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "white 'M&S tv' logo",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman is standing and placing ornaments on a Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A box of red baubles sits on the floor near the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S tv' logo is visible in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pillow with the text 'NOEL' rests on the sofa.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The woman is standing to the right of the Christmas tree, facing it. The cardboard box of ornaments is on the floor to the right of the tree and in front of the fireplace. The sofa is positioned to the left of the tripod lamp. The window shutters are behind the Christmas tree.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short blonde hair, wearing a black short-sleeved top and black pants",
+        "action": "adjusting the branches of the Christmas tree",
+        "position": "right",
+        "id": "person_blonde_hair_1"
+      },
+      {
+        "desc": "artificial Christmas tree, green, full, with a white fabric base cover",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "open cardboard box containing red Christmas baubles",
+        "action": "static",
+        "position": "bottom right",
+        "id": "cardboard_box_1"
+      },
+      {
+        "desc": "black leather sofa with a white pillow reading 'NOEL' and a red patterned pillow",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "tripod floor lamp with wooden legs and a beige shade",
+        "action": "static",
+        "position": "left background",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "hand with light skin tone",
+        "action": "fluffing tree branches",
+        "position": "foreground",
+        "id": "hand_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is standing to the right of the Christmas tree, adjusting its branches.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A close-up shot shows a hand fluffing the green needles of the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A box of red ornaments sits on the floor near the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'M&S tv' is visible in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pillow with the word 'NOEL' is on the sofa.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The person is standing to the right of the Christmas tree. The box of ornaments is on the floor in front of the person and to the right of the tree. The sofa is to the left of the tree, and the tripod lamp is behind the sofa.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "human hand with light skin tone",
+        "action": "adjusting the branches of the tree",
+        "position": "left foreground",
+        "id": "hand_1"
+      },
+      {
+        "desc": "artificial Christmas tree with green, needle-like foliage",
+        "action": "static",
+        "position": "center and right background",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "white text logo 'M&S tv'",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is reaching into the frame to fluff or arrange the branches of the artificial tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tree has dense, green needles typical of a pine or fir.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The M&S tv logo is visible in the upper left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The hand is in the foreground on the left side, reaching towards the center where the tree branches are located. The tree fills the majority of the background and right side of the frame. The logo is positioned above the hand in the top left corner.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone and a gold ring on the ring finger",
+        "action": "adjusting the branches of the tree",
+        "position": "left",
+        "id": "hand_1"
+      },
+      {
+        "desc": "artificial Christmas tree with green, needle-like foliage and a slightly glossy texture",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "white text logo reading 'M&S tv' in a serif font",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is adjusting the branches of the artificial Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The M&S tv logo is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The hand is positioned on the left side of the frame, reaching into the center where the Christmas tree is located. The M&S tv logo is situated above the hand and to the left of the tree's upper branches.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length wavy light brown hair, wearing a dark blue velvet top over a white shirt",
+        "action": "adjusting the branches of the tree",
+        "position": "right"
+      },
+      {
+        "desc": "green artificial Christmas tree branches with needle-like texture",
+        "action": "being manipulated",
+        "position": "left",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "human hand with fair skin",
+        "action": "fluffing tree branches",
+        "position": "left",
+        "id": "hand_1"
+      },
+      {
+        "desc": "white window blinds",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman is adjusting the branches of a green artificial Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is visible fluffing the needles of the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a dark blue velvet top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "White window blinds are visible in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The woman is positioned to the right of the Christmas tree branches. The hand is on the left side of the frame, interacting with the tree. The window blinds are behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length wavy brown hair, wearing a dark short-sleeved top and a bracelet on her left wrist",
+        "action": "adjusting the branches of a tree",
+        "position": "right"
+      },
+      {
+        "desc": "green artificial Christmas tree with dense foliage",
+        "action": "being adjusted",
+        "position": "left",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "white text logo 'M&S.tv' with a small crown icon",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      },
+      {
+        "desc": "white window blinds with horizontal slats",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is reaching out with her left hand to touch or arrange the branches of the green tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The M&S.tv logo is visible in the top-left corner of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is standing to the right of the tree.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S.tv"
+    ],
+    "spatial": "The woman is positioned to the right of the large green tree. Her left hand is reaching towards the tree branches in the center of the frame. The window blinds are located in the background behind the woman and the tree.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with shoulder-length wavy blonde hair, wearing a dark top",
+        "action": "reaching towards the tree",
+        "position": "right/background",
+        "id": "person_blonde_hair_1"
+      },
+      {
+        "desc": "green artificial Christmas tree with needle-like branches",
+        "action": "static",
+        "position": "left/foreground",
+        "id": "christmas_tree_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person with blonde hair is reaching towards a Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree is positioned in the foreground on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S tv' logo is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The green Christmas tree is in the foreground on the left side of the frame. The person with blonde hair is in the background to the right of the tree. The 'M&S tv' text is located in the top left corner, above the tree branches.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length blonde hair, wearing a black short-sleeved top and black trousers",
+        "action": "turning and walking away from the tree",
+        "position": "center",
+        "id": "person_blonde_hair_1"
+      },
+      {
+        "desc": "green artificial Christmas tree with a white fabric skirt at the base",
+        "action": "static",
+        "position": "center/background",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "open cardboard box containing red and silver Christmas baubles",
+        "action": "static",
+        "position": "bottom right",
+        "id": "cardboard_box_1"
+      },
+      {
+        "desc": "black leather sofa with a white pillow featuring the word 'NOEL' in red letters",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "wooden tripod floor lamp with a beige shade",
+        "action": "static",
+        "position": "left background",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "white text logo 'M&S tv'",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman turns away from the Christmas tree and walks towards the left side of the room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A box of red and silver ornaments sits on the floor near the fireplace.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'NOEL' pillow rests on the black sofa.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The M&S tv logo is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The woman is in front of the Christmas tree and to the right of the sofa. The box of ornaments is on the floor to the right of the woman. The tripod lamp is to the left of the window shutters and behind the sofa.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with shoulder-length wavy brown hair, wearing a black short-sleeved top and black trousers",
+        "action": "standing and looking at the tree",
+        "position": "left",
+        "id": "person_brown_hair_1"
+      },
+      {
+        "desc": "artificial green Christmas tree with a white fabric base cover",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "black leather sofa with a white pillow featuring the word 'NOEL' in red letters and a red patterned pillow",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "open cardboard box containing red and silver Christmas baubles",
+        "action": "static",
+        "position": "right",
+        "id": "cardboard_box_1"
+      },
+      {
+        "desc": "white fireplace mantel decorated with a string of warm white lights and a banner",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "tall floor lamp with a beige shade and wooden tripod legs",
+        "action": "static",
+        "position": "left background",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "window covered with white horizontal blinds",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "white text logo 'M&S tv' with a stylized ampersand",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person stands to the left of the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree is positioned in front of the window.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A box of ornaments sits on the floor to the right of the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S tv' logo is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The person is standing to the left of the Christmas tree. The tree is centered in the room, directly in front of the window with white blinds. To the left of the person is a black sofa with pillows. To the right of the tree, on the floor, is an open box of ornaments, and further right is a fireplace mantel decorated with lights.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with curly brown hair, wearing a black short-sleeved dress",
+        "action": "standing and facing the Christmas tree",
+        "position": "left",
+        "id": "person_curly_brown_1"
+      },
+      {
+        "desc": "artificial Christmas tree, green, unadorned, with a white cloth base",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "cardboard box, open, containing red and gold Christmas baubles",
+        "action": "static",
+        "position": "center foreground",
+        "id": "cardboard_box_1"
+      },
+      {
+        "desc": "black leather sofa with a white 'NOEL' pillow and a red patterned pillow",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "white fireplace mantel with a garland and lights",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "wooden tripod floor lamp with a beige shade",
+        "action": "static",
+        "position": "left background",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person with curly hair stands in the living room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is facing the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A box of ornaments sits on the floor in front of the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'M&S tv' is visible in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'NOEL' is visible on a pillow on the sofa.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The person is to the left of the Christmas tree. The box of ornaments is on the floor in front of the tree. The sofa is to the left of the person. The fireplace is to the right of the tree. The tripod lamp is behind the person and to the left of the tree.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with shoulder-length blonde hair, wearing a black short-sleeved t-shirt and black pants",
+        "action": "standing on a stool and reaching up to decorate the top of the Christmas tree",
+        "position": "center",
+        "id": "person_blonde_hair_1"
+      },
+      {
+        "desc": "green artificial Christmas tree with a white fabric base cover",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "small wooden stool with a cushioned top",
+        "action": "static",
+        "position": "center",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "black leather sofa with a white pillow reading 'NOEL' and a red patterned pillow",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "wooden tripod floor lamp with a beige shade",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "open cardboard box containing red and silver Christmas baubles",
+        "action": "static",
+        "position": "bottom",
+        "id": "cardboard_box_1"
+      },
+      {
+        "desc": "white text logo 'M&S tv' with a stylized ampersand",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is standing on a stool to reach the top of the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding a string of lights or garland near the top of the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A cardboard box filled with ornaments sits on the floor near the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S tv' logo is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The person is standing on the stool, which is positioned in front of the Christmas tree. The sofa is to the left of the tripod lamp. The box of ornaments is on the floor to the right of the tree base.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": [
+      "person uses stool to reach top of tree for decorating"
+    ]
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with shoulder-length brown hair, wearing a black short-sleeved t-shirt and black trousers, standing barefoot",
+        "action": "reaching up to decorate the top of the tree",
+        "position": "center-right"
+      },
+      {
+        "desc": "green artificial Christmas tree with a white fabric base cover",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "small wooden stool with a light-colored cushion",
+        "action": "static",
+        "position": "center-right",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "black leather sofa with a white pillow reading 'NOEL' and a red patterned throw",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "wooden tripod floor lamp with a beige cylindrical shade",
+        "action": "static",
+        "position": "left background",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "string of warm white fairy lights",
+        "action": "static",
+        "position": "right background",
+        "id": "fairy_lights_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is standing on a small stool to reach the top of the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is adjusting decorations near the top of the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'M&S tv' is visible in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pillow with the word 'NOEL' is on the sofa.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The person is standing on the stool, which is positioned to the right of the Christmas tree. The sofa is to the left of the tree and the tripod lamp. The window shutters are behind the tree. The fairy lights are on the floor to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with shoulder-length brown hair, wearing a black short-sleeved top and black trousers",
+        "action": "standing on a stool and reaching up to decorate the top of the tree",
+        "position": "center-right",
+        "id": "person_brown_hair_1"
+      },
+      {
+        "desc": "artificial green Christmas tree with a white fabric skirt at the base",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "small wooden stool with a light-colored cushion",
+        "action": "static",
+        "position": "center-right",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "black leather sofa with a red patterned throw and a white pillow reading 'NOEL'",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "wooden tripod floor lamp with a beige cylindrical shade",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "window with white plantation shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "string of warm white fairy lights",
+        "action": "static",
+        "position": "right",
+        "id": "fairy_lights_1"
+      },
+      {
+        "desc": "white 'M&S tv' logo text",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is standing on a small wooden stool to reach the top of the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding a string of lights and placing them near the top of the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree is positioned in front of a window with white shutters.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pillow with the text 'NOEL' is resting on the black sofa to the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The M&S tv logo is visible in the top left corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The person is standing on the stool, which is placed to the right of the Christmas tree. The Christmas tree is located in the center of the room, in front of the window with white shutters. To the left of the tree, there is a tripod floor lamp and a black sofa. The 'NOEL' pillow is on the sofa. The fairy lights are on the floor to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with shoulder-length brown hair, wearing a black short-sleeved t-shirt and black trousers",
+        "action": "standing on a stool and reaching up to decorate the tree",
+        "position": "center-right",
+        "id": "person_brown_hair_1"
+      },
+      {
+        "desc": "green artificial Christmas tree with a white fabric skirt at the base",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "wooden stool with a padded seat cushion",
+        "action": "static",
+        "position": "center-right",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "black leather sofa with a red patterned throw blanket and a white pillow with 'NOEL' text",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "wooden tripod floor lamp with a beige cylindrical shade",
+        "action": "static",
+        "position": "left background",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "window with white plantation shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "white text logo 'M&S tv' with a sparkle icon",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is standing on a stool to reach the top of the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding a string of lights or tinsel near the top of the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'NOEL' pillow is resting on the black sofa.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The M&S tv logo is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The person is standing on the stool, which is positioned to the right of the Christmas tree. The Christmas tree is located in the center of the room, in front of the window with white shutters. To the left of the tree, there is a tripod lamp and a black sofa with a decorative pillow.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with shoulder-length brown hair, wearing a black short-sleeved top and black trousers",
+        "action": "standing on a stool and adjusting the top of the tree",
+        "position": "center-right",
+        "id": "person_brown_hair_1"
+      },
+      {
+        "desc": "green artificial Christmas tree with a white fabric skirt at the base",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "small wooden stool with a cushioned top",
+        "action": "static",
+        "position": "center-right",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "black leather sofa with a red patterned throw and a white pillow reading 'NOEL'",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "tripod floor lamp with a beige shade",
+        "action": "static",
+        "position": "left background",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "string of warm white fairy lights",
+        "action": "static",
+        "position": "right background",
+        "id": "fairy_lights_1"
+      },
+      {
+        "desc": "white text logo 'M&S tv'",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is standing on a wooden stool to reach the top of the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is using their hands to adjust the branches or lights near the top of the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree is positioned in front of a window with white shutters.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pillow with the text 'NOEL' is resting on the sofa.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S tv' logo is visible in the top-left corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The person is standing on the stool, which is placed to the right of the Christmas tree. The Christmas tree is located in the center of the room, in front of the window shutters. To the left of the tree, there is a tripod lamp and a sofa with a 'NOEL' pillow. The 'M&S tv' logo is positioned in the top-left corner, above the lamp.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short blonde hair, wearing a black short-sleeved top and black pants",
+        "action": "adjusting the Christmas tree",
+        "position": "center",
+        "id": "person_blonde_hair_1"
+      },
+      {
+        "desc": "green artificial Christmas tree with white flocking, standing in a white fabric base",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "black leather sofa with a white pillow featuring the word 'NOEL' in red letters and a red patterned throw blanket",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "wooden tripod floor lamp with a beige cylindrical shade",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white window shutters covering a large window",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "small wooden stool with a white cushion",
+        "action": "static",
+        "position": "right",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "white fireplace mantel decorated with a string of warm white fairy lights and a red and white garland",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "text logo 'M&S tv' in white font",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person with short blonde hair is adjusting the branches of a Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree is positioned in front of a window with white shutters.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pillow on the sofa to the left displays the text 'NOEL'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S tv' logo is visible in the top-left corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The person is standing in the center of the room, in front of the Christmas tree. The Christmas tree is positioned in front of the window with white shutters. To the left of the tree is a black sofa with a 'NOEL' pillow and a tripod lamp. To the right of the tree is a small stool and a fireplace mantel decorated with lights.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length brown hair, wearing a black short-sleeved top and black pants",
+        "action": "decorating the Christmas tree",
+        "position": "left",
+        "id": "person_brown_hair_1"
+      },
+      {
+        "desc": "green artificial Christmas tree with a white fabric base cover",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "white rectangular pillow with the word 'NOEL' in red letters",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "black leather sofa",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "wooden tripod floor lamp with a beige shade",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "white 'M&S tv' logo",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is standing next to the Christmas tree and reaching out to place an ornament on it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'NOEL' pillow is resting on the black sofa.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree is positioned in front of the window with white shutters.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S tv' logo is visible in the upper left corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The woman is to the left of the Christmas tree, reaching towards it. The Christmas tree is in the center of the room, in front of the window shutters. The black sofa with the 'NOEL' pillow is to the left of the woman. The tripod lamp is behind the sofa.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short blonde hair, wearing a black long-sleeved top and black pants",
+        "action": "reaching behind the Christmas tree",
+        "position": "center/background"
+      },
+      {
+        "desc": "artificial Christmas tree, green, unadorned, standing on a white base",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "black leather sofa with red and white pillows, one reading 'NOEL'",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "wooden tripod floor lamp with a beige shade",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white fireplace mantel decorated with string lights and garland",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "small wooden stool with a cushion",
+        "action": "static",
+        "position": "center/foreground",
+        "id": "wooden_stool_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is reaching behind the Christmas tree towards the window.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'NOEL' pillow is resting on the black sofa.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "String lights are draped along the fireplace mantel.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The Christmas tree is in the center of the room, in front of the window shutters. The person is behind the tree, reaching towards the window. The sofa is to the left of the tree, and the fireplace is to the right of the tree. The tripod lamp is next to the sofa.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with shoulder-length wavy brown hair, wearing a black short-sleeved top and black pants",
+        "action": "walking from the background window towards the left foreground",
+        "position": "center to left",
+        "id": "person_brown_hair_1"
+      },
+      {
+        "desc": "artificial Christmas tree, green, decorated with small white lights, base covered by a white cloth",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "black leather sofa with a white pillow featuring the text 'NOEL' in red letters and a red patterned pillow",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "tripod floor lamp with wooden legs and a beige cylindrical shade",
+        "action": "static",
+        "position": "left background",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "white fireplace mantel decorated with a string of warm white lights and a red and white garland",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "small wooden stool with a light-colored cushion",
+        "action": "static",
+        "position": "center foreground",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "text 'M&S tv' in a white serif font",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person walks from the window area towards the left side of the room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree is positioned in the center of the room in front of the window.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S tv' logo is visible in the top left corner of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pillow on the sofa reads 'NOEL'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The person is walking to the left of the Christmas tree. The Christmas tree is in front of the white window shutters. The black sofa is to the left of the tripod lamp. The fireplace is to the right of the Christmas tree.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with shoulder-length curly brown hair, wearing a black short-sleeved dress",
+        "action": "standing and facing the window",
+        "position": "left",
+        "id": "person_curly_brown_1"
+      },
+      {
+        "desc": "green artificial Christmas tree with white string lights and a white fabric tree skirt",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "window with white plantation shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "dark leather sofa with a white pillow featuring the word 'NOEL' in red letters",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "small wooden stool with a light-colored cushion",
+        "action": "static",
+        "position": "right",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "white fireplace mantel decorated with string lights and a garland",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "white text logo 'M&S tv' with a stylized ampersand",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a black dress stands in the living room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree is positioned in front of the window.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'NOEL' pillow rests on the sofa.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S tv' logo is visible in the top-left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The person is standing to the left of the Christmas tree. The Christmas tree is centered in front of the window with white shutters. The sofa with the 'NOEL' pillow is to the left of the person. The wooden stool is to the right of the tree, near the fireplace mantel.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with shoulder-length blonde hair, wearing a black short-sleeved dress and black leggings",
+        "action": "decorating the Christmas tree",
+        "position": "center",
+        "id": "person_blonde_hair_1"
+      },
+      {
+        "desc": "green Christmas tree with white lights and a white fabric skirt at the base",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "black leather sofa with a red patterned pillow and a white pillow with 'NOEL' text",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "tripod floor lamp with a grey cylindrical shade",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white fireplace mantel with string lights and a red garland",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "small wooden stool with a light-colored cushion",
+        "action": "static",
+        "position": "right",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "M&S tv logo in white text",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person with blonde hair is standing in front of a Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is reaching up to adjust the branches or decorations on the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree is positioned in front of a window with white shutters.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black sofa with a 'NOEL' pillow is visible on the left side of the room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A tripod lamp stands next to the sofa.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "String lights are draped along the fireplace mantel on the right.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The person is standing in the center of the room, in front of the Christmas tree. The Christmas tree is positioned in front of the window with white shutters. To the left of the person, there is a black sofa and a tripod lamp. To the right of the person, there is a small stool and a fireplace mantel.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with shoulder-length blonde hair, wearing a black short-sleeved dress and black tights",
+        "action": "reaching up to decorate the top of the Christmas tree",
+        "position": "center",
+        "id": "person_blonde_hair_1"
+      },
+      {
+        "desc": "green artificial Christmas tree with white lights",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "black leather sofa with a white pillow reading 'NOEL' and a red patterned pillow",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "tripod floor lamp with a beige shade",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white fireplace mantel with red garland",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "small wooden stool with a cushion",
+        "action": "static",
+        "position": "right",
+        "id": "wooden_stool_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person with blonde hair is reaching up to place an ornament or decoration on the top of the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree is positioned in front of a window with white shutters.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black sofa with a 'NOEL' pillow is located to the left of the scene.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'M&S tv' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The person is standing in the center of the room, in front of the Christmas tree. The Christmas tree is positioned in front of the window with white shutters. To the left of the person is a black sofa and a tripod lamp. To the right of the person is a small stool and a fireplace mantel.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with shoulder-length blonde hair, wearing a black long-sleeved dress and black tights",
+        "action": "decorating the top of the Christmas tree",
+        "position": "center",
+        "id": "person_blonde_hair_1"
+      },
+      {
+        "desc": "green Christmas tree with white lights",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "black leather sofa with a white pillow reading 'NOEL' and a red patterned pillow",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "wooden tripod floor lamp with a beige shade",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white fireplace mantel with red bunting and lights",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "small wooden stool with a white fur cushion",
+        "action": "static",
+        "position": "right",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "white text logo 'M&S tv'",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is reaching up to decorate the top of a Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is standing in front of a window with white shutters.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white pillow with the text 'NOEL' is on the sofa.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S tv' logo is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The person is in the center of the room, standing in front of the Christmas tree. The sofa is to the left of the person, and the fireplace is to the right. The tripod lamp is positioned between the sofa and the window in the background.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with curly blonde hair, wearing a black long-sleeved dress or tunic and black leggings",
+        "action": "decorating the Christmas tree",
+        "position": "center",
+        "id": "person_blonde_hair_1"
+      },
+      {
+        "desc": "green artificial Christmas tree with white lights",
+        "action": "standing",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "black leather sofa with a red pillow and a white pillow with 'NOEL' text",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "tripod floor lamp with a beige shade",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white fireplace mantel with garland and lights",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "large out-of-focus golden circular lights (bokeh effect)",
+        "action": "static",
+        "position": "foreground",
+        "id": "bokeh_lights_1"
+      },
+      {
+        "desc": "white text logo 'M&S tv'",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person with curly blonde hair is decorating a Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is reaching up to adjust the branches or lights on the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene transitions to a blurry view of golden bokeh lights.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'M&S tv' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The person is standing in front of the Christmas tree, which is positioned in front of a window with white shutters. To the left of the person is a black sofa and a tripod lamp. To the right of the person is a white fireplace mantel. The golden bokeh lights appear in the foreground, obscuring the view of the room.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a black short-sleeved top and black trousers",
+        "action": "standing on a stool and adjusting ornaments on the Christmas tree",
+        "position": "center-right",
+        "id": "person_brown_hair_1"
+      },
+      {
+        "desc": "green Christmas tree with red and gold ornaments and a white fabric base",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "small wooden stool with a dark finish",
+        "action": "static",
+        "position": "center-right",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "black leather sofa with a white pillow reading 'NOEL' and a red patterned pillow",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "tripod floor lamp with a beige shade",
+        "action": "static",
+        "position": "left background",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "white fireplace mantel with string lights",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "text 'M&S tv' in white font",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is standing on a wooden stool to reach the upper branches of the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is adjusting an ornament near the top of the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white pillow with the text 'NOEL' is resting on the black sofa.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree is decorated with red and gold baubles.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The person is standing on the wooden stool, which is positioned in front of the Christmas tree. The Christmas tree is located in the center of the room, in front of the white window shutters. To the left of the tree, there is a black sofa and a tripod floor lamp. To the right of the tree, a fireplace mantel with lights is visible.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": [
+      "hanging ornaments on tree begins"
+    ]
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with shoulder-length brown hair, wearing a black long-sleeved dress, black leggings, and a silver watch on the left wrist",
+        "action": "standing on a stool and hanging ornaments on the tree",
+        "position": "center"
+      },
+      {
+        "desc": "green Christmas tree decorated with red and gold baubles and a white fabric skirt at the base",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "small dark wooden stool",
+        "action": "static",
+        "position": "center",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "black leather sofa with a red patterned throw and a white pillow with 'NOEL' text",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "tripod floor lamp with a beige shade",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white fireplace mantel with a garland and lights",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "white text logo 'M&S tv'",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is standing on a stool to reach the upper branches of the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is placing an ornament on the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S tv' logo is visible in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pillow with the text 'NOEL' is on the sofa.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The person is standing on a stool which is positioned in front of the Christmas tree. The sofa is to the left of the tree, and the fireplace is to the right of the tree. The tripod lamp is located behind the sofa.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length brown hair, wearing a black top and a silver watch on her left wrist",
+        "action": "reaching towards the Christmas tree",
+        "position": "right",
+        "id": "person_brown_hair_1"
+      },
+      {
+        "desc": "Christmas tree with green needles and red ornaments",
+        "action": "static",
+        "position": "left",
+        "id": "christmas_tree_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is reaching her left arm towards the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a watch on her left wrist.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree is decorated with red ornaments.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S.tv"
+    ],
+    "spatial": "The woman is positioned to the right of the Christmas tree. Her arm extends from the right side of the frame towards the tree on the left. The M&S.tv logo is located in the top left corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      68,
+      70
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a silver wristwatch on the left wrist",
+        "action": "hanging a silver bauble on the tree",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "silver bauble ornament with a red ribbon loop",
+        "action": "being placed on a branch",
+        "position": "center",
+        "id": "ornaments_various_1"
+      },
+      {
+        "desc": "green artificial Christmas tree with needle-like branches",
+        "action": "static",
+        "position": "left/center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "white 'M&S tv' logo text",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is hanging a silver bauble ornament on a Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ornament is attached to a branch using a red ribbon.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a silver watch on their left wrist.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The person's hands are to the right of the Christmas tree branches. The silver bauble is being placed in the center of the frame, hanging from a branch. The M&S tv logo is located in the top left corner, above the tree.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      70,
+      72
+    ],
+    "visible_entities": [
+      {
+        "desc": "green artificial Christmas tree with needle-like branches",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "silver metallic jingle bell ornament with a red plaid ribbon and twine loop",
+        "action": "hanging",
+        "position": "center",
+        "id": "ornaments_various_1"
+      },
+      {
+        "desc": "white text logo 'M&S tv' in sans-serif font",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A silver jingle bell ornament hangs from a branch of the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S tv' logo is visible in the top left corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The silver jingle bell ornament is hanging in the center of the green Christmas tree. The 'M&S tv' text is located in the top left corner, above the tree branches.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      72,
+      74
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a dark long-sleeved garment",
+        "action": "hanging a red ornament",
+        "position": "right"
+      },
+      {
+        "desc": "green Christmas tree with dark green needles and shiny decorations",
+        "action": "static",
+        "position": "left",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "red spherical Christmas bauble, glossy finish",
+        "action": "being placed",
+        "position": "center",
+        "id": "ornaments_various_1"
+      },
+      {
+        "desc": "white text 'M&S tv' with a small logo",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is hanging a red spherical ornament on a Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hands are adjusting the position of the bauble among the branches.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'M&S tv' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The Christmas tree is positioned on the left side of the frame. The person's hands are to the right of the tree, reaching in to place the red ornament. The 'M&S tv' text is located above the tree branches in the top left corner.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      74,
+      76
+    ],
+    "visible_entities": [
+      {
+        "desc": "human hand with light skin tone",
+        "action": "adjusting ornaments on a tree",
+        "position": "right",
+        "id": "hand_1"
+      },
+      {
+        "desc": "dark green artificial Christmas tree with textured needles",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "shiny, reflective ornaments with warm lights",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white text logo 'M&S tv' with a small crown icon",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is reaching into the branches of a Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hand is manipulating shiny ornaments on the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S tv' logo is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The human hand is positioned to the right of the Christmas tree branches. The hand is reaching towards the shiny ornaments located in the center of the frame. The 'M&S tv' logo is situated in the top left corner, above the tree.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      76,
+      78
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hands with fair skin",
+        "action": "adjusting a star ornament",
+        "position": "right",
+        "id": "hand_1"
+      },
+      {
+        "desc": "dark green artificial Christmas tree with shiny needles",
+        "action": "static",
+        "position": "left",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "gold star-shaped ornament with reflective surface",
+        "action": "being placed",
+        "position": "center-right",
+        "id": "ornaments_various_1"
+      },
+      {
+        "desc": "white 'M&S' logo text",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person's hands are adjusting a gold star ornament on the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree has dark green, shiny needles.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S' logo is visible in the top-left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S"
+    ],
+    "spatial": "The person's hands are to the right of the Christmas tree branches. The gold star ornament is being held by the hands and is positioned in front of the tree. The 'M&S' logo is in the top-left corner, above the tree.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      78,
+      80
+    ],
+    "visible_entities": [
+      {
+        "desc": "Christmas tree with dense, dark green needles and a shiny, metallic silver ribbon ornament",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "M&S logo in white serif font",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A silver ribbon ornament is hanging on the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The M&S logo is visible in the top left corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S"
+    ],
+    "spatial": "The M&S logo is located in the top left corner, above the branches of the Christmas tree. The silver ribbon ornament is positioned on the right side of the tree, nestled among the green needles.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": [
+      "close-up shots of individual ornaments begin"
+    ]
+  },
+  {
+    "time": [
+      80,
+      82
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair, wearing a dark top and a silver watch on her left wrist",
+        "action": "reaching up to adjust an ornament",
+        "position": "right",
+        "id": "person_brown_hair_1"
+      },
+      {
+        "desc": "green Christmas tree with pine needles",
+        "action": "static",
+        "position": "left",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "red bauble ornament with a plaid pattern",
+        "action": "hanging",
+        "position": "left foreground",
+        "id": "ornaments_various_1"
+      },
+      {
+        "desc": "small brown plush ornament",
+        "action": "hanging",
+        "position": "left center",
+        "id": "ornaments_various_1"
+      },
+      {
+        "desc": "white 'M&S' logo text",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman reaches her left arm towards the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is adjusting a small brown ornament on the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red plaid bauble hangs below the brown ornament.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S' logo is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S"
+    ],
+    "spatial": "The woman is positioned to the right of the Christmas tree. Her hand is reaching towards the center of the tree branches. The red plaid bauble is hanging below the small brown ornament she is touching. The 'M&S' logo is located in the top left corner of the frame, above the tree.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      82,
+      84
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length brown hair, wearing a dark top and a silver watch on her left wrist",
+        "action": "decorating the Christmas tree",
+        "position": "right",
+        "id": "person_brown_hair_1"
+      },
+      {
+        "desc": "shiny pink glass bauble with a textured, iridescent blue and gold rim",
+        "action": "hanging on the tree",
+        "position": "left",
+        "id": "ornaments_various_1"
+      },
+      {
+        "desc": "Christmas tree with green needles and ornaments",
+        "action": "static",
+        "position": "left",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "white text logo 'M&S TV' with a small crown icon",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is reaching out to place an ornament on the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pink bauble with a decorative rim is hanging on the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The M&S TV logo is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S TV"
+    ],
+    "spatial": "The woman is positioned to the right of the Christmas tree. The pink bauble is hanging on the tree in the foreground, to the left of the woman. The M&S TV logo is located in the top left corner of the frame, above the tree.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      84,
+      86
+    ],
+    "visible_entities": [
+      {
+        "desc": "shiny pink spherical Christmas bauble with a textured, multi-colored cap featuring concentric rings of gold, blue, and red",
+        "action": "static",
+        "position": "left/foreground",
+        "id": "ornaments_various_1"
+      },
+      {
+        "desc": "blurred blue geometric ornament with star-like patterns",
+        "action": "static",
+        "position": "center/background",
+        "id": "ornaments_various_1"
+      },
+      {
+        "desc": "dark green pine needles of a Christmas tree",
+        "action": "static",
+        "position": "background",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "white text logo 'M&S TV' with a small crown icon",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pink Christmas bauble hangs stationary in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bauble reflects the surrounding environment on its glossy surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S TV' logo is visible in the upper left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S TV"
+    ],
+    "spatial": "The pink bauble is in the foreground on the left side of the frame. The blurred blue ornament is behind the pink bauble in the center. The green pine needles are in the background behind both ornaments.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      86,
+      88
+    ],
+    "visible_entities": [
+      {
+        "desc": "small brown paper gift bag with a white snowflake design and a red ribbon handle",
+        "action": "hanging",
+        "position": "center-right",
+        "id": "ornaments_various_1"
+      },
+      {
+        "desc": "shiny red spherical Christmas ornament",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "ornaments_various_1"
+      },
+      {
+        "desc": "green pine tree branches",
+        "action": "static",
+        "position": "foreground",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "white text logo reading 'M&S tv'",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A small gift bag ornament hangs from a tree branch.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red bauble is visible in the lower left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The M&S tv logo is displayed in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The brown gift bag is hanging from a branch in the center-right of the frame. The red spherical ornament is located in the bottom-left foreground, below and to the left of the gift bag. The 'M&S tv' text is positioned in the top-left corner, above the tree branches.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      88,
+      90
+    ],
+    "visible_entities": [
+      {
+        "desc": "shiny red spherical Christmas bauble with a silver cap",
+        "action": "hanging from a branch",
+        "position": "center",
+        "id": "ornaments_various_1"
+      },
+      {
+        "desc": "green pine tree branches with needle-like leaves",
+        "action": "static",
+        "position": "background",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "small golden spherical ornaments",
+        "action": "static",
+        "position": "background",
+        "id": "ornaments_various_1"
+      },
+      {
+        "desc": "white text logo 'M&S tv'",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A red bauble hangs from a green pine branch.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The camera focus shifts slightly on the decorations.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'M&S tv' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The red bauble is in the center foreground, hanging from the green pine branches which fill the background. The golden ornaments are located behind and to the left of the red bauble. The 'M&S tv' logo is positioned in the top left corner, above the tree decorations.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      90,
+      92
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length brown hair, wearing a black short-sleeved dress and black leggings",
+        "action": "standing on a stool and decorating the tree",
+        "position": "right",
+        "id": "person_brown_hair_1"
+      },
+      {
+        "desc": "green Christmas tree with ornaments and a white fabric skirt at the base",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "shiny red spherical bauble hanging from a branch",
+        "action": "static",
+        "position": "foreground",
+        "id": "ornaments_various_1"
+      },
+      {
+        "desc": "small wooden stool with a cushion",
+        "action": "static",
+        "position": "right",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "black leather sofa with a 'NOEL' pillow",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "tripod floor lamp with a beige shade",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white text logo 'M&S tv' with a crown icon",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman stands on a stool to reach the upper branches of the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is placing an ornament on the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red bauble hangs in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'M&S tv' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The woman is standing on a stool to the right of the Christmas tree. The sofa is to the left of the tree. The tripod lamp is behind the sofa. The red bauble is in the foreground, hanging from the tree branches.",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      92,
+      94
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with shoulder-length brown hair, wearing a black short-sleeved top, black leggings, and beige socks",
+        "action": "standing on a wooden stool to reach the Christmas tree",
+        "position": "right",
+        "id": "person_brown_hair_1"
+      },
+      {
+        "desc": "green Christmas tree decorated with red and gold baubles and ornaments, with a white fabric skirt at the base",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "small wooden stool with a cushioned top",
+        "action": "supporting the person",
+        "position": "right",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "black leather sofa with red patterned cushions and a white pillow featuring the word 'NOEL' in red letters",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "tripod floor lamp with wooden legs and a beige cylindrical shade",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white fireplace mantel decorated with a string of warm white lights and a red garland",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "white text logo 'M&S tv' in a serif font",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is standing on a wooden stool next to a Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is reaching towards the middle section of the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree is positioned in front of a window with white shutters.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black sofa with a 'NOEL' pillow is located to the left of the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A tripod lamp stands in the corner to the left of the window.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'M&S tv' is visible in the top-left corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The person is standing on a stool to the right of the Christmas tree. The Christmas tree is in the center of the room, in front of the window shutters. To the left of the tree, there is a black sofa and a tripod floor lamp. To the right of the tree, there is a fireplace mantel decorated with lights.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      94,
+      96
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with blonde hair tied back, wearing a black short-sleeved top and black trousers",
+        "action": "bending over a stool to handle a gift box",
+        "position": "right",
+        "id": "person_blonde_hair_1"
+      },
+      {
+        "desc": "green Christmas tree decorated with red and gold baubles and ornaments, with a white fabric skirt at the base",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "dark leather sofa with a red patterned throw blanket and a white pillow featuring the word 'NOEL' in red letters",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "wooden tripod floor lamp with a beige cylindrical shade",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "wooden stool with a cushioned seat",
+        "action": "static",
+        "position": "right",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "white fireplace mantel decorated with string lights and a red and white garland",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "M&S tv logo in white text",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is bending over a stool to arrange or wrap a gift box.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree is fully decorated with ornaments.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pillow on the sofa displays the text 'NOEL'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "String lights are draped along the fireplace mantel.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The Christmas tree is in the center of the room, positioned in front of the white window shutters. To the left of the tree, there is a tripod floor lamp and a dark leather sofa. To the right of the tree, a person is bending over a wooden stool. The fireplace mantel is on the far right wall, next to the person.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      96,
+      98
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with shoulder-length brown hair, wearing a black short-sleeved top and black trousers",
+        "action": "standing and adjusting items near the tree",
+        "position": "right",
+        "id": "person_brown_hair_1"
+      },
+      {
+        "desc": "green Christmas tree decorated with red and gold baubles, topped with a star, base covered by a white cloth",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "black leather sofa with red patterned cushions and a white pillow reading 'NOEL'",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "wooden tripod floor lamp with a beige cylindrical shade",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "white fireplace mantel decorated with fairy lights and garland",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "small wooden stool with a cushion",
+        "action": "static",
+        "position": "right",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "white text logo 'M&S tv' with a sparkle icon",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is standing to the right of the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is reaching towards the tree or the area near the window.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree is positioned in front of the white window shutters.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S tv' logo is visible in the top left corner of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pillow with the text 'NOEL' is on the sofa.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The person is standing to the right of the Christmas tree. The Christmas tree is in the center of the room, in front of the window shutters. To the left of the tree, there is a tripod lamp and a sofa. To the right of the tree, there is a fireplace mantel decorated with lights.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      98,
+      100
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a black short-sleeved top and black pants",
+        "action": "standing and arranging gifts",
+        "position": "right",
+        "id": "person_brown_hair_1"
+      },
+      {
+        "desc": "green Christmas tree with ornaments, topped with a star, base covered in white fabric",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "black leather sofa with red and white pillows, one reading 'NOEL'",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "wooden tripod floor lamp with a beige cylindrical shade",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "wrapped gift boxes in gold and red paper",
+        "action": "being placed",
+        "position": "center/right",
+        "id": "wrapped_gifts_1"
+      },
+      {
+        "desc": "white fireplace mantel with garland and lights",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is standing next to the Christmas tree arranging wrapped gifts.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree is decorated with red and gold ornaments.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pillow on the sofa displays the text 'NOEL'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The M&S.tv logo is visible in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Fairy lights are strung along the fireplace mantel.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S.tv",
+      "NOEL"
+    ],
+    "spatial": "The Christmas tree is in the center of the room, in front of the white window shutters. The person is to the right of the tree, placing gifts on a stool. The black sofa is to the left of the tree, with the tripod lamp standing next to it. The fireplace is on the far right wall.",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      100,
+      102
+    ],
+    "visible_entities": [
+      {
+        "desc": "Christmas tree with green needles, decorated with red and gold baubles, topped with a star",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "floor lamp with a beige cylindrical shade and a wooden tripod base",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "window with white plantation shutters",
+        "action": "static",
+        "position": "background left",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "stack of wrapped gift boxes with various patterns (red, gold, silver)",
+        "action": "static",
+        "position": "bottom center",
+        "id": "wrapped_gifts_1"
+      },
+      {
+        "desc": "white fireplace mantel with a large mirror above it",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "black flat-screen television",
+        "action": "static",
+        "position": "background right",
+        "id": "television_1"
+      },
+      {
+        "desc": "white text logo 'M&S tv' in the top left corner",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A Christmas tree stands in the center of the room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Wrapped gifts are piled on the floor beneath the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S tv' logo is visible in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A lamp with a wooden tripod base stands to the left of the tree.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The Christmas tree is in the center of the room, positioned in front of the window with white shutters. To the left of the tree is a floor lamp with a wooden tripod base. To the right of the tree is a white fireplace mantel with a mirror above it. Wrapped gifts are placed on the floor directly below the Christmas tree.",
+    "parse_success": true,
+    "chunk_idx": 50,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      102,
+      104
+    ],
+    "visible_entities": [
+      {
+        "desc": "Christmas tree, green, decorated with red and gold baubles, white lights, and a star topper",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "floor lamp, tripod style with wooden legs and a beige cylindrical shade",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "windows with white plantation shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "wrapped gifts, various sizes and patterns including polka dots and stripes",
+        "action": "static",
+        "position": "bottom",
+        "id": "wrapped_gifts_1"
+      },
+      {
+        "desc": "television, black screen",
+        "action": "static",
+        "position": "right",
+        "id": "television_1"
+      },
+      {
+        "desc": "fireplace mantel, white, decorated with a garland",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "M&S.tv logo, white text",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The scene is a static shot of a decorated living room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The M&S.tv logo is visible in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Christmas lights are strung along the fireplace mantel and under the window.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S.tv"
+    ],
+    "spatial": "The Christmas tree is in the center of the room, standing in front of the windows with white shutters. To the left of the tree is a tripod floor lamp. To the right of the tree is a television and a fireplace mantel. Wrapped gifts are piled on the floor at the base of the tree.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      104,
+      106
+    ],
+    "visible_entities": [
+      {
+        "desc": "Christmas tree with green needles, decorated with red and gold baubles, white ornaments, and a gold star topper",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "floor lamp with a beige cylindrical shade and a light wooden tripod base",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white window shutters with horizontal slats",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "wrapped gift boxes with various patterns (polka dots, stripes) stacked on the floor",
+        "action": "static",
+        "position": "bottom",
+        "id": "wrapped_gifts_1"
+      },
+      {
+        "desc": "black flat-screen television",
+        "action": "static",
+        "position": "right",
+        "id": "television_1"
+      },
+      {
+        "desc": "white fireplace mantel decorated with a garland and red ornaments",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "string of warm white fairy lights",
+        "action": "static",
+        "position": "background",
+        "id": "fairy_lights_1"
+      },
+      {
+        "desc": "white text logo 'M&S tv' with a stylized ampersand",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The Christmas tree is decorated with red and gold baubles.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Wrapped gifts are stacked under the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A floor lamp stands to the left of the window.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Fairy lights are draped along the window sill and fireplace.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S tv' logo is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The Christmas tree is in the center of the room, positioned in front of the white window shutters. To the left of the tree stands a tripod floor lamp. To the right of the tree, a television sits on a white cabinet next to a fireplace mantel. Wrapped gift boxes are placed on the floor at the base of the tree.",
+    "parse_success": true,
+    "chunk_idx": 52,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      106,
+      108
+    ],
+    "visible_entities": [
+      {
+        "desc": "purple sequined bauble, spherical, shiny texture",
+        "action": "static",
+        "position": "center",
+        "id": "ornaments_various_1"
+      },
+      {
+        "desc": "purple bauble with gold grid pattern, spherical, shiny texture",
+        "action": "static",
+        "position": "left",
+        "id": "ornaments_various_1"
+      },
+      {
+        "desc": "green pine needles, part of a Christmas tree",
+        "action": "static",
+        "position": "background",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "white text logo 'M&S tv'",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A purple sequined bauble hangs in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A purple bauble with a gold grid pattern hangs on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ornaments are suspended from green pine branches.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'M&S tv' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The purple sequined bauble is in the center, while the purple bauble with the gold grid pattern is to its left. Both ornaments are hanging from the green pine needles which fill the background. The 'M&S tv' text is located in the top-left corner, above the ornaments.",
+    "parse_success": true,
+    "chunk_idx": 53,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      108,
+      110
+    ],
+    "visible_entities": [
+      {
+        "desc": "purple spherical Christmas bauble with a gold lattice/grid pattern and shiny texture",
+        "action": "hanging on tree branch",
+        "position": "foreground left",
+        "id": "ornaments_various_1"
+      },
+      {
+        "desc": "green Christmas tree with needle-like branches",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "silhouette of a person with long hair wearing a dark dress or top",
+        "action": "reaching up to decorate",
+        "position": "background right"
+      },
+      {
+        "desc": "blurred red spherical ornament",
+        "action": "hanging",
+        "position": "background right",
+        "id": "ornaments_various_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A purple bauble with a gold grid pattern hangs in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person is reaching up to place an ornament on the top of the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The camera focus shifts from the purple bauble to the person decorating in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The purple bauble is in the foreground on the left side of the frame, hanging from the green Christmas tree branches. The person is in the background to the right of the tree, reaching towards the top of it. A blurred red ornament is visible behind the person.",
+    "parse_success": true,
+    "chunk_idx": 54,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      110,
+      112
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length wavy brown hair, wearing a black short-sleeved top and black pants",
+        "action": "reaching up to place a topper on the Christmas tree",
+        "position": "right",
+        "id": "person_brown_hair_1"
+      },
+      {
+        "desc": "green artificial Christmas tree decorated with red baubles, gold star ornaments, and ribbon bows",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "white and beige angel tree topper with a red base",
+        "action": "being placed on top of the tree",
+        "position": "top center",
+        "id": "tree_topper_angel_1"
+      },
+      {
+        "desc": "floor lamp with a beige cylindrical shade and a light wood tripod base",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white window shutters with horizontal slats",
+        "action": "static",
+        "position": "background left",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "crystal chandelier hanging from the ceiling",
+        "action": "static",
+        "position": "top right",
+        "id": "crystal_chandelier_1"
+      },
+      {
+        "desc": "black flat-screen television",
+        "action": "static",
+        "position": "bottom right",
+        "id": "television_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is placing an angel topper on the peak of the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree is decorated with red and gold ornaments.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A floor lamp stands to the left of the window.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'M&S.tv' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S.tv"
+    ],
+    "spatial": "The woman is standing to the right of the Christmas tree. The Christmas tree is positioned in front of the white window shutters. The floor lamp is to the left of the window. The chandelier is above the woman and the tree.",
+    "parse_success": true,
+    "chunk_idx": 55,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": [
+      "tree topper (angel) being placed on tree"
+    ]
+  },
+  {
+    "time": [
+      112,
+      114
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with shoulder-length wavy brown hair, wearing a black short-sleeved top and black pants",
+        "action": "reaching up to place a tree topper",
+        "position": "right",
+        "id": "person_brown_hair_1"
+      },
+      {
+        "desc": "green Christmas tree decorated with red and gold baubles and a star topper",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "wooden tripod floor lamp with a beige cylindrical shade",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "crystal chandelier",
+        "action": "static",
+        "position": "top",
+        "id": "crystal_chandelier_1"
+      },
+      {
+        "desc": "white text logo 'M&S tv'",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is reaching up with their right hand to place a star topper on the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree is decorated with red and gold ornaments.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S tv' logo is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The person is standing to the right of the Christmas tree. The Christmas tree is positioned in front of the white window shutters. The wooden tripod lamp is to the left of the Christmas tree. The crystal chandelier is hanging above the scene.",
+    "parse_success": true,
+    "chunk_idx": 56,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      114,
+      116
+    ],
+    "visible_entities": [
+      {
+        "desc": "Christmas tree topper angel doll with blonde yarn hair, white wings, red dress, and white collar",
+        "action": "static",
+        "position": "top/center",
+        "id": "tree_topper_angel_1"
+      },
+      {
+        "desc": "Green artificial Christmas tree branches with pine needles",
+        "action": "static",
+        "position": "bottom/foreground"
+      },
+      {
+        "desc": "Small warm white light bulb",
+        "action": "glowing",
+        "position": "center",
+        "id": "fairy_lights_1"
+      },
+      {
+        "desc": "Red spherical ornament",
+        "action": "static",
+        "position": "bottom right",
+        "id": "ornaments_various_1"
+      },
+      {
+        "desc": "White text logo 'M&S tv'",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "An angel doll is placed on the top of the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small light bulb on the tree is glowing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'M&S tv' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The angel doll is positioned on top of the green Christmas tree branches. The glowing light bulb is situated among the branches below the angel. The red ornament is located on the lower right side of the tree. The 'M&S tv' logo is in the upper left corner of the frame, above the tree.",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      116,
+      118
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a white sleeveless dress",
+        "action": "standing behind the Christmas tree",
+        "position": "right background",
+        "id": "person_white_dress_1"
+      },
+      {
+        "desc": "Christmas tree, green with red and gold ornaments, topped with a star, standing on a white base",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "black leather sofa with red and white pillows, one pillow has 'NOEL' text",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "wooden tripod floor lamp with a beige shade",
+        "action": "static",
+        "position": "left background",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "stack of wrapped gift boxes with various patterns (stripes, polka dots) and colors",
+        "action": "static",
+        "position": "center foreground",
+        "id": "wrapped_gifts_1"
+      },
+      {
+        "desc": "white fireplace mantel decorated with a garland and string lights",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "M&S.tv logo, white text",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a white dress is standing behind the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree is decorated with red and gold ornaments.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pillow on the sofa displays the text 'NOEL'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several wrapped gifts are placed on the floor in front of the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The M&S.tv logo is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S.tv",
+      "NOEL"
+    ],
+    "spatial": "The Christmas tree is in the center of the room, in front of the white window shutters. The person is standing behind the tree, slightly to the right. The black sofa is to the left of the tree, with the tripod lamp next to it. The stack of gifts is on the floor in front of the tree. The fireplace is to the right of the tree.",
+    "parse_success": true,
+    "chunk_idx": 58,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": [
+      "person in white dress appears (different from previous presenters)"
+    ]
+  },
+  {
+    "time": [
+      118,
+      120
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length brown hair, wearing a black short-sleeved top and black trousers",
+        "action": "walking from right to left",
+        "position": "right to left",
+        "id": "person_brown_hair_1"
+      },
+      {
+        "desc": "Christmas tree, green with red and gold ornaments, white lights, and a white tree skirt",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "stack of wrapped gifts, various sizes and patterns including chevron and solid colors",
+        "action": "static",
+        "position": "foreground center",
+        "id": "wrapped_gifts_1"
+      },
+      {
+        "desc": "black leather sofa with a red patterned throw and a white 'NOEL' cushion",
+        "action": "static",
+        "position": "left",
+        "id": "black_leather_sofa_1"
+      },
+      {
+        "desc": "tripod floor lamp with a beige shade",
+        "action": "static",
+        "position": "left background",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "M&S tv logo, white text",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman in black clothing walks from the right side of the room towards the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The M&S tv logo is visible in the top left corner of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white cushion with the word 'NOEL' is on the sofa.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "NOEL"
+    ],
+    "spatial": "The Christmas tree is in the center of the room, in front of the window shutters. The stack of gifts is on the floor in front of the tree. The woman is to the right of the tree and is walking towards the sofa on the left. The tripod lamp is to the left of the tree.",
+    "parse_success": true,
+    "chunk_idx": 59,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      120,
+      122
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with curly dark hair, wearing a black short-sleeved top",
+        "action": "standing and looking at the Christmas tree",
+        "position": "left foreground",
+        "id": "person_curly_dark_1"
+      },
+      {
+        "desc": "Christmas tree decorated with red and gold baubles, white ornaments, and lights",
+        "action": "static",
+        "position": "center background",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "pile of wrapped gifts in various patterns including chevron and polka dots",
+        "action": "static",
+        "position": "bottom center",
+        "id": "wrapped_gifts_1"
+      },
+      {
+        "desc": "tripod floor lamp with a beige shade",
+        "action": "static",
+        "position": "left background",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white fireplace mantel with garland and lights",
+        "action": "static",
+        "position": "right background",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "center background",
+        "id": "window_shutters_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person stands in the foreground observing the room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A decorated Christmas tree is positioned in front of a window with white shutters.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Wrapped gifts are piled on the floor beneath the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'M&S tv' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The person is to the left of the Christmas tree. The Christmas tree is in front of the window shutters. The pile of gifts is below the Christmas tree. The tripod lamp is to the left of the tree and behind the person. The fireplace is to the right of the tree.",
+    "parse_success": true,
+    "chunk_idx": 60,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      122,
+      124
+    ],
+    "visible_entities": [
+      {
+        "desc": "red knitted ornament shaped like a Christmas cracker with white snowflake pattern and white stripes on the ends",
+        "action": "static",
+        "position": "left",
+        "id": "ornaments_various_1"
+      },
+      {
+        "desc": "red glittery spherical bauble",
+        "action": "static",
+        "position": "center",
+        "id": "ornaments_various_1"
+      },
+      {
+        "desc": "white and brown spherical bauble painted to look like a Christmas pudding with white icing dripping down and a green holly leaf on top",
+        "action": "static",
+        "position": "left",
+        "id": "ornaments_various_1"
+      },
+      {
+        "desc": "green Christmas tree branches with needles",
+        "action": "static",
+        "position": "background",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "white text logo 'M&S tv'",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video shows close-up shots of Christmas tree decorations.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red knitted cracker ornament hangs on the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red glittery bauble hangs next to the cracker ornament.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bauble painted to resemble a Christmas pudding hangs on the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S tv' logo is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The red knitted cracker ornament is to the left of the red glittery bauble. The Christmas pudding bauble is below the cracker ornament. All ornaments are hanging on the green Christmas tree branches.",
+    "parse_success": true,
+    "chunk_idx": 61,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      124,
+      126
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length wavy brown hair, wearing a black short-sleeved top with a sheer panel on the chest and a long silver necklace with a pendant",
+        "action": "standing behind a table and speaking",
+        "position": "center",
+        "id": "person_brown_hair_1"
+      },
+      {
+        "desc": "Christmas tree decorated with red and gold baubles, ribbons, and lights",
+        "action": "static",
+        "position": "left",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "white table covered with wrapping paper rolls, gift bags, ribbons, and ornaments",
+        "action": "static",
+        "position": "foreground",
+        "id": "wrapped_gifts_1"
+      },
+      {
+        "desc": "white shelf with lit candles and wooden tree decorations",
+        "action": "static",
+        "position": "background",
+        "id": "shelf_1"
+      },
+      {
+        "desc": "white text logo 'M&S tv' with a stylized ampersand",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is standing behind a table filled with Christmas wrapping supplies.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is speaking to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A decorated Christmas tree is positioned to the left of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S tv' logo is visible in the top left corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The woman is standing behind the white table in the center of the frame. The Christmas tree is to the left of the woman. The shelf with candles is behind the woman and above the table. The wrapping supplies are on the table in front of the woman.",
+    "parse_success": true,
+    "chunk_idx": 62,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      126,
+      128
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length wavy brown hair, wearing a black short-sleeved dress with a V-neckline and a long silver necklace with a pendant",
+        "action": "standing behind a table",
+        "position": "center",
+        "id": "person_brown_hair_1"
+      },
+      {
+        "desc": "Christmas tree decorated with red and gold baubles, lights, and ornaments",
+        "action": "static",
+        "position": "left",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "white table surface covered with wrapping paper rolls, gift bags, and decorative baubles",
+        "action": "static",
+        "position": "foreground",
+        "id": "wrapped_gifts_1"
+      },
+      {
+        "desc": "white shelf with candles and wooden decorations",
+        "action": "static",
+        "position": "background",
+        "id": "shelf_1"
+      },
+      {
+        "desc": "white text logo reading 'M&S tv'",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman stands behind a table filled with wrapping supplies.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A decorated Christmas tree is visible on the left side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S tv' logo is displayed in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Candles are lit on the shelf in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The woman is standing behind the white table in the center of the frame. To her left is a decorated Christmas tree. The table is in the foreground, holding various wrapping materials. Behind the woman, a shelf with candles is mounted on the wall.",
+    "parse_success": true,
+    "chunk_idx": 63,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      128,
+      130
+    ],
+    "visible_entities": [
+      {
+        "desc": "M&S logo, white text with a small crown icon",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      },
+      {
+        "desc": "large, out-of-focus circular lights, glowing in shades of warm yellow and orange",
+        "action": "shifting position",
+        "position": "background",
+        "id": "bokeh_lights_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The out-of-focus lights shift slightly in position and intensity between the frames.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The M&S logo remains fixed in the top-left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S"
+    ],
+    "spatial": "The M&S logo is positioned in the top-left corner of the frame, overlaid on top of the background lights. The large, glowing circular lights are scattered across the background, with some appearing on the left and others towards the center and right.",
+    "parse_success": true,
+    "chunk_idx": 64,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      130,
+      132
+    ],
+    "visible_entities": [
+      {
+        "desc": "large, round, glittery silver bauble with a textured surface",
+        "action": "hanging",
+        "position": "foreground left",
+        "id": "ornaments_various_1"
+      },
+      {
+        "desc": "green Christmas tree decorated with red and white ornaments and topped with a star",
+        "action": "static",
+        "position": "background center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "crystal chandelier with multiple lit bulbs",
+        "action": "static",
+        "position": "top right",
+        "id": "crystal_chandelier_1"
+      },
+      {
+        "desc": "white fireplace mantel with a mirror above it",
+        "action": "static",
+        "position": "background right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "white text logo reading 'M&S tv'",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera focus shifts from a close-up of a hanging ornament to a wide shot of a living room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A decorated Christmas tree stands in the center of the room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A chandelier hangs from the ceiling above the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'M&S tv' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The glittery silver bauble is in the foreground on the left, appearing in front of the Christmas tree. The Christmas tree is positioned in the center of the room, below the chandelier. The fireplace mantel is to the right of the Christmas tree. The 'M&S tv' logo is in the top left corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 65,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      132,
+      134
+    ],
+    "visible_entities": [
+      {
+        "desc": "Christmas tree, green, decorated with red and white ornaments, candy canes, and baubles, topped with a star",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "Crystal chandelier, glowing with warm light, hanging from the ceiling",
+        "action": "static",
+        "position": "top right",
+        "id": "crystal_chandelier_1"
+      },
+      {
+        "desc": "White window shutters, slatted, covering a large window",
+        "action": "static",
+        "position": "left background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "Floor lamp, white shade, wooden tripod legs",
+        "action": "static",
+        "position": "left foreground",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "Fireplace mantel, white, decorated with garland and a string of heart-shaped ornaments",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "Large mirror, rectangular frame, reflecting the Christmas tree",
+        "action": "static",
+        "position": "right wall",
+        "id": "mirror_1"
+      },
+      {
+        "desc": "Text logo 'M&S tv', white, sans-serif font",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A decorated Christmas tree stands in the center of the room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A crystal chandelier hangs above the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The M&S tv logo is visible in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A mirror on the right wall reflects the Christmas tree.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The Christmas tree is in the center of the room, positioned in front of the white window shutters. The crystal chandelier is above and to the right of the tree. The floor lamp is to the left of the tree in the foreground. The fireplace mantel is to the right of the tree, with a large mirror mounted on the wall above it.",
+    "parse_success": true,
+    "chunk_idx": 66,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      134,
+      136
+    ],
+    "visible_entities": [
+      {
+        "desc": "Christmas tree with green needles, decorated with pink and silver baubles, white lights, and a star topper",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "wrapped gift boxes with various patterns and ribbons",
+        "action": "static",
+        "position": "bottom",
+        "id": "wrapped_gifts_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "floor lamp with a white shade and tripod legs",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "chandelier with crystal details",
+        "action": "static",
+        "position": "top",
+        "id": "crystal_chandelier_1"
+      },
+      {
+        "desc": "black television screen",
+        "action": "static",
+        "position": "right",
+        "id": "television_1"
+      },
+      {
+        "desc": "M&S.tv logo in white text",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera pans slightly to the left, revealing a floor lamp.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A Christmas tree stands in the center of the room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Gift boxes are piled under the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The M&S.tv logo is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S.tv"
+    ],
+    "spatial": "The Christmas tree is in the center of the room, with wrapped gifts placed underneath it. The window shutters are behind the tree. The floor lamp is to the left of the tree, and the television is to the right. The chandelier hangs above the tree.",
+    "parse_success": true,
+    "chunk_idx": 67,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      136,
+      138
+    ],
+    "visible_entities": [
+      {
+        "desc": "Christmas tree with green needles, decorated with pink, purple, and silver baubles",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "stack of wrapped gifts in silver, gold, and red paper with ribbons",
+        "action": "static",
+        "position": "bottom",
+        "id": "wrapped_gifts_1"
+      },
+      {
+        "desc": "floor lamp with a beige cylindrical shade and a wooden tripod base",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white window shutters with horizontal slats",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "white fireplace mantel with a garland and lights",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "crystal chandelier hanging from the ceiling",
+        "action": "static",
+        "position": "top",
+        "id": "crystal_chandelier_1"
+      },
+      {
+        "desc": "white wall or door surface",
+        "action": "moving",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A white wall or door slides into the frame from the left, obscuring the view of the room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Christmas tree stands in the center of the room, surrounded by wrapped gifts at its base.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'M&S tv' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The Christmas tree is in the center of the room, with a stack of gifts placed below it. The floor lamp is to the left of the tree, and the fireplace is to the right. A white wall moves in front of the scene from the left side, partially blocking the view of the lamp and window.",
+    "parse_success": true,
+    "chunk_idx": 68,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      138,
+      140
+    ],
+    "visible_entities": [
+      {
+        "desc": "Christmas tree with green needles, decorated with white and silver spherical ornaments",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "pile of wrapped gifts in various patterns (polka dots, stripes) and colors (pink, silver, gold)",
+        "action": "static",
+        "position": "bottom",
+        "id": "wrapped_gifts_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "left",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "white fireplace mantel with garland and string lights",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "crystal chandelier",
+        "action": "static",
+        "position": "top",
+        "id": "crystal_chandelier_1"
+      },
+      {
+        "desc": "white text logo 'M&S tv' with a small crown icon",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      },
+      {
+        "desc": "floor lamp with a white shade",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The scene displays a decorated Christmas tree in a living room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Wrapped gifts are placed on the floor beneath the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S tv' logo is visible in the top-left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "String lights are draped along the fireplace mantel.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The Christmas tree is in the center of the room, positioned in front of the white window shutters. The pile of gifts is below the tree. The fireplace mantel is to the right of the tree. The chandelier is above the tree. The floor lamp is to the left of the tree.",
+    "parse_success": true,
+    "chunk_idx": 69,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      140,
+      142
+    ],
+    "visible_entities": [
+      {
+        "desc": "Christmas tree decorated with white and pink baubles and lights",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "background left",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "crystal chandelier",
+        "action": "static",
+        "position": "top right",
+        "id": "crystal_chandelier_1"
+      },
+      {
+        "desc": "tripod floor lamp with white shade",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "fireplace with garland and mirror",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "wrapped gifts under the tree",
+        "action": "static",
+        "position": "bottom center",
+        "id": "wrapped_gifts_1"
+      },
+      {
+        "desc": "M&S tv logo",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A decorated Christmas tree stands in the center of the room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'M&S tv' logo is visible in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Gifts are placed underneath the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A chandelier hangs from the ceiling.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The Christmas tree is in the center of the room, positioned in front of the white window shutters. The tripod floor lamp is to the left of the tree. The fireplace is to the right of the tree. The chandelier is above the tree. Wrapped gifts are on the floor under the tree.",
+    "parse_success": true,
+    "chunk_idx": 70,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      142,
+      144
+    ],
+    "visible_entities": [
+      {
+        "desc": "green Christmas tree decorated with pink, purple, and silver baubles and white lights",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "white fireplace mantel with a garland and a large mirror above it",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "tall floor lamp with a tripod wooden base and a white drum shade",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "window with white plantation shutters and a string of warm fairy lights on the sill",
+        "action": "static",
+        "position": "background left",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "collection of wrapped gift boxes in various patterns and colors",
+        "action": "static",
+        "position": "bottom center",
+        "id": "wrapped_gifts_1"
+      },
+      {
+        "desc": "white text logo reading 'M&S tv' with a small crown icon",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      },
+      {
+        "desc": "black flat-screen television",
+        "action": "static",
+        "position": "background right",
+        "id": "television_1"
+      },
+      {
+        "desc": "crystal chandelier hanging from the ceiling",
+        "action": "static",
+        "position": "top center",
+        "id": "crystal_chandelier_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The M&S tv logo is visible in the top left corner of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A decorated Christmas tree stands in the center of the room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Gift boxes are piled on the floor beneath the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Fairy lights are draped along the window sill behind the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A mirror on the right wall reflects the Christmas tree.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The Christmas tree is in the center of the room, positioned in front of the window with white shutters. To the left of the tree is a tripod floor lamp. To the right of the tree is a white fireplace mantel with a mirror above it. Wrapped gift boxes are on the floor below the tree. The M&S tv logo is in the top left corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 71,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      144,
+      146
+    ],
+    "visible_entities": [
+      {
+        "desc": "Christmas tree, green, decorated with white and gold baubles and lights",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "Floor lamp, tripod style, wooden legs, beige cylindrical shade",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "Wrapped gifts, various sizes, pink and patterned wrapping paper",
+        "action": "static",
+        "position": "bottom",
+        "id": "wrapped_gifts_1"
+      },
+      {
+        "desc": "Window shutters, white, slatted",
+        "action": "static",
+        "position": "background",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "Fireplace mantel, white, decorated with garland and lights",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "Television, black, flat screen",
+        "action": "static",
+        "position": "right",
+        "id": "television_1"
+      },
+      {
+        "desc": "Chandelier, crystal, hanging from ceiling",
+        "action": "static",
+        "position": "top",
+        "id": "crystal_chandelier_1"
+      },
+      {
+        "desc": "M&S.tv logo, white text",
+        "action": "static",
+        "position": "top-left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera pans slightly to the left, revealing a floor lamp.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A Christmas tree stands in the center of the room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Wrapped gifts are placed on the floor under the tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The M&S.tv logo is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S.tv"
+    ],
+    "spatial": "The Christmas tree is in the center of the room, with wrapped gifts underneath it. To the left of the tree is a tripod floor lamp. Behind the tree are white window shutters. To the right of the tree is a fireplace mantel and a television. A chandelier hangs above the scene.",
+    "parse_success": true,
+    "chunk_idx": 72,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      146,
+      148
+    ],
+    "visible_entities": [
+      {
+        "desc": "Christmas tree, green, decorated with white and gold baubles and lights",
+        "action": "static",
+        "position": "center",
+        "id": "christmas_tree_1"
+      },
+      {
+        "desc": "floor lamp, wooden tripod legs, grey cylindrical shade",
+        "action": "static",
+        "position": "left",
+        "id": "floor_lamp_1"
+      },
+      {
+        "desc": "white window shutters",
+        "action": "static",
+        "position": "background left",
+        "id": "window_shutters_1"
+      },
+      {
+        "desc": "wrapped gifts, various colors and patterns, under the tree",
+        "action": "static",
+        "position": "bottom center",
+        "id": "wrapped_gifts_1"
+      },
+      {
+        "desc": "fireplace mantel with garland and bunting",
+        "action": "static",
+        "position": "right",
+        "id": "fireplace_mantel_1"
+      },
+      {
+        "desc": "mirror with grey frame, reflecting the tree",
+        "action": "static",
+        "position": "right",
+        "id": "mirror_1"
+      },
+      {
+        "desc": "chandelier, crystal, hanging from ceiling",
+        "action": "static",
+        "position": "top",
+        "id": "crystal_chandelier_1"
+      },
+      {
+        "desc": "television, black screen",
+        "action": "static",
+        "position": "right background",
+        "id": "television_1"
+      },
+      {
+        "desc": "text 'M&S tv' in white font",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The Christmas tree is decorated with white and gold ornaments.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Presents are placed under the Christmas tree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'M&S tv' is visible in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A floor lamp stands to the left of the window.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv"
+    ],
+    "spatial": "The Christmas tree is in the center of the room, positioned in front of the white window shutters. The floor lamp is to the left of the tree. The fireplace mantel is to the right of the tree, with a mirror hanging above it. Wrapped gifts are on the floor under the tree.",
+    "parse_success": true,
+    "chunk_idx": 73,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      148,
+      150
+    ],
+    "visible_entities": [
+      {
+        "desc": "gold gradient background with a metallic sheen",
+        "action": "static",
+        "position": "background",
+        "id": "gold_background_1"
+      },
+      {
+        "desc": "white intricate snowflake graphics of varying sizes",
+        "action": "static",
+        "position": "scattered across the frame",
+        "id": "snowflake_graphics_1"
+      },
+      {
+        "desc": "white text in serif and sans-serif fonts",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "small white 'M&S tv' logo",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a static promotional end screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'To see more go to:' is displayed above the website URL.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The website address 'WWW.MARKSANDSPENCER.COM' is shown in the center.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tagline 'The GREATEST HITS this Christmas' appears at the bottom.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "White snowflake graphics are scattered around the text.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "To see more go to:",
+      "WWW.MARKSANDSPENCER.COM",
+      "The GREATEST HITS this Christmas"
+    ],
+    "spatial": "The 'M&S tv' logo is in the top left corner. The text 'To see more go to:' is positioned above the website URL 'WWW.MARKSANDSPENCER.COM' in the center of the screen. The phrase 'The GREATEST HITS this Christmas' is located at the bottom center, below the URL. White snowflake graphics are scattered in the background, surrounding the central text.",
+    "parse_success": true,
+    "chunk_idx": 74,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": [
+      "outro graphics sequence begins with gold background and snowflakes"
+    ]
+  },
+  {
+    "time": [
+      150,
+      152
+    ],
+    "visible_entities": [
+      {
+        "desc": "white snowflake graphics of varying sizes with intricate geometric patterns",
+        "action": "static",
+        "position": "scattered across the background",
+        "id": "snowflake_graphics_1"
+      },
+      {
+        "desc": "gold gradient background",
+        "action": "static",
+        "position": "background",
+        "id": "gold_background_1"
+      },
+      {
+        "desc": "white text in serif and sans-serif fonts",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The screen displays a promotional message for M&S.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'To see more go to: WWW.MARKSANDSPENCER.COM' is visible in the center.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tagline 'The GREATEST HITS this Christmas' is displayed at the bottom.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S.tv",
+      "To see more go to:",
+      "WWW.MARKSANDSPENCER.COM",
+      "The GREATEST HITS this Christmas"
+    ],
+    "spatial": "The text 'To see more go to:' is above the website URL. The website URL is above the tagline 'The GREATEST HITS this Christmas'. The snowflake graphics are scattered around the text on the gold background.",
+    "parse_success": true,
+    "chunk_idx": 75,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": []
+  },
+  {
+    "time": [
+      152,
+      154
+    ],
+    "visible_entities": [
+      {
+        "desc": "white snowflake graphics of varying sizes with intricate cutout patterns",
+        "action": "static",
+        "position": "scattered across the background",
+        "id": "snowflake_graphics_1"
+      },
+      {
+        "desc": "white text in serif font reading 'To see more go to:'",
+        "action": "static",
+        "position": "center",
+        "id": "outro_text_1"
+      },
+      {
+        "desc": "white text in sans-serif font reading 'WWW.MARKSANDSPENCER.COM'",
+        "action": "static",
+        "position": "center",
+        "id": "outro_text_1"
+      },
+      {
+        "desc": "white text reading 'The GREATEST HITS this Christmas' with decorative flourishes",
+        "action": "static",
+        "position": "bottom",
+        "id": "outro_text_1"
+      },
+      {
+        "desc": "small white logo text reading 'M&S tv'",
+        "action": "static",
+        "position": "top left",
+        "id": "ms_tv_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a static promotional screen with a gold background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'WWW.MARKSANDSPENCER.COM' is displayed in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The phrase 'The GREATEST HITS this Christmas' appears at the bottom of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "M&S tv",
+      "To see more go to:",
+      "WWW.MARKSANDSPENCER.COM",
+      "The GREATEST HITS this Christmas"
+    ],
+    "spatial": "The 'M&S tv' logo is in the top left corner. The instruction 'To see more go to:' is above the website URL in the center. The snowflake graphics are scattered around the text elements, with larger snowflakes in the bottom corners.",
+    "parse_success": true,
+    "chunk_idx": 76,
+    "video_id": "v_6rG5dBgwBDc",
+    "state_changes": [
+      "final call-to-action text with website URL appears"
+    ]
+  }
+]

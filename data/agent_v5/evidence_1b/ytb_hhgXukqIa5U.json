@@ -1,0 +1,3735 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "Nutrition Facts label with black text on a white background, listing nutrients like Total Fat, Sodium, and Protein",
+        "action": "static",
+        "position": "left",
+        "id": "nutritionfacts_label"
+      },
+      {
+        "desc": "Green stylized 'N' logo",
+        "action": "static",
+        "position": "right",
+        "id": "nutritionfacts_logo"
+      },
+      {
+        "desc": "Green text reading 'NutritionFacts.org' in a sans-serif font",
+        "action": "static",
+        "position": "right",
+        "id": "nutritionfacts_logo"
+      },
+      {
+        "desc": "Black text reading 'The latest in nutrition research'",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "Faint document text in the background",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The Nutrition Facts label is displayed on the left side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The NutritionFacts.org logo and text appear on the right side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'The latest in nutrition research' is visible below the logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A faint document with the title 'Diagnosis and Treatment of Neurocysticercosis' is visible at the bottom.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Nutrition Facts",
+      "Serving Size approx 1 cup cooked",
+      "Servings Per Container 6",
+      "Calories 240",
+      "Total Fat 3.5g",
+      "Sodium 180mg",
+      "Total Carbohydrate 42g",
+      "Protein 10g",
+      "NutritionFacts.org",
+      "The latest in nutrition research",
+      "Diagnosis and Treatment of Neurocysticercosis"
+    ],
+    "spatial": "The Nutrition Facts label is to the left of the NutritionFacts.org logo. The slogan 'The latest in nutrition research' is below the logo. The faint document text is at the bottom of the screen, below the Nutrition Facts label.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "Document page with black text on a white background, featuring a title 'Diagnosis and Treatment of Neurocysticercosis' in large bold serif font, author names 'Christina M. Coyle' and 'Herbert B. Tanowitz' with superscript numbers, and a block of introductory text at the bottom.",
+        "action": "static",
+        "id": "doc_diagnosis_treatment_ncc"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document is identified as a 'Review Article'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The article is published in 'Interdisciplinary Perspectives on Infectious Diseases', Volume 2009.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text states that Neurocysticercosis is the most common parasitic disease of the central nervous system.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The article is recommended by Louis M. Weiss.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Interdisciplinary Perspectives on Infectious Diseases",
+      "Volume 2009, Article ID 180742, 9 pages",
+      "doi:10.1155/2009/180742",
+      "Review Article",
+      "Diagnosis and Treatment of Neurocysticercosis",
+      "Christina M. Coyle1,2 and Herbert B. Tanowitz1,2,3",
+      "1Department of Medicine, Division of Infectious Disease, Albert Einstein College of Medicine, Bronx, NY 10461, USA",
+      "2Parasitology and Tropical Disease Clinic and Laboratory, Jacobi Medical Center, Bronx, NY 10461, USA",
+      "3Department of Pathology, Division of Parasitology and Tropical Medicine, Albert Einstein College of Medicine, Bronx, NY 10461, USA",
+      "Correspondence should be addressed to Christina M. Coyle, coyle@aecom.yu.edu",
+      "Recommended by Louis M. Weiss",
+      "Neurocysticercosis, the infection caused by the larval form of the tapeworm Taenia solium, is the most common parasitic disease of the central nervous system and the most common cause of acquired epilepsy worldwide. This has primarily been a disease"
+    ],
+    "spatial": "The header information is located at the top of the page. The title 'Diagnosis and Treatment of Neurocysticercosis' is centered below the header. The authors' names are positioned below the title. The affiliation details are listed below the authors. The correspondence information is below the affiliations. The recommendation note is above the main body text at the bottom.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": [
+      "Transition from NutritionFacts.org intro to medical document 'Diagnosis and Treatment of Neurocysticercosis'"
+    ]
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "white document page with black text, featuring a title 'Diagnosis and Treatment of Neurocysticercosis' and author names 'Christina M. Coyle' and 'Herbert B. Tanowitz'",
+        "action": "static"
+      },
+      {
+        "desc": "yellow highlight mark",
+        "action": "static"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Diagnosis and Treatment of Neurocysticercosis'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow highlight appears over the text 'the most common cause of acquired epilepsy worldwide'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Interdisciplinary Perspectives on Infectious Diseases",
+      "Volume 2009, Article ID 180742, 9 pages",
+      "doi:10.1155/2009/180742",
+      "Review Article",
+      "Diagnosis and Treatment of Neurocysticercosis",
+      "Christina M. Coyle",
+      "Herbert B. Tanowitz",
+      "Department of Medicine, Division of Infectious Disease, Albert Einstein College of Medicine, Bronx, NY 10461, USA",
+      "Parasitology and Tropical Disease Clinic and Laboratory, Jacobi Medical Center, Bronx, NY 10461, USA",
+      "Department of Pathology, Division of Parasitology and Tropical Medicine, Albert Einstein College of Medicine, Bronx, NY 10461, USA",
+      "Correspondence should be addressed to Christina M. Coyle, coyle@aecom.yu.edu",
+      "Recommended by Louis M. Weiss",
+      "Neurocysticercosis, the infection caused by the larval form of the tapeworm Taenia solium, is the most common parasitic disease of the central nervous system and the most common cause of acquired epilepsy worldwide."
+    ],
+    "spatial": "The title is at the top center of the page. The author names are below the title. The yellow highlight is located at the bottom of the visible text area, emphasizing a specific sentence.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "Review article title page with black serif text on a white background, featuring the title 'Diagnosis and Treatment of Neurocysticercosis', authors 'Christina M. Coyle' and 'Herbert B. Tanowitz', and affiliations. A specific phrase in the abstract is highlighted in yellow.",
+        "action": "static",
+        "position": "center",
+        "id": "doc_diagnosis_treatment_ncc"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Diagnosis and Treatment of Neurocysticercosis'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The authors listed are Christina M. Coyle and Herbert B. Tanowitz.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'the most common cause of acquired epilepsy worldwide' is highlighted in yellow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The article is published in 'Interdisciplinary Perspectives on Infectious Diseases'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Interdisciplinary Perspectives on Infectious Diseases",
+      "Volume 2009, Article ID 180742, 9 pages",
+      "doi:10.1155/2009/180742",
+      "Review Article",
+      "Diagnosis and Treatment of Neurocysticercosis",
+      "Christina M. Coyle1,2 and Herbert B. Tanowitz1,2,3",
+      "1Department of Medicine, Division of Infectious Disease, Albert Einstein College of Medicine, Bronx, NY 10461, USA",
+      "2Parasitology and Tropical Disease Clinic and Laboratory, Jacobi Medical Center, Bronx, NY 10461, USA",
+      "3Department of Pathology, Division of Parasitology and Tropical Medicine, Albert Einstein College of Medicine, Bronx, NY 10461, USA",
+      "Correspondence should be addressed to Christina M. Coyle, coyle@aecom.yu.edu",
+      "Recommended by Louis M. Weiss",
+      "Neurocysticercosis, the infection caused by the larval form of the tapeworm Taenia solium, is the most common parasitic disease of the central nervous system and the most the most common cause of acquired epilepsy worldwide. primarily been a disease"
+    ],
+    "spatial": "The journal information is at the top of the page. The title 'Diagnosis and Treatment of Neurocysticercosis' is centered below the journal info. The authors' names are below the title. The affiliations are listed below the authors. The correspondence email is below the affiliations. The abstract text containing the yellow highlight is at the bottom of the visible area.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "A white document page containing black text. The text includes a title 'Diagnosis and Treatment of Neurocysticercosis', author names 'Christina M. Coyle' and 'Herbert B. Tanowitz', and a paragraph of body text. A specific phrase in the body text is highlighted with a yellow background.",
+        "action": "static",
+        "position": "center",
+        "id": "doc_diagnosis_treatment_ncc"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Diagnosis and Treatment of Neurocysticercosis'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The authors are listed as Christina M. Coyle and Herbert B. Tanowitz.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'the most common cause of acquired epilepsy worldwide' is highlighted in yellow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The document is identified as a 'Review Article'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Interdisciplinary Perspectives on Infectious Diseases",
+      "Volume 2009, Article ID 180742, 9 pages",
+      "doi:10.1155/2009/180742",
+      "Review Article",
+      "Diagnosis and Treatment of Neurocysticercosis",
+      "Christina M. Coyle1,2 and Herbert B. Tanowitz1,2,3",
+      "1Department of Medicine, Division of Infectious Disease, Albert Einstein College of Medicine, Bronx, NY 10461, USA",
+      "2Parasitology and Tropical Disease Clinic and Laboratory, Jacobi Medical Center, Bronx, NY 10461, USA",
+      "3Department of Pathology, Division of Parasitology and Tropical Medicine, Albert Einstein College of Medicine, Bronx, NY 10461, USA",
+      "Correspondence should be addressed to Christina M. Coyle, coyle@aecom.yu.edu",
+      "Recommended by Louis M. Weiss",
+      "Neurocysticercosis, the infection caused by the larval form of the tapeworm Taenia solium, is the most common parasitic disease of the central nervous system and the most common cause of acquired epilepsy worldwide."
+    ],
+    "spatial": "The title 'Diagnosis and Treatment of Neurocysticercosis' is located in the upper center of the page, below the 'Review Article' label. The author names are positioned directly below the title. The body text paragraph is located at the bottom of the page, below the correspondence information.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "text document with black serif font on white background, featuring a title 'Diagnosis and Treatment of Neurocysticercosis', author names 'Christina M. Coyle' and 'Herbert B. Tanowitz', and a highlighted sentence in yellow",
+        "action": "static"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Diagnosis and Treatment of Neurocysticercosis'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'the most common cause of acquired epilepsy worldwide' is highlighted in yellow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The authors listed are Christina M. Coyle and Herbert B. Tanowitz.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Interdisciplinary Perspectives on Infectious Diseases",
+      "Volume 2009, Article ID 180742, 9 pages",
+      "doi:10.1155/2009/180742",
+      "Review Article",
+      "Diagnosis and Treatment of Neurocysticercosis",
+      "Christina M. Coyle",
+      "Herbert B. Tanowitz",
+      "Department of Medicine, Division of Infectious Disease, Albert Einstein College of Medicine, Bronx, NY 10461, USA",
+      "Parasitology and Tropical Disease Clinic and Laboratory, Jacobi Medical Center, Bronx, NY 10461, USA",
+      "Department of Pathology, Division of Parasitology and Tropical Medicine, Albert Einstein College of Medicine, Bronx, NY 10461, USA",
+      "Correspondence should be addressed to Christina M. Coyle, coyle@aecom.yu.edu",
+      "Recommended by Louis M. Weiss",
+      "Neurocysticercosis, the infection caused by the larval form of the tapeworm Taenia solium, is the most common parasitic disease of the central nervous system and the most common cause of acquired epilepsy worldwide."
+    ],
+    "spatial": "The title 'Diagnosis and Treatment of Neurocysticercosis' is located at the top center of the document. The author names are positioned directly below the title. The highlighted yellow text is located in the bottom paragraph of the visible text area.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "cross-section of a brain specimen, pale white tissue with numerous dark, circular cystic cavities and lesions",
+        "action": "static",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "text 'Review Article' in large serif font",
+        "action": "static",
+        "position": "top-left"
+      },
+      {
+        "desc": "text 'Diagnosis and Treatment of Neurocysticercosis' in bold serif font",
+        "action": "static",
+        "position": "center-left"
+      },
+      {
+        "desc": "highlighted text 'the most common cause of acquired epilepsy worldwide' with yellow background",
+        "action": "static",
+        "position": "bottom-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a static title page of a medical review article.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pathological image of a brain with cysts is positioned on the right side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'the most common cause of acquired epilepsy worldwide' is highlighted in yellow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The article title is 'Diagnosis and Treatment of Neurocysticercosis'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Interdisciplinary Perspectives on Infectious Diseases",
+      "Volume 2009, Article ID 180742, 9 pages",
+      "doi:10.1155/2009/180742",
+      "Review Article",
+      "Diagnosis and Treatment of Neurocysticercosis",
+      "Christina M. Coyle",
+      "Herbert B. Tanowitz",
+      "Department of Medicine, Division of Infectious Disease, Albert Einstein College of Medicine, Bronx, NY 10461, USA",
+      "Parasitology and Tropical Disease Clinic and Laboratory, Jacobi Medical Center, Bronx, NY 10461, USA",
+      "Department of Pathology, Division of Parasitology and Tropical Medicine, Albert Einstein College of Medicine, Bronx, NY 10461, USA",
+      "Correspondence should be addressed to Christina M. Coyle, coyle@aecom.yu.edu",
+      "Recommended by Louis M. Weiss",
+      "Neurocysticercosis, the infection caused by the larval form of the tapeworm Taenia solium, is the most common parasitic disease of the central nervous system and the most common cause of acquired epilepsy worldwide."
+    ],
+    "spatial": "The pathological brain specimen is located to the right of the article title and author information. The highlighted sentence regarding epilepsy is located at the bottom of the page, below the author affiliations.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": [
+      "Brain specimen cross-section image appears alongside document text"
+    ]
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "cross-section of a brain specimen, pale white tissue with numerous dark, circular cystic lesions and holes",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "text 'the most common cause of acquired epilepsy worldwide' highlighted in yellow",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "black serif text on white background including title 'Diagnosis and Treatment of Neurocysticercosis' and author names",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a static review article page.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'the most common cause of acquired epilepsy worldwide' is highlighted in yellow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pathological brain specimen with visible cysts is shown on the right side of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Interdisciplinary Perspectives on Infectious Diseases",
+      "Volume 2009, Article ID 180742, 9 pages",
+      "doi:10.1155/2009/180742",
+      "Review Article",
+      "Diagnosis and Treatment of Neurocysticercosis",
+      "Christina M. Coyle and Herbert B. Tanowitz",
+      "Department of Medicine, Division of Infectious Disease, Albert Einstein",
+      "Parasitology and Tropical Disease Clinic and Laboratory, Jacobi Medical Center",
+      "Department of Pathology, Division of Parasitology and Tropical Medicine",
+      "Bronx, NY 10461, USA",
+      "Correspondence should be addressed to Christina M. Coyle",
+      "Recommended by Louis M. Weiss",
+      "Neurocysticercosis, the infection caused by the larval form of the tapeworm Taenia solium, is a parasitic infection of the central nervous system and the most common cause of acquired epilepsy worldwide."
+    ],
+    "spatial": "The brain specimen image is positioned to the right of the article text. The yellow highlighted sentence is located at the bottom of the page, below the author affiliations and correspondence information.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "cross-section of a brain specimen, pale white tissue with numerous dark, circular cysts and lesions",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "text 'Review Article' in serif font, black",
+        "action": "static",
+        "position": "top left"
+      },
+      {
+        "desc": "text 'Diagnosis and Treatment of Neurocysticercosis' in bold serif font, black",
+        "action": "static",
+        "position": "center left"
+      },
+      {
+        "desc": "text 'Christina M. Coyle and Herbert B. Tanowitz' in bold serif font, black",
+        "action": "static",
+        "position": "center left"
+      },
+      {
+        "desc": "highlighted text 'the most common cause of acquired epilepsy worldwide' with yellow background",
+        "action": "static",
+        "position": "bottom center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a static title page of a medical review article.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The title of the article is 'Diagnosis and Treatment of Neurocysticercosis'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A biological specimen showing a brain cross-section with cysts is positioned on the right side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'the most common cause of acquired epilepsy worldwide' is highlighted in yellow at the bottom of the page.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Interdisciplinary Perspectives on Infectious Diseases",
+      "Volume 2009, Article ID 180742, 9 pages",
+      "doi:10.1155/2009/180742",
+      "Review Article",
+      "Diagnosis and Treatment of Neurocysticercosis",
+      "Christina M. Coyle and Herbert B. Tanowitz",
+      "Department of Medicine, Division of Infectious Disease, Albert Einstein",
+      "Parasitology and Tropical Disease Clinic and Laboratory, Jacobi Medical Center",
+      "Department of Pathology, Division of Parasitology and Tropical Medicine",
+      "Bronx, NY 10461, USA",
+      "Correspondence should be addressed to Christina M. Coyle",
+      "Recommended by Louis M. Weiss",
+      "Neurocysticercosis, the infection caused by the larval form of the tapeworm Taenia solium, is a disease",
+      "of the central nervous system and the most common cause of acquired epilepsy worldwide."
+    ],
+    "spatial": "The title text 'Diagnosis and Treatment of Neurocysticercosis' is to the left of the brain specimen image. The authors' names are below the title. The highlighted sentence regarding epilepsy is located at the bottom of the page, below the author affiliations.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "biological specimen of a brain cross-section, pale white tissue with numerous dark, circular cysts and cavities",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "text 'the most common cause of acquired epilepsy worldwide' highlighted in yellow",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "title text 'Diagnosis and Treatment of Neurocysticercosis' in bold black serif font",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "author names 'Christina M. Coyle' and 'Herbert B. Tanowitz' in bold black text",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The image displays a review article titled 'Diagnosis and Treatment of Neurocysticercosis'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A highlighted sentence states that the condition is 'the most common cause of acquired epilepsy worldwide'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pathological image of a brain with cysts is positioned on the right side of the page.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The authors Christina M. Coyle and Herbert B. Tanowitz are listed below the title.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Interdisciplinary Perspectives on Infectious Diseases",
+      "Volume 2009, Article ID 180742, 9 pages",
+      "doi:10.1155/2009/180742",
+      "Review Article",
+      "Diagnosis and Treatment of Neurocysticercosis",
+      "Christina M. Coyle",
+      "Herbert B. Tanowitz",
+      "Department of Medicine, Division of Infectious Disease, Albert Einstein College of Medicine",
+      "Parasitology and Tropical Disease Clinic and Laboratory, Jacobi Medical Center",
+      "Department of Pathology, Division of Parasitology and Tropical Medicine",
+      "Bronx, NY 10461, USA",
+      "Correspondence should be addressed to Christina M. Coyle",
+      "Recommended by Louis M. Weiss",
+      "Neurocysticercosis, the infection caused by the larval form of the tapeworm Taenia solium, is a parasitic infection of the central nervous system and the most common cause of acquired epilepsy worldwide."
+    ],
+    "spatial": "The title 'Diagnosis and Treatment of Neurocysticercosis' is at the top of the page. The authors' names are below the title and to the left of the brain image. The brain specimen image is on the right side of the document. The highlighted text regarding epilepsy is located at the bottom of the page, below the author affiliations.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "Cross-section of a brain specimen, pale white tissue with numerous dark, circular cystic cavities and lesions scattered throughout.",
+        "action": "static",
+        "position": "right foreground",
+        "id": "brain_specimen_cross_section"
+      },
+      {
+        "desc": "Text overlay, black serif font on a white background, with a yellow highlighter box around specific text.",
+        "action": "static",
+        "position": "center left"
+      },
+      {
+        "desc": "Paper page peel transition effect, white paper curling upwards from the bottom left corner.",
+        "action": "peeling upwards",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A paper page peel transition reveals a new document underneath.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'the most common cause of acquired epilepsy worldwide' is highlighted in yellow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The title 'Neurocysticercosis: Fireflies in the Central Nervous System' is visible on the underlying page.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The author 'Petra N. Davidson' is listed on the underlying page.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Am J Electroneurodiagnostic Technol",
+      "50:26-36, 2010",
+      "© ASET, Missouri",
+      "Neurocysticercosis: Fireflies in the Central Nervous System",
+      "Petra N. Davidson, R. EEG T., BS",
+      "Immanuel St. Joseph's — Mayo Health System",
+      "Mankato, Minnesota",
+      "ABSTRACT. Neurocysticercosis (NCC) is caused by cysticerci spreading to spinal or brain tissue. NCC causes headaches, seizures, and focal neurological deficits. NCC is one of the main causes of epilepsy worldwide. NCC can cause death if it is not adequately treated. NCC is",
+      "Neurocysticercosis: Fi...",
+      "Central N...",
+      "Christina M.",
+      "S. Tanowitz",
+      "Department of Medicine, Division of Infectious Disease, Albert Einstein",
+      "Parasitology and Tropical Disease Clinic and Laboratory, Jacobi Medical Center",
+      "Department of Pathology, Division of Parasitology and Tropical Medicine",
+      "Bronx, NY 10461, USA",
+      "Correspondence should be addressed to Christina M. Co...",
+      "Recommended by Louis M. Weiss",
+      "Neurocysticercosis, the infection caused by the larval form of the tapeworm Taenia solium, is a parasitic disease of the central nervous system and the most common cause of acquired epilepsy worldwide.",
+      "the most common cause of acquired epilepsy worldwide"
+    ],
+    "spatial": "The brain specimen image is positioned to the right of the text block. The text 'the most common cause of acquired epilepsy worldwide' is located near the bottom of the visible text area. The peeling paper effect originates from the bottom left, covering the lower portion of the text and the left side of the brain image.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": [
+      "Paper page peel transition effect begins"
+    ]
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "white paper document with black serif text",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a static title page of a medical article.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The title of the article is 'Neurocysticercosis: Fireflies in the Central Nervous System'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The author is listed as Petra N. Davidson, R. EEG T., BS.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The abstract begins with the text 'Neurocysticercosis (NCC) is caused by cysticerci spreading to spinal or brain tissue.'",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Am J Electroneurodiagnostic Technol",
+      "50:26-36, 2010",
+      "© ASET, Missouri",
+      "Neurocysticercosis: Fireflies in the",
+      "Central Nervous System",
+      "Petra N. Davidson, R. EEG T., BS",
+      "Immanuel St. Joseph's — Mayo Health System",
+      "Mankato, Minnesota",
+      "ABSTRACT. Neurocysticercosis (NCC) is caused by cysticerci",
+      "spreading to spinal or brain tissue. NCC causes headaches, seizures, and",
+      "focal neurological deficits. NCC is one of the main causes of epilepsy",
+      "worldwide. NCC can cause death if it is not adequately treated. NCC is"
+    ],
+    "spatial": "The journal citation and copyright information are located at the top left of the page. The article title is centered in the upper middle section, positioned above the author's name. The author's affiliation is centered below the name, and the abstract text block is located at the bottom of the visible area.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "white rectangular text box with a slight drop shadow, containing black serif text",
+        "action": "appearing over the background",
+        "position": "center"
+      },
+      {
+        "desc": "document page with a title 'Neurocysticercosis: Fireflies in the Central Nervous System', author name 'Petra N. Davidson', and an abstract section",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A white text box overlay appears in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text box obscures the middle portion of the document page.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text box contains a paragraph describing cysticerci creating cavities in the brain and appearing like fireflies on a CT scan.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Am J Electroneurodiagnostic Technol",
+      "50:26-36, 2010",
+      "© ASET, Missouri",
+      "Neurocysticercosis: Fireflies in the Central Nervous System",
+      "Petra N. Davidson, R. EEG T., BS",
+      "Immanuel St. Joseph's — Mayo Health System",
+      "Mankato, Minnesota",
+      "Cysticerci create cavities in the brain and other body tissue where their tiny bodies grow sometimes into tapeworms two to seven meters in length and can live up to 25 years in the human body. On magnetic resonance imaging (MRI) wormholes appear. Often times, if best practice is followed, the patient's entire body is scanned and more craters appear. Some authors have stated that cysticerci on a computed topography (CT) scan are similar to a starry sky or fireflies (Kapur et al. 2007).",
+      "ABSTRACT. Neurocysticercosis (NCC) is caused by cysticerci spreading to spinal or brain tissue. NCC causes headaches, seizures, and focal neurological deficits. NCC is one of the main causes of epilepsy worldwide. NCC can cause death if it is not adequately treated. NCC is"
+    ],
+    "spatial": "The white text box is positioned in the center of the frame, overlaying the background document. The text box is located below the document title and author name, and above the abstract section. The abstract text is visible at the bottom of the screen, below the overlay.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": [
+      "New document 'Neurocysticercosis: Fireflies in the Central Nervous System' appears"
+    ]
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "digital document page with a light gray background, featuring a large title in gray sans-serif font, a central text excerpt on a white rectangular background with a drop shadow, and an abstract section in black serif font at the bottom",
+        "action": "static"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Neurocysticercosis: Fireflies in the Central Nervous System'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A highlighted text box describes cysticerci creating cavities and appearing like fireflies on CT scans.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The abstract section defines Neurocysticercosis (NCC) as a cause of epilepsy worldwide.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Am J Electroneurodiagnostic Technol",
+      "50:26-36, 2010",
+      "© ASET, Missouri",
+      "Neurocysticercosis: Fireflies in the",
+      "Central Nervous System",
+      "Cysticerci create cavities in the brain and other body tissue where",
+      "their tiny bodies grow sometimes into tapeworms two to seven meters in",
+      "length and can live up to 25 years in the human body. On magnetic reso-",
+      "nance imaging (MRI) wormholes appear. Often times, if best practice is",
+      "followed, the patient's entire body is scanned and more craters appear.",
+      "Some authors have stated that cysticerci on a computed topography (CT)",
+      "scan are similar to a starry sky or fireflies (Kapur et al. 2007).",
+      "ABSTRACT. Neurocysticercosis (NCC) is caused by cysticerci",
+      "spreading to spinal or brain tissue. NCC causes headaches, seizures, and",
+      "focal neurological deficits. NCC is one of the main causes of epilepsy",
+      "worldwide. NCC can cause death if it is not adequately treated. NCC is"
+    ],
+    "spatial": "The journal citation information is located at the top left of the screen. The main title is centered above a white text box containing a descriptive paragraph. The abstract section is positioned below the white text box.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "White rectangular text box with a torn paper edge effect, containing black serif text",
+        "action": "static",
+        "position": "center",
+        "id": "torn_paper_text_box"
+      },
+      {
+        "desc": "Main title text 'Neurocysticercosis: Fireflies in the Central Nervous System' in large grey sans-serif font",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "Abstract text block in smaller grey serif font",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "Journal citation text 'Am J Electroneurodiagnostic Technol 50:26-36, 2010 © ASET, Missouri' in small grey font",
+        "action": "static",
+        "position": "top-left",
+        "id": "journal_citation_aset"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A white text box with a torn paper effect is displayed in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text inside the central box describes cysticerci creating cavities in the brain and mentions they can grow into tapeworms.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text states that cysticerci on a CT scan are similar to a starry sky or fireflies.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The main title 'Neurocysticercosis: Fireflies in the Central Nervous System' is visible above the central text box.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An abstract section is visible below the central text box, defining Neurocysticercosis (NCC).",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Am J Electroneurodiagnostic Technol",
+      "50:26-36, 2010",
+      "© ASET, Missouri",
+      "Neurocysticercosis: Fireflies in the",
+      "Central Nervous System",
+      "Cysticerci create cavities in the brain and other body tissue where",
+      "their tiny bodies grow sometimes into tapeworms two to seven meters in",
+      "length and can live up to 25 years in the human body. On magnetic reso-",
+      "nance imaging (MRI) wormholes appear. Often times, if best practice is",
+      "followed, the patient's entire body is scanned and more craters appear.",
+      "Some authors have stated that cysticerci on a computed topography (CT)",
+      "scan are similar to a starry sky or fireflies (Kapur et al. 2007).",
+      "ABSTRACT. Neurocysticercosis (NCC) is caused by cysticerci",
+      "spreading to spinal or brain tissue. NCC causes headaches, seizures, and",
+      "focal neurological deficits. NCC is one of the main causes of epilepsy",
+      "worldwide. NCC can cause death if it is not adequately treated. NCC is"
+    ],
+    "spatial": "The journal citation is located in the top-left corner of the screen. The main title is centered at the top, positioned above the white text box. The white text box with the torn paper effect is in the center of the frame. The abstract text block is located below the central white text box.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "Text overlay on a torn paper graphic, black serif font, describing Cysticerci and tapeworms",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Main title text 'Neurocysticercosis: Fireflies in the Central Nervous System' in grey sans-serif font",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "Abstract text block in black serif font below the paper graphic",
+        "action": "static",
+        "position": "bottom",
+        "id": "abstract_text_block"
+      },
+      {
+        "desc": "Journal citation text 'Am J Electroneurodiagnostic Technol 50:26-36, 2010' in small grey font",
+        "action": "static",
+        "position": "top-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a static slide presentation about Neurocysticercosis.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A central text box describes Cysticerci creating cavities in the brain and growing into tapeworms.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text mentions that on MRI scans, wormholes appear.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text states that cysticerci on a CT scan are similar to a starry sky or fireflies.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The abstract section defines Neurocysticercosis (NCC) as caused by cysticerci spreading to spinal or brain tissue.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Am J Electroneurodiagnostic Technol",
+      "50:26-36, 2010",
+      "© ASET, Missouri",
+      "Neurocysticercosis: Fireflies in the Central Nervous System",
+      "Cysticerci create cavities in the brain and other body tissue where their tiny bodies grow sometimes into tapeworms two to seven meters in length and can live up to 25 years in the human body. On magnetic resonance imaging (MRI) wormholes appear. Often times, if best practice is followed, the patient's entire body is scanned and more craters appear. Some authors have stated that cysticerci on a computed topography (CT) scan are similar to a starry sky or fireflies (Kapur et al. 2007).",
+      "ABSTRACT. Neurocysticercosis (NCC) is caused by cysticerci spreading to spinal or brain tissue. NCC causes headaches, seizures, and focal neurological deficits. NCC is one of the main causes of epilepsy worldwide. NCC can cause death if it is not adequately treated. NCC is"
+    ],
+    "spatial": "The journal citation is located in the top-left corner. The main title is centered above a torn paper graphic containing a descriptive paragraph. The abstract text block is positioned below the torn paper graphic.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "Digital document page with a light gray background, featuring a large title in gray sans-serif font, a central text excerpt on a white rectangular background with a drop shadow, and a paragraph of text below.",
+        "action": "static"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The screen displays a static view of a medical article titled 'Neurocysticercosis: Fireflies in the Central Nervous System'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A central text box highlights a paragraph describing cysticerci creating cavities in the brain and their appearance on MRI and CT scans.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text mentions that cysticerci can grow into tapeworms two to seven meters in length and live up to 25 years.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bottom text section is labeled 'ABSTRACT' and describes Neurocysticercosis (NCC) as a cause of headaches, seizures, and epilepsy.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Am J Electroneurodiagnostic Technol",
+      "50:26-36, 2010",
+      "© ASET, Missouri",
+      "Neurocysticercosis: Fireflies in the",
+      "Central Nervous System",
+      "Cysticerci create cavities in the brain and other body tissue where",
+      "their tiny bodies grow sometimes into tapeworms two to seven meters in",
+      "length and can live up to 25 years in the human body. On magnetic reso-",
+      "nance imaging (MRI) wormholes appear. Often times, if best practice is",
+      "followed, the patient's entire body is scanned and more craters appear.",
+      "Some authors have stated that cysticerci on a computed topography (CT)",
+      "scan are similar to a starry sky or fireflies (Kapur et al. 2007).",
+      "ABSTRACT. Neurocysticercosis (NCC) is caused by cysticerci",
+      "spreading to spinal or brain tissue. NCC causes headaches, seizures, and",
+      "focal neurological deficits. NCC is one of the main causes of epilepsy",
+      "worldwide. NCC can cause death if it is not adequately treated. NCC is"
+    ],
+    "spatial": "The title 'Neurocysticercosis: Fireflies in the Central Nervous System' is located at the top center of the screen. A white text box containing a descriptive paragraph is positioned in the center, below the title. The 'ABSTRACT' section is located below the central white text box.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "White rectangular text box with a torn-paper edge effect, containing italicized serif text.",
+        "action": "static",
+        "position": "center",
+        "id": "torn_paper_text_box"
+      },
+      {
+        "desc": "Main title text 'Neurocysticercosis: Fireflies in the Central Nervous System' in a large, grey, sans-serif font.",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "Abstract section text in a smaller, grey, serif font located at the bottom of the screen.",
+        "action": "static",
+        "position": "bottom",
+        "id": "abstract_text_block"
+      },
+      {
+        "desc": "Journal citation text 'Am J Electroneurodiagnostic Technol 50:26-36, 2010 © ASET, Missouri' in small grey font.",
+        "action": "static",
+        "position": "top-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A white text box overlays the center of the screen, obscuring the middle portion of the document.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text inside the white box describes Cysticerci creating cavities in the brain and growing into tapeworms.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text states that cysticerci on a CT scan are similar to a starry sky or fireflies.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The abstract text below the box defines Neurocysticercosis (NCC) as a cause of headaches, seizures, and epilepsy.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Am J Electroneurodiagnostic Technol",
+      "50:26-36, 2010",
+      "© ASET, Missouri",
+      "Neurocysticercosis: Fireflies in the Central Nervous System",
+      "Cysticerci create cavities in the brain and other body tissue where their tiny bodies grow sometimes into tapeworms two to seven meters in length and can live up to 25 years in the human body. On magnetic resonance imaging (MRI) wormholes appear. Often times, if best practice is followed, the patient's entire body is scanned and more craters appear. Some authors have stated that cysticerci on a computed topography (CT) scan are similar to a starry sky or fireflies (Kapur et al. 2007).",
+      "ABSTRACT. Neurocysticercosis (NCC) is caused by cysticerci spreading to spinal or brain tissue. NCC causes headaches, seizures, and focal neurological deficits. NCC is one of the main causes of epilepsy worldwide. NCC can cause death if it is not adequately treated. NCC is"
+    ],
+    "spatial": "The journal citation is located in the top-left corner. The main title is centered at the top of the screen. The white text box is positioned in the center, below the title and above the abstract text. The abstract text begins at the bottom of the screen, underneath the white box.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "Text overlay on a torn white paper background with a drop shadow, featuring a serif font.",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Background document text in a sans-serif font, slightly blurred.",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A text overlay describes Cysticerci creating cavities in the brain.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text states that tapeworms can live up to 25 years in the human body.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text mentions that cysticerci on a CT scan are similar to a starry sky or fireflies.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background text includes the title 'Neurocysticercosis: Fireflies in the Central Nervous System'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Am J Electroneurodiagnostic Technol",
+      "50:26-36, 2010",
+      "© ASET, Missouri",
+      "Neurocysticercosis: Fireflies in the Central Nervous System",
+      "Cysticerci create cavities in the brain and other body tissue where their tiny bodies grow sometimes into tapeworms two to seven meters in length and can live up to 25 years in the human body. On magnetic resonance imaging (MRI) wormholes appear. Often times, if best practice is followed, the patient's entire body is scanned and more craters appear. Some authors have stated that cysticerci on a computed topography (CT) scan are similar to a starry sky or fireflies (Kapur et al. 2007).",
+      "ABSTRACT. Neurocysticercosis (NCC) is caused by cysticerci spreading to spinal or brain tissue. NCC causes headaches, seizures, and focal neurological deficits. NCC is one of the main causes of epilepsy worldwide. NCC can cause death if it is not adequately treated. NCC is"
+    ],
+    "spatial": "The white text box containing the paragraph about Cysticerci is centered in the foreground. This box is positioned below the main title 'Neurocysticercosis: Fireflies in the Central Nervous System' and above the 'ABSTRACT' section. The journal citation information is located in the top left corner of the background.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "Document page with a grey background, featuring a large title in grey text, a central text excerpt on a white rectangular background with a drop shadow, and a lower section of text labeled 'ABSTRACT'.",
+        "action": "static",
+        "id": "doc_fireflies_cns"
+      },
+      {
+        "desc": "Header text in the top-left corner reading 'Am J Electroneurodiagnostic Technol', '50:26-36, 2010', and '© ASET, Missouri'.",
+        "action": "static",
+        "id": "journal_citation_aset"
+      },
+      {
+        "desc": "Main title text in the center reading 'Neurocysticercosis: Fireflies in the Central Nervous System'.",
+        "action": "static"
+      },
+      {
+        "desc": "Central text block on a white background describing cysticerci, tapeworms, MRI, and CT scans, ending with the citation '(Kapur et al. 2007)'.",
+        "action": "static"
+      },
+      {
+        "desc": "Abstract text section at the bottom starting with 'ABSTRACT. Neurocysticercosis (NCC) is caused by cysticerci...'.",
+        "action": "static"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a static document page about Neurocysticercosis.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The title 'Neurocysticercosis: Fireflies in the Central Nervous System' is centered on the page.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A specific paragraph is highlighted on a white background, describing how cysticerci create cavities and can grow into tapeworms.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text mentions that cysticerci on a CT scan can look like a starry sky or fireflies.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The abstract section is visible below the highlighted text block.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Am J Electroneurodiagnostic Technol",
+      "50:26-36, 2010",
+      "© ASET, Missouri",
+      "Neurocysticercosis: Fireflies in the Central Nervous System",
+      "Cysticerci create cavities in the brain and other body tissue where their tiny bodies grow sometimes into tapeworms two to seven meters in length and can live up to 25 years in the human body. On magnetic resonance imaging (MRI) wormholes appear. Often times, if best practice is followed, the patient's entire body is scanned and more craters appear. Some authors have stated that cysticerci on a computed topography (CT) scan are similar to a starry sky or fireflies (Kapur et al. 2007).",
+      "ABSTRACT. Neurocysticercosis (NCC) is caused by cysticerci spreading to spinal or brain tissue. NCC causes headaches, seizures, and focal neurological deficits. NCC is one of the main causes of epilepsy worldwide. NCC can cause death if it is not adequately treated. NCC is"
+    ],
+    "spatial": "The header text is located in the top-left corner of the frame. The main title is positioned centrally above the highlighted text block. The white text block containing the detailed description is in the center of the screen, overlaying the grey background. The abstract text is situated directly below the white text block.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "A white rectangular text box with a torn paper edge effect, containing black serif text.",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "A document background with a light grey gradient, featuring a main title in large grey sans-serif font and an abstract section in smaller black serif font.",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A white text box overlays the center of the document.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text box contains a paragraph describing Cysticerci creating cavities in the brain and body tissue.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text mentions that tapeworms can grow two to seven meters in length and live up to 25 years.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text states that cysticerci on a CT scan are similar to a starry sky or fireflies.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The main title of the document reads 'Neurocysticercosis: Fireflies in the Central Nervous System'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Am J Electroneurodiagnostic Technol",
+      "50:26-36, 2010",
+      "© ASET, Missouri",
+      "Neurocysticercosis: Fireflies in the",
+      "Central Nervous System",
+      "Cysticerci create cavities in the brain and other body tissue where",
+      "their tiny bodies grow sometimes into tapeworms two to seven meters in",
+      "length and can live up to 25 years in the human body. On magnetic reso-",
+      "nance imaging (MRI) wormholes appear. Often times, if best practice is",
+      "followed, the patient's entire body is scanned and more craters appear.",
+      "Some authors have stated that cysticerci on a computed topography (CT)",
+      "scan are similar to a starry sky or fireflies (Kapur et al. 2007).",
+      "ABSTRACT. Neurocysticercosis (NCC) is caused by cysticerci",
+      "spreading to spinal or brain tissue. NCC causes headaches, seizures, and",
+      "focal neurological deficits. NCC is one of the main causes of epilepsy",
+      "worldwide. NCC can cause death if it is not adequately treated. NCC is"
+    ],
+    "spatial": "The white text box is positioned in the center of the frame, overlaying the document background. The main title 'Neurocysticercosis: Fireflies in the Central Nervous System' is located above the white text box. The 'ABSTRACT' section is located below the white text box.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "A digital document page with a white background, featuring a large title in grey sans-serif font, a central text block with a torn-paper edge effect and drop shadow, and a lower abstract section in black serif font.",
+        "action": "static"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Neurocysticercosis: Fireflies in the Central Nervous System'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A central text block describes cysticerci creating cavities in the brain and growing into tapeworms.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text mentions that cysticerci on a CT scan are similar to a starry sky or fireflies.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The header text 'Am J Electroneurodiagnostic Technol 50:26-36, 2010' is visible at the top left.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Am J Electroneurodiagnostic Technol",
+      "50:26-36, 2010",
+      "© ASET, Missouri",
+      "Neurocysticercosis: Fireflies in the",
+      "Central Nervous System",
+      "Cysticerci create cavities in the brain and other body tissue where",
+      "their tiny bodies grow sometimes into tapeworms two to seven meters in",
+      "length and can live up to 25 years in the human body. On magnetic reso-",
+      "nance imaging (MRI) wormholes appear. Often times, if best practice is",
+      "followed, the patient's entire body is scanned and more craters appear.",
+      "Some authors have stated that cysticerci on a computed topography (CT)",
+      "scan are similar to a starry sky or fireflies (Kapur et al. 2007).",
+      "ABSTRACT. Neurocysticercosis (NCC) is caused by cysticerci",
+      "spreading to spinal or brain tissue. NCC causes headaches, seizures, and",
+      "focal neurological deficits. NCC is one of the main causes of epilepsy",
+      "worldwide. NCC can cause death if it is not adequately treated. NCC is"
+    ],
+    "spatial": "The header text is located at the top left of the page. The main title is centered below the header. The text block with the torn-paper effect is positioned in the center of the screen, below the title. The abstract text is located at the bottom of the visible area, below the central text block.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "White rectangular text box with a torn paper edge effect, containing italicized black serif text",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Main document background with large grey sans-serif title and smaller black serif abstract text",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A white text box is superimposed over the center of the document.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text inside the box describes cysticerci creating cavities in the brain and growing into tapeworms.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text mentions that cysticerci on a CT scan are similar to a starry sky or fireflies.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The main title 'Neurocysticercosis: Fireflies in the Central Nervous System' is visible behind the overlay.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Am J Electroneurodiagnostic Technol",
+      "50:26-36, 2010",
+      "© ASET, Missouri",
+      "Neurocysticercosis: Fireflies in the",
+      "Central Nervous System",
+      "Cysticerci create cavities in the brain and other body tissue where",
+      "their tiny bodies grow sometimes into tapeworms two to seven meters in",
+      "length and can live up to 25 years in the human body. On magnetic reso-",
+      "nance imaging (MRI) wormholes appear. Often times, if best practice is",
+      "followed, the patient's entire body is scanned and more craters appear.",
+      "Some authors have stated that cysticerci on a computed topography (CT)",
+      "scan are similar to a starry sky or fireflies (Kapur et al. 2007).",
+      "ABSTRACT. Neurocysticercosis (NCC) is caused by cysticerci",
+      "spreading to spinal or brain tissue. NCC causes headaches, seizures, and",
+      "focal neurological deficits. NCC is one of the main causes of epilepsy",
+      "worldwide. NCC can cause death if it is not adequately treated. NCC is"
+    ],
+    "spatial": "The white text box with torn edges is positioned in the center of the frame, overlaying the main document text. The title 'Neurocysticercosis: Fireflies in the Central Nervous System' is located above the white box. The abstract text is visible below the white box.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "digital document page with a light gray background, featuring a large title in gray sans-serif font, a central text block with a white background and torn paper edges, and a lower text block in black serif font.",
+        "action": "static"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The screen displays a static view of a medical article or presentation slide.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The title 'Neurocysticercosis: Fireflies in the Central Nervous System' is visible at the top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A central text box describes cysticerci creating cavities and appearing like fireflies on CT scans.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An abstract section is visible at the bottom of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Am J Electroneurodiagnostic Technol",
+      "50:26-36, 2010",
+      "© ASET, Missouri",
+      "Neurocysticercosis: Fireflies in the",
+      "Central Nervous System",
+      "Cysticerci create cavities in the brain and other body tissue where",
+      "their tiny bodies grow sometimes into tapeworms two to seven meters in",
+      "length and can live up to 25 years in the human body. On magnetic reso-",
+      "nance imaging (MRI) wormholes appear. Often times, if best practice is",
+      "followed, the patient's entire body is scanned and more craters appear.",
+      "Some authors have stated that cysticerci on a computed topography (CT)",
+      "scan are similar to a starry sky or fireflies (Kapur et al. 2007).",
+      "ABSTRACT. Neurocysticercosis (NCC) is caused by cysticerci",
+      "spreading to spinal or brain tissue. NCC causes headaches, seizures, and",
+      "focal neurological deficits. NCC is one of the main causes of epilepsy",
+      "worldwide. NCC can cause death if it is not adequately treated. NCC is"
+    ],
+    "spatial": "The citation information is located at the top left corner of the screen. The main title is centered below the citation. A text block with a white background is positioned in the center of the screen, below the title. The abstract text is located at the bottom of the screen, below the central text block.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "white rectangular text box with a drop shadow, containing italicized serif text",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "yellow highlight box overlaying the word 'wormholes'",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "document background with gray serif text for title and abstract",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A yellow highlight appears over the word 'wormholes' in the central text box.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text describes cysticerci creating cavities in the brain.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text mentions tapeworms growing two to seven meters in length.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text states cysticerci can live up to 25 years in the human body.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text compares cysticerci on a CT scan to a starry sky or fireflies.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Am J Electroneurodiagnostic Technol",
+      "50:26-36, 2010",
+      "© ASET, Missouri",
+      "Neurocysticercosis: Fireflies in the Central Nervous System",
+      "Cysticerci create cavities in the brain and other body tissue where their tiny bodies grow sometimes into tapeworms two to seven meters in length and can live up to 25 years in the human body. On magnetic resonance imaging (MRI) wormholes appear. Often times, if best practice is followed, the patient's entire body is scanned and more craters appear. Some authors have stated that cysticerci on a computed topography (CT) scan are similar to a starry sky or fireflies (Kapur et al. 2007).",
+      "ABSTRACT. Neurocysticercosis (NCC) is caused by cysticerci spreading to spinal or brain tissue. NCC causes headaches, seizures, and focal neurological deficits. NCC is one of the main causes of epilepsy worldwide. NCC can cause death if it is not adequately treated. NCC is"
+    ],
+    "spatial": "The white text box is centered on the screen, overlaying the document background. The yellow highlight is inside the white text box, specifically covering the word 'wormholes'. The title 'Neurocysticercosis: Fireflies in the Central Nervous System' is above the white text box. The abstract text is below the white text box.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "white paper strip with black serif text, containing a paragraph about Cysticerci and MRI scans, with the word 'wormholes' highlighted in yellow",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "medical document page with the title 'Neurocysticercosis: Fireflies in the Central Nervous System' and an 'ABSTRACT' section",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "axial MRI brain scan image showing a cross-section of a brain with numerous small dark spots scattered throughout the tissue",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A white paper strip is placed over a document, partially obscuring the text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the paper strip describes Cysticerci creating cavities in the brain.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The word 'wormholes' is highlighted in yellow on the paper strip.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An MRI scan of a brain is visible on the left side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background document title reads 'Neurocysticercosis: Fireflies in the Central Nervous System'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "© ASET, Missouri",
+      "Neurocysticercosis: Fireflies in the Central Nervous System",
+      "Cysticerci create cavities in the brain and other body tissue where their tiny bodies grow sometimes to tapeworms two to seven meters in length and can live up to 25 years in the human body. On magnetic resonance imaging (MRI) wormholes appear. Often times, if best practice is followed, the patient's entire body is scanned and more craters appear. Some authors have stated that cysticerci on a computed topography (CT) scan are similar to a starry sky or fireflies (Kapur et al. 2007).",
+      "ABSTRACT. Neurocysticercosis (NCC) is caused by cysticerci spreading to spinal or brain tissue. NCC causes headaches, seizures, and focal neurological deficits. NCC is one of the main causes of epilepsy if it is not adequately treated. NCC is",
+      "BRAIN"
+    ],
+    "spatial": "The white paper strip with the highlighted text is positioned in the center, overlaying the background document. The MRI brain scan image is located to the left of the paper strip. The background document text is visible above and below the paper strip.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": [
+      "MRI brain scan image appears on screen"
+    ]
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "axial cross-section of a human brain showing grey and white matter differentiation, with numerous small, dark, punctate spots scattered throughout the parenchyma",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white text label reading 'BRAIN' in uppercase sans-serif font",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a static medical imaging scan of a brain.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The brain tissue exhibits multiple small, dark, dot-like lesions distributed across the visible area.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'BRAIN' is visible at the bottom of the scan area.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BRAIN"
+    ],
+    "spatial": "The brain scan image is positioned on the left side of the frame against a black background. The text label 'BRAIN' is located at the bottom center of the scan image.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "axial cross-section of a human brain, grayscale, showing numerous small, dark, circular spots scattered throughout the tissue",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white rectangular text box containing a paragraph of black serif text",
+        "action": "static",
+        "position": "center-right"
+      },
+      {
+        "desc": "the word 'BRAIN' in white capital letters",
+        "action": "static",
+        "position": "bottom-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A medical scan of a brain is displayed on the left side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A text box containing a paragraph about cysticerci appears in the center-right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text describes cysticerci creating cavities in the brain and appearing like a 'starry sky' on CT scans.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The word 'BRAIN' is visible at the bottom of the scan image.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Cysticerci create cavities in the brain and other body tissue where their tiny bodies grow sometimes into tapeworms two to seven meters in length and can live up to 25 years in the human body. On magnetic resonance imaging (MRI) wormholes appear. Often times, if best practice is followed, the patient's entire body is scanned and more craters appear. Some authors have stated that cysticerci on a computed topography (CT) scan are similar to a starry sky or fireflies (Kapur et al. 2007).",
+      "BRAIN"
+    ],
+    "spatial": "The brain scan image is positioned on the left side of the screen. The text box is located to the right of the brain scan, slightly overlapping it. The label 'BRAIN' is situated at the bottom edge of the brain scan image.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "circular medical brain scan image, grayscale, showing multiple small dark spots scattered across the tissue",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white rectangular text box containing a paragraph of black serif text with a yellow highlighted section",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A paragraph of text describes cysticerci creating cavities in the brain and body tissue.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text mentions that cysticerci can grow into tapeworms two to seven meters in length.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text states that cysticerci can live up to 25 years in the human body.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text notes that on MRI, wormholes appear.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text states that cysticerci on a CT scan are 'similar to a starry sky or fireflies'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The phrase 'similar to a starry sky' is highlighted in yellow.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Cysticerci create cavities in the brain and other body tissue where their tiny bodies grow sometimes into tapeworms two to seven meters in length and can live up to 25 years in the human body. On magnetic resonance imaging (MRI) wormholes appear. Often times, if best practice is followed, the patient's entire body is scanned and more craters appear. Some authors have stated that cysticerci on a computed topography (CT) scan are similar to a starry sky or fireflies (Kapur et al. 2007).",
+      "BRAIN"
+    ],
+    "spatial": "The white text box is positioned in the center of the frame, overlaying the circular brain scan image which is situated to the left. The word 'BRAIN' is located at the bottom center of the screen, below the main visual elements.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "axial MRI scan of a brain showing numerous small, bright, hyperintense spots scattered throughout the gray and white matter",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white text label reading 'BRAIN' in capital letters",
+        "action": "static",
+        "position": "bottom-right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a static medical image of a brain scan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The brain scan reveals multiple small, bright lesions distributed across the tissue.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'BRAIN' is visible at the bottom of the scan.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BRAIN"
+    ],
+    "spatial": "The MRI scan of the brain is positioned on the right side of the frame against a black background. The text label 'BRAIN' is located at the bottom edge of the scan.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "axial MRI brain scan showing grey and white matter with numerous small, bright, hyperintense spots scattered throughout the tissue",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "thin white diagonal line",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "An axial MRI scan of a brain is displayed on the right side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The brain scan reveals multiple small, bright, hyperintense lesions scattered throughout the parenchyma.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A thin white diagonal line is visible on the left side of the black background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BRAIN"
+    ],
+    "spatial": "The axial MRI brain scan is positioned on the right side of the frame. The thin white diagonal line is located to the left of the brain scan. The text 'BRAIN' is situated at the bottom edge of the brain scan image.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "Medical brain scan image, circular cross-section, grayscale tones, filled with numerous small, bright, star-shaped spots",
+        "action": "static",
+        "position": "right",
+        "id": "brain_mri_scan"
+      },
+      {
+        "desc": "Torn strip of white paper with black serif text",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Small white text label reading 'BRAIN'",
+        "action": "static",
+        "position": "bottom right",
+        "id": "brain_label"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text overlay explains that each star-shaped spot is a fluid-filled cyst containing a tapeworm.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The brain scan image is positioned to the right of the text strip.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text strip is superimposed over the left side of the brain scan.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Each star is a fluid filled cyst with the beginning of",
+      "a living, growing tapeworm inside.",
+      "BRAIN"
+    ],
+    "spatial": "The brain scan image is located on the right side of the frame. A strip of paper containing explanatory text is positioned to the left of the scan's center, partially overlapping the scan image. The label 'BRAIN' is located at the bottom right edge of the scan.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "medical scan of a brain, grayscale, showing numerous small white spots scattered throughout the tissue",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white rectangular text box with torn edges containing black serif text",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "small white text label reading 'BRAIN' at the bottom edge",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text box explains that each star-shaped spot in the scan is a fluid-filled cyst containing a tapeworm.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The brain scan is positioned to the right of the explanatory text box.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The label 'BRAIN' is located below the brain scan image.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Each star is a fluid filled cyst with the beginning of",
+      "a living, growing tapeworm inside.",
+      "BRAIN"
+    ],
+    "spatial": "The white text box is positioned in the center of the frame, overlapping the left side of the brain scan. The brain scan occupies the right side of the frame. The 'BRAIN' label is located at the bottom right corner, directly below the scan.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "medical brain scan image, grayscale, showing numerous small, bright, star-shaped spots scattered throughout the tissue",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white rectangular text box with a torn paper edge effect, containing black serif text",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "small white text label reading 'BRAIN' in capital letters",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A medical brain scan image is displayed on the right side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The brain scan shows numerous bright, star-shaped spots scattered throughout the tissue.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A text box overlay explains that each star is a fluid-filled cyst containing a tapeworm.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The label 'BRAIN' identifies the organ shown in the scan.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Each star is a fluid filled cyst with the beginning of a living, growing tapeworm inside.",
+      "BRAIN"
+    ],
+    "spatial": "The white text box is positioned to the left of the brain scan image. The 'BRAIN' label is located at the bottom right corner of the scan image.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      68,
+      70
+    ],
+    "visible_entities": [
+      {
+        "desc": "medical scan of a brain, grayscale, showing numerous small, bright, star-shaped spots scattered throughout the tissue",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white rectangular text box with a torn paper edge effect, containing black serif text",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "small white text label reading 'BRAIN'",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text overlay explains that each star-shaped spot is a fluid-filled cyst containing a living, growing tapeworm.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The brain scan is positioned on the right side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text box is positioned in the center, overlapping the left side of the brain scan.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Each star is a fluid filled cyst with the beginning of",
+      "a living, growing tapeworm inside.",
+      "BRAIN"
+    ],
+    "spatial": "The medical scan of the brain is located on the right side of the frame. The white text box is positioned in the center, partially overlapping the left side of the brain scan. The 'BRAIN' label is located at the bottom right corner, below the scan.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      70,
+      72
+    ],
+    "visible_entities": [
+      {
+        "desc": "cross-section of a biological brain specimen, pale yellowish-white tissue with numerous translucent, fluid-filled cysts of varying sizes scattered throughout",
+        "action": "static",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "medical brain scan image (MRI), grayscale circular view showing white speckles inside a dark outline",
+        "action": "static",
+        "position": "right/background"
+      },
+      {
+        "desc": "torn strip of white paper with black serif text",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "small, flat, beige irregular object resembling a dried leaf or piece of parasite",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A cross-section of a brain specimen is displayed in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The brain specimen is covered in visible cysts.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A text strip overlays the image, reading 'Each star is a fluid filled cyst with the beginning of a living, growing tapeworm inside.'",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A medical scan image is positioned behind the brain specimen on the right side.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Each star is a fluid filled cyst with the beginning of",
+      "a living, growing tapeworm inside.",
+      "BRAIN"
+    ],
+    "spatial": "The brain specimen is in the foreground, positioned in front of the medical scan image which is to the right. The text strip is horizontally across the center, partially obscuring the scan image. The small beige object rests on top of the text strip.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": [
+      "Biological brain specimen with cysts replaces MRI scan view"
+    ]
+  },
+  {
+    "time": [
+      72,
+      74
+    ],
+    "visible_entities": [
+      {
+        "desc": "coronal section of a brain specimen, pale yellowish-white tissue with numerous translucent, spherical, gelatinous cysts of varying sizes scattered throughout the cortex and white matter",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "grayscale medical imaging scan (MRI/CT) of a brain cross-section",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white rectangular label with black text",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white rectangular label with black text",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A coronal section of a brain specimen is displayed in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The brain tissue is heavily infested with multiple cysts.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A grayscale medical scan is visible in the background behind the specimen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'a li' is visible on a label to the left of the brain.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'BRAIN' is visible at the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "a li",
+      "f",
+      "BRAIN"
+    ],
+    "spatial": "The brain specimen is positioned in the foreground, centered in the frame. The grayscale medical scan is located behind the specimen. A label with the text 'a li' is to the left of the brain, and another label with the letter 'f' is to the right. The text 'BRAIN' is below the specimen in the bottom right corner.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      74,
+      76
+    ],
+    "visible_entities": [
+      {
+        "desc": "gross pathology brain slice, pale yellow tissue with numerous translucent, amber-colored cystic lesions of varying sizes scattered throughout the cortex and white matter",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "grayscale scanning electron micrograph of a spiky, spherical organism with a textured central body and radiating sharp projections",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "medical imaging scan, grayscale circular cross-section showing internal structures",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white text label 'a li' on a torn paper strip",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white text label 'BRAIN' in capital letters",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A grayscale micrograph of a spiky organism is superimposed over the center of the brain tissue slice.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The brain slice displays multiple fluid-filled cysts embedded in the tissue.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'a li' is visible on the left side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'BRAIN' is visible at the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "a li",
+      "BRAIN"
+    ],
+    "spatial": "The spiky micrograph is in the foreground, covering the center of the brain slice which is in the background. The medical imaging scan is positioned to the right of the brain slice. The text label 'a li' is to the left of the brain slice, and the text 'BRAIN' is below the medical scan.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": [
+      "Scanning electron micrograph of scolex/organism appears"
+    ]
+  },
+  {
+    "time": [
+      76,
+      78
+    ],
+    "visible_entities": [
+      {
+        "desc": "gray textured biological structure with a central cracked circular area surrounded by a ring of sharp, needle-like spines",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "yellowish organic mass with brown spots and a glossy surface",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "circular blue-tinted cross-section with a dark rim",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "small white rectangular paper labels with black text",
+        "action": "static",
+        "position": "left and right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A gray, spiky biological structure is centered in the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellowish organic mass is positioned to the left of the central structure.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue circular cross-section is positioned to the right of the central structure.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'a li' is visible on a label to the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'f' is visible on a label to the right.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "a li",
+      "f"
+    ],
+    "spatial": "The gray spiky structure is in the center of the frame. The yellowish organic mass is to the left of the central structure. The blue circular cross-section is to the right of the central structure. The label with 'a li' is on the left side, and the label with 'f' is on the right side.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      78,
+      80
+    ],
+    "visible_entities": [
+      {
+        "desc": "central gray textured structure with a cracked circular center and a ring of sharp, radiating spikes",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "pale yellowish organic mass with brown spots and a glossy surface",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "pale yellowish organic mass with brown spots and a glossy surface",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "blue-tinted circular cross-section with a dark rim",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white rectangular label with black text",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white rectangular label with black text",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The central gray spiky structure remains static in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The label on the left displays the text 'a li'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The label on the right displays the text 'f'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pale organic masses are positioned on either side of the central structure.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "a li",
+      "f"
+    ],
+    "spatial": "The central gray spiky structure is in the middle of the frame. To its left is a pale yellowish organic mass with a label reading 'a li'. To its right is another pale yellowish organic mass with a label reading 'f', which is next to a blue-tinted circular cross-section.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      80,
+      82
+    ],
+    "visible_entities": [
+      {
+        "desc": "central grey textured structure with a cracked circular center and a radial array of sharp, needle-like spikes",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "pale yellowish organic mass with brown spots and a segmented appearance",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "pale yellowish organic mass with brown spots and a segmented appearance",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "blueish-grey circular cross-section with a dark outer rim",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "small white rectangular text labels",
+        "action": "static",
+        "position": "left and right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The central grey structure remains static in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pale yellowish organic masses are positioned on the left and right sides of the central structure.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blueish-grey circular cross-section is located to the right of the central structure.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Small white text labels are visible on the left and right sides of the image.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "a li",
+      "f"
+    ],
+    "spatial": "The central grey textured structure is in the middle of the frame. The pale yellowish organic mass on the left is to the left of the central structure, and the one on the right is to the right of the central structure. The blueish-grey circular cross-section is to the right of the right-side organic mass. The text label 'a li' is to the left of the left-side organic mass, and the text label 'f' is to the right of the right-side organic mass.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      82,
+      84
+    ],
+    "visible_entities": [
+      {
+        "desc": "grayscale scanning electron micrograph of a scolex with a central textured surface and radiating sharp hooks",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "medical journal article header with bold serif title text and smaller author names",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "yellowish biological tissue specimen with dark spots",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "blue circular cross-section image",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A grayscale micrograph of a parasitic scolex is centered in the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Text overlay reading 'Public Health Implications of Cysticercosis Acquired in the United States' appears over the image.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The journal header 'Emerging Infectious Diseases' is visible at the top left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellowish tissue specimen is positioned to the left of the central micrograph.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "MedscapeCME ACTIVITY",
+      "a li",
+      "f"
+    ],
+    "spatial": "The central micrograph is overlaid by the article title text. The yellowish tissue specimen is to the left of the central image, while the blue circular cross-section is to the right. The journal header is located above the main title text.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      84,
+      86
+    ],
+    "visible_entities": [
+      {
+        "desc": "Document page with white background, black serif text, and a gray shaded box",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Large bold black title text reading 'Public Health Implications of Cysticercosis Acquired in the United States'",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "Gray rectangular box containing 'MedscapeCME ACTIVITY' header and instructional text",
+        "action": "static",
+        "position": "center",
+        "id": "medscape_cme_box"
+      },
+      {
+        "desc": "Small black text listing author names 'Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard'",
+        "action": "static",
+        "position": "top",
+        "id": "authors_sorvillo_group"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Public Health Implications of Cysticercosis Acquired in the United States'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The authors listed are Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A gray box labeled 'MedscapeCME ACTIVITY' provides instructions for earning CME credit.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The header indicates the journal is 'Emerging Infectious Diseases', Vol. 17, No. 1, January 2011.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "MedscapeCME ACTIVITY",
+      "Medscape, LLC is pleased to provide online continuing medical education (CME) for this journal article, allowing clinicians the opportunity to earn CME credit.",
+      "This activity has been planned and implemented in accordance with the Essential Areas and policies of the Accreditation Council for Continuing Medical Education through the joint sponsorship of Medscape, LLC and Emerging Infectious Diseases. Medscape, LLC is accredited by the ACCME to provide continuing medical education for physicians.",
+      "Medscape, LLC designates this Journal-based CME for a maximum of 1 AMA PRA Category 1 Credit(s)TM. Physicians should claim only the credit commensurate with their participation in the activity.",
+      "All other clinicians completing this activity will be issued a certificate of participation. To participate in this journal CME activity: (1) review the learning objectives and author disclosures; (2) study the education content; (3) take the post-test and/or complete the evaluation at www.medscapecme.com/journal/eid; (4) view/print certificate.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The title text is located at the top center of the page. The author names are positioned directly below the title. The gray 'MedscapeCME ACTIVITY' box is situated below the author names in the center of the page. The header text runs along the very top edge of the document.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": [
+      "New document 'Public Health Implications of Cysticercosis Acquired in the United States' appears"
+    ]
+  },
+  {
+    "time": [
+      86,
+      88
+    ],
+    "visible_entities": [
+      {
+        "desc": "Document page with white background, black serif text for the title and authors, and a grey shaded box containing sans-serif text",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Medscape CME ACTIVITY logo and text block inside a grey rectangular box",
+        "action": "static",
+        "position": "center",
+        "id": "medscape_cme_box"
+      },
+      {
+        "desc": "Main title text 'Public Health Implications of Cysticercosis Acquired in the United States' in large, bold, black font",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "Author names 'Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard' in smaller bold text",
+        "action": "static",
+        "position": "center",
+        "id": "authors_sorvillo_group"
+      },
+      {
+        "desc": "Header text 'Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011' in small font",
+        "action": "static",
+        "position": "top",
+        "id": "journal_citation_eid"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title of a medical article regarding Cysticercosis.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Medscape CME ACTIVITY box provides instructions for clinicians to earn credit.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text indicates the article is from the journal Emerging Infectious Diseases, Vol. 17, No. 1, January 2011.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The authors listed are Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "MedscapeCME ACTIVITY",
+      "Medscape, LLC is pleased to provide online continuing medical education (CME) for this journal article, allowing clinicians the opportunity to earn CME credit.",
+      "This activity has been planned and implemented in accordance with the Essential Areas and policies of the Accreditation Council for Continuing Medical Education through the joint sponsorship of Medscape, LLC and Emerging Infectious Diseases. Medscape, LLC is accredited by the ACCME to provide continuing medical education for physicians.",
+      "Medscape, LLC designates this Journal-based CME for a maximum of 1 AMA PRA Category 1 Credit(s)TM. Physicians should claim only the credit commensurate with their participation in the activity.",
+      "All other clinicians completing this activity will be issued a certificate of participation. To participate in this journal CME activity: (1) review the learning objectives and author disclosures; (2) study the education content; (3) take the post-test and/or complete the evaluation at www.medscapecme.com/journal/eid; (4) view/print certificate.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The header text is located at the very top of the page. The main title is centered below the header. The author names are positioned directly below the main title. The grey Medscape CME ACTIVITY box is situated below the author names, occupying the middle section of the page. The introductory text of the article begins at the bottom of the page.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      88,
+      90
+    ],
+    "visible_entities": [
+      {
+        "desc": "Document page with black text on a white background, featuring a large bold title, author names, a gray shaded box, and two columns of text at the bottom.",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Gray shaded rectangular box containing text about 'MedscapeCME ACTIVITY'.",
+        "action": "static",
+        "position": "center",
+        "id": "medscape_cme_box"
+      },
+      {
+        "desc": "Header text 'Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011' in small font.",
+        "action": "static",
+        "position": "top",
+        "id": "journal_citation_eid"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Public Health Implications of Cysticercosis Acquired in the United States'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The authors listed are Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A gray box labeled 'MedscapeCME ACTIVITY' is visible in the middle of the page.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text at the bottom mentions the years '1954–2005'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "MedscapeCME ACTIVITY",
+      "Medscape, LLC is pleased to provide online continuing medical education (CME) for this journal article, allowing clinicians the opportunity to earn CME credit.",
+      "This activity has been planned and implemented in accordance with the Essential Areas and policies of the Accreditation Council for Continuing Medical Education through the joint sponsorship of Medscape, LLC and Emerging Infectious Diseases. Medscape, LLC is accredited by the ACCME to provide continuing medical education for physicians.",
+      "Medscape, LLC designates this Journal-based CME for a maximum of 1 AMA PRA Category 1 Credit(s)TM. Physicians should claim only the credit commensurate with their participation in the activity.",
+      "All other clinicians completing this activity will be issued a certificate of participation. To participate in this journal CME activity: (1) review the learning objectives and author disclosures; (2) study the education content; (3) take the post-test and/or complete the evaluation at www.medscapecme.com/journal/eid; (4) view/print certificate.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The header text is located at the very top of the page. The main title is centered below the header. The author names are positioned directly below the title. The gray 'MedscapeCME ACTIVITY' box is situated below the author names. Two columns of text are visible at the bottom of the page, below the gray box.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      90,
+      92
+    ],
+    "visible_entities": [
+      {
+        "desc": "Document page with black text on a white background, featuring a large bold title, author names, a grey shaded box containing text, and a header.",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Public Health Implications of Cysticercosis Acquired in the United States'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The authors are listed as Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A grey box labeled 'MedscapeCME ACTIVITY' is visible in the middle of the page.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The header text reads 'Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "MedscapeCME ACTIVITY",
+      "Medscape, LLC is pleased to provide online continuing medical education (CME) for this journal article, allowing clinicians the opportunity to earn CME credit.",
+      "This activity has been planned and implemented in accordance with the Essential Areas and policies of the Accreditation Council for Continuing Medical Education through the joint sponsorship of Medscape, LLC and Emerging Infectious Diseases. Medscape, LLC is accredited by the ACCME to provide continuing medical education for physicians.",
+      "Medscape, LLC designates this Journal-based CME for a maximum of 1 AMA PRA Category 1 Credit(s)TM. Physicians should claim only the credit commensurate with their participation in the activity.",
+      "All other clinicians completing this activity will be issued a certificate of participation. To participate in this journal CME activity: (1) review the learning objectives and author disclosures; (2) study the education content; (3) take the post-test and/or complete the evaluation at www.medscapecme.com/journal/eid; (4) view/print certificate.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The header text is located at the top of the page. The main title is centered below the header. The author names are positioned directly below the title. The grey 'MedscapeCME ACTIVITY' box is situated below the author names. The body text columns are at the bottom of the page.",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      92,
+      94
+    ],
+    "visible_entities": [
+      {
+        "desc": "Document page with the title 'Public Health Implications of Cysticercosis Acquired in the United States' in large bold black font, followed by author names and a gray 'Medscape CME ACTIVITY' box containing instructional text.",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Yellow highlighter mark covering the text 'Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects'.",
+        "action": "static",
+        "position": "bottom",
+        "id": "yellow_highlight_bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title of a medical article.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow highlight is applied to the first sentence of the abstract or introduction at the bottom of the page.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Medscape CME ACTIVITY' is visible inside a gray box.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "Medscape CME ACTIVITY",
+      "Medscape, LLC is pleased to provide online continuing medical education (CME) for this journal article, allowing clinicians the opportunity to earn CME credit.",
+      "This activity has been planned and implemented in accordance with the Essential Areas and policies of the Accreditation Council for Continuing Medical Education through the joint sponsorship of Medscape, LLC and Emerging Infectious Diseases. Medscape, LLC is accredited by the ACCME to provide continuing medical education for physicians.",
+      "Medscape, LLC designates this Journal-based CME for a maximum of 1 AMA PRA Category 1 Credit(s)TM. Physicians should claim only the credit commensurate with their participation in the activity.",
+      "All other clinicians completing this activity will be issued a certificate of participation. To participate in this journal CME activity: (1) review the learning objectives and author disclosures; (2) study the education content; (3) take the post-test and/or complete the evaluation at www.medscapecme.com/journal/eid; (4) view/print certificate.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The article title is at the top center of the page. The author names are directly below the title. The gray Medscape CME box is below the author names. The yellow highlighted text is at the bottom of the visible page area.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": [
+      "Yellow highlighter mark appears on document text"
+    ]
+  },
+  {
+    "time": [
+      94,
+      96
+    ],
+    "visible_entities": [
+      {
+        "desc": "Document page with a large bold black title 'Public Health Implications of Cysticercosis Acquired in the United States', author names, a grey box containing 'MedscapeCME ACTIVITY' text, and body text with a yellow highlighted section.",
+        "action": "static",
+        "position": "center",
+        "id": "doc_public_health_cysticercosis"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Public Health Implications of Cysticercosis Acquired in the United States'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow highlight covers the text 'Cysticercosis has emerged as a cause of severe neurologic disease in the United States'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'MedscapeCME ACTIVITY' is visible inside a grey rectangular box.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "MedscapeCME ACTIVITY",
+      "Medscape, LLC is pleased to provide online continuing medical education (CME) for this journal article, allowing clinicians the opportunity to earn CME credit.",
+      "This activity has been planned and implemented in accordance with the Essential Areas and policies of the Accreditation Council for Continuing Medical Education through the joint sponsorship of Medscape, LLC and Emerging Infectious Diseases. Medscape, LLC is accredited by the ACCME to provide continuing medical education for physicians.",
+      "Medscape, LLC designates this Journal-based CME for a maximum of 1 AMA PRA Category 1 Credit(s)TM. Physicians should claim only the credit commensurate with their participation in the activity.",
+      "All other clinicians completing this activity will be issued a certificate of participation. To participate in this journal CME activity: (1) review the learning objectives and author disclosures; (2) study the education content; (3) take the post-test and/or complete the evaluation at www.medscapecme.com/journal/eid; (4) view/print certificate.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The title is at the top of the page, above the author names. The grey MedscapeCME box is below the author names and above the main body text. The yellow highlighted text is located at the bottom left of the page.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      96,
+      98
+    ],
+    "visible_entities": [
+      {
+        "desc": "Document page with the title 'Public Health Implications of Cysticercosis Acquired in the United States' in large bold black font, authors 'Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard' below, a gray 'MedscapeCME ACTIVITY' box with instructional text, and a highlighted yellow text block at the bottom.",
+        "action": "static",
+        "position": "center",
+        "id": "doc_public_health_cysticercosis"
+      },
+      {
+        "desc": "Yellow highlighter mark",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Public Health Implications of Cysticercosis Acquired in the United States'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Cysticercosis has emerged as a cause of severe neurologic disease in the United States' is highlighted in yellow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The MedscapeCME ACTIVITY box provides instructions for clinicians to earn CME credit.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "MedscapeCME ACTIVITY",
+      "Medscape, LLC is pleased to provide online continuing medical education (CME) for this journal article, allowing clinicians the opportunity to earn CME credit.",
+      "This activity has been planned and implemented in accordance with the Essential Areas and policies of the Accreditation Council for Continuing Medical Education through the joint sponsorship of Medscape, LLC and Emerging Infectious Diseases. Medscape, LLC is accredited by the ACCME to provide continuing medical education for physicians.",
+      "Medscape, LLC designates this Journal-based CME for a maximum of 1 AMA PRA Category 1 Credit(s)TM. Physicians should claim only the credit commensurate with their participation in the activity.",
+      "All other clinicians completing this activity will be issued a certificate of participation. To participate in this journal CME activity: (1) review the learning objectives and author disclosures; (2) study the education content; (3) take the post-test and/or complete the evaluation at www.medscapecme.com/journal/eid; (4) view/print certificate.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The title is at the top of the page, above the authors' names. The gray MedscapeCME ACTIVITY box is located below the authors' names. The yellow highlighted text is at the bottom of the visible page area.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      98,
+      100
+    ],
+    "visible_entities": [
+      {
+        "desc": "Document page with white background, black serif text, and a gray rectangular box containing text. A yellow highlighter mark is visible at the bottom.",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Title text 'Public Health Implications of Cysticercosis Acquired in the United States' in large, bold, black font.",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "Gray box labeled 'MedscapeCME ACTIVITY' containing instructional text.",
+        "action": "static",
+        "position": "center",
+        "id": "medscape_cme_box"
+      },
+      {
+        "desc": "Yellow highlighted text section at the bottom of the page.",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Public Health Implications of Cysticercosis Acquired in the United States'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The authors listed are Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A gray box titled 'MedscapeCME ACTIVITY' provides information about continuing medical education.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Cysticercosis has emerged as a cause of severe neurologic disease in the United States' is highlighted in yellow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The header indicates the journal is 'Emerging Infectious Diseases', Vol. 17, No. 1, January 2011.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "MedscapeCME ACTIVITY",
+      "Medscape, LLC is pleased to provide online continuing medical education (CME) for this journal article, allowing clinicians the opportunity to earn CME credit.",
+      "This activity has been planned and implemented in accordance with the Essential Areas and policies of the Accreditation Council for Continuing Medical Education through the joint sponsorship of Medscape, LLC and Emerging Infectious Diseases. Medscape, LLC is accredited by the ACCME to provide continuing medical education for physicians.",
+      "Medscape, LLC designates this Journal-based CME for a maximum of 1 AMA PRA Category 1 Credit(s)TM. Physicians should claim only the credit commensurate with their participation in the activity.",
+      "All other clinicians completing this activity will be issued a certificate of participation. To participate in this journal CME activity: (1) review the learning objectives and author disclosures; (2) study the education content; (3) take the post-test and/or complete the evaluation at www.medscapecme.com/journal/eid; (4) view/print certificate.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The title is located at the top of the page, above the authors' names. The gray 'MedscapeCME ACTIVITY' box is positioned below the author list in the center of the page. The yellow highlighted text is located at the bottom of the visible area, below the gray box.",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      100,
+      102
+    ],
+    "visible_entities": [
+      {
+        "desc": "Document page with white background, black serif text, and a gray shaded box",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Yellow highlighter mark on text",
+        "action": "static",
+        "position": "bottom-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Public Health Implications of Cysticercosis Acquired in the United States'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A gray box labeled 'MedscapeCME ACTIVITY' is visible below the author names.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Cysticercosis has emerged as a cause of severe neurologic disease in the United States' is highlighted in yellow.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "MedscapeCME ACTIVITY",
+      "Medscape, LLC is pleased to provide online continuing medical education (CME) for this journal article, allowing clinicians the opportunity to earn CME credit.",
+      "This activity has been planned and implemented in accordance with the Essential Areas and policies of the Accreditation Council for Continuing Medical Education through the joint sponsorship of Medscape, LLC and Emerging Infectious Diseases. Medscape, LLC is accredited by the ACCME to provide continuing medical education for physicians.",
+      "Medscape, LLC designates this Journal-based CME for a maximum of 1 AMA PRA Category 1 Credit(s)TM. Physicians should claim only the credit commensurate with their participation in the activity.",
+      "All other clinicians completing this activity will be issued a certificate of participation. To participate in this journal CME activity: (1) review the learning objectives and author disclosures; (2) study the education content; (3) take the post-test and/or complete the evaluation at www.medscapecme.com/journal/eid; (4) view/print certificate.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The main title is centered at the top of the page. The gray MedscapeCME box is located below the author names. The yellow highlighted text is positioned at the bottom left of the page, to the left of the text starting with '1954–2005'.",
+    "parse_success": true,
+    "chunk_idx": 50,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      102,
+      104
+    ],
+    "visible_entities": [
+      {
+        "desc": "A document page with a large, bold, dark grey title 'Public Health Implications of Cysticercosis Acquired in the United States' and author names 'Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard' below it.",
+        "action": "static",
+        "position": "background",
+        "id": "doc_public_health_cysticercosis"
+      },
+      {
+        "desc": "A rectangular white text box with a drop shadow, containing a paragraph of black serif text about Neurocysticercosis (NCC).",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "A yellow highlighted text segment at the bottom of the page reading 'Cysticercosis has emerged as a cause of severe neurologic disease in the United States'.",
+        "action": "static",
+        "position": "bottom",
+        "id": "yellow_highlight_bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A white text box containing a definition of Neurocysticercosis is positioned over the main document text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text box describes symptoms such as seizures, headaches, and focal neurologic deficits.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text box states that NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A specific sentence at the bottom of the page is highlighted in yellow to emphasize the emergence of Cysticercosis in the United States.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "MedscapeCME ACTIVITY",
+      "Neurocysticercosis (NCC) occurs when the cysticerci from the pork tapeworm, Taenia solium, infect the central nervous system. Some people may remain asymptomatic their entire lives as carriers, while others are asymptomatic for a few years then suddenly become very ill with seizures, headaches, and other focal neurologic deficits as the cysticerci multiply within the nervous system, muscles, and other tissue. NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The white text box containing the definition of Neurocysticercosis is centered on the screen, overlaying the background document. The yellow highlighted text is located at the bottom of the page, below the main title and the central text box. The author names are positioned directly below the main title in the background.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      104,
+      106
+    ],
+    "visible_entities": [
+      {
+        "desc": "Document page with a large bold title 'Public Health Implications of Cysticercosis Acquired in the United States', author names below, a central text block on a white background with a torn paper edge effect, and a highlighted yellow text section at the bottom.",
+        "action": "static"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Public Health Implications of Cysticercosis Acquired in the United States'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The central text block defines Neurocysticercosis (NCC) as an infection caused by the pork tapeworm, Taenia solium.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text states that NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow highlighted section at the bottom reads 'Cysticercosis has emerged as a cause of severe neurologic disease in the United States'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "Neurocysticercosis (NCC) occurs when the cysticerci from the pork tapeworm, Taenia solium, infect the central nervous system. Some people may remain asymptomatic their entire lives as carriers, while others are asymptomatic for a few years then suddenly become very ill with seizures, headaches, and other focal neurologic deficits as the cysticerci multiply within the nervous system, muscles, and other tissue. NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The title is at the top of the document. The author names are below the title. The main text block is in the center of the page. The highlighted yellow text is at the bottom of the page.",
+    "parse_success": true,
+    "chunk_idx": 52,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      106,
+      108
+    ],
+    "visible_entities": [
+      {
+        "desc": "Document page with a large bold title 'Public Health Implications of Cysticercosis Acquired in the United States' in dark grey font, followed by author names in smaller text.",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "A rectangular text snippet with a white background and a torn-paper edge effect, containing a paragraph of black serif text.",
+        "action": "static",
+        "position": "center",
+        "id": "torn_paper_text_box"
+      },
+      {
+        "desc": "A yellow highlighter mark covering the first line of text at the bottom of the page.",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Public Health Implications of Cysticercosis Acquired in the United States'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The central text snippet defines Neurocysticercosis (NCC) as an infection caused by the pork tapeworm, Taenia solium.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text states that NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The phrase 'Cysticercosis has emerged as a cause of severe neurologic disease in the United States' is highlighted in yellow at the bottom.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "Neurocysticercosis (NCC) occurs when the cysticerci from the pork tapeworm, Taenia solium, infect the central nervous system. Some people may remain asymptomatic their entire lives as carriers, while others are asymptomatic for a few years then suddenly become very ill with seizures, headaches, and other focal neurologic deficits as the cysticerci multiply within the nervous system, muscles, and other tissue. NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The document title is located at the top of the frame. The white text snippet describing Neurocysticercosis is positioned in the center, below the title. The yellow highlighted text is located at the bottom of the page, below the central text snippet.",
+    "parse_success": true,
+    "chunk_idx": 53,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      108,
+      110
+    ],
+    "visible_entities": [
+      {
+        "desc": "Document page with a large bold grey title, author names, a central text block on a white background with a torn-paper edge effect, and a yellow highlighted text box at the bottom.",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Yellow highlighted text box containing black text.",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Public Health Implications of Cysticercosis Acquired in the United States'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A central text block defines Neurocysticercosis (NCC) and its symptoms.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow highlighted box at the bottom states that Cysticercosis has emerged as a cause of severe neurologic disease in the United States.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "Neurocysticercosis (NCC) occurs when the cysticerci from the pork tapeworm, Taenia solium, infect the central nervous system. Some people may remain asymptomatic their entire lives as carriers, while others are asymptomatic for a few years then suddenly become very ill with seizures, headaches, and other focal neurologic deficits as the cysticerci multiply within the nervous system, muscles, and other tissue. NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The main title is at the top of the page, above the author names. The central text block is positioned below the authors and above the yellow highlighted text box at the bottom.",
+    "parse_success": true,
+    "chunk_idx": 54,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      110,
+      112
+    ],
+    "visible_entities": [
+      {
+        "desc": "Document page with a large, bold, dark gray title 'Public Health Implications of Cysticercosis Acquired in the United States', author names 'Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard' below it, a central text block with a white background and black serif font, and a yellow highlighted text section at the bottom.",
+        "action": "static",
+        "position": "center",
+        "id": "doc_public_health_cysticercosis"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document title reads 'Public Health Implications of Cysticercosis Acquired in the United States'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text defines Neurocysticercosis (NCC) as occurring when cysticerci from the pork tapeworm, Taenia solium, infect the central nervous system.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A sentence at the bottom is highlighted in yellow, stating 'Cysticercosis has emerged as a cause of severe neurologic disease in the United States'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text mentions that NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "Neurocysticercosis (NCC) occurs when the cysticerci from the pork tapeworm, Taenia solium, infect the central nervous system. Some people may remain asymptomatic their entire lives as carriers, while others are asymptomatic for a few years then suddenly become very ill with seizures, headaches, and other focal neurologic deficits as the cysticerci multiply within the nervous system, muscles, and other tissue. NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The header text is located at the top of the page. The main title is centered below the header. The authors' names are positioned directly below the title. The main paragraph of text is in the center of the page, below the authors. The yellow highlighted text is at the bottom left of the visible area.",
+    "parse_success": true,
+    "chunk_idx": 55,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      112,
+      114
+    ],
+    "visible_entities": [
+      {
+        "desc": "Document page with a large, bold, dark grey title 'Public Health Implications of Cysticercosis Acquired in the United States' and a list of authors below it.",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "A white rectangular text box containing a paragraph of black serif text describing Neurocysticercosis (NCC) and the pork tapeworm Taenia solium.",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "A yellow highlighted text segment at the bottom of the page reading 'Cysticercosis has emerged as a cause of severe neurologic disease in the United States'.",
+        "action": "static",
+        "position": "bottom",
+        "id": "yellow_highlight_bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Public Health Implications of Cysticercosis Acquired in the United States'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The central text box defines Neurocysticercosis (NCC) as an infection of the central nervous system by cysticerci from the pork tapeworm, Taenia solium.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text states that NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The highlighted text at the bottom indicates that Cysticercosis has emerged as a cause of severe neurologic disease in the United States.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "Neurocysticercosis (NCC) occurs when the cysticerci from the pork tapeworm, Taenia solium, infect the central nervous system. Some people may remain asymptomatic their entire lives as carriers, while others are asymptomatic for a few years then suddenly become very ill with seizures, headaches, and other focal neurologic deficits as the cysticerci multiply within the nervous system, muscles, and other tissue. NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The title is located at the top of the page, above the authors' names. The main text box describing the disease is positioned in the center of the page, below the author list. The yellow highlighted text is situated at the bottom of the page, below the main text box.",
+    "parse_success": true,
+    "chunk_idx": 56,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      114,
+      116
+    ],
+    "visible_entities": [
+      {
+        "desc": "Document page with a large bold title 'Public Health Implications of Cysticercosis Acquired in the United States', author names, and a central text block with a torn-paper visual effect.",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Yellow highlighted text block at the bottom of the page.",
+        "action": "static",
+        "position": "bottom",
+        "id": "yellow_highlight_bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Public Health Implications of Cysticercosis Acquired in the United States'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text defines Neurocysticercosis (NCC) as an infection of the central nervous system by cysticerci from the pork tapeworm, Taenia solium.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text states that NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A sentence at the bottom is highlighted in yellow, stating that Cysticercosis has emerged as a cause of severe neurologic disease in the United States.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "Neurocysticercosis (NCC) occurs when the cysticerci from the pork tapeworm, Taenia solium, infect the central nervous system. Some people may remain asymptomatic their entire lives as carriers, while others are asymptomatic for a few years then suddenly become very ill with seizures, headaches, and other focal neurologic deficits as the cysticerci multiply within the nervous system, muscles, and other tissue. NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The title is at the top of the page, above the author names. The main text block with the torn-paper effect is in the center of the page. The yellow highlighted text is located at the bottom of the page, below the main text block.",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      116,
+      118
+    ],
+    "visible_entities": [
+      {
+        "desc": "Document page with a large, bold, dark grey title 'Public Health Implications of Cysticercosis Acquired in the United States', author names in smaller text below, a central paragraph of text on a white background with a torn-paper effect, and a yellow highlighted text box at the bottom.",
+        "action": "static"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Public Health Implications of Cysticercosis Acquired in the United States'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The authors listed are Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A paragraph describes Neurocysticercosis (NCC) and its symptoms.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow highlighted box at the bottom contains the text 'Cysticercosis has emerged as a cause of severe neurologic disease in the United States'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The header indicates the source is 'Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "Neurocysticercosis (NCC) occurs when the cysticerci from the pork tapeworm, Taenia solium, infect the central nervous system. Some people may remain asymptomatic their entire lives as carriers, while others are asymptomatic for a few years then suddenly become very ill with seizures, headaches, and other focal neurologic deficits as the cysticerci multiply within the nervous system, muscles, and other tissue. NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The header text is at the top of the page. The main title is centered below the header. The author names are directly below the title. The main paragraph of text is in the center of the page, below the authors. The yellow highlighted text box is at the bottom of the visible area.",
+    "parse_success": true,
+    "chunk_idx": 58,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      118,
+      120
+    ],
+    "visible_entities": [
+      {
+        "desc": "A document page with a large bold title 'Public Health Implications of Cysticercosis Acquired in the United States', a list of authors, a central text block with a torn-paper effect background, and a highlighted yellow text section at the bottom.",
+        "action": "static",
+        "id": "doc_public_health_cysticercosis"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Public Health Implications of Cysticercosis Acquired in the United States'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A paragraph defines Neurocysticercosis (NCC) as an infection of the central nervous system by cysticerci from the pork tapeworm, Taenia solium.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text states that NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A sentence at the bottom is highlighted in yellow, reading 'Cysticercosis has emerged as a cause of severe neurologic disease in the United States'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "Neurocysticercosis (NCC) occurs when the cysticerci from the pork tapeworm, Taenia solium, infect the central nervous system. Some people may remain asymptomatic their entire lives as carriers, while others are asymptomatic for a few years then suddenly become very ill with seizures, headaches, and other focal neurologic deficits as the cysticerci multiply within the nervous system, muscles, and other tissue. NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The title is at the top of the page, above the authors' names. The main text block is in the center of the frame, below the authors. The highlighted yellow text is at the bottom of the page, below the main text block.",
+    "parse_success": true,
+    "chunk_idx": 59,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      120,
+      122
+    ],
+    "visible_entities": [
+      {
+        "desc": "Document page with a large bold title 'Public Health Implications of Cysticercosis Acquired in the United States', author names, and a central text block with a torn-paper effect border.",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Yellow highlighted text section at the bottom of the page.",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Public Health Implications of Cysticercosis Acquired in the United States'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text describes Neurocysticercosis (NCC) as an infection caused by the pork tapeworm, Taenia solium.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The highlighted text at the bottom reads: 'Cysticercosis has emerged as a cause of severe neurologic disease in the United States'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "Neurocysticercosis (NCC) occurs when the cysticerci from the pork tapeworm, Taenia solium, infect the central nervous system. Some people may remain asymptomatic their entire lives as carriers, while others are asymptomatic for a few years then suddenly become very ill with seizures, headaches, and other focal neurologic deficits as the cysticerci multiply within the nervous system, muscles, and other tissue. NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The main title is located at the top center of the page. The author names are positioned directly below the title. A large block of text describing the disease is situated in the center of the page, below the authors. The yellow highlighted text is located at the bottom of the page.",
+    "parse_success": true,
+    "chunk_idx": 60,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      122,
+      124
+    ],
+    "visible_entities": [
+      {
+        "desc": "Document page with a large, bold, dark grey title 'Public Health Implications of Cysticercosis Acquired in the United States' at the top, followed by author names in smaller text. The main body text is black serif font on a white background. A specific paragraph is highlighted with a white background overlay. At the bottom, a sentence is highlighted in yellow.",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document title 'Public Health Implications of Cysticercosis Acquired in the United States' is displayed prominently at the top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text defines Neurocysticercosis (NCC) as an infection of the central nervous system by cysticerci from the pork tapeworm, Taenia solium.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A sentence at the bottom of the page is highlighted in yellow, stating 'Cysticercosis has emerged as a cause of severe neurologic disease in the United States'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "Neurocysticercosis (NCC) occurs when the cysticerci from the pork tapeworm, Taenia solium, infect the central nervous system. Some people may remain asymptomatic their entire lives as carriers, while others are asymptomatic for a few years then suddenly become very ill with seizures, headaches, and other focal neurologic deficits as the cysticerci multiply within the nervous system, muscles, and other tissue. NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The title is above the author names. The main paragraph text is below the author names. The yellow highlighted text is at the bottom of the visible area, below the main paragraph.",
+    "parse_success": true,
+    "chunk_idx": 61,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      124,
+      126
+    ],
+    "visible_entities": [
+      {
+        "desc": "Title text 'Public Health Implications of Cysticercosis Acquired in the United States' in large, bold, dark grey sans-serif font",
+        "action": "static",
+        "position": "top/center"
+      },
+      {
+        "desc": "Author names 'Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard' in smaller dark grey sans-serif font",
+        "action": "static",
+        "position": "center",
+        "id": "authors_sorvillo_group"
+      },
+      {
+        "desc": "White rectangular text box with a torn-paper edge effect containing a paragraph of black serif text",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Yellow highlighted text strip at the bottom reading 'Cysticercosis has emerged as a cause of severe neurologic disease in the United States'",
+        "action": "static",
+        "position": "bottom/left"
+      },
+      {
+        "desc": "Small grey text '1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal' at the bottom right",
+        "action": "static",
+        "position": "bottom/right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The title 'Public Health Implications of Cysticercosis Acquired in the United States' is displayed at the top of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A paragraph of text defines Neurocysticercosis (NCC) as an infection of the central nervous system by cysticerci from the pork tapeworm, Taenia solium.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text states that NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow highlighted section at the bottom emphasizes that Cysticercosis has emerged as a cause of severe neurologic disease in the United States.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text mentions that some people remain asymptomatic carriers while others develop seizures and headaches.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "Neurocysticercosis (NCC) occurs when the cysticerci from the pork tapeworm, Taenia solium, infect the central nervous system. Some people may remain asymptomatic their entire lives as carriers, while others are asymptomatic for a few years then suddenly become very ill with seizures, headaches, and other focal neurologic deficits as the cysticerci multiply within the nervous system, muscles, and other tissue. NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The main title is positioned above the author names. The large white text box containing the definition of Neurocysticercosis is located below the author names in the center of the frame. The yellow highlighted text strip is situated at the bottom left, below the white text box. The small grey text regarding the years 1954-2005 is to the right of the yellow highlighted text.",
+    "parse_success": true,
+    "chunk_idx": 62,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      126,
+      128
+    ],
+    "visible_entities": [
+      {
+        "desc": "Document page with a large, bold, dark grey title 'Public Health Implications of Cysticercosis Acquired in the United States' at the top, followed by author names in smaller font. The center features a white text box with a torn-paper edge effect containing a paragraph of black serif text. The bottom of the page has a yellow highlighted text box.",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Public Health Implications of Cysticercosis Acquired in the United States'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A paragraph of text describes Neurocysticercosis (NCC) and its symptoms.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow highlighted box at the bottom contains the text 'Cysticercosis has emerged as a cause of severe neurologic disease in the United States'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "Neurocysticercosis (NCC) occurs when the cysticerci from the pork tapeworm, Taenia solium, infect the central nervous system. Some people may remain asymptomatic their entire lives as carriers, while others are asymptomatic for a few years then suddenly become very ill with seizures, headaches, and other focal neurologic deficits as the cysticerci multiply within the nervous system, muscles, and other tissue. NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The header text 'Emerging Infectious Diseases' is located at the very top of the page. The main title is centered below the header. The paragraph of text is positioned in the middle of the page, below the author names. The yellow highlighted text box is located at the bottom of the visible area.",
+    "parse_success": true,
+    "chunk_idx": 63,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      128,
+      130
+    ],
+    "visible_entities": [
+      {
+        "desc": "Document page with a large bold title 'Public Health Implications of Cysticercosis Acquired in the United States', a list of authors, and a central text block on a white background resembling a torn piece of paper.",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Yellow highlighted text strip at the bottom of the page.",
+        "action": "static",
+        "position": "bottom",
+        "id": "yellow_highlight_bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Public Health Implications of Cysticercosis Acquired in the United States'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The authors listed are Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A text block defines Neurocysticercosis (NCC) as an infection of the central nervous system by cysticerci from the pork tapeworm, Taenia solium.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text states that NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A highlighted sentence at the bottom reads 'Cysticercosis has emerged as a cause of severe neurologic disease in the United States'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "Neurocysticercosis (NCC) occurs when the cysticerci from the pork tapeworm, Taenia solium, infect the central nervous system. Some people may remain asymptomatic their entire lives as carriers, while others are asymptomatic for a few years then suddenly become very ill with seizures, headaches, and other focal neurologic deficits as the cysticerci multiply within the nervous system, muscles, and other tissue. NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The header text is located at the very top of the page. The main title is centered below the header. The authors' names are positioned directly below the title. The large text block describing the disease is in the center of the page, below the authors. The yellow highlighted text is at the bottom of the visible area.",
+    "parse_success": true,
+    "chunk_idx": 64,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      130,
+      132
+    ],
+    "visible_entities": [
+      {
+        "desc": "Document page with a large, bold, dark grey title 'Public Health Implications of Cysticercosis Acquired in the United States' and a list of authors below it.",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "A rectangular text excerpt with a white background and black serif font, containing a paragraph about Neurocysticercosis (NCC).",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "A yellow highlighted text block at the bottom of the page.",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Public Health Implications of Cysticercosis Acquired in the United States'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The central text explains that Neurocysticercosis (NCC) occurs when cysticerci from the pork tapeworm, Taenia solium, infect the central nervous system.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text states that NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bottom text is highlighted in yellow and reads 'Cysticercosis has emerged as a cause of severe neurologic disease in the United States'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "Neurocysticercosis (NCC) occurs when the cysticerci from the pork tapeworm, Taenia solium, infect the central nervous system. Some people may remain asymptomatic their entire lives as carriers, while others are asymptomatic for a few years then suddenly become very ill with seizures, headaches, and other focal neurologic deficits as the cysticerci multiply within the nervous system, muscles, and other tissue. NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The header text is located at the very top of the page. The main title is centered below the header. The paragraph describing Neurocysticercosis is positioned in the center of the frame, below the title. The yellow highlighted text is located at the bottom of the visible area.",
+    "parse_success": true,
+    "chunk_idx": 65,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      132,
+      134
+    ],
+    "visible_entities": [
+      {
+        "desc": "Document page with a large bold black title, smaller author names, and a central text block with a torn-paper visual effect on a light gray background.",
+        "action": "static"
+      },
+      {
+        "desc": "Yellow highlighted text strip at the bottom of the page.",
+        "action": "static",
+        "id": "yellow_highlight_bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The document displays the title 'Public Health Implications of Cysticercosis Acquired in the United States'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The authors listed are Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A central text block defines Neurocysticercosis (NCC) as an infection caused by the pork tapeworm, Taenia solium.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text states that NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow highlight at the bottom emphasizes that Cysticercosis has emerged as a cause of severe neurologic disease in the United States.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Emerging Infectious Diseases • www.cdc.gov/eid • Vol. 17, No. 1, January 2011",
+      "Public Health Implications of Cysticercosis Acquired in the United States",
+      "Frank Sorvillo, Patricia Wilkins, Shira Shafir, and Mark Eberhard",
+      "Neurocysticercosis (NCC) occurs when the cysticerci from the pork tapeworm, Taenia solium, infect the central nervous system. Some people may remain asymptomatic their entire lives as carriers, while others are asymptomatic for a few years then suddenly become very ill with seizures, headaches, and other focal neurologic deficits as the cysticerci multiply within the nervous system, muscles, and other tissue. NCC can cause sudden death due to high amounts of pressure on the brain and spinal cord.",
+      "Cysticercosis has emerged as a cause of severe neurologic disease in the United States that primarily affects",
+      "1954–2005. A confirmed or presumptive source of infection was identified among household members or close personal"
+    ],
+    "spatial": "The header text is located at the very top of the page. The main title is centered below the header, with the author names directly underneath it. The large paragraph describing Neurocysticercosis is positioned in the center of the page, appearing as if pasted onto the background. The yellow highlighted text is located at the bottom of the visible area, below the main paragraph.",
+    "parse_success": true,
+    "chunk_idx": 66,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": []
+  },
+  {
+    "time": [
+      134,
+      136
+    ],
+    "visible_entities": [
+      {
+        "desc": "Nutrition Facts label, white background with grey text, listing serving size, calories, and nutrient breakdown",
+        "action": "static",
+        "position": "left",
+        "id": "nutritionfacts_label"
+      },
+      {
+        "desc": "Green stylized 'N' logo",
+        "action": "static",
+        "position": "right",
+        "id": "nutritionfacts_logo"
+      },
+      {
+        "desc": "Text 'NutritionFacts.org' in green font",
+        "action": "static",
+        "position": "right",
+        "id": "nutritionfacts_logo"
+      },
+      {
+        "desc": "Text 'The latest in nutrition research' in black font",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "Blurred text strip resembling a newspaper or document",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The Nutrition Facts label displays 'Calories 240' and 'Total Fat 3.5g'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'NutritionFacts.org' appears below the green logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tagline 'The latest in nutrition research' fades in below the website name.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blurred strip of text is positioned horizontally across the bottom of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Nutrition Facts",
+      "Serving Size approx 1 cup cooked",
+      "Servings Per Container 6",
+      "Calories 240",
+      "Total Fat 3.5g",
+      "Sodium 180mg",
+      "Total Carbohydrate 42g",
+      "Dietary Fiber 4g",
+      "Sugars 21g",
+      "Protein 10g",
+      "NutritionFacts.org",
+      "The latest in nutrition research"
+    ],
+    "spatial": "The Nutrition Facts label is positioned on the left side of the screen. The green logo and website text are on the right side. The blurred text strip is located at the bottom, overlapping the lower portion of the Nutrition Facts label.",
+    "parse_success": true,
+    "chunk_idx": 67,
+    "video_id": "ytb_hhgXukqIa5U",
+    "state_changes": [
+      "Return to NutritionFacts.org branding and label"
+    ]
+  }
+]

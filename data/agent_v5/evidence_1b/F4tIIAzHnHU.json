@@ -1,0 +1,2289 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "Text 'Arvind G' in black sans-serif font, oriented diagonally",
+        "action": "static",
+        "position": "top",
+        "id": "arvind_logo_1"
+      },
+      {
+        "desc": "Geometric graphic featuring a black hexagonal outline with red arrowheads at vertices, containing intersecting black and grey lines with a central white glow",
+        "action": "static",
+        "position": "center",
+        "id": "geometric_graphic_1"
+      },
+      {
+        "desc": "Text 'Hands-O' in black sans-serif font",
+        "action": "static",
+        "position": "bottom",
+        "id": "arvind_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'Arvind G' is displayed at the top of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A geometric hexagon graphic is positioned in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Hands-O' is displayed below the graphic.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Arvind G",
+      "Hands-O"
+    ],
+    "spatial": "The text 'Arvind G' is above the geometric hexagon graphic. The geometric hexagon graphic is above the text 'Hands-O'.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "geometric polyhedron model with black edges, red vertices, and internal grey struts",
+        "action": "static",
+        "position": "center",
+        "id": "geometric_graphic_1"
+      },
+      {
+        "desc": "black sans-serif text reading 'Arvind Gupta Toys'",
+        "action": "static",
+        "position": "top",
+        "id": "arvind_logo_1"
+      },
+      {
+        "desc": "black sans-serif text reading 'Hands-on Science'",
+        "action": "static",
+        "position": "bottom",
+        "id": "arvind_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The geometric model is positioned centrally between the top and bottom text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Arvind Gupta Toys' is displayed at the top of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Hands-on Science' is displayed at the bottom of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Arvind Gupta Toys",
+      "Hands-on Science"
+    ],
+    "spatial": "The geometric model is in the center of the frame. The text 'Arvind Gupta Toys' is above the model. The text 'Hands-on Science' is below the model.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with brown skin tone",
+        "action": "touching the car",
+        "position": "left",
+        "id": "hand_brown_skin_1"
+      },
+      {
+        "desc": "toy car made from a clear plastic bottle with a green cap, four beige button wheels, a green straw, and a red balloon attached",
+        "action": "static",
+        "position": "center",
+        "id": "bottle_jet_car_1"
+      },
+      {
+        "desc": "yellow text 'TOYS FROM TRASH' in a decorative font",
+        "action": "static",
+        "position": "top",
+        "id": "title_text_1"
+      },
+      {
+        "desc": "green text 'JET CAR' in a sans-serif font",
+        "action": "static",
+        "position": "bottom right",
+        "id": "title_text_1"
+      },
+      {
+        "desc": "white text 'Dubbed in French by Louis Jourdin (Les petits derovillards)' in a small sans-serif font",
+        "action": "static",
+        "position": "bottom",
+        "id": "french_dub_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is touching the toy car.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The toy car is constructed from a plastic bottle with button wheels.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red balloon is attached to the back of the car via a straw.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'TOYS FROM TRASH' is visible at the top of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'JET CAR' is visible at the bottom right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Dubbed in French by Louis Jourdin (Les petits derovillards)' is visible at the bottom.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "TOYS FROM TRASH",
+      "JET CAR",
+      "Dubbed in French by Louis Jourdin (Les petits derovillards)"
+    ],
+    "spatial": "The hand is to the left of the toy car. The toy car is in the center of the frame. The text 'TOYS FROM TRASH' is above the toy car. The text 'JET CAR' is to the right of the toy car and below it. The French dubbing credit is below the 'JET CAR' text.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": [
+      "transition from intro titles to bottle car demonstration with hand appearing"
+    ]
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with brown skin, short fingernails",
+        "action": "holding the car",
+        "position": "left",
+        "id": "hand_brown_skin_1"
+      },
+      {
+        "desc": "transparent plastic bottle, cut in half horizontally, serving as the car body",
+        "action": "static",
+        "position": "center",
+        "id": "plastic_bottle_body_1"
+      },
+      {
+        "desc": "four beige buttons with four holes each, attached as wheels",
+        "action": "static",
+        "position": "bottom",
+        "id": "button_wheels_1"
+      },
+      {
+        "desc": "green plastic straw, inserted into the bottle",
+        "action": "static",
+        "position": "center",
+        "id": "green_straw_1"
+      },
+      {
+        "desc": "red inflated balloon, attached to the straw",
+        "action": "static",
+        "position": "top right",
+        "id": "red_balloon_1"
+      },
+      {
+        "desc": "light blue bottle cap",
+        "action": "static",
+        "position": "right",
+        "id": "bottle_cap_1"
+      },
+      {
+        "desc": "yellow text 'TOYS FROM TRASH' in a decorative font",
+        "action": "static",
+        "position": "top left",
+        "id": "title_text_1"
+      },
+      {
+        "desc": "green text 'JET CAR' in a sans-serif font",
+        "action": "static",
+        "position": "bottom right",
+        "id": "title_text_1"
+      },
+      {
+        "desc": "white text 'Dubbed in French by Louis Jourdin (Les petits derovillards)'",
+        "action": "static",
+        "position": "bottom",
+        "id": "french_dub_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a homemade car constructed from a plastic bottle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The car features four button wheels and a red balloon attached via a green straw.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'TOYS FROM TRASH' is displayed in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'JET CAR' is displayed in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "TOYS FROM TRASH",
+      "JET CAR",
+      "Dubbed in French by Louis Jourdin (Les petits derovillards)"
+    ],
+    "spatial": "The hand is on the left side, holding the plastic bottle car which is in the center. The red balloon is attached to the top of the bottle. The text 'TOYS FROM TRASH' is above the car, and the text 'JET CAR' is to the right of the car's rear wheels.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "transparent small plastic bottle with a green cap, modified with buttons attached as wheels",
+        "action": "static",
+        "position": "top",
+        "id": "plastic_bottle_body_1"
+      },
+      {
+        "desc": "four beige big buttons with four holes each, serving as wheels for the bottle",
+        "action": "static",
+        "position": "center",
+        "id": "button_wheels_1"
+      },
+      {
+        "desc": "red rubber balloon, deflated",
+        "action": "static",
+        "position": "bottom left",
+        "id": "red_balloon_1"
+      },
+      {
+        "desc": "green bent plastic straw",
+        "action": "static",
+        "position": "bottom right",
+        "id": "green_straw_1"
+      },
+      {
+        "desc": "yellow rubber band",
+        "action": "static",
+        "position": "bottom center",
+        "id": "rubber_band_1"
+      },
+      {
+        "desc": "thin metal needle",
+        "action": "static",
+        "position": "center",
+        "id": "needle_axle_1"
+      },
+      {
+        "desc": "yellow bold text 'MATERIALS' at the top",
+        "action": "static",
+        "position": "top",
+        "id": "materials_text_1"
+      },
+      {
+        "desc": "white text labels identifying the objects",
+        "action": "static",
+        "position": "distributed"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a collection of craft materials arranged on a blue background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small plastic bottle is positioned horizontally at the top of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Four big buttons are attached to the bottle to resemble a car with wheels.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red balloon, green bent straw, and yellow rubber band are placed below the bottle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'MATERIALS' is visible at the top center in yellow font.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Labels such as 'NEEDLE', 'BIG BUTTONS', and 'BENT STRAW' point to their respective items.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MATERIALS",
+      "SMALL PLASTIC BOTTLE",
+      "NEEDLE",
+      "BIG BUTTONS",
+      "BALLOON",
+      "RUBBER BAND",
+      "BENT STRAW"
+    ],
+    "spatial": "The small plastic bottle is located at the top of the frame, positioned above the balloon and straw. The needle is shown near the bottle, with a line pointing to the axle area. The text labels are distributed around the objects, generally placed next to or below the items they identify.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": [
+      "scene changes from assembled car to materials display layout"
+    ]
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "transparent small plastic bottle with a green cap, modified with holes and attached buttons",
+        "action": "static",
+        "position": "top",
+        "id": "plastic_bottle_body_1"
+      },
+      {
+        "desc": "four beige big buttons with four holes each, attached to the bottle as wheels",
+        "action": "static",
+        "position": "center",
+        "id": "button_wheels_1"
+      },
+      {
+        "desc": "thin metal needle threaded through the bottle and buttons",
+        "action": "static",
+        "position": "center",
+        "id": "needle_axle_1"
+      },
+      {
+        "desc": "deflated red rubber balloon",
+        "action": "static",
+        "position": "bottom left",
+        "id": "red_balloon_1"
+      },
+      {
+        "desc": "green bent plastic straw",
+        "action": "static",
+        "position": "bottom right",
+        "id": "green_straw_1"
+      },
+      {
+        "desc": "small yellow rubber band",
+        "action": "static",
+        "position": "bottom center",
+        "id": "rubber_band_1"
+      },
+      {
+        "desc": "yellow text 'MATERIALS' in a playful font",
+        "action": "static",
+        "position": "top",
+        "id": "materials_text_1"
+      },
+      {
+        "desc": "white text labels identifying the objects",
+        "action": "static",
+        "position": "distributed"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The image displays a collection of materials for a DIY project laid out on a blue background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'MATERIALS' is visible at the top of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small plastic bottle is positioned above a red balloon and a green straw.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Big buttons are attached to the sides of the plastic bottle to act as wheels.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A needle is inserted through the bottle and the center of the buttons.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MATERIALS",
+      "SMALL PLASTIC BOTTLE",
+      "NEEDLE",
+      "BIG BUTTONS",
+      "BALLOON",
+      "RUBBER BAND",
+      "BENT STRAW"
+    ],
+    "spatial": "The small plastic bottle is positioned at the top of the frame, above the red balloon and green straw. The big buttons are attached to the sides of the bottle. The needle is threaded through the bottle and buttons. The red balloon is to the left of the green straw. Text labels are placed next to their corresponding objects.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone",
+        "action": "holding the bottle car",
+        "position": "left",
+        "id": "hand_light_skin_1"
+      },
+      {
+        "desc": "transparent plastic bottle car with a green cap, beige button wheels, and a red balloon attached",
+        "action": "being held",
+        "position": "center",
+        "id": "bottle_jet_car_1"
+      },
+      {
+        "desc": "inflated red rubber balloon",
+        "action": "attached to the bottle",
+        "position": "top-left",
+        "id": "red_balloon_1"
+      },
+      {
+        "desc": "green bent plastic straw",
+        "action": "inserted into the bottle",
+        "position": "center-right",
+        "id": "green_straw_1"
+      },
+      {
+        "desc": "yellow text 'BOTTLE JET CAR' in sans-serif font",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "title_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding the plastic bottle car on the left side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red balloon is inflated and attached to the neck of the bottle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The green straw is inserted into the bottle and extends outwards.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'BOTTLE JET CAR' is visible at the bottom of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BOTTLE JET CAR"
+    ],
+    "spatial": "The hand is to the left of the plastic bottle car. The red balloon is attached to the top-left of the bottle. The green straw is inserted into the bottle and points to the right. The text 'BOTTLE JET CAR' is below the hand and the car.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": [
+      "materials display ends, hand begins holding assembled bottle car"
+    ]
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with brown skin, short fingernails",
+        "action": "holding the bottle car",
+        "position": "left",
+        "id": "hand_brown_skin_1"
+      },
+      {
+        "desc": "transparent plastic bottle, rectangular shape, repurposed as a car body",
+        "action": "being held",
+        "position": "center",
+        "id": "plastic_bottle_body_1"
+      },
+      {
+        "desc": "red balloon, inflated, attached to the bottle neck",
+        "action": "static",
+        "position": "top left",
+        "id": "red_balloon_1"
+      },
+      {
+        "desc": "green plastic straw, bent, inserted through the bottle",
+        "action": "static",
+        "position": "center",
+        "id": "green_straw_1"
+      },
+      {
+        "desc": "four wooden buttons, light brown, four-hole design, serving as wheels",
+        "action": "static",
+        "position": "bottom",
+        "id": "button_wheels_1"
+      },
+      {
+        "desc": "yellow text reading 'BOTTLE JET CAR'",
+        "action": "static",
+        "position": "bottom left",
+        "id": "title_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a homemade toy car constructed from a plastic bottle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The toy car features wooden buttons as wheels and a red balloon for propulsion.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'BOTTLE JET CAR' is displayed in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BOTTLE JET CAR"
+    ],
+    "spatial": "The hand is on the left side, holding the neck of the transparent plastic bottle. The red balloon is positioned above the bottle on the left. The green straw runs through the bottle diagonally. The wooden button wheels are attached below the bottle. The yellow text is located below the hand and the front of the bottle.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone and manicured fingernails",
+        "action": "holding the bottle car",
+        "position": "left",
+        "id": "hand_light_skin_1"
+      },
+      {
+        "desc": "transparent plastic bottle car with a teal cap, red balloon inside, green straw exhaust, and four wooden button wheels attached with white axles",
+        "action": "being held and tilted",
+        "position": "center",
+        "id": "bottle_jet_car_1"
+      },
+      {
+        "desc": "yellow text reading 'BOTTLE JET CAR'",
+        "action": "static",
+        "position": "bottom left",
+        "id": "title_text_1"
+      },
+      {
+        "desc": "solid blue background surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding the bottle jet car by its teal cap.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bottle car is tilted upwards at an angle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'BOTTLE JET CAR' is visible in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BOTTLE JET CAR"
+    ],
+    "spatial": "The hand is on the left side, holding the teal cap of the bottle car. The bottle car is positioned in the center, above the blue background. The text 'BOTTLE JET CAR' is located below the hand and to the left of the bottle car.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone and short fingernails",
+        "action": "holding the bottle car",
+        "position": "left",
+        "id": "hand_light_skin_1"
+      },
+      {
+        "desc": "transparent plastic bottle car with a teal cap, red internal propeller, green straw axle, and wooden button wheels",
+        "action": "being held and tilted",
+        "position": "center",
+        "id": "bottle_jet_car_1"
+      },
+      {
+        "desc": "yellow text overlay",
+        "action": "static",
+        "position": "bottom",
+        "id": "yellow_text_overlay_1"
+      },
+      {
+        "desc": "solid blue background",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand holds the neck of a plastic bottle car.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bottle car is tilted diagonally with the front end higher than the back.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'BUTTON WHEELS + NEEDLE AXLE + STRAW BUSH' is displayed at the bottom of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BUTTON WHEELS + NEEDLE AXLE",
+      "+ STRAW BUSH"
+    ],
+    "spatial": "The hand is on the left side, holding the front of the plastic bottle car. The bottle car is positioned centrally against the blue background. The yellow text is located below the bottle car.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone holding the neck of a bottle",
+        "action": "holding the bottle",
+        "position": "left"
+      },
+      {
+        "desc": "transparent plastic bottle with a teal cap, modified with wheels and a propeller",
+        "action": "being held horizontally",
+        "position": "center",
+        "id": "bottle_jet_car_1"
+      },
+      {
+        "desc": "four beige button wheels attached to axles",
+        "action": "static",
+        "position": "on the bottle",
+        "id": "button_wheels_1"
+      },
+      {
+        "desc": "red plastic propeller inside the bottle",
+        "action": "static",
+        "position": "inside the bottle"
+      },
+      {
+        "desc": "green straw protruding from the back of the bottle",
+        "action": "static",
+        "position": "right",
+        "id": "green_straw_1"
+      },
+      {
+        "desc": "yellow text overlay",
+        "action": "static",
+        "position": "bottom",
+        "id": "yellow_text_overlay_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a plastic bottle car horizontally.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bottle car features button wheels and a green straw exhaust.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'BUTTON WHEELS + NEEDLE AXLE + STRAW BUSH' is displayed at the bottom.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BUTTON WHEELS + NEEDLE AXLE",
+      "+ STRAW BUSH"
+    ],
+    "spatial": "The hand is on the left side, gripping the neck of the transparent bottle. The red propeller is located inside the bottle, while the green straw extends out from the right side. The yellow text is positioned below the bottle.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone, holding the bottle car",
+        "action": "holding the bottle car",
+        "position": "left"
+      },
+      {
+        "desc": "transparent plastic bottle with horizontal ridges, teal cap, red balloon attached to green straw",
+        "action": "being held",
+        "position": "center",
+        "id": "bottle_jet_car_1"
+      },
+      {
+        "desc": "four beige button wheels attached to white needle axles",
+        "action": "static",
+        "position": "attached to bottle",
+        "id": "button_wheels_1"
+      },
+      {
+        "desc": "green bent straw inserted into bottle",
+        "action": "static",
+        "position": "inside bottle",
+        "id": "green_straw_1"
+      },
+      {
+        "desc": "yellow text overlay",
+        "action": "static",
+        "position": "bottom",
+        "id": "yellow_text_overlay_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand holds a homemade car constructed from a plastic bottle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The car features button wheels attached via needle axles.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green straw and red balloon are attached to the bottle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Text on the screen reads 'BUTTON WHEELS + NEEDLE AXLE + STRAW BUSH' and 'BENT STRAW + BALLOON'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BUTTON WHEELS + NEEDLE AXLE",
+      "+ STRAW BUSH",
+      "BENT STRAW + BALLOON"
+    ],
+    "spatial": "The hand is on the left side of the frame, holding the teal cap of the plastic bottle. The bottle is positioned horizontally in the center. The yellow text is located at the bottom of the screen, below the bottle car.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone and manicured nails",
+        "action": "holding the toy car",
+        "position": "left",
+        "id": "hand_light_skin_1"
+      },
+      {
+        "desc": "toy car made from a transparent plastic bottle with wooden disc wheels and white axles",
+        "action": "being rotated",
+        "position": "center",
+        "id": "bottle_jet_car_1"
+      },
+      {
+        "desc": "red balloon attached to the underside of the bottle",
+        "action": "static",
+        "position": "bottom",
+        "id": "red_balloon_1"
+      },
+      {
+        "desc": "green bent straw inserted into the bottle",
+        "action": "static",
+        "position": "center",
+        "id": "green_straw_1"
+      },
+      {
+        "desc": "yellow text reading 'BENT STRAW + BALLOON'",
+        "action": "static",
+        "position": "bottom",
+        "id": "instruction_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding and rotating a homemade toy car.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The toy car is constructed from a clear plastic bottle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The car features wheels made of wooden discs.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red balloon is attached to the bottom of the car.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green straw is visible inside the bottle structure.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'BENT STRAW + BALLOON' is displayed at the bottom of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BENT STRAW + BALLOON"
+    ],
+    "spatial": "The hand is to the left of the toy car, gripping the bottle cap area. The red balloon is located below the main body of the plastic bottle. The green straw is positioned inside the bottle, extending towards the right. The yellow text is situated below the toy car against the blue background.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with brown skin tone",
+        "action": "holding the bottle car",
+        "position": "left",
+        "id": "hand_brown_skin_1"
+      },
+      {
+        "desc": "transparent plastic bottle car with wooden disc wheels, white axles, red paper fin, and green straw exhaust",
+        "action": "being held and rotated",
+        "position": "center",
+        "id": "bottle_jet_car_1"
+      },
+      {
+        "desc": "yellow text reading 'BENT STRAW + BALLOON'",
+        "action": "static",
+        "position": "bottom left",
+        "id": "instruction_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand holds a transparent plastic bottle car against a blue background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bottle car is rotated to show its underside and side profile.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'BENT STRAW + BALLOON' is visible at the bottom of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BENT STRAW + BALLOON"
+    ],
+    "spatial": "The hand is to the left of the bottle car, gripping its neck. The bottle car is positioned in the center of the frame. The text is located below the bottle car.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with brown skin tone",
+        "action": "holding the bottle car",
+        "position": "left",
+        "id": "hand_brown_skin_1"
+      },
+      {
+        "desc": "transparent plastic bottle car with beige button wheels, a green straw axle, and a red balloon engine",
+        "action": "being held and tilted",
+        "position": "center",
+        "id": "bottle_jet_car_1"
+      },
+      {
+        "desc": "yellow text 'BENT STRAW + BALLOON'",
+        "action": "static",
+        "position": "bottom left",
+        "id": "instruction_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand holds a DIY car made from a plastic bottle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The car is tilted upwards at the front.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'BENT STRAW + BALLOON' is visible on the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BENT STRAW + BALLOON"
+    ],
+    "spatial": "The hand is on the left side of the frame, holding the front of the plastic bottle car. The text 'BENT STRAW + BALLOON' is located below the car in the bottom left corner.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a purple striped collared shirt",
+        "action": "holding the toy car",
+        "position": "left",
+        "id": "person_presenter_1"
+      },
+      {
+        "desc": "toy car made from a clear plastic bottle with wooden button wheels, a green bent straw, and a red balloon",
+        "action": "being held by the man",
+        "position": "center",
+        "id": "bottle_jet_car_1"
+      },
+      {
+        "desc": "yellow text overlay",
+        "action": "static",
+        "position": "bottom left",
+        "id": "yellow_text_overlay_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man holds the plastic bottle car in his hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red balloon attached to the straw is deflated.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'INFLATE BALLOON & CLOSE STRAW' appears on the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "INFLATE BALLOON",
+      "& CLOSE STRAW"
+    ],
+    "spatial": "The man is positioned to the left of the frame, holding the toy car in the center. The text overlay is located in the bottom left corner, below the man's hand.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a purple striped collared shirt",
+        "action": "blowing into the bottle",
+        "position": "left",
+        "id": "person_presenter_1"
+      },
+      {
+        "desc": "clear plastic bottle car with yellow button wheels and a green cap",
+        "action": "being held",
+        "position": "center",
+        "id": "bottle_jet_car_1"
+      },
+      {
+        "desc": "red balloon",
+        "action": "inflating",
+        "position": "center",
+        "id": "red_balloon_1"
+      },
+      {
+        "desc": "green straw",
+        "action": "static",
+        "position": "center",
+        "id": "green_straw_1"
+      },
+      {
+        "desc": "yellow text overlay",
+        "action": "static",
+        "position": "bottom left",
+        "id": "yellow_text_overlay_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is blowing air into the bottle to inflate the red balloon.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red balloon expands significantly between the two frames.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text overlay reads 'INFLATE BALLOON & CLOSE STRAW'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "INFLATE BALLOON",
+      "& CLOSE STRAW"
+    ],
+    "spatial": "The man is on the left side of the frame, holding the plastic bottle car in the center. The red balloon is attached to the top of the bottle via a green straw. The yellow text is located in the bottom left corner, below the man's chin.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": [
+      "man begins blowing into the bottle straw to inflate balloon"
+    ]
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, dark eyebrows, wearing a purple striped collared shirt",
+        "action": "blowing air into a straw",
+        "position": "left",
+        "id": "person_presenter_1"
+      },
+      {
+        "desc": "homemade toy car made from a clear plastic bottle, green straw, and four yellow button wheels",
+        "action": "being held and inflated",
+        "position": "center",
+        "id": "bottle_jet_car_1"
+      },
+      {
+        "desc": "red balloon, partially inflated",
+        "action": "expanding",
+        "position": "right",
+        "id": "red_balloon_1"
+      },
+      {
+        "desc": "yellow text overlay",
+        "action": "static",
+        "position": "bottom left",
+        "id": "yellow_text_overlay_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is blowing air through a green straw into a plastic bottle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red balloon attached to the bottle is inflating.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is holding the bottle car with his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text overlay reads 'INFLATE BALLOON & CLOSE STRAW'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "INFLATE BALLOON",
+      "& CLOSE STRAW"
+    ],
+    "spatial": "The man is positioned on the left side of the frame, blowing into the straw which is inserted into the plastic bottle car held in the center. The red balloon is attached to the top of the bottle and extends to the right. The yellow text is located in the bottom left corner, below the man's chin.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": [
+      "balloon starts visibly inflating/expanding"
+    ]
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short black hair, wearing a purple striped shirt",
+        "action": "blowing air into a bottle",
+        "position": "left",
+        "id": "person_presenter_1"
+      },
+      {
+        "desc": "clear plastic bottle with a green cap, modified with a green straw and two yellow button-like wheels",
+        "action": "being held and used as a vehicle",
+        "position": "center",
+        "id": "plastic_bottle_body_1"
+      },
+      {
+        "desc": "large red inflated balloon",
+        "action": "attached to the bottle",
+        "position": "right",
+        "id": "red_balloon_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is blowing air into the mouth of the plastic bottle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red balloon is attached to the top of the bottle via a green straw.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two yellow buttons are attached to the bottom of the bottle to act as wheels.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is on the left side of the frame, holding the plastic bottle in the center. The red balloon is attached to the right side of the bottle, extending towards the right edge of the frame.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, wearing a purple striped collared shirt",
+        "action": "holding the toy car and blowing into the straw",
+        "position": "left",
+        "id": "person_presenter_1"
+      },
+      {
+        "desc": "homemade toy car made from a clear plastic bottle, yellow button wheels, a green straw, and a red balloon",
+        "action": "being propelled forward by escaping air",
+        "position": "center",
+        "id": "bottle_jet_car_1"
+      },
+      {
+        "desc": "grey textured wall",
+        "action": "static",
+        "position": "background",
+        "id": "wall_decor_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man blows air through a green straw into the bottle car.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red balloon attached to the bottle deflates as air escapes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The toy car moves from left to right across the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is positioned on the left side of the frame, holding the toy car in front of him. The red balloon is attached to the top of the clear plastic bottle. The green straw extends from the man's mouth to the bottle.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": [
+      "car begins being propelled forward by escaping air from balloon"
+    ]
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hands with dark skin tone",
+        "action": "holding the toy car",
+        "position": "bottom left"
+      },
+      {
+        "desc": "toy car made from a clear plastic bottle with yellow button wheels and a green straw axle",
+        "action": "being held",
+        "position": "center",
+        "id": "bottle_jet_car_1"
+      },
+      {
+        "desc": "inflated red balloon",
+        "action": "attached to the toy car",
+        "position": "top right",
+        "id": "red_balloon_1"
+      },
+      {
+        "desc": "grey textured wall",
+        "action": "static",
+        "position": "background",
+        "id": "wall_decor_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a homemade toy car constructed from a plastic bottle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The toy car has yellow buttons attached as wheels.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red balloon is attached to the top of the plastic bottle car.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background is a grey textured wall.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's hands are holding the plastic bottle car from below. The red balloon is attached to the top of the bottle, positioned above the car body. The car is in front of the grey textured wall.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with tan skin tone",
+        "action": "holding the car",
+        "position": "right",
+        "id": "hand_tan_skin_1"
+      },
+      {
+        "desc": "toy car made from a clear plastic bottle with wooden wheels and a green straw",
+        "action": "being held",
+        "position": "center",
+        "id": "bottle_jet_car_1"
+      },
+      {
+        "desc": "inflated red balloon",
+        "action": "static",
+        "position": "center",
+        "id": "red_balloon_1"
+      },
+      {
+        "desc": "yellow text overlay",
+        "action": "static",
+        "position": "bottom left",
+        "id": "yellow_text_overlay_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a homemade toy car on the floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The toy car consists of a clear plastic bottle body, wooden wheels, and a green straw.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red balloon is attached to the top of the plastic bottle car.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'PLACE ON FLOOR & LET GO !!' is displayed in the bottom left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PLACE ON FLOOR",
+      "& LET GO !!"
+    ],
+    "spatial": "The hand is to the right of the toy car, holding it in place. The red balloon is positioned above the clear plastic bottle body of the car. The yellow text is located in the bottom left area of the frame, below the car.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "red balloon, inflated, round, attached to a small wheeled vehicle",
+        "action": "moving forward",
+        "position": "center",
+        "id": "red_balloon_1"
+      },
+      {
+        "desc": "small wheeled vehicle, wooden or cardboard construction, simple design",
+        "action": "moving forward",
+        "position": "center",
+        "id": "small_vehicle_1"
+      },
+      {
+        "desc": "grey rectangular mat, flat, placed on the floor",
+        "action": "static",
+        "position": "foreground",
+        "id": "grey_mat_1"
+      },
+      {
+        "desc": "yellow text overlay, sans-serif font, uppercase",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "yellow_text_overlay_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A red balloon attached to a small wheeled vehicle moves across the floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The vehicle travels away from a grey rectangular mat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'PLACE ON FLOOR & LET GO !!' is displayed on the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PLACE ON FLOOR",
+      "& LET GO !!"
+    ],
+    "spatial": "The red balloon is attached to the top of the small wheeled vehicle. The vehicle is moving away from the grey mat, which is in the foreground. The yellow text is located in the bottom-left corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": [
+      "car transitions from being held to moving forward independently on floor"
+    ]
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "smooth, light-grey, reflective floor surface",
+        "action": "static",
+        "position": "foreground",
+        "id": "grey_floor_1"
+      },
+      {
+        "desc": "yellow, sans-serif, uppercase text overlay",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "yellow_text_overlay_1"
+      },
+      {
+        "desc": "row of three tan chairs with metal legs",
+        "action": "static",
+        "position": "left background",
+        "id": "chairs_1"
+      },
+      {
+        "desc": "white shelving unit with items and a potted plant",
+        "action": "static",
+        "position": "center background",
+        "id": "white_shelving_1"
+      },
+      {
+        "desc": "white cabinet or counter",
+        "action": "static",
+        "position": "far left background",
+        "id": "white_cabinet_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera remains static, showing a wide view of a room with a reflective floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'PLACE ON FLOOR & LET GO !!' is displayed in the bottom-left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The chairs are arranged in a row against the wall on the left side of the room.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PLACE ON FLOOR",
+      "& LET GO !!"
+    ],
+    "spatial": "The yellow text is located in the bottom-left corner of the frame, superimposed over the floor. The row of tan chairs is positioned to the left of the white shelving unit in the background. The white cabinet is to the left of the tan chairs.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "yellow sans-serif text overlay",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "yellow_text_overlay_1"
+      },
+      {
+        "desc": "shiny light-grey floor",
+        "action": "static",
+        "position": "foreground",
+        "id": "grey_floor_1"
+      },
+      {
+        "desc": "white cabinet",
+        "action": "static",
+        "position": "left",
+        "id": "white_cabinet_1"
+      },
+      {
+        "desc": "row of three brown chairs",
+        "action": "static",
+        "position": "left",
+        "id": "chairs_1"
+      },
+      {
+        "desc": "white shelving unit",
+        "action": "static",
+        "position": "right",
+        "id": "white_shelving_1"
+      },
+      {
+        "desc": "potted green plant",
+        "action": "static",
+        "position": "right",
+        "id": "potted_plant_1"
+      },
+      {
+        "desc": "wall with framed pictures and posters",
+        "action": "static",
+        "position": "background",
+        "id": "wall_decor_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'PLACE ON FLOOR & LET GO !!' is displayed in the bottom-left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The room is empty of people.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The floor is highly reflective, showing reflections of the furniture and windows.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PLACE ON FLOOR",
+      "& LET GO !!"
+    ],
+    "spatial": "The yellow text is superimposed over the shiny floor in the bottom-left area. The white cabinet and brown chairs are positioned on the left side of the room. The white shelving unit and potted plant are located on the right side. The wall with pictures is in the background behind the furniture.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "red inflated balloon",
+        "action": "static",
+        "position": "center",
+        "id": "red_balloon_1"
+      },
+      {
+        "desc": "clear plastic bottle car with wooden wheels",
+        "action": "static",
+        "position": "center",
+        "id": "bottle_jet_car_1"
+      },
+      {
+        "desc": "human hand with light skin",
+        "action": "holding the bottle car",
+        "position": "right",
+        "id": "hand_light_skin_1"
+      },
+      {
+        "desc": "green straw",
+        "action": "static",
+        "position": "center",
+        "id": "green_straw_1"
+      },
+      {
+        "desc": "grey smooth surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "grey_floor_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A human hand is holding a homemade car constructed from a clear plastic bottle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red balloon is attached to the top of the plastic bottle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green straw is taped to the side of the bottle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bottle car has small wooden wheels attached to its underside.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The red balloon is positioned above the clear plastic bottle. The human hand is to the right of the bottle, holding it. The green straw is attached to the side of the bottle. The entire assembly rests on a grey surface.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "red inflated balloon",
+        "action": "propelling the car",
+        "position": "center",
+        "id": "red_balloon_1"
+      },
+      {
+        "desc": "homemade car made from a clear plastic bottle with wooden wheels",
+        "action": "moving forward",
+        "position": "center",
+        "id": "bottle_jet_car_1"
+      },
+      {
+        "desc": "human hand with tan skin",
+        "action": "releasing the car",
+        "position": "right",
+        "id": "hand_tan_skin_1"
+      },
+      {
+        "desc": "smooth gray floor",
+        "action": "static",
+        "position": "background",
+        "id": "grey_floor_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand releases a balloon-powered car.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The car moves forward across the floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red balloon is attached to the top of the plastic bottle.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The red balloon is positioned above the clear plastic bottle car. The hand is to the right of the car, pushing it forward. The car is on the smooth gray floor.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "red spherical ball, smooth surface, small size",
+        "action": "rolling across the floor",
+        "position": "center",
+        "id": "red_ball_1"
+      },
+      {
+        "desc": "shiny grey polished floor, reflective surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "grey_floor_1"
+      },
+      {
+        "desc": "white shelving unit with various items, potted plant with green leaves in red pot",
+        "action": "static",
+        "position": "background",
+        "id": "white_shelving_1"
+      },
+      {
+        "desc": "dark grey rectangular mat, flat texture",
+        "action": "static",
+        "position": "foreground",
+        "id": "grey_mat_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A red ball is rolling across the shiny floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The floor reflects the light and objects in the room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dark grey mat is placed on the floor in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The red ball is in the center of the room, rolling on the shiny grey floor. The dark grey mat is in the foreground, below the position of the ball. The white shelving unit and potted plant are in the background, behind the rolling ball.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": [
+      "scene changes from bottle car to red ball rolling on floor"
+    ]
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "small toy vehicle, red and white, low-profile",
+        "action": "moving left",
+        "position": "left foreground",
+        "id": "small_vehicle_1"
+      },
+      {
+        "desc": "shiny grey floor, reflective surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "grey_floor_1"
+      },
+      {
+        "desc": "row of three wooden chairs with metal legs",
+        "action": "static",
+        "position": "background left",
+        "id": "chairs_1"
+      },
+      {
+        "desc": "white shelving unit with various items",
+        "action": "static",
+        "position": "background right",
+        "id": "white_shelving_1"
+      },
+      {
+        "desc": "potted green plant in a red pot",
+        "action": "static",
+        "position": "background right",
+        "id": "potted_plant_1"
+      },
+      {
+        "desc": "white cabinet or counter",
+        "action": "static",
+        "position": "background left",
+        "id": "white_cabinet_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A small red and white toy vehicle is moving across the floor to the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The floor is highly reflective, showing reflections of the furniture and light sources.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Three wooden chairs are lined up against the wall in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The red and white toy vehicle is on the shiny grey floor in the foreground. The row of wooden chairs is to the left of the white shelving unit in the background. The potted plant is next to the white shelving unit.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": [
+      "small toy vehicle appears moving across floor"
+    ]
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "split-screen layout with two video thumbnails",
+        "action": "static",
+        "position": "center",
+        "id": "end_screen_thumbnails_1"
+      },
+      {
+        "desc": "left thumbnail showing a D.C. motor with a copper coil and battery",
+        "action": "static",
+        "position": "left",
+        "id": "end_screen_thumbnails_1"
+      },
+      {
+        "desc": "right thumbnail showing a pink magnetic levitation toy",
+        "action": "static",
+        "position": "right",
+        "id": "end_screen_thumbnails_1"
+      },
+      {
+        "desc": "hand holding the D.C. motor components",
+        "action": "holding the motor",
+        "position": "left"
+      },
+      {
+        "desc": "hand holding the magnetic levitation toy",
+        "action": "holding the toy",
+        "position": "right",
+        "id": "magnetic_levitation_device_1"
+      },
+      {
+        "desc": "text boxes with instructions",
+        "action": "static",
+        "position": "top",
+        "id": "instruction_text_1"
+      },
+      {
+        "desc": "social media icons (Facebook, YouTube) and website URL",
+        "action": "static",
+        "position": "bottom",
+        "id": "social_media_icons_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a split-screen with two different toy demonstrations.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is holding a D.C. motor made from a battery and copper coil on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is holding a pink magnetic levitation toy on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Text prompts viewers to suggest activities or subscribe for future videos.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The website www.arvindguptatoys.com is displayed at the bottom.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Click here to suggest activities for our future videos",
+      "Click here to subscribe and know more about our future videos",
+      "TOYS FROM TRASH",
+      "D.C. MOTOR",
+      "MAGNETIC LEVITATION",
+      "PLACE COIL MAKE MOTOR SPIN!",
+      "Credits: Ashok Rupner, Dr. Vidula Mhaiskar, Shivaji Mane, Jyoti Hiremath, Arvind Gupta, Manish Jain",
+      "www.arvindguptatoys.com",
+      "f",
+      "You Tube"
+    ],
+    "spatial": "The screen is divided into two halves. The D.C. motor demonstration is on the left, and the magnetic levitation demonstration is on the right. Text boxes are positioned above the video thumbnails. Social media icons and the website URL are located at the bottom of the screen.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": [
+      "transition to end screen with video thumbnails and social media links"
+    ]
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light brown skin tone, fingers holding a copper wire loop",
+        "action": "holding a copper wire loop",
+        "position": "left",
+        "id": "hand_light_skin_1"
+      },
+      {
+        "desc": "copper wire loop, circular, metallic, reddish-brown",
+        "action": "being held",
+        "position": "left",
+        "id": "copper_wire_1"
+      },
+      {
+        "desc": "blue and silver battery, rectangular, cylindrical cells",
+        "action": "static",
+        "position": "left",
+        "id": "battery_pack_1"
+      },
+      {
+        "desc": "pink wooden base, rectangular, painted pink",
+        "action": "static",
+        "position": "right",
+        "id": "pink_foam_base_1"
+      },
+      {
+        "desc": "blue pencil, hexagonal, with white and blue spiral pattern",
+        "action": "static",
+        "position": "right",
+        "id": "blue_pencil_1"
+      },
+      {
+        "desc": "black circular supports, small, disc-shaped",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "text box, white background, black border, black sans-serif text",
+        "action": "static",
+        "position": "top left",
+        "id": "instruction_text_1"
+      },
+      {
+        "desc": "text box, white background, black border, black sans-serif text",
+        "action": "static",
+        "position": "top right",
+        "id": "instruction_text_1"
+      },
+      {
+        "desc": "Facebook logo, blue square with white 'f'",
+        "action": "static",
+        "position": "bottom right",
+        "id": "facebook_logo_1"
+      },
+      {
+        "desc": "YouTube logo, red and white rectangle",
+        "action": "static",
+        "position": "bottom right",
+        "id": "youtube_logo_1"
+      },
+      {
+        "desc": "Creative Commons license icons, black and white symbols",
+        "action": "static",
+        "position": "bottom center",
+        "id": "cc_license_1"
+      },
+      {
+        "desc": "website URL text, black sans-serif font",
+        "action": "static",
+        "position": "bottom left",
+        "id": "website_url_1"
+      },
+      {
+        "desc": "credits text, small black sans-serif font",
+        "action": "static",
+        "position": "bottom left",
+        "id": "credits_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a copper wire loop above a battery setup.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue pencil with a spiral pattern rests on black supports on a pink wooden base.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Click here to suggest activities for our future videos' is visible in the top left box.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Click here to subscribe and know more about our future videos' is visible in the top right box.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The website 'www.arvindguptatoys.com' is displayed at the bottom left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Credits list names including Ashok Rupner and Dr. Vidula Mhaiskar.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Click here to suggest activities for our future videos",
+      "Click here to subscribe and know more about our future videos",
+      "PLACE COIL MAKE MOTOR SPIN!",
+      "Credits: Ashok Rupner, Dr. Vidula Mhaiskar, Shivaji Mane, Jyoti Hiremath, Arvind Gupta, Manish Jain",
+      "www.arvindguptatoys.com",
+      "CC",
+      "BY",
+      "NC",
+      "SA",
+      "f",
+      "You Tube"
+    ],
+    "spatial": "The hand holding the copper wire is to the left of the pink wooden base with the pencil. The two text boxes are positioned above the images of the experiments. The credits and website URL are located below the images on the left side, while the social media icons are below the images on the right side.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand holding a blue and white battery pack with a black cylindrical component",
+        "action": "holding the device",
+        "position": "left"
+      },
+      {
+        "desc": "copper wire coil suspended between two vertical metal supports",
+        "action": "static",
+        "position": "left",
+        "id": "copper_wire_1"
+      },
+      {
+        "desc": "pink rectangular foam base with a blue pencil resting on black wheels",
+        "action": "static",
+        "position": "right",
+        "id": "pink_foam_base_1"
+      },
+      {
+        "desc": "text box with black border and text 'Click here to suggest activities for our future videos'",
+        "action": "static",
+        "position": "top left",
+        "id": "instruction_text_1"
+      },
+      {
+        "desc": "text box with black border and text 'Click here to subscribe and know more about our future videos'",
+        "action": "static",
+        "position": "top right",
+        "id": "instruction_text_1"
+      },
+      {
+        "desc": "yellow text 'FRICTIONL' and 'FRICTIONLESS FLOATIN' overlaid on the right image",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "social media icons (Facebook, YouTube) and website URL at the bottom",
+        "action": "static",
+        "position": "bottom",
+        "id": "social_media_icons_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a battery-powered device with a copper coil on the left side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pink foam board with a pencil on wheels is displayed on the right side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'FRICTIONL' appears in yellow above the pencil setup.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'FRICTIONLESS FLOATIN' appears in yellow above the pencil setup in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The website 'www.arvindguptatoys.com' is visible at the bottom left.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Click here to suggest activities for our future videos",
+      "Click here to subscribe and know more about our future videos",
+      "FRICTIONL",
+      "FRICTIONLESS FLOATIN",
+      "PLACE COIL MAKE MOTOR SPIN!",
+      "Credits: Ashok Rupner, Dr. Vidula Mhaiskar, Shivaji Mane, Jyoti Hiremath, Arvind Gupta, Manish Jain",
+      "www.arvindguptatoys.com",
+      "CC BY NC",
+      "You Tube"
+    ],
+    "spatial": "The hand holding the motor device is to the left of the pink foam board setup. The suggestion text box is above the motor device, and the subscription text box is above the foam board. The credits and website URL are located at the bottom of the screen, below both main images.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": []
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone, holding a small dark cylindrical object",
+        "action": "holding object above device",
+        "position": "top left",
+        "id": "hand_light_skin_1"
+      },
+      {
+        "desc": "device with two vertical metal rods and a blue and white battery pack",
+        "action": "static",
+        "position": "bottom left",
+        "id": "magnetic_levitation_device_1"
+      },
+      {
+        "desc": "pencil with blue and white spiral stripes, floating horizontally",
+        "action": "static",
+        "position": "center right",
+        "id": "blue_pencil_1"
+      },
+      {
+        "desc": "pink foam base with a wavy texture",
+        "action": "static",
+        "position": "bottom right",
+        "id": "pink_foam_base_1"
+      },
+      {
+        "desc": "text 'FRICTIONLESS FLOATING PENCIL !! MINI MAG-L' in yellow font",
+        "action": "static",
+        "position": "center right"
+      },
+      {
+        "desc": "text 'Click here to suggest activities for our future videos' in black font inside a box",
+        "action": "static",
+        "position": "top left",
+        "id": "instruction_text_1"
+      },
+      {
+        "desc": "text 'Click here to subscribe and know more about our future videos' in black font inside a box",
+        "action": "static",
+        "position": "top right",
+        "id": "instruction_text_1"
+      },
+      {
+        "desc": "text 'Credits: Ashok Rupner, Dr.Vidula Mhaiskar, Shivaji Mane, Jyoti Hiremath, Arvind Gupta, Manish Jain' in black font",
+        "action": "static",
+        "position": "bottom left",
+        "id": "credits_text_1"
+      },
+      {
+        "desc": "text 'www.arvindguptatoys.com' in black font",
+        "action": "static",
+        "position": "bottom left",
+        "id": "website_url_1"
+      },
+      {
+        "desc": "Facebook logo (blue square with white 'f')",
+        "action": "static",
+        "position": "bottom right",
+        "id": "facebook_logo_1"
+      },
+      {
+        "desc": "YouTube logo (red rectangle with white 'You Tube')",
+        "action": "static",
+        "position": "bottom right",
+        "id": "youtube_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand holds a small dark cylindrical object above a device with vertical rods.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue and white striped pencil is floating horizontally above a pink foam base.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'FRICTIONLESS FLOATING PENCIL !! MINI MAG-L' is displayed above the floating pencil.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The website 'www.arvindguptatoys.com' is visible at the bottom of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Click here to suggest activities for our future videos",
+      "Click here to subscribe and know more about our future videos",
+      "FRICTIONLESS FLOATING PENCIL !!",
+      "MINI MAG-L",
+      "Credits: Ashok Rupner, Dr.Vidula Mhaiskar, Shivaji Mane, Jyoti Hiremath, Arvind Gupta, Manish Jain",
+      "www.arvindguptatoys.com",
+      "f",
+      "You Tube"
+    ],
+    "spatial": "The hand holding the object is positioned above the device with vertical rods on the left side of the screen. The floating pencil is located to the right of the hand and device, hovering above the pink foam base. The text boxes for suggestions and subscriptions are at the top of the screen, above the visual demonstrations.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": [
+      "pencil begins floating/levitating above magnetic device"
+    ]
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone holding a small, dark grey cylindrical magnet",
+        "action": "holding magnet",
+        "position": "top left",
+        "id": "hand_light_skin_1"
+      },
+      {
+        "desc": "DIY magnetic levitation device featuring a blue and white battery pack, a copper wire coil, and a thin copper wire loop",
+        "action": "static",
+        "position": "bottom left",
+        "id": "magnetic_levitation_device_1"
+      },
+      {
+        "desc": "pink foam base with a blue pencil levitating above it, supported by small grey magnets",
+        "action": "static",
+        "position": "right",
+        "id": "pink_foam_base_1"
+      },
+      {
+        "desc": "text boxes with black borders and sans-serif font",
+        "action": "static",
+        "position": "top",
+        "id": "instruction_text_1"
+      },
+      {
+        "desc": "social media icons (Facebook, YouTube) and a website URL",
+        "action": "static",
+        "position": "bottom",
+        "id": "social_media_icons_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a small magnet above a copper wire loop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue pencil is floating horizontally above a pink foam base.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'FRICTIONLESS FLOATING PENCIL !! MINI MAG-LEV TRAIN !!!' is displayed in yellow font.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The website 'www.arvindguptatoys.com' is visible at the bottom of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Credits are listed for Ashok Rupner, Dr. Vidula Mhaiskar, Shivaji Mane, Jyoti Hiremath, Arvind Gupta, and Manish Jain.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Click here to suggest activities for our future videos",
+      "Click here to subscribe and know more about our future videos",
+      "FRICTIONLESS FLOATING PENCIL !!",
+      "MINI MAG-LEV TRAIN !!!",
+      "BRING ANOTHER MAGNET",
+      "Credits: Ashok Rupner, Dr. Vidula Mhaiskar, Shivaji Mane, Jyoti Hiremath, Arvind Gupta, Manish Jain",
+      "www.arvindguptatoys.com",
+      "CC",
+      "BY",
+      "NC",
+      "SA",
+      "You Tube"
+    ],
+    "spatial": "The video frame is split into two main sections. On the left, a hand is positioned above a battery-powered device with a copper loop. On the right, a floating pencil is situated above a pink foam base. Text boxes are located at the top of the screen, while credits and social media icons are arranged along the bottom edge.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "F4tIIAzHnHU",
+    "state_changes": []
+  }
+]

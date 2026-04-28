@@ -1,0 +1,2176 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a white t-shirt and grey pants",
+        "action": "standing and leaning against a booth",
+        "position": "right",
+        "id": "person_man_brown_1"
+      },
+      {
+        "desc": "woman with blonde hair in a ponytail, wearing a white tank top",
+        "action": "sitting",
+        "position": "left",
+        "id": "person_woman_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a dark jacket over a white shirt",
+        "action": "sitting",
+        "position": "center",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "red glass hookah with a silver metal stem and hose",
+        "action": "static",
+        "position": "center-left",
+        "id": "hookah_base_1"
+      },
+      {
+        "desc": "grey rectangular table",
+        "action": "static",
+        "position": "foreground",
+        "id": "furniture_table_1"
+      },
+      {
+        "desc": "green illuminated exit sign",
+        "action": "static",
+        "position": "top-right",
+        "id": "sign_exit_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a white t-shirt is standing and leaning against a booth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two women are sitting at a table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red hookah is placed on the table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The exit sign is illuminated green above a doorway.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "EXIT"
+    ],
+    "spatial": "The man in the white t-shirt is standing to the right of the booth where the two women are sitting. The red hookah is on the grey table in front of the women. The green exit sign is above the doorway in the background on the right.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short blonde hair, wearing a white t-shirt and blue jeans",
+        "action": "standing with left hand on hip and right hand on booth backrest",
+        "position": "right",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a white tank top and a dark cardigan",
+        "action": "sitting in booth holding a hookah hose to mouth",
+        "position": "center",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "woman with blonde hair, wearing a white tank top",
+        "action": "sitting in booth",
+        "position": "left",
+        "id": "person_woman_blonde_1"
+      },
+      {
+        "desc": "red glass hookah base with a metal stem",
+        "action": "static",
+        "position": "foreground",
+        "id": "hookah_base_1"
+      },
+      {
+        "desc": "grey rectangular table",
+        "action": "static",
+        "position": "foreground",
+        "id": "furniture_table_1"
+      },
+      {
+        "desc": "tan leather booth seating",
+        "action": "static",
+        "position": "background",
+        "id": "furniture_tan_seating_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman in the center is smoking from the hookah.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing next to the booth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hookah is sitting on the table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The women are seated inside the booth.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The red hookah is on the grey table in the foreground. The two women are sitting in the tan booth behind the table. The man is standing to the right of the booth, with his hand resting on the back of the seat.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": [
+      "woman with dark hair now holding hookah hose to mouth, blonde woman moved to booth"
+    ]
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short blonde hair, wearing a white t-shirt with a small black graphic on the chest, and blue jeans",
+        "action": "standing with left hand on hip and right arm resting on the booth backrest",
+        "position": "right",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a dark short-sleeved top",
+        "action": "sitting and holding a hookah hose to her mouth",
+        "position": "center",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "man with short hair, wearing a white tank top",
+        "action": "sitting and holding a hookah hose to his mouth",
+        "position": "left",
+        "id": "person_man_tank_1"
+      },
+      {
+        "desc": "red glass hookah base with a black hose",
+        "action": "static",
+        "position": "left foreground",
+        "id": "hookah_hose_1"
+      },
+      {
+        "desc": "dark grey table",
+        "action": "static",
+        "position": "foreground",
+        "id": "furniture_table_1"
+      },
+      {
+        "desc": "beige upholstered booth seat",
+        "action": "static",
+        "position": "center",
+        "id": "furniture_beige_seating_1"
+      },
+      {
+        "desc": "green illuminated 'EXIT' sign",
+        "action": "static",
+        "position": "top right background",
+        "id": "sign_exit_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the white t-shirt stands to the right of the booth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman and the man in the tank top are sitting in the booth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is inhaling from the hookah hose.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the tank top is inhaling from the hookah hose.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red hookah base sits on the table in front of the man in the tank top.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "EXIT"
+    ],
+    "spatial": "The man in the white t-shirt is standing to the right of the beige booth. The woman and the man in the tank top are sitting inside the booth. The red hookah is on the table in front of the man in the tank top. The 'EXIT' sign is above the doorway in the background.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": [
+      "new person (man in white tank top) appeared holding hookah hose, woman with dark hair changed top"
+    ]
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short blonde hair, wearing a white t-shirt, blue jeans, and a necklace",
+        "action": "standing with hand on hip",
+        "position": "right",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a white top and black vest",
+        "action": "exhaling smoke",
+        "position": "center",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "red glass hookah with a black hose",
+        "action": "static",
+        "position": "left foreground",
+        "id": "hookah_hose_1"
+      },
+      {
+        "desc": "green illuminated exit sign",
+        "action": "static",
+        "position": "top right background",
+        "id": "sign_exit_1"
+      },
+      {
+        "desc": "beige padded booth seating",
+        "action": "static",
+        "position": "center background",
+        "id": "furniture_beige_seating_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is exhaling a cloud of smoke.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is leaning against the booth seating.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red hookah is sitting on the table.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "EXIT"
+    ],
+    "spatial": "The man in the white t-shirt is standing to the right of the woman. The woman is seated behind the table, which holds the red hookah in the foreground. The green exit sign is located above the doorway in the background on the right.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": [
+      "woman with dark hair started exhaling smoke"
+    ]
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short blonde hair, wearing a white t-shirt, dark pants, and a necklace with a pendant",
+        "action": "standing with hand on hip",
+        "position": "center-right",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a white top and a dark cardigan",
+        "action": "sitting in a booth",
+        "position": "left",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "tan leather booth seat",
+        "action": "static",
+        "position": "left",
+        "id": "furniture_tan_seating_1"
+      },
+      {
+        "desc": "black hookah hose",
+        "action": "being held",
+        "position": "left",
+        "id": "hookah_hose_1"
+      },
+      {
+        "desc": "vase with yellow flowers",
+        "action": "static",
+        "position": "background left",
+        "id": "flowers_yellow_1"
+      },
+      {
+        "desc": "dark wall with framed artwork",
+        "action": "static",
+        "position": "background",
+        "id": "wallart_framed_1"
+      },
+      {
+        "desc": "doorway with light-colored frame",
+        "action": "static",
+        "position": "right",
+        "id": "decor_doorway_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man stands next to the booth where the woman is sitting.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman holds a black hookah hose.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man rests his right hand on the back of the booth seat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A vase of yellow flowers sits on a surface near the window.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is standing to the right of the woman, who is seated in the booth. The woman is holding the hookah hose in front of her. The vase of flowers is behind the woman and to the left. The doorway is to the right of the man.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": [
+      "vase with yellow flowers appeared, doorway became visible"
+    ]
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short blonde hair, white t-shirt, necklace with pendant",
+        "action": "gesturing with hands",
+        "position": "center",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, black top, white undershirt",
+        "action": "static",
+        "position": "left",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "tan leather booth seat",
+        "action": "static",
+        "position": "left",
+        "id": "furniture_tan_seating_1"
+      },
+      {
+        "desc": "dark wall with artwork",
+        "action": "static",
+        "position": "background",
+        "id": "wallart_framed_1"
+      },
+      {
+        "desc": "vase with yellow flowers",
+        "action": "static",
+        "position": "left",
+        "id": "flowers_yellow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the white t-shirt is gesturing with his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is leaning his right arm on the back of the booth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is sitting in the booth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A vase with yellow flowers is on a surface to the left.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is standing to the right of the woman. The woman is sitting in the booth, which is to the left of the man. The vase with flowers is to the left of the woman. The dark wall is behind both the man and the woman.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short spiky blonde hair, wearing a white t-shirt and a necklace with a dark pendant",
+        "action": "gesturing with hands",
+        "position": "center",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a black top",
+        "action": "static",
+        "position": "left",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "dark wall with a large painting featuring a dark background and a yellowish abstract shape",
+        "action": "static",
+        "position": "background",
+        "id": "wallart_painting_1"
+      },
+      {
+        "desc": "brown leather sofa",
+        "action": "static",
+        "position": "left",
+        "id": "furniture_brown_seating_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the center is gesturing with his hands in front of his chest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A woman with dark hair is sitting on the sofa to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a necklace with a dark pendant.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the white t-shirt is in the center of the frame, in front of a dark wall with a painting. The woman with dark hair is to the left of the man, sitting on a brown leather sofa. The sofa is in front of the wall.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": [
+      "man's hair now described as spiky, large painting with abstract shape visible"
+    ]
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short spiky blonde hair, wearing a white t-shirt and a necklace with a dark pendant",
+        "action": "gesturing with hands",
+        "position": "center",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "dark wall with a painting depicting a landscape with clouds",
+        "action": "static",
+        "position": "background",
+        "id": "wallart_painting_1"
+      },
+      {
+        "desc": "framed picture with a diamond shape",
+        "action": "static",
+        "position": "background right",
+        "id": "wallart_framed_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is gesturing with both hands in front of him.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a necklace with a dark pendant.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A painting is visible on the wall behind the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the center of the frame, in front of a dark wall. A painting is on the wall to the left of the man. A framed picture is on the wall to the right of the man.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": [
+      "wall painting changed to landscape with clouds, diamond-shaped framed picture appeared"
+    ]
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short spiky blonde hair, wearing a white t-shirt with a small black microphone clipped to the collar",
+        "action": "gesturing with hands",
+        "position": "center",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "dark wall with a framed picture featuring a diamond shape and a vent near the ceiling",
+        "action": "static",
+        "position": "background",
+        "id": "wallart_framed_1"
+      },
+      {
+        "desc": "white rectangular surface, possibly a piano or table edge",
+        "action": "static",
+        "position": "foreground",
+        "id": "furniture_table_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is gesturing with both hands in front of him.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a white t-shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small black microphone is clipped to the man's collar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A framed picture hangs on the wall behind the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is positioned in the center of the frame, sitting in front of a dark wall. The white surface is in the foreground, directly in front of the man. The framed picture is on the wall to the right of the man's head.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": [
+      "man now has microphone clipped to collar, vent near ceiling visible"
+    ]
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short blonde spiky hair, wearing a white t-shirt with a small black microphone clipped to the collar",
+        "action": "gesturing with hands while speaking",
+        "position": "center",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "dark painting with abstract yellow and white strokes",
+        "action": "static",
+        "position": "background left",
+        "id": "wallart_painting_1"
+      },
+      {
+        "desc": "small framed picture with a diamond shape",
+        "action": "static",
+        "position": "background right",
+        "id": "wallart_framed_1"
+      },
+      {
+        "desc": "wooden cabinet or dresser",
+        "action": "static",
+        "position": "background right",
+        "id": "furniture_cabinet_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person gestures with hands while speaking",
+        "confidence": 1.0
+      },
+      {
+        "fact": "microphone is clipped to the person's t-shirt collar",
+        "confidence": 1.0
+      },
+      {
+        "fact": "painting is hanging on the wall behind the person",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, in front of a dark wall. The painting is to the left of the person on the wall. The framed picture is to the right of the person, above the wooden cabinet.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": [
+      "person with spiky blonde hair now speaking, wooden cabinet appeared"
+    ]
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short spiky blonde hair, wearing a white t-shirt and a necklace with a black pendant",
+        "action": "gesturing with hands",
+        "position": "center",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "person with dark hair, partially visible",
+        "action": "static",
+        "position": "bottom left",
+        "id": "person_dark_partial_1"
+      },
+      {
+        "desc": "dark framed picture on the wall",
+        "action": "static",
+        "position": "background left",
+        "id": "wallart_framed_1"
+      },
+      {
+        "desc": "small framed picture on the wall",
+        "action": "static",
+        "position": "background right",
+        "id": "wallart_framed_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the white t-shirt is gesturing with his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A second person is partially visible in the bottom left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a necklace with a black pendant.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the white t-shirt is in the center of the frame. The partially visible person is to the left of the man. The large dark picture is behind the man on the left, and the small framed picture is on the wall to the right.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": [
+      "person with dark hair partially visible appeared"
+    ]
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short blonde hair, wearing a white t-shirt and a necklace with a black pendant",
+        "action": "talking and gesturing with hands",
+        "position": "center",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "person with long dark hair, wearing a dark top",
+        "action": "static",
+        "position": "left",
+        "id": "person_dark_partial_1"
+      },
+      {
+        "desc": "dark wall with a large painting featuring dark tones and a framed picture",
+        "action": "static",
+        "position": "background",
+        "id": "wallart_painting_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the center is talking and gesturing with his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person with long dark hair is sitting to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a necklace with a black pendant.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the white t-shirt is in the center of the frame. The person with long dark hair is to the left of the man. The dark wall with artwork is behind both people.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short blonde hair, wearing a white t-shirt with a small black microphone clipped to the collar",
+        "action": "gesturing with hands",
+        "position": "center/foreground",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a dark top",
+        "action": "static",
+        "position": "left/background",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "dark framed artwork on the wall",
+        "action": "static",
+        "position": "background",
+        "id": "wallart_framed_1"
+      },
+      {
+        "desc": "brown leather sofa",
+        "action": "static",
+        "position": "background",
+        "id": "furniture_brown_seating_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the white t-shirt is gesturing with both hands in front of his body.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman with long dark hair is sitting on the sofa.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small black microphone is clipped to the man's shirt collar.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the white t-shirt is in the foreground, positioned to the right of the woman with long dark hair. The woman is sitting on the brown leather sofa, which is behind the man. The dark framed artwork is on the wall behind the man.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short spiky blonde hair, wearing a white t-shirt and a necklace with a dark pendant",
+        "action": "gesturing with hands while speaking",
+        "position": "right",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a dark top",
+        "action": "static",
+        "position": "left",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "yellow flowers in a vase",
+        "action": "static",
+        "position": "left background",
+        "id": "flowers_yellow_1"
+      },
+      {
+        "desc": "dark framed artwork on the wall",
+        "action": "static",
+        "position": "background",
+        "id": "wallart_framed_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the white t-shirt is gesturing with his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is sitting on the left side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Yellow flowers are visible in the background on the left.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the white t-shirt is positioned to the right of the woman with long dark hair. The woman is sitting on a couch to the left of the man. Behind the woman, there are yellow flowers in a vase. A dark framed artwork hangs on the wall in the background behind the man.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": [
+      "yellow flowers in vase became visible"
+    ]
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short blonde hair, wearing a white t-shirt with a graphic print and a necklace",
+        "action": "gesturing with hands while standing",
+        "position": "right",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a black top",
+        "action": "static",
+        "position": "left",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "brown leather sofa",
+        "action": "static",
+        "position": "center",
+        "id": "furniture_brown_seating_1"
+      },
+      {
+        "desc": "yellow flowers in a vase",
+        "action": "static",
+        "position": "left",
+        "id": "flowers_yellow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the white t-shirt is standing and gesturing with his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman with dark hair is sitting on the sofa.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A vase of yellow flowers is visible on the left side of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the white t-shirt is standing to the right of the brown leather sofa. The woman with dark hair is sitting on the left side of the sofa. The vase of yellow flowers is positioned to the left of the woman.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short spiky blonde hair, wearing a white t-shirt and a necklace with a dark pendant",
+        "action": "gesturing with hands",
+        "position": "right",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a black top",
+        "action": "static",
+        "position": "left",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "brown leather sofa",
+        "action": "static",
+        "position": "background",
+        "id": "furniture_brown_seating_1"
+      },
+      {
+        "desc": "yellow flowers in a vase",
+        "action": "static",
+        "position": "left",
+        "id": "flowers_yellow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is standing and gesturing with his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is sitting on the sofa.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A vase of yellow flowers is visible on the left side of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is standing to the right of the woman. The woman is sitting on the brown leather sofa. The vase of yellow flowers is to the left of the woman.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short spiky blonde hair, wearing a white t-shirt with a black graphic print on the chest",
+        "action": "leaning on a booth seat back and gesturing with his right hand",
+        "position": "right",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a black top over a white shirt",
+        "action": "sitting in a booth and looking to the left",
+        "position": "left",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "brown leather booth seat back",
+        "action": "static",
+        "position": "center",
+        "id": "furniture_brown_seating_1"
+      },
+      {
+        "desc": "vase with yellow flowers and green leaves",
+        "action": "static",
+        "position": "left background",
+        "id": "flowers_yellow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man leans his left arm on the back of the booth seat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man gestures with his right hand while speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman sits in the booth to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A vase of yellow flowers is visible in the background on the left.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is to the right of the woman. The woman is sitting in front of the brown leather booth seat back. The man is leaning on the booth seat back. The vase of flowers is to the left of the woman in the background.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": [
+      "man now leaning on booth seat back, woman looking to the left"
+    ]
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short spiky blonde hair, wearing a white t-shirt with a black graphic print on the chest",
+        "action": "gesturing with hands while standing",
+        "position": "right",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a white tank top under a black cardigan",
+        "action": "sitting on a couch",
+        "position": "left",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "beige leather couch",
+        "action": "static",
+        "position": "center",
+        "id": "furniture_beige_seating_1"
+      },
+      {
+        "desc": "tall vase with yellow flowers and green leaves",
+        "action": "static",
+        "position": "left",
+        "id": "flowers_yellow_1"
+      },
+      {
+        "desc": "dark wall with a framed picture",
+        "action": "static",
+        "position": "background",
+        "id": "wallart_framed_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the white t-shirt is standing and gesturing with his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman with dark hair is sitting on the couch.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A vase of yellow flowers is on a table to the left of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is standing to the right of the woman. The woman is sitting on the beige couch. The vase of flowers is to the left of the woman and in front of the dark wall.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": [
+      "woman now on couch instead of booth, beige couch visible"
+    ]
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short blonde hair, wearing a white t-shirt and a necklace",
+        "action": "standing and holding a glass",
+        "position": "right",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a black top over a white shirt",
+        "action": "sitting and smiling",
+        "position": "left",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "brown leather sofa",
+        "action": "static",
+        "position": "center",
+        "id": "furniture_brown_seating_1"
+      },
+      {
+        "desc": "vase with yellow flowers",
+        "action": "static",
+        "position": "left background",
+        "id": "flowers_yellow_1"
+      },
+      {
+        "desc": "dark framed picture on the wall",
+        "action": "static",
+        "position": "background",
+        "id": "wallart_framed_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a white t-shirt is standing on the right side of the frame holding a glass.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A woman with dark hair is sitting on a sofa to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is smiling while looking towards the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A vase containing yellow flowers sits on a surface in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is standing to the right of the brown leather sofa. The woman is sitting on the left side of the sofa. The vase with yellow flowers is behind the woman on the far left. The dark framed picture is on the wall behind the man.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": [
+      "man now holding a glass, woman smiling"
+    ]
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short blonde hair, wearing a white t-shirt and a necklace with a pendant",
+        "action": "standing and holding a glass",
+        "position": "right",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a black top over a white shirt",
+        "action": "sitting and smiling",
+        "position": "left",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "clear glass containing a drink",
+        "action": "being held",
+        "position": "right",
+        "id": "drink_clear_1"
+      },
+      {
+        "desc": "tan leather booth seat",
+        "action": "static",
+        "position": "center",
+        "id": "furniture_tan_seating_1"
+      },
+      {
+        "desc": "vase with yellow flowers",
+        "action": "static",
+        "position": "left",
+        "id": "flowers_yellow_1"
+      },
+      {
+        "desc": "buddha statue head",
+        "action": "static",
+        "position": "left",
+        "id": "decor_buddha_1"
+      },
+      {
+        "desc": "dark wall with a painting",
+        "action": "static",
+        "position": "background",
+        "id": "wallart_painting_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is standing and holding a glass in his left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is sitting in the booth and smiling.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a necklace with a pendant.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A vase with yellow flowers is on a surface to the left.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the white t-shirt is standing to the right of the tan leather booth. The woman is sitting inside the booth on the left side. The vase with yellow flowers is to the left of the woman. The painting is on the wall behind the man and the booth.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": [
+      "buddha statue head appeared, clear glass with drink being held"
+    ]
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short blonde hair, wearing a white t-shirt and a necklace",
+        "action": "standing and holding a black hookah hose",
+        "position": "right",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a black top over a white shirt",
+        "action": "sitting on a couch and smiling",
+        "position": "left",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "black hookah hose",
+        "action": "being held by the man",
+        "position": "center-right",
+        "id": "hookah_hose_1"
+      },
+      {
+        "desc": "beige leather couch",
+        "action": "static",
+        "position": "center",
+        "id": "furniture_beige_seating_1"
+      },
+      {
+        "desc": "vase with yellow flowers",
+        "action": "static",
+        "position": "left background",
+        "id": "flowers_yellow_1"
+      },
+      {
+        "desc": "glass bottle with yellow liquid",
+        "action": "static",
+        "position": "bottom left",
+        "id": "drink_yellow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the white t-shirt is holding a black hookah hose with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is sitting on the couch to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man appears to be speaking or singing while holding the hose.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A glass bottle containing yellow liquid sits on the table in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the white t-shirt is standing to the right of the beige couch. The woman is sitting on the left side of the couch. The vase with yellow flowers is behind the woman on the left. The glass bottle is in the bottom left corner, in front of the woman.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": [
+      "man now holding black hookah hose, glass bottle with yellow liquid appeared"
+    ]
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short light brown hair, wearing a white t-shirt with a small black logo on the chest",
+        "action": "leaning against a booth seat",
+        "position": "right",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a black short-sleeved top over a white undershirt",
+        "action": "sitting in a booth",
+        "position": "left",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "black hookah hose",
+        "action": "being held",
+        "position": "left",
+        "id": "hookah_hose_1"
+      },
+      {
+        "desc": "bouquet of yellow flowers in a vase",
+        "action": "static",
+        "position": "left",
+        "id": "flowers_yellow_1"
+      },
+      {
+        "desc": "brown leather booth seat",
+        "action": "static",
+        "position": "center",
+        "id": "furniture_brown_seating_1"
+      },
+      {
+        "desc": "dark wall with a painting",
+        "action": "static",
+        "position": "background",
+        "id": "wallart_painting_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is leaning his right arm on the back of the booth seat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is holding the black hookah hose.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The yellow flowers are placed on the table to the left of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing to the right of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is sitting to the left of the man. The man is leaning against the brown leather booth seat. The bouquet of yellow flowers is on the table in front of the woman.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short light brown hair, wearing a white t-shirt with a small black graphic on the chest, and blue jeans",
+        "action": "standing and leaning his right arm on the back of a booth",
+        "position": "right",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a black cardigan over a white top",
+        "action": "sitting in a booth and holding a glass of yellow liquid",
+        "position": "left",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "brown leather booth seat",
+        "action": "static",
+        "position": "center",
+        "id": "furniture_brown_seating_1"
+      },
+      {
+        "desc": "glass of yellow liquid",
+        "action": "being held by the woman",
+        "position": "left",
+        "id": "drink_yellow_1"
+      },
+      {
+        "desc": "hookah with a black hose and a red base",
+        "action": "static",
+        "position": "left foreground",
+        "id": "hookah_hose_1"
+      },
+      {
+        "desc": "vase with yellow flowers",
+        "action": "static",
+        "position": "left background",
+        "id": "flowers_yellow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is standing and leaning on the booth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is sitting in the booth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is holding a glass of yellow liquid.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is standing to the right of the booth. The woman is sitting inside the booth to the left of the man. The hookah is on the table in front of the woman. The vase with flowers is behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": [
+      "woman now holding glass of yellow liquid, full hookah with red base visible"
+    ]
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long dark hair, wearing a black short-sleeved top over a white shirt",
+        "action": "sitting at a table",
+        "position": "left",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "man with short blonde hair, wearing a white t-shirt with a small black graphic and blue jeans",
+        "action": "standing and leaning against a booth",
+        "position": "right",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "red hookah with a silver stem and a glass base containing yellow liquid",
+        "action": "static",
+        "position": "foreground left",
+        "id": "hookah_base_1"
+      },
+      {
+        "desc": "bouquet of yellow flowers in a vase",
+        "action": "static",
+        "position": "background left",
+        "id": "flowers_yellow_1"
+      },
+      {
+        "desc": "tan leather booth seat",
+        "action": "static",
+        "position": "center",
+        "id": "furniture_tan_seating_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman is sitting at a table on the left side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man is standing on the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is leaning his arm against the back of a booth seat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red hookah is placed on the table in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Yellow flowers are visible in a vase behind the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is sitting to the left of the man. The man is standing to the right of the booth seat. The hookah is on the table in front of the woman. The flowers are behind the woman and to the left of the man.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": [
+      "red hookah with silver stem and yellow liquid in base appeared"
+    ]
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short blonde hair, wearing a white t-shirt and blue jeans",
+        "action": "standing and leaning against a booth",
+        "position": "right",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a black top over a white shirt",
+        "action": "sitting at a table",
+        "position": "left",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "hookah with a red base and black hose",
+        "action": "static",
+        "position": "left foreground",
+        "id": "hookah_hose_1"
+      },
+      {
+        "desc": "glass of yellow liquid",
+        "action": "static",
+        "position": "left foreground",
+        "id": "drink_yellow_1"
+      },
+      {
+        "desc": "vase with yellow flowers",
+        "action": "static",
+        "position": "background left",
+        "id": "flowers_yellow_1"
+      },
+      {
+        "desc": "tan leather booth",
+        "action": "static",
+        "position": "center background",
+        "id": "furniture_tan_seating_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a white t-shirt is standing and leaning against a booth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A woman with long dark hair is sitting at a table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hookah with a red base is on the table in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A glass of yellow liquid is on the table next to the hookah.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is sitting at a table to the left of the man. The man is standing to the right of the woman, leaning against the back of a tan booth. The hookah and a glass of yellow liquid are on the table in front of the woman.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short blonde hair, wearing a white t-shirt and blue jeans",
+        "action": "standing and holding a glass",
+        "position": "right",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a black cardigan over a white top",
+        "action": "sitting at a table",
+        "position": "left",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "black hookah hose",
+        "action": "static",
+        "position": "left",
+        "id": "hookah_hose_1"
+      },
+      {
+        "desc": "glass with yellow liquid",
+        "action": "static",
+        "position": "left",
+        "id": "drink_yellow_1"
+      },
+      {
+        "desc": "vase with yellow flowers",
+        "action": "static",
+        "position": "background left",
+        "id": "flowers_yellow_1"
+      },
+      {
+        "desc": "tan leather booth seat",
+        "action": "static",
+        "position": "center",
+        "id": "furniture_tan_seating_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the white t-shirt is standing on the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is sitting at a table on the left side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is holding a glass in his hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hookah hose is on the table in front of the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the white t-shirt is standing to the right of the tan leather booth seat. The woman is sitting at a table to the left of the booth. The vase with yellow flowers is behind the woman on a surface in the background.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short spiky blonde hair, wearing a white t-shirt with a black graphic on the chest and blue jeans",
+        "action": "standing and leaning on a booth",
+        "position": "right",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a black short-sleeved top over a white tank top",
+        "action": "sitting in a booth",
+        "position": "left",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "tan leather booth seat",
+        "action": "static",
+        "position": "center",
+        "id": "furniture_tan_seating_1"
+      },
+      {
+        "desc": "black hookah hose",
+        "action": "static",
+        "position": "left",
+        "id": "hookah_hose_1"
+      },
+      {
+        "desc": "glass vase with yellow flowers",
+        "action": "static",
+        "position": "background left",
+        "id": "flowers_yellow_1"
+      },
+      {
+        "desc": "glass bottle with yellow liquid",
+        "action": "static",
+        "position": "foreground left",
+        "id": "drink_yellow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is standing and leaning his left arm on the back of the booth seat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is sitting in the booth to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A glass bottle containing yellow liquid sits on the table in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is sitting to the left of the man. The man is standing to the right of the booth seat. The vase of yellow flowers is behind the woman on a surface against the wall.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": [
+      "glass bottle with yellow liquid appeared on table"
+    ]
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short blonde hair, wearing a white t-shirt with a black graphic print on the chest",
+        "action": "leaning against a couch",
+        "position": "right",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a black cardigan over a white top",
+        "action": "sitting on a couch",
+        "position": "left",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "brown leather couch",
+        "action": "static",
+        "position": "center",
+        "id": "furniture_brown_seating_1"
+      },
+      {
+        "desc": "vase with yellow flowers and green leaves",
+        "action": "static",
+        "position": "left background",
+        "id": "flowers_yellow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is leaning his arm on the back of the couch.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is sitting on the couch looking towards the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A vase of yellow flowers sits on a surface behind the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is standing to the right of the woman. The woman is sitting on the left side of the brown leather couch. The vase of yellow flowers is behind the woman on the left side of the frame.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short blonde hair, wearing a white t-shirt with a small black logo on the chest",
+        "action": "gesturing with hands while leaning",
+        "position": "right",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a black cardigan over a white top",
+        "action": "sitting",
+        "position": "left",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "beige leather sofa",
+        "action": "static",
+        "position": "center",
+        "id": "furniture_beige_seating_1"
+      },
+      {
+        "desc": "vase with yellow flowers",
+        "action": "static",
+        "position": "left background",
+        "id": "flowers_yellow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the white t-shirt is leaning his right arm on the back of the sofa.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is gesturing with his left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is sitting on the sofa.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is to the right of the woman. The woman is sitting on the beige sofa. The vase with yellow flowers is behind the woman on the left side.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short blonde hair, wearing a white t-shirt with a small black logo on the chest",
+        "action": "leaning against the back of a sofa and gesturing with hands",
+        "position": "right",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a black short-sleeved top over a white shirt",
+        "action": "sitting on the sofa",
+        "position": "left",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "brown leather sofa",
+        "action": "static",
+        "position": "center",
+        "id": "furniture_brown_seating_1"
+      },
+      {
+        "desc": "vase with yellow lilies",
+        "action": "static",
+        "position": "left background",
+        "id": "flowers_yellow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is leaning his right arm on the back of the sofa.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is sitting on the sofa to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is gesturing with his hands while speaking.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is standing to the right of the woman. The woman is sitting on the sofa. The vase of flowers is on a surface behind the woman and to the left of the sofa.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": [
+      "flowers now identified as lilies"
+    ]
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short blonde hair, wearing a white t-shirt and a necklace",
+        "action": "leaning against a booth backrest",
+        "position": "right",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a black top",
+        "action": "sitting",
+        "position": "left",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "bouquet of yellow lilies in a vase",
+        "action": "static",
+        "position": "left",
+        "id": "flowers_yellow_1"
+      },
+      {
+        "desc": "brown leather booth seat",
+        "action": "static",
+        "position": "center",
+        "id": "furniture_brown_seating_1"
+      },
+      {
+        "desc": "dark framed artwork",
+        "action": "static",
+        "position": "background",
+        "id": "wallart_framed_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is leaning his arm on the back of the booth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is seated to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A vase of yellow flowers sits on the table next to the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is seated to the left of the man. The man is leaning against the back of the brown booth seat. The bouquet of yellow lilies is on the table to the left of the woman. The dark framed artwork is on the wall behind the man.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short spiky blonde hair, wearing a white t-shirt and a necklace with a pendant",
+        "action": "standing and gesturing with hands",
+        "position": "right",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a dark top",
+        "action": "sitting",
+        "position": "left",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "brown leather sofa",
+        "action": "static",
+        "position": "center",
+        "id": "furniture_brown_seating_1"
+      },
+      {
+        "desc": "yellow flowers in a vase",
+        "action": "static",
+        "position": "left",
+        "id": "flowers_yellow_1"
+      },
+      {
+        "desc": "dark wall art",
+        "action": "static",
+        "position": "background",
+        "id": "wallart_framed_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the white t-shirt is standing in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is sitting on the sofa to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is gesturing with his hands while speaking.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the white t-shirt is standing to the right of the woman. The woman is sitting on the brown leather sofa. The yellow flowers are on the far left, next to the sofa.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": []
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a white t-shirt with a small black microphone clipped to the collar",
+        "action": "standing and talking",
+        "position": "right",
+        "id": "person_man_brown_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a white tank top under a black short-sleeved cardigan",
+        "action": "sitting and smiling",
+        "position": "left",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "person with blonde hair wearing a grey tank top",
+        "action": "sitting",
+        "position": "far left",
+        "id": "person_blonde_tank_1"
+      },
+      {
+        "desc": "dark brown leather booth seat",
+        "action": "static",
+        "position": "center",
+        "id": "furniture_brown_seating_1"
+      },
+      {
+        "desc": "vase with yellow flowers",
+        "action": "static",
+        "position": "background left",
+        "id": "flowers_yellow_1"
+      },
+      {
+        "desc": "glass bottle containing yellow liquid",
+        "action": "static",
+        "position": "foreground left",
+        "id": "drink_yellow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the white t-shirt is standing to the right of the booth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman with dark hair is sitting in the booth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A glass bottle with yellow liquid sits on the table in front of the blonde person.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the white t-shirt is standing to the right of the dark brown leather booth. The woman with dark hair is sitting inside the booth, while the blonde person is seated to her left. The vase with yellow flowers is in the background behind the seated people.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": [
+      "new person with blonde hair in grey tank top appeared"
+    ]
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short blonde hair, wearing a white tank top",
+        "action": "smoking from a hookah",
+        "position": "left",
+        "id": "person_blonde_tank_1"
+      },
+      {
+        "desc": "person with long dark hair, wearing a white top and black cardigan",
+        "action": "sitting and smiling",
+        "position": "center",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "person wearing a white t-shirt",
+        "action": "standing and gesturing",
+        "position": "right",
+        "id": "person_man_blonde_1"
+      },
+      {
+        "desc": "hookah with a black hose",
+        "action": "static",
+        "position": "left",
+        "id": "hookah_hose_1"
+      },
+      {
+        "desc": "glass of yellow liquid",
+        "action": "static",
+        "position": "left",
+        "id": "drink_yellow_1"
+      },
+      {
+        "desc": "glass of amber liquid",
+        "action": "static",
+        "position": "left",
+        "id": "drink_amber_1"
+      },
+      {
+        "desc": "brown leather booth seat",
+        "action": "static",
+        "position": "background",
+        "id": "furniture_brown_seating_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person on the left is holding a hookah hose and exhaling smoke.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the center is looking at the person on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person on the right is standing next to the booth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "There are two glasses of liquid on the table.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person with blonde hair is to the left of the person with dark hair. The hookah is on the table in front of the person with blonde hair. The person in the white t-shirt is standing to the right of the booth.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": [
+      "person with short blonde hair started smoking from hookah, glass of amber liquid appeared"
+    ]
+  },
+  {
+    "time": [
+      68,
+      70
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short blonde hair, wearing a white tank top",
+        "action": "exhaling a large cloud of smoke",
+        "position": "left",
+        "id": "person_blonde_tank_1"
+      },
+      {
+        "desc": "woman with long dark hair, wearing a black short-sleeved top over a white shirt",
+        "action": "holding a black hookah hose",
+        "position": "center",
+        "id": "person_woman_darkhair_1"
+      },
+      {
+        "desc": "black hookah hose",
+        "action": "being held",
+        "position": "center",
+        "id": "hookah_hose_1"
+      },
+      {
+        "desc": "glass of yellow liquid",
+        "action": "static",
+        "position": "left",
+        "id": "drink_yellow_1"
+      },
+      {
+        "desc": "bottle of amber liquid",
+        "action": "static",
+        "position": "center",
+        "id": "drink_amber_1"
+      },
+      {
+        "desc": "person's arm and hand",
+        "action": "resting on the booth back",
+        "position": "right",
+        "id": "person_arm_1"
+      },
+      {
+        "desc": "dark leather booth seat",
+        "action": "static",
+        "position": "background",
+        "id": "furniture_brown_seating_1"
+      },
+      {
+        "desc": "vase with yellow flowers",
+        "action": "static",
+        "position": "background",
+        "id": "flowers_yellow_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person on the left exhales a thick cloud of white smoke.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman in the center holds the black hose of a hookah.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A glass containing a yellow beverage sits on the table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bottle of amber liquid is placed on the table next to the glass.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A third person's arm is visible resting on the back of the booth on the right.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person with blonde hair is to the left of the woman with dark hair. The woman is holding the hookah hose which extends from the table. The glass of yellow liquid is in front of the person on the left, next to the bottle of amber liquid. The vase with yellow flowers is behind the woman on the booth seat.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "v_5rtrGkZNfLo",
+    "state_changes": [
+      "person with blonde hair exhaling large smoke cloud, woman now holding hookah hose"
+    ]
+  }
+]

@@ -1,0 +1,3390 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "large multi-story building, white facade with grid of rectangular windows, featuring a ground-level entrance with a row of thick cylindrical columns",
+        "action": "static",
+        "position": "center",
+        "id": "building_government_1"
+      },
+      {
+        "desc": "green pine trees with needle-like leaves",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "red flag hanging from the building facade",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "circular watermark logo containing a stylized Chinese character",
+        "action": "static",
+        "position": "top right",
+        "id": "circular_logo_watermark_1"
+      },
+      {
+        "desc": "clear blue sky",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A large white building stands static in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Green trees are positioned to the left of the building.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red flag hangs from the building's exterior wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A circular logo watermark is visible in the top right corner of the sky.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The green trees are to the left of the large white building. The red flag is attached to the front facade of the building, slightly to the right of the center. The circular watermark is located in the top right corner of the frame, above the building.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "large white multi-story building with a grid of rectangular windows and a lower entrance section supported by columns",
+        "action": "static",
+        "position": "center",
+        "id": "building_government_1"
+      },
+      {
+        "desc": "blue news banner with white text and a gold logo",
+        "action": "static",
+        "position": "bottom",
+        "id": "news_banner_1"
+      },
+      {
+        "desc": "green trees with foliage",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "clear blue sky",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A large white building stands under a clear blue sky.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue news banner is overlaid at the bottom of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the banner reads 'Обстановка накаляется' and 'КНДР грозит ударить по Южной Корее'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Обстановка накаляется",
+      "КНДР грозит ударить по Южной Корее",
+      "ntdtv.ru",
+      "唐"
+    ],
+    "spatial": "The large white building occupies the center and background of the frame. The green trees are located to the left of the building. The blue news banner is positioned at the bottom, overlaying the lower portion of the building and trees.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": [
+      "blue news banner appears on screen"
+    ]
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "large multi-story building with white tiled facade and numerous rectangular windows",
+        "action": "static",
+        "position": "background",
+        "id": "building_government_1"
+      },
+      {
+        "desc": "South Korean flag (white background with red and blue taegeuk symbol and black trigrams)",
+        "action": "waving in the wind",
+        "position": "center",
+        "id": "south_korean_flag_1"
+      },
+      {
+        "desc": "red flag with a yellow emblem",
+        "action": "waving in the wind",
+        "position": "left",
+        "id": "red_flag_yellow_emblem_1"
+      },
+      {
+        "desc": "red flag with white text",
+        "action": "waving in the wind",
+        "position": "right"
+      },
+      {
+        "desc": "blue news banner with white text and a gold logo",
+        "action": "static",
+        "position": "bottom",
+        "id": "news_banner_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Three flags are waving in the wind in front of the building.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The South Korean flag is positioned between two red flags.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The news banner displays the headline 'Обстановка накаляется' and 'КНДР грозит ударить по Южной Корее'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Обстановка накаляется",
+      "КНДР грозит ударить по Южной Корее",
+      "ntdtv.ru"
+    ],
+    "spatial": "The South Korean flag is in the center, flanked by a red flag on the left and another red flag on the right. The flags are positioned in front of the large white building. The blue news banner is located at the bottom of the screen, overlaying the lower portion of the scene.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": [
+      "South Korean flag and red flags appear waving"
+    ]
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "Red flag with a yellow star and white crossed rifles emblem",
+        "action": "waving in the wind",
+        "position": "left",
+        "id": "red_flag_yellow_emblem_1"
+      },
+      {
+        "desc": "White flag with a central blue and red yin-yang symbol and black trigrams",
+        "action": "waving in the wind",
+        "position": "center",
+        "id": "south_korean_flag_1"
+      },
+      {
+        "desc": "Red flag with yellow text and emblem",
+        "action": "waving in the wind",
+        "position": "right",
+        "id": "red_flag_yellow_emblem_1"
+      },
+      {
+        "desc": "Grey building facade with rectangular windows",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "Blue news banner with white text",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Three flags are waving in the wind in front of a building.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red flag on the left features a yellow star and crossed rifles.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The white flag in the center displays the South Korean flag design.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A news ticker at the bottom displays Russian text about North Korea threatening South Korea.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Обстановка накаляется",
+      "КНДР грозится ударить по Южной Корее",
+      "ntdtv.ru"
+    ],
+    "spatial": "The red flag with the star is to the left of the white flag. The white flag is in the center, between the two red flags. The blue news banner is below the flags and the building facade.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "three effigies dressed in white jumpsuits, mounted on wooden crosses, with flames engulfing their lower sections",
+        "action": "burning",
+        "position": "center",
+        "id": "effigy_burning_1"
+      },
+      {
+        "desc": "a crowd of people wearing winter coats and holding signs",
+        "action": "standing",
+        "position": "background",
+        "id": "protest_crowd_1"
+      },
+      {
+        "desc": "white smoke rising from the fire",
+        "action": "rising",
+        "position": "center"
+      },
+      {
+        "desc": "a red flag with a yellow emblem and white text",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "a white flag with a blue and red symbol",
+        "action": "static",
+        "position": "center",
+        "id": "south_korean_flag_1"
+      },
+      {
+        "desc": "a red flag with a yellow emblem",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Three effigies are burning on wooden crosses.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "White smoke is rising from the burning effigies.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A crowd of people is standing behind the burning effigies.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The effigies have signs attached to their chests.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Flags are displayed on poles in front of a building.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "김정은",
+      "김정일",
+      "김일성",
+      "태권도",
+      "지옥으로 가라"
+    ],
+    "spatial": "The burning effigies are in the center foreground. The crowd of people is behind the effigies. The flags are positioned to the left, center, and right of the scene, in front of a building.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": [
+      "protest scene begins with effigies burning and crowd gathering"
+    ]
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "mannequin effigy dressed in a white jumpsuit with a human-like head, mounted on a wooden cross structure",
+        "action": "burning with flames on the torso and head",
+        "position": "center",
+        "id": "effigy_burning_1"
+      },
+      {
+        "desc": "mannequin effigy dressed in a white jumpsuit, mounted on a wooden cross structure",
+        "action": "burning with flames on the torso",
+        "position": "left",
+        "id": "effigy_burning_1"
+      },
+      {
+        "desc": "mannequin effigy dressed in a white jumpsuit, mounted on a wooden cross structure",
+        "action": "burning with flames on the torso",
+        "position": "right",
+        "id": "effigy_burning_1"
+      },
+      {
+        "desc": "crowd of people wearing dark winter coats and jackets",
+        "action": "standing and holding signs",
+        "position": "background",
+        "id": "protest_crowd_1"
+      },
+      {
+        "desc": "white smoke rising from the burning effigies",
+        "action": "drifting upwards",
+        "position": "center"
+      },
+      {
+        "desc": "large white banner with black Korean text",
+        "action": "static",
+        "position": "background",
+        "id": "white_banner_korean_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Three effigies dressed in white jumpsuits are burning on wooden crosses.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Flames are visible on the torsos and heads of the effigies.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A crowd of people is standing behind the burning effigies.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The crowd is holding a large banner with Korean text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "White smoke is rising from the fire.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "김정은",
+      "김정은",
+      "지옥으로",
+      "기독교",
+      "나! 패!"
+    ],
+    "spatial": "The central burning effigy is positioned between two other burning effigies. The crowd of protesters is standing behind the effigies, holding a banner that stretches across the background. The smoke is rising above the burning figures.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing black coat and black gloves",
+        "action": "holding a transparent plastic bag",
+        "position": "foreground"
+      },
+      {
+        "desc": "transparent plastic bag containing a pink cylindrical object",
+        "action": "being held",
+        "position": "center",
+        "id": "plastic_bag_pink_1"
+      },
+      {
+        "desc": "white banner with blue Korean text",
+        "action": "static",
+        "position": "background",
+        "id": "white_banner_korean_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person wearing black gloves is holding a clear plastic bag.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Inside the bag is a pink cylindrical object.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background features a white banner with blue text.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "아내"
+    ],
+    "spatial": "The person in the black coat is in the foreground, holding the plastic bag in front of the white banner. The banner is behind the person and the bag.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": [
+      "scene changes to person holding plastic bag with pink object"
+    ]
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a black coat with dark buttons and dark cuffs",
+        "action": "holding a plastic bag",
+        "position": "left"
+      },
+      {
+        "desc": "person wearing a black puffy jacket with white stripes on the sleeve and a black glove",
+        "action": "reaching into the plastic bag",
+        "position": "right"
+      },
+      {
+        "desc": "clear plastic bag containing a pink object",
+        "action": "being held and manipulated",
+        "position": "center",
+        "id": "plastic_bag_pink_1"
+      },
+      {
+        "desc": "white banner with large blue Korean characters",
+        "action": "static",
+        "position": "background",
+        "id": "white_banner_korean_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person on the right reaches their gloved hand into the plastic bag held by the person on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person on the left holds the plastic bag steady.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pink object is visible inside the clear plastic bag.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person on the right wears a black glove on their hand.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "唐",
+      "아내"
+    ],
+    "spatial": "The person in the black coat is to the left of the person in the puffy jacket. The person in the puffy jacket is reaching into the plastic bag held by the person on the left. The white banner with blue text is behind both people.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": [
+      "person reaches into plastic bag (action change)"
+    ]
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "man in the foreground wearing a dark cap and dark jacket, holding a large white banner",
+        "action": "holding a banner",
+        "position": "foreground"
+      },
+      {
+        "desc": "large white banner with bold black Korean text",
+        "action": "static",
+        "position": "foreground",
+        "id": "white_banner_korean_text_1"
+      },
+      {
+        "desc": "man in the center background wearing a dark cap and glasses, raising his right fist",
+        "action": "raising fist",
+        "position": "center"
+      },
+      {
+        "desc": "man in the background wearing a dark cap and glasses, holding a green sign",
+        "action": "holding a sign",
+        "position": "left"
+      },
+      {
+        "desc": "green rectangular sign with black Korean text",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "man in the background wearing a dark cap with a gold emblem",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "man in the background wearing a brown cap",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in the foreground is holding a large white banner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in the center background is raising his right fist in the air.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man on the left is holding a green sign with Korean text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The banner has large black Korean text written on it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The green sign has black Korean text written on it.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "북한 동포여!",
+      "일어나자!",
+      "하겠습니다!",
+      "가라!"
+    ],
+    "spatial": "The man holding the large white banner is in the foreground, positioned in front of the other people. The man raising his fist is in the center of the crowd, behind the banner. The man holding the green sign is to the left of the man raising his fist. The green sign is held up by the man on the left.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": [
+      "protest banner scene with man raising fist"
+    ]
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "man wearing a dark brown cap with a gold emblem, dark jacket",
+        "action": "shouting with mouth open",
+        "position": "center foreground"
+      },
+      {
+        "desc": "man wearing a dark baseball cap with white text, glasses, dark jacket",
+        "action": "static",
+        "position": "center left"
+      },
+      {
+        "desc": "white flag with large black Korean characters",
+        "action": "being held and waved",
+        "position": "right foreground",
+        "id": "white_banner_korean_text_1"
+      },
+      {
+        "desc": "white rectangular sign with green Korean text",
+        "action": "being held up",
+        "position": "upper left background"
+      },
+      {
+        "desc": "small green rectangular sign with white Korean text",
+        "action": "being held",
+        "position": "center left"
+      },
+      {
+        "desc": "man wearing a dark cap with a gold emblem, dark jacket",
+        "action": "static",
+        "position": "center background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in the center foreground is shouting with his mouth open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person is holding a white flag with black text in the right foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person is holding a white sign with green text in the upper left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person is holding a small green sign with white text in the center left.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "북한 동포여!",
+      "일어나자!",
+      "패륜아"
+    ],
+    "spatial": "The man shouting is in the center foreground, positioned to the right of the man wearing glasses. The white flag is held in front of the crowd on the right side. The white sign with green text is held above the heads of the people in the upper left background. The small green sign is held below the white sign and to the left of the shouting man.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, wearing glasses and a translucent white plastic raincoat",
+        "action": "holding a sign",
+        "position": "center"
+      },
+      {
+        "desc": "white rectangular sign with red vertical Korean text",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "green rectangular sign with black Korean text",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "large white flag with black Korean text",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "crowd of people wearing dark jackets and hats",
+        "action": "standing",
+        "position": "background",
+        "id": "protest_crowd_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a translucent raincoat holds a sign with red text in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green sign with black text is visible on the left side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large white flag with black text is positioned on the right side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign held by the central figure reads '김정일 뒈진놈' (Kim Jong-il dead bastard).",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The green sign reads '북한 동포여! 일어나자!' (North Korean compatriots! Let's rise up!).",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "북한 동포여!",
+      "일어나자!",
+      "김정일",
+      "뒈진놈",
+      "기라"
+    ],
+    "spatial": "The man in the raincoat is in the center foreground, holding a sign with red text. To his left, a green sign is held up by someone in the background. To his right, a large white flag is visible in the foreground. The crowd of people is behind the central figure.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short black hair, wearing glasses and a light grey hooded jacket",
+        "action": "standing still",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "white rectangular sign with large red Korean characters",
+        "action": "static",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "burning effigy with a photo of a man's face attached",
+        "action": "burning",
+        "position": "center/foreground",
+        "id": "effigy_burning_1"
+      },
+      {
+        "desc": "crowd of people wearing winter hats and dark jackets",
+        "action": "standing",
+        "position": "background",
+        "id": "protest_crowd_1"
+      },
+      {
+        "desc": "white banners with red and black Korean text",
+        "action": "static",
+        "position": "bottom",
+        "id": "white_banner_korean_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a grey jacket stands in the center holding a sign.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An effigy behind the person is on fire, emitting smoke.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign held by the person displays red Korean text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A crowd of people stands behind the central figure.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "김정일",
+      "돼진놈",
+      "백두혈통!",
+      "돼지혈통!",
+      "북한동포여",
+      "일어나자",
+      "일어",
+      "축 김정은"
+    ],
+    "spatial": "The person in the grey jacket is in the foreground, standing in front of the burning effigy. The white sign with red text is held in front of the person's chest. The crowd of people is positioned behind the central figure and the effigy. The banners are located at the bottom of the frame, below the crowd.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing glasses and a light-colored hooded jacket",
+        "action": "standing still",
+        "position": "center"
+      },
+      {
+        "desc": "white rectangular sign with large vertical red Korean text",
+        "action": "static",
+        "position": "center foreground"
+      },
+      {
+        "desc": "green bamboo-like stick",
+        "action": "being held",
+        "position": "right foreground"
+      },
+      {
+        "desc": "crowd of people wearing dark winter hats and jackets",
+        "action": "standing",
+        "position": "background",
+        "id": "protest_crowd_1"
+      },
+      {
+        "desc": "protest signs with photos and Korean text",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a light jacket stands in the center holding a sign.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand enters from the right holding a green stick near the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign displays vertical red Korean characters.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Smoke is visible in the background behind the crowd.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "김정일",
+      "돼진놈",
+      "백두혈통!",
+      "돼지혈통!",
+      "축 김정일은 사망",
+      "북한 동포",
+      "일어",
+      "기분",
+      "혈통?",
+      "혈통!"
+    ],
+    "spatial": "The man in the light jacket is in the center foreground, holding a white sign with red text. A green stick is positioned to the right of the man, pointing towards him. The crowd of people and other protest signs are located behind the central man.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "large paper cutout of a man's head with black hair and a pouting expression, attached to a stick or handle",
+        "action": "being held up",
+        "position": "center foreground"
+      },
+      {
+        "desc": "person wearing an orange safety vest over a dark sweater and white collared shirt",
+        "action": "standing",
+        "position": "left background"
+      },
+      {
+        "desc": "white sign with blue Korean text",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "fire with orange flames and smoke",
+        "action": "burning",
+        "position": "right background"
+      },
+      {
+        "desc": "poster with a photo of a man's face and Korean text",
+        "action": "static",
+        "position": "right background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a large cutout of a man's face in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A fire is burning in the background on the right side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in an orange vest is standing in the background on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A sign with Korean text is visible to the left of the central cutout.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "축 김"
+    ],
+    "spatial": "The large paper cutout of a man's face is in the center foreground. To the left of the cutout, a person in an orange vest is standing behind a sign with Korean text. To the right of the cutout, a fire is burning in front of a poster that also features a man's face.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": [
+      "paper cutout of man's head appears"
+    ]
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "cutout of a man's face with short black hair and a grimacing expression",
+        "action": "burning",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "fire with orange flames and smoke",
+        "action": "burning",
+        "position": "right/center"
+      },
+      {
+        "desc": "person wearing a black vest over a white shirt",
+        "action": "static",
+        "position": "left/background"
+      },
+      {
+        "desc": "person wearing a blue face mask and a dark hat",
+        "action": "static",
+        "position": "left/background"
+      },
+      {
+        "desc": "white sign with black Korean text",
+        "action": "static",
+        "position": "left/background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A cutout of a man's face is being burned in a fire.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Flames are consuming the paper cutout.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in the background holds a sign with Korean text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The fire is located to the right of the people in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "패륜아 김정",
+      "빨리 뒤져",
+      "축 김"
+    ],
+    "spatial": "The burning cutout is in the center foreground, positioned in front of the fire on the right. The group of people and the sign they are holding are to the left of the fire and behind the burning cutout. The text on the sign is visible on the white surface held by the person in the black vest.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": [
+      "cutout begins burning"
+    ]
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "effigy with a printed portrait of a man's face, mounted on a wooden cross structure",
+        "action": "burning with visible flames and smoke",
+        "position": "center/foreground",
+        "id": "effigy_burning_1"
+      },
+      {
+        "desc": "group of people wearing winter clothing including dark jackets, beanies, and face masks",
+        "action": "standing and holding signs",
+        "position": "background",
+        "id": "protest_crowd_1"
+      },
+      {
+        "desc": "white banner with black and red Korean text",
+        "action": "static",
+        "position": "background",
+        "id": "white_banner_korean_text_1"
+      },
+      {
+        "desc": "smaller white signs with Korean text",
+        "action": "being held up",
+        "position": "background",
+        "id": "white_banner_korean_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "An effigy featuring a man's face is burning on a wooden cross.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Sparks are flying from the burning effigy.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A group of people are standing behind the burning effigy.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The banner in the background displays Korean text including '김정일 사망 2주년'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "김정일 사망 2주년",
+      "남북통일을찾는사",
+      "남북자",
+      "좋다!",
+      "대",
+      "북한",
+      "독도",
+      "김정은"
+    ],
+    "spatial": "The burning effigy is in the foreground, positioned in front of the crowd of people. The large white banner is held by the people in the background, situated behind the burning cross. Smaller signs are held up by individuals within the crowd, to the left and right of the central banner.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "effigy made of white fabric and wood, engulfed in bright orange flames and smoke",
+        "action": "burning",
+        "position": "foreground left",
+        "id": "effigy_burning_1"
+      },
+      {
+        "desc": "effigy made of white fabric and wood, engulfed in bright orange flames and smoke",
+        "action": "burning",
+        "position": "foreground center",
+        "id": "effigy_burning_1"
+      },
+      {
+        "desc": "man with short black hair, wearing a black jacket and black pants",
+        "action": "holding a microphone and speaking",
+        "position": "center right"
+      },
+      {
+        "desc": "large white banner with black and red Korean text",
+        "action": "static",
+        "position": "background center",
+        "id": "white_banner_korean_text_1"
+      },
+      {
+        "desc": "crowd of people wearing winter coats and hats",
+        "action": "standing",
+        "position": "background",
+        "id": "protest_crowd_1"
+      },
+      {
+        "desc": "wooden cross structure",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two effigies in the foreground are burning with visible flames.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a black jacket is holding a microphone to his mouth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large white banner with Korean text is held by people in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Smoke is rising from the burning effigies.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "북한 동포들아!",
+      "김정일 사망 2주년",
+      "남북용병굴을찾는사람들",
+      "좋다! 패",
+      "대한민국이"
+    ],
+    "spatial": "The burning effigies are in the foreground, positioned in front of the crowd and the banner. The man with the microphone stands to the right of the central burning effigy. The large white banner is held horizontally behind the burning figures and the speaker.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, wearing glasses, a dark pinstripe suit, a light blue shirt, and a purple patterned tie",
+        "action": "speaking into microphones",
+        "position": "center",
+        "id": "person_press_conference_speaker_1"
+      },
+      {
+        "desc": "South Korean flag (Taegukgi) with red and blue taegeuk symbol and black trigrams",
+        "action": "static",
+        "position": "left",
+        "id": "south_korean_flag_1"
+      },
+      {
+        "desc": "blue backdrop with white text",
+        "action": "static",
+        "position": "background",
+        "id": "blue_backdrop_1"
+      },
+      {
+        "desc": "two silver microphones on stands",
+        "action": "static",
+        "position": "foreground",
+        "id": "microphones_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a suit is speaking into microphones.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '대한민국 국방' is visible on the blue backdrop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Ministry of National Defense' is visible on the blue backdrop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "대한민국 국방",
+      "Ministry of National Defense"
+    ],
+    "spatial": "The man in the suit is positioned in the center, standing in front of a blue backdrop. The South Korean flag is to the left of the man. The microphones are in front of the man.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": [
+      "press conference scene begins with man in pinstripe suit speaking"
+    ]
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, wearing glasses, a dark pinstripe suit, a light blue shirt, and a purple patterned tie",
+        "action": "speaking into microphones",
+        "position": "center",
+        "id": "person_press_conference_speaker_1"
+      },
+      {
+        "desc": "South Korean flag with red, blue, and black symbols on a white background",
+        "action": "static",
+        "position": "left",
+        "id": "south_korean_flag_1"
+      },
+      {
+        "desc": "blue backdrop with white text",
+        "action": "static",
+        "position": "background",
+        "id": "blue_backdrop_1"
+      },
+      {
+        "desc": "two thin black microphones",
+        "action": "static",
+        "position": "foreground",
+        "id": "microphones_1"
+      },
+      {
+        "desc": "blue lower-third graphic with white text and a gold logo",
+        "action": "static",
+        "position": "bottom",
+        "id": "news_banner_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is speaking into two microphones positioned in front of him.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The South Korean flag is standing to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue graphic overlay appears at the bottom of the screen in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '대한민국 국방' is visible on the blue background behind the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "대한민국 국방",
+      "Min",
+      "National Def",
+      "Ким Мин",
+      "представител"
+    ],
+    "spatial": "The man is positioned in the center of the frame, standing in front of a blue backdrop. To his left is the South Korean flag. Two microphones are directly in front of his chest. In the second frame, a blue text banner is located at the bottom of the screen, below the man.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, wearing glasses, a dark pinstripe suit, a light blue shirt, and a dark purple tie",
+        "action": "speaking into microphones",
+        "position": "center",
+        "id": "person_press_conference_speaker_1"
+      },
+      {
+        "desc": "South Korean flag with red, blue, and black symbols on a white background",
+        "action": "static",
+        "position": "left",
+        "id": "south_korean_flag_1"
+      },
+      {
+        "desc": "blue backdrop with white text",
+        "action": "static",
+        "position": "background",
+        "id": "blue_backdrop_1"
+      },
+      {
+        "desc": "blue lower-third graphic with white text and a gold logo",
+        "action": "static",
+        "position": "bottom",
+        "id": "news_banner_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is speaking into two microphones positioned in front of him.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The South Korean flag is standing to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The lower-third graphic identifies the man as 'Ким Мин Сок' and 'представитель Минобороны Южной Кореи'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "대한민국 국방",
+      "Min",
+      "National De",
+      "唐",
+      "Ким Мин Сок",
+      "представитель Минобороны Южной Кореи",
+      "ntdtv.ru"
+    ],
+    "spatial": "The man is in the center of the frame, in front of a blue backdrop. The South Korean flag is to the left of the man. The blue lower-third graphic is at the bottom of the screen, below the man.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, wearing glasses, a dark pinstripe suit, a light blue shirt, and a dark patterned tie",
+        "action": "speaking into a microphone",
+        "position": "center",
+        "id": "person_press_conference_speaker_1"
+      },
+      {
+        "desc": "South Korean flag with black trigrams and a red and blue taegeuk symbol",
+        "action": "static",
+        "position": "left",
+        "id": "south_korean_flag_1"
+      },
+      {
+        "desc": "blue background with white text",
+        "action": "static",
+        "position": "background",
+        "id": "blue_backdrop_1"
+      },
+      {
+        "desc": "blue lower-third graphic with white text and a gold logo",
+        "action": "static",
+        "position": "bottom",
+        "id": "news_banner_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is speaking into a microphone.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The South Korean flag is positioned to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The lower-third graphic displays the name 'Ким Мин Сок' and the title 'представитель Минобороны Южной Кореи'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "대한민국 국방",
+      "Min",
+      "National De",
+      "Ким Мин Сок",
+      "представитель Минобороны Южной Кореи",
+      "ntdtv.ru"
+    ],
+    "spatial": "The man is in the center of the frame, in front of a blue background. The South Korean flag is to the left of the man. The blue lower-third graphic is at the bottom of the screen, below the man.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, wearing glasses, a dark pinstripe suit, a light blue shirt, and a purple patterned tie",
+        "action": "speaking into microphones",
+        "position": "center",
+        "id": "person_press_conference_speaker_1"
+      },
+      {
+        "desc": "South Korean flag (Taegeukgi) with red and blue symbol and black trigrams",
+        "action": "static",
+        "position": "left",
+        "id": "south_korean_flag_1"
+      },
+      {
+        "desc": "blue backdrop with white Korean and English text",
+        "action": "static",
+        "position": "background",
+        "id": "blue_backdrop_1"
+      },
+      {
+        "desc": "blue news ticker bar with white text and a gold logo",
+        "action": "static",
+        "position": "bottom",
+        "id": "news_banner_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is speaking into two microphones positioned in front of him.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The South Korean flag is visible to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The news ticker identifies the speaker as 'Ким Мин Сок' (Kim Min Sok) and 'представитель Минобороны Южной Кореи' (representative of the Ministry of Defense of South Korea).",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'ntdtv.ru' is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "대한민국 국방",
+      "Min",
+      "National De",
+      "Ким Мин Сок",
+      "представитель Минобороны Южной Кореи",
+      "ntdtv.ru"
+    ],
+    "spatial": "The man is positioned in the center of the frame, in front of a blue backdrop. The South Korean flag is to the left of the man. The blue news ticker is at the bottom of the screen, below the man.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, wearing glasses, a dark pinstripe suit, a light blue shirt, and a purple patterned tie",
+        "action": "speaking at a podium",
+        "position": "center",
+        "id": "person_press_conference_speaker_1"
+      },
+      {
+        "desc": "South Korean flag with red and blue taegeuk symbol and black trigrams on a white background",
+        "action": "static",
+        "position": "left",
+        "id": "south_korean_flag_1"
+      },
+      {
+        "desc": "blue backdrop with white text",
+        "action": "static",
+        "position": "background",
+        "id": "blue_backdrop_1"
+      },
+      {
+        "desc": "two thin black microphones on stands",
+        "action": "static",
+        "position": "foreground",
+        "id": "microphones_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is speaking into the microphones.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man looks down at his notes or the podium in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '대한민국 국방' is visible on the blue backdrop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Ministry of National Defense' is partially visible on the blue backdrop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "대한민국 국방",
+      "Ministry of National Defense"
+    ],
+    "spatial": "The man is in the center of the frame, standing in front of the blue backdrop. The South Korean flag is to the left of the man. The microphones are in front of the man, positioned near his chest.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, wearing wire-rimmed glasses, a dark pinstripe suit jacket, a light blue collared shirt, and a dark purple patterned tie",
+        "action": "speaking into microphones",
+        "position": "center",
+        "id": "person_press_conference_speaker_1"
+      },
+      {
+        "desc": "South Korean flag (Taegeukgi) with red and blue taegeuk symbol and black trigrams on a white background",
+        "action": "static",
+        "position": "left",
+        "id": "south_korean_flag_1"
+      },
+      {
+        "desc": "blue backdrop with white text",
+        "action": "static",
+        "position": "background",
+        "id": "blue_backdrop_1"
+      },
+      {
+        "desc": "two thin black gooseneck microphones",
+        "action": "static",
+        "position": "foreground",
+        "id": "microphones_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is speaking into the microphones.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a dark pinstripe suit.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The South Korean flag is positioned to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '대한민국 국방' is visible on the blue backdrop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Ministry of National Defense' is partially visible on the blue backdrop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "대한민국 국방",
+      "Ministry of National Defense"
+    ],
+    "spatial": "The man is positioned in the center of the frame, standing in front of a blue backdrop. The South Korean flag is to the left of the man. Two microphones are in front of the man's chest.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, wearing glasses, a dark pinstripe suit, a light blue shirt, and a purple patterned tie",
+        "action": "speaking into microphones",
+        "position": "center",
+        "id": "person_press_conference_speaker_1"
+      },
+      {
+        "desc": "South Korean flag (Taegeukgi) with red and blue taegeuk symbol and black trigrams on a white background",
+        "action": "static",
+        "position": "left",
+        "id": "south_korean_flag_1"
+      },
+      {
+        "desc": "blue backdrop with white text",
+        "action": "static",
+        "position": "background",
+        "id": "blue_backdrop_1"
+      },
+      {
+        "desc": "two thin black microphones on stands",
+        "action": "static",
+        "position": "foreground",
+        "id": "microphones_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is speaking into the microphones.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing glasses.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '대한민국 국방' is visible on the blue backdrop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Ministry of National Defense' is partially visible on the blue backdrop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "대한민국 국방",
+      "Min",
+      "National De"
+    ],
+    "spatial": "The man is in the center of the frame, standing in front of the blue backdrop. The South Korean flag is to the left of the man. The microphones are in front of the man.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, wearing glasses, a dark pinstripe suit, a white collared shirt, and a purple patterned tie",
+        "action": "speaking into microphones",
+        "position": "center"
+      },
+      {
+        "desc": "South Korean flag (Taegeukgi) with red and blue taegeuk symbol and black trigrams on a white background",
+        "action": "static",
+        "position": "left",
+        "id": "south_korean_flag_1"
+      },
+      {
+        "desc": "blue backdrop with white text",
+        "action": "static",
+        "position": "background",
+        "id": "blue_backdrop_1"
+      },
+      {
+        "desc": "two thin black microphones",
+        "action": "static",
+        "position": "foreground",
+        "id": "microphones_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is speaking into the microphones.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The South Korean flag is positioned to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '대한민국 국방' is visible on the blue backdrop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Ministry of National Defense' is partially visible on the blue backdrop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "대한민국 국방",
+      "Min",
+      "National De"
+    ],
+    "spatial": "The man is standing in the center, in front of the blue backdrop. The South Korean flag is to the left of the man. The microphones are in front of the man's chest.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, wearing glasses, a dark pinstripe suit, a white collared shirt, and a purple patterned tie",
+        "action": "speaking into microphones",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "South Korean flag (Taegeukgi) with a white background, central red and blue taegeuk symbol, and black trigrams",
+        "action": "static",
+        "position": "left",
+        "id": "south_korean_flag_1"
+      },
+      {
+        "desc": "blue backdrop with white text reading '대한민국 국방부' and 'Ministry of National Defense'",
+        "action": "static",
+        "position": "background",
+        "id": "blue_backdrop_1"
+      },
+      {
+        "desc": "group of people sitting at desks, wearing casual and business casual clothing, some with laptops",
+        "action": "sitting and looking at screens",
+        "position": "foreground"
+      },
+      {
+        "desc": "multiple professional video cameras on tripods",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "silver laptop with a 'news Y' sticker on the lid",
+        "action": "static",
+        "position": "foreground",
+        "id": "silver_laptop_news_1"
+      },
+      {
+        "desc": "round wall clock with a white face and black hands",
+        "action": "static",
+        "position": "top right",
+        "id": "wall_clock_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a dark pinstripe suit is speaking into two microphones.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The South Korean flag is positioned to the left of the speaker.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '대한민국 국방부' and 'Ministry of National Defense' is visible on the blue backdrop behind the speaker.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A group of people, likely journalists, are seated at desks in front of the speaker.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several video cameras on tripods are set up in the background behind the seated audience.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A laptop in the foreground has a 'news Y' sticker on its lid.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A round clock is mounted on the wall in the upper right corner of the room.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "대한민국 국방",
+      "Ministry of National D",
+      "민국",
+      "news Y"
+    ],
+    "spatial": "The man in the pinstripe suit is in front of the blue backdrop and to the right of the South Korean flag. The group of people with laptops is in front of the man speaking. The video cameras are behind the seated people. The clock is on the wall above and to the right of the seated people.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "man in foreground wearing a brown jacket with a fur-lined hood and a black shirt underneath",
+        "action": "resting chin on hand",
+        "position": "foreground center"
+      },
+      {
+        "desc": "man with short black hair and glasses, wearing a purple sweater over a red collared shirt",
+        "action": "looking at laptop",
+        "position": "foreground left"
+      },
+      {
+        "desc": "man with short black hair and glasses, wearing a dark grey sweater",
+        "action": "looking down",
+        "position": "foreground right"
+      },
+      {
+        "desc": "silver laptop with a 'news 1' logo sticker on the lid",
+        "action": "static",
+        "position": "foreground left",
+        "id": "silver_laptop_news_1"
+      },
+      {
+        "desc": "group of people standing in the background operating large professional video cameras on tripods",
+        "action": "standing",
+        "position": "background"
+      },
+      {
+        "desc": "round wall clock with a white face and black hands",
+        "action": "static",
+        "position": "top right background",
+        "id": "wall_clock_1"
+      },
+      {
+        "desc": "man in a dark suit and glasses sitting at a desk",
+        "action": "static",
+        "position": "background left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a brown jacket rests his chin on his hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a purple sweater looks at a laptop screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A laptop with a 'news 1' logo is open on a desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several cameramen stand behind the seated people with video cameras.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A clock is mounted on the wall in the upper right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "news 1",
+      "T"
+    ],
+    "spatial": "The man in the brown jacket is in the foreground center, sitting in front of the group of cameramen. To his left, the man in the purple sweater is seated at a desk with a laptop. The laptop is on the desk in front of the man in the purple sweater. The clock is on the wall above and to the right of the cameramen.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": [
+      "newsroom scene begins with people at desks and laptops"
+    ]
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, wearing a brown hooded jacket with fur trim and a black shirt underneath",
+        "action": "resting chin on hand",
+        "position": "foreground center"
+      },
+      {
+        "desc": "man with short black hair and glasses, wearing a purple sweater with red and white stripes on the collar",
+        "action": "looking at laptop",
+        "position": "foreground left"
+      },
+      {
+        "desc": "man with short black hair and glasses, wearing a dark grey sweater",
+        "action": "looking down",
+        "position": "foreground right"
+      },
+      {
+        "desc": "silver laptop with a white sticker featuring an orange and black logo and the text 'news'",
+        "action": "static",
+        "position": "foreground left",
+        "id": "silver_laptop_news_1"
+      },
+      {
+        "desc": "group of people in the background operating large black video cameras on tripods",
+        "action": "standing and filming",
+        "position": "background"
+      },
+      {
+        "desc": "round wall clock with a white face and black hands",
+        "action": "static",
+        "position": "top right",
+        "id": "wall_clock_1"
+      },
+      {
+        "desc": "circular wooden sign with a Chinese character on it",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a brown jacket rests his chin on his hand while looking down.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a purple sweater sits in front of a laptop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several cameramen are standing in the background with professional video equipment.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A clock is mounted on the wall in the upper right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "news",
+      "唐"
+    ],
+    "spatial": "The man in the brown jacket is in the foreground center, positioned to the right of the man in the purple sweater. The silver laptop is on the table in front of the man in the purple sweater. The group of cameramen with tripods is standing behind the seated men in the foreground. The wall clock is located above the seated man on the right.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, wearing glasses, a dark pinstripe suit, a light blue shirt, and a purple patterned tie",
+        "action": "speaking into microphones",
+        "position": "center",
+        "id": "person_press_conference_speaker_1"
+      },
+      {
+        "desc": "South Korean flag (Taegeukgi) with red and blue taegeuk symbol and black trigrams",
+        "action": "static",
+        "position": "left",
+        "id": "south_korean_flag_1"
+      },
+      {
+        "desc": "blue backdrop with white text",
+        "action": "static",
+        "position": "background",
+        "id": "blue_backdrop_1"
+      },
+      {
+        "desc": "two black microphones on stands",
+        "action": "static",
+        "position": "foreground",
+        "id": "microphones_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is speaking into the microphones.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a dark pinstripe suit.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The South Korean flag is visible on the left side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '대한민국 국방' is visible on the blue backdrop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "대한민국 국방",
+      "Min",
+      "National De",
+      "민국"
+    ],
+    "spatial": "The man is in the center of the frame, standing in front of the blue backdrop. The South Korean flag is to the left of the man. The microphones are in front of the man.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": [
+      "returns to press conference scene"
+    ]
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, wearing glasses, a dark pinstripe suit, a light blue shirt, and a purple patterned tie",
+        "action": "speaking at a podium",
+        "position": "center",
+        "id": "person_press_conference_speaker_1"
+      },
+      {
+        "desc": "South Korean flag (Taegeukgi) with red and blue taegeuk symbol and black trigrams on a white background",
+        "action": "static",
+        "position": "left",
+        "id": "south_korean_flag_1"
+      },
+      {
+        "desc": "blue backdrop with white text",
+        "action": "static",
+        "position": "background",
+        "id": "blue_backdrop_1"
+      },
+      {
+        "desc": "black gooseneck microphones",
+        "action": "static",
+        "position": "foreground",
+        "id": "microphones_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is speaking into the microphones.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a dark pinstripe suit.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The backdrop displays the text '대한민국 국방' and 'Ministry of National Defense'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The South Korean flag is positioned to the left of the speaker.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "대한민국 국방",
+      "Ministry of National Defense"
+    ],
+    "spatial": "The man is standing in the center of the frame, in front of the blue backdrop. The South Korean flag is to the left of the man. The microphones are in front of the man's chest.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, wearing wire-rimmed glasses, a dark pinstripe suit jacket, a light blue collared shirt, and a dark purple patterned tie",
+        "action": "speaking into microphones",
+        "position": "center",
+        "id": "person_press_conference_speaker_1"
+      },
+      {
+        "desc": "South Korean flag (Taegeukgi) with white background, central red and blue taegeuk symbol, and black trigrams",
+        "action": "static",
+        "position": "left",
+        "id": "south_korean_flag_1"
+      },
+      {
+        "desc": "blue backdrop with white text",
+        "action": "static",
+        "position": "background",
+        "id": "blue_backdrop_1"
+      },
+      {
+        "desc": "two thin black gooseneck microphones",
+        "action": "static",
+        "position": "foreground",
+        "id": "microphones_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is speaking into the microphones.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a dark pinstripe suit.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The South Korean flag is positioned to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '대한민국 국방' is visible on the blue backdrop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "대한민국 국방",
+      "Min",
+      "National De"
+    ],
+    "spatial": "The man is standing in the center, positioned in front of the blue backdrop. The South Korean flag is to the left of the man. The microphones are in front of the man's chest.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, wearing rimless glasses, a dark pinstripe suit jacket, a light blue dress shirt, and a purple patterned tie",
+        "action": "speaking into microphones",
+        "position": "center",
+        "id": "person_press_conference_speaker_1"
+      },
+      {
+        "desc": "South Korean flag (Taegeukgi) with white background, red and blue taegeuk symbol, and black trigrams",
+        "action": "static",
+        "position": "left",
+        "id": "south_korean_flag_1"
+      },
+      {
+        "desc": "blue backdrop with white text and a government emblem",
+        "action": "static",
+        "position": "background",
+        "id": "blue_backdrop_1"
+      },
+      {
+        "desc": "two thin black gooseneck microphones",
+        "action": "static",
+        "position": "foreground",
+        "id": "microphones_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is speaking into two microphones.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The South Korean flag is positioned to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '대한민국 국방' is visible on the blue background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Ministry of National Defense' is partially visible below the Korean text.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "대한민국 국방",
+      "Ministry of National Defense"
+    ],
+    "spatial": "The man is positioned in the center of the frame, standing in front of a blue backdrop. The South Korean flag is to the left of the man. The two microphones are in front of the man's chest.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, wearing wire-rimmed glasses, a dark pinstripe suit, a light blue dress shirt, and a dark purple patterned tie",
+        "action": "speaking into microphones",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "South Korean flag (Taegeukgi) with red and blue taegeuk symbol and black trigrams on a white background",
+        "action": "static",
+        "position": "left",
+        "id": "south_korean_flag_1"
+      },
+      {
+        "desc": "blue backdrop with white text",
+        "action": "static",
+        "position": "background",
+        "id": "blue_backdrop_1"
+      },
+      {
+        "desc": "large modern building with a grey stone facade, rectangular windows, and a dark grey overhang featuring a silver military-style emblem",
+        "action": "static",
+        "position": "background",
+        "id": "building_government_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a pinstripe suit is speaking at a podium.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The South Korean flag is positioned to the left of the speaker.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The backdrop displays the text '대한민국 국방' and 'Min... National De...'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene cuts to an exterior shot of a large government-style building.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "대한민국 국방",
+      "Min",
+      "National De",
+      "국"
+    ],
+    "spatial": "The man is standing in front of the blue backdrop. The South Korean flag is to the left of the man. The text on the backdrop is behind the man's head. The building shown in the second frame has a large emblem centered above the main entrance.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      68,
+      70
+    ],
+    "visible_entities": [
+      {
+        "desc": "large multi-story building with light gray stone facade and rectangular windows",
+        "action": "static",
+        "position": "background",
+        "id": "building_government_1"
+      },
+      {
+        "desc": "dark gray curved canopy with a silver winged emblem in the center",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "glass entrance doors with dark frames",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "two flags on flagpoles, one red and one red with yellow stars",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "small potted plants with green foliage in white planters",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "circular watermark with Chinese characters in the top right corner",
+        "action": "static",
+        "position": "top right",
+        "id": "circular_logo_watermark_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The building facade is constructed from light gray stone blocks.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dark gray canopy extends over the main entrance.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver emblem featuring wings and a central symbol is mounted on the canopy.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two flags are flying on flagpoles above the entrance.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Potted plants are placed on either side of the entrance steps.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The entrance consists of glass doors with dark frames.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "唐"
+    ],
+    "spatial": "The dark gray canopy is above the glass entrance doors. The silver winged emblem is on the front of the canopy. The flags are above the canopy. The potted plants are in front of the building, flanking the entrance. The watermark is in the top right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": [
+      "building exterior scene shown"
+    ]
+  },
+  {
+    "time": [
+      70,
+      72
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, wearing a dark suit, white shirt, and dark tie",
+        "action": "standing behind a podium",
+        "position": "center"
+      },
+      {
+        "desc": "wooden podium with a silver emblem on the front",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "blue backdrop with white text and a silver emblem",
+        "action": "static",
+        "position": "background",
+        "id": "blue_backdrop_1"
+      },
+      {
+        "desc": "multiple flags on poles, including the South Korean flag and red flags",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "people sitting at tables, seen from behind, wearing dark clothing",
+        "action": "sitting",
+        "position": "foreground"
+      },
+      {
+        "desc": "silver winged emblem with a star",
+        "action": "static",
+        "position": "top/center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a dark suit is standing behind a wooden podium.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man appears to be speaking or addressing an audience.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several flags are arranged behind the speaker.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "People are seated at tables in the foreground facing the speaker.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The backdrop displays the text '대한민국 국방부' and 'MINISTRY OF NATIONAL DEFENSE'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "대한민국 국방부",
+      "MINISTRY OF NATIONAL DEFENSE",
+      "대한민국 육군",
+      "대한민국 해군",
+      "대한민국 공군",
+      "대한민국 해병대"
+    ],
+    "spatial": "The man in the suit is standing behind the wooden podium. The podium is in front of the blue backdrop. The flags are positioned behind the man and to his left and right. The audience members are sitting at tables in the foreground, in front of the speaker.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      72,
+      74
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing glasses, a dark suit jacket, white shirt, and dark tie",
+        "action": "standing at a podium",
+        "position": "center/background"
+      },
+      {
+        "desc": "wooden podium with a gold emblem on the front",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "blue backdrop with white text and logos",
+        "action": "static",
+        "position": "background",
+        "id": "blue_backdrop_1"
+      },
+      {
+        "desc": "row of colorful flags on poles",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "person with short dark hair wearing a grey shirt",
+        "action": "sitting",
+        "position": "left/foreground"
+      },
+      {
+        "desc": "person with short dark hair wearing a dark blue jacket",
+        "action": "sitting",
+        "position": "left/foreground"
+      },
+      {
+        "desc": "person with short dark hair wearing a black jacket",
+        "action": "sitting",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "wooden tables with papers and laptops",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a dark suit is standing behind a wooden podium.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man appears to be speaking or addressing the room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several people are seated at tables in the foreground facing the podium.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The backdrop displays the text '대한민국 국방부' and 'Ministry of National Defense'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The backdrop displays the text '대한민국 속초소방서'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "대한민국 국방부",
+      "Ministry of National Defense",
+      "대한민국 속초소방서"
+    ],
+    "spatial": "The man in the suit is standing behind the wooden podium in the center of the room. The podium is positioned in front of a blue backdrop adorned with flags and text. Several people are seated at tables in the foreground, facing the man and the podium.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      74,
+      76
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, wearing an olive-green military uniform with gold epaulets and a red necktie",
+        "action": "sitting at a desk and writing on a red folder",
+        "position": "left foreground",
+        "id": "person_military_olive_1"
+      },
+      {
+        "desc": "man with short black hair, wearing an olive-green military uniform with gold epaulets and a red necktie",
+        "action": "sitting at a long table",
+        "position": "center background",
+        "id": "person_military_olive_1"
+      },
+      {
+        "desc": "man with short black hair, wearing an olive-green military uniform with gold epaulets and a red necktie",
+        "action": "sitting at a long table",
+        "position": "center background",
+        "id": "person_military_olive_1"
+      },
+      {
+        "desc": "man with short black hair, wearing an olive-green military uniform with gold epaulets and a red necktie",
+        "action": "sitting at a long table",
+        "position": "right background",
+        "id": "person_military_olive_1"
+      },
+      {
+        "desc": "long, dark polished wooden conference table with microphones",
+        "action": "static",
+        "position": "center",
+        "id": "wooden_desk_1"
+      },
+      {
+        "desc": "vertical flag with blue, white, and red horizontal stripes and a red star in a white circle",
+        "action": "static",
+        "position": "background wall",
+        "id": "north_korean_flag_1"
+      },
+      {
+        "desc": "gold circular emblem mounted on the wall",
+        "action": "static",
+        "position": "top background",
+        "id": "gold_emblem_wall_1"
+      },
+      {
+        "desc": "grey upholstered chair with wooden frame",
+        "action": "static",
+        "position": "left foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in the foreground is writing on a red folder at a desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Three men are seated behind a long wooden table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Microphones are placed on the table in front of the seated men.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A flag is hanging on the wall behind the men.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man writing at the desk is in the foreground to the left of the long wooden table. The three other men are seated behind the table. The flag and gold emblem are on the wall behind the seated men.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": [
+      "North Korean military meeting scene begins"
+    ]
+  },
+  {
+    "time": [
+      76,
+      78
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, wearing an olive-green military uniform with gold epaulets and a red necktie",
+        "action": "sitting at a desk and writing on a red folder",
+        "position": "left foreground",
+        "id": "person_military_olive_1"
+      },
+      {
+        "desc": "man with short black hair, wearing an olive-green military uniform with gold epaulets and a red necktie",
+        "action": "sitting at a long desk and looking down at papers",
+        "position": "center background",
+        "id": "person_military_olive_1"
+      },
+      {
+        "desc": "man with short black hair, wearing an olive-green military uniform with gold epaulets and a red necktie",
+        "action": "sitting at a long desk and looking down at papers",
+        "position": "center background",
+        "id": "person_military_olive_1"
+      },
+      {
+        "desc": "man with short black hair, wearing an olive-green military uniform with gold epaulets and a red necktie",
+        "action": "sitting at a long desk and looking forward",
+        "position": "right background",
+        "id": "person_military_olive_1"
+      },
+      {
+        "desc": "long, dark brown wooden desk with a glossy finish and vertical paneling",
+        "action": "static",
+        "position": "center",
+        "id": "wooden_desk_1"
+      },
+      {
+        "desc": "smaller dark brown wooden desk",
+        "action": "static",
+        "position": "left foreground",
+        "id": "wooden_desk_1"
+      },
+      {
+        "desc": "upholstered chair with a light brown fabric seat and backrest and a wooden frame",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "North Korean flag, featuring red, white, and blue horizontal stripes with a red star in a white circle",
+        "action": "static",
+        "position": "background wall",
+        "id": "north_korean_flag_1"
+      },
+      {
+        "desc": "gold-colored circular emblem mounted on the wall",
+        "action": "static",
+        "position": "top center background",
+        "id": "gold_emblem_wall_1"
+      },
+      {
+        "desc": "black gooseneck microphones",
+        "action": "static",
+        "position": "on the long desk",
+        "id": "microphones_1"
+      },
+      {
+        "desc": "red folder or document cover",
+        "action": "being written on",
+        "position": "on the smaller desk"
+      },
+      {
+        "desc": "white vertical blinds covering a window",
+        "action": "static",
+        "position": "left background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in an olive-green military uniform is sitting at a desk in the foreground and writing on a red folder.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Three men in olive-green military uniforms are sitting behind a long wooden desk in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The North Korean flag is hanging on the wall behind the men at the long desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A gold-colored circular emblem is mounted on the wall above the North Korean flag.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Black gooseneck microphones are placed on the long desk in front of the men.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man writing at the smaller desk is in the foreground and to the left of the long desk. The long desk is in front of the three men sitting behind it. The North Korean flag is on the wall behind the men at the long desk. The gold emblem is above the flag. The upholstered chair is next to the man at the smaller desk.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      78,
+      80
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, wearing a dark blue button-up jacket and glasses",
+        "action": "being escorted by guards",
+        "position": "center"
+      },
+      {
+        "desc": "guards wearing olive-green military uniforms, peaked caps, and brown leather belts",
+        "action": "holding the man's arms",
+        "position": "center",
+        "id": "person_military_olive_1"
+      },
+      {
+        "desc": "man with short black hair, wearing an olive-green military uniform with gold epaulets",
+        "action": "sitting",
+        "position": "left",
+        "id": "person_military_olive_1"
+      },
+      {
+        "desc": "dark wooden desk",
+        "action": "static",
+        "position": "background",
+        "id": "wooden_desk_1"
+      },
+      {
+        "desc": "North Korean flag hanging on the wall",
+        "action": "static",
+        "position": "background",
+        "id": "north_korean_flag_1"
+      },
+      {
+        "desc": "gold circular emblem on the wall",
+        "action": "static",
+        "position": "background",
+        "id": "gold_emblem_wall_1"
+      },
+      {
+        "desc": "white circular logo with a stylized character",
+        "action": "static",
+        "position": "top right",
+        "id": "circular_logo_watermark_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two guards are holding the arms of the man in the dark blue jacket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the dark blue jacket is bowing his head.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a military uniform sits in a chair to the left of the guards.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The North Korean flag hangs on the wall behind the desk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A gold emblem is mounted on the wall above the flag.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the dark blue jacket is in the center, flanked by two guards holding his arms. To the left of the guards, a man in a military uniform sits in a chair. Behind the group, a dark wooden desk is positioned against the wall. Above the desk, the North Korean flag is to the left of a gold circular emblem.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": [
+      "man in blue jacket being detained/escorted by guards"
+    ]
+  },
+  {
+    "time": [
+      80,
+      82
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, glasses, wearing a dark navy blue button-up shirt",
+        "action": "standing with head bowed and hands cuffed in front",
+        "position": "center"
+      },
+      {
+        "desc": "man in olive-green military uniform with a peaked cap and brown leather belt",
+        "action": "standing behind the man in blue, holding his shoulder",
+        "position": "center background",
+        "id": "person_military_olive_1"
+      },
+      {
+        "desc": "man in olive-green military uniform with a peaked cap and brown leather belt",
+        "action": "standing to the right of the man in blue, holding his arm",
+        "position": "right",
+        "id": "person_military_olive_1"
+      },
+      {
+        "desc": "man in olive-green military uniform with yellow collar tabs",
+        "action": "sitting on a chair",
+        "position": "left"
+      },
+      {
+        "desc": "metal handcuffs",
+        "action": "securing the wrists of the man in blue",
+        "position": "center foreground"
+      },
+      {
+        "desc": "maroon upholstered chair",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a dark blue shirt is standing with his head bowed.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the blue shirt has his hands cuffed in front of him.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two men in military uniforms are physically holding the man in the blue shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a military uniform is sitting on a maroon chair to the left.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the blue shirt is in the center, flanked by two men in military uniforms. One uniformed man stands behind him with a hand on his shoulder, while the other stands to his right holding his arm. To the left of this group, another man in a military uniform sits on a maroon chair.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": [
+      "man now handcuffed (detention state change)"
+    ]
+  },
+  {
+    "time": [
+      82,
+      84
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with dark hair, wearing a dark blue button-up jacket and glasses",
+        "action": "standing with head bowed and hands bound in front",
+        "position": "center"
+      },
+      {
+        "desc": "man in a brown military uniform with a peaked cap",
+        "action": "standing behind the central man, holding his shoulder",
+        "position": "background center"
+      },
+      {
+        "desc": "man in a brown military uniform with a peaked cap",
+        "action": "standing to the right, holding the central man's arm",
+        "position": "right"
+      },
+      {
+        "desc": "man in a brown military uniform with gold epaulets",
+        "action": "sitting in a chair",
+        "position": "left"
+      },
+      {
+        "desc": "maroon upholstered chair",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "black microphones on stands",
+        "action": "static",
+        "position": "foreground",
+        "id": "microphones_1"
+      },
+      {
+        "desc": "man in a dark suit speaking at a podium",
+        "action": "speaking into microphones",
+        "position": "right"
+      },
+      {
+        "desc": "man in a white military uniform with a peaked cap",
+        "action": "standing behind the speaker",
+        "position": "left"
+      },
+      {
+        "desc": "red logo with white text",
+        "action": "static",
+        "position": "top left"
+      },
+      {
+        "desc": "circular logo with text",
+        "action": "static",
+        "position": "top right",
+        "id": "circular_logo_watermark_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a dark blue jacket stands with his head bowed and hands bound.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two men in brown military uniforms are physically restraining the man in the blue jacket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a brown military uniform sits in a maroon chair on the left side of the room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a dark suit is speaking into a cluster of black microphones.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a white military uniform stands behind the speaker.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene cuts between a room with restrained individuals and a podium with microphones.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "In the first scene, the man in the blue jacket is in the center, flanked by two men in brown uniforms. A seated man in a brown uniform is to the left of the standing group. In the second scene, the speaker is at the podium in the foreground, with the man in the white uniform standing behind him to his left. The microphones are positioned in front of the speaker.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      84,
+      86
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, wearing a dark navy button-up jacket with a red pin on the left lapel",
+        "action": "speaking into microphones then standing still",
+        "position": "center",
+        "id": "person_detained_blue_jacket_1"
+      },
+      {
+        "desc": "man wearing a tan military cap and a white uniform jacket with gold epaulets",
+        "action": "clapping hands",
+        "position": "left"
+      },
+      {
+        "desc": "cluster of black microphones with silver stems",
+        "action": "static",
+        "position": "foreground",
+        "id": "microphones_1"
+      },
+      {
+        "desc": "white text logo with red accent in the top left corner",
+        "action": "static",
+        "position": "top left"
+      },
+      {
+        "desc": "circular logo with stylized text in the top right corner",
+        "action": "static",
+        "position": "top right",
+        "id": "circular_logo_watermark_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the dark jacket is speaking into the microphones.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the white uniform is clapping his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microphones are positioned in front of the speakers.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the dark jacket is standing to the right of the man in the white uniform. The cluster of microphones is in front of both men. The logos are located in the top corners of the screen, above the men.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": [
+      "different man speaking with red pin, military clapping"
+    ]
+  },
+  {
+    "time": [
+      86,
+      88
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair, wearing a dark navy button-up suit with a red pin on the left chest",
+        "action": "speaking into microphones",
+        "position": "center",
+        "id": "person_detained_blue_jacket_1"
+      },
+      {
+        "desc": "man wearing a light-colored military uniform and a peaked cap with a gold emblem",
+        "action": "clapping hands",
+        "position": "left"
+      },
+      {
+        "desc": "man wearing a grey military uniform and a peaked cap",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "cluster of black microphones on silver stands",
+        "action": "static",
+        "position": "foreground",
+        "id": "microphones_1"
+      },
+      {
+        "desc": "red logo with white text in the top left corner",
+        "action": "static",
+        "position": "top left"
+      },
+      {
+        "desc": "circular logo with a character inside in the top right corner",
+        "action": "static",
+        "position": "top right",
+        "id": "circular_logo_watermark_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the center is speaking into a cluster of microphones.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the left is clapping his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man on the right is standing still.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microphones are positioned in front of the man in the center.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the dark suit is in the center, standing behind the cluster of microphones. To his left is the man in the light uniform who is clapping. To his right is the man in the grey uniform. The logos are located in the top corners of the frame.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      88,
+      90
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair shaved on the sides, wearing a black coat with a fur collar",
+        "action": "sitting at a table and pointing at a document",
+        "position": "center",
+        "id": "person_fur_collar_coat_1"
+      },
+      {
+        "desc": "large white document with printed text and a grid layout",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white desktop microphone on a silver stand",
+        "action": "static",
+        "position": "left",
+        "id": "microphones_1"
+      },
+      {
+        "desc": "man wearing glasses and a grey button-up jacket",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "man wearing a grey cap and a grey jacket",
+        "action": "static",
+        "position": "background right",
+        "id": "person_grey_cap_jacket_1"
+      },
+      {
+        "desc": "man in a military uniform, partially visible",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "dark brown wooden table",
+        "action": "static",
+        "position": "bottom",
+        "id": "wooden_desk_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the black coat is pointing his right index finger at a specific spot on the document.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the black coat is holding a cigarette in his left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white microphone is positioned on the table to the left of the document.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several men in grey and military attire are seated or standing behind the man in the black coat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The document features a grid-like structure with text.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the black coat is seated at the table in the center, with the document spread out in front of him. The microphone is to the left of the document on the table. The man in the grey jacket is sitting to the left and behind the central figure, while the man in the cap is to the right and behind him.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": [
+      "meeting scene with document review"
+    ]
+  },
+  {
+    "time": [
+      90,
+      92
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short black hair shaved on the sides, wearing a black coat with a fur collar",
+        "action": "sitting at a table and pointing at a document",
+        "position": "center",
+        "id": "person_fur_collar_coat_1"
+      },
+      {
+        "desc": "large white document with printed text and a small gold emblem",
+        "action": "lying flat on the table",
+        "position": "foreground"
+      },
+      {
+        "desc": "man with glasses wearing a grey button-up suit",
+        "action": "sitting and listening",
+        "position": "left background"
+      },
+      {
+        "desc": "man wearing a grey cap and grey jacket",
+        "action": "sitting and smiling",
+        "position": "right background",
+        "id": "person_grey_cap_jacket_1"
+      },
+      {
+        "desc": "silver microphone on a stand",
+        "action": "static",
+        "position": "left",
+        "id": "microphones_1"
+      },
+      {
+        "desc": "white telephone handset",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "black television set",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "men in military uniforms",
+        "action": "standing",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the black coat points his right index finger at the document on the table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the black coat holds a cigarette in his left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large document is spread out on the table in front of the central figure.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A microphone and telephone are positioned on the left side of the table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the grey cap is smiling while looking towards the center.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man in the black coat sits at the center of the table, with the document in front of him. To his left, the man in the grey suit sits, while the man in the cap sits to his right. The microphone and telephone are on the table to the left of the document. Men in military uniforms stand in the background behind the seated men.",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      92,
+      94
+    ],
+    "visible_entities": [
+      {
+        "desc": "large white rocket body with vertical stabilizer fins, metallic surface with visible panel lines",
+        "action": "igniting engine and emitting exhaust",
+        "position": "center",
+        "id": "rocket_1"
+      },
+      {
+        "desc": "bright orange and yellow rocket exhaust plume",
+        "action": "expanding and glowing",
+        "position": "bottom center",
+        "id": "rocket_exhaust_1"
+      },
+      {
+        "desc": "white umbilical cable or hose",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "dark rocky terrain background",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The rocket engine ignites, producing a bright orange and yellow exhaust plume.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The rocket body remains stationary on the launch pad during ignition.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white cable is attached to the right side of the rocket.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white rocket body is positioned in the center of the frame. The bright orange exhaust plume is located directly below the rocket body. The white umbilical cable is attached to the right side of the rocket. The dark rocky terrain is behind the rocket.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": [
+      "rocket launch sequence begins with engine ignition"
+    ]
+  },
+  {
+    "time": [
+      94,
+      96
+    ],
+    "visible_entities": [
+      {
+        "desc": "white rocket, cylindrical body with a pointed nose cone, emitting bright orange flames",
+        "action": "launching vertically",
+        "position": "center",
+        "id": "rocket_1"
+      },
+      {
+        "desc": "tall dark green launch tower structure, vertical metal framework",
+        "action": "static",
+        "position": "left",
+        "id": "launch_tower_1"
+      },
+      {
+        "desc": "large white smoke plume, billowing and dense",
+        "action": "expanding",
+        "position": "left",
+        "id": "rocket_exhaust_1"
+      },
+      {
+        "desc": "snowy landscape, brown earth patches, sparse trees, and winding roads",
+        "action": "static",
+        "position": "background",
+        "id": "snowy_landscape_1"
+      },
+      {
+        "desc": "red circular logo with a stylized figure",
+        "action": "static",
+        "position": "top-left",
+        "id": "circular_logo_watermark_1"
+      },
+      {
+        "desc": "white circular logo with a stylized character",
+        "action": "static",
+        "position": "top-right",
+        "id": "circular_logo_watermark_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A white rocket is launching from a launch pad.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Bright orange flames are visible at the base of the rocket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large cloud of white smoke is billowing to the left of the launch tower.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The launch tower stands vertically next to the rocket.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white rocket is positioned in the center of the frame, launching upwards. To the left of the rocket stands a tall dark green launch tower. A large white smoke plume is expanding to the left of the launch tower. The snowy landscape is in the background behind the launch site. The red logo is in the top-left corner, and the white logo is in the top-right corner.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": [
+      "rocket launching vertically with flames"
+    ]
+  },
+  {
+    "time": [
+      96,
+      98
+    ],
+    "visible_entities": [
+      {
+        "desc": "slender white rocket with a pointed nose cone",
+        "action": "launching vertically",
+        "position": "center",
+        "id": "rocket_1"
+      },
+      {
+        "desc": "large billowing cloud of white smoke and exhaust",
+        "action": "expanding",
+        "position": "left",
+        "id": "rocket_exhaust_1"
+      },
+      {
+        "desc": "dark vertical launch tower structure",
+        "action": "static",
+        "position": "left",
+        "id": "launch_tower_1"
+      },
+      {
+        "desc": "snowy landscape with brown trees and winding roads",
+        "action": "static",
+        "position": "background",
+        "id": "snowy_landscape_1"
+      },
+      {
+        "desc": "circular logo with Chinese character '周'",
+        "action": "static",
+        "position": "top right",
+        "id": "circular_logo_watermark_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A white rocket is launching vertically from a launch pad.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Bright orange flames are visible at the base of the rocket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A massive cloud of white smoke is billowing to the left of the rocket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The launch is taking place in a snowy, wooded environment.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "周"
+    ],
+    "spatial": "The white rocket is in the center of the frame, launching upwards. To the left of the rocket is a large cloud of white smoke and a dark launch tower. The snowy landscape is in the background behind the rocket and smoke.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": []
+  },
+  {
+    "time": [
+      98,
+      100
+    ],
+    "visible_entities": [
+      {
+        "desc": "slender white rocket with a pointed nose cone",
+        "action": "ascending vertically",
+        "position": "center",
+        "id": "rocket_1"
+      },
+      {
+        "desc": "bright yellow-orange rocket exhaust plume",
+        "action": "burning",
+        "position": "bottom-center",
+        "id": "rocket_exhaust_1"
+      },
+      {
+        "desc": "large billowing white smoke cloud",
+        "action": "expanding",
+        "position": "left",
+        "id": "rocket_exhaust_1"
+      },
+      {
+        "desc": "snow-covered hillside with brown trees",
+        "action": "static",
+        "position": "background",
+        "id": "snowy_landscape_1"
+      },
+      {
+        "desc": "circular logo with stylized text",
+        "action": "static",
+        "position": "top-right",
+        "id": "circular_logo_watermark_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A white rocket is ascending vertically from the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bright flame is visible at the base of the rocket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large cloud of white smoke is billowing to the left of the launch site.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The launch is taking place in a snowy, wooded environment.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white rocket is in the center of the frame, positioned in front of the snowy hillside. The bright exhaust plume is directly below the rocket. The large white smoke cloud is to the left of the rocket. The circular logo is in the top-right corner, above the landscape.",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "9Jq3NEJIhBI_00:00:00:000_00:01:06:600",
+    "state_changes": [
+      "rocket continuing ascent"
+    ]
+  }
+]

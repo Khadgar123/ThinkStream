@@ -1,0 +1,814 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "Logo graphic featuring a stylized illustration of a woman with long red hair, wearing a grey sleeveless top and a red skirt. The text 'Hot Thai Kitchen' is in a bold, black, rounded font. The entire graphic is enclosed in a rough, hand-drawn style black rectangular border on a white background.",
+        "action": "static",
+        "position": "center",
+        "id": "logo_intro_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A static logo graphic is displayed.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text reads 'Hot Thai Kitchen'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The illustration shows a woman with red hair and a red skirt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Hot Thai Kitchen"
+    ],
+    "spatial": "The text 'Hot Thai Kitchen' is to the left of the woman illustration. The woman figure is positioned on the right side of the logo, inside the black border.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [\n    2,\n    4\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"white square bowl containing stir-fried orange pumpkin chunks with green skin, scrambled egg pieces, and dark green basil leaves\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"text 'Hot Thai Kitchen' in a distressed font with a red cartoon woman illustration, enclosed in a rectangular border\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"text 'Pad Faktong' in a bold white sans-serif font\",\n      \"action\": \"static\",\n      \"position\": \"bottom-left\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The video displays a title card for a recipe.\",\n    \"The text 'Hot Thai Kitchen' is overlaid on the image of the food.\",\n    \"The text 'Pad Faktong' identifies the dish being shown.\"\n  ],\n  \"ocr\": [\n    \"Hot Thai Kitchen\",\n    \"Pad\",\n    \"Faktong\"\n  ],\n  \"spatial\": \"The white bowl of food is in the center of the frame. The 'Hot Thai Kitchen' logo is superimposed over the center of the bowl. The text 'Pad Faktong' is located in the bottom-left corner, below the bowl.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 1,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [4, 6],\n  \"visible_entities\": [\n    {\n      \"desc\": \"white square bowl with rounded corners containing stir-fried food\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"cubed kabocha squash with dark green skin and bright orange flesh\",\n      \"action\": \"static\",\n      \"position\": \"inside bowl\"\n    },\n    {\n      \"desc\": \"scrambled egg pieces mixed with the squash\",\n      \"action\": \"static\",\n      \"position\": \"inside bowl\"\n    },\n    {\n      \"desc\": \"fresh green basil leaves garnish\",\n      \"action\": \"static\",\n      \"position\": \"top of food\"\n    },\n    {\n      \"desc\": \"white text overlay reading 'Pad Faktong' and 'Kabocha Squash Stir-Fry'\",\n      \"action\": \"static\",\n      \"position\": \"bottom left\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The video displays a dish identified by text as 'Pad Faktong' and 'Kabocha Squash Stir-Fry'.\",\n    \"The dish consists of stir-fried pumpkin cubes and egg.\",\n    \"Fresh basil leaves are placed on top of the cooked food as a garnish.\"\n  ],\n  \"ocr\": [\n    \"Pad\",\n    \"Faktong\",\n    \"Kabocha\",\n    \"Squash\",\n    \"Stir-Fry\"\n  ],\n  \"spatial\": \"The white bowl containing the stir-fry is centered in the frame. The text overlay is positioned in the bottom left corner, to the left of the bowl. The basil garnish is on top of the squash and egg mixture inside the bowl.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 2,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [\n    6,\n    8\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"Kabocha squash stir-fry dish featuring diced orange squash with dark green skin, crumbled yellow egg, and dark green leafy vegetables, garnished with fresh basil leaves\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"white square bowl with rounded corners\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"white bold sans-serif text reading 'Kabocha Squash Stir-Fry'\",\n      \"action\": \"static\",\n      \"position\": \"bottom left\"\n    },\n    {\n      \"desc\": \"dark textured surface\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The video displays a static shot of a prepared Kabocha Squash Stir-Fry.\",\n    \"The dish is served in a white bowl.\",\n    \"The text 'Kabocha Squash Stir-Fry' is overlaid on the bottom left of the screen.\"\n  ],\n  \"ocr\": [\n    \"Kabocha\",\n    \"Squash\",\n    \"Stir-Fry\"\n  ],\n  \"spatial\": \"The white bowl containing the stir-fry is positioned in the center of the frame. The text overlay is located to the left of the bowl. The bowl rests on a dark surface.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 3,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [8, 10],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person's hand with light skin tone\",\n      \"action\": \"serving food\",\n      \"position\": \"left\"\n    },\n    {\n      \"desc\": \"silver metal spoon\",\n      \"action\": \"transferring food\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"white square bowl with rounded corners\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"cooked dish with orange chunks, green leafy vegetables, and yellow crumbles\",\n      \"action\": \"being served\",\n      \"position\": \"inside bowl\"\n    },\n    {\n      \"desc\": \"light brown wooden cutting board\",\n      \"action\": \"static\",\n      \"position\": \"under bowl\"\n    },\n    {\n      \"desc\": \"metal pan with food residue\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person uses a silver spoon to transfer food from a pan into a white bowl.\",\n    \"The bowl sits on a wooden cutting board.\",\n    \"The dish consists of orange vegetables, green leaves, and yellow bits.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The white bowl is placed on top of the wooden cutting board. The person's hand is to the left of the bowl, holding a spoon that extends over the food. The metal pan is located in the background, above and behind the bowl.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 4,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [\n    10,\n    12\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with fair skin, wearing a silver bracelet on the left wrist\",\n      \"action\": \"placing a green leaf on the food\",\n      \"position\": \"left/center\"\n    },\n    {\n      \"desc\": \"white square bowl containing a cooked dish with orange cubes, dark green leafy vegetables, and yellow pieces\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"fresh green leaf, smooth texture, elongated shape\",\n      \"action\": \"being placed on the food\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"light-colored wooden cutting board, rectangular, with visible wood grain\",\n      \"action\": \"static\",\n      \"position\": \"center/bottom\"\n    },\n    {\n      \"desc\": \"metal pan, partially visible, containing a brownish liquid or sauce\",\n      \"action\": \"static\",\n      \"position\": \"top right/background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person is placing a fresh green leaf on top of a dish in a white bowl.\",\n    \"The dish contains orange cubes, likely pumpkin or squash, and dark green vegetables.\",\n    \"The white bowl is sitting on a wooden cutting board.\",\n    \"A metal pan is visible in the background on the right.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person's hands are positioned over the white bowl, which is in the center of the frame. The bowl is on top of a wooden cutting board. In the background, to the top right of the bowl, a metal pan is partially visible.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 5,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [12, 14],\n  \"visible_entities\": [\n    {\n      \"desc\": \"woman with dark hair pulled back, wearing a green sleeveless top, long beaded necklace, and dangling earrings\",\n      \"action\": \"eating food from a spoon\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"white bowl containing cooked food with green garnish\",\n      \"action\": \"being held\",\n      \"position\": \"bottom center\"\n    },\n    {\n      \"desc\": \"silver spoon\",\n      \"action\": \"being used to eat\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black refrigerator with a large yellow rectangular board and elephant magnets attached\",\n      \"action\": \"static\",\n      \"position\": \"left\"\n    },\n    {\n      \"desc\": \"red chili pepper graphic\",\n      \"action\": \"static\",\n      \"position\": \"top left\"\n    },\n    {\n      \"desc\": \"framed pictures on a white wall\",\n      \"action\": \"static\",\n      \"position\": \"background right\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The woman is putting a spoonful of food into her mouth.\",\n    \"The woman is holding a white bowl in her left hand.\",\n    \"A large yellow board is attached to the black refrigerator.\",\n    \"Two elephant-shaped magnets are visible on the refrigerator door.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The woman is positioned in the center of the frame, holding a white bowl in front of her. To her left stands a black refrigerator with a yellow board attached to its door. Behind the woman, framed pictures hang on the white wall.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 6,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [14, 16],\n  \"visible_entities\": [\n    {\n      \"desc\": \"silver metal wok with a black handle, containing a reddish-brown ring of residue at the bottom\",\n      \"action\": \"receiving oil\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"silver metal spoon\",\n      \"action\": \"pouring oil\",\n      \"position\": \"top right\"\n    },\n    {\n      \"desc\": \"clear yellowish cooking oil\",\n      \"action\": \"pooling in the wok\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black stovetop with control buttons\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A silver spoon is pouring clear oil into the center of a wok.\",\n    \"A pool of oil is forming at the bottom of the wok.\",\n    \"The wok sits on a black stovetop.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The silver spoon is positioned above the wok, pouring oil into it. The oil is pooling at the bottom center of the wok. The wok is resting on the black stovetop.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 7,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [16, 18],\n  \"visible_entities\": [\n    {\n      \"desc\": \"silver metal wok with a reddish-brown seasoned ring at the bottom\",\n      \"action\": \"being stirred\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"metal spatula\",\n      \"action\": \"scraping the bottom of the wok\",\n      \"position\": \"top right\"\n    },\n    {\n      \"desc\": \"black stovetop surface\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A metal spatula is scraping the bottom of a silver wok.\",\n    \"The wok has a reddish-brown ring of seasoning at its base.\",\n    \"The wok is sitting on a black stovetop.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The metal spatula is inside the silver wok, moving across the bottom. The wok is centered on the black stovetop surface.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 8,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [18, 20],\n  \"visible_entities\": [\n    {\n      \"desc\": \"silver metal wok with a dark handle, containing reddish-brown oil residue at the bottom\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"silver metal spatula\",\n      \"action\": \"hovering over the wok\",\n      \"position\": \"top\"\n    },\n    {\n      \"desc\": \"person's hand and forearm with fair skin, wearing a silver wristwatch with a metal link band\",\n      \"action\": \"dropping minced garlic into the wok\",\n      \"position\": \"right\"\n    },\n    {\n      \"desc\": \"small pile of minced yellow garlic\",\n      \"action\": \"falling into the wok\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black stovetop surface with white control panel text\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A hand wearing a silver watch drops minced garlic into the center of a wok.\",\n    \"The wok contains reddish-brown oil residue at the bottom.\",\n    \"A metal spatula is held above the wok.\",\n    \"The text 'OFF' is visible on the stovetop control panel.\"\n  ],\n  \"ocr\": [\n    \"OFF\"\n  ],\n  \"spatial\": \"The silver wok is centered on the black stovetop. The person's hand is to the right of the wok, dropping garlic into it. The metal spatula is positioned above the wok. The control panel text is below the wok on the right side.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 9,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [20, 22],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person's right arm with fair skin, wearing a silver metal-link wristwatch with a round white face\",\n      \"action\": \"stirring minced garlic\",\n      \"position\": \"right\"\n    },\n    {\n      \"desc\": \"large silver metal wok with a black handle, containing oil and minced garlic\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"silver metal spatula\",\n      \"action\": \"moving\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black stovetop with control panel\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"person stirs minced garlic in the wok using a metal spatula\",\n    \"minced garlic is frying in oil at the bottom of the wok\",\n    \"the stovetop control panel displays white text labels\"\n  ],\n  \"ocr\": [\n    \"OFF\",\n    \"HI\",\n    \"LO\"\n  ],\n  \"spatial\": \"The person's arm is to the right of the wok. The spatula is inside the wok, moving the garlic. The wok is on top of the black stovetop.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 10,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [22, 24],\n  \"visible_entities\": [\n    {\n      \"desc\": \"silver metal wok with a black handle\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"chopped pale yellow garlic pieces\",\n      \"action\": \"being stirred\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"silver metal ladle\",\n      \"action\": \"stirring garlic\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black stovetop surface\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A metal ladle is stirring chopped garlic inside a wok.\",\n    \"The garlic pieces are scattered at the bottom of the wok.\",\n    \"The wok is sitting on a black stovetop.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The silver metal wok is positioned in the center of the frame, resting on the black stovetop. The chopped garlic pieces are located at the bottom of the wok. The metal ladle is inside the wok, positioned above the garlic.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 11,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hand with fair skin and silver metal wristwatch",
+        "action": "pouring ingredients into wok",
+        "position": "right",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "large silver metal wok with a shiny surface",
+        "action": "static",
+        "position": "center",
+        "id": "wok_silver_1"
+      },
+      {
+        "desc": "small light pink ceramic bowl",
+        "action": "being held and tilted",
+        "position": "center",
+        "id": "bowl_pink_1"
+      },
+      {
+        "desc": "chopped yellow-orange squash cubes with green skin edges",
+        "action": "falling into the wok",
+        "position": "center",
+        "id": "ingredient_squash_1"
+      },
+      {
+        "desc": "metal spatula with a silver surface",
+        "action": "resting in the wok",
+        "position": "center",
+        "id": "utensil_spatula_1"
+      },
+      {
+        "desc": "minced garlic or ginger in oil",
+        "action": "sizzling in the wok",
+        "position": "center",
+        "id": "ingredient_aromatics_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person pours chopped yellow squash from a pink bowl into a wok.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wok contains minced garlic or ginger cooking in oil.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal spatula is resting inside the wok.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's hand is positioned on the right side of the frame, holding the pink bowl over the center of the large silver wok. The yellow squash cubes are falling from the bowl into the wok, landing on top of the minced garlic and oil at the bottom. The metal spatula rests inside the wok to the left of the falling squash.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": [
+      "Cooking action starts with ingredients poured into wok"
+    ]
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [26, 28],\n  \"visible_entities\": [\n    {\n      \"desc\": \"woman with long dark hair in a ponytail, wearing a green sleeveless top and a long beaded necklace\",\n      \"action\": \"stirring food in a wok\",\n      \"position\": \"right\"\n    },\n    {\n      \"desc\": \"silver metal wok with a black handle\",\n      \"action\": \"static\",\n      \"position\": \"left\"\n    },\n    {\n      \"desc\": \"silver metal spatula\",\n      \"action\": \"being held\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"cubed yellow squash with green skin\",\n      \"action\": \"being stirred\",\n      \"position\": \"inside wok\"\n    },\n    {\n      \"desc\": \"black induction cooktop with digital display\",\n      \"action\": \"static\",\n      \"position\": \"bottom\"\n    },\n    {\n      \"desc\": \"white tiled wall with decorative art\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The woman is stirring yellow squash cubes in a wok using a spatula.\",\n    \"The wok is sitting on a black induction cooktop.\",\n    \"The cooktop display shows green digital numbers.\",\n    \"A framed picture hangs on the wall to the right of the woman.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The woman is standing to the right of the stove, holding a spatula inside the wok. The wok is placed on top of the black cooktop. The yellow squash cubes are inside the wok. The tiled wall is behind the cooking area.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 13,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [28, 30],\n  \"visible_entities\": [\n    {\n      \"desc\": \"hand with fair skin\",\n      \"action\": \"pouring liquid\",\n      \"position\": \"right\"\n    },\n    {\n      \"desc\": \"glass measuring cup with red markings, containing clear liquid\",\n      \"action\": \"being tilted\",\n      \"position\": \"right\"\n    },\n    {\n      \"desc\": \"small white bowl containing dark brown liquid\",\n      \"action\": \"being tilted\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"silver metal wok\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"diced yellow squash with green skin\",\n      \"action\": \"cooking\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black stovetop surface\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A hand pours clear liquid from a glass measuring cup into the wok.\",\n    \"A hand pours dark brown liquid from a small white bowl into the wok.\",\n    \"Diced yellow squash is cooking inside the silver wok.\",\n    \"The wok is sitting on a black stovetop.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The silver wok is centered on the black stovetop. The diced yellow squash is inside the wok. The hand holding the glass measuring cup is to the right of the wok, pouring liquid into it. The hand holding the small white bowl is positioned above the center of the wok, pouring dark liquid onto the squash.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 14,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [30, 32],\n  \"visible_entities\": [\n    {\n      \"desc\": \"hand with light skin tone\",\n      \"action\": \"pouring liquid from a small white bowl\",\n      \"position\": \"top center\"\n    },\n    {\n      \"desc\": \"diced pumpkin pieces with orange flesh and green skin\",\n      \"action\": \"simmering in liquid\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"large silver metal wok\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"metal spatula with a silver handle\",\n      \"action\": \"resting in the wok\",\n      \"position\": \"right\"\n    },\n    {\n      \"desc\": \"small white bowl\",\n      \"action\": \"being held and tilted\",\n      \"position\": \"top center\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A hand is pouring a dark liquid from a small white bowl into the wok.\",\n    \"Diced pumpkin pieces are cooking in the wok.\",\n    \"A metal spatula is resting inside the wok on the right side.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The hand holding the small white bowl is positioned above the wok. The diced pumpkin pieces are inside the wok. The metal spatula is resting inside the wok to the right of the pumpkin pieces.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 15,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [32, 34],\n  \"visible_entities\": [\n    {\n      \"desc\": \"silver metal wok with a black handle\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"diced yellow squash with green skin\",\n      \"action\": \"simmering in liquid\",\n      \"position\": \"inside the wok\"\n    },\n    {\n      \"desc\": \"hand holding a white spoon\",\n      \"action\": \"stirring the squash\",\n      \"position\": \"top center\"\n    },\n    {\n      \"desc\": \"brown cooking liquid\",\n      \"action\": \"bubbling\",\n      \"position\": \"inside the wok\"\n    },\n    {\n      \"desc\": \"black stovetop surface\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A hand is stirring diced yellow squash in a silver wok.\",\n    \"The squash is simmering in a brown liquid.\",\n    \"The wok is placed on a black stovetop.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The silver wok is centered on the black stovetop. The diced yellow squash is inside the wok, submerged in the brown liquid. The hand holding the white spoon is positioned above the wok, stirring the contents.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 16,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [34, 36],\n  \"visible_entities\": [\n    {\n      \"desc\": \"silver metal wok with a smooth, reflective interior surface and a handle extending to the right\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"cubed vegetables with bright orange flesh and dark green skin, simmering in a bubbling brown sauce\",\n      \"action\": \"simmering\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"silver metal spatula with a curved, solid head and a long handle\",\n      \"action\": \"hovering above the food\",\n      \"position\": \"top right\"\n    },\n    {\n      \"desc\": \"black stovetop surface with metal grates and control panel buttons\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A silver metal spatula is held above the wok.\",\n    \"Cubed vegetables are simmering in a bubbling sauce inside the wok.\",\n    \"The spatula is positioned over the right side of the cooking food.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The silver metal wok is centered on the black stovetop. The cubed vegetables are inside the wok, submerged in the sauce. The metal spatula is positioned above and to the right of the vegetables.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 17,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [36, 38],\n  \"visible_entities\": [\n    {\n      \"desc\": \"silver metal wok with a handle, containing diced yellow-orange squash and green zucchini in a reddish sauce\",\n      \"action\": \"being stirred\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"metal spatula with a long handle\",\n      \"action\": \"stirring the vegetables\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black stovetop surface\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person is stirring diced vegetables in a wok with a metal spatula.\",\n    \"The vegetables include yellow-orange squash and green zucchini.\",\n    \"The wok is sitting on a black stovetop.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The wok is in the center of the frame, sitting on the black stovetop. The metal spatula is inside the wok, mixing the vegetables.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 18,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [38, 40],\n  \"visible_entities\": [\n    {\n      \"desc\": \"diced zucchini pieces with green skin and pale yellow flesh\",\n      \"action\": \"being stirred in a wok\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"silver metal wok with a handle\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"metal spatula\",\n      \"action\": \"stirring vegetables\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black stovetop surface\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A metal spatula is stirring diced zucchini in a wok.\",\n    \"The zucchini pieces are coated in a sauce.\",\n    \"The wok is sitting on a black stovetop.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The diced zucchini is inside the silver wok. The metal spatula is in the center of the wok, mixing the vegetables. The wok is placed on top of the black stovetop surface.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 19,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [40, 42],\n  \"visible_entities\": [\n    {\n      \"desc\": \"woman with long dark hair in a ponytail, wearing a dark green sleeveless top and silver earrings\",\n      \"action\": \"stirring vegetables in a wok\",\n      \"position\": \"right\"\n    },\n    {\n      \"desc\": \"silver metal wok containing diced orange and green vegetables\",\n      \"action\": \"being stirred\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black stovetop with metal grates\",\n      \"action\": \"static\",\n      \"position\": \"bottom\"\n    },\n    {\n      \"desc\": \"white tiled wall with framed art and a vase of flowers\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The woman is stirring diced vegetables in a wok using a metal utensil.\",\n    \"The wok is sitting on a black stovetop.\",\n    \"The vegetables inside the wok appear to be coated in a sauce.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The woman is standing to the right of the stove. The silver wok is placed on top of the black stovetop in the center of the frame. The white tiled wall with framed art is behind the woman and the stove.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 20,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [42, 44],\n  \"visible_entities\": [\n    {\n      \"desc\": \"woman with long dark hair in a ponytail, wearing a sleeveless green top and a watch\",\n      \"action\": \"pouring liquid from a bowl\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"silver wok containing diced orange and green vegetables\",\n      \"action\": \"static\",\n      \"position\": \"bottom left\"\n    },\n    {\n      \"desc\": \"small white bowl\",\n      \"action\": \"being held and tipped\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"metal spatula\",\n      \"action\": \"stirring food\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black stovetop\",\n      \"action\": \"static\",\n      \"position\": \"bottom\"\n    },\n    {\n      \"desc\": \"white tiled wall with framed art\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The woman pours a liquid from a small white bowl into the wok.\",\n    \"The wok contains diced orange squash and green zucchini.\",\n    \"A metal spatula rests inside the wok among the vegetables.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The woman is standing behind the stovetop, holding the white bowl above the silver wok. The wok is positioned on the black stovetop in the foreground. The white tiled wall with framed artwork is behind the woman.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 21,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [44, 46],\n  \"visible_entities\": [\n    {\n      \"desc\": \"silver metal wok with a metallic handle\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"chopped zucchini pieces with green skin and yellow flesh\",\n      \"action\": \"being stirred\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"orange sauce coating the vegetables\",\n      \"action\": \"simmering\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"metal spatula\",\n      \"action\": \"stirring the food\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"hand holding a white bowl\",\n      \"action\": \"pouring liquid\",\n      \"position\": \"top right\"\n    },\n    {\n      \"desc\": \"black stovetop with control panel\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A hand pours liquid from a white bowl into the wok.\",\n    \"A metal spatula stirs the zucchini and sauce mixture.\",\n    \"The orange sauce bubbles around the zucchini pieces.\",\n    \"The wok sits on a black stovetop.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The silver wok is centered on the black stovetop. Inside the wok, chopped zucchini pieces are mixed with orange sauce. A hand holding a white bowl is positioned above the right side of the wok, pouring liquid into it. A metal spatula is inside the wok, stirring the ingredients.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 22,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [\n    46,\n    48\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"silver metal wok with a shiny interior surface\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"cubed vegetables with green skin and orange flesh\",\n      \"action\": \"being stirred\",\n      \"position\": \"inside the wok\"\n    },\n    {\n      \"desc\": \"metal spatula with a long handle\",\n      \"action\": \"stirring the vegetables\",\n      \"position\": \"inside the wok\"\n    },\n    {\n      \"desc\": \"orange sauce coating the vegetables\",\n      \"action\": \"simmering\",\n      \"position\": \"inside the wok\"\n    },\n    {\n      \"desc\": \"black stovetop surface with a metal grate\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A metal spatula is stirring cubed vegetables inside a wok.\",\n    \"The vegetables are coated in an orange sauce.\",\n    \"The wok is sitting on a black stovetop.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The silver wok is centered on the black stovetop. Inside the wok, the metal spatula is mixing the cubed vegetables and orange sauce. The stovetop grate is visible to the left of the wok.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 23,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [48, 50],\n  \"visible_entities\": [\n    {\n      \"desc\": \"silver metal wok with a long handle\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"cubed vegetables with green skin and orange flesh\",\n      \"action\": \"being stirred\",\n      \"position\": \"inside the wok\"\n    },\n    {\n      \"desc\": \"yellow liquid sauce\",\n      \"action\": \"being mixed\",\n      \"position\": \"inside the wok\"\n    },\n    {\n      \"desc\": \"silver metal ladle\",\n      \"action\": \"stirring the food\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black stovetop surface\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person is stirring the contents of the wok with a ladle.\",\n    \"Yellow liquid is being mixed with the cubed vegetables.\",\n    \"The wok is sitting on a black stovetop.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The silver metal wok is centered on the black stovetop. Inside the wok, the cubed vegetables and yellow sauce are being mixed by the silver ladle.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 24,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [50, 52],\n  \"visible_entities\": [\n    {\n      \"desc\": \"silver metal wok with a smooth, reflective interior surface and a handle extending to the right\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"cubed vegetables with orange flesh and dark green skin, mixed with a yellowish liquid sauce\",\n      \"action\": \"simmering in liquid\",\n      \"position\": \"inside wok\"\n    },\n    {\n      \"desc\": \"silver metal ladle with a long handle\",\n      \"action\": \"stirring the vegetables\",\n      \"position\": \"right\"\n    },\n    {\n      \"desc\": \"black stovetop surface with a metal grate visible on the left\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A silver ladle is stirring the cubed vegetables inside the wok.\",\n    \"The vegetables are simmering in a yellowish liquid at the bottom of the pan.\",\n    \"The wok is placed on a black stovetop.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The silver wok is centered on the black stovetop. Inside the wok, the cubed vegetables are submerged in a yellowish sauce. A silver ladle is positioned on the right side of the wok, dipping into the mixture.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 25,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [52, 54],\n  \"visible_entities\": [\n    {\n      \"desc\": \"hand holding a silver metal ladle\",\n      \"action\": \"stirring food\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"silver metal wok containing orange pumpkin chunks, green zucchini slices, and yellow egg\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black stovetop surface\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A hand is stirring a mixture of vegetables and egg in a wok with a ladle.\",\n    \"The wok contains chunks of orange pumpkin and slices of green zucchini.\",\n    \"The wok is sitting on a black stovetop.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The hand holding the ladle is positioned above the wok. The food mixture is inside the wok. The wok is resting on the black stovetop surface.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 26,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [54, 56],\n  \"visible_entities\": [\n    {\n      \"desc\": \"silver metal wok with a smooth interior surface\",\n      \"action\": \"containing food\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"large green leafy vegetables, likely basil\",\n      \"action\": \"being stirred\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"scrambled yellow egg pieces and orange diced vegetables\",\n      \"action\": \"being mixed\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"metal spatula\",\n      \"action\": \"stirring ingredients\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black stovetop with control panel\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person is stirring ingredients in a wok with a metal spatula.\",\n    \"Steam is rising from the hot food in the wok.\",\n    \"Green leafy vegetables are being mixed with scrambled eggs and diced orange vegetables.\",\n    \"The wok is sitting on a black stovetop.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The silver wok is centered on the black stovetop. Inside the wok, green leafy vegetables are on top of the scrambled eggs and orange vegetables. A metal spatula is inside the wok, mixing the ingredients together.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 27,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [56, 58],\n  \"visible_entities\": [\n    {\n      \"desc\": \"metal wok with a silver handle\",\n      \"action\": \"containing food\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"metal spatula\",\n      \"action\": \"stirring food\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"mixture of yellow scrambled eggs, orange chunks, and green leafy vegetables\",\n      \"action\": \"being cooked\",\n      \"position\": \"inside wok\"\n    },\n    {\n      \"desc\": \"black stovetop surface\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A metal spatula is stirring a mixture of eggs, orange chunks, and green leaves inside a wok.\",\n    \"The food is steaming, indicating it is hot.\",\n    \"The wok is placed on a black stovetop.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The metal spatula is inside the wok, positioned above the food mixture. The food mixture is at the bottom of the wok. The wok is sitting on top of the black stovetop.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 28,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [58, 60],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person wearing a dark green short-sleeved top\",\n      \"action\": \"serving food\",\n      \"position\": \"left\"\n    },\n    {\n      \"desc\": \"white square bowl with rounded corners\",\n      \"action\": \"receiving food\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"light brown wooden cutting board\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"metal wok containing cooked orange vegetables and grains\",\n      \"action\": \"static\",\n      \"position\": \"top right\"\n    },\n    {\n      \"desc\": \"metal serving utensil\",\n      \"action\": \"transferring food\",\n      \"position\": \"center\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The person is using a metal utensil to transfer cooked food from the wok into the white bowl.\",\n    \"The white bowl is placed on top of the wooden cutting board.\",\n    \"The food consists of orange chunks, likely squash or pumpkin, mixed with grains and green leafy vegetables.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The white bowl is centered on the wooden cutting board. The person is positioned to the left of the bowl. The metal wok is located above and to the right of the bowl. The serving utensil is held by the person, bridging the space between the wok and the bowl.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 29,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [60, 62],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person wearing a dark green long-sleeved top\",\n      \"action\": \"serving food\",\n      \"position\": \"left\"\n    },\n    {\n      \"desc\": \"white square bowl with rounded corners\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"metal spoon\",\n      \"action\": \"transferring food\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"light brown wooden cutting board\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"cooked food mixture with orange chunks and green leaves\",\n      \"action\": \"being served\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"large metal frying pan\",\n      \"action\": \"static\",\n      \"position\": \"top right\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The person is using a spoon to transfer food from a pan into a white bowl.\",\n    \"The white bowl is resting on a wooden cutting board.\",\n    \"The food consists of orange cubes and dark green leafy vegetables.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is positioned to the left of the wooden cutting board. The white bowl is on top of the cutting board in the center of the frame. The frying pan is located above and to the right of the bowl. The spoon is held by the person and is currently inside the bowl.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 30,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [62, 64],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with fair skin, wearing a dark green short-sleeved top and a beaded necklace with silver accents\",\n      \"action\": \"garnishing the dish with herbs\",\n      \"position\": \"left/foreground\"\n    },\n    {\n      \"desc\": \"white square bowl with rounded corners containing cooked orange squash cubes, yellow scrambled egg pieces, and dark green leafy vegetables\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"light-colored wooden cutting board with visible grain\",\n      \"action\": \"static\",\n      \"position\": \"center/foreground\"\n    },\n    {\n      \"desc\": \"silver metal frying pan with oil residue and remaining food\",\n      \"action\": \"static\",\n      \"position\": \"top right/background\"\n    },\n    {\n      \"desc\": \"silver metal spatula\",\n      \"action\": \"static\",\n      \"position\": \"top right/background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The person uses both hands to sprinkle chopped green herbs over the food in the white bowl.\",\n    \"The white bowl is placed on top of the wooden cutting board.\",\n    \"The frying pan is positioned behind and to the right of the bowl.\",\n    \"The food in the bowl consists of orange cubes, yellow crumbles, and green leaves.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is positioned to the left of the white bowl. The white bowl is sitting on top of the wooden cutting board. The frying pan is located behind and to the right of the cutting board.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 31,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a dark green short-sleeved top and a beaded necklace with silver accents, and a silver watch on the left wrist",
+        "action": "arranging basil leaves on food",
+        "position": "left/center/foreground",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white square bowl containing a stir-fry dish with orange cubes, dark green leafy vegetables, and scrambled egg pieces",
+        "action": "static",
+        "position": "center/foreground",
+        "id": "bowl_white_1"
+      },
+      {
+        "desc": "light-colored wooden cutting board with visible grain",
+        "action": "static",
+        "position": "center/bottom",
+        "id": "board_wood_1"
+      },
+      {
+        "desc": "large metal wok with oil residue and a slotted spoon inside",
+        "action": "static",
+        "position": "top/right/background",
+        "id": "utensil_spoon_1"
+      },
+      {
+        "desc": "fresh green basil leaves",
+        "action": "being placed",
+        "position": "center/foreground",
+        "id": "ingredient_basil_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person arranges fresh basil leaves on top of the stir-fry in the white bowl",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the stir-fry contains orange cubes (likely squash or sweet potato), dark greens, and scrambled egg",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the white bowl sits on a wooden cutting board",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a wok with cooking residue is visible in the background",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is to the left and above the white bowl. The white bowl is centered on the wooden cutting board. The wok is behind and to the right of the bowl. The basil leaves are being placed on top of the food inside the bowl.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": [
+      "Plating and garnishing phase begins with basil addition"
+    ]
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [\n    66,\n    68\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"woman with dark hair pulled back, wearing a green sleeveless top, a long necklace with beads and a pendant, and dangling earrings\",\n      \"action\": \"eating with a fork\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"silver fork\",\n      \"action\": \"being held to mouth\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"white bowl with food\",\n      \"action\": \"static\",\n      \"position\": \"bottom\"\n    },\n    {\n      \"desc\": \"black refrigerator with elephant magnets\",\n      \"action\": \"static\",\n      \"position\": \"left\"\n    },\n    {\n      \"desc\": \"framed pictures on wall\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The woman is holding a fork to her mouth.\",\n    \"The woman is chewing food.\",\n    \"There are elephant-shaped magnets on the refrigerator.\",\n    \"The woman is wearing a green top.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The woman is in the center of the frame, holding a fork near her mouth. To her left is a black refrigerator with magnets on it. Behind her on the wall are framed pictures. She is holding a bowl of food below her chin.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 33,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      68,
+      70
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [\n    68,\n    70\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"black text reading 'Related Videos:', 'CLICK HERE for the Full Version', 'Kabocha Squash Dessert Recipe', and 'For Recipes:'\",\n      \"action\": \"static\",\n      \"position\": \"top\"\n    },\n    {\n      \"desc\": \"red underlined text reading 'www.HotThaiKitchen.com'\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"logo with black text 'Hot Thai Kitchen' and a red silhouette of a woman\",\n      \"action\": \"static\",\n      \"position\": \"bottom\"\n    },\n    {\n      \"desc\": \"black italic text reading 'Click to Subscribe!'\",\n      \"action\": \"static\",\n      \"position\": \"bottom\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The screen displays a static end card with related video information.\",\n    \"The text 'CLICK HERE for the Full Version' is visible.\",\n    \"The text 'Kabocha Squash Dessert Recipe' is visible.\",\n    \"The website 'www.HotThaiKitchen.com' is displayed in red.\",\n    \"The logo for 'Hot Thai Kitchen' is visible at the bottom.\"\n  ],\n  \"ocr\": [\n    \"Related Videos:\",\n    \"CLICK HERE for the Full Version\",\n    \"Kabocha Squash Dessert Recipe\",\n    \"For Recipes: www.HotThaiKitchen.com\",\n    \"Hot Thai Kitchen\",\n    \"Click to Subscribe!\"\n  ],\n  \"spatial\": \"The 'Related Videos' text is at the top of the screen. The red website URL is below the recipe title text. The 'Hot Thai Kitchen' logo is below the website URL. The 'Click to Subscribe!' text is at the very bottom, below the logo.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 34,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      70,
+      72
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [\n    70,\n    72\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"Black text in serif font reading 'Related Videos:', 'CLICK HERE for the Full Version', 'Kabocha Squash Dessert Recipe', and 'For Recipes:'.\",\n      \"action\": \"static\",\n      \"position\": \"top\"\n    },\n    {\n      \"desc\": \"Red underlined text in serif font reading 'www.HotThaiKitchen.com'.\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"Rectangular logo with a black border containing the text 'Hot Thai Kitchen' in black and a red silhouette of a woman.\",\n      \"action\": \"static\",\n      \"position\": \"bottom\"\n    },\n    {\n      \"desc\": \"Black text in italic serif font reading 'Click to Subscribe!'.\",\n      \"action\": \"static\",\n      \"position\": \"bottom\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The screen displays a static end card with related video information.\",\n    \"The text 'CLICK HERE for the Full Version' is visible.\",\n    \"The text 'Kabocha Squash Dessert Recipe' is visible.\",\n    \"The website URL 'www.HotThaiKitchen.com' is displayed in red.\",\n    \"The text 'Click to Subscribe!' is displayed below the logo.\"\n  ],\n  \"ocr\": [\n    \"Related Videos:\",\n    \"CLICK HERE for the Full Version\",\n    \"Kabocha Squash Dessert Recipe\",\n    \"For Recipes: www.HotThaiKitchen.com\",\n    \"Hot Thai Kitchen\",\n    \"Click to Subscribe!\"\n  ],\n  \"spatial\": \"The 'Related Videos' text is at the top of the screen. The red website URL is below the recipe title and above the logo. The 'Hot Thai Kitchen' logo is centered near the bottom, with the 'Click to Subscribe!' text directly below it.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 35,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      72,
+      74
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [72, 74],\n  \"visible_entities\": [\n    {\n      \"desc\": \"Black serif text reading 'Related Videos:', 'CLICK HERE for the Full Version', 'Kabocha Squash Dessert Recipe', and 'For Recipes:'.\",\n      \"action\": \"static\",\n      \"position\": \"top\"\n    },\n    {\n      \"desc\": \"Red underlined text reading 'www.HotThaiKitchen.com'.\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"Rectangular logo with a black border containing the text 'Hot Thai Kitchen' in black font and a red silhouette of a woman.\",\n      \"action\": \"static\",\n      \"position\": \"bottom\"\n    },\n    {\n      \"desc\": \"Black cursive text reading 'Click to Subscribe!'.\",\n      \"action\": \"static\",\n      \"position\": \"bottom\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The screen displays a static end card with related video information.\",\n    \"The text 'CLICK HERE for the Full Version' is visible.\",\n    \"The text 'Kabocha Squash Dessert Recipe' is visible.\",\n    \"The website 'www.HotThaiKitchen.com' is displayed in red.\",\n    \"A 'Hot Thai Kitchen' logo is present above the subscription text.\"\n  ],\n  \"ocr\": [\n    \"Related Videos:\",\n    \"CLICK HERE for the Full Version\",\n    \"Kabocha Squash Dessert Recipe\",\n    \"For Recipes: www.HotThaiKitchen.com\",\n    \"Hot Thai Kitchen\",\n    \"Click to Subscribe!\"\n  ],\n  \"spatial\": \"The 'Related Videos' text is at the top of the screen. The red website URL is below the recipe title and above the logo. The 'Hot Thai Kitchen' logo is centered near the bottom, directly above the 'Click to Subscribe!' text.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 36,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      74,
+      76
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [74, 76],\n  \"visible_entities\": [\n    {\n      \"desc\": \"Black text in serif font reading 'Related Videos:', 'CLICK HERE for the Full Version', 'Kabocha Squash Dessert Recipe', and 'For Recipes:'.\",\n      \"action\": \"static\",\n      \"position\": \"top/center\"\n    },\n    {\n      \"desc\": \"Red underlined text reading 'www.HotThaiKitchen.com'.\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"A rectangular logo with a black border containing the text 'Hot Thai Kitchen' in a bold, distressed font and a red silhouette of a woman standing to the right of the text.\",\n      \"action\": \"static\",\n      \"position\": \"bottom/center\"\n    },\n    {\n      \"desc\": \"Black text in a script font reading 'Click to Subscribe!'.\",\n      \"action\": \"static\",\n      \"position\": \"bottom\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The screen displays a static end card with related video links.\",\n    \"The text 'Kabocha Squash Dessert Recipe' is visible.\",\n    \"The website URL 'www.HotThaiKitchen.com' is displayed in red.\",\n    \"A 'Click to Subscribe!' prompt is located at the bottom of the screen.\"\n  ],\n  \"ocr\": [\n    \"Related Videos:\",\n    \"CLICK HERE for the Full Version\",\n    \"Kabocha Squash Dessert Recipe\",\n    \"For Recipes: www.HotThaiKitchen.com\",\n    \"Hot Thai Kitchen\",\n    \"Click to Subscribe!\"\n  ],\n  \"spatial\": \"The 'Related Videos' header is at the top of the screen. The 'Kabocha Squash Dessert Recipe' text is below the 'CLICK HERE' text. The red website URL is below the recipe title. The 'Hot Thai Kitchen' logo is below the website URL. The 'Click to Subscribe!' text is at the very bottom, below the logo.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 37,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      76,
+      78
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [\n    76,\n    78\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"Black text in a serif font reading 'Related Videos:', 'CLICK HERE for the Full Version', 'Kabocha Squash Dessert Recipe', and 'For Recipes:'.\",\n      \"action\": \"static\",\n      \"position\": \"top/center\"\n    },\n    {\n      \"desc\": \"Red text in a serif font reading 'www.HotThaiKitchen.com' with an underline.\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"A rectangular logo with a black border containing the text 'Hot Thai Kitchen' in a bold, stylized font and a red silhouette of a woman.\",\n      \"action\": \"static\",\n      \"position\": \"bottom/center\"\n    },\n    {\n      \"desc\": \"Black text in an italicized serif font reading 'Click to Subscribe!'.\",\n      \"action\": \"static\",\n      \"position\": \"bottom\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The screen displays a static end card with text and a logo.\",\n    \"The text 'CLICK HERE for the Full Version' is visible.\",\n    \"The text 'Kabocha Squash Dessert Recipe' is visible.\",\n    \"The website URL 'www.HotThaiKitchen.com' is displayed in red.\",\n    \"The 'Hot Thai Kitchen' logo is shown above the subscription text.\"\n  ],\n  \"ocr\": [\n    \"Related Videos:\",\n    \"CLICK HERE for the Full Version\",\n    \"Kabocha Squash Dessert Recipe\",\n    \"For Recipes: www.HotThaiKitchen.com\",\n    \"Hot Thai Kitchen\",\n    \"Click to Subscribe!\"\n  ],\n  \"spatial\": \"The 'Related Videos:' text is at the top of the screen. The 'CLICK HERE' and recipe title text are below the header. The red website URL is below the recipe title. The 'Hot Thai Kitchen' logo is below the URL. The 'Click to Subscribe!' text is at the very bottom, below the logo.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 38,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      78,
+      80
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [78, 80],\n  \"visible_entities\": [\n    {\n      \"desc\": \"Black text reading 'Related Videos:' in a serif font at the top of the screen.\",\n      \"action\": \"static\",\n      \"position\": \"top\"\n    },\n    {\n      \"desc\": \"Black text reading 'CLICK HERE for the Full Version' and 'Kabocha Squash Dessert Recipe' in a serif font.\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"Black text reading 'For Recipes:' followed by a red underlined URL 'www.HotThaiKitchen.com'.\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"A rectangular logo with a black border containing the text 'Hot Thai Kitchen' in a bold, distressed font and a red silhouette of a woman.\",\n      \"action\": \"static\",\n      \"position\": \"bottom\"\n    },\n    {\n      \"desc\": \"Black italicized text reading 'Click to Subscribe!' at the very bottom.\",\n      \"action\": \"static\",\n      \"position\": \"bottom\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The screen displays a static end card with related video links and recipe information.\",\n    \"The text 'CLICK HERE for the Full Version' is visible.\",\n    \"The text 'Kabocha Squash Dessert Recipe' is visible.\",\n    \"The URL 'www.HotThaiKitchen.com' is displayed in red.\"\n  ],\n  \"ocr\": [\n    \"Related Videos:\",\n    \"CLICK HERE for the Full Version\",\n    \"Kabocha Squash Dessert Recipe\",\n    \"For Recipes: www.HotThaiKitchen.com\",\n    \"Hot Thai Kitchen\",\n    \"Click to Subscribe!\"\n  ],\n  \"spatial\": \"The 'Related Videos' header is at the top of the screen. Below it are the lines 'CLICK HERE for the Full Version' and 'Kabocha Squash Dessert Recipe'. The website URL is below the recipe title. The 'Hot Thai Kitchen' logo is below the URL, and the 'Click to Subscribe!' text is at the very bottom.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 39,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  },
+  {
+    "time": [
+      80,
+      82
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "ocr": [],
+    "spatial": "",
+    "parse_success": false,
+    "_raw": "```json\n{\n  \"time\": [80, 82],\n  \"visible_entities\": [\n    {\n      \"desc\": \"black text reading 'Related Videos:', 'CLICK HERE for the Full Version', 'Kabocha Squash Dessert Recipe', and 'For Recipes:'\",\n      \"action\": \"static\",\n      \"position\": \"top\"\n    },\n    {\n      \"desc\": \"red underlined text reading 'www.HotThaiKitchen.com'\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"rectangular logo with a black border containing the text 'Hot Thai Kitchen' in black font and a red silhouette of a woman\",\n      \"action\": \"static\",\n      \"position\": \"bottom\"\n    },\n    {\n      \"desc\": \"black italicized text reading 'Click to Subscribe!'\",\n      \"action\": \"static\",\n      \"position\": \"bottom\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The screen displays a static end card with text and a logo.\",\n    \"The text 'CLICK HERE for the Full Version' is visible.\",\n    \"The text 'Kabocha Squash Dessert Recipe' is visible.\",\n    \"The website 'www.HotThaiKitchen.com' is displayed in red.\"\n  ],\n  \"ocr\": [\n    \"Related Videos:\",\n    \"CLICK HERE for the Full Version\",\n    \"Kabocha Squash Dessert Recipe\",\n    \"For Recipes: www.HotThaiKitchen.com\",\n    \"Hot Thai Kitchen\",\n    \"Click to Subscribe!\"\n  ],\n  \"spatial\": \"The 'Related Videos' text is at the top of the screen. The red website URL is below the recipe title text. The 'Hot Thai Kitchen' logo is below the website URL. The 'Click to Subscribe!' text is at the very bottom, below the logo.\"\n}\n```",
+    "_silent_empty": true,
+    "_retry_failed": true,
+    "chunk_idx": 40,
+    "video_id": "Kabocha_Squash_Stir-Fry_Recipe_ผ_ดฟ_กทอง_-_Hot_Thai_Kitchen_",
+    "state_changes": []
+  }
+]

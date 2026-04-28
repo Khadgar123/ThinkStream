@@ -1,0 +1,4445 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "large modern building with a light gray wavy roof and a lower facade made of gray stone blocks",
+        "action": "static",
+        "position": "center",
+        "id": "cia_building_1"
+      },
+      {
+        "desc": "text 'CIA at Copia' in dark gray sans-serif font",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "rectangular garden plots with green plants and soil, arranged in a grid pattern",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "colorful mural with purple and green abstract shapes",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "dense green trees and foliage",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The building displays the text 'CIA at Copia' on its upper facade.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A colorful mural is painted on the left side of the building.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Garden plots are arranged in the foreground in front of the building.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "CIA at Copia"
+    ],
+    "spatial": "The garden plots are in front of the building. The text 'CIA at Copia' is located on the upper section of the building's facade. The colorful mural is to the left of the text on the building. The trees are behind the building.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "large modern building with a light gray facade, flat roof, and curved glass windows",
+        "action": "static",
+        "position": "center",
+        "id": "cia_building_1"
+      },
+      {
+        "desc": "dark river with calm water",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "parking lot filled with numerous parked cars",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "dense trees with green and yellow foliage",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "distant mountains with a hazy appearance",
+        "action": "static",
+        "position": "top"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera maintains a static aerial view of the landscape.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The river flows in the foreground below the building.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The parking lot is situated to the right of the main building.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The river is in the foreground, below the large modern building. The parking lot is to the right of the building. The trees are behind the building and next to the parking lot. The mountains are in the background above the town.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": [
+      "scene transition to different building angle with river and parking lot visible"
+    ]
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "pale yellow butter cubes, smooth texture, rectangular shape, solid",
+        "action": "static",
+        "position": "foreground",
+        "id": "butter_block_1"
+      },
+      {
+        "desc": "golden-brown breaded food items, cylindrical shape, rough crumb coating",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video cuts from a close-up of butter cubes to a close-up of breaded food items.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The butter cubes are arranged in a pile.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The breaded food items are arranged in rows.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The butter cubes are in the foreground, filling the frame. The breaded food items are in the background, positioned behind the butter.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": [
+      "butter cubes and breaded food items appear"
+    ]
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown baked pastries with a textured, sugary surface",
+        "action": "static",
+        "position": "background",
+        "id": "pastries_fried_1"
+      },
+      {
+        "desc": "white text overlay in a thin, sans-serif font",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'BAKING & PASTRY EXCELLENCE' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pastries are arranged closely together in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BAKING & PASTRY",
+      "EXCELLENCE"
+    ],
+    "spatial": "The text 'BAKING & PASTRY EXCELLENCE' is centered in the foreground, overlaid on top of the golden-brown pastries which fill the background.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown baked rolls with a granular, sugar-coated surface",
+        "action": "static",
+        "position": "foreground/center",
+        "id": "pastries_fried_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The baked rolls remain stationary in the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The rolls are arranged in a tight cluster filling the view.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The golden-brown rolls are positioned next to each other, filling the foreground and center of the frame.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown fried dough pieces with a granular, sugary surface texture",
+        "action": "static",
+        "position": "foreground",
+        "id": "pastries_fried_1"
+      },
+      {
+        "desc": "pale yellow fried dough pieces with a smoother surface texture",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pile of fried dough pieces is arranged closely together.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The foreground pieces have a distinct granular coating compared to the smoother background pieces.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The golden-brown pieces with granular texture are in the foreground, while the paler, smoother pieces are positioned behind them.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "rectangular beige sign with black serif text reading 'MODEL BAKERY', mounted on a metal bracket",
+        "action": "static",
+        "position": "top right",
+        "id": "model_bakery_sign_1"
+      },
+      {
+        "desc": "rectangular beige sign with black serif text reading 'MODEL BAKERY' and a red cupcake icon, mounted under an awning",
+        "action": "static",
+        "position": "left",
+        "id": "model_bakery_sign_1"
+      },
+      {
+        "desc": "dark green fabric awning with a scalloped edge",
+        "action": "static",
+        "position": "left",
+        "id": "model_bakery_exterior_1"
+      },
+      {
+        "desc": "dark green fabric awning, angled",
+        "action": "static",
+        "position": "right",
+        "id": "model_bakery_exterior_1"
+      },
+      {
+        "desc": "cream-colored building facade",
+        "action": "static",
+        "position": "background",
+        "id": "model_bakery_exterior_1"
+      },
+      {
+        "desc": "dark green window frames",
+        "action": "static",
+        "position": "bottom",
+        "id": "model_bakery_exterior_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera remains static on the storefront.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A sign reading 'MODEL BAKERY' is mounted high on the wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A second sign reading 'MODEL BAKERY' with a cupcake logo is visible under the left awning.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MODEL BAKERY",
+      "MODEL BAKERY"
+    ],
+    "spatial": "The upper 'MODEL BAKERY' sign is mounted on the cream-colored wall above the green awnings. The lower 'MODEL BAKERY' sign is positioned directly underneath the left green awning. The left awning is adjacent to the right awning.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": [
+      "transition to Model Bakery exterior with signage"
+    ]
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "rectangular beige sign with black serif text reading 'MODEL BAKERY' and a red logo, mounted on a metal bracket",
+        "action": "static",
+        "position": "top/center",
+        "id": "model_bakery_sign_1"
+      },
+      {
+        "desc": "dark green fabric awning with a scalloped edge, attached to the building facade",
+        "action": "static",
+        "position": "left",
+        "id": "model_bakery_exterior_1"
+      },
+      {
+        "desc": "rectangular beige sign with black serif text reading 'MODEL BAKERY' and a red logo, mounted horizontally under the awning",
+        "action": "static",
+        "position": "left",
+        "id": "model_bakery_sign_1"
+      },
+      {
+        "desc": "dark green fabric awning, partially visible on the right side",
+        "action": "static",
+        "position": "right",
+        "id": "model_bakery_exterior_1"
+      },
+      {
+        "desc": "dark green patio umbrella, partially visible in the foreground",
+        "action": "static",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "white building facade with a smooth texture",
+        "action": "static",
+        "position": "background",
+        "id": "model_bakery_exterior_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The scene shows the exterior of a building with signage.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign reading 'MODEL BAKERY' is mounted above the green awning.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A second sign reading 'MODEL BAKERY' is located under the left awning.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MODEL BAKERY",
+      "MODEL BAKERY"
+    ],
+    "spatial": "The upper 'MODEL BAKERY' sign is mounted on the white wall above the green awnings. The lower 'MODEL BAKERY' sign is positioned below the left green awning. The green patio umbrella is in front of the right green awning.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone",
+        "action": "holding a round, golden-brown baked good",
+        "position": "top right",
+        "id": "hand_chef_1"
+      },
+      {
+        "desc": "round, golden-brown baked goods with a textured, crumbly top surface and a lighter, smooth side",
+        "action": "arranged in rows on a surface",
+        "position": "center and background"
+      },
+      {
+        "desc": "light-colored, flat surface",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding up one of the round, golden-brown baked goods.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Multiple baked goods are arranged in neat rows on a light-colored surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baked goods have a textured, crumbly topping on one side.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "A hand is in the foreground, holding one baked good above the others. The other baked goods are arranged in rows on the surface below and behind the one being held.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": [
+      "hands begin interacting with baked goods"
+    ]
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown baked pastry with a textured, sugary crust and a soft, pale yellow interior",
+        "action": "being pulled apart",
+        "position": "center",
+        "id": "pastries_fried_1"
+      },
+      {
+        "desc": "hands with light skin tone and short fingernails",
+        "action": "pulling the pastry apart",
+        "position": "left and right",
+        "id": "hand_chef_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "hands are pulling a pastry apart to reveal its soft interior",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the pastry has a sugary, textured crust",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are on the left and right sides of the pastry, holding it. The pastry is in the center of the frame, between the hands.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": [
+      "pastry being pulled apart to show interior"
+    ]
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "pulling apart bread",
+        "position": "foreground",
+        "id": "hand_chef_1"
+      },
+      {
+        "desc": "golden-brown bread roll with a sugary or cornmeal-dusted crust and a soft, white, fluffy interior",
+        "action": "being torn open",
+        "position": "center",
+        "id": "pastries_fried_1"
+      },
+      {
+        "desc": "additional bread rolls in the background, slightly out of focus",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Hands are pulling a bread roll apart to reveal its texture.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bread has a textured, golden-brown crust.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The interior of the bread is white and airy.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are in the foreground, holding and manipulating the bread roll in the center. The bread roll is positioned between the hands. Other bread rolls are visible in the background, behind the main subject.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a black chef's coat with a white apron, featuring a logo with a deer and text 'MODEL BAKERY' on the chest",
+        "action": "holding a large block of butter",
+        "position": "center"
+      },
+      {
+        "desc": "large rectangular block of pale yellow butter, solid and smooth",
+        "action": "being held and then placed into a pot",
+        "position": "center",
+        "id": "butter_block_1"
+      },
+      {
+        "desc": "large stainless steel pot with handles, containing melted yellow liquid",
+        "action": "static",
+        "position": "center",
+        "id": "pot_silver_1"
+      },
+      {
+        "desc": "commercial kitchen background with stainless steel counters and quilted metal walls",
+        "action": "static",
+        "position": "background",
+        "id": "stainless_counter_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person holds a large block of butter wrapped in blue plastic.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The block of butter is placed into a large metal pot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pot contains a pool of melted yellow butter at the bottom.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The chef's coat has the text 'MODEL BAKERY' visible on the chest.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MODEL",
+      "BAKERY"
+    ],
+    "spatial": "The person is standing in the center of the kitchen, holding the block of butter in front of their torso. The large metal pot is positioned below the butter block, ready to receive it. The stainless steel counters are behind the person.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": [
+      "butter block placed into pot with melted liquid"
+    ]
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with fair skin, wearing a gold ring on the ring finger",
+        "action": "holding a wooden stick",
+        "position": "top right",
+        "id": "hand_chef_1"
+      },
+      {
+        "desc": "long, thin, light-brown wooden stick",
+        "action": "being used to flip food",
+        "position": "center",
+        "id": "wooden_stick_1"
+      },
+      {
+        "desc": "rows of round, puffy pastries, pale yellow on top and golden-brown on the bottom",
+        "action": "frying in oil",
+        "position": "center",
+        "id": "pastries_frying_1"
+      },
+      {
+        "desc": "large, flat, metallic griddle surface",
+        "action": "static",
+        "position": "background",
+        "id": "griddle_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is using a wooden stick to flip a round pastry on a griddle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Numerous round pastries are arranged in rows on the hot surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pastries have a golden-brown cooked side and a pale yellow uncooked side.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is positioned in the top right corner, holding the wooden stick which extends down into the center of the frame. The stick is touching one of the pastries in the middle row. The pastries are arranged in neat rows on top of the large metal griddle.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": [
+      "frying process begins with pastries in oil on griddle"
+    ]
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown fried dough pastries with a white ring around the middle",
+        "action": "floating in oil",
+        "position": "left/center",
+        "id": "pastries_frying_1"
+      },
+      {
+        "desc": "metal wire rack with a wooden handle",
+        "action": "being held and moved",
+        "position": "right/foreground",
+        "id": "cooling_rack_1"
+      },
+      {
+        "desc": "person's arm with light skin tone",
+        "action": "holding the rack handle",
+        "position": "right"
+      },
+      {
+        "desc": "dark bubbling cooking oil",
+        "action": "boiling",
+        "position": "center/bottom",
+        "id": "oil_bubbling_1"
+      },
+      {
+        "desc": "stainless steel deep fryer with a diamond-patterned back wall",
+        "action": "static",
+        "position": "background",
+        "id": "fryer_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is lifting a metal rack out of the deep fryer.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The rack is holding several cooked pastries.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pastries are floating in the hot oil.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pastries have a golden-brown crust.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The metal rack is positioned above the dark cooking oil in the center of the fryer. The person's arm is on the right side, holding the handle of the rack. The uncooked or cooking pastries are to the left of the rack in the oil.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": [
+      "donuts lifted from fryer with wire rack"
+    ]
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a black short-sleeved shirt with a logo on the chest and a white apron",
+        "action": "holding a metal wire rack",
+        "position": "center"
+      },
+      {
+        "desc": "golden-brown round pastries, likely donuts, with a smooth fried texture",
+        "action": "being held on a rack and resting on a surface",
+        "position": "foreground and center"
+      },
+      {
+        "desc": "metal wire cooling rack with a grid pattern",
+        "action": "being held by the person",
+        "position": "center",
+        "id": "cooling_rack_1"
+      },
+      {
+        "desc": "stainless steel industrial kitchen equipment with a quilted metal backsplash",
+        "action": "static",
+        "position": "background",
+        "id": "stainless_counter_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a metal wire rack filled with golden-brown pastries.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The rack is positioned above a table surface covered with more pastries.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a white apron over a black shirt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing in the center, holding the wire rack in front of their torso. The rack is positioned above the pastries that are resting on the table in the foreground. The stainless steel kitchen equipment is located behind the person.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long blonde hair, wearing a dark grey and black striped shirt and a white apron with a logo",
+        "action": "speaking",
+        "position": "center",
+        "id": "person_chef_female_1"
+      },
+      {
+        "desc": "golden-brown round pastries, likely donuts, arranged on a wire cooling rack",
+        "action": "static",
+        "position": "foreground",
+        "id": "pastries_fried_1"
+      },
+      {
+        "desc": "person wearing a black shirt and white apron, standing behind a counter",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "stainless steel counter with a quilted metal backsplash",
+        "action": "static",
+        "position": "background",
+        "id": "stainless_counter_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman with blonde hair is speaking to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A lower-third graphic identifies the woman as Sarah Hansen, Owner of Model Bakery.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Freshly baked golden-brown pastries are cooling on a wire rack in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a white apron stands behind the pastries in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SARAH HANSEN",
+      "OWNER",
+      "MODEL BAKERY",
+      "MODEL",
+      "BAKERY"
+    ],
+    "spatial": "The woman is in the center of the frame, with a blurred background behind her. The pastries are in the foreground, positioned in front of the person in the white apron. The person in the white apron is standing behind the stainless steel counter.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length blonde hair, wearing a dark grey and black horizontal striped long-sleeve shirt and a white apron with a logo",
+        "action": "speaking",
+        "position": "center",
+        "id": "person_chef_female_1"
+      },
+      {
+        "desc": "white apron with a gold logo featuring a chef's hat and text",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black lower-third graphic overlay with white text",
+        "action": "static",
+        "position": "bottom left",
+        "id": "lower_third_1"
+      },
+      {
+        "desc": "blurred background showing a room with white pillars and wooden furniture",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is speaking to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text overlay identifies the speaker as Sarah Hansen, Owner of Model Bakery.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The apron features the text 'MODEL BAKERY' and a graphic of a chef's hat.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SARAH HANSEN",
+      "OWNER",
+      "MODEL BAKERY",
+      "MODEL",
+      "BAKERY"
+    ],
+    "spatial": "The woman is in the center of the frame, wearing the apron over her striped shirt. The text overlay is positioned in the bottom left corner, in front of the woman's torso. The blurred room interior is behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": [
+      "interview segment begins with lower-third graphic"
+    ]
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown fried food pieces, coated in granular breadcrumbs, piled together",
+        "action": "static"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The fried food pieces are stationary in a pile.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The food has a textured, golden-brown breadcrumb coating.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The fried food pieces are piled together, with some pieces in the foreground and others behind them. The pieces are next to each other, filling the frame.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown, hexagonal pastries with a granular, sugary crust texture",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "woman with long blonde hair, wearing a dark grey and black striped long-sleeve shirt and a white apron with gold embroidery",
+        "action": "static",
+        "position": "center",
+        "id": "person_chef_female_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video cuts from a close-up of the pastries to a medium shot of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing an apron with the word 'MODEL' embroidered on it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pastries are piled together in a container.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MODEL"
+    ],
+    "spatial": "The pastries are shown in the foreground in the first frame. The woman is centered in the frame in the second shot, with a blurred background containing a wooden table and white chairs behind her.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long blonde hair, wearing a dark grey and black striped long-sleeve shirt and a cream-colored apron with a wheat graphic",
+        "action": "speaking",
+        "position": "center/foreground",
+        "id": "person_chef_female_1"
+      },
+      {
+        "desc": "wooden table with light-colored legs",
+        "action": "static",
+        "position": "background/left",
+        "id": "wooden_table_1"
+      },
+      {
+        "desc": "white vertical pillar",
+        "action": "static",
+        "position": "background/center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is speaking, with her mouth moving between frames.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The apron features the text 'MODEL' above a graphic of wheat stalks.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a striped shirt underneath the apron.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MODEL"
+    ],
+    "spatial": "The woman is in the foreground, positioned in front of a white pillar and a wooden table. The wooden table is to the left of the woman in the background.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long blonde hair, wearing a black and grey striped long-sleeve shirt and a cream-colored apron with a wheat graphic",
+        "action": "speaking",
+        "position": "foreground",
+        "id": "person_chef_female_1"
+      },
+      {
+        "desc": "large rectangular photograph showing a group of people standing in front of a storefront",
+        "action": "static",
+        "position": "background",
+        "id": "photo_storefront_1"
+      },
+      {
+        "desc": "wooden table with a light finish",
+        "action": "static",
+        "position": "background left",
+        "id": "wooden_table_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman with blonde hair is speaking to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing an apron with the word 'MODEL' printed on it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A photograph is hanging on a wall in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The photograph depicts a group of people posing outside a bakery.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MODEL",
+      "MODEL BAKERY"
+    ],
+    "spatial": "The woman is in the foreground, positioned in front of a blurred background. To the left of the woman, a wooden table is visible in the background. Above and behind the woman, a large photograph is hanging on a wall.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "framed photograph showing a group of people posing in front of a storefront",
+        "action": "static",
+        "position": "background",
+        "id": "photo_storefront_1"
+      },
+      {
+        "desc": "golden-brown round pastries, likely donuts, with light tan tops and white dough sides",
+        "action": "being fried",
+        "position": "foreground",
+        "id": "pastries_frying_1"
+      },
+      {
+        "desc": "dark cooking oil in a metal fryer",
+        "action": "static",
+        "position": "center",
+        "id": "oil_bubbling_1"
+      },
+      {
+        "desc": "metal wire frying rack with a wooden handle",
+        "action": "being held",
+        "position": "right",
+        "id": "cooling_rack_1"
+      },
+      {
+        "desc": "person's arm and hand",
+        "action": "holding the frying rack",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a metal frying rack over a vat of oil.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Round pastries are floating in the hot oil.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A framed photograph is hanging on a wall above the cooking area.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The photograph displays a group of people standing outside a bakery.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MODEL BAKERY"
+    ],
+    "spatial": "The framed photograph is hanging on the wall in the background, positioned above the cooking area. In the foreground, golden-brown pastries are floating in the dark oil. To the right of the pastries, a person's hand is holding a metal frying rack with a wooden handle, positioning it over the fryer.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a white apron over a dark shirt, with a silver ring on their finger",
+        "action": "lifting a metal grate",
+        "position": "right"
+      },
+      {
+        "desc": "golden-brown fried donuts with white centers, puffy texture",
+        "action": "being lifted",
+        "position": "center",
+        "id": "pastries_fried_1"
+      },
+      {
+        "desc": "metal grate with parallel bars and a wooden handle",
+        "action": "being held",
+        "position": "center",
+        "id": "metal_grate_1"
+      },
+      {
+        "desc": "large industrial fryer with dark oil and a diamond-plate metal backsplash",
+        "action": "static",
+        "position": "background",
+        "id": "fryer_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is lifting a metal grate out of a large fryer.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The grate is holding a batch of golden-brown donuts.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The donuts are being removed from the hot oil.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is to the right of the fryer. The metal grate is above the dark oil in the fryer. The donuts are on top of the metal grate. The diamond-plate backsplash is behind the fryer.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a white apron and a white wristwatch",
+        "action": "holding a metal cooling rack",
+        "position": "left"
+      },
+      {
+        "desc": "golden-brown round pastries with a white cream filling",
+        "action": "resting on a wire rack",
+        "position": "center",
+        "id": "pastries_fried_1"
+      },
+      {
+        "desc": "metal wire cooling rack with a wooden handle",
+        "action": "being held",
+        "position": "foreground",
+        "id": "cooling_rack_1"
+      },
+      {
+        "desc": "tall metal shelving unit with trays",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a metal wire cooling rack loaded with pastries.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pastries are round, golden-brown, and have a visible white cream layer in the middle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The rack has a wooden handle on the left side.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is on the left side of the frame, holding the metal rack which extends towards the center. The golden-brown pastries are arranged in rows on top of the wire rack. In the background, behind the person and the rack, there is a tall metal shelving unit.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with shoulder-length blonde hair, wearing a dark grey and black horizontal striped t-shirt and a cream-colored apron",
+        "action": "sitting and speaking",
+        "position": "center/foreground",
+        "id": "person_chef_female_1"
+      },
+      {
+        "desc": "cream-colored apron with a graphic of a wheat sheaf and text",
+        "action": "static",
+        "position": "center/foreground",
+        "id": "apron_wheat_1"
+      },
+      {
+        "desc": "wooden table with a light finish",
+        "action": "static",
+        "position": "background/left",
+        "id": "wooden_table_1"
+      },
+      {
+        "desc": "white structural columns",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is sitting and speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The apron features the text 'MODEL BAKERY' and an illustration of a wheat sheaf.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a striped shirt under the apron.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MODEL",
+      "BAKERY"
+    ],
+    "spatial": "The woman is in the foreground, centered in the frame. The wooden table is behind her and to the left. The white columns are in the background behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "wooden-framed chalkboard with a black surface and white handwritten text",
+        "action": "static",
+        "position": "center",
+        "id": "chalkboard_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A chalkboard sign is displayed, featuring white handwritten text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the board reads 'THE BIRTHPLACE OF OPRAH'S FAVORITE \"ENGLISH MUFFIN\"'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THE BIRTHPLACE",
+      "OF OPRAH'S FAVORITE",
+      "\"ENGLISH MUFFIN\""
+    ],
+    "spatial": "The chalkboard is positioned centrally in the frame, with a wooden frame surrounding the black writing surface. The text is written in the center of the board.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "Black chalkboard with a light-colored wooden frame, featuring handwritten text in white chalk.",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A chalkboard sign is displayed with text written on it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the board reads 'THE BIRTHPLACE OF Oprah's Favorite \"ENGLISH MUFFIN\"'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THE BIRTHPLACE",
+      "OF Oprah's FAVORITE",
+      "\"ENGLISH MUFFIN\""
+    ],
+    "spatial": "The chalkboard is positioned centrally in the frame. The text is written on the surface of the chalkboard, arranged in lines from top to bottom.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long blonde hair, wearing a dark grey and black horizontal striped long-sleeve shirt and a cream-colored apron",
+        "action": "speaking",
+        "position": "right foreground",
+        "id": "person_chef_female_1"
+      },
+      {
+        "desc": "wooden table with light-colored legs",
+        "action": "static",
+        "position": "left background",
+        "id": "wooden_table_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is speaking with her mouth open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The apron has the word 'MODEL' printed on the chest area.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a striped shirt underneath the apron.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MODEL"
+    ],
+    "spatial": "The woman is positioned in the foreground on the right side of the frame. A wooden table is visible in the background to the left of the woman. The text 'MODEL' is located on the front of the apron worn by the woman.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark grey short-sleeved shirt, a white apron tied around the waist, brown pants, and a white watch on the left wrist",
+        "action": "handling dough",
+        "position": "right"
+      },
+      {
+        "desc": "large mass of white dough, soft and pliable texture",
+        "action": "being manipulated",
+        "position": "center",
+        "id": "dough_raw_1"
+      },
+      {
+        "desc": "red plastic cutting board, rectangular with rounded corners",
+        "action": "static",
+        "position": "center",
+        "id": "cutting_board_1"
+      },
+      {
+        "desc": "white wall chart with a grid of black horizontal lines and pink/red text labels",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "woven wicker basket, light brown",
+        "action": "static",
+        "position": "background",
+        "id": "wicker_basket_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is using their hands to fold and shape the white dough on the red cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red cutting board is resting on a metal work table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white wall chart with a grid is mounted on the wall behind the workspace.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wicker basket sits on the table in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FOCACCIA"
+    ],
+    "spatial": "The person is standing to the right of the red cutting board, which is placed on the metal table. The white dough is on top of the red cutting board. The wall chart is located on the wall behind the table and to the left of the person. The wicker basket is on the table, behind the cutting board.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": [
+      "dough handling process begins"
+    ]
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly dark hair, beard, glasses, wearing a grey head covering, black short-sleeved shirt, and a white apron",
+        "action": "placing a red tray with dough into a machine",
+        "position": "center"
+      },
+      {
+        "desc": "white industrial dough press machine with a mechanical arm and a red logo",
+        "action": "static",
+        "position": "right",
+        "id": "dough_press_1"
+      },
+      {
+        "desc": "red circular tray holding a flattened white dough disc",
+        "action": "being held and inserted into the machine",
+        "position": "center-right"
+      },
+      {
+        "desc": "wooden work table covered in flour with a red textured tray and a wicker basket",
+        "action": "static",
+        "position": "left",
+        "id": "wooden_table_1"
+      },
+      {
+        "desc": "metal wire shelving unit holding boxes and containers",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man inserts a red tray containing dough into the white machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The machine has a red logo with the text 'PIKA' on the front.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "There is a red textured tray resting on the wooden table in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PIKA"
+    ],
+    "spatial": "The man is standing in the center, positioned between the wooden table on the left and the white machine on the right. He is holding the red tray with dough in front of the machine's opening. The metal shelving unit is located behind the machine.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": [
+      "dough placed into industrial press machine"
+    ]
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "industrial machine press with a beige, weathered metal frame and a dark grey upper pressing mechanism featuring vertical slots",
+        "action": "lifting upwards",
+        "position": "center",
+        "id": "dough_press_1"
+      },
+      {
+        "desc": "stack of round, pale dough balls, smooth and uniform in size",
+        "action": "being revealed",
+        "position": "center",
+        "id": "dough_raw_1"
+      },
+      {
+        "desc": "red circular tray or base plate",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "thick, off-white circular ring component",
+        "action": "moving upwards",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The machine press lifts upwards to reveal a batch of dough balls.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dough balls are arranged in a circular pattern on the red tray.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The off-white ring component rises along with the upper mechanism.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The industrial machine press is positioned above the red circular tray. The stack of dough balls rests on the red tray, directly underneath the lifting mechanism. The off-white ring is situated between the upper dark grey mechanism and the dough balls.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a white apron over a black short-sleeved shirt, with a white wristwatch on their left wrist",
+        "action": "holding a red tray with dough balls and sprinkling yellow powder",
+        "position": "left"
+      },
+      {
+        "desc": "red plastic tray holding multiple small, round, white dough balls",
+        "action": "being held by the person",
+        "position": "left foreground"
+      },
+      {
+        "desc": "large, industrial, off-white machine with a circular pressing mechanism and a black handle",
+        "action": "static",
+        "position": "right",
+        "id": "dough_press_1"
+      },
+      {
+        "desc": "large, rectangular, silver metal baking sheet",
+        "action": "static",
+        "position": "center",
+        "id": "baking_tray_1"
+      },
+      {
+        "desc": "fine, bright yellow powder covering the baking sheet",
+        "action": "being sprinkled",
+        "position": "center",
+        "id": "yellow_powder_1"
+      },
+      {
+        "desc": "white bowl containing a yellow liquid",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person holds a red tray filled with white dough balls next to a large machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person sprinkles a fine yellow powder onto a metal baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baking sheet is almost completely covered in the yellow powder.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The machine has a label with the text 'ACE' visible on it.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ACE"
+    ],
+    "spatial": "The person is on the left side of the frame, holding the red tray of dough balls in front of the large machine. The metal baking sheet, covered in yellow powder, is in the center of the frame, below the person's hand. The white bowl with yellow liquid is to the right of the baking sheet.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": [
+      "yellow powder sprinkled onto dough balls"
+    ]
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with beard, wearing glasses, black short-sleeved chef shirt with gold logo, white apron, watch on left wrist",
+        "action": "rolling dough balls on a wooden table",
+        "position": "center"
+      },
+      {
+        "desc": "white dough balls, round and smooth",
+        "action": "being rolled and placed on a tray",
+        "position": "foreground and center",
+        "id": "dough_raw_1"
+      },
+      {
+        "desc": "yellow rectangular tray, smooth surface",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "red silicone mat with circular indentations",
+        "action": "static",
+        "position": "left",
+        "id": "silicone_mat_1"
+      },
+      {
+        "desc": "wooden work table, light brown, dusted with flour",
+        "action": "static",
+        "position": "center",
+        "id": "wooden_table_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is rolling a piece of white dough into a ball with his hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man places the formed dough ball onto a yellow tray.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "There are multiple dough balls already arranged on the yellow tray.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red silicone mat with circular molds sits on the left side of the table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's black shirt features a gold logo with a deer head and text.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MODEL",
+      "BAKKERY"
+    ],
+    "spatial": "The man stands behind the wooden work table. The yellow tray is in the foreground, positioned in front of the man. The red silicone mat is to the left of the man's hands on the table. The dough balls are on the yellow tray and on the wooden table surface.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a white apron over a dark shirt, with fair skin",
+        "action": "placing dough balls onto a tray",
+        "position": "center/background"
+      },
+      {
+        "desc": "round, smooth, white dough balls",
+        "action": "being arranged on a tray",
+        "position": "foreground/center",
+        "id": "dough_raw_1"
+      },
+      {
+        "desc": "rectangular metal baking tray with a bright yellow silicone mat",
+        "action": "static",
+        "position": "foreground",
+        "id": "baking_tray_1"
+      },
+      {
+        "desc": "wooden work surface with flour dusting and a red silicone mat",
+        "action": "static",
+        "position": "left",
+        "id": "wooden_table_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is placing round dough balls onto a yellow mat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dough balls are arranged in rows on the baking tray.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding two dough balls in the air before placing them down.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The metal baking tray with the yellow mat is in the foreground. The person is standing behind the tray. The wooden work surface is to the left of the tray. The dough balls are on top of the yellow mat.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      68,
+      70
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly brown hair, beard, glasses, grey striped headband, and a dark grey chef's coat with a logo on the left chest",
+        "action": "speaking and gesturing with hands",
+        "position": "center",
+        "id": "person_chef_male_1"
+      },
+      {
+        "desc": "white round dough balls on a yellow baking sheet",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "person's hand and arm in the background",
+        "action": "reaching towards the dough",
+        "position": "top left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the grey chef's coat is speaking and gesturing with his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "White dough balls are arranged on a yellow baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is reaching towards the dough balls in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text overlay identifies the speaker as Gordon Patty, Production Manager at Model Bakery.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "GORDON PATTY",
+      "PRODUCTION MANAGER",
+      "MODEL BAKERY"
+    ],
+    "spatial": "The man in the grey chef's coat is centered in the frame. The baking sheet with dough balls is in the foreground, below the man's face. The hand reaching for the dough is in the background, to the left of the man.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      70,
+      72
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly brown hair, beard, and glasses, wearing a grey striped chef's hat and a dark grey chef's coat with a 'Model Bakery' logo",
+        "action": "gesturing with hands",
+        "position": "center",
+        "id": "person_chef_male_1"
+      },
+      {
+        "desc": "text overlay with white sans-serif font reading 'GORDON PATTY' and 'PRODUCTION MANAGER MODEL BAKERY'",
+        "action": "static",
+        "position": "bottom right",
+        "id": "lower_third_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is gesturing with his hands while speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text overlay identifies the man as Gordon Patty, Production Manager at Model Bakery.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a grey chef's coat with a logo on the left chest.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "GORDON PATTY",
+      "PRODUCTION MANAGER",
+      "MODEL BAKERY"
+    ],
+    "spatial": "The man is positioned in the center of the frame, in front of a blurred background of large windows. The text overlay is located in the bottom right corner of the screen, below and to the right of the man.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      72,
+      74
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly brown hair, beard, and glasses, wearing a dark grey chef's jacket and a white apron with gold embroidery",
+        "action": "working with dough",
+        "position": "center",
+        "id": "person_chef_male_1"
+      },
+      {
+        "desc": "white apron with gold embroidered text 'MODEL BAKERY' and a wheat sheaf logo",
+        "action": "static",
+        "position": "center",
+        "id": "apron_wheat_1"
+      },
+      {
+        "desc": "wooden work table covered in flour",
+        "action": "static",
+        "position": "foreground",
+        "id": "wooden_table_1"
+      },
+      {
+        "desc": "white dough balls on red silicone mats",
+        "action": "static",
+        "position": "left",
+        "id": "dough_raw_1"
+      },
+      {
+        "desc": "smartwatch with a white band and black face",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is standing at a wooden table covered in flour.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is handling dough on the table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The apron reads 'MODEL BAKERY' in gold lettering.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "There are portions of white dough resting on red mats on the left side of the table.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MODEL",
+      "BAKERY"
+    ],
+    "spatial": "The man is standing behind the wooden work table. The dough balls on red mats are to the left of the man's hands. The 'MODEL BAKERY' text is embroidered on the upper chest of the apron worn by the man.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      74,
+      76
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark grey short-sleeved t-shirt, a white apron, and a silver watch with a white strap",
+        "action": "arranging dough balls",
+        "position": "center/right"
+      },
+      {
+        "desc": "round white dough balls, smooth texture",
+        "action": "being placed",
+        "position": "foreground/center",
+        "id": "dough_raw_1"
+      },
+      {
+        "desc": "metal baking tray lined with a yellow silicone mat",
+        "action": "static",
+        "position": "foreground/bottom",
+        "id": "silicone_mat_1"
+      },
+      {
+        "desc": "red silicone mat with round dough balls",
+        "action": "static",
+        "position": "background/left",
+        "id": "silicone_mat_1"
+      },
+      {
+        "desc": "white plastic container",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is placing round white dough balls onto a yellow silicone mat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dough balls are arranged in neat rows on the baking tray.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red silicone mat with more dough balls sits on the table in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The metal baking tray with the yellow mat is in the foreground. The person is standing behind the tray, reaching over it to place the dough balls. To the left of the tray, there is a white container and a red mat with additional dough balls.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      76,
+      78
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a dark long-sleeved shirt and a white wristband on the left wrist",
+        "action": "sliding a baking tray onto a rack",
+        "position": "left/foreground"
+      },
+      {
+        "desc": "smooth, pale yellow, round dough buns",
+        "action": "resting on a tray",
+        "position": "center/foreground",
+        "id": "dough_raw_1"
+      },
+      {
+        "desc": "metal baking tray with a yellow silicone mat",
+        "action": "being held by the person",
+        "position": "center",
+        "id": "baking_tray_1"
+      },
+      {
+        "desc": "multi-tiered metal cooling rack",
+        "action": "static",
+        "position": "right/background",
+        "id": "cooling_rack_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is sliding a metal baking tray onto a shelf of a metal rack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tray is lined with a yellow mat and holds several round, pale dough buns.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a white wristband on their left wrist.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned to the left of the metal rack. The person is holding the baking tray with the dough buns, which are resting on top of the yellow mat. The rack is to the right of the person, with other trays visible on the shelves above and below the one being used.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      78,
+      80
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly brown hair, beard, glasses, grey headband, dark grey chef coat with logo",
+        "action": "static",
+        "position": "center",
+        "id": "person_chef_male_1"
+      },
+      {
+        "desc": "metal baking rack with multiple shelves",
+        "action": "static",
+        "position": "background",
+        "id": "cooling_rack_1"
+      },
+      {
+        "desc": "round dough balls on baking trays",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "hairy arm and hand",
+        "action": "moving",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man wearing a grey headband and glasses is shown in a medium shot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is moving in the foreground, partially obscuring the view.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's chef coat features a logo with a tree and the text 'MODEL BAKERY'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Baking trays with round dough balls are visible on the metal rack.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MODEL",
+      "BAKERY"
+    ],
+    "spatial": "The man is centered in the frame, appearing in front of the metal baking rack. The baking rack is behind the man and contains trays of dough. A hand is moving in the foreground, positioned in front of the baking rack.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      80,
+      82
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly brown hair, beard, glasses, grey striped headband, and dark grey chef's coat with 'MODEL BAKERY' logo",
+        "action": "talking and gesturing with hand",
+        "position": "center",
+        "id": "person_chef_male_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "man is talking",
+        "confidence": 1.0
+      },
+      {
+        "fact": "man gestures with his right hand",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the chef's coat has a logo that reads 'MODEL BAKERY'",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MODEL",
+      "BAKERY"
+    ],
+    "spatial": "The man is in the foreground, centered in the frame. The background, which appears to be a building with large windows, is behind him.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      82,
+      84
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly brown hair, beard, and glasses, wearing a grey striped headband and a dark grey denim chef's jacket with 'MODEL BAKERY' embroidered on the chest",
+        "action": "gesturing with hand",
+        "position": "foreground",
+        "id": "person_chef_male_1"
+      },
+      {
+        "desc": "rows of round, golden-brown topped pastries with white sides, arranged on a metal baking tray",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "man gestures with his right hand while speaking",
+        "confidence": 1.0
+      },
+      {
+        "fact": "pastries are arranged in neat rows on a baking sheet",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the chef's jacket has 'MODEL BAKERY' embroidered on the left chest",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MODEL",
+      "BAKERY"
+    ],
+    "spatial": "The man in the chef's jacket is in the foreground, positioned in front of the background scene containing the pastries. The pastries are arranged on a tray that is behind the man.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      84,
+      86
+    ],
+    "visible_entities": [
+      {
+        "desc": "rows of round, thick, golden-brown pastries with white creamy centers, frying in oil",
+        "action": "frying in hot oil",
+        "position": "center/foreground",
+        "id": "pastries_frying_1"
+      },
+      {
+        "desc": "large, rectangular, metallic deep-frying vat with rusted edges",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "human hand with fingers visible",
+        "action": "reaching towards the pastries",
+        "position": "top right",
+        "id": "hand_chef_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Rows of round pastries are frying in hot oil inside a large metal vat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pastries have a golden-brown crust on the top and bottom with a white creamy center.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is visible in the top right corner, reaching towards the food.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The rows of frying pastries fill the center and foreground of the frame. The metallic vat surrounds the pastries. A human hand is positioned in the top right corner, above and near the pastries.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      86,
+      88
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly brown hair, beard, glasses, grey headband, wearing a dark grey short-sleeved chef coat with a logo",
+        "action": "gesturing with right hand",
+        "position": "center",
+        "id": "person_chef_male_1"
+      },
+      {
+        "desc": "rows of round, two-toned pastries with golden-brown tops and white bottoms, frying in oil",
+        "action": "static",
+        "position": "foreground",
+        "id": "pastries_frying_1"
+      },
+      {
+        "desc": "large metal griddle surface",
+        "action": "static",
+        "position": "background",
+        "id": "griddle_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the grey chef coat is gesturing with his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Rows of round pastries are frying in oil on a large metal griddle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pastries have a distinct two-tone appearance with golden-brown tops and white bottoms.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MODRL",
+      "BAKERY"
+    ],
+    "spatial": "The man in the grey chef coat is in the center of the frame. The rows of frying pastries are in the foreground, below the man's position. The metal griddle is behind the pastries.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      88,
+      90
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly brown hair, beard, glasses, grey striped headband, dark grey chef coat with logo",
+        "action": "gesturing with right hand",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man gestures with his right hand, palm open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a grey striped headband.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man has a beard and glasses.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'MODEL BAKERY' is visible on the man's coat.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MODEL",
+      "BAKERY"
+    ],
+    "spatial": "The man is in the foreground, centered in the frame. The text 'MODEL BAKERY' is on the left side of his chest (viewer's right). The background is blurred and behind the man.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      90,
+      92
+    ],
+    "visible_entities": [
+      {
+        "desc": "yellow liquid mixture with white foam patches",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "metallic pot rim",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A yellow liquid mixture fills the container.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "White foam is visible along the edges of the liquid.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The yellow liquid mixture is inside the container. The metallic rim is located at the bottom of the frame, below the liquid.",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      92,
+      94
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's arm with light skin tone, wearing a dark wristwatch with a white band",
+        "action": "manipulating food on a griddle",
+        "position": "foreground"
+      },
+      {
+        "desc": "long, thin, yellow wooden stick",
+        "action": "being used to flip food",
+        "position": "center",
+        "id": "wooden_stick_1"
+      },
+      {
+        "desc": "metal spatula with a black handle",
+        "action": "being used to lift food",
+        "position": "center",
+        "id": "spatula_1"
+      },
+      {
+        "desc": "rectangular metal griddle with bubbling white liquid and multiple round, golden-brown food items",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using a wooden stick and a metal spatula to cook food.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person flips a round, golden-brown food item using the wooden stick.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The food items are cooking in a bubbling white liquid on the griddle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The food items have a golden-brown crust on one side and a pale yellow interior.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's arm is in the foreground, positioned above the metal griddle. The wooden stick and spatula are held by the person and are interacting with the food items on the griddle surface. The food items are arranged in rows on the griddle, surrounded by the bubbling white liquid.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      94,
+      96
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly brown hair, beard, glasses, grey headband, dark grey chef's jacket",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "rectangular golden-brown cakes with white filling, arranged in rows",
+        "action": "being cooked",
+        "position": "center"
+      },
+      {
+        "desc": "metal spatula with black handle",
+        "action": "being held",
+        "position": "right",
+        "id": "spatula_1"
+      },
+      {
+        "desc": "wooden stick",
+        "action": "being held",
+        "position": "left",
+        "id": "wooden_stick_1"
+      },
+      {
+        "desc": "large metal griddle",
+        "action": "static",
+        "position": "bottom",
+        "id": "griddle_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a wooden stick and a metal spatula over a griddle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Rows of rectangular cakes are cooking on the hot surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the grey headband is looking forward.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is positioned in the center of the frame. The griddle is located below the man's hands. The wooden stick is to the left of the metal spatula. The cakes are arranged on top of the griddle.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      96,
+      98
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly brown hair, beard, glasses, grey bandana, and a dark grey chef's coat",
+        "action": "looking forward with a surprised expression",
+        "position": "center",
+        "id": "person_chef_male_1"
+      },
+      {
+        "desc": "piece of golden-brown fried food with a crispy, textured crust",
+        "action": "being held",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is looking forward with a surprised expression.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is holding a piece of fried food.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is in the background, centered in the frame. The piece of fried food is in the foreground, held by a hand that is partially visible.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      98,
+      100
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with dark curly hair, beard, glasses, wearing a grey bandana and a dark grey chef's coat with a logo",
+        "action": "static",
+        "position": "center",
+        "id": "person_chef_male_1"
+      },
+      {
+        "desc": "golden-brown pastry with a textured, seeded surface and white crumbly interior",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the grey chef's coat is sitting still.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pastry is shown in a close-up shot.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MIDDLE",
+      "BAKERY"
+    ],
+    "spatial": "The man is in the center of the frame. The pastry is to the right of the man. The text 'MIDDLE BAKERY' is on the left side of the man's chest.",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      100,
+      102
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly dark hair, beard, glasses, wearing a grey bandana and a dark grey chef's coat with a logo",
+        "action": "standing outdoors",
+        "position": "center",
+        "id": "person_chef_male_1"
+      },
+      {
+        "desc": "large rectangular block of pale yellow butter, wrapped in clear plastic with blue edges",
+        "action": "being held",
+        "position": "foreground",
+        "id": "butter_block_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man is standing outside a building with glass windows.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is holding a large block of butter with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The butter block is wrapped in plastic packaging.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MODEL",
+      "CITY",
+      "BAKERY"
+    ],
+    "spatial": "The man is standing in front of a building with large glass windows. He is holding the large block of butter in front of his torso. The logo on his chef's coat is located on the left side of his chest.",
+    "parse_success": true,
+    "chunk_idx": 50,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      102,
+      104
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with tan skin, wearing a white shirt and a white wristwatch with a perforated band",
+        "action": "lowering a block into a pot",
+        "position": "center"
+      },
+      {
+        "desc": "large rectangular block of pale yellow butter wrapped in blue plastic",
+        "action": "being lowered into the pot",
+        "position": "center",
+        "id": "butter_block_1"
+      },
+      {
+        "desc": "large silver metal stockpot with handles",
+        "action": "static",
+        "position": "center",
+        "id": "pot_silver_1"
+      },
+      {
+        "desc": "red tiled floor",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is lowering a large block of butter into a metal pot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The butter is wrapped in blue plastic.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a white watch on their left wrist.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing behind the large metal pot. The block of butter is being held by the person and is positioned inside the pot. The red tiled floor is below the pot and the person.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": [
+      "butter block lowered into stockpot"
+    ]
+  },
+  {
+    "time": [
+      104,
+      106
+    ],
+    "visible_entities": [
+      {
+        "desc": "large silver metal stockpot with riveted handles",
+        "action": "being tilted and placed on stove",
+        "position": "center/foreground",
+        "id": "pot_silver_1"
+      },
+      {
+        "desc": "large rectangular block of pale yellow butter",
+        "action": "sliding into pot",
+        "position": "inside pot",
+        "id": "butter_block_1"
+      },
+      {
+        "desc": "industrial gas burner with spiral grate emitting blue flame",
+        "action": "burning",
+        "position": "left/background"
+      },
+      {
+        "desc": "hand with light skin tone",
+        "action": "holding pot handle",
+        "position": "top right",
+        "id": "hand_chef_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is tilting a large metal pot to slide a block of butter into it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pot is being moved over a lit gas stove burner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The butter block is sliding down the side of the pot.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large silver pot is positioned in the foreground, partially obscuring the gas burner which is to the left and below it. The block of butter is inside the pot. A hand is visible at the top right, holding the handle of the pot.",
+    "parse_success": true,
+    "chunk_idx": 52,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": [
+      "pot placed on gas burner, butter sliding in"
+    ]
+  },
+  {
+    "time": [
+      106,
+      108
+    ],
+    "visible_entities": [
+      {
+        "desc": "large rectangular block of pale yellow butter, smooth and solid",
+        "action": "melting",
+        "position": "center",
+        "id": "butter_block_1"
+      },
+      {
+        "desc": "large silver metal stockpot with riveted handles",
+        "action": "static",
+        "position": "center",
+        "id": "pot_silver_1"
+      },
+      {
+        "desc": "pool of melted yellow butter liquid",
+        "action": "simmering",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A large block of butter is melting inside a metal pot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The butter block is sitting in a pool of its own melted liquid.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The melted butter is bubbling slightly around the edges of the solid block.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The large block of butter is inside the silver metal pot. The solid butter block is positioned in the center, resting on top of the pool of melted butter liquid at the bottom of the pot.",
+    "parse_success": true,
+    "chunk_idx": 53,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": [
+      "butter melting into liquid pool"
+    ]
+  },
+  {
+    "time": [
+      108,
+      110
+    ],
+    "visible_entities": [
+      {
+        "desc": "large silver metal stockpot with riveted handles",
+        "action": "static",
+        "position": "center",
+        "id": "pot_silver_1"
+      },
+      {
+        "desc": "white creamy liquid with a smooth surface",
+        "action": "static",
+        "position": "inside the pot"
+      },
+      {
+        "desc": "white steam rising from the liquid",
+        "action": "rising",
+        "position": "above the liquid"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A large silver stockpot is sitting on a stove.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pot contains a white liquid.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Steam is rising from the white liquid, indicating it is hot.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white liquid is inside the large silver stockpot. The stockpot is centered in the frame. Steam is rising above the liquid.",
+    "parse_success": true,
+    "chunk_idx": 54,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      110,
+      112
+    ],
+    "visible_entities": [
+      {
+        "desc": "large silver metal pot with a handle on the left side",
+        "action": "static",
+        "position": "center",
+        "id": "pot_silver_1"
+      },
+      {
+        "desc": "white opaque liquid filling the pot",
+        "action": "steaming",
+        "position": "inside the pot"
+      },
+      {
+        "desc": "white steam rising from the liquid",
+        "action": "rising",
+        "position": "above the pot"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "white steam is rising from the surface of the white liquid",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the pot is filled with a white opaque liquid",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the pot is sitting on a surface",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white liquid is inside the large silver metal pot. The steam is rising above the liquid and the pot. The pot handle is on the left side of the pot.",
+    "parse_success": true,
+    "chunk_idx": 55,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      112,
+      114
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly brown hair, beard, glasses, wearing a grey striped cap and a dark grey chef's coat with a logo",
+        "action": "gesturing with left hand",
+        "position": "center",
+        "id": "person_chef_male_1"
+      },
+      {
+        "desc": "metal baking rack with multiple shelves",
+        "action": "static",
+        "position": "foreground",
+        "id": "cooling_rack_1"
+      },
+      {
+        "desc": "rows of round, pale dough balls on a yellow-dusted baking sheet",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "person in a white apron and dark shirt",
+        "action": "reaching towards the dough",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man in the grey cap is gesturing with his left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The camera angle shifts to a low perspective looking through a metal baking rack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Rows of round dough balls are resting on a yellow surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in the background is reaching towards the baking tray.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The chef's coat features a logo with the text 'MODEL BAKERY'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MODEL",
+      "BAKERY"
+    ],
+    "spatial": "The metal baking rack is in the foreground, framing the view of the dough balls. The dough balls are arranged in rows on a tray that is inside the rack. The person in the white apron is in the background, behind the rack and reaching towards the dough.",
+    "parse_success": true,
+    "chunk_idx": 56,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      114,
+      116
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a dark long-sleeved shirt and a white apron",
+        "action": "placing dough balls onto a tray",
+        "position": "background"
+      },
+      {
+        "desc": "round, smooth, pale dough balls",
+        "action": "resting on yellow powder",
+        "position": "foreground",
+        "id": "dough_raw_1"
+      },
+      {
+        "desc": "metal baking trays",
+        "action": "stacked on a rack",
+        "position": "center",
+        "id": "baking_tray_1"
+      },
+      {
+        "desc": "yellow powder covering the tray surface",
+        "action": "static",
+        "position": "foreground",
+        "id": "yellow_powder_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is placing a round dough ball onto a tray.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dough balls are arranged in rows on the baking sheets.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baking trays are stacked vertically on a metal rack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dough balls are resting on a layer of yellow powder.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The metal baking trays are stacked vertically on a rack, with one tray in the foreground and others above and below it. The round dough balls are arranged on the trays, resting on top of the yellow powder. The person is positioned behind the trays, reaching forward to place a dough ball.",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      116,
+      118
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hand and forearm, light skin tone, wearing a white apron and a dark long-sleeved shirt",
+        "action": "placing dough onto the tray",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "large rectangular metal baking sheet",
+        "action": "static",
+        "position": "center/foreground",
+        "id": "baking_tray_1"
+      },
+      {
+        "desc": "bright yellow granular powder, likely cornmeal or semolina",
+        "action": "static",
+        "position": "center/foreground",
+        "id": "yellow_powder_1"
+      },
+      {
+        "desc": "smooth, round, pale white dough balls",
+        "action": "being placed",
+        "position": "center/foreground",
+        "id": "dough_raw_1"
+      },
+      {
+        "desc": "stainless steel industrial kitchen equipment",
+        "action": "static",
+        "position": "left/background"
+      },
+      {
+        "desc": "small red indicator light",
+        "action": "glowing",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is placing a round ball of dough onto a baking sheet covered in yellow powder.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baking sheet is filled with a layer of yellow granular powder.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several dough balls are already resting on the yellow powder.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red indicator light is illuminated on the machine below the tray.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The metal baking sheet is positioned in the center, resting above the stainless steel machinery. The yellow powder covers the surface of the baking sheet. The dough balls are arranged on top of the yellow powder. The person's hand is to the right of the tray, holding a dough ball and placing it down. The red light is located on the front panel of the machine, below the tray.",
+    "parse_success": true,
+    "chunk_idx": 58,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      118,
+      120
+    ],
+    "visible_entities": [
+      {
+        "desc": "pale yellow, round, puffy dough discs",
+        "action": "frying in oil",
+        "position": "center",
+        "id": "dough_raw_1"
+      },
+      {
+        "desc": "human hand",
+        "action": "placing a dough disc into the fryer",
+        "position": "top",
+        "id": "hand_chef_1"
+      },
+      {
+        "desc": "large, rectangular metal deep fryer",
+        "action": "static",
+        "position": "foreground",
+        "id": "fryer_1"
+      },
+      {
+        "desc": "bubbling hot oil",
+        "action": "boiling",
+        "position": "center",
+        "id": "oil_bubbling_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand places a round piece of dough into the hot oil.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Numerous dough discs are frying in the bubbling oil.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The metal fryer has dark residue along the upper rim.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The human hand is positioned above the metal deep fryer. The hand is holding a dough disc and placing it into the oil, which is located below the hand and surrounds the other frying dough discs.",
+    "parse_success": true,
+    "chunk_idx": 59,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": [
+      "dough discs begin frying in deep fryer"
+    ]
+  },
+  {
+    "time": [
+      120,
+      122
+    ],
+    "visible_entities": [
+      {
+        "desc": "rows of round, pale yellow dough discs with a soft, matte texture",
+        "action": "moving along a conveyor belt",
+        "position": "center",
+        "id": "dough_raw_1"
+      },
+      {
+        "desc": "dark, reflective metal conveyor belt surface",
+        "action": "static",
+        "position": "background",
+        "id": "conveyor_belt_1"
+      },
+      {
+        "desc": "rusty, brown metal side panel of the machinery",
+        "action": "static",
+        "position": "left",
+        "id": "conveyor_belt_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Rows of round, pale yellow dough discs are moving along a conveyor belt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dough discs are arranged in neat, parallel lines.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The conveyor belt surface is dark and reflective.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The rows of pale yellow dough discs are on the dark conveyor belt. The rusty metal side panel is to the left of the dough discs.",
+    "parse_success": true,
+    "chunk_idx": 60,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": [
+      "conveyor belt system shown moving dough"
+    ]
+  },
+  {
+    "time": [
+      122,
+      124
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with fair skin wearing a ring on the ring finger and a dark wristwatch",
+        "action": "manipulating food with a stick",
+        "position": "top right",
+        "id": "hand_chef_1"
+      },
+      {
+        "desc": "long, thin, light-brown wooden stick",
+        "action": "flipping a donut",
+        "position": "center",
+        "id": "wooden_stick_1"
+      },
+      {
+        "desc": "round, puffy donuts, some pale yellow and raw, others golden-brown and fried",
+        "action": "frying in oil",
+        "position": "foreground and background",
+        "id": "pastries_frying_1"
+      },
+      {
+        "desc": "large, rectangular metal deep fryer filled with bubbling oil",
+        "action": "static",
+        "position": "background",
+        "id": "fryer_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand uses a wooden stick to flip a pale yellow donut over in the hot oil.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Rows of golden-brown fried donuts are visible behind the raw pale yellow donuts.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The donuts are floating in bubbling oil within a large metal fryer.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is positioned above the fryer and to the right of the wooden stick. The wooden stick is inserted into the oil, touching a pale yellow donut in the center. The rows of golden-brown donuts are behind the pale yellow donuts in the foreground.",
+    "parse_success": true,
+    "chunk_idx": 61,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      124,
+      126
+    ],
+    "visible_entities": [
+      {
+        "desc": "round, puffy pastries, pale yellow on the uncooked side and golden-brown on the fried side",
+        "action": "frying in oil",
+        "position": "center/foreground",
+        "id": "pastries_frying_1"
+      },
+      {
+        "desc": "long, thin wooden stick, light brown",
+        "action": "lifting a pastry",
+        "position": "center/right",
+        "id": "wooden_stick_1"
+      },
+      {
+        "desc": "metal spatula, silver",
+        "action": "static",
+        "position": "background",
+        "id": "spatula_1"
+      },
+      {
+        "desc": "large, rectangular metal griddle, silver with dark edges",
+        "action": "static",
+        "position": "background",
+        "id": "griddle_1"
+      },
+      {
+        "desc": "bubbling hot oil, clear/yellowish",
+        "action": "bubbling",
+        "position": "center",
+        "id": "oil_bubbling_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A wooden stick is lifting a round, pale yellow pastry out of the hot oil.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Numerous round pastries are frying in a large metal griddle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Some pastries have a golden-brown fried surface while others are pale yellow.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The oil is bubbling around the frying pastries.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The wooden stick is positioned above the metal griddle, lifting a pastry from the bubbling oil. The pastries are arranged in rows on the griddle, with the pale yellow ones in the foreground and the golden-brown ones further back. The metal spatula is visible in the background, to the right of the frying pastries.",
+    "parse_success": true,
+    "chunk_idx": 62,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      126,
+      128
+    ],
+    "visible_entities": [
+      {
+        "desc": "round, puffy pastries with golden-brown tops and pale yellow sides, frying in oil",
+        "action": "frying in hot oil",
+        "position": "center and foreground",
+        "id": "pastries_frying_1"
+      },
+      {
+        "desc": "wooden chopstick, light brown, slender",
+        "action": "being used to flip a pastry",
+        "position": "right",
+        "id": "wooden_stick_1"
+      },
+      {
+        "desc": "metal spatula with a black handle",
+        "action": "static",
+        "position": "top right",
+        "id": "spatula_1"
+      },
+      {
+        "desc": "large, rectangular metal griddle with dark, rusted edges",
+        "action": "static",
+        "position": "background",
+        "id": "griddle_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A wooden chopstick is used to flip a round pastry in the hot oil.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Numerous pastries are frying in a large metal griddle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pastries have a distinct two-tone appearance with browned tops and pale sides.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The pastries are arranged in rows inside the large metal griddle. The wooden chopstick is on the right side, interacting with a pastry in the foreground. The metal spatula is positioned in the upper right corner, near the edge of the griddle.",
+    "parse_success": true,
+    "chunk_idx": 63,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      128,
+      130
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown, round, puffy pastries with a white doughy base, frying in oil",
+        "action": "floating in hot oil",
+        "position": "foreground and center",
+        "id": "pastries_frying_1"
+      },
+      {
+        "desc": "metal wire rack with a wooden handle",
+        "action": "lifting pastries",
+        "position": "right",
+        "id": "cooling_rack_1"
+      },
+      {
+        "desc": "person's arm with light skin tone",
+        "action": "holding the wire rack",
+        "position": "right"
+      },
+      {
+        "desc": "large rectangular metal fryer filled with dark oil",
+        "action": "static",
+        "position": "background",
+        "id": "fryer_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person uses a metal wire rack to lift a row of golden-brown pastries out of the hot oil.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pastries are floating in the fryer.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pastries have a distinct two-tone appearance with a browned top and white bottom.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The metal wire rack is positioned to the right of the pastries currently frying in the oil. The person's arm is above the rack, holding the handle to lift the food. The fried pastries are in the foreground, while the uncooked or cooking pastries are further back in the fryer.",
+    "parse_success": true,
+    "chunk_idx": 64,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      130,
+      132
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hands and forearms, light skin tone, wearing a silver ring on the left ring finger",
+        "action": "holding a metal grate",
+        "position": "right"
+      },
+      {
+        "desc": "metal grate with a wooden handle, silver wire mesh, rectangular shape",
+        "action": "being held over the griddle",
+        "position": "right/foreground",
+        "id": "metal_grate_1"
+      },
+      {
+        "desc": "round, golden-brown fried pastries with a white center, puffy texture",
+        "action": "cooking in oil",
+        "position": "left/center",
+        "id": "pastries_frying_1"
+      },
+      {
+        "desc": "large flat-top griddle, dark metal surface with oil stains and residue",
+        "action": "static",
+        "position": "background/center",
+        "id": "griddle_1"
+      },
+      {
+        "desc": "stainless steel wall with a diamond plate pattern",
+        "action": "static",
+        "position": "background",
+        "id": "stainless_counter_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a metal grate with a wooden handle over the right side of the griddle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Numerous round, golden-brown pastries are frying in dark oil on the flat-top griddle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pastries are arranged in rows on the cooking surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's hands are on the right side of the frame, holding the metal grate above the griddle. The golden-brown pastries are to the left of the grate, sitting directly on the hot surface. The diamond-patterned stainless steel wall is behind the griddle.",
+    "parse_success": true,
+    "chunk_idx": 65,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      132,
+      134
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a white apron over a dark short-sleeved shirt",
+        "action": "holding a wire rack",
+        "position": "left"
+      },
+      {
+        "desc": "wire cooling rack filled with golden-brown round cakes",
+        "action": "being carried",
+        "position": "center"
+      },
+      {
+        "desc": "golden-brown round cakes with white cream filling",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "hand reaching down",
+        "action": "picking up a cake",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a white apron is carrying a wire rack loaded with cakes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is picking up one of the golden-brown cakes from a surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cakes consist of two sponge layers with a thick white cream filling.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the white apron is on the left side of the frame, holding the wire rack. The rack of cakes is in the foreground, extending from the left towards the right. A hand is positioned above the cakes on the right side, grasping one of them.",
+    "parse_success": true,
+    "chunk_idx": 66,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      134,
+      136
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown round baked goods with a textured, sugary topping and pale yellow sides",
+        "action": "being picked up and placed on a metal rack",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "human hand with light skin tone",
+        "action": "picking up a baked good",
+        "position": "top right/center",
+        "id": "hand_chef_1"
+      },
+      {
+        "desc": "silver metal cooling rack with parallel bars",
+        "action": "static",
+        "position": "center/background",
+        "id": "cooling_rack_1"
+      },
+      {
+        "desc": "stack of silver metal trays",
+        "action": "static",
+        "position": "left background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand picks up a golden-brown baked good from a group.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baked goods are arranged in rows on a surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal cooling rack is positioned in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baked goods have a textured, sugary top surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is above the baked goods, holding one in the center. The metal cooling rack is to the right of the stack of trays in the background. The baked goods are arranged on a surface below the hand.",
+    "parse_success": true,
+    "chunk_idx": 67,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      136,
+      138
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long blonde hair, wearing a dark grey and black horizontal striped shirt and a cream-colored apron with a wheat graphic",
+        "action": "static",
+        "position": "center",
+        "id": "person_chef_female_1"
+      },
+      {
+        "desc": "golden-brown baked bun with a textured, crumb-coated surface",
+        "action": "being held by hands",
+        "position": "foreground"
+      },
+      {
+        "desc": "human hands with fair skin",
+        "action": "holding the bun",
+        "position": "foreground",
+        "id": "hand_chef_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman is wearing an apron with the text 'MODEL' printed on it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Hands are holding a golden-brown bun in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bun has a textured, crumb-like coating on its surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MODEL"
+    ],
+    "spatial": "The woman is in the background, positioned behind the hands and the bun. The hands are in the foreground, holding the bun in the center of the frame. The text 'MODEL' is located on the front of the woman's apron.",
+    "parse_success": true,
+    "chunk_idx": 68,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      138,
+      140
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown bread roll with a coarse, sugary or crumbly textured crust",
+        "action": "being pulled apart by hands",
+        "position": "center",
+        "id": "pastries_fried_1"
+      },
+      {
+        "desc": "pair of hands with light skin tone",
+        "action": "pulling the bread roll apart",
+        "position": "foreground",
+        "id": "hand_chef_1"
+      },
+      {
+        "desc": "soft, white, fluffy interior of the bread",
+        "action": "being exposed",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pair of hands is pulling a bread roll apart.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The action reveals the soft, white interior of the bread.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bread roll has a golden-brown crust with a granular texture.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are in the foreground, holding the bread roll in the center. The bread roll is positioned between the left and right hands. The white interior is inside the crust and is being revealed as the hands pull the sides apart.",
+    "parse_success": true,
+    "chunk_idx": 69,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      140,
+      142
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown bread roll with a crispy, sugar-dusted crust and a soft, stringy white interior",
+        "action": "being pulled apart by hands",
+        "position": "center",
+        "id": "pastries_fried_1"
+      },
+      {
+        "desc": "pair of hands with light skin tone",
+        "action": "pulling the bread apart",
+        "position": "foreground",
+        "id": "hand_chef_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Hands are pulling a bread roll apart to reveal its texture.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bread has a golden-brown crust covered in sugar crystals.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The interior of the bread is white, fluffy, and stringy.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are in the foreground, holding the bread roll in the center. The bread is positioned between the left and right hands.",
+    "parse_success": true,
+    "chunk_idx": 70,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      142,
+      144
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long blonde hair, wearing a dark grey and black horizontal striped shirt and a cream-colored apron",
+        "action": "static",
+        "position": "foreground",
+        "id": "person_chef_female_1"
+      },
+      {
+        "desc": "cream-colored apron with a graphic of a wheat sheaf and text",
+        "action": "static",
+        "position": "center",
+        "id": "apron_wheat_1"
+      },
+      {
+        "desc": "wooden table and chairs, blurred",
+        "action": "static",
+        "position": "background",
+        "id": "wooden_table_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is standing still in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The apron features the word 'MODEL' in red capital letters.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A graphic of a wheat sheaf is printed below the text on the apron.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MODEL"
+    ],
+    "spatial": "The woman is in the foreground, positioned centrally in the frame. The apron is worn on the front of her torso. The wooden table and chairs are located in the background, behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 71,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      144,
+      146
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long blonde hair, wearing a dark grey and black horizontal striped long-sleeve shirt and a cream-colored apron with red text and a wheat graphic",
+        "action": "speaking",
+        "position": "center/foreground",
+        "id": "person_chef_female_1"
+      },
+      {
+        "desc": "wooden table with light-colored legs",
+        "action": "static",
+        "position": "background/left",
+        "id": "wooden_table_1"
+      },
+      {
+        "desc": "white structural pillars",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing an apron with the text 'MODEL' printed on it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The apron features a graphic of a bundle of wheat below the text.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MODEL"
+    ],
+    "spatial": "The woman is in the foreground, positioned to the right of the wooden table. The table and white pillars are behind the woman in the background.",
+    "parse_success": true,
+    "chunk_idx": 72,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      146,
+      148
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long blonde hair, wearing a black and grey striped long-sleeve shirt and a white apron with a wheat graphic",
+        "action": "static",
+        "position": "right",
+        "id": "person_chef_female_1"
+      },
+      {
+        "desc": "man with curly brown hair, beard, glasses, and a grey headband, wearing a dark denim chef's jacket",
+        "action": "static",
+        "position": "left",
+        "id": "person_chef_male_1"
+      },
+      {
+        "desc": "wooden table with light-colored legs",
+        "action": "static",
+        "position": "background",
+        "id": "wooden_table_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman in the striped shirt is positioned on the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man in the denim jacket is positioned on the left side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'MODEL' is visible on the woman's apron.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'MODEL BAKERY' is visible on the man's jacket.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MODEL",
+      "MODEL BAKERY"
+    ],
+    "spatial": "The woman in the striped shirt is to the right of the man in the denim jacket. The wooden table is behind the woman. The text 'MODEL' is on the front of the woman's apron.",
+    "parse_success": true,
+    "chunk_idx": 73,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      148,
+      150
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a black shirt with a 'BAKERY' logo, a white apron, and a white wristband",
+        "action": "holding a wire cooling rack with pastries",
+        "position": "background"
+      },
+      {
+        "desc": "golden-brown, round, cream-filled pastries (donuts)",
+        "action": "being held on a rack and resting on a surface",
+        "position": "foreground and background",
+        "id": "pastries_fried_1"
+      },
+      {
+        "desc": "metal wire cooling rack",
+        "action": "being held by the person",
+        "position": "center",
+        "id": "cooling_rack_1"
+      },
+      {
+        "desc": "stainless steel counter and quilted metal wall",
+        "action": "static",
+        "position": "background",
+        "id": "stainless_counter_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a wire rack containing three golden-brown pastries.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Numerous similar pastries are arranged on a counter in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is standing behind the counter filled with pastries.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BAKERY"
+    ],
+    "spatial": "The person is standing behind the stainless steel counter. The wire rack with pastries is being held by the person in the center of the frame. The pastries on the counter are in the foreground, below the rack being held.",
+    "parse_success": true,
+    "chunk_idx": 74,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      150,
+      152
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a black short-sleeved shirt with a logo on the chest and a white apron",
+        "action": "holding a metal wire rack",
+        "position": "background"
+      },
+      {
+        "desc": "golden-brown round pastries with a light dusting of sugar",
+        "action": "static",
+        "position": "foreground",
+        "id": "pastries_fried_1"
+      },
+      {
+        "desc": "metal wire rack",
+        "action": "being held",
+        "position": "center",
+        "id": "cooling_rack_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a metal wire rack behind a large group of pastries.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pastries are arranged in rows on a white surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a white apron over a black shirt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BAKERY"
+    ],
+    "spatial": "The person in the white apron is standing behind the pastries. The metal wire rack is held by the person and is positioned above the pastries. The pastries are in the foreground, covering the bottom of the frame.",
+    "parse_success": true,
+    "chunk_idx": 75,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      152,
+      154
+    ],
+    "visible_entities": [
+      {
+        "desc": "round, yellow, uncooked dough discs, smooth texture",
+        "action": "frying in oil",
+        "position": "bottom/foreground",
+        "id": "dough_raw_1"
+      },
+      {
+        "desc": "metal baking sheet with yellow residue",
+        "action": "being held above the fryer",
+        "position": "top/center",
+        "id": "baking_tray_1"
+      },
+      {
+        "desc": "dark, bubbling cooking oil",
+        "action": "bubbling",
+        "position": "center/background",
+        "id": "oil_bubbling_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a metal baking sheet above a deep fryer.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Round yellow dough discs are frying in the hot oil.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The oil is bubbling around the edges of the dough.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The metal baking sheet is held above the deep fryer. The yellow dough discs are inside the fryer, submerged in the dark oil. The oil surrounds the dough discs.",
+    "parse_success": true,
+    "chunk_idx": 76,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      154,
+      156
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with tan skin, wearing a black short-sleeved shirt",
+        "action": "holding a tray",
+        "position": "foreground"
+      },
+      {
+        "desc": "white rectangular tray containing a yellow surface with white dough balls",
+        "action": "being held",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is holding a white tray",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the tray contains a yellow surface",
+        "confidence": 1.0
+      },
+      {
+        "fact": "white dough balls are arranged on the yellow surface",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the foreground holding the tray. The tray is positioned in front of the person's torso. The white dough balls are on top of the yellow surface inside the tray.",
+    "parse_success": true,
+    "chunk_idx": 77,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      156,
+      158
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly brown hair, beard, glasses, wearing a grey striped head wrap and a dark grey chef's jacket with a logo",
+        "action": "turning head to the right",
+        "position": "center",
+        "id": "person_chef_male_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man turns his head from facing forward to looking to his right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a grey striped head wrap.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a dark grey chef's jacket with a logo on the left chest.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "NOBEL",
+      "BAKERY"
+    ],
+    "spatial": "The man is in the foreground, centered in the frame. The text 'NOBEL BAKERY' is on the left side of his chest (viewer's right). The background, consisting of pillars and greenery, is behind the man.",
+    "parse_success": true,
+    "chunk_idx": 78,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      158,
+      160
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with curly brown hair, beard, and glasses, wearing a grey striped head wrap and a dark grey denim-style chef's jacket with a logo on the chest",
+        "action": "speaking",
+        "position": "center",
+        "id": "person_chef_male_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a head wrap.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing glasses.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MODEL",
+      "BAKERY"
+    ],
+    "spatial": "The man is in the foreground, centered in the frame. The text 'MODEL BAKERY' is located on the left side of his chest (viewer's right). The background consists of blurred architectural columns and greenery behind the man.",
+    "parse_success": true,
+    "chunk_idx": 79,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      160,
+      162
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown baked pastries with a textured, sugary crust",
+        "action": "static",
+        "position": "foreground/center",
+        "id": "pastries_fried_1"
+      },
+      {
+        "desc": "additional baked pastries, slightly out of focus",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A close-up shot displays a batch of golden-brown baked pastries.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pastries in the foreground are in sharp focus, revealing a granular, sugary texture on their crust.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pastries are arranged closely together, filling the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The pastries in the foreground are in front of the pastries in the background. The pastries are arranged next to each other, filling the entire frame.",
+    "parse_success": true,
+    "chunk_idx": 80,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      162,
+      164
+    ],
+    "visible_entities": [
+      {
+        "desc": "text reading 'CIAprochef.com/butter' in a thin, sans-serif font, appearing light gray or white",
+        "action": "static",
+        "position": "center",
+        "id": "cia_url_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'CIAprochef.com/butter' is displayed in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text remains static throughout the clip.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "CIAprochef.com/butter"
+    ],
+    "spatial": "The text is centered horizontally and vertically on a plain white background.",
+    "parse_success": true,
+    "chunk_idx": 81,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": [
+      "closing URL text appears"
+    ]
+  },
+  {
+    "time": [
+      164,
+      166
+    ],
+    "visible_entities": [
+      {
+        "desc": "Text string reading 'CIAprochef.com/butter' in a thin, sans-serif font, dark grey color, centered on a plain white background.",
+        "action": "static"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'CIAprochef.com/butter' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text remains static throughout the duration of the clip.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "CIAprochef.com/butter"
+    ],
+    "spatial": "The text string is positioned in the center of the white background.",
+    "parse_success": true,
+    "chunk_idx": 82,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      166,
+      168
+    ],
+    "visible_entities": [
+      {
+        "desc": "text string 'CIAprochef.com/butter' in a thin, sans-serif font, dark grey color",
+        "action": "static",
+        "position": "center",
+        "id": "cia_url_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'CIAprochef.com/butter' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text remains static throughout the clip.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "CIAprochef.com/butter"
+    ],
+    "spatial": "The text string is centered horizontally and vertically on a plain white background.",
+    "parse_success": true,
+    "chunk_idx": 83,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      168,
+      170
+    ],
+    "visible_entities": [
+      {
+        "desc": "A logo featuring a black silhouette of a butter pat inside a thin black diamond outline, with a blue ribbon on the left and a red ribbon on the right.",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Black text in a sans-serif font arranged in an arc and a straight line.",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The logo remains static in the center of the white background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'BUTTER OF EUROPE' is arched above the central graphic.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'MAKE IT MAGNIFIQUE' is displayed across the ribbons.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The handle '@BUTTEROFEUROPE' is positioned below the logo.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BUTTER OF EUROPE",
+      "MAKE IT",
+      "MAGNIFIQUE",
+      "@BUTTEROFEUROPE"
+    ],
+    "spatial": "The text 'BUTTER OF EUROPE' is arched above the central diamond graphic. The blue ribbon containing 'MAKE IT' is to the left of the red ribbon containing 'MAGNIFIQUE'. The social media handle '@BUTTEROFEUROPE' is located below the entire logo assembly.",
+    "parse_success": true,
+    "chunk_idx": 84,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": [
+      "butter logo with diamond and ribbons displayed"
+    ]
+  },
+  {
+    "time": [
+      170,
+      172
+    ],
+    "visible_entities": [
+      {
+        "desc": "Blue rectangular flag with a circle of twelve yellow stars",
+        "action": "static",
+        "position": "left",
+        "id": "eu_flag_1"
+      },
+      {
+        "desc": "Text in blue capital letters reading 'CAMPAIGN FINANCED WITH AID FROM THE EUROPEAN UNION'",
+        "action": "static",
+        "position": "center-left",
+        "id": "eu_text_1"
+      },
+      {
+        "desc": "Vertical orange rectangular banner with white text and a small blue EU flag icon at the bottom",
+        "action": "static",
+        "position": "center-right",
+        "id": "eu_banner_1"
+      },
+      {
+        "desc": "Text in blue capital letters reading 'THE EUROPEAN UNION SUPPORTS CAMPAIGNS THAT PROMOTE HIGH QUALITY AGRICULTURAL PRODUCTS'",
+        "action": "static",
+        "position": "right",
+        "id": "eu_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The European Union flag is displayed on the left side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Text stating 'CAMPAIGN FINANCED WITH AID FROM THE EUROPEAN UNION' appears next to the flag.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange banner displays the slogan 'ENJOY IT'S FROM EUROPE'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Text on the right explains that the EU supports campaigns for high quality agricultural products.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "CAMPAIGN FINANCED WITH AID FROM THE EUROPEAN UNION",
+      "ENJOY",
+      "IT'S FROM",
+      "EUROPE",
+      "THE EUROPEAN UNION SUPPORTS CAMPAIGNS THAT PROMOTE HIGH QUALITY AGRICULTURAL PRODUCTS"
+    ],
+    "spatial": "The blue EU flag is to the left of the financing text. The orange vertical banner is to the right of the financing text. The explanatory text block is to the right of the orange banner. All elements are arranged horizontally on a white background.",
+    "parse_success": true,
+    "chunk_idx": 85,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": [
+      "EU funding disclosure banner appears"
+    ]
+  },
+  {
+    "time": [
+      172,
+      174
+    ],
+    "visible_entities": [
+      {
+        "desc": "blue rectangular flag with a circle of twelve yellow stars",
+        "action": "static",
+        "position": "left",
+        "id": "eu_flag_1"
+      },
+      {
+        "desc": "blue uppercase sans-serif text reading 'CAMPAIGN FINANCED WITH AID FROM THE EUROPEAN UNION'",
+        "action": "static",
+        "position": "center-left",
+        "id": "eu_text_1"
+      },
+      {
+        "desc": "orange vertical rectangular banner with white text and a small blue flag icon at the bottom",
+        "action": "static",
+        "position": "center-right",
+        "id": "eu_banner_1"
+      },
+      {
+        "desc": "blue uppercase sans-serif text reading 'THE EUROPEAN UNION SUPPORTS CAMPAIGNS THAT PROMOTE HIGH QUALITY AGRICULTURAL PRODUCTS'",
+        "action": "static",
+        "position": "right",
+        "id": "eu_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The European Union flag is displayed on the left side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'CAMPAIGN FINANCED WITH AID FROM THE EUROPEAN UNION' appears next to the flag.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange banner with the text 'ENJOY IT'S FROM EUROPE' is visible in the center.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'THE EUROPEAN UNION SUPPORTS CAMPAIGNS THAT PROMOTE HIGH QUALITY AGRICULTURAL PRODUCTS' is displayed on the right.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "CAMPAIGN FINANCED WITH AID FROM THE EUROPEAN UNION",
+      "ENJOY",
+      "IT'S FROM",
+      "EUROPE",
+      "THE EUROPEAN UNION SUPPORTS CAMPAIGNS THAT PROMOTE HIGH QUALITY AGRICULTURAL PRODUCTS"
+    ],
+    "spatial": "The blue European Union flag is to the left of the text 'CAMPAIGN FINANCED WITH AID FROM THE EUROPEAN UNION'. The orange vertical banner is to the right of this text. The text 'THE EUROPEAN UNION SUPPORTS CAMPAIGNS THAT PROMOTE HIGH QUALITY AGRICULTURAL PRODUCTS' is to the right of the orange banner.",
+    "parse_success": true,
+    "chunk_idx": 86,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      174,
+      176
+    ],
+    "visible_entities": [
+      {
+        "desc": "white serif text logo reading 'THE CULINARY INSTITUTE OF AMERICA' with a large decorative 'C' and a small registered trademark symbol",
+        "action": "static",
+        "position": "center",
+        "id": "cia_logo_1"
+      },
+      {
+        "desc": "bright white lens flare with green and blue circular artifacts",
+        "action": "moving across the screen",
+        "position": "center to right",
+        "id": "lens_flare_1"
+      },
+      {
+        "desc": "solid dark green background",
+        "action": "static",
+        "position": "background",
+        "id": "green_background_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The Culinary Institute of America logo is displayed in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bright light flare moves from the top of the logo towards the right side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text is white against a green background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THE CULINARY INSTITUTE OF AMERICA®"
+    ],
+    "spatial": "The text logo is centered on the green background. The lens flare appears above and to the right of the text logo.",
+    "parse_success": true,
+    "chunk_idx": 87,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": [
+      "CIA logo appears with lens flare transition"
+    ]
+  },
+  {
+    "time": [
+      176,
+      178
+    ],
+    "visible_entities": [
+      {
+        "desc": "The Culinary Institute of America logo, featuring white serif text and a golden circular emblem with a wheat stalk pattern at the bottom",
+        "action": "static",
+        "position": "center",
+        "id": "cia_logo_1"
+      },
+      {
+        "desc": "A bright, glowing lens flare effect with circular rings",
+        "action": "fading out",
+        "position": "center",
+        "id": "lens_flare_1"
+      },
+      {
+        "desc": "A solid green background",
+        "action": "static",
+        "position": "background",
+        "id": "green_background_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The logo for The Culinary Institute of America is displayed in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bright light flare effect fades away from the center of the logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'THE CULINARY INSTITUTE OF AMERICA' is visible in white.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THE CULINARY INSTITUTE OF AMERICA®"
+    ],
+    "spatial": "The logo is centered on the green background. The lens flare is superimposed over the center of the logo. The text is arranged within the golden circular border of the logo.",
+    "parse_success": true,
+    "chunk_idx": 88,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      178,
+      180
+    ],
+    "visible_entities": [
+      {
+        "desc": "Logo for 'The Culinary Institute of America' featuring white serif text and a gold circular border with a golden wheat stalk at the bottom, set against a solid green background.",
+        "action": "static"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The logo for The Culinary Institute of America is displayed centrally on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'THE CULINARY INSTITUTE OF AMERICA' is written in white capital letters.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A golden wheat stalk graphic is positioned at the bottom of the logo.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THE",
+      "CULINARY",
+      "INSTITUTE",
+      "OF",
+      "AMERICA®"
+    ],
+    "spatial": "The white text is centered within the gold circular border. The golden wheat stalk is located below the text, forming the bottom edge of the logo. The entire logo is positioned in the center of the green background.",
+    "parse_success": true,
+    "chunk_idx": 89,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  },
+  {
+    "time": [
+      180,
+      182
+    ],
+    "visible_entities": [
+      {
+        "desc": "The Culinary Institute of America logo featuring white serif text and a golden wheat stalk graphic on a green background",
+        "action": "static",
+        "position": "center",
+        "id": "cia_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The Culinary Institute of America logo is displayed statically in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'THE CULINARY INSTITUTE OF AMERICA' is visible in white font.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A golden wheat stalk graphic is positioned below the text.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THE",
+      "CULINARY",
+      "INSTITUTE",
+      "OF",
+      "AMERICA®"
+    ],
+    "spatial": "The text 'THE CULINARY INSTITUTE OF AMERICA' is positioned above the golden wheat stalk graphic. The entire logo is centered on the green background.",
+    "parse_success": true,
+    "chunk_idx": 90,
+    "video_id": "Model_Bakery_-_ENGLISH_MUFFINS",
+    "state_changes": []
+  }
+]

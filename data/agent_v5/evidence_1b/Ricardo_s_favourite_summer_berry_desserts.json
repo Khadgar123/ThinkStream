@@ -1,0 +1,3096 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "white text reading 'IS THIS' in a sans-serif font",
+        "action": "static",
+        "position": "left",
+        "id": "text_intro_1"
+      },
+      {
+        "desc": "white text reading 'THIS IS HOW you do' in mixed sans-serif and cursive fonts",
+        "action": "static",
+        "position": "center",
+        "id": "text_intro_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'IS THIS' appears on the left side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text changes to 'THIS IS HOW you do' in the center of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "IS THIS",
+      "THIS IS HOW you do"
+    ],
+    "spatial": "The text 'IS THIS' is positioned on the left side of the orange background. The text 'THIS IS HOW you do' is positioned in the center of the orange background.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "white text graphic reading 'THIS IS HOW you do it' with a wavy underline, featuring a mix of uppercase block letters and lowercase cursive script",
+        "action": "static",
+        "position": "center",
+        "id": "text_intro_1"
+      },
+      {
+        "desc": "small black square logo with a white 'R' and the word 'RECIPES' below it",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'THIS IS HOW you do it' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wavy white line underlines the phrase 'you do it'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "THIS IS HOW",
+      "you do it",
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The text graphic is centered on the orange background. The 'R RECIPES' logo is located in the bottom right corner, below and to the right of the main text.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a light brown button-down shirt with chest pockets and dark blue jeans",
+        "action": "gesturing with hands",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "stainless steel range hood",
+        "action": "static",
+        "position": "top/center",
+        "id": "hood_stainless_1"
+      },
+      {
+        "desc": "stainless steel stove with black knobs",
+        "action": "static",
+        "position": "center/background",
+        "id": "stove_stainless_1"
+      },
+      {
+        "desc": "white kitchen towel with red stripes",
+        "action": "static",
+        "position": "foreground",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "small white bowl with a spoon",
+        "action": "static",
+        "position": "foreground/left",
+        "id": "spoon_silver_1"
+      },
+      {
+        "desc": "black square logo with white letter 'R' and text 'RECIPES'",
+        "action": "static",
+        "position": "bottom/right",
+        "id": "logo_recipes_1"
+      },
+      {
+        "desc": "white kitchen cabinets with glass doors",
+        "action": "static",
+        "position": "background/right",
+        "id": "cabinet_white_1"
+      },
+      {
+        "desc": "wall with yellow and white geometric patterned wallpaper",
+        "action": "static",
+        "position": "background/left",
+        "id": "wallpaper_geometric_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is standing in a kitchen and gesturing with both hands raised.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A striped towel is laid out on the counter in front of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small white bowl sits on the counter to the left of the towel.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is positioned in front of a large stainless steel stove and range hood.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing in the center of the kitchen, in front of the stainless steel stove. The range hood is mounted above the stove. In the foreground, the striped towel is on the counter, with the small white bowl to its left. The white cabinets are to the right of the stove in the background.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": [
+      "Host appears in kitchen scene, starting intro segment"
+    ]
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a beige button-down shirt with chest pockets and dark blue jeans",
+        "action": "gesturing with hands while standing",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "large stainless steel range hood",
+        "action": "static",
+        "position": "top",
+        "id": "hood_stainless_1"
+      },
+      {
+        "desc": "stainless steel stove with black knobs and grates",
+        "action": "static",
+        "position": "center",
+        "id": "stove_stainless_1"
+      },
+      {
+        "desc": "white kitchen towel with red horizontal stripes",
+        "action": "static",
+        "position": "foreground",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "white kitchen cabinets with glass doors",
+        "action": "static",
+        "position": "background",
+        "id": "cabinet_white_1"
+      },
+      {
+        "desc": "black square logo with white letter 'R' and text 'RECIPES'",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is standing in front of the stove.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is gesturing with his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A striped towel is lying on the counter in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The range hood is mounted above the stove.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing in front of the stainless steel stove. The large range hood is positioned above the stove and the man. The striped towel is on the counter in the foreground, below the man's waist level. The white cabinets are in the background to the right of the stove.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a beige button-down shirt and dark pants",
+        "action": "turning to face the camera and placing hands on the counter",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white kitchen towel with red horizontal stripes",
+        "action": "static",
+        "position": "foreground",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "stainless steel range hood",
+        "action": "static",
+        "position": "top",
+        "id": "hood_stainless_1"
+      },
+      {
+        "desc": "black logo with a white letter 'R' and the word 'RECIPES' below it",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      },
+      {
+        "desc": "white kitchen island counter",
+        "action": "static",
+        "position": "foreground",
+        "id": "countertop_kitchen_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man turns his body to face forward.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man places both hands on the white kitchen towel.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black logo with the text 'R RECIPES' is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing behind the white kitchen island counter. The striped towel is on the counter in front of the man. The stainless steel range hood is above the man and the counter. The 'R RECIPES' logo is in the bottom right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a beige long-sleeved button-up shirt with two chest pockets and dark pants",
+        "action": "standing behind a kitchen island with hands resting on a striped cloth",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white kitchen towel with red horizontal stripes",
+        "action": "lying flat on the countertop",
+        "position": "foreground",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "white ceramic bowl containing a small spoon",
+        "action": "static",
+        "position": "left foreground",
+        "id": "spoon_silver_1"
+      },
+      {
+        "desc": "stainless steel range hood",
+        "action": "static",
+        "position": "top center",
+        "id": "hood_stainless_1"
+      },
+      {
+        "desc": "black square logo with a white letter 'R' and the word 'RECIPES' underneath",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      },
+      {
+        "desc": "white kitchen cabinets with glass doors and silver handles",
+        "action": "static",
+        "position": "background",
+        "id": "cabinet_white_1"
+      },
+      {
+        "desc": "stainless steel stove with black knobs",
+        "action": "static",
+        "position": "background right",
+        "id": "stove_stainless_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man stands behind a kitchen island.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man places his hands on a red and white striped cloth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small white bowl sits on the counter to the left of the cloth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing behind the kitchen island, with the striped cloth directly in front of him on the counter. The white bowl is to the left of the cloth. The stainless steel stove is behind the man and to his right. The range hood is mounted above the stove area.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a beige long-sleeved shirt and blue jeans",
+        "action": "manipulating kitchen linens",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white kitchen towel with red horizontal stripes",
+        "action": "being folded",
+        "position": "center",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "white paper towel, rectangular",
+        "action": "being lifted",
+        "position": "foreground"
+      },
+      {
+        "desc": "black square logo with white 'R' and 'RECIPES' text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person folds the striped towel in half.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person lifts the white paper towel from the surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The paper towel is placed in front of the striped towel.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The person is positioned behind the kitchen linens on the counter. The white paper towel is in the foreground, while the striped towel is behind it. The logo is in the bottom right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": [
+      "Started folding and manipulating kitchen towel"
+    ]
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a beige button-down shirt with two chest pockets and dark pants",
+        "action": "holding and adjusting a towel",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white kitchen towel with a red border and red stripes",
+        "action": "being smoothed out",
+        "position": "foreground",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "white ceramic spoon rest with a spoon inside",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "right",
+        "id": "stove_stainless_1"
+      },
+      {
+        "desc": "black square logo with a white letter 'R' and the word 'RECIPES' below it",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      },
+      {
+        "desc": "kitchen background with white cabinets, open shelving with colorful dishes, and patterned wallpaper",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is using both hands to smooth out a white and red towel on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white spoon rest is positioned to the left of the towel.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A gas stovetop is positioned to the right of the towel.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing behind the kitchen counter. The towel is on the counter in front of him. The spoon rest is to the left of the towel, and the stovetop is to the right of the towel. The kitchen cabinets and shelves are in the background behind the man.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a beige long-sleeved button-up shirt with chest pockets and dark blue jeans",
+        "action": "stirring a white substance in a small bowl",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "small white bowl containing a white creamy substance",
+        "action": "static",
+        "position": "foreground left",
+        "id": "bowl_white_1"
+      },
+      {
+        "desc": "spoon",
+        "action": "being used to stir",
+        "position": "foreground left",
+        "id": "spoon_silver_1"
+      },
+      {
+        "desc": "white kitchen towel with red stripes",
+        "action": "static",
+        "position": "foreground center",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "stainless steel stove and range hood",
+        "action": "static",
+        "position": "background",
+        "id": "stove_stainless_1"
+      },
+      {
+        "desc": "black square logo with white letter 'R' and text 'RECIPES'",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is stirring a white substance in a small bowl with a spoon.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white towel with red stripes lies flat on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing behind a kitchen island.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing behind the kitchen counter. The small white bowl is on the counter to the left of the striped towel. The stainless steel stove is behind the man.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": [
+      "Started stirring white substance in bowl"
+    ]
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a beige long-sleeved button-up shirt",
+        "action": "spreading white powder onto a cloth",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white kitchen towel with red stripes along the edges",
+        "action": "lying flat on the counter",
+        "position": "foreground",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "silver spoon",
+        "action": "being held by the man",
+        "position": "center",
+        "id": "spoon_silver_1"
+      },
+      {
+        "desc": "small white bowl",
+        "action": "static",
+        "position": "left",
+        "id": "bowl_white_1"
+      },
+      {
+        "desc": "black square logo with a white letter 'R' and the word 'RECIPES' below it",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is using a spoon to sprinkle a white powdery substance onto the towel.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The towel is spread out flat on the kitchen island counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing behind the kitchen island counter. The white towel with red stripes is on the counter in front of him. The small white bowl is to the left of the towel. The man is holding the spoon over the towel.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": [
+      "Started spreading powder onto towel"
+    ]
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "white kitchen towel with red stripes along the edges",
+        "action": "static",
+        "position": "center",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "black square logo with a white letter 'R' and the word 'RECIPES' underneath",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A white towel with red stripes is lying flat on a surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A logo with the text 'R RECIPES' is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The white towel with red stripes is in the center of the frame, lying on a grey surface. The 'R RECIPES' logo is located in the bottom right corner, below and to the right of the towel.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a beige button-down shirt with two chest pockets and dark blue jeans",
+        "action": "gesturing with hands over a towel",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white kitchen towel with red stripes",
+        "action": "static",
+        "position": "foreground",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "small white bowl",
+        "action": "static",
+        "position": "foreground left",
+        "id": "bowl_white_1"
+      },
+      {
+        "desc": "stainless steel stove with black knobs",
+        "action": "static",
+        "position": "background right",
+        "id": "stove_stainless_1"
+      },
+      {
+        "desc": "black square logo with white text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is standing behind a kitchen island.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is gesturing with his hands over a towel.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small white bowl is on the counter to the left of the towel.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing behind the kitchen island. The white towel is on the island in front of the man. The small white bowl is to the left of the towel. The stove is behind the man and to his right.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a light beige button-down shirt with two chest pockets and dark blue jeans",
+        "action": "reaching for a small white bowl",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white kitchen towel with red horizontal stripes",
+        "action": "static",
+        "position": "foreground",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "small white bowl",
+        "action": "being reached for",
+        "position": "left",
+        "id": "bowl_white_1"
+      },
+      {
+        "desc": "stainless steel stove with black knobs",
+        "action": "static",
+        "position": "background",
+        "id": "stove_stainless_1"
+      },
+      {
+        "desc": "black square logo with a white letter 'R' and the word 'RECIPES' below it",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man reaches his right hand towards the small white bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A striped towel is laid flat on the counter in front of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing behind a kitchen island.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing behind the kitchen island. The striped towel is on the counter in front of the man. The small white bowl is to the left of the towel. The stove is behind the man.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a light beige long-sleeved button-down shirt and dark pants",
+        "action": "pulling a baking sheet out of the oven",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "rectangular metal baking sheet lined with parchment paper, containing a flat, pale yellow baked good",
+        "action": "being pulled out of the oven",
+        "position": "center",
+        "id": "baking_sheet_1"
+      },
+      {
+        "desc": "stainless steel oven with black control knobs and a metal wire rack inside",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "black oven mitt on the man's right hand",
+        "action": "holding the baking sheet",
+        "position": "center",
+        "id": "oven_mitt_black_1"
+      },
+      {
+        "desc": "white kitchen towel with red stripes",
+        "action": "static",
+        "position": "bottom",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "black square logo with a white letter 'R' and the word 'RECIPES' below it",
+        "action": "static",
+        "position": "bottom-right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is pulling a baking sheet out of the oven.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a black oven mitt on his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baking sheet contains a flat, pale yellow baked good.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white towel with red stripes is lying on the counter in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing in front of the stainless steel oven. He is holding the baking sheet, which is emerging from inside the oven. The white towel with red stripes is on the counter in front of the man and below the baking sheet. The 'R RECIPES' logo is in the bottom right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": [
+      "Removed baking sheet from oven, baking step complete"
+    ]
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a light grey button-down shirt with two chest pockets and dark pants",
+        "action": "holding a wooden board and lifting a black oven mitt",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "light-colored wooden cutting board with a white cloth or paper on it",
+        "action": "being held by the man",
+        "position": "center",
+        "id": "cutting_board_1"
+      },
+      {
+        "desc": "black oven mitt",
+        "action": "being lifted by the man",
+        "position": "center",
+        "id": "oven_mitt_black_1"
+      },
+      {
+        "desc": "stainless steel range hood",
+        "action": "static",
+        "position": "top",
+        "id": "hood_stainless_1"
+      },
+      {
+        "desc": "stainless steel stove with black knobs",
+        "action": "static",
+        "position": "center",
+        "id": "stove_stainless_1"
+      },
+      {
+        "desc": "white kitchen cabinets with glass doors",
+        "action": "static",
+        "position": "right",
+        "id": "cabinet_white_1"
+      },
+      {
+        "desc": "wallpaper with a yellow and white geometric pattern",
+        "action": "static",
+        "position": "background",
+        "id": "wallpaper_geometric_1"
+      },
+      {
+        "desc": "black square logo with a white 'R' and the word 'RECIPES' below it",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is holding a wooden board in his left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is lifting a black oven mitt with his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing in a kitchen in front of a stove.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A logo with the text 'R RECIPES' is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing in the center of the kitchen, in front of the stove and below the range hood. The wooden board is held in front of him. The white cabinets are to the right of the man. The 'R RECIPES' logo is in the bottom right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a light brown long-sleeved button-up shirt and dark blue jeans",
+        "action": "holding a baking sheet with both hands",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "rectangular baking sheet with a light brown baked good on top",
+        "action": "being held",
+        "position": "center",
+        "id": "baking_sheet_1"
+      },
+      {
+        "desc": "white kitchen towel with red stripes",
+        "action": "static",
+        "position": "foreground",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "stainless steel stove with black knobs",
+        "action": "static",
+        "position": "background",
+        "id": "stove_stainless_1"
+      },
+      {
+        "desc": "black square logo with a white letter 'R' and the word 'RECIPES' below it",
+        "action": "static",
+        "position": "bottom-right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man holds a baking sheet containing a baked good.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing in a kitchen in front of a stove.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white towel with red stripes lies on the counter in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing in the center of the frame, holding the baking sheet in front of his torso. The stove is behind the man. The white towel is on the counter in the foreground, below the baking sheet. The 'R RECIPES' logo is in the bottom right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a light grey button-down shirt and dark blue jeans",
+        "action": "holding and tilting a baking sheet",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "rectangular metal baking sheet with a light brown baked good on top",
+        "action": "being held and tilted",
+        "position": "center",
+        "id": "baking_sheet_1"
+      },
+      {
+        "desc": "white kitchen towel with red stripes",
+        "action": "static",
+        "position": "foreground",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "stainless steel stove with black knobs and a large range hood",
+        "action": "static",
+        "position": "background",
+        "id": "stove_stainless_1"
+      },
+      {
+        "desc": "black square logo with a white letter 'R' and the word 'RECIPES' below it",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is holding a baking sheet with a baked good on it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man tilts the baking sheet downwards.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A striped towel is lying on the counter in front of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing in the center of the kitchen, in front of the stainless steel stove. He is holding the baking sheet in front of his torso. The striped towel is on the counter in the foreground, below the baking sheet. The 'R RECIPES' logo is in the bottom right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a beige long-sleeved button-up shirt and black oven mitts",
+        "action": "flipping a baking sheet over onto a towel",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "rectangular metal baking sheet with a golden-brown baked good inside",
+        "action": "being inverted",
+        "position": "center",
+        "id": "baking_sheet_1"
+      },
+      {
+        "desc": "white kitchen towel with red stripes",
+        "action": "static",
+        "position": "center foreground",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "black square logo with white letter 'R' and text 'RECIPES'",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      },
+      {
+        "desc": "stainless steel stove with black knobs",
+        "action": "static",
+        "position": "right background",
+        "id": "stove_stainless_1"
+      },
+      {
+        "desc": "white kitchen cabinets with glass doors",
+        "action": "static",
+        "position": "background",
+        "id": "cabinet_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man flips a baking sheet upside down onto a towel on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing black oven mitts on both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baked good is golden brown.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing behind the kitchen island counter. He is holding the baking sheet above the towel which is lying on the counter. The stove is to the right of the man in the background.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": [
+      "Flipped baking sheet to invert cake onto towel"
+    ]
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a beige button-down shirt with chest pockets and dark pants",
+        "action": "tilting a baking sheet",
+        "position": "center"
+      },
+      {
+        "desc": "dark rectangular metal baking sheet",
+        "action": "being tilted",
+        "position": "center foreground",
+        "id": "baking_sheet_1"
+      },
+      {
+        "desc": "black oven mitt",
+        "action": "worn on hand",
+        "position": "center",
+        "id": "oven_mitt_black_1"
+      },
+      {
+        "desc": "white kitchen counter",
+        "action": "static",
+        "position": "foreground",
+        "id": "countertop_kitchen_1"
+      },
+      {
+        "desc": "stainless steel stove with black knobs",
+        "action": "static",
+        "position": "right background",
+        "id": "stove_stainless_1"
+      },
+      {
+        "desc": "black square logo with white 'R' and 'RECIPES' text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is tilting a baking sheet over a cloth on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a black oven mitt on his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing behind the kitchen counter. The baking sheet is in front of the man, positioned above a cloth on the counter. The stove is to the right of the man.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a beige button-down shirt and dark pants",
+        "action": "peeling parchment paper off a cake",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "rectangular yellow sponge cake",
+        "action": "static",
+        "position": "center",
+        "id": "food_sponge_1"
+      },
+      {
+        "desc": "white kitchen towel with red stripes",
+        "action": "static",
+        "position": "center",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "sheet of white parchment paper",
+        "action": "being peeled away",
+        "position": "center",
+        "id": "paper_parchment_1"
+      },
+      {
+        "desc": "black square logo with white text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is peeling a sheet of parchment paper off the top of a yellow sponge cake.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cake is resting on a white towel with red stripes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing behind the kitchen island. The yellow cake is on top of the striped towel, which is on the island. The man's hands are holding the parchment paper above the cake. The logo is in the bottom right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": [
+      "Started peeling parchment paper off cake"
+    ]
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with fair skin, wearing a beige long-sleeved garment and a gold ring on the left ring finger",
+        "action": "peeling parchment paper",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "yellow sponge cake roll",
+        "action": "static",
+        "position": "center",
+        "id": "food_sponge_1"
+      },
+      {
+        "desc": "white kitchen towel with red stripes",
+        "action": "static",
+        "position": "bottom",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "translucent parchment paper",
+        "action": "being peeled",
+        "position": "center",
+        "id": "paper_parchment_1"
+      },
+      {
+        "desc": "black square logo with white text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Hands are peeling a sheet of parchment paper off a yellow sponge cake.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sponge cake is resting on a white towel with red stripes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A logo reading 'R RECIPES' is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The hands are positioned above the yellow sponge cake, actively peeling the parchment paper. The sponge cake lies on top of the white towel with red stripes. The 'R RECIPES' logo is located in the bottom right corner of the frame, separate from the cooking action.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "peeling parchment paper",
+        "position": "top left",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "thin, translucent, off-white parchment paper",
+        "action": "being peeled off",
+        "position": "center",
+        "id": "paper_parchment_1"
+      },
+      {
+        "desc": "rectangular, pale yellow sponge cake",
+        "action": "static",
+        "position": "center",
+        "id": "food_sponge_1"
+      },
+      {
+        "desc": "white kitchen towel with red stripes",
+        "action": "static",
+        "position": "bottom",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "black square logo with white 'R' and 'RECIPES' text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Hands are peeling a sheet of parchment paper off a yellow sponge cake.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sponge cake is resting on a white towel with red stripes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The hands are above the parchment paper, which is being lifted from the surface of the yellow sponge cake. The sponge cake is lying on top of the white towel with red stripes. The logo is in the bottom right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hand with a silver ring on the ring finger, wearing a beige long-sleeved shirt",
+        "action": "pressing down on the yellow sheet",
+        "position": "top right",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "rectangular yellow sponge cake sheet, flat and porous texture",
+        "action": "being manipulated",
+        "position": "center",
+        "id": "food_sponge_1"
+      },
+      {
+        "desc": "thin, translucent parchment paper",
+        "action": "being peeled back",
+        "position": "left",
+        "id": "paper_parchment_1"
+      },
+      {
+        "desc": "white kitchen towel with red horizontal stripes",
+        "action": "static",
+        "position": "bottom",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "black square logo with a white letter 'R' and the word 'RECIPES' below it",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is peeling a sheet of parchment paper off a yellow sponge cake.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's hand is pressing down on the right side of the cake to keep it in place.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cake is resting on a white towel with red stripes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo 'R RECIPES' is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The yellow sponge cake is on top of the white and red striped towel. The person's hand is above the right side of the cake, while the parchment paper is being lifted from the left side of the cake. The 'R RECIPES' logo is in the bottom right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a light brown long-sleeved button-up shirt and dark pants",
+        "action": "rolling a sheet of yellow dough",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "large rectangular sheet of pale yellow dough",
+        "action": "being rolled",
+        "position": "center foreground",
+        "id": "food_sponge_1"
+      },
+      {
+        "desc": "white kitchen towel with a red and white patterned border",
+        "action": "static",
+        "position": "center foreground",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "stainless steel gas range with black grates and knobs",
+        "action": "static",
+        "position": "center background",
+        "id": "stove_stainless_1"
+      },
+      {
+        "desc": "white kitchen cabinets with glass doors and silver handles",
+        "action": "static",
+        "position": "background",
+        "id": "cabinet_white_1"
+      },
+      {
+        "desc": "wallpaper with a yellow and white geometric pattern",
+        "action": "static",
+        "position": "background",
+        "id": "wallpaper_geometric_1"
+      },
+      {
+        "desc": "black square logo with a white letter 'R' and the word 'RECIPES' underneath",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is using both hands to roll the yellow dough on the towel.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dough is resting on a white towel on a grey countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A stainless steel range is located behind the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing behind the kitchen island in the center of the frame. The sheet of dough is on the towel, which is on the countertop in front of him. The stainless steel range is behind the man. The white cabinets are to the right of the range. The 'R RECIPES' logo is in the bottom right corner of the image.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a light brown long-sleeved button-up shirt and dark blue jeans",
+        "action": "smoothing a sheet of yellow dough",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "sheet of yellow dough, thin and rectangular",
+        "action": "being smoothed",
+        "position": "center",
+        "id": "food_sponge_1"
+      },
+      {
+        "desc": "white kitchen towel with red stripes",
+        "action": "static",
+        "position": "center",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "white marble countertop",
+        "action": "static",
+        "position": "foreground",
+        "id": "countertop_kitchen_1"
+      },
+      {
+        "desc": "stainless steel stove with black knobs",
+        "action": "static",
+        "position": "background",
+        "id": "stove_stainless_1"
+      },
+      {
+        "desc": "black square logo with a white letter 'R' and the word 'RECIPES' below it",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is using both hands to smooth a sheet of yellow dough.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dough is resting on a white towel with red stripes on the countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing behind the kitchen island. The sheet of yellow dough is on top of the white towel, which is on the countertop in front of the man. The stainless steel stove is behind the man.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a light brown long-sleeved button-down shirt and dark pants",
+        "action": "handling sheets of dough",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "thin yellow sheets of dough",
+        "action": "being placed on a cloth",
+        "position": "center foreground",
+        "id": "food_sponge_1"
+      },
+      {
+        "desc": "white cloth with red stripes",
+        "action": "static",
+        "position": "center foreground",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "white bowl with a brush inside",
+        "action": "static",
+        "position": "left foreground",
+        "id": "bowl_white_1"
+      },
+      {
+        "desc": "stainless steel stove and range hood",
+        "action": "static",
+        "position": "background",
+        "id": "stove_stainless_1"
+      },
+      {
+        "desc": "white kitchen cabinets with glass doors",
+        "action": "static",
+        "position": "background right",
+        "id": "cabinet_white_1"
+      },
+      {
+        "desc": "black square logo with white text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is placing a sheet of yellow dough onto another sheet lying on a striped cloth.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white bowl containing a brush sits on the counter to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing behind a kitchen island.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing behind the kitchen island in the center of the frame. The sheets of dough are on the counter in front of him. The white bowl is to the left of the dough. The stove is behind the man. The 'R RECIPES' logo is in the bottom right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a light beige button-down shirt and dark blue jeans",
+        "action": "lifting and shaking a thin sheet of dough",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "thin, translucent, pale yellow sheet of dough",
+        "action": "being held and shaken in the air",
+        "position": "center",
+        "id": "food_sponge_1"
+      },
+      {
+        "desc": "rectangular sheet of yellow dough",
+        "action": "static",
+        "position": "center foreground",
+        "id": "food_sponge_1"
+      },
+      {
+        "desc": "white and red striped kitchen towel",
+        "action": "static",
+        "position": "center foreground",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "small white bowl with a pastry brush inside",
+        "action": "static",
+        "position": "bottom left",
+        "id": "bowl_white_1"
+      },
+      {
+        "desc": "large stainless steel range hood",
+        "action": "static",
+        "position": "top center",
+        "id": "hood_stainless_1"
+      },
+      {
+        "desc": "black square logo with a white letter 'R' and the word 'RECIPES' below it",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is holding a sheet of dough with both hands and shaking it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A rectangular sheet of dough rests on a striped towel on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pastry brush is resting inside a small white bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing behind the kitchen island. The sheet of dough he is holding is above the rectangular sheet of dough on the counter. The small white bowl is to the left of the striped towel. The range hood is above the stove in the background.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a beige button-down shirt with two chest pockets and dark pants",
+        "action": "gesturing with hands open over the counter",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "rectangular sheet of yellow dough, flat and smooth",
+        "action": "static",
+        "position": "foreground center",
+        "id": "food_sponge_1"
+      },
+      {
+        "desc": "white and red striped kitchen towel",
+        "action": "static",
+        "position": "foreground center",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "small white bowl containing a pastry brush",
+        "action": "static",
+        "position": "foreground left",
+        "id": "bowl_white_1"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "foreground right",
+        "id": "stove_stainless_1"
+      },
+      {
+        "desc": "black square logo with a white letter 'R' and the word 'RECIPES' below it",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      },
+      {
+        "desc": "kitchen background with white cabinets, open shelves with colorful dishes, and a large stainless steel range hood",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man gestures with both hands open towards the sheet of dough on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A rectangular sheet of yellow dough rests on a striped towel on the kitchen island.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small white bowl with a pastry brush sits to the left of the dough.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man stands behind the kitchen island, with the sheet of dough directly in front of him on the counter. The small white bowl is to the left of the dough, and the gas stovetop is to the right of the dough. The large range hood is above the man and the stove in the background.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a light beige button-down shirt and dark trousers",
+        "action": "rolling a sheet of yellow dough",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "rectangular sheet of yellow dough",
+        "action": "being rolled",
+        "position": "center foreground",
+        "id": "food_sponge_1"
+      },
+      {
+        "desc": "white kitchen towel with red stripes",
+        "action": "static",
+        "position": "center foreground",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "stainless steel stove and range hood",
+        "action": "static",
+        "position": "background",
+        "id": "stove_stainless_1"
+      },
+      {
+        "desc": "white kitchen cabinets and shelves with various items",
+        "action": "static",
+        "position": "background",
+        "id": "cabinet_white_1"
+      },
+      {
+        "desc": "black square logo with white text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is rolling a sheet of yellow dough using a white towel with red stripes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dough is on a white countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing behind the kitchen island. The sheet of yellow dough is on the countertop in front of him. The stainless steel stove is behind the man. The 'R RECIPES' logo is in the bottom right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a light brown long-sleeved button-down shirt and dark pants",
+        "action": "rolling a yellow sheet of dough using a red and white striped towel",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "yellow sheet of dough, flat and rectangular",
+        "action": "being rolled",
+        "position": "center foreground",
+        "id": "food_sponge_1"
+      },
+      {
+        "desc": "red and white striped kitchen towel",
+        "action": "being used to roll dough",
+        "position": "center foreground",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "white bowl with a pastry brush inside",
+        "action": "static",
+        "position": "left foreground",
+        "id": "bowl_white_1"
+      },
+      {
+        "desc": "stainless steel gas stove with black grates",
+        "action": "static",
+        "position": "right background",
+        "id": "stove_stainless_1"
+      },
+      {
+        "desc": "black square logo with a white letter 'R' and the word 'RECIPES' below it",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is rolling the yellow dough sheet tightly using the towel.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white bowl containing a brush sits on the counter to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing behind the kitchen island in the center of the frame. The yellow dough on the towel is directly in front of him on the counter. The white bowl is to the left of the dough, and the stove is behind the man to the right.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": [
+      "Started rolling dough using striped towel"
+    ]
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a light brown long-sleeved button-up shirt and dark pants",
+        "action": "rolling a yellow sheet of dough",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "yellow sheet of dough",
+        "action": "being rolled",
+        "position": "center",
+        "id": "food_sponge_1"
+      },
+      {
+        "desc": "white kitchen towel with red stripes",
+        "action": "static",
+        "position": "center",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "white marble countertop",
+        "action": "static",
+        "position": "foreground",
+        "id": "countertop_kitchen_1"
+      },
+      {
+        "desc": "small white bowl with a pastry brush",
+        "action": "static",
+        "position": "left",
+        "id": "bowl_white_1"
+      },
+      {
+        "desc": "stainless steel stove and oven range",
+        "action": "static",
+        "position": "background",
+        "id": "stove_stainless_1"
+      },
+      {
+        "desc": "black square logo with a white letter 'R' and the word 'RECIPES' below it",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is using both hands to roll the yellow dough sheet on the striped towel.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The towel is placed on the marble countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing behind the marble countertop. The yellow dough sheet is on top of the striped towel, which is on the countertop. The small white bowl is to the left of the towel. The stainless steel stove is behind the man.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "rolling a towel",
+        "position": "top center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white kitchen towel with red stripes",
+        "action": "being rolled",
+        "position": "center",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "yellow rectangular sponge cake",
+        "action": "static",
+        "position": "center",
+        "id": "food_sponge_1"
+      },
+      {
+        "desc": "black square logo with white text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is rolling a yellow sponge cake inside a white towel with red stripes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The hands are positioned over the towel, guiding the rolling motion.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The hands are above the towel and cake. The yellow cake is on top of the white towel. The logo is in the bottom right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a light brown long-sleeved button-up shirt",
+        "action": "rolling a towel",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white towel with red stripes",
+        "action": "being rolled",
+        "position": "center foreground",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "yellow flat sheet of food",
+        "action": "static",
+        "position": "center foreground",
+        "id": "food_sponge_1"
+      },
+      {
+        "desc": "grey marble countertop",
+        "action": "static",
+        "position": "foreground",
+        "id": "countertop_kitchen_1"
+      },
+      {
+        "desc": "stainless steel stove",
+        "action": "static",
+        "position": "background",
+        "id": "stove_stainless_1"
+      },
+      {
+        "desc": "black square logo with white text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is using both hands to roll a striped towel over a yellow sheet of food.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black logo with the text 'R RECIPES' is visible in the bottom right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing behind a grey marble countertop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing behind the grey marble countertop. The yellow sheet of food is on the countertop, and the man is rolling the striped towel over it. The stainless steel stove is behind the man.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a light brown long-sleeved button-up shirt",
+        "action": "rolling a towel",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white towel with pink and yellow stripes",
+        "action": "being rolled",
+        "position": "foreground",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "grey marble countertop",
+        "action": "static",
+        "position": "foreground",
+        "id": "countertop_kitchen_1"
+      },
+      {
+        "desc": "stainless steel gas stove",
+        "action": "static",
+        "position": "background",
+        "id": "stove_stainless_1"
+      },
+      {
+        "desc": "black square logo with white text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is rolling a striped towel on the countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's hands are pressing down on the towel to tighten the roll.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The stove is located behind the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing behind the grey marble countertop. The striped towel is on the countertop in front of the man. The stainless steel stove is behind the man. The 'R RECIPES' logo is in the bottom right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      68,
+      70
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a beige long-sleeved button-up shirt and dark pants",
+        "action": "rolling a white towel",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white towel, rolled into a cylinder",
+        "action": "being rolled",
+        "position": "center foreground",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "light gray kitchen countertop",
+        "action": "static",
+        "position": "foreground",
+        "id": "countertop_kitchen_1"
+      },
+      {
+        "desc": "black stovetop with metal grates",
+        "action": "static",
+        "position": "right foreground",
+        "id": "stove_stainless_1"
+      },
+      {
+        "desc": "stainless steel gas range with black knobs",
+        "action": "static",
+        "position": "left background",
+        "id": "stove_stainless_1"
+      },
+      {
+        "desc": "white kitchen cabinets with silver handles",
+        "action": "static",
+        "position": "background",
+        "id": "cabinet_white_1"
+      },
+      {
+        "desc": "black square logo with a white 'R' and the word 'RECIPES' below it",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is rolling a white towel on the countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's hands are pressing down on the towel.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black stovetop is located to the right of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A stainless steel oven is located behind the man to the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing behind the light gray countertop. He is rolling a white towel which is in front of him on the counter. To the man's right is a black stovetop, and to his left in the background is a stainless steel oven. The white cabinets are behind the man.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      70,
+      72
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a beige long-sleeved button-up shirt and dark pants",
+        "action": "rolling a towel",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white towel with red stripes",
+        "action": "being rolled",
+        "position": "foreground",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "black rectangular logo with a white letter 'R' and the word 'RECIPES' below it",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      },
+      {
+        "desc": "stainless steel gas stove with black grates and knobs",
+        "action": "static",
+        "position": "left",
+        "id": "stove_stainless_1"
+      },
+      {
+        "desc": "kitchen island with a light-colored countertop",
+        "action": "static",
+        "position": "foreground",
+        "id": "countertop_kitchen_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is rolling a white and red striped towel on the kitchen counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's hands are placed on the towel to guide the rolling motion.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing behind the kitchen island. The towel is on the countertop in front of the man. The stove is to the left of the man. The logo is in the bottom right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      72,
+      74
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a beige button-down shirt with two chest pockets and dark blue jeans",
+        "action": "gesturing with hands while standing behind a kitchen island",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "rolled-up kitchen towel with white and red stripes",
+        "action": "static",
+        "position": "foreground",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "stainless steel gas stovetop with black grates",
+        "action": "static",
+        "position": "foreground",
+        "id": "stove_stainless_1"
+      },
+      {
+        "desc": "black square logo with a white letter 'R' and the word 'RECIPES' underneath",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      },
+      {
+        "desc": "large stainless steel range hood",
+        "action": "static",
+        "position": "top",
+        "id": "hood_stainless_1"
+      },
+      {
+        "desc": "white kitchen cabinets with glass doors",
+        "action": "static",
+        "position": "background",
+        "id": "cabinet_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man stands behind a kitchen island and gestures with his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A rolled-up striped towel rests on the countertop in front of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is positioned between a gas stovetop on his left and another stovetop on his right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A logo with the text 'R RECIPES' is visible in the bottom right corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing behind the kitchen island. The rolled-up towel is on the countertop in front of him. The gas stovetop is to the left of the man, and the 'R RECIPES' logo is in the bottom right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": [
+      "Rolling complete, towel static"
+    ]
+  },
+  {
+    "time": [
+      74,
+      76
+    ],
+    "visible_entities": [
+      {
+        "desc": "rolled white kitchen towel with red stripes",
+        "action": "static",
+        "position": "center",
+        "id": "towel_striped_1"
+      },
+      {
+        "desc": "person's hand with light skin and manicured nails",
+        "action": "resting on table",
+        "position": "background",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "black square logo with white text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A rolled white towel with red stripes rests on a gray surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person's hand is visible in the background behind the towel.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo 'R RECIPES' is displayed in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The rolled towel is in the center foreground on the gray table. The person's hand is behind the towel. The 'R RECIPES' logo is in the bottom right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      76,
+      78
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a beige button-up shirt with two chest pockets over a white t-shirt",
+        "action": "gesturing with hands",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "red wooden ladder",
+        "action": "static",
+        "position": "left background",
+        "id": "shelf_ladder_red_1"
+      },
+      {
+        "desc": "white shelves with various kitchen items",
+        "action": "static",
+        "position": "left background",
+        "id": "cabinet_white_1"
+      },
+      {
+        "desc": "white cabinet with glass doors",
+        "action": "static",
+        "position": "right background",
+        "id": "cabinet_white_1"
+      },
+      {
+        "desc": "black square logo with a white letter 'R' and the word 'RECIPES' below it",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is gesturing with his hands while speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red ladder is leaning against the shelves in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'R RECIPES' logo is visible in the bottom right corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is in the center of the frame, in front of the background elements. To his left, a red ladder is positioned in front of white shelves. To his right, a white cabinet is visible. The 'R RECIPES' logo is in the bottom right corner, overlaying the scene.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      78,
+      80
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a beige button-down shirt with chest pockets and a white undershirt",
+        "action": "speaking",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "red wooden ladder-style shelving unit",
+        "action": "static",
+        "position": "left",
+        "id": "shelf_ladder_red_1"
+      },
+      {
+        "desc": "white cabinet with glass doors",
+        "action": "static",
+        "position": "right",
+        "id": "cabinet_white_1"
+      },
+      {
+        "desc": "black square logo with white text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is speaking to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing in a kitchen setting.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red ladder shelf is visible in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo 'R RECIPES' is displayed in the bottom right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is positioned in the center of the frame, in front of a patterned wall. To his left is a red ladder shelf, and to his right is a white cabinet. The 'R RECIPES' logo is located in the bottom right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      80,
+      82
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a light brown button-down shirt with two chest pockets and silver buttons, over a white t-shirt",
+        "action": "talking",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "red ladder-style shelving unit",
+        "action": "static",
+        "position": "left",
+        "id": "shelf_ladder_red_1"
+      },
+      {
+        "desc": "white cabinet with glass doors",
+        "action": "static",
+        "position": "right",
+        "id": "cabinet_white_1"
+      },
+      {
+        "desc": "black square logo with white text",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is talking to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red ladder shelf is visible on the left side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white cabinet is visible on the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo in the corner reads 'R RECIPES'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES"
+    ],
+    "spatial": "The man is standing in the center of the frame, in front of a wall with yellow patterned wallpaper. To his left is a red ladder shelf, and to his right is a white cabinet. The 'R RECIPES' logo is superimposed in the bottom right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      82,
+      84
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a beige button-down shirt with two chest pockets and a white t-shirt underneath",
+        "action": "talking to the camera",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white plate with a silver fork on the right side",
+        "action": "static",
+        "position": "center",
+        "id": "plate_white_1"
+      },
+      {
+        "desc": "image of baked oysters topped with cheese and bacon",
+        "action": "static",
+        "position": "center",
+        "id": "image_food_outro_1"
+      },
+      {
+        "desc": "orange circular button with white text and arrow",
+        "action": "static",
+        "position": "left",
+        "id": "graphic_circle_orange_1"
+      },
+      {
+        "desc": "orange rectangular button with white text and dotted border",
+        "action": "static",
+        "position": "center",
+        "id": "graphic_banner_orange_1"
+      },
+      {
+        "desc": "orange square logo with camera and bird icons",
+        "action": "static",
+        "position": "top right",
+        "id": "graphic_square_orange_1"
+      },
+      {
+        "desc": "black square logo with white letter 'R' and text 'RECIPES'",
+        "action": "static",
+        "position": "bottom right",
+        "id": "logo_recipes_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video transitions from a man talking to a white background with a plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The plate contains an image of baked oysters.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A fork is placed on the right side of the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'WATCH MORE VIDEOS' appears in an orange circle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'SUBSCRIBE!' appears in an orange rectangle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Social media handles '@ricardorecipes' are visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "R",
+      "RECIPES",
+      "WATCH MORE VIDEOS",
+      "SUBSCRIBE!",
+      "@ricardorecipes"
+    ],
+    "spatial": "The man is centered in the first frame. In the second frame, the plate is centered on the white background. The fork is to the right of the food image on the plate. The 'WATCH MORE VIDEOS' button is to the left of the plate. The 'SUBSCRIBE!' button is below the food image. The social media logo is in the top right corner, and the 'R RECIPES' logo is in the bottom right corner.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": [
+      "Outro graphics and food image appear on screen"
+    ]
+  },
+  {
+    "time": [
+      84,
+      86
+    ],
+    "visible_entities": [
+      {
+        "desc": "white round plate, ceramic, clean",
+        "action": "static",
+        "position": "center",
+        "id": "plate_white_1"
+      },
+      {
+        "desc": "silver metal fork, four tines",
+        "action": "static",
+        "position": "right",
+        "id": "fork_silver_1"
+      },
+      {
+        "desc": "orange rectangular banner with white text and social media icons",
+        "action": "static",
+        "position": "top right",
+        "id": "graphic_banner_orange_1"
+      },
+      {
+        "desc": "orange circular button with white text and arrow",
+        "action": "static",
+        "position": "left",
+        "id": "graphic_circle_orange_1"
+      },
+      {
+        "desc": "orange rectangular button with white text and dotted border",
+        "action": "static",
+        "position": "center",
+        "id": "graphic_banner_orange_1"
+      },
+      {
+        "desc": "rectangular image of baked stuffed mussels with melted cheese",
+        "action": "static",
+        "position": "center",
+        "id": "image_food_outro_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A white plate is centered on a white background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver fork rests on the right side of the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An image of baked stuffed mussels is displayed in the center of the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'WATCH MORE VIDEOS' appears in a circle on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'SUBSCRIBE!' appears in a banner at the bottom center.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Social media handles '@ricardorecipes' are visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "@ricardorecipes",
+      "WATCH MORE VIDEOS",
+      "SUBSCRIBE!",
+      "R"
+    ],
+    "spatial": "The white plate is in the center of the frame. The silver fork is placed on the right side of the plate. The image of the food is positioned in the center of the plate. The 'WATCH MORE VIDEOS' button is to the left of the plate. The 'SUBSCRIBE!' button is below the food image. The social media banner is in the top right corner, above the plate.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      86,
+      88
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a blue button-down shirt",
+        "action": "standing and gesturing with hands",
+        "position": "center"
+      },
+      {
+        "desc": "white ceramic dinner plate",
+        "action": "static",
+        "position": "center",
+        "id": "plate_white_1"
+      },
+      {
+        "desc": "silver metal fork",
+        "action": "static",
+        "position": "right",
+        "id": "fork_silver_1"
+      },
+      {
+        "desc": "orange circular graphic with white text and arrow",
+        "action": "static",
+        "position": "left",
+        "id": "graphic_circle_orange_1"
+      },
+      {
+        "desc": "orange rectangular banner with white text and dotted border",
+        "action": "static",
+        "position": "bottom",
+        "id": "graphic_banner_orange_1"
+      },
+      {
+        "desc": "orange square graphic with white social media icons and text",
+        "action": "static",
+        "position": "top right",
+        "id": "graphic_square_orange_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a blue shirt is standing in a kitchen setting inside the video frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is gesturing with his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'WATCH MORE VIDEOS' is visible in the orange circle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'SUBSCRIBE!' is visible in the orange banner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '@ricardorecipes' is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "WATCH MORE VIDEOS",
+      "SUBSCRIBE!",
+      "@ricardorecipes"
+    ],
+    "spatial": "The video frame showing the man is positioned in the center of the white plate. The silver fork is to the right of the plate. The 'WATCH MORE VIDEOS' graphic is to the left of the plate. The 'SUBSCRIBE!' banner is below the video frame. The social media handle is in the top right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": [
+      "Host reappears in different outfit (blue shirt)"
+    ]
+  },
+  {
+    "time": [
+      88,
+      90
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a blue button-down shirt",
+        "action": "standing behind a kitchen counter",
+        "position": "center"
+      },
+      {
+        "desc": "white round plate, ceramic, glossy",
+        "action": "static",
+        "position": "center",
+        "id": "plate_white_1"
+      },
+      {
+        "desc": "silver metal fork, four tines",
+        "action": "static",
+        "position": "right",
+        "id": "fork_silver_1"
+      },
+      {
+        "desc": "orange circular graphic with white text and arrow",
+        "action": "static",
+        "position": "left",
+        "id": "graphic_circle_orange_1"
+      },
+      {
+        "desc": "orange rectangular banner with white text and dotted border",
+        "action": "static",
+        "position": "bottom-center",
+        "id": "graphic_banner_orange_1"
+      },
+      {
+        "desc": "orange square logo with white social media icons",
+        "action": "static",
+        "position": "top-right",
+        "id": "graphic_square_orange_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man in a blue shirt is standing behind a counter in a kitchen setting.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'WATCH MORE VIDEOS' is visible inside an orange circle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'SUBSCRIBE!' is displayed on an orange banner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The handle '@ricardorecipes' is visible below social media icons.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "WATCH MORE VIDEOS",
+      "SUBSCRIBE!",
+      "@ricardorecipes"
+    ],
+    "spatial": "The white plate is in the center of the frame, with a silver fork resting on its right side. A video insert showing a man in a kitchen is positioned in the center of the plate. The 'WATCH MORE VIDEOS' graphic is to the left of the plate, while the 'SUBSCRIBE!' banner is below the video insert. The social media logo is located in the top right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  },
+  {
+    "time": [
+      90,
+      92
+    ],
+    "visible_entities": [
+      {
+        "desc": "white round ceramic plate, glossy finish",
+        "action": "static",
+        "position": "center",
+        "id": "plate_white_1"
+      },
+      {
+        "desc": "silver metal fork with four tines",
+        "action": "static",
+        "position": "right",
+        "id": "fork_silver_1"
+      },
+      {
+        "desc": "man with short brown hair wearing a blue button-down shirt",
+        "action": "standing in a kitchen",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "orange circular graphic with a white arrow",
+        "action": "static",
+        "position": "left",
+        "id": "graphic_circle_orange_1"
+      },
+      {
+        "desc": "orange rectangular banner with white dotted border",
+        "action": "static",
+        "position": "center",
+        "id": "graphic_banner_orange_1"
+      },
+      {
+        "desc": "orange square logo with white social media icons",
+        "action": "static",
+        "position": "top right",
+        "id": "graphic_square_orange_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A video thumbnail showing a man in a blue shirt is displayed on a white plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'WATCH MORE VIDEOS' appears inside an orange circle.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'SUBSCRIBE!' appears inside an orange banner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '@ricardorecipes' appears below social media icons.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "WATCH MORE VIDEOS",
+      "SUBSCRIBE!",
+      "@ricardorecipes"
+    ],
+    "spatial": "The white plate is in the center of the frame with a silver fork resting on its right side. A video thumbnail of a man is positioned in the center of the plate. To the left of the plate is an orange circle containing text, and below the video thumbnail is an orange banner. In the top right corner of the screen, an orange logo is visible.",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "Ricardo_s_favourite_summer_berry_desserts",
+    "state_changes": []
+  }
+]

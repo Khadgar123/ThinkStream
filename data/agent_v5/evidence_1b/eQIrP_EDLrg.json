@@ -1,0 +1,1266 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "text overlay reading 'Learning with Doris' on the top line and 'How to Keep Your Pages' on the bottom line, rendered in a white, sans-serif font",
+        "action": "static",
+        "position": "center",
+        "id": "text_intro_doris_1"
+      },
+      {
+        "desc": "a cosmic background featuring a deep blue starry sky with a bright, glowing nebula at the bottom center emitting white and light blue light",
+        "action": "static",
+        "position": "background",
+        "id": "background_cosmic_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'Learning with Doris' is displayed above the text 'How to Keep Your Pages'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text is centered horizontally over the glowing nebula.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background consists of a starry night sky with a bright light source at the bottom.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Learning with Doris",
+      "How to Keep Your Pages"
+    ],
+    "spatial": "The text 'Learning with Doris' is positioned above the text 'How to Keep Your Pages'. Both lines of text are centered in the frame, appearing in front of the starry background and above the bright nebula at the bottom.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "Text reading 'Learning with Darth' and 'How to Snap Your Fingers' in a white, outlined, sans-serif font",
+        "action": "static",
+        "position": "center",
+        "id": "text_intro_darth_1"
+      },
+      {
+        "desc": "A deep blue cosmic background filled with scattered white stars and a bright, glowing nebula at the bottom center",
+        "action": "static",
+        "position": "background",
+        "id": "background_cosmic_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'Learning with Darth' is displayed above the text 'How to Snap Your Fingers'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background is a static image of a starry galaxy.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Learning with Darth",
+      "How to Snap Your Fingers"
+    ],
+    "spatial": "The text is centered in the middle of the frame, positioned above the bright nebula at the bottom and in front of the starry background.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": [
+      "title text changed from 'Learning with Doris' to 'Learning with Darth'"
+    ]
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet, blue plaid button-down shirt over a white undershirt",
+        "action": "sitting still",
+        "position": "center",
+        "id": "person_darth_1"
+      },
+      {
+        "desc": "dark leather couch or furniture",
+        "action": "static",
+        "position": "left",
+        "id": "couch_leather_1"
+      },
+      {
+        "desc": "beige wall with a light switch",
+        "action": "static",
+        "position": "background",
+        "id": "wall_beige_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person wearing a Darth Vader helmet sits in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a blue plaid shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A light switch is visible on the wall to the right.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the Darth Vader helmet is in the center of the frame, in front of the beige wall. The dark leather furniture is to the left of the person. The light switch is on the wall to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": [
+      "scene transition from title card to person sitting on couch"
+    ]
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet, a dark blue plaid button-down shirt over a white t-shirt",
+        "action": "raising right hand with fingers curled",
+        "position": "center",
+        "id": "person_darth_1"
+      },
+      {
+        "desc": "dark leather sofa",
+        "action": "static",
+        "position": "left",
+        "id": "couch_leather_1"
+      },
+      {
+        "desc": "beige wall with a white light switch plate",
+        "action": "static",
+        "position": "background",
+        "id": "wall_beige_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person raises their right hand to shoulder level.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a Darth Vader helmet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A light switch is visible on the wall in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, in front of the beige wall. The dark leather sofa is to the left of the person. The light switch is on the wall to the right of the person.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": [
+      "person began hand gestures (was sitting still in chunk 2)"
+    ]
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet and a dark blue plaid button-down shirt",
+        "action": "gesturing with hands",
+        "position": "center",
+        "id": "person_darth_1"
+      },
+      {
+        "desc": "black leather couch",
+        "action": "static",
+        "position": "left",
+        "id": "couch_leather_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person raises their right hand with fingers curled.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person raises their left hand with fingers curled.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a black helmet.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person wearing the helmet is in the center of the frame. The black leather couch is to the left of the person. The person's hands are raised in front of their chest.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet and a dark blue plaid button-down shirt",
+        "action": "holding both hands up with fingers curled",
+        "position": "center",
+        "id": "person_darth_1"
+      },
+      {
+        "desc": "dark leather sofa",
+        "action": "static",
+        "position": "left",
+        "id": "couch_leather_1"
+      },
+      {
+        "desc": "beige wall",
+        "action": "static",
+        "position": "background",
+        "id": "wall_beige_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds both hands up at shoulder height",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person wears a black helmet resembling Darth Vader",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person wears a blue plaid shirt",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame, sitting in front of the beige wall. The dark leather sofa is to the left of the person.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet and a dark blue plaid button-down shirt over a white undershirt",
+        "action": "moving hands with index fingers pointing up",
+        "position": "center",
+        "id": "person_darth_1"
+      },
+      {
+        "desc": "dark brown leather sofa",
+        "action": "static",
+        "position": "left",
+        "id": "couch_leather_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person moves hands with index fingers pointing up",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a Darth Vader helmet",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame. The leather sofa is to the left of the person.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet and a dark blue plaid button-down shirt over a white undershirt",
+        "action": "raising right hand",
+        "position": "center",
+        "id": "person_darth_1"
+      },
+      {
+        "desc": "dark leather sofa",
+        "action": "static",
+        "position": "left",
+        "id": "couch_leather_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person raises their right hand with fingers curled.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a black helmet.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame. The dark leather sofa is to the left of the person. The person's raised hand is in front of their chest.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet and a dark blue plaid button-down shirt",
+        "action": "gesturing with hand",
+        "position": "center",
+        "id": "person_darth_1"
+      },
+      {
+        "desc": "right hand with index finger extended",
+        "action": "pointing upwards",
+        "position": "left foreground",
+        "id": "person_darth_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person raises their right hand with the index finger pointing up.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a black Darth Vader mask.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a blue plaid shirt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person wearing the helmet is positioned in the center of the frame. Their right hand is raised in the foreground to the left of their torso.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet and a dark blue plaid button-down shirt over a white t-shirt",
+        "action": "holding up right hand with fingers curled",
+        "position": "center",
+        "id": "person_darth_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds up right hand with fingers curled",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person wears a glossy black Darth Vader helmet",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person wearing the Darth Vader helmet is in the center of the frame. Their raised right hand is positioned to the left of their torso. The person is in front of a plain yellow wall.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet and a dark blue plaid button-down shirt",
+        "action": "making a hand gesture with the index finger and pinky extended",
+        "position": "center",
+        "id": "person_darth_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person raises their right hand in a gesture",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the person is wearing a Darth Vader helmet",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame. Their right hand is raised to the left of their helmet. The background is a plain wall behind the person.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet, a blue plaid button-down shirt, and a white undershirt",
+        "action": "holding right hand up in a pinching gesture",
+        "position": "center",
+        "id": "person_darth_1"
+      },
+      {
+        "desc": "dark brown leather couch",
+        "action": "static",
+        "position": "bottom left",
+        "id": "couch_leather_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds right hand up with thumb and index finger close together",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a Darth Vader helmet",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the Darth Vader helmet is positioned in the center of the frame. The dark brown leather couch is visible in the bottom left corner, behind the person's right arm. The person's hand is raised in front of their chest.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet and a dark blue plaid button-down shirt over a white t-shirt",
+        "action": "holding up right hand in a gesture",
+        "position": "center",
+        "id": "person_darth_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is holding their right hand up with the thumb and index finger touching to form a circle, while the other three fingers are extended.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is centered in the frame. Their raised right hand is positioned to the left of their helmeted head. The person is in front of a plain, light-colored wall.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a black Darth Vader helmet and a blue plaid button-down shirt",
+        "action": "holding up a hand in a rock-on gesture",
+        "position": "center",
+        "id": "person_darth_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds up their right hand in a rock-on gesture",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a Darth Vader helmet",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame. Their hand is raised in front of their chest and to the left of their helmet.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": [
+      "person started rock-on hand gesture"
+    ]
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a black Darth Vader helmet and a dark blue plaid button-down shirt over a white t-shirt",
+        "action": "holding up a hand in a rock-on gesture",
+        "position": "center",
+        "id": "person_darth_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person wearing a Darth Vader helmet raises their right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person forms a 'rock on' sign with their index and pinky fingers extended.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a dark blue plaid shirt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is centered in the frame. Their raised hand is positioned to the left of their helmeted head. The person is in front of a plain beige wall.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet and a dark blue plaid button-down shirt",
+        "action": "holding up a hand in a 'rock on' gesture",
+        "position": "center",
+        "id": "person_darth_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds up their right hand making a 'rock on' sign",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a Darth Vader helmet",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is centered in the frame. Their raised hand is to the left of their helmeted head. The person is in front of a plain beige wall.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet and a blue plaid button-down shirt",
+        "action": "holding up right hand with fingers curled",
+        "position": "center",
+        "id": "person_darth_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds up right hand with fingers curled",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person wears a Darth Vader helmet",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame. The raised hand is to the left of the helmet. The helmet is on the person's head.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet and a dark blue plaid button-down shirt",
+        "action": "holding up a hand with fingers in a gesture",
+        "position": "center",
+        "id": "person_darth_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds up their right hand with the index and pinky fingers extended",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a Darth Vader helmet",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame. Their hand is raised in front of their chest. The helmet is on the person's head.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet and a blue plaid button-down shirt",
+        "action": "raising right hand and changing hand gesture",
+        "position": "center",
+        "id": "person_darth_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person raises right hand",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person changes hand gesture from a pinch to a pointing finger",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a Darth Vader helmet",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame. The raised hand is in front of the person's chest. The helmet is on the person's head.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet and a blue plaid button-down shirt",
+        "action": "raising right hand with fingers curled",
+        "position": "center",
+        "id": "person_darth_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person raises right hand with fingers curled",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a Darth Vader helmet",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person wearing the helmet is in the center of the frame. The raised hand is positioned to the left of the helmet from the viewer's perspective. The person is in front of a plain beige wall.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet with blue accents and a dark blue plaid button-down shirt",
+        "action": "raising right hand with fingers curled",
+        "position": "center",
+        "id": "person_darth_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person raises their right hand",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a Darth Vader helmet",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a blue plaid shirt",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person wearing the Darth Vader helmet is centered in the frame. Their raised right hand is positioned to the left of their head. The person is in front of a plain beige wall.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet, blue plaid button-down shirt, and white undershirt",
+        "action": "raising right hand with index finger pointing up, then lowering hand",
+        "position": "center",
+        "id": "person_darth_1"
+      },
+      {
+        "desc": "dark leather sofa or chair",
+        "action": "static",
+        "position": "left",
+        "id": "couch_leather_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person raises their right hand with the index finger pointing upwards.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person lowers their hand towards the bottom of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a Darth Vader helmet.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the Darth Vader helmet is positioned in the center of the frame. A dark leather sofa is visible to the left of the person. The person's hand is raised in front of their chest.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": [
+      "person lowered hand after pointing index finger up"
+    ]
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet with blue light reflections, a dark blue plaid button-down shirt, and a white undershirt",
+        "action": "raising right hand with fingers spread",
+        "position": "center",
+        "id": "person_darth_1"
+      },
+      {
+        "desc": "dark brown leather couch",
+        "action": "static",
+        "position": "background",
+        "id": "couch_leather_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person raises their right hand towards the camera",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a Darth Vader helmet",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a blue plaid shirt",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person wearing the helmet is in the center of the frame, positioned in front of the dark brown leather couch. The person's raised right hand is in the foreground, to the right of their helmet.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a black Darth Vader helmet and a blue plaid button-down shirt",
+        "action": "making a hand gesture",
+        "position": "center",
+        "id": "person_darth_1"
+      },
+      {
+        "desc": "black leather sofa",
+        "action": "static",
+        "position": "left",
+        "id": "couch_leather_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person raises their right hand in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person changes their hand gesture from an open palm to a pinching motion.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black leather sofa is visible in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person wearing the helmet is in the center of the frame. Their raised hand is in the foreground, positioned to the right of their head. The black leather sofa is behind the person on the left side.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet and a blue plaid button-down shirt",
+        "action": "holding up a hand in a pinching gesture",
+        "position": "center",
+        "id": "person_darth_1"
+      },
+      {
+        "desc": "dark brown leather sofa",
+        "action": "static",
+        "position": "background",
+        "id": "couch_leather_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds up their right hand with thumb and index finger close together",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a Darth Vader helmet",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the helmet is in the center of the frame. The leather sofa is behind the person to the left. The hand is in the foreground, positioned to the right of the helmet.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet with blue vertical accents on the faceplate and a blue plaid button-down shirt",
+        "action": "holding up a hand in the foreground",
+        "position": "center",
+        "id": "person_darth_1"
+      },
+      {
+        "desc": "dark brown leather couch",
+        "action": "static",
+        "position": "left",
+        "id": "couch_leather_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person wearing a Darth Vader helmet raises their right hand towards the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a blue plaid shirt.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the helmet is in the center of the frame. Their hand is in the foreground, to the right of their helmet. The leather couch is visible to the left of the person.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet, a dark blue plaid button-down shirt, and a white undershirt",
+        "action": "raising both hands with fingers curled",
+        "position": "center",
+        "id": "person_darth_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person raises both hands to shoulder height",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person wears a Darth Vader helmet",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person wears a blue plaid shirt",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is centered in the frame. The person's hands are raised in front of their torso. The person is in front of a plain beige wall.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": [
+      "person raised both hands (previously using one hand)"
+    ]
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet, dark blue plaid button-down shirt, and a light blue t-shirt underneath",
+        "action": "raising both hands with fingers curled",
+        "position": "center",
+        "id": "person_darth_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person raises both hands to shoulder level",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a Darth Vader helmet",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a plaid shirt",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is centered in the frame. The Darth Vader helmet is on the person's head. The person's hands are raised in front of their chest and shoulders.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet and a dark blue plaid button-down shirt over a light blue t-shirt",
+        "action": "holding hands up with fingers curled",
+        "position": "center",
+        "id": "person_darth_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds both hands up in front of their chest",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a Darth Vader helmet",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame. Their hands are raised in front of their chest, positioned on either side of the helmet.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet and a blue plaid button-down shirt over a white undershirt",
+        "action": "raising both hands with index fingers pointing upward",
+        "position": "center",
+        "id": "person_darth_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person raises both hands with index fingers pointing upward",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a Darth Vader helmet",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a blue plaid shirt",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is centered in the frame. The person's hands are raised in front of their chest. The background is a plain wall behind the person.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": [
+      "person changed to both index fingers pointing upward"
+    ]
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet and a dark blue plaid button-down shirt with a white undershirt visible at the collar",
+        "action": "moving hands in front of chest",
+        "position": "center",
+        "id": "person_darth_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person moves hands in front of chest",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a Darth Vader helmet",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is in the center of the frame. Their hands are in front of their chest. The helmet is on the person's head.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a glossy black Darth Vader helmet and a dark blue plaid button-down shirt",
+        "action": "raising right hand with palm open",
+        "position": "center",
+        "id": "person_darth_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person raises right hand with palm open",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a Darth Vader helmet",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is centered in the frame. The raised hand is to the left of the person's head.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "Text reading 'An Altered Deal Production' in a white, outlined, sans-serif font",
+        "action": "static",
+        "position": "top/center",
+        "id": "text_production_1"
+      },
+      {
+        "desc": "A large, dark celestial body resembling a moon or planet with a textured, cratered surface and a bright crescent edge",
+        "action": "static",
+        "position": "right",
+        "id": "celestial_body_1"
+      },
+      {
+        "desc": "A bright, singular point of light resembling a star",
+        "action": "static",
+        "position": "left",
+        "id": "star_1"
+      },
+      {
+        "desc": "A dark, silhouetted landscape or horizon line",
+        "action": "static",
+        "position": "bottom",
+        "id": "landscape_1"
+      },
+      {
+        "desc": "A dark, starry night sky background",
+        "action": "static",
+        "position": "background",
+        "id": "sky_starry_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'An Altered Deal Production' is displayed at the top of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large celestial body is positioned on the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bright star is visible on the left side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene depicts a static view of outer space.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "An Altered Deal Production"
+    ],
+    "spatial": "The text 'An Altered Deal Production' is located at the top center of the frame. The large celestial body is to the right of the bright star. The silhouetted landscape is at the bottom of the frame, below the celestial body and the star.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": [
+      "scene transition from person on couch to production credit with celestial background"
+    ]
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "White text with a thin black outline reading 'An Altered Deal Production' in a sans-serif font.",
+        "action": "static",
+        "position": "center",
+        "id": "text_production_1"
+      },
+      {
+        "desc": "A large, dark celestial body, resembling a planet or moon, with a textured surface and a bright crescent of light on its left side.",
+        "action": "static",
+        "position": "right",
+        "id": "celestial_body_1"
+      },
+      {
+        "desc": "A dark, silhouetted landscape forming the bottom edge of the frame.",
+        "action": "static",
+        "position": "bottom",
+        "id": "landscape_1"
+      },
+      {
+        "desc": "A small, bright point of light, like a star, in the sky.",
+        "action": "static",
+        "position": "left",
+        "id": "star_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'An Altered Deal Production' is displayed in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large planet is visible on the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene is set against a dark, starry night sky.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "An Altered Deal Production"
+    ],
+    "spatial": "The text 'An Altered Deal Production' is centered in the upper portion of the frame. The large planet is to the right of the text and above the silhouetted landscape at the bottom. A small star is to the left of the text.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "eQIrP_EDLrg",
+    "state_changes": []
+  }
+]

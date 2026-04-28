@@ -1,0 +1,2439 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "Warning label with an orange header bar containing a yellow triangle with an exclamation mark and the word 'WARNING' in black text. Below the header is a black section with a white square on the left containing a line drawing of an open book. To the right of the book icon is white text reading 'READ INSTRUCTIONS.' followed by a bullet point and safety instructions.",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A warning label is displayed on a blue background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The label instructs the user to read instructions and follow the Owner's Manual.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'WARNING' is visible in the orange header.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'READ INSTRUCTIONS.' is visible in bold white letters.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "WARNING",
+      "READ INSTRUCTIONS.",
+      "• Read and follow all labels and the Owner's Manual carefully before installing, operating, or servicing unit. Read the safety information at the beginning of the manual and in each section."
+    ],
+    "spatial": "The orange header bar is above the black text section. The book icon is to the left of the instructional text. The entire warning label is centered on the blue background.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "Warning label with an orange header bar containing a yellow triangle with an exclamation mark and black text, a white square with a black line-drawing of an open book on the left, and a black rectangular area with white text on the right.",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A warning label is displayed on a blue background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The label instructs the user to read instructions.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text advises reading the Owner's Manual before installing, operating, or servicing the unit.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "WARNING",
+      "READ INSTRUCTIONS.",
+      "• Read and follow all labels and the Owner's Manual carefully before installing, operating, or servicing unit. Read the safety information at the beginning of the manual and in each section."
+    ],
+    "spatial": "The warning label is centered on the blue background. The book icon is to the left of the instructional text. The orange header is above the black text section.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "blue rectangular industrial generator with black front panel, black handles, and a wheel",
+        "action": "static",
+        "position": "center",
+        "id": "machine_blue_1"
+      },
+      {
+        "desc": "warning label with orange header, black body, and white icon",
+        "action": "static",
+        "position": "foreground",
+        "id": "warning_label_1"
+      },
+      {
+        "desc": "black folding screen or wall",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a warning label instructing users to read instructions.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The label text reads 'WARNING' and 'READ INSTRUCTIONS.'",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue generator is positioned on a concrete floor.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "WARNING",
+      "READ INSTRUCTIONS.",
+      "• Read and follow all labels and the Owner's Manual carefully before installing, operating, or servicing unit. Read the safety information at the beginning of the manual and in each section."
+    ],
+    "spatial": "The warning label is in the foreground, appearing as an overlay. The blue generator is located in the center of the frame, in front of the black folding screen in the background.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": [
+      "scene transitions from warning label to blue industrial machine"
+    ]
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "blue industrial generator with black front panel, metal construction, mounted on wheels with black handles",
+        "action": "static",
+        "position": "center",
+        "id": "machine_blue_1"
+      },
+      {
+        "desc": "black folding screen or partition",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A blue industrial generator is sitting stationary on a concrete floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The generator features a black control panel on the front with gauges and outlets.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Weldcraft' is visible on the side of the machine.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Weldcraft"
+    ],
+    "spatial": "The blue generator is in the foreground, positioned in front of the black folding screen. The black control panel is on the front face of the blue generator body.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "blue industrial air filtration unit with black front panel, black corrugated hoses, and wheels",
+        "action": "static",
+        "position": "center",
+        "id": "machine_blue_1"
+      },
+      {
+        "desc": "person wearing blue jeans and black shoes",
+        "action": "kneeling",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is kneeling on the floor to the left of the blue machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two black corrugated hoses are connected to the front of the machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The machine is labeled 'FILTAIN 215'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Miller",
+      "FILTAIN 215"
+    ],
+    "spatial": "The blue industrial machine is positioned in the center of the frame. A person is kneeling to the left of the machine. Two black hoses extend from the front of the machine towards the right side of the frame.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": [
+      "person enters scene, kneeling by machine"
+    ]
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing blue jeans and black shoes, partially visible on the left",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "blue industrial machine with black control panel, black corrugated hoses, and silver horizontal vents",
+        "action": "static",
+        "position": "center",
+        "id": "machine_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is standing next to a blue industrial machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The machine has a black control panel with knobs and switches.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two black corrugated hoses are connected to the front of the machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'FILTAIR 215' is visible on the machine.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "W",
+      "Nilfisk",
+      "FILTAIR 215"
+    ],
+    "spatial": "The person is to the left of the blue industrial machine. The black control panel is on the upper front part of the machine. The black hoses extend from the front of the machine towards the right side of the frame.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a grey and blue jacket, blue jeans, and blue and white gloves",
+        "action": "connecting a blue hose to the machine",
+        "position": "left",
+        "id": "person_worker_1"
+      },
+      {
+        "desc": "black industrial machine with a silver vented grille, control knobs, and attached black corrugated hoses",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "blue hose with a metal connector",
+        "action": "being held and inserted",
+        "position": "bottom left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person connects a blue hose to a port on the lower left side of the black machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The machine features a silver grille with horizontal slats.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two thick black corrugated hoses are attached to the upper left of the machine's front panel.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Miller",
+      "FILTAIR 215",
+      "WELDING FUME EXTRACTOR"
+    ],
+    "spatial": "The person is positioned to the left of the black machine. The blue hose is held by the person and is being inserted into a port located below the silver grille on the machine. The black corrugated hoses extend from the upper left of the machine towards the right side of the frame.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": [
+      "person begins connecting hose to machine"
+    ]
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a grey and blue work jacket, blue jeans, and white gloves with blue trim",
+        "action": "connecting a blue hose to the machine",
+        "position": "left",
+        "id": "person_worker_1"
+      },
+      {
+        "desc": "black industrial machine with a vented front panel, control knobs, and a red power switch",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "thick black corrugated hoses",
+        "action": "static",
+        "position": "center",
+        "id": "hose_black_1"
+      },
+      {
+        "desc": "thin blue hose",
+        "action": "being connected",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person connects a blue hose to the bottom port of the black machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The machine has the text 'Miller' and 'FILT AIR 215' printed on the front.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two thick black hoses are attached to the upper section of the machine.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Miller",
+      "FILT AIR 215"
+    ],
+    "spatial": "The person is positioned to the left of the black machine. The thick black hoses are attached above the blue hose on the machine's front panel. The person is holding the blue hose near the bottom connection point.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a beige jacket and blue and white gloves",
+        "action": "lifting a blue metal plate",
+        "position": "center",
+        "id": "person_worker_1"
+      },
+      {
+        "desc": "blue metal plate with four black knobs",
+        "action": "being lifted",
+        "position": "center"
+      },
+      {
+        "desc": "cylindrical filter with pleated material",
+        "action": "static",
+        "position": "center",
+        "id": "filter_cylindrical_1"
+      },
+      {
+        "desc": "blue industrial machine with black front panel and hoses",
+        "action": "static",
+        "position": "center",
+        "id": "machine_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person wearing gloves lifts the blue metal plate off the machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Lifting the plate reveals a cylindrical filter inside the machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The machine has a black front panel with the text 'FILTAIR 215' and 'Miller'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Miller",
+      "FILTAIR 215"
+    ],
+    "spatial": "The person is standing behind the blue machine. The blue metal plate is on top of the machine, covering the cylindrical filter which is inside the machine. The black front panel is on the front of the blue machine.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": [
+      "person lifts blue metal plate with knobs"
+    ]
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a beige jacket, blue jeans, and blue and white work gloves",
+        "action": "pressing a white object onto the blue machine",
+        "position": "center",
+        "id": "person_worker_1"
+      },
+      {
+        "desc": "large blue industrial machine with a glossy finish, black rubber feet, and ventilation slots",
+        "action": "static",
+        "position": "foreground",
+        "id": "machine_blue_1"
+      },
+      {
+        "desc": "small white rectangular object with a blue logo",
+        "action": "being pressed",
+        "position": "center"
+      },
+      {
+        "desc": "dark grey wall panels",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is pressing a white object onto the top surface of a blue machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing protective gloves while handling the object.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue machine has black rubber feet attached to its top panel.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing behind the blue machine, reaching over it. The white object is located on top of the blue machine, directly under the person's gloved hands. The dark grey wall panels are in the background behind the person and the machine.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": [
+      "person presses white object onto machine"
+    ]
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a beige and grey work jacket, blue jeans, and white gloves with blue cuffs",
+        "action": "manipulating the lid of the machine",
+        "position": "center",
+        "id": "person_worker_1"
+      },
+      {
+        "desc": "bright blue metal machine with a hinged lid, black handle, ventilation slots, and a wheel",
+        "action": "static",
+        "position": "foreground",
+        "id": "machine_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is opening or closing the lid of the blue machine",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the machine has a black handle on its top surface",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the machine features rows of ventilation slots on the lid",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing behind the blue machine. The person's gloved hands are on the lid of the machine. The machine is in the foreground, positioned in front of the person.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": [
+      "person manipulates hinged lid of machine"
+    ]
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a beige and dark grey jacket with blue gloves",
+        "action": "adjusting the blue machine",
+        "position": "center",
+        "id": "person_worker_1"
+      },
+      {
+        "desc": "large blue metal machine with black handles and ventilation slots",
+        "action": "static",
+        "position": "foreground",
+        "id": "machine_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is adjusting the blue machine with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The machine has black handles on top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The machine has ventilation slots on the side.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing behind the blue machine. The person's hands are on the top surface of the machine.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a beige jacket, blue jeans, and blue and white work gloves",
+        "action": "holding the handle of a blue machine",
+        "position": "center",
+        "id": "person_worker_1"
+      },
+      {
+        "desc": "blue industrial machine with a metal handle, ventilation slots, and a black control panel",
+        "action": "static",
+        "position": "foreground",
+        "id": "machine_blue_1"
+      },
+      {
+        "desc": "black control panel featuring a circular gauge with green, yellow, and red zones, a blue button, and warning labels",
+        "action": "static",
+        "position": "right",
+        "id": "control_panel_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding the handle of a blue machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The machine features a filter cleaning gauge.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gauge indicates that cleaning is recommended at 3 IN. W.C. and required at 4 IN. W.C.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Warning labels are present on the control panel.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FILTER CLEANING GAUGE",
+      "INCHES W.C.",
+      "WARNING",
+      "Replace filter if above 4 in. w.c. after cleaning.",
+      "AVERTISSEMENT",
+      "Remplacez le filtre si la pression est supérieure à 4 pouces C.E. après le nettoyage.",
+      "ADVERTENCIA",
+      "Sustituya el filtro si la presión es superior a 4 pulgadas de c.a. después de limpiarlo.",
+      "3 IN. W.C.: CLEANING RECOMMENDED",
+      "4 IN. W.C.: CLEANING REQUIRED",
+      "CLEANING CYCLE",
+      "CLEANING"
+    ],
+    "spatial": "The person is standing behind the blue machine, holding its top handle. The black control panel is located on the front face of the machine. The gauge is positioned to the right of the blue cleaning cycle button.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "black industrial control panel with a blue circular button, a circular analog gauge with a white face and red/green zones, and warning labels in English, French, and Spanish",
+        "action": "static",
+        "position": "center",
+        "id": "control_panel_1"
+      },
+      {
+        "desc": "white text printed on the black panel",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The camera focuses on a static control panel.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gauge needle points to the green zone, indicating a reading below 3 inches W.C.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '3 IN. W.C.: CLEANING RECOMMENDED' and '4 IN. W.C.: CLEANING REQUIRED' is visible below the gauge.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FILTER CLEANING",
+      "GAUGE",
+      "WARNING",
+      "Replace filter if above",
+      "4 in. w.c. after cleaning.",
+      "AVERTISSEMENT",
+      "Remplacez le filtre si la",
+      "pression est supérieure à 4",
+      "pouces d.C. après le nettoyage.",
+      "ADVERTENCIA",
+      "Cambie el filtro si está por",
+      "encima de 4 pulg. d.c. después",
+      "de limpiarlo.",
+      "INCHES W.C.",
+      "CLEANING CYCLE",
+      "CLEANING",
+      "3 IN. W.C.: CLEANING RECOMMENDED",
+      "4 IN. W.C.: CLEANING REQUIRED"
+    ],
+    "spatial": "The blue 'CLEANING CYCLE' button is to the left of the 'FILTER CLEANING GAUGE'. The warning labels are to the right of the gauge. The text describing cleaning recommendations is located directly below the gauge.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand wearing a white protective glove with a blue wrist cuff and a blue logo on the back",
+        "action": "pointing at the gauge dial",
+        "position": "foreground right",
+        "id": "white_gloves_1"
+      },
+      {
+        "desc": "circular filter cleaning gauge with a black rim, white face, and a needle indicating pressure in a green zone",
+        "action": "static",
+        "position": "center",
+        "id": "pressure_gauge_1"
+      },
+      {
+        "desc": "black industrial control panel with a blue push-button and warning labels",
+        "action": "static",
+        "position": "background",
+        "id": "control_panel_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A gloved hand points directly at the needle of the filter cleaning gauge.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gauge needle is positioned in the green section of the scale, indicating a reading of approximately 1.5 inches W.C.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the panel indicates that cleaning is recommended at 3 in. W.C. and required at 4 in. W.C.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FILTER CLEANING GAUGE",
+      "INCHES W.C.",
+      "WARNING",
+      "Replace filter if above 4 in. w.c. after cleaning",
+      "AVERTISSEMENT",
+      "Remplacez le filtre si la pression est supérieure à 4 pouces CE après le nettoyage",
+      "ADVERTENCIA",
+      "Cambie el filtro si está en un número de agua de más 4 pulgadas tras la limpieza",
+      "CLEANING CYCLE",
+      "CLEANING",
+      "3 IN. W.C.: CLEANING RECOMMENDED",
+      "4 IN. W.C.: CLEANING REQUIRED"
+    ],
+    "spatial": "The gloved hand is in the foreground, reaching from the right side to point at the gauge. The gauge is located in the center of the black control panel. The blue 'CLEANING CYCLE' button is to the left of the gauge. The warning labels are positioned to the right of the gauge.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": [
+      "hand points at pressure gauge"
+    ]
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "white work glove with blue accents on the fingertips",
+        "action": "pointing at the gauge",
+        "position": "right foreground",
+        "id": "white_gloves_1"
+      },
+      {
+        "desc": "black rectangular machine panel with a circular gauge, blue button, and warning labels",
+        "action": "static",
+        "position": "center",
+        "id": "control_panel_1"
+      },
+      {
+        "desc": "circular filter cleaning gauge with a white face, black needle, and green, yellow, and red zones",
+        "action": "static",
+        "position": "center",
+        "id": "pressure_gauge_1"
+      },
+      {
+        "desc": "blue circular button with a black rim",
+        "action": "static",
+        "position": "left",
+        "id": "blue_button_1"
+      },
+      {
+        "desc": "yellow warning labels with black text",
+        "action": "static",
+        "position": "right",
+        "id": "warning_label_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A gloved hand points to the red section of the filter cleaning gauge.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The gauge needle indicates a pressure reading in the red zone, above 4 inches W.C.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text below the gauge states '4 IN. W.C. - CLEANING REQUIRED'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FILTER CLEANING",
+      "GAUGE",
+      "WARNING",
+      "Replace filter if above 4 in. w.c. after cleaning.",
+      "AVERTISSEMENT",
+      "Remplacez le filtre si la pression est supérieure à 4 pouces C.E. après le nettoyage.",
+      "ADVERTENCIA",
+      "Cambie el filtro si está por encima de 4 pulgadas de agua de máx. después de la limpieza.",
+      "INCHES W.C.",
+      "CLEANING CYCLE",
+      "CLEANING",
+      "3 IN. W.C. - CLEANING RECOMMENDED",
+      "4 IN. W.C. - CLEANING REQUIRED"
+    ],
+    "spatial": "The blue button is to the left of the circular gauge. The gloved hand is in the foreground on the right, pointing at the gauge. The warning labels are to the right of the gauge. The text 'CLEANING CYCLE' is below the blue button.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "black industrial control panel with a blue push-button labeled 'CLEANING CYCLE', a circular pressure gauge with a white face and green/red zones, and warning labels in English, French, and Spanish",
+        "action": "static",
+        "position": "center",
+        "id": "control_panel_1"
+      },
+      {
+        "desc": "pressure gauge needle pointing to the red zone",
+        "action": "static",
+        "position": "center",
+        "id": "pressure_gauge_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The pressure gauge needle indicates a reading in the red zone, above 4 inches W.C.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the panel states '4 IN. W.C.: CLEANING REQUIRED'",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue button is labeled 'CLEANING CYCLE'",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FILTER CLEANING",
+      "GAUGE",
+      "WARNING",
+      "Replace filter if above 4 in. w.c. after cleaning.",
+      "AVERTISSEMENT",
+      "Remplacer le filtre s'il dépasse 4 pouces d'eau après nettoyage.",
+      "ADVERTENCIA",
+      "Cambie el filtro si excede 4 pulgadas de agua después de limpieza.",
+      "CLEANING CYCLE",
+      "CLEANING",
+      "3 IN. W.C.: CLEANING RECOMMENDED",
+      "4 IN. W.C.: CLEANING REQUIRED"
+    ],
+    "spatial": "The blue 'CLEANING CYCLE' button is located to the left of the circular filter cleaning gauge. The warning labels are positioned to the right of the gauge. The text indicating cleaning requirements is printed directly below the gauge.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": [
+      "pressure gauge needle moves to red zone"
+    ]
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "black industrial control panel with a circular gauge, a blue button, and warning labels",
+        "action": "static",
+        "position": "center",
+        "id": "control_panel_1"
+      },
+      {
+        "desc": "circular filter cleaning gauge with a white face, black needle, and red/green zones",
+        "action": "static",
+        "position": "center",
+        "id": "pressure_gauge_1"
+      },
+      {
+        "desc": "blue circular push-button",
+        "action": "static",
+        "position": "left",
+        "id": "blue_button_1"
+      },
+      {
+        "desc": "orange and white warning labels with text in English, French, and Spanish",
+        "action": "static",
+        "position": "right",
+        "id": "warning_label_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The needle on the filter cleaning gauge points to the green zone, indicating a reading below 3 inches W.C.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text below the gauge states '3 IN. W.C.: CLEANING RECOMMENDED' and '4 IN. W.C.: CLEANING REQUIRED'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue button is labeled 'CLEANING CYCLE'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FILTER CLEANING",
+      "GAUGE",
+      "INCHES W.C.",
+      "WARNING",
+      "Replace filter if above 4 in. w.c. after cleaning.",
+      "AVERTISSEMENT",
+      "Remplacer le filtre si la pression est supérieure à 4 pouces CE après nettoyage.",
+      "ADVERTENCIA",
+      "Cambie el filtro si está por encima de 4 pulgadas de agua después de limpiar.",
+      "CLEANING CYCLE",
+      "CLEANING",
+      "3 IN. W.C.: CLEANING RECOMMENDED",
+      "4 IN. W.C.: CLEANING REQUIRED"
+    ],
+    "spatial": "The blue button is to the left of the circular gauge. The warning labels are to the right of the gauge. The instructional text regarding cleaning recommendations is located directly below the gauge.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "black industrial machine control panel with silver knobs, a blue button, and a pressure gauge",
+        "action": "static",
+        "position": "center",
+        "id": "control_panel_1"
+      },
+      {
+        "desc": "black corrugated hose with a ribbed texture",
+        "action": "static",
+        "position": "left",
+        "id": "hose_black_1"
+      },
+      {
+        "desc": "white text label reading 'Miller FILTAIR 215'",
+        "action": "static",
+        "position": "bottom",
+        "id": "miller_logo_1"
+      },
+      {
+        "desc": "white electrical cord",
+        "action": "static",
+        "position": "left",
+        "id": "white_cable_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The machine control panel is static in the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The label reads 'Miller FILTAIR 215'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pressure gauge is located on the right side of the panel.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white cord is plugged into the 'AUTO START IN' port.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "AUTO START IN",
+      "HAND",
+      "OFF",
+      "AUTO",
+      "CONTROL",
+      "FLOW",
+      "CLEANING CYCLE",
+      "FILTER CLEANING GAUGE",
+      "2 IN. W.C. CLEANING RECOMMENDED",
+      "4 IN. W.C. CLEANING REQUIRED",
+      "Miller",
+      "FILTAIR 215",
+      "MILLER ELECTRIC MFG. LLC, APPLETON, WI, USA"
+    ],
+    "spatial": "The black corrugated hose is to the left of the main control panel. The 'Miller FILTAIR 215' label is below the knobs and buttons on the panel. The pressure gauge is to the right of the blue cleaning cycle button.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "black industrial machine control panel with silver knobs, blue button, and white labels",
+        "action": "static",
+        "position": "center",
+        "id": "control_panel_1"
+      },
+      {
+        "desc": "black corrugated flexible hose",
+        "action": "static",
+        "position": "left",
+        "id": "hose_black_1"
+      },
+      {
+        "desc": "white cable connected to the panel",
+        "action": "static",
+        "position": "left",
+        "id": "white_cable_1"
+      },
+      {
+        "desc": "circular pressure gauge with green and red zones",
+        "action": "static",
+        "position": "top-right",
+        "id": "pressure_gauge_1"
+      },
+      {
+        "desc": "silver ventilation grille",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The machine is stationary.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The control panel features 'Miller' and 'FILTAIR 215' branding.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white cable is plugged into the 'AUTO START IN' port.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pressure gauge indicates a reading in the green zone.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "AUTO START IN",
+      "HAND",
+      "OFF",
+      "AUTO",
+      "CONTROL",
+      "FLOW",
+      "CLEANING CYCLE",
+      "FILTER CLEANING GAUGE",
+      "2 IN. W.C. CLEANING RECOMMENDED",
+      "4 IN. W.C. CLEANING REQUIRED",
+      "Miller.",
+      "FILTAIR 215",
+      "MILLER ELECTRIC MFG. LLC, APPLETON, WI, USA"
+    ],
+    "spatial": "The black corrugated hose is attached to the left side of the machine panel. The white cable is plugged into the panel to the left of the control knobs. The pressure gauge is located in the upper right corner, above the Miller logo. The ventilation grille is positioned below the control panel and branding.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand wearing a white glove with a blue cuff and a blue logo",
+        "action": "pointing at the blue button",
+        "position": "right",
+        "id": "white_gloves_1"
+      },
+      {
+        "desc": "black industrial machine control panel with knobs, a gauge, and labels",
+        "action": "static",
+        "position": "center",
+        "id": "control_panel_1"
+      },
+      {
+        "desc": "blue circular button labeled 'CLEANING CYCLE'",
+        "action": "being pointed at",
+        "position": "center-right",
+        "id": "blue_button_1"
+      },
+      {
+        "desc": "black rotary knob labeled 'CONTROL' with 'HAND', 'OFF', 'AUTO' settings",
+        "action": "static",
+        "position": "center-left"
+      },
+      {
+        "desc": "black rotary knob labeled 'FLOW'",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "circular pressure gauge with green and red zones",
+        "action": "static",
+        "position": "top-right",
+        "id": "pressure_gauge_1"
+      },
+      {
+        "desc": "black corrugated hose attached to the machine",
+        "action": "static",
+        "position": "left",
+        "id": "hose_black_1"
+      },
+      {
+        "desc": "white text 'Miller' with a logo on a black background",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "miller_logo_1"
+      },
+      {
+        "desc": "white text 'FILTAIR 215' on a black background",
+        "action": "static",
+        "position": "bottom-right",
+        "id": "miller_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A gloved hand points at the blue 'CLEANING CYCLE' button.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'CONTROL' knob is set to the 'OFF' position.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The machine is a Miller FILTAIR 215 model.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black hose is connected to the left side of the machine.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "AUTO START IN",
+      "HAND",
+      "OFF",
+      "AUTO",
+      "CONTROL",
+      "FLOW",
+      "CLEANING CYCLE",
+      "FILTER CLEANING GAUGE",
+      "2 IN. W.C. CLEANING RECOMMENDED",
+      "4 IN. W.C. CLEANING REQUIRED",
+      "Miller",
+      "FILTAIR 215",
+      "MILLER ELECTRIC MFG. LLC, APPLETON, WI, USA"
+    ],
+    "spatial": "The gloved hand is on the right side of the frame, pointing at the blue button. The blue button is to the right of the 'FLOW' knob. The 'CONTROL' knob is to the left of the 'FLOW' knob. The pressure gauge is above the 'FILTAIR 215' label. The black hose is on the far left of the machine.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": [
+      "hand points at blue CLEANING CYCLE button"
+    ]
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "black industrial machine with a blue top, featuring a control panel with knobs, a blue indicator light, and a pressure gauge",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black corrugated flexible hose",
+        "action": "static",
+        "position": "left",
+        "id": "hose_black_1"
+      },
+      {
+        "desc": "white cable",
+        "action": "static",
+        "position": "left",
+        "id": "white_cable_1"
+      },
+      {
+        "desc": "white label with black text reading 'Miller' and 'FILTAIR 215'",
+        "action": "static",
+        "position": "center",
+        "id": "miller_logo_1"
+      },
+      {
+        "desc": "bright blue circular light",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The machine is stationary in the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue light on the control panel is illuminated.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The label on the machine reads 'Miller' and 'FILTAIR 215'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Miller",
+      "FILTAIR 215",
+      "MILLER ELECTRIC MFG. LLC, APPLETON, WI, USA",
+      "AUTO START IN",
+      "CONTROL",
+      "HAND",
+      "OFF",
+      "AUTO",
+      "FLOW",
+      "CLEANING CYCLE",
+      "FILTER CLEANING GAUGE",
+      "2 IN. W.C. CLEANING RECOMMENDED",
+      "4 IN. W.C. CLEANING REQUIRED",
+      "WARNING"
+    ],
+    "spatial": "The black corrugated hose is attached to the left side of the machine. The white cable is plugged into the panel to the left of the control knobs. The 'Miller' and 'FILTAIR 215' label is located on the front panel, below the control knobs and above the ventilation slats. The blue light is positioned between the flow knob and the filter cleaning gauge.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": [
+      "blue indicator light activates on machine"
+    ]
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "black industrial machine control panel with silver horizontal vents, featuring a 'Miller' logo, 'FILTAIR 215' label, two grey rotary knobs, a blue push button, and a circular pressure gauge",
+        "action": "static",
+        "position": "center",
+        "id": "control_panel_1"
+      },
+      {
+        "desc": "grey corrugated flexible hose",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white thin cable",
+        "action": "static",
+        "position": "left",
+        "id": "white_cable_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The machine control panel is static.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'FILTAIR 215' label is visible on the front of the machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pressure gauge needle is pointing to the green zone.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Miller",
+      "FILTAIR 215",
+      "MILLER ELECTRIC MFG. LLC, APPLETON, WI, USA",
+      "AUTO START IN",
+      "HAND",
+      "OFF",
+      "AUTO",
+      "CONTROL",
+      "FLOW",
+      "CLEANING CYCLE",
+      "FILTER CLEANING GAUGE",
+      "IN. W.C. CLEANING RECOMMENDED",
+      "IN. W.C. CLEANING REQUIRED"
+    ],
+    "spatial": "The grey corrugated hose is connected to the left side of the black machine panel. The white cable is plugged into the 'AUTO START IN' port, which is located to the left of the 'CONTROL' knob. The 'FILTAIR 215' label is positioned above the silver horizontal vents.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "black industrial machine control panel with silver horizontal vents, featuring a blue LED light, a pressure gauge, and two grey rotary knobs",
+        "action": "static",
+        "position": "center",
+        "id": "control_panel_1"
+      },
+      {
+        "desc": "thick black corrugated hose with a ribbed texture",
+        "action": "static",
+        "position": "left",
+        "id": "hose_black_1"
+      },
+      {
+        "desc": "thin white cable plugged into the panel",
+        "action": "static",
+        "position": "left",
+        "id": "white_cable_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The machine control panel is static.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue LED light labeled 'CLEANING CYCLE' is illuminated.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pressure gauge needle indicates a reading in the green zone.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Miller' and 'FILTAIR 215' is visible on the front of the machine.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "AUTO START IN",
+      "HAND",
+      "OFF",
+      "AUTO",
+      "CONTROL",
+      "FLOW",
+      "CLEANING CYCLE",
+      "FILTER CLEANING GAUGE",
+      "2 IN. W.C. CLEANING RECOMMENDED",
+      "4 IN. W.C. CLEANING REQUIRED",
+      "Miller",
+      "FILTAIR 215",
+      "MILLER ELECTRIC MFG. LLC, APPLETON, WI, USA"
+    ],
+    "spatial": "The black corrugated hose is attached to the left side of the machine panel. The white cable is plugged into the panel to the left of the control knobs. The blue light is located to the right of the flow knob and above the 'FILTAIR 215' label.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing blue jeans, grey and blue jacket, white gloves with blue cuffs",
+        "action": "kneeling and holding the machine",
+        "position": "right"
+      },
+      {
+        "desc": "large blue rectangular industrial machine with black control panel, black wheels, and silver ventilation slats",
+        "action": "being moved",
+        "position": "center",
+        "id": "machine_blue_1"
+      },
+      {
+        "desc": "black control panel with white text, dials, switches, and a pressure gauge",
+        "action": "static",
+        "position": "center",
+        "id": "control_panel_1"
+      },
+      {
+        "desc": "black corrugated hose attached to the machine",
+        "action": "static",
+        "position": "left",
+        "id": "hose_black_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is kneeling on the floor to the right of the machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding the side of the blue machine with gloved hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The machine features a control panel labeled 'FILTAIR 215'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The control panel includes a 'FILTER CLEANING GAUGE' and various switches.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Miller",
+      "AUTO START",
+      "HAND",
+      "OFF",
+      "AUTO",
+      "CONTROL",
+      "FLOW",
+      "CLEANING CYCLE",
+      "FILTER CLEANING GAUGE",
+      "3 IN. W.C. CLEANING RECOMMENDED",
+      "6 IN. W.C. CLEANING REQUIRED",
+      "Miller",
+      "FILTAIR 215",
+      "MILLER ELECTRIC MFG. LLC, APPLETON, WI, USA"
+    ],
+    "spatial": "The person is kneeling to the right of the blue machine. The black control panel is located on the front face of the machine, above the silver ventilation slats. The black corrugated hose is attached to the left side of the machine.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": [
+      "person begins moving/tilting the machine"
+    ]
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a grey and blue jacket, blue jeans, and blue and white gloves",
+        "action": "kneeling and holding the blue machine",
+        "position": "right",
+        "id": "person_worker_1"
+      },
+      {
+        "desc": "large blue rectangular metal machine with grey wheels and black handles",
+        "action": "being tilted by the person",
+        "position": "center",
+        "id": "machine_blue_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is kneeling on the floor next to a blue machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is tilting the blue machine backwards onto its wheels.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The machine has the brand name 'Miller' printed on the side.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Miller"
+    ],
+    "spatial": "The person is to the right of the blue machine. The person is holding the top handle and the side of the machine. The machine is on the concrete floor.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short blonde hair, wearing a two-tone jacket (grey sleeves, blue torso), blue jeans, white and blue gloves, and a respirator mask with blue straps",
+        "action": "kneeling and adjusting a wheel",
+        "position": "center",
+        "id": "person_worker_1"
+      },
+      {
+        "desc": "large blue metal machine with a white 'Miller' logo on the side",
+        "action": "static",
+        "position": "left",
+        "id": "machine_blue_1"
+      },
+      {
+        "desc": "grey plastic wheel with a black rubber tire and a blue center hub",
+        "action": "being adjusted",
+        "position": "bottom center",
+        "id": "wheels_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is kneeling on the floor next to the blue machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is using a gloved hand to manipulate the wheel at the base of the machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The machine has the text 'Miller' printed on its side panel.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Miller"
+    ],
+    "spatial": "The person is to the right of the blue Miller machine. The grey wheel is located at the bottom corner of the machine, near the person's hand. The person is kneeling on the floor in front of the machine's side panel.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": [
+      "person adjusts wheel on machine"
+    ]
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with light brown hair, wearing a grey and blue long-sleeved shirt, blue jeans, white gloves with blue cuffs, and a respirator mask",
+        "action": "kneeling and adjusting the bottom of the blue machine",
+        "position": "right",
+        "id": "person_worker_1"
+      },
+      {
+        "desc": "large blue rectangular metal machine with grey wheels and a black handle",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white text logo reading 'Miller' with a stylized 'M' symbol",
+        "action": "static",
+        "position": "left",
+        "id": "miller_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is kneeling on the floor next to a blue machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is using their gloved hands to manipulate the bottom edge of the blue machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue machine has the text 'Miller' printed on its side.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Miller"
+    ],
+    "spatial": "The person is to the right of the blue machine. The 'Miller' logo is on the left side of the machine. The person is kneeling on the floor in front of the machine's side panel.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short blonde hair, wearing a grey and blue jacket, blue jeans, white gloves with blue cuffs, and a respirator mask",
+        "action": "kneeling and pulling a black tray",
+        "position": "right",
+        "id": "person_worker_1"
+      },
+      {
+        "desc": "large blue metal cart with grey wheels and a black handle",
+        "action": "static",
+        "position": "left",
+        "id": "wheels_1"
+      },
+      {
+        "desc": "black rectangular tray",
+        "action": "being pulled out",
+        "position": "bottom center",
+        "id": "tray_black_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is kneeling on the floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is pulling a black tray out from the bottom of the blue cart.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue cart has the text 'Miller' on its side.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Miller"
+    ],
+    "spatial": "The person is to the right of the large blue cart. The black tray is located at the bottom of the cart, extending outwards towards the person. The person is holding the edge of the tray.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": [
+      "person pulls out black tray from machine"
+    ]
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short blonde hair, wearing a grey and blue jacket, blue jeans, white gloves with blue cuffs, and a respirator mask",
+        "action": "kneeling and adjusting a ramp",
+        "position": "right",
+        "id": "person_worker_1"
+      },
+      {
+        "desc": "large blue metal machine with grey wheels and a black handle",
+        "action": "static",
+        "position": "left",
+        "id": "machine_blue_1"
+      },
+      {
+        "desc": "black metal ramp with a textured surface",
+        "action": "being positioned",
+        "position": "bottom center",
+        "id": "ramp_black_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is kneeling on the floor next to a blue machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is using their gloved hands to position a black ramp under the wheels of the machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The machine has the brand name 'Miller' printed on its side.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Miller"
+    ],
+    "spatial": "The person is to the right of the blue machine. The black ramp is located below the machine, positioned near the wheels. The person is holding the ramp with their hands.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": [
+      "person positions black metal ramp"
+    ]
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with brown hair, wearing a grey and blue long-sleeved shirt, blue jeans, white gloves with blue cuffs, and a blue respirator mask",
+        "action": "kneeling and adjusting the bottom of the blue machine",
+        "position": "right",
+        "id": "person_worker_1"
+      },
+      {
+        "desc": "large blue rectangular metal machine with grey wheels and black handles",
+        "action": "static",
+        "position": "left",
+        "id": "machine_blue_1"
+      },
+      {
+        "desc": "white text logo reading 'Miller' with a circular symbol",
+        "action": "static",
+        "position": "left",
+        "id": "miller_logo_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is kneeling on the floor next to a blue machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is using their gloved hands to adjust the bottom edge of the machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The machine has the brand name 'Miller' printed on its side.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Miller"
+    ],
+    "spatial": "The person is positioned to the right of the blue machine. The 'Miller' logo is located on the upper left side of the machine's blue casing. The person's hands are near the bottom right corner of the machine.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short blonde hair, wearing a grey and blue jacket, blue jeans, safety glasses, a respirator mask, and white gloves with blue cuffs",
+        "action": "kneeling and adjusting a wheel",
+        "position": "right"
+      },
+      {
+        "desc": "large blue metal machine with a white 'Miller' logo, mounted on grey wheels with black tires",
+        "action": "static",
+        "position": "left",
+        "id": "machine_blue_1"
+      },
+      {
+        "desc": "black metal tool or lever",
+        "action": "being held",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is kneeling on the floor next to a blue machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding a black tool near the wheel of the machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing safety gear including a mask and glasses.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue machine has the text 'Miller' printed on the side.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Miller"
+    ],
+    "spatial": "The person is to the right of the blue machine. The person is holding a black tool near the bottom wheel of the machine. The machine is on the concrete floor.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing blue jeans, a grey and blue jacket, and white gloves with blue cuffs",
+        "action": "crouching and pushing the blue cart",
+        "position": "right"
+      },
+      {
+        "desc": "large blue rectangular metal cart with a white 'Miller' logo, black handles, and grey wheels",
+        "action": "being moved across the floor",
+        "position": "center",
+        "id": "wheels_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is crouching down to push a large blue cart.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cart is equipped with wheels and is being rolled across a concrete floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The cart features a white 'Miller' logo on its side panel.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Miller"
+    ],
+    "spatial": "The person is positioned to the right of the blue cart. The cart is in the center of the frame, resting on the floor. The person's hands are placed on the top and side of the cart to maneuver it.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "large blue rectangular industrial welding machine with a white 'Miller' logo, mounted on a black frame with large grey wheels",
+        "action": "static",
+        "position": "left/center/foreground",
+        "id": "machine_blue_1"
+      },
+      {
+        "desc": "person wearing a blue long-sleeved shirt, blue jeans, white gloves, and a white welding helmet",
+        "action": "bending over and working",
+        "position": "right/foreground",
+        "id": "person_welder_1"
+      },
+      {
+        "desc": "person wearing a dark jacket, white gloves, and a white welding helmet",
+        "action": "standing and observing",
+        "position": "center/background",
+        "id": "person_observer_1"
+      },
+      {
+        "desc": "black welding cables and hoses",
+        "action": "lying on the floor",
+        "position": "bottom/foreground",
+        "id": "hose_black_1"
+      },
+      {
+        "desc": "silver metal ladder",
+        "action": "static",
+        "position": "background",
+        "id": "ladder_silver_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a blue shirt is bending over a work surface, appearing to operate a welding tool.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A second person in a dark jacket stands behind the first person, watching the work.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue Miller welding machine is positioned on the floor to the left of the workers.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Black cables connect the welding machine to the area where the person is working.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Miller"
+    ],
+    "spatial": "The blue Miller welding machine is to the left of the person in the blue shirt. The person in the blue shirt is in front of the person in the dark jacket. The black cables are on the floor near the welding machine and the workers. The silver ladder is in the background behind the workers.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": [
+      "scene changes to welding setup with two people"
+    ]
+  },
+  {
+    "time": [
+      68,
+      70
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue long-sleeve shirt, light blue jeans, white protective gloves, and a white welding helmet",
+        "action": "adjusting the machine",
+        "position": "right",
+        "id": "person_welder_1"
+      },
+      {
+        "desc": "person wearing a dark jacket and white protective gloves",
+        "action": "standing",
+        "position": "background",
+        "id": "person_observer_1"
+      },
+      {
+        "desc": "large blue industrial welding machine with a white logo, black wheels, and a black front grille",
+        "action": "static",
+        "position": "left",
+        "id": "machine_blue_1"
+      },
+      {
+        "desc": "black coiled cable",
+        "action": "static",
+        "position": "foreground",
+        "id": "hose_black_1"
+      },
+      {
+        "desc": "silver metal ladder",
+        "action": "static",
+        "position": "background",
+        "id": "ladder_silver_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the blue shirt is bending over and adjusting the controls on the front of the blue machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue machine has the text 'Miller' printed on its side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A second person is standing behind the machine.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Miller"
+    ],
+    "spatial": "The person in the blue shirt is to the right of the blue Miller machine. The second person is standing behind the machine. The silver ladder is in the background to the left of the second person.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      70,
+      72
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a white welding helmet, dark jacket, and light-colored gloves",
+        "action": "standing near the machine",
+        "position": "center",
+        "id": "person_observer_1"
+      },
+      {
+        "desc": "person wearing a blue long-sleeved shirt, blue jeans, and white gloves",
+        "action": "standing",
+        "position": "right",
+        "id": "person_welder_1"
+      },
+      {
+        "desc": "large blue industrial welding machine with a black front panel, control knobs, and a thick black hose",
+        "action": "static",
+        "position": "foreground",
+        "id": "machine_blue_1"
+      },
+      {
+        "desc": "silver metal ladder",
+        "action": "static",
+        "position": "background",
+        "id": "ladder_silver_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a welding helmet stands next to a blue welding machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The welding machine has the text 'Miller' and 'FUSION 21S' on it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A second person in a blue shirt stands to the right of the machine.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Miller",
+      "FUSION 21S"
+    ],
+    "spatial": "The blue welding machine is in the foreground, positioned to the left of the person in the blue shirt. The person wearing the welding helmet is standing behind and slightly to the left of the machine. A silver ladder is visible in the background behind the machine.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      72,
+      74
+    ],
+    "visible_entities": [
+      {
+        "desc": "large blue industrial machine with a black front control panel, featuring a pressure gauge, control knobs, a blue indicator light, and a thick black corrugated hose attached at the bottom",
+        "action": "static",
+        "position": "foreground",
+        "id": "machine_blue_1"
+      },
+      {
+        "desc": "black metal lifting handle attached to the top of the blue machine",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "person wearing dark clothing, partially visible and out of focus",
+        "action": "standing",
+        "position": "background",
+        "id": "person_observer_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A large blue industrial machine sits stationary in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'FUTURE 215' is visible on the front panel of the machine.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person is standing in the background behind the machine.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FUTURE 215"
+    ],
+    "spatial": "The blue industrial machine is in the foreground, occupying the center and left of the frame. The black lifting handle is on top of the machine. The person is standing in the background, behind the machine.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      74,
+      76
+    ],
+    "visible_entities": [
+      {
+        "desc": "black metal welding machine with control knobs and dials, featuring a wire spool holder on top",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "orange text 'WATCH MORE:' with a black curved arrow pointing left",
+        "action": "static",
+        "position": "left",
+        "id": "end_screen_watchmore_1"
+      },
+      {
+        "desc": "orange text 'SUBSCRIBE' with a black curved arrow pointing right",
+        "action": "static",
+        "position": "right",
+        "id": "end_screen_subscribe_1"
+      },
+      {
+        "desc": "blue textured background surface",
+        "action": "static",
+        "position": "background",
+        "id": "end_screen_background_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video transitions from a shot of a welding machine to a plain blue background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'WATCH MORE:' is displayed on the left side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'SUBSCRIBE' is displayed on the right side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Black arrows point towards the respective text prompts.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "WATCH MORE:",
+      "SUBSCRIBE"
+    ],
+    "spatial": "The welding machine is positioned in the center of the frame in the first part of the clip. The 'WATCH MORE:' text is to the left of the center, while the 'SUBSCRIBE' text is to the right. The blue background is behind all foreground elements.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": [
+      "transitions to end screen with subscribe/watch more text"
+    ]
+  },
+  {
+    "time": [
+      76,
+      78
+    ],
+    "visible_entities": [
+      {
+        "desc": "Text 'WATCH MORE:' in bold, yellow, sans-serif font",
+        "action": "static",
+        "position": "top-left",
+        "id": "end_screen_watchmore_1"
+      },
+      {
+        "desc": "Text 'SUBSCRIBE' in bold, yellow, sans-serif font",
+        "action": "static",
+        "position": "bottom-right",
+        "id": "end_screen_subscribe_1"
+      },
+      {
+        "desc": "Black, hand-drawn style curved arrow pointing downwards and leftwards",
+        "action": "static",
+        "position": "left",
+        "id": "end_screen_arrows_1"
+      },
+      {
+        "desc": "Black, hand-drawn style curved arrow pointing upwards and leftwards",
+        "action": "static",
+        "position": "right",
+        "id": "end_screen_arrows_1"
+      },
+      {
+        "desc": "Blue background with a grunge or textured surface appearance",
+        "action": "static",
+        "position": "background",
+        "id": "end_screen_background_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'WATCH MORE:' is displayed in the upper left quadrant.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'SUBSCRIBE' is displayed in the lower right quadrant.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black arrow curves from the 'WATCH MORE:' text downwards.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black arrow curves from the 'SUBSCRIBE' text upwards.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background is a textured blue surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "WATCH MORE:",
+      "SUBSCRIBE"
+    ],
+    "spatial": "The text 'WATCH MORE:' is located in the top-left area of the frame, positioned above a black curved arrow. The text 'SUBSCRIBE' is located in the bottom-right area, positioned below a second black curved arrow. Both text elements and arrows are set against a textured blue background.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      78,
+      80
+    ],
+    "visible_entities": [
+      {
+        "desc": "text 'WATCH MORE:' in bold, yellow, sans-serif font",
+        "action": "static",
+        "position": "top-left",
+        "id": "end_screen_watchmore_1"
+      },
+      {
+        "desc": "black, brush-stroke style arrow curving downwards and to the left",
+        "action": "static",
+        "position": "left",
+        "id": "end_screen_arrows_1"
+      },
+      {
+        "desc": "text 'SUBSCRIBE' in bold, yellow, sans-serif font",
+        "action": "static",
+        "position": "bottom-right",
+        "id": "end_screen_subscribe_1"
+      },
+      {
+        "desc": "black, brush-stroke style arrow curving upwards and to the left",
+        "action": "static",
+        "position": "right",
+        "id": "end_screen_arrows_1"
+      },
+      {
+        "desc": "blue background with a textured, grunge-like appearance",
+        "action": "static",
+        "position": "background",
+        "id": "end_screen_background_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'WATCH MORE:' is displayed in the top-left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'SUBSCRIBE' is displayed in the bottom-right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black arrow points from the 'WATCH MORE:' text towards the center-left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black arrow points from the 'SUBSCRIBE' text towards the center-right.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "WATCH MORE:",
+      "SUBSCRIBE"
+    ],
+    "spatial": "The 'WATCH MORE:' text is located in the top-left area, while the 'SUBSCRIBE' text is in the bottom-right area. A black arrow is positioned below the 'WATCH MORE:' text, and another black arrow is positioned above the 'SUBSCRIBE' text. All elements are superimposed on a textured blue background.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      80,
+      82
+    ],
+    "visible_entities": [
+      {
+        "desc": "Text 'WATCH MORE:' in bold, yellow, uppercase sans-serif font",
+        "action": "static",
+        "position": "top-left",
+        "id": "end_screen_watchmore_1"
+      },
+      {
+        "desc": "Text 'SUBSCRIBE' in bold, yellow, uppercase sans-serif font",
+        "action": "static",
+        "position": "bottom-right",
+        "id": "end_screen_subscribe_1"
+      },
+      {
+        "desc": "Black, brush-stroke style arrow curving downwards",
+        "action": "static",
+        "position": "left",
+        "id": "end_screen_arrows_1"
+      },
+      {
+        "desc": "Black, brush-stroke style arrow curving upwards",
+        "action": "static",
+        "position": "right",
+        "id": "end_screen_arrows_1"
+      },
+      {
+        "desc": "Blue background with a subtle, mottled texture resembling concrete or paper",
+        "action": "static",
+        "position": "background",
+        "id": "end_screen_background_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'WATCH MORE:' is displayed in the upper left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'SUBSCRIBE' is displayed in the lower right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black arrow points downwards on the left side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black arrow points upwards on the right side of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "WATCH MORE:",
+      "SUBSCRIBE"
+    ],
+    "spatial": "The text 'WATCH MORE:' is located in the top-left area, positioned above a black arrow that curves downwards. The text 'SUBSCRIBE' is located in the bottom-right area, positioned below a black arrow that curves upwards. The left-side elements are horizontally opposite the right-side elements on the blue background.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      82,
+      84
+    ],
+    "visible_entities": [
+      {
+        "desc": "Text 'WATCH MORE:' in bold, yellow, uppercase sans-serif font",
+        "action": "static",
+        "position": "top left",
+        "id": "end_screen_watchmore_1"
+      },
+      {
+        "desc": "Text 'SUBSCRIBE' in bold, yellow, uppercase sans-serif font",
+        "action": "static",
+        "position": "bottom right",
+        "id": "end_screen_subscribe_1"
+      },
+      {
+        "desc": "Black, brush-stroke style curved arrow pointing downwards and to the left",
+        "action": "static",
+        "position": "left",
+        "id": "end_screen_arrows_1"
+      },
+      {
+        "desc": "Black, brush-stroke style curved arrow pointing upwards and to the left",
+        "action": "static",
+        "position": "right",
+        "id": "end_screen_arrows_1"
+      },
+      {
+        "desc": "Textured blue background with a grunge or concrete-like appearance",
+        "action": "static",
+        "position": "background",
+        "id": "end_screen_background_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a static end screen layout.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'WATCH MORE:' is visible in the upper left quadrant.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'SUBSCRIBE' is visible in the lower right quadrant.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black arrow points from the 'WATCH MORE:' text downwards.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "WATCH MORE:",
+      "SUBSCRIBE"
+    ],
+    "spatial": "The 'WATCH MORE:' text is located in the top left area, above a black arrow that curves downwards. The 'SUBSCRIBE' text is located in the bottom right area, below a black arrow that curves upwards. Both text elements and arrows are positioned against a textured blue background.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  },
+  {
+    "time": [
+      84,
+      86
+    ],
+    "visible_entities": [
+      {
+        "desc": "Text 'WATCH MORE:' in bold, yellow, uppercase sans-serif font",
+        "action": "static",
+        "position": "top-left",
+        "id": "end_screen_watchmore_1"
+      },
+      {
+        "desc": "Text 'SUBSCRIBE' in bold, yellow, uppercase sans-serif font",
+        "action": "static",
+        "position": "bottom-right",
+        "id": "end_screen_subscribe_1"
+      },
+      {
+        "desc": "Black, hand-drawn style curved arrow pointing downwards and leftwards",
+        "action": "static",
+        "position": "left",
+        "id": "end_screen_arrows_1"
+      },
+      {
+        "desc": "Black, hand-drawn style curved arrow pointing upwards and leftwards",
+        "action": "static",
+        "position": "right",
+        "id": "end_screen_arrows_1"
+      },
+      {
+        "desc": "Blue background with a subtle textured, grunge-like pattern",
+        "action": "static",
+        "position": "background",
+        "id": "end_screen_background_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'WATCH MORE:' is displayed in the upper left area.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'SUBSCRIBE' is displayed in the lower right area.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black arrow points from the 'WATCH MORE:' text downwards.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black arrow points from the 'SUBSCRIBE' text upwards.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "WATCH MORE:",
+      "SUBSCRIBE"
+    ],
+    "spatial": "The 'WATCH MORE:' text is located in the top-left quadrant, above the downward-pointing black arrow. The 'SUBSCRIBE' text is located in the bottom-right quadrant, below the upward-pointing black arrow. Both text elements and arrows are superimposed on the blue textured background.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "Plasma_Cutting_Table_part_2_-DIY_downdraft_table_and_Miller_Fume_Extractor",
+    "state_changes": []
+  }
+]

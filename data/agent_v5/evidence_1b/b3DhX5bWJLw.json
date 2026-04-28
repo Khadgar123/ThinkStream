@@ -1,0 +1,2794 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "White text reading '- Nintendo - Presents' in a sans-serif font",
+        "action": "static",
+        "position": "center",
+        "id": "nintendo_presents_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text '- Nintendo - Presents' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text remains static against a black background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "- Nintendo -",
+      "Presents"
+    ],
+    "spatial": "The text '- Nintendo -' is positioned directly above the word 'Presents' in the center of the frame.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "Title logo reading 'SUPER MARIO WORLD' in a playful, cartoon-style font with multi-colored letters (red, blue, green, yellow) and a trademark symbol",
+        "action": "static",
+        "position": "center",
+        "id": "super_mario_title_1"
+      },
+      {
+        "desc": "A grey, spherical object resembling a Yoshi egg, positioned directly beneath the title text",
+        "action": "static",
+        "position": "center",
+        "id": "yoshi_egg_1"
+      },
+      {
+        "desc": "A decorative border frame with a beige, stone-block texture featuring small circular indentations",
+        "action": "static",
+        "position": "background",
+        "id": "decorative_border_1"
+      },
+      {
+        "desc": "Copyright text reading '© 1990-1991 Nintendo' in a small, cyan digital font",
+        "action": "static",
+        "position": "bottom",
+        "id": "nintendo_copyright_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The 'SUPER MARIO WORLD' title logo is displayed in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A grey egg is positioned below the main title text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The copyright text '© 1990-1991 Nintendo' is visible at the bottom of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The scene is framed by a stone-textured border.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SUPER",
+      "MARIO WORLD™",
+      "© 1990-1991 Nintendo"
+    ],
+    "spatial": "The 'SUPER MARIO WORLD' logo is centered on the screen. The grey egg is located directly below the logo. The copyright text is positioned at the bottom of the screen, below the egg. The entire composition is enclosed within a stone-textured border.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": [
+      "Title screen appears after Nintendo Presents intro"
+    ]
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "Title logo with 'SUPER' in red and green, and 'MARIO WORLD' in multi-colored block letters (green, blue, yellow, red) with black outlines",
+        "action": "static",
+        "position": "center",
+        "id": "super_mario_title_1"
+      },
+      {
+        "desc": "Save file menu with white text listing 'MARIO A', 'MARIO B', 'MARIO C', and 'ERASE DATA', accompanied by a red arrow cursor",
+        "action": "static",
+        "position": "center",
+        "id": "menu_cursor_1"
+      },
+      {
+        "desc": "Small pixelated character resembling Mario with a red hat and blue overalls",
+        "action": "static",
+        "position": "left",
+        "id": "mario_character_1"
+      },
+      {
+        "desc": "Small pixelated dinosaur character (Yoshi) with orange/red coloring",
+        "action": "static",
+        "position": "right",
+        "id": "yoshi_dinosaur_1"
+      },
+      {
+        "desc": "Copyright text '© 1990, 1991 Nintendo' in blue font",
+        "action": "static",
+        "position": "bottom",
+        "id": "nintendo_copyright_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The save file menu appears on the screen, overlaying the title background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red arrow cursor points to the 'MARIO A' save slot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'MARIO B' and 'MARIO C' are marked as 'EMPTY'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The copyright text at the bottom reads '© 1990, 1991 Nintendo'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SUPER",
+      "MARIO WORLD",
+      "TM",
+      "MARIO A",
+      "MARIO B",
+      "EMPTY",
+      "MARIO C",
+      "EMPTY",
+      "ERASE DATA",
+      "© 1990, 1991 Nintendo"
+    ],
+    "spatial": "The 'MARIO WORLD' title is positioned in the upper center of the screen. The save file menu appears below the title in the center. The small Mario character is on the far left side of the ground, while the Yoshi character is on the right side. The copyright text is located at the very bottom of the screen, below the ground level.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": [
+      "Save file menu appears with cursor and character sprites"
+    ]
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "Title screen with 'SUPER MARIOWORLD' text in colorful blocky font (Red 'SUPER', Green/Red/Blue/Yellow 'MARIO', Blue/Yellow/Green 'WORLD') against a light blue sky background with a grey mountain and green bushes.",
+        "action": "static",
+        "id": "super_mario_title_1"
+      },
+      {
+        "desc": "Menu options text '1 PLAYER GAME' and '2 PLAYER GAME' in black pixelated font.",
+        "action": "static",
+        "id": "menu_text_1"
+      },
+      {
+        "desc": "Red triangular cursor icon.",
+        "action": "static",
+        "id": "menu_cursor_1"
+      },
+      {
+        "desc": "Copyright text '© 1990, 1991 Nintendo' in blue pixelated font.",
+        "action": "static",
+        "id": "nintendo_copyright_1"
+      },
+      {
+        "desc": "Brown border with a repeating question mark block pattern.",
+        "action": "static",
+        "id": "question_block_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The title screen displays 'SUPER MARIOWORLD' at the top center.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red cursor points to the '1 PLAYER GAME' option.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The copyright text '© 1990, 1991 Nintendo' is visible at the bottom.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The screen is framed by a brown border with question mark blocks.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SUPER",
+      "MARIO WORLD™",
+      "1 PLAYER GAME",
+      "2 PLAYER GAME",
+      "© 1990, 1991 Nintendo"
+    ],
+    "spatial": "The 'SUPER MARIOWORLD' title is above the menu options. The red cursor is to the left of the '1 PLAYER GAME' text. The '2 PLAYER GAME' text is below the '1 PLAYER GAME' text. The copyright text is at the bottom of the screen, below the green bushes.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": [
+      "Game start menu options displayed (1 PLAYER/2 PLAYER GAME)"
+    ]
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "pixelated character with white hair, wearing a pink shirt and blue pants",
+        "action": "standing on a path",
+        "position": "center",
+        "id": "princess_peach_1"
+      },
+      {
+        "desc": "green map terrain with a winding beige path, trees, and a blue pond",
+        "action": "static",
+        "position": "background",
+        "id": "map_terrain_1"
+      },
+      {
+        "desc": "text 'YOSHI'S HOUSE' in a pixelated font",
+        "action": "static",
+        "position": "top",
+        "id": "menu_text_1"
+      },
+      {
+        "desc": "text 'x3' next to a small character icon",
+        "action": "static",
+        "position": "top-left",
+        "id": "menu_text_1"
+      },
+      {
+        "desc": "number '1' inside a white box",
+        "action": "static",
+        "position": "top-right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The character stands on the path in the center of the map.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'YOSHI'S HOUSE' is displayed at the top of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The map features a blue pond on the left side.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "YOSHI'S HOUSE",
+      "x3",
+      "1"
+    ],
+    "spatial": "The character is standing on the path in the center of the green map. The text 'YOSHI'S HOUSE' is located above the map area. The pond is to the left of the character's position.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": [
+      "Transition to world map screen with character on path"
+    ]
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "pixelated yellow text in a blocky, uppercase font",
+        "action": "static",
+        "position": "center",
+        "id": "game_hud_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'MARIO START !' is displayed in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background is completely black.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MARIO START !"
+    ],
+    "spatial": "The yellow text 'MARIO START !' is centered on the black background.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": []
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "small character with red cap, red shirt, blue overalls, brown shoes",
+        "action": "standing on the ground",
+        "position": "left",
+        "id": "mario_character_1"
+      },
+      {
+        "desc": "orange bird-like creature with a blue beak and white belly",
+        "action": "standing on a slope",
+        "position": "right",
+        "id": "bird_enemy_1"
+      },
+      {
+        "desc": "green bushy object with a rounded, leafy texture",
+        "action": "static",
+        "position": "center",
+        "id": "green_bush_1"
+      },
+      {
+        "desc": "brown dirt slope with green grass on top",
+        "action": "static",
+        "position": "right",
+        "id": "ground_terrain_1"
+      },
+      {
+        "desc": "pixelated text and icons in red, white, and yellow",
+        "action": "static",
+        "position": "top",
+        "id": "game_hud_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The character in the red cap stands on the flat ground to the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The orange bird-like creature stands on the elevated dirt slope to the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The green bushy object sits on the ground between the character and the slope.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'MARIO' is displayed in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'TIME 300' is displayed in the top center area.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MARIO",
+      "x 5",
+      "0",
+      "TIME",
+      "300",
+      "0x",
+      "0"
+    ],
+    "spatial": "The character in the red cap is to the left of the green bushy object. The green bushy object is to the left of the brown dirt slope. The orange bird-like creature is on top of the brown dirt slope. The heads-up display text is above all the game elements.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": [
+      "Gameplay begins with Mario and enemy creature visible"
+    ]
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "pixelated character with red cap, red shirt, blue overalls, and brown shoes",
+        "action": "jumping over a bush",
+        "position": "center",
+        "id": "mario_character_1"
+      },
+      {
+        "desc": "orange and white striped enemy creature",
+        "action": "hiding inside a green bush",
+        "position": "bottom-left",
+        "id": "striped_enemy_1"
+      },
+      {
+        "desc": "green bush with white snow on top",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "green_bush_1"
+      },
+      {
+        "desc": "large brown sloped platform with green grassy top edge",
+        "action": "static",
+        "position": "right",
+        "id": "ground_terrain_1"
+      },
+      {
+        "desc": "yellow circular coin with a face profile",
+        "action": "static",
+        "position": "top-right",
+        "id": "gold_coins_1"
+      },
+      {
+        "desc": "blue background with light blue rounded hills and white clouds",
+        "action": "static",
+        "position": "background",
+        "id": "blue_sky_background_1"
+      },
+      {
+        "desc": "heads-up display text showing 'MARIO', 'TIME', and numbers",
+        "action": "static",
+        "position": "top",
+        "id": "game_hud_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The character in red and blue jumps over a green bush.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An orange enemy is partially visible inside the green bush.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow coin appears on the right side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timer counts down from 298 to 297.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The character is positioned in the air above the ground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MARIO",
+      "x 5",
+      "0",
+      "TIME",
+      "298",
+      "297",
+      "0x",
+      "0"
+    ],
+    "spatial": "The character is in the center of the screen, positioned above the ground and to the left of the large brown slope. The green bush containing the enemy is on the ground to the left of the character. The yellow coin is located in the top right corner, above the brown slope. The background hills are behind all foreground elements.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": [
+      "Mario starts jumping action, HUD appears"
+    ]
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "small character with red hat, red shirt, and blue overalls",
+        "action": "running to the right",
+        "position": "bottom center",
+        "id": "mario_character_1"
+      },
+      {
+        "desc": "yellow circular coin with a face profile",
+        "action": "floating in the air",
+        "position": "center",
+        "id": "gold_coins_1"
+      },
+      {
+        "desc": "large brown ramp with green grassy top edge",
+        "action": "static",
+        "position": "left",
+        "id": "ground_terrain_1"
+      },
+      {
+        "desc": "green bush with rounded top",
+        "action": "static",
+        "position": "bottom right",
+        "id": "green_bush_1"
+      },
+      {
+        "desc": "blue background with light blue rounded hills and white clouds",
+        "action": "static",
+        "position": "background",
+        "id": "blue_sky_background_1"
+      },
+      {
+        "desc": "white HUD text and icons",
+        "action": "static",
+        "position": "top",
+        "id": "game_hud_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The character runs to the right across the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The character collects the yellow coin, causing the score to increase.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The coin disappears after being collected.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The HUD displays 'MARIO X 5' and 'TIME 296'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MARIO",
+      "X 5",
+      "TIME",
+      "296",
+      "0",
+      "X 0",
+      "0",
+      "1000"
+    ],
+    "spatial": "The character is running on the ground below the floating coin. The brown ramp is to the left of the character. The green bush is to the right of the character. The HUD text is at the top of the screen, above the game world.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": [
+      "Mario transitions to running action"
+    ]
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "small character with red hat, red shirt, blue overalls, brown shoes",
+        "action": "jumping over a green bush",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "large black bullet-shaped cannon with a white eye and red mouth",
+        "action": "static",
+        "position": "left/center",
+        "id": "bullet_cannon_1"
+      },
+      {
+        "desc": "dinosaur-like creature with blue skin, orange shell, and white belly",
+        "action": "standing",
+        "position": "right/foreground",
+        "id": "yoshi_dinosaur_1"
+      },
+      {
+        "desc": "green bush with pixelated texture",
+        "action": "static",
+        "position": "bottom/foreground",
+        "id": "green_bush_1"
+      },
+      {
+        "desc": "large light-blue cylindrical structures with white spots",
+        "action": "static",
+        "position": "background",
+        "id": "light_blue_structures_1"
+      },
+      {
+        "desc": "white rectangular clouds",
+        "action": "static",
+        "position": "background",
+        "id": "white_clouds_1"
+      },
+      {
+        "desc": "game interface text in pixelated font",
+        "action": "static",
+        "position": "top",
+        "id": "game_hud_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The character in red and blue jumps over a green bush.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dinosaur-like creature stands on the ground to the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The black cannon is positioned on the left side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'MARIO x 5' is visible in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'TIME 293' is visible at the top center.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '1000' is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MARIO",
+      "x 5",
+      "TIME",
+      "293",
+      "291",
+      "0",
+      "1",
+      "1000"
+    ],
+    "spatial": "The character in red and blue is to the left of the dinosaur-like creature and is jumping over a green bush. The black cannon is to the left of the jumping character. The large blue cylindrical structures are in the background behind the characters and the cannon. The game interface text is above all the scene elements.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": [
+      "Mario jumping over bush, cannon enemy appears"
+    ]
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "character with red cap, red shirt, blue overalls, and brown shoes",
+        "action": "walking right",
+        "position": "bottom center",
+        "id": "mario_character_1"
+      },
+      {
+        "desc": "brown square block with a yellow question mark symbol",
+        "action": "floating in mid-air",
+        "position": "center",
+        "id": "question_block_1"
+      },
+      {
+        "desc": "blue humanoid figure with a long snout and orange armor",
+        "action": "standing still",
+        "position": "bottom left"
+      },
+      {
+        "desc": "green bushy vegetation",
+        "action": "static",
+        "position": "bottom center",
+        "id": "green_bush_1"
+      },
+      {
+        "desc": "white pixelated text displaying game stats",
+        "action": "static",
+        "position": "top",
+        "id": "game_hud_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The character in the red cap walks to the right across the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue humanoid figure stands on the left side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The brown block with the question mark floats above the green bushes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timer counts down from 290 to 288.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MARIO",
+      "x 5",
+      "TIME",
+      "290",
+      "288",
+      "x 1",
+      "1000"
+    ],
+    "spatial": "The character in the red cap is to the right of the blue humanoid figure. The brown block is above the green bushes and to the right of the blue figure. The white text is located at the top of the screen, above all other entities.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": []
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "pixelated character with red cap, red shirt, blue overalls, brown shoes",
+        "action": "jumping to collect item",
+        "position": "center/bottom"
+      },
+      {
+        "desc": "red mushroom with white spots and white stem",
+        "action": "floating in air",
+        "position": "center",
+        "id": "mushroom_powerup_1"
+      },
+      {
+        "desc": "brown square block with pixelated face",
+        "action": "static",
+        "position": "center",
+        "id": "block_with_face_1"
+      },
+      {
+        "desc": "green grassy ground with brown soil base",
+        "action": "static",
+        "position": "bottom",
+        "id": "ground_terrain_1"
+      },
+      {
+        "desc": "light blue rounded pillars and white horizontal platforms",
+        "action": "static",
+        "position": "background",
+        "id": "light_blue_structures_1"
+      },
+      {
+        "desc": "white pixelated text '1000' with black outline",
+        "action": "static",
+        "position": "center",
+        "id": "game_hud_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The character jumps and collects the red mushroom.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The score increases by 1000 points upon collecting the mushroom.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red mushroom emerges from the brown block.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timer counts down from 297 to 296.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MARIO",
+      "x 5",
+      "0",
+      "TIME",
+      "297",
+      "296",
+      "x 1",
+      "1000",
+      "1000"
+    ],
+    "spatial": "The character is standing on the green grassy ground at the bottom of the screen. The brown block is floating in the air above the ground, to the left of the character. The red mushroom is positioned to the right of the brown block. The background pillars are behind the character and the block.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": [
+      "Mario jumping to collect mushroom item"
+    ]
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "pixelated character with red cap, red shirt, blue overalls, and brown shoes",
+        "action": "walking right",
+        "position": "center",
+        "id": "mario_character_1"
+      },
+      {
+        "desc": "blue dinosaur-like creature with orange shell and white belly",
+        "action": "jumping",
+        "position": "right"
+      },
+      {
+        "desc": "large green cylindrical pipe",
+        "action": "static",
+        "position": "right",
+        "id": "green_pipe_1"
+      },
+      {
+        "desc": "green grassy ground with brown soil underneath",
+        "action": "static",
+        "position": "bottom",
+        "id": "ground_terrain_1"
+      },
+      {
+        "desc": "white pill-shaped clouds and blue rounded hills",
+        "action": "static",
+        "position": "background",
+        "id": "white_clouds_1"
+      },
+      {
+        "desc": "game HUD text in red, yellow, and white",
+        "action": "static",
+        "position": "top",
+        "id": "game_hud_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The character in red overalls walks to the right across the grass.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue creature jumps into the air near the green pipe.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timer counts down from 285 to 284.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The score displays '000000' and '2000'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MARIO",
+      "x 5",
+      "TIME",
+      "285",
+      "284",
+      "0",
+      "1",
+      "2000"
+    ],
+    "spatial": "The character in red overalls is to the left of the jumping blue creature. The green pipe is on the right side of the screen, positioned in front of the background hills. The HUD text is located at the top of the screen, above the game world.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": [
+      "Yoshi character appears alongside Mario"
+    ]
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "pixelated character with red hat and red shirt, blue overalls, brown hair and mustache",
+        "action": "standing on a pipe then walking right",
+        "position": "center",
+        "id": "mario_character_1"
+      },
+      {
+        "desc": "green diagonal pipe, smooth texture",
+        "action": "static",
+        "position": "left",
+        "id": "green_pipe_1"
+      },
+      {
+        "desc": "blue dinosaur-like creature with orange shell and purple head",
+        "action": "walking right",
+        "position": "left",
+        "id": "yoshi_dinosaur_1"
+      },
+      {
+        "desc": "flat brown platform with green grassy top edge",
+        "action": "static",
+        "position": "right",
+        "id": "ground_terrain_1"
+      },
+      {
+        "desc": "green bushy object",
+        "action": "static",
+        "position": "right",
+        "id": "green_bush_1"
+      },
+      {
+        "desc": "white text and numbers on blue background",
+        "action": "static",
+        "position": "top"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The character in red stands on top of the green pipe in the first frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The character in red walks to the right onto the brown platform in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue creature walks up the side of the green pipe.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timer at the top of the screen counts down from 282 to 281.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'MARIO' and 'TIME' is visible at the top of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MARIO",
+      "x 5",
+      "0",
+      "TIME",
+      "282",
+      "281",
+      "x 1",
+      "2000"
+    ],
+    "spatial": "The character in red is initially above the green pipe, then moves to the right of it. The blue creature is to the left of the character in red. The brown platform is to the right of the green pipe. The green bushy object is on top of the brown platform.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": []
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "pixelated character with red cap, red shirt, blue overalls, brown shoes, and a mustache",
+        "action": "jumping through the air",
+        "position": "center"
+      },
+      {
+        "desc": "blue dinosaur-like creature with an orange shell and white belly",
+        "action": "walking on the ground",
+        "position": "bottom left",
+        "id": "yoshi_dinosaur_1"
+      },
+      {
+        "desc": "blue dinosaur-like creature with an orange shell and white belly",
+        "action": "walking on the ground",
+        "position": "bottom right",
+        "id": "yoshi_dinosaur_1"
+      },
+      {
+        "desc": "yellow coin with a face design",
+        "action": "floating in the air",
+        "position": "center right",
+        "id": "gold_coins_1"
+      },
+      {
+        "desc": "large light-blue rounded rock formations with white spots",
+        "action": "static",
+        "position": "background",
+        "id": "light_blue_structures_1"
+      },
+      {
+        "desc": "brown triangular hills with green grassy tops",
+        "action": "static",
+        "position": "bottom",
+        "id": "ground_terrain_1"
+      },
+      {
+        "desc": "white pixelated text and numbers",
+        "action": "static",
+        "position": "top",
+        "id": "game_hud_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The character in red is jumping in the air above the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow coin is floating in the air to the right of the jumping character.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two blue creatures are walking on the ground below the jumping character.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background features large blue rock formations.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The HUD displays 'MARIO', 'TIME 279', and '2000' points.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MARIO",
+      "x 5",
+      "0",
+      "TIME",
+      "279",
+      "x 1",
+      "2000"
+    ],
+    "spatial": "The jumping character is positioned in the center of the screen, above the brown hills. The yellow coin is to the right of the jumping character. The blue creatures are located on the ground at the bottom left and bottom right, below the jumping character. The large blue rock formations are in the background behind the character and the hills.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": []
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "pixelated character with red cap, red shirt, blue overalls, brown hair, and mustache",
+        "action": "jumping from ground to mid-air",
+        "position": "center",
+        "id": "mario_character_1"
+      },
+      {
+        "desc": "blue dinosaur-like creature with orange shell and white belly",
+        "action": "standing on the ground",
+        "position": "left"
+      },
+      {
+        "desc": "yellow coin with the number '3' on it",
+        "action": "static",
+        "position": "center-top",
+        "id": "gold_coins_1"
+      },
+      {
+        "desc": "brown sloped hill with green grassy top edge",
+        "action": "static",
+        "position": "left",
+        "id": "ground_terrain_1"
+      },
+      {
+        "desc": "white text and numbers on a blue background",
+        "action": "static",
+        "position": "top",
+        "id": "game_hud_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The character in the red cap jumps from the ground into the air.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue creature stands on the ground to the left of the jumping character.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The yellow coin with the number '3' floats in the air above the hill.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'MARIO' and 'TIME 276' is visible at the top of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MARIO",
+      "x 5",
+      "0",
+      "TIME",
+      "276",
+      "0x",
+      "1",
+      "2000",
+      "3"
+    ],
+    "spatial": "The character in the red cap is to the right of the blue creature. The yellow coin is above the brown hill and to the left of the character in the red cap. The blue creature is standing on the green ground.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": []
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "pixelated character with a red cap, red shirt, blue overalls, and a brown mustache",
+        "action": "standing on the ground",
+        "position": "center",
+        "id": "mario_character_1"
+      },
+      {
+        "desc": "red and white spotted mushroom",
+        "action": "floating in the air",
+        "position": "center",
+        "id": "mushroom_powerup_1"
+      },
+      {
+        "desc": "blue dinosaur-like creature with a red shell and orange spikes",
+        "action": "standing on the ground",
+        "position": "right",
+        "id": "yoshi_dinosaur_1"
+      },
+      {
+        "desc": "green bush",
+        "action": "static",
+        "position": "bottom",
+        "id": "green_bush_1"
+      },
+      {
+        "desc": "white rectangular platforms",
+        "action": "static",
+        "position": "background",
+        "id": "white_platforms_1"
+      },
+      {
+        "desc": "game interface text",
+        "action": "static",
+        "position": "top",
+        "id": "game_hud_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A red and white spotted mushroom is floating in the air above the character.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The character in the red cap is standing on the green ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue dinosaur-like creature is standing on the right side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The game timer displays the number 273 and then 272.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'MARIO' is visible in the top left corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MARIO",
+      "0",
+      "TIME",
+      "273",
+      "272",
+      "0x",
+      "1",
+      "2000"
+    ],
+    "spatial": "The character in the red cap is to the left of the blue dinosaur-like creature. The red and white spotted mushroom is above the character and to the left of the dinosaur. The green bush is on the ground in front of the character. The white platforms are in the background behind the characters.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": []
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "pixelated character with red cap, red shirt, blue overalls, and brown shoes",
+        "action": "jumping over an enemy",
+        "position": "center",
+        "id": "mario_character_1"
+      },
+      {
+        "desc": "blue-shelled turtle enemy with a spiked shell and orange skin",
+        "action": "standing on the ground",
+        "position": "center-right",
+        "id": "turtle_enemy_1"
+      },
+      {
+        "desc": "red piranha plant with white spots and sharp teeth",
+        "action": "emerging from a pipe",
+        "position": "top-right",
+        "id": "piranha_plant_1"
+      },
+      {
+        "desc": "purple vertical pipe",
+        "action": "static",
+        "position": "right",
+        "id": "purple_pipe_1"
+      },
+      {
+        "desc": "gold coin",
+        "action": "floating in the air",
+        "position": "top-right",
+        "id": "gold_coins_1"
+      },
+      {
+        "desc": "blue sky background with light blue rounded hills and white horizontal platforms",
+        "action": "static",
+        "position": "background",
+        "id": "blue_sky_background_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The character in red jumps over the blue-shelled turtle enemy.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red piranha plant emerges from a tall pipe on the right side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A gold coin floats in the air above the purple pipe.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timer counts down from 271 to 259.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MARIO",
+      "x 5",
+      "0",
+      "TIME",
+      "271",
+      "259",
+      "0x",
+      "1",
+      "3000"
+    ],
+    "spatial": "The character in red is to the left of the purple pipe and above the blue-shelled turtle enemy. The piranha plant is above the purple pipe. The gold coin is to the right of the piranha plant and above the purple pipe. The green bushes are on the ground in the foreground.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": [
+      "Piranha plant emerges from pipe, turtle enemy appears"
+    ]
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "pixelated character with red cap, red shirt, blue overalls, and brown hair",
+        "action": "jumping up",
+        "position": "center",
+        "id": "mario_character_1"
+      },
+      {
+        "desc": "red and white winged enemy with a green base",
+        "action": "flying",
+        "position": "center",
+        "id": "winged_enemy_1"
+      },
+      {
+        "desc": "purple cylindrical pipe",
+        "action": "static",
+        "position": "center",
+        "id": "purple_pipe_1"
+      },
+      {
+        "desc": "white mushroom icon inside a blue square box",
+        "action": "static",
+        "position": "top",
+        "id": "mushroom_powerup_1"
+      },
+      {
+        "desc": "yellow coins",
+        "action": "static",
+        "position": "right",
+        "id": "gold_coins_1"
+      },
+      {
+        "desc": "green bush",
+        "action": "static",
+        "position": "left",
+        "id": "green_bush_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The character in red and blue jumps vertically from the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The winged enemy hovers in the air above the ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timer counts down from 268 to 266.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The score displays 3000 points.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MARIO",
+      "x 5",
+      "x",
+      "0",
+      "TIME",
+      "268",
+      "266",
+      "x 1",
+      "3000"
+    ],
+    "spatial": "The character in red and blue is to the left of the purple pipe. The winged enemy is above the character and the pipe. The green bush is to the left of the character. The yellow coins are to the right of the winged enemy.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": [
+      "Winged enemy appears flying"
+    ]
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "pixelated character with red cap, red shirt, blue overalls, brown shoes",
+        "action": "jumping in mid-air",
+        "position": "center"
+      },
+      {
+        "desc": "red and white mushroom icon inside a blue square box",
+        "action": "static",
+        "position": "top-center",
+        "id": "mushroom_powerup_1"
+      },
+      {
+        "desc": "vertical column of yellow oval coins",
+        "action": "static",
+        "position": "right",
+        "id": "gold_coins_1"
+      },
+      {
+        "desc": "purple cylindrical pipes with dark rims",
+        "action": "static",
+        "position": "bottom",
+        "id": "purple_pipe_1"
+      },
+      {
+        "desc": "light blue rounded hill shapes",
+        "action": "static",
+        "position": "background",
+        "id": "blue_sky_background_1"
+      },
+      {
+        "desc": "red and white pixelated enemy with wings",
+        "action": "static",
+        "position": "left",
+        "id": "winged_enemy_1"
+      },
+      {
+        "desc": "green diagonal pipe structure",
+        "action": "static",
+        "position": "bottom-right",
+        "id": "green_pipe_1"
+      },
+      {
+        "desc": "white text and numbers on blue background",
+        "action": "static",
+        "position": "top"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The character is jumping in the air above the ground level.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The score counter displays '0'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timer counts down from 265 to 263.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The coin counter shows '0x 1' and '3000'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red and white winged enemy is visible on the left side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Purple pipes protrude from the green grassy ground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MARIO",
+      "x 5",
+      "0",
+      "TIME",
+      "265",
+      "263",
+      "0x",
+      "1",
+      "3000"
+    ],
+    "spatial": "The character is positioned in the center of the screen, above the purple pipes and green ground. To the right of the character, a vertical line of yellow coins hangs in the air. The red and white winged enemy is located to the left of the character. The mushroom icon is centered at the top of the screen, between the score and the timer.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": []
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "pixelated character with red cap, red shirt, blue overalls, brown hair, and mustache",
+        "action": "jumping upwards",
+        "position": "center",
+        "id": "mario_character_1"
+      },
+      {
+        "desc": "large green cylindrical pipe, smooth texture, angled diagonally",
+        "action": "static",
+        "position": "right",
+        "id": "green_pipe_1"
+      },
+      {
+        "desc": "short purple cylindrical pipe, smooth texture",
+        "action": "static",
+        "position": "left",
+        "id": "purple_pipe_1"
+      },
+      {
+        "desc": "vertical column of grey stone blocks",
+        "action": "static",
+        "position": "top-center",
+        "id": "light_blue_structures_1"
+      },
+      {
+        "desc": "vertical column of gold coins",
+        "action": "static",
+        "position": "top-left",
+        "id": "gold_coins_1"
+      },
+      {
+        "desc": "blue sky background with light blue rounded hills and white cloud shapes",
+        "action": "static",
+        "position": "background",
+        "id": "blue_sky_background_1"
+      },
+      {
+        "desc": "game interface text in pixelated font",
+        "action": "static",
+        "position": "top",
+        "id": "game_hud_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The character jumps upwards towards a column of stone blocks.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The character is positioned between a purple pipe on the left and a large green pipe on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timer counts down from 262 to 260.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'MARIO x 5' is visible in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'TIME 262' changes to 'TIME 260'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MARIO",
+      "x 5",
+      "0",
+      "TIME",
+      "262",
+      "260",
+      "0x",
+      "1",
+      "3000"
+    ],
+    "spatial": "The character is to the left of the large green pipe and to the right of the purple pipe. The column of stone blocks is directly above the character. The column of gold coins is to the left of the stone blocks. The game interface text is located at the top of the screen above the gameplay area.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "character with red cap, red shirt, blue overalls, brown shoes, and mustache",
+        "action": "walking right",
+        "position": "center",
+        "id": "mario_character_1"
+      },
+      {
+        "desc": "large green cylindrical pipe, smooth texture, angled diagonally",
+        "action": "static",
+        "position": "center",
+        "id": "green_pipe_1"
+      },
+      {
+        "desc": "smaller green cylindrical pipes, smooth texture, vertical",
+        "action": "static",
+        "position": "right",
+        "id": "green_pipe_1"
+      },
+      {
+        "desc": "purple cylindrical pipe, smooth texture, vertical",
+        "action": "static",
+        "position": "left",
+        "id": "purple_pipe_1"
+      },
+      {
+        "desc": "blue dinosaur-like creature with orange shell and white spikes",
+        "action": "static",
+        "position": "right",
+        "id": "yoshi_dinosaur_1"
+      },
+      {
+        "desc": "red and white mushroom icon inside a square box",
+        "action": "static",
+        "position": "top center"
+      },
+      {
+        "desc": "gold coins, circular, metallic",
+        "action": "static",
+        "position": "top left",
+        "id": "gold_coins_1"
+      },
+      {
+        "desc": "green ground with grassy top edge",
+        "action": "static",
+        "position": "bottom",
+        "id": "ground_terrain_1"
+      },
+      {
+        "desc": "light blue rounded hills in background",
+        "action": "static",
+        "position": "background",
+        "id": "blue_sky_background_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The character in the red cap is walking to the right on the green ground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The large green pipe is angled diagonally across the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue creature is standing on the ground to the right of the vertical green pipes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'MARIO' is visible in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'TIME 259' is visible in the top center area.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'x 5' is visible below the 'MARIO' text.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '3000' is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MARIO",
+      "x 5",
+      "0",
+      "TIME",
+      "259",
+      "0x",
+      "3000"
+    ],
+    "spatial": "The character in the red cap is to the left of the large angled green pipe. The large angled green pipe is in front of the smaller vertical green pipes. The blue creature is to the right of the vertical green pipes. The purple pipe is to the left of the character. The gold coins are above the character and to the left of the mushroom icon.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": []
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "video game character sprite, small, wearing red cap and shirt with blue overalls",
+        "action": "static",
+        "position": "left",
+        "id": "mario_character_1"
+      },
+      {
+        "desc": "light blue rounded pillars, smooth texture, varying heights",
+        "action": "static",
+        "position": "center",
+        "id": "light_blue_structures_1"
+      },
+      {
+        "desc": "yellow oval coins, arranged in a vertical line",
+        "action": "static",
+        "position": "center",
+        "id": "gold_coins_1"
+      },
+      {
+        "desc": "red mushroom with white spots inside a blue square box",
+        "action": "static",
+        "position": "top",
+        "id": "mushroom_powerup_1"
+      },
+      {
+        "desc": "white text and numbers on a blue background",
+        "action": "static",
+        "position": "top",
+        "id": "game_hud_text_1"
+      },
+      {
+        "desc": "dark room interior with a window covered by vertical blinds",
+        "action": "static",
+        "position": "background",
+        "id": "room_interior_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video game screen displays a level with light blue pillars and yellow coins.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'MARIO' is visible in the top left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'TIME 256' is visible in the top center.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '3000' is visible in the top right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The second frame shows a dark room with a window letting in bright light.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MARIO",
+      "x 5",
+      "TIME",
+      "256",
+      "x 2",
+      "3000"
+    ],
+    "spatial": "The character sprite is to the left of the light blue pillars. The yellow coins are positioned above the central pillars. The red mushroom icon is located above the coins and pillars. The text elements are arranged horizontally across the top of the screen.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": [
+      "Scene transitions from gameplay to real-world room interior"
+    ]
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with dark shoulder-length hair, wearing a white hooded jacket and dark pants",
+        "action": "sitting on a stool",
+        "position": "right",
+        "id": "person_white_hoodie_1"
+      },
+      {
+        "desc": "flat-screen television displaying a blue and white image",
+        "action": "static",
+        "position": "center",
+        "id": "television_screen_1"
+      },
+      {
+        "desc": "wooden stool with a dark seat",
+        "action": "static",
+        "position": "right",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "dark media console stand",
+        "action": "static",
+        "position": "center",
+        "id": "media_console_1"
+      },
+      {
+        "desc": "silver electronic device, likely a DVD player or receiver",
+        "action": "static",
+        "position": "center",
+        "id": "silver_electronic_device_1"
+      },
+      {
+        "desc": "dark wall-mounted shelf with a decorative object",
+        "action": "static",
+        "position": "background",
+        "id": "wall_shelf_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is sitting on a stool facing a television.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The television is turned on and displaying a scene with blue tones.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An electronic device is located on the bottom shelf of the media console.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is sitting on the stool to the right of the television. The television is placed on top of the media console. The silver electronic device is on the bottom shelf of the media console, below the television. The wall-mounted shelf is above the television.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": [
+      "Person appears sitting on stool watching TV"
+    ]
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with dark shoulder-length hair, wearing a white hooded sweatshirt and dark pants",
+        "action": "sitting on a stool",
+        "position": "right",
+        "id": "person_white_hoodie_1"
+      },
+      {
+        "desc": "flat-screen television displaying a blue and white video game interface",
+        "action": "static",
+        "position": "center",
+        "id": "television_screen_1"
+      },
+      {
+        "desc": "wooden stool with a metal frame",
+        "action": "static",
+        "position": "right",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "dark wooden media console with shelves",
+        "action": "static",
+        "position": "center",
+        "id": "media_console_1"
+      },
+      {
+        "desc": "silver electronic device, likely a DVD player or console",
+        "action": "static",
+        "position": "center",
+        "id": "silver_electronic_device_1"
+      },
+      {
+        "desc": "dark wall-mounted shelf with decorative objects",
+        "action": "static",
+        "position": "background",
+        "id": "wall_shelf_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is sitting on a stool facing a television.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The television is placed on a media console.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver electronic device is located on the bottom shelf of the media console.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wall-mounted shelf is positioned above the television.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is sitting on the stool to the right of the television. The television is on top of the media console. The silver electronic device is inside the media console on the bottom shelf. The wall-mounted shelf is above the television.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": []
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with dark shoulder-length hair, wearing a white hooded sweatshirt and dark pants",
+        "action": "sitting on a stool",
+        "position": "right",
+        "id": "person_white_hoodie_1"
+      },
+      {
+        "desc": "flat-screen television displaying a blue-toned video",
+        "action": "static",
+        "position": "center",
+        "id": "television_screen_1"
+      },
+      {
+        "desc": "wooden stool with a dark seat",
+        "action": "static",
+        "position": "right",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "dark media console stand",
+        "action": "static",
+        "position": "center",
+        "id": "media_console_1"
+      },
+      {
+        "desc": "silver electronic device, likely a DVD player or receiver",
+        "action": "static",
+        "position": "center",
+        "id": "silver_electronic_device_1"
+      },
+      {
+        "desc": "dark wall-mounted shelf with decorative items",
+        "action": "static",
+        "position": "top",
+        "id": "wall_shelf_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is sitting on a stool facing a television screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The television is displaying a scene with blue lighting and bright spots.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver electronic device is placed on the bottom shelf of the media console.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A shelf is mounted on the wall above the television.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is sitting on a stool to the right of the television. The television is placed on a media console in the center of the frame. A silver electronic device is located on a shelf below the television. A wall-mounted shelf is positioned above the television.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with shoulder-length dark hair, wearing a white hooded sweatshirt and dark pants",
+        "action": "sitting on a stool",
+        "position": "right",
+        "id": "person_white_hoodie_1"
+      },
+      {
+        "desc": "flat-screen television displaying a video game with a blue and purple color palette",
+        "action": "static",
+        "position": "center",
+        "id": "television_screen_1"
+      },
+      {
+        "desc": "wooden stool with a light-colored finish",
+        "action": "static",
+        "position": "right",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "dark wooden media console with shelves",
+        "action": "static",
+        "position": "center",
+        "id": "media_console_1"
+      },
+      {
+        "desc": "silver electronic device, likely a DVD player or console, with a blue indicator light",
+        "action": "static",
+        "position": "center",
+        "id": "silver_electronic_device_1"
+      },
+      {
+        "desc": "dark elephant-shaped figurine",
+        "action": "static",
+        "position": "top",
+        "id": "elephant_figurine_1"
+      },
+      {
+        "desc": "small figurine with orange and white colors",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person sits on a stool facing a television screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The television displays a video game interface with a score of 299.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An elephant figurine rests on a shelf mounted above the television.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver electronic device is located on the bottom shelf of the media console.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "299"
+    ],
+    "spatial": "The person is sitting on the stool to the right of the television. The television is placed on top of the media console. The elephant figurine is on a shelf above the television. The silver electronic device is on the bottom shelf of the media console, below the television.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": []
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with dark shoulder-length hair, wearing a white hooded sweatshirt and dark pants",
+        "action": "sitting on a stool",
+        "position": "right",
+        "id": "person_white_hoodie_1"
+      },
+      {
+        "desc": "television screen displaying a video game with blue and white graphics",
+        "action": "static",
+        "position": "center",
+        "id": "television_screen_1"
+      },
+      {
+        "desc": "wooden stool with a metal frame",
+        "action": "static",
+        "position": "right",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "dark wooden TV stand with shelves holding electronic devices",
+        "action": "static",
+        "position": "center",
+        "id": "media_console_1"
+      },
+      {
+        "desc": "dark decorative elephant figurine",
+        "action": "static",
+        "position": "background",
+        "id": "elephant_figurine_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is sitting on a stool facing a television.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The television is displaying a video game interface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An elephant figurine is placed on a shelf above the television.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is sitting on the stool to the right of the television. The television is positioned on the wooden TV stand. The elephant figurine is on a shelf above the television.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": []
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a light-colored short-sleeved t-shirt and light-colored pants",
+        "action": "standing and leaning forward",
+        "position": "left",
+        "id": "person_short_hair_1"
+      },
+      {
+        "desc": "person with shoulder-length dark hair, wearing a white hooded sweatshirt and dark pants",
+        "action": "sitting on a stool",
+        "position": "right",
+        "id": "person_white_hoodie_1"
+      },
+      {
+        "desc": "television screen displaying a video game with blue and white graphics",
+        "action": "static",
+        "position": "center",
+        "id": "television_screen_1"
+      },
+      {
+        "desc": "wooden stool with a light finish",
+        "action": "static",
+        "position": "right",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "dark media stand with shelves",
+        "action": "static",
+        "position": "center",
+        "id": "media_console_1"
+      },
+      {
+        "desc": "dark elephant figurine",
+        "action": "static",
+        "position": "background",
+        "id": "elephant_figurine_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person on the left is leaning forward towards the television.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person on the right is sitting on a stool facing the television.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The television is displaying a video game interface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An elephant figurine is on a shelf above the television.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the white hoodie is sitting on a stool to the right of the television. The person in the light t-shirt is standing to the left of the television. The television is on a media stand. The elephant figurine is on a shelf above the television.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": [
+      "Second person appears standing in room"
+    ]
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a light-colored long-sleeved shirt",
+        "action": "standing and facing the television",
+        "position": "left",
+        "id": "person_short_hair_1"
+      },
+      {
+        "desc": "person with shoulder-length dark hair, wearing a white hooded sweatshirt and dark pants",
+        "action": "sitting on a stool facing the television",
+        "position": "right",
+        "id": "person_white_hoodie_1"
+      },
+      {
+        "desc": "television screen displaying a video game with blue and white graphics",
+        "action": "static",
+        "position": "center",
+        "id": "television_screen_1"
+      },
+      {
+        "desc": "wooden stool",
+        "action": "static",
+        "position": "right",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "dark wooden media stand",
+        "action": "static",
+        "position": "center",
+        "id": "media_console_1"
+      },
+      {
+        "desc": "silver electronic device (DVD player or console)",
+        "action": "static",
+        "position": "center",
+        "id": "silver_electronic_device_1"
+      },
+      {
+        "desc": "dark elephant figurine",
+        "action": "static",
+        "position": "background",
+        "id": "elephant_figurine_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a white hoodie sits on a stool to the right of the television.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person with short dark hair stands to the left of the television.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The television is placed on a dark wooden media stand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver electronic device is located on the bottom shelf of the media stand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An elephant figurine sits on a wall shelf above the television.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the white hoodie is sitting on a stool to the right of the television. The person with short dark hair is standing to the left of the television. The television is on a media stand, and an elephant figurine is on a shelf above the television.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": []
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with dark hair, wearing a light-colored long-sleeved button-up shirt",
+        "action": "sitting and gesturing with hands while looking at the screen",
+        "position": "left",
+        "id": "person_short_hair_1"
+      },
+      {
+        "desc": "person with shoulder-length dark hair, wearing a white hooded jacket",
+        "action": "sitting on a stool facing the television",
+        "position": "right",
+        "id": "person_white_hoodie_1"
+      },
+      {
+        "desc": "television screen displaying a video game with blue and white graphics and a score counter",
+        "action": "static",
+        "position": "center",
+        "id": "television_screen_1"
+      },
+      {
+        "desc": "wooden stool",
+        "action": "static",
+        "position": "right",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "dark media stand with electronic devices",
+        "action": "static",
+        "position": "center",
+        "id": "media_console_1"
+      },
+      {
+        "desc": "wall shelf with dark decorative objects",
+        "action": "static",
+        "position": "background",
+        "id": "wall_shelf_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man sits on the left side of the room facing a television.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a white jacket sits on a stool to the right of the television.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The television is placed on a media stand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The video game on the screen displays a score of '2370'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "2370"
+    ],
+    "spatial": "The man is to the left of the television, while the person in the white jacket is to the right of the television. The television is on top of the media stand. The wall shelf is above the television in the background.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": [
+      "Man sits down and begins gesturing at screen"
+    ]
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a light-colored long-sleeved shirt",
+        "action": "sitting and gesturing towards the screen",
+        "position": "left",
+        "id": "person_short_hair_1"
+      },
+      {
+        "desc": "person with shoulder-length brown hair, wearing a white hooded sweatshirt and dark pants",
+        "action": "sitting on a stool",
+        "position": "right",
+        "id": "person_white_hoodie_1"
+      },
+      {
+        "desc": "television screen displaying a video game with blue and white graphics",
+        "action": "displaying content",
+        "position": "center",
+        "id": "television_screen_1"
+      },
+      {
+        "desc": "wooden stool with a high seat",
+        "action": "static",
+        "position": "right",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "dark wooden media stand with shelves",
+        "action": "static",
+        "position": "center",
+        "id": "media_console_1"
+      },
+      {
+        "desc": "silver electronic device, likely a DVD player or console",
+        "action": "static",
+        "position": "bottom center",
+        "id": "silver_electronic_device_1"
+      },
+      {
+        "desc": "dark decorative object on a wall shelf",
+        "action": "static",
+        "position": "background",
+        "id": "elephant_figurine_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person on the left is gesturing with their hand towards the television screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person on the right is sitting on a wooden stool facing the television.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The television is placed on a dark media stand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver electronic device is located on the bottom shelf of the media stand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The video game on the screen displays the number '237' in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "237"
+    ],
+    "spatial": "The person in the light shirt is to the left of the television. The person in the white hoodie is to the right of the television and is sitting on a stool. The television is on top of the media stand, and the silver electronic device is on the bottom shelf of the stand. A decorative object is on a shelf above the television.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": []
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a light-colored long-sleeved shirt",
+        "action": "leaning forward and reaching towards the screen",
+        "position": "left",
+        "id": "person_short_hair_1"
+      },
+      {
+        "desc": "person with shoulder-length brown hair, wearing a white hooded sweatshirt and dark pants",
+        "action": "sitting on a stool",
+        "position": "right",
+        "id": "person_white_hoodie_1"
+      },
+      {
+        "desc": "television screen displaying a blue-toned video game with city-like graphics",
+        "action": "static",
+        "position": "center",
+        "id": "television_screen_1"
+      },
+      {
+        "desc": "wooden stool with a dark seat",
+        "action": "static",
+        "position": "right",
+        "id": "wooden_stool_1"
+      },
+      {
+        "desc": "dark wooden shelf mounted on the wall",
+        "action": "static",
+        "position": "background",
+        "id": "wall_shelf_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person on the left leans forward and extends their hand toward the television screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person on the right sits on a stool facing the television.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The television displays a video game with blue graphics.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A shelf is mounted on the wall above the television.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "279"
+    ],
+    "spatial": "The person in the light shirt is to the left of the television, while the person in the white hoodie is to the right of the television. The wooden stool is under the person in the white hoodie. The shelf is above the television in the background.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": [
+      "Man leans forward reaching towards screen"
+    ]
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a light grey long-sleeved shirt and blue jeans",
+        "action": "hugging another person",
+        "position": "center",
+        "id": "person_short_hair_1"
+      },
+      {
+        "desc": "person with shoulder-length dark hair, wearing a white long-sleeved top and dark pants",
+        "action": "hugging another person",
+        "position": "center",
+        "id": "person_white_hoodie_1"
+      },
+      {
+        "desc": "television screen displaying a blue image",
+        "action": "static",
+        "position": "background",
+        "id": "television_screen_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two people are standing in the center of the room embracing each other.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person on the left has their arms wrapped around the other person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A television is turned on in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the grey shirt is to the left of the person in the white top. They are standing in front of a television screen that is in the background.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": [
+      "Two people begin hugging"
+    ]
+  },
+  {
+    "time": [
+      68,
+      70
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a grey long-sleeved shirt and blue jeans",
+        "action": "embracing another person",
+        "position": "center",
+        "id": "person_short_hair_1"
+      },
+      {
+        "desc": "person with dark hair, wearing a white long-sleeved top and dark shorts or skirt",
+        "action": "embracing another person",
+        "position": "center",
+        "id": "person_dark_hair_white_top_1"
+      },
+      {
+        "desc": "television screen displaying a blue and white image",
+        "action": "static",
+        "position": "background",
+        "id": "television_screen_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two people are embracing each other in the center of the room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the grey shirt has their arms wrapped around the person in the white top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A television is visible in the background behind the couple.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the grey shirt is in front of the person in the white top, and they are both positioned in the center of the frame. The television screen is behind the couple.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": []
+  },
+  {
+    "time": [
+      70,
+      72
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a grey long-sleeved shirt and blue jeans",
+        "action": "kissing and hugging another person",
+        "position": "center",
+        "id": "person_short_hair_1"
+      },
+      {
+        "desc": "person with dark hair, wearing a white long-sleeved top and a dark skirt",
+        "action": "kissing and hugging another person",
+        "position": "center",
+        "id": "person_dark_hair_white_top_1"
+      },
+      {
+        "desc": "television screen displaying a blue interface",
+        "action": "static",
+        "position": "background",
+        "id": "television_screen_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Two people are standing in the center of the room embracing and kissing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the grey shirt has their arms around the person in the white top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person in the white top has their arms wrapped around the neck of the person in the grey shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A television is visible in the background behind the couple.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the grey shirt is standing in front of the person in the white top, facing them. The television is located in the background behind the couple. The couple is positioned in the center of the frame.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": [
+      "Two people kissing and hugging"
+    ]
+  },
+  {
+    "time": [
+      72,
+      74
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a grey long-sleeved shirt and blue jeans",
+        "action": "kissing a woman",
+        "position": "center",
+        "id": "person_short_hair_1"
+      },
+      {
+        "desc": "woman with dark hair, wearing a white long-sleeved top and dark pants",
+        "action": "kissing a man",
+        "position": "center",
+        "id": "person_dark_hair_white_top_1"
+      },
+      {
+        "desc": "television screen emitting blue light",
+        "action": "static",
+        "position": "background",
+        "id": "television_screen_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man and a woman are standing close together in the center of the room.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man and woman are embracing and kissing.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman has her arms wrapped around the man's neck.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A television screen is visible in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The man is standing in front of the television screen. The woman is standing in front of the man, facing him. The television is located in the background behind the couple.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": []
+  },
+  {
+    "time": [
+      74,
+      76
+    ],
+    "visible_entities": [
+      {
+        "desc": "small character with a green shell, red shoes, and a white belly",
+        "action": "jumping upwards",
+        "position": "center",
+        "id": "koopa_shell_character_1"
+      },
+      {
+        "desc": "small character with a blue shell, red shoes, and a white belly",
+        "action": "standing",
+        "position": "left",
+        "id": "koopa_shell_character_1"
+      },
+      {
+        "desc": "green pipe with a black rim",
+        "action": "static",
+        "position": "right",
+        "id": "green_pipe_1"
+      },
+      {
+        "desc": "white pipe with a grey rim",
+        "action": "static",
+        "position": "center",
+        "id": "white_pipe_1"
+      },
+      {
+        "desc": "yellow oval coins",
+        "action": "static",
+        "position": "top",
+        "id": "gold_coins_1"
+      },
+      {
+        "desc": "red mushroom with white spots",
+        "action": "static",
+        "position": "top",
+        "id": "mushroom_powerup_1"
+      },
+      {
+        "desc": "pixelated game interface text",
+        "action": "static",
+        "position": "top",
+        "id": "game_hud_text_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A character with a green shell is jumping upwards in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A character with a blue shell is standing on the ground to the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Yellow coins are arranged in the air above the characters.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The game timer displays the number 214.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The coin counter displays the number 5.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MARIO",
+      "x 5",
+      "TIME",
+      "214",
+      "x 5",
+      "3000"
+    ],
+    "spatial": "The character with the blue shell is to the left of the white pipe. The character with the green shell is in the air above the white pipe. The green pipe is to the right of the white pipe. The coins are located above the characters and the pipes.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": [
+      "Scene returns to gameplay with Koopa shell characters"
+    ]
+  },
+  {
+    "time": [
+      76,
+      78
+    ],
+    "visible_entities": [
+      {
+        "desc": "character with red cap, red shirt, blue overalls, and brown hair",
+        "action": "walking right",
+        "position": "bottom/center",
+        "id": "mario_character_1"
+      },
+      {
+        "desc": "green bush with jagged top edge",
+        "action": "static",
+        "position": "bottom/center",
+        "id": "green_bush_1"
+      },
+      {
+        "desc": "yellow circular coins arranged in vertical columns",
+        "action": "static",
+        "position": "top/left",
+        "id": "gold_coins_1"
+      },
+      {
+        "desc": "brown block with a question mark symbol",
+        "action": "static",
+        "position": "right",
+        "id": "question_block_1"
+      },
+      {
+        "desc": "white text and numbers on blue background",
+        "action": "static",
+        "position": "top"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The character walks to the right past a green bush.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The character moves from behind a bush into open space.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The timer counts down from 213 to 212.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The coin count remains at 14.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MARIO",
+      "TIME",
+      "213",
+      "212",
+      "0",
+      "0x 14",
+      "3000"
+    ],
+    "spatial": "The character is to the right of the green bush in the second frame. The yellow coins are above and to the left of the character. The brown question mark block is to the right of the character. The text and numbers are located at the top of the screen above the game world.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "b3DhX5bWJLw",
+    "state_changes": []
+  }
+]

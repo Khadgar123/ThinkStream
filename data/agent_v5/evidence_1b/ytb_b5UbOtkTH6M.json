@@ -1,0 +1,4302 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long dark hair in a ponytail, wearing a white short-sleeved t-shirt and light blue denim shorts, barefoot",
+        "action": "bending down to adjust footwear then sitting on a bench",
+        "position": "center",
+        "id": "person_builder_1"
+      },
+      {
+        "desc": "dark wooden bench with open shoe cubbies underneath",
+        "action": "static",
+        "position": "right",
+        "id": "furniture_entry_bench_1"
+      },
+      {
+        "desc": "white double glass doors with silver handles",
+        "action": "static",
+        "position": "left",
+        "id": "structure_door_1"
+      },
+      {
+        "desc": "white plastic bag",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "woven baskets",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman bends down to adjust her footwear.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman sits on the edge of the bench.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Shoes are stored inside the cubbies under the bench.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white plastic bag rests on the wooden floor.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is positioned in the center of the room, between the glass doors on the left and the bench on the right. The bench is situated against the wall under the windows. The woven baskets are stacked on a dark cabinet to the right of the bench.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a white sleeveless top and light blue denim shorts",
+        "action": "walking from right to left",
+        "position": "right/foreground",
+        "id": "person_builder_1"
+      },
+      {
+        "desc": "white door frame with a silver doorknob and a vertical lock mechanism",
+        "action": "static",
+        "position": "left",
+        "id": "structure_door_1"
+      },
+      {
+        "desc": "glass window pane showing blurred green foliage",
+        "action": "static",
+        "position": "center/background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is walking from right to left across the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is positioned in front of a glass window.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white door frame is located to the left of the person.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is to the right of the white door frame. The person is in front of the glass window pane. The blurred green foliage is visible through the window in the background.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": [
+      "Person transitions from sitting on bench to walking"
+    ]
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with long hair, wearing a white short-sleeved t-shirt and light blue denim shorts with back pockets and frayed hems",
+        "action": "walking away from the camera towards the door",
+        "position": "center"
+      },
+      {
+        "desc": "white door frame with glass panels and a silver handle",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "green leafy trees visible through the glass",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "logo with 'RATED' in blue and 'RED' in red text inside a white distressed border",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is walking towards the glass door.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing denim shorts.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo 'RATED RED' is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The person is in front of the glass door and the green trees visible outside. The 'RATED RED' logo is located in the top right corner of the frame, above the door frame.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with long dark hair, wearing a white short-sleeved t-shirt and light blue denim shorts with back pockets",
+        "action": "opening a glass door",
+        "position": "left"
+      },
+      {
+        "desc": "white-framed glass door with a handle",
+        "action": "being opened",
+        "position": "center",
+        "id": "structure_door_1"
+      },
+      {
+        "desc": "green leafy trees and foliage outside",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "dark wooden shoe bench with open cubbies containing shoes",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "logo with 'RATED' in blue text above 'RED' in red text on a white background",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is opening the glass door to the outside.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is standing on a wooden floor.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The shoe bench is positioned against the wall under a window.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'RATED RED' logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The person is to the left of the shoe bench and is standing in front of the glass door. The shoe bench is to the right of the person and is located under a window. The 'RATED RED' logo is in the top right corner of the frame, above the window.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": [
+      "Person opens the glass door"
+    ]
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with long brown hair, wearing a white t-shirt and light blue denim shorts",
+        "action": "walking out the door",
+        "position": "left"
+      },
+      {
+        "desc": "large graphic overlay featuring a red flame, a blue hammer, and red text",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white rectangular logo with red and blue text",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "dark wooden shoe bench with open cubbies",
+        "action": "static",
+        "position": "right",
+        "id": "furniture_entry_bench_1"
+      },
+      {
+        "desc": "glass door with white frame",
+        "action": "static",
+        "position": "left",
+        "id": "structure_door_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person walks out through a glass door.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'RED HOT BUILDING' is displayed in red capital letters.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A graphic of a blue hammer is positioned below a red flame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A 'RATED RED' logo is visible in the top right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Shoes are stored inside the cubbies of the wooden bench.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RED HOT",
+      "BUILDING",
+      "RATED RED"
+    ],
+    "spatial": "The person is walking through the glass door on the left side of the frame. The large 'RED HOT BUILDING' graphic is superimposed in the center, partially obscuring the view of the person and the door. To the right of the door, a wooden shoe bench sits against the wall under a window. The 'RATED RED' logo is located in the top right corner, above the window.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair, wearing a white v-neck t-shirt and blue denim shorts",
+        "action": "standing behind a wooden workbench",
+        "position": "center",
+        "id": "person_builder_1"
+      },
+      {
+        "desc": "large wooden workbench, light-colored wood, sturdy construction",
+        "action": "static",
+        "position": "foreground",
+        "id": "furniture_workbench_1"
+      },
+      {
+        "desc": "red and blue graphic overlay with flame icon and text 'RED HOT BUILDING'",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "blue and red lower-third banner with text 'AMANDA MERTZ' and 'RATEDRED.COM'",
+        "action": "static",
+        "position": "bottom left",
+        "id": "graphic_overlay_1"
+      },
+      {
+        "desc": "Rated Red logo, white text on red background",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "workshop background with plywood walls, shelves holding paint cans and tools",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman stands behind a wooden workbench in a workshop setting.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'RED HOT BUILDING' is displayed in large red letters over the scene.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The lower-third graphic identifies the woman as 'AMANDA MERTZ' and lists the website 'RATEDRED.COM'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background features plywood walls with shelves holding various tools and supplies.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RED HOT",
+      "BUILDING",
+      "AMANDA MERTZ",
+      "RATEDRED.COM",
+      "RATED RED"
+    ],
+    "spatial": "The woman is standing behind the wooden workbench in the center of the frame. The 'RED HOT BUILDING' graphic is superimposed over the center of the image, partially obscuring the woman. The 'AMANDA MERTZ' banner is located in the bottom left corner, while the 'RATED RED' logo is in the top right corner. The workshop shelves and tools are visible in the background behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": [
+      "Scene changes to workshop, person standing at workbench"
+    ]
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with long blonde hair, wearing a white v-neck t-shirt and light blue denim shorts",
+        "action": "standing behind a wooden workbench",
+        "position": "center"
+      },
+      {
+        "desc": "long wooden workbench made of light-colored wood planks",
+        "action": "static",
+        "position": "foreground",
+        "id": "furniture_workbench_1"
+      },
+      {
+        "desc": "blue and red graphic banner with white text",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "Rated Red logo with red and blue text on a white background",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "Rated Red sign with distressed red and blue text on a dark background",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "wooden shelves holding paint cans and tools",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman with long blonde hair is standing behind a wooden workbench.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a white t-shirt and denim shorts.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A graphic overlay at the bottom displays the name 'AMANDA MERTZ' and the website 'RATEDRED.COM'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The setting is a workshop with plywood walls and shelves holding various tools and supplies.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "AMANDA MERTZ",
+      "RATEDRED.COM"
+    ],
+    "spatial": "The woman is standing behind the wooden workbench in the center of the frame. The 'AMANDA MERTZ' graphic banner is located at the bottom of the screen, below the workbench. The Rated Red sign is on the wall in the background, behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a white sleeveless top and light blue denim shorts",
+        "action": "sitting on a bench",
+        "position": "center",
+        "id": "person_builder_1"
+      },
+      {
+        "desc": "dark wooden bench with open storage cubbies underneath",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "red graphic banner with white text",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "Rated Red logo",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_rated_red_1"
+      },
+      {
+        "desc": "white text listing lumber dimensions",
+        "action": "static",
+        "position": "bottom"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is sitting on a wooden bench.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'SOME THINGS YOU'LL NEED' appears on a red banner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A list of lumber measurements appears on screen: '1 - 2\" x 10\" x 6'', '1 - 2\" x 10\" x 5'9'', '2 - 2\" x 10\" x 16 1/2'', and '2 - 2\" x 10\" x 14''.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "SOME THINGS YOU'LL NEED",
+      "1 - 2\" x 10\" x 6'",
+      "1 - 2\" x 10\" x 5'9\"",
+      "2 - 2\" x 10\" x 16 1/2\"",
+      "2 - 2\" x 10\" x 14\""
+    ],
+    "spatial": "The person is sitting on top of the wooden bench. The red banner with text is located at the bottom of the screen, below the bench. The Rated Red logo is in the top right corner.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with tanned skin, wearing a white sleeveless top and light blue denim shorts",
+        "action": "sitting on a bench",
+        "position": "center"
+      },
+      {
+        "desc": "dark wooden bench with open storage compartments underneath",
+        "action": "static",
+        "position": "center",
+        "id": "furniture_entry_bench_1"
+      },
+      {
+        "desc": "red banner graphic overlay at the bottom of the screen",
+        "action": "static",
+        "position": "bottom",
+        "id": "graphic_overlay_1"
+      },
+      {
+        "desc": "Rated Red logo in the top right corner",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "white text listing lumber dimensions (e.g., '1 - 2\" x 10\" x 6'')",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "white text listing tools (PENCIL, TAPE MEASURE, MITER SAW, DRILL) with icons",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "glass door with white frame showing green trees outside",
+        "action": "static",
+        "position": "background left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is sitting on a dark wooden bench.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is resting their hands on the bench surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The video displays a list of lumber dimensions on a red banner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The video displays a list of tools including a pencil, tape measure, miter saw, and drill.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Rated Red logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "1 - 2\" x 10\" x 6'",
+      "1 - 2\" x 10\" x 5'9\"",
+      "2 - 2\" x 10\" x 16 1/2\"",
+      "2 - 2\" x 10\" x 14\"",
+      "PENCIL",
+      "TAPE MEASURE",
+      "MITER SAW",
+      "DRILL"
+    ],
+    "spatial": "The person is sitting on top of the wooden bench. The red banner containing text and tool icons is located below the person and the bench. The glass door is behind the person to the left. The Rated Red logo is positioned above the bench in the top right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with long dark hair, wearing a white t-shirt, bending over",
+        "action": "bending over",
+        "position": "center"
+      },
+      {
+        "desc": "red banner with white text and tool icons",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "Rated Red logo with white and red text",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "yellow pencil icon",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "tape measure icon",
+        "action": "static",
+        "position": "bottom center-left"
+      },
+      {
+        "desc": "miter saw icon",
+        "action": "static",
+        "position": "bottom center-right"
+      },
+      {
+        "desc": "yellow drill icon",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "blue pocket hole jig icon",
+        "action": "static",
+        "position": "bottom center"
+      },
+      {
+        "desc": "silver screw icon",
+        "action": "static",
+        "position": "bottom center"
+      },
+      {
+        "desc": "paint brush icon with yellow handle",
+        "action": "static",
+        "position": "bottom right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person with long dark hair is bending over in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red banner spans the bottom of the screen displaying tool names and icons.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'PENCIL', 'TAPE MEASURE', 'MITER SAW', and 'DRILL' appears on the banner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'POCKET HOLE JIG', '1 1/4\" POCKET HOLE SCREWS', and 'PAINT BRUSH' appears on the banner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'RATED RED' logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "PENCIL",
+      "TAPE MEASURE",
+      "MITER SAW",
+      "DRILL",
+      "POCKET HOLE JIG",
+      "1 1/4\" POCKET HOLE SCREWS",
+      "PAINT BRUSH"
+    ],
+    "spatial": "The person is positioned in the center of the frame, bending forward. The red banner containing text and icons is located below the person. The 'RATED RED' logo is situated in the top right corner, above the person's back.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with long dark hair, wearing a white short-sleeved t-shirt and light-colored denim shorts",
+        "action": "leaning forward and working on a surface",
+        "position": "center"
+      },
+      {
+        "desc": "red banner containing white text and icons for tools",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "blue pocket hole jig icon",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "silver screw icon",
+        "action": "static",
+        "position": "bottom center-left"
+      },
+      {
+        "desc": "paint brush icon with yellow handle",
+        "action": "static",
+        "position": "bottom center-right"
+      },
+      {
+        "desc": "yellow can of wood finish icon",
+        "action": "static",
+        "position": "bottom right"
+      },
+      {
+        "desc": "Rated Red logo in a white box with red and blue text",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_rated_red_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person with long dark hair is leaning forward over a surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red banner at the bottom displays a list of tools and materials.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'POCKET HOLE JIG' is displayed next to a blue tool icon.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '11/4\" POCKET HOLE SCREWS' is displayed next to a screw icon.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'PAINT BRUSH' is displayed next to a brush icon.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'STAIN' is displayed next to a yellow can icon.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "POCKET HOLE JIG",
+      "11/4\" POCKET HOLE SCREWS",
+      "PAINT BRUSH",
+      "WOOD FINISH",
+      "STAIN"
+    ],
+    "spatial": "The person is positioned in the center of the frame, leaning over a surface. The red banner containing tool information is located at the bottom of the screen, below the person. The 'Rated Red' logo is in the top right corner, above the person.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with brown hair tied back, wearing a white t-shirt and light blue denim shorts with frayed hems",
+        "action": "leaning forward",
+        "position": "center"
+      },
+      {
+        "desc": "red graphic overlay with white text and icons",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "can of polyurethane with a black label",
+        "action": "static",
+        "position": "bottom",
+        "id": "material_stain_1"
+      },
+      {
+        "desc": "white folded rags",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "Rated Red logo with blue and red text",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is leaning forward with their head down.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'POLYURETHANE' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'RAGS' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'RATED RED' logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "POLYURETHANE",
+      "RAGS"
+    ],
+    "spatial": "The person is positioned in the center of the frame, leaning over a surface. The red graphic overlay containing the text and icons is located at the bottom of the screen, below the person. The 'RATED RED' logo is in the top right corner.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair, wearing a white v-neck t-shirt tied at the waist and light blue denim shorts",
+        "action": "standing behind a workbench and gesturing with her right hand",
+        "position": "center"
+      },
+      {
+        "desc": "long light-colored wooden plank",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "yellow tape measure",
+        "action": "being used to measure wood",
+        "position": "top-left"
+      },
+      {
+        "desc": "person wearing grey ear protection and safety glasses",
+        "action": "working with a tool",
+        "position": "bottom-right",
+        "id": "safety_gear_1"
+      },
+      {
+        "desc": "banner with 'RATED RED' logo in red and blue distressed font",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "wooden shelves with paint cans and tools",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman stands behind a wooden workbench in a workshop setting.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A close-up shot shows a yellow tape measure being extended along a piece of wood.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Another person wearing safety gear is visible working in the bottom right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The background features a banner with the text 'RATED RED'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Shelves holding various paint cans are mounted on the wall behind the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The woman is standing behind the wooden workbench in the center of the frame. The 'RATED RED' banner is hanging on the wall directly behind her. The shelves with paint cans are located above the workbench and to the right of the banner. A close-up of a tape measure appears in the top-left corner, while a person wearing ear protection is positioned in the bottom-right corner.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": [
+      "Person begins measuring wood with tape measure"
+    ]
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair in a ponytail, wearing a white t-shirt, blue jeans, safety glasses, and grey earmuffs",
+        "action": "measuring wood with a tape measure and operating a saw",
+        "position": "left/center/foreground"
+      },
+      {
+        "desc": "yellow and black tape measure",
+        "action": "being held against wood",
+        "position": "left/foreground"
+      },
+      {
+        "desc": "light-colored wooden plank",
+        "action": "static",
+        "position": "center/foreground",
+        "id": "material_project_wood_1"
+      },
+      {
+        "desc": "circular saw blade",
+        "action": "being operated",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "plastic bag of rags with blue and red branding",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "Rated Red logo with red and blue text",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_rated_red_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman measures a wooden plank using a yellow tape measure.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman operates a circular saw on the wood.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman wears safety glasses and grey earmuffs.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bag of rags hangs on the wall in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "RAGS"
+    ],
+    "spatial": "The woman is in the foreground, positioned to the left of the saw blade. She is holding the tape measure against the wooden plank which is in front of her. The bag of rags is behind the woman on the wall.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair in a ponytail, wearing safety glasses, grey earmuffs, a white v-neck t-shirt tied at the waist, and blue jeans",
+        "action": "measuring wood and working on a wooden structure",
+        "position": "center"
+      },
+      {
+        "desc": "yellow and black tape measure",
+        "action": "being held and used",
+        "position": "foreground"
+      },
+      {
+        "desc": "black pencil",
+        "action": "being held",
+        "position": "foreground"
+      },
+      {
+        "desc": "light-colored wooden planks and structure",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "bag of white rags with blue and red packaging",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "Rated Red logo with white text on a red and blue background",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a tape measure and a pencil.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "She is measuring a wooden plank.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "She is leaning over a wooden structure.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bag of rags is hanging on the wall behind her.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Rated Red logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "RAGS",
+      "PAINT & CLEANING",
+      "4"
+    ],
+    "spatial": "The woman is in the center of the frame, standing in front of a wooden wall. She is holding a tape measure and a pencil over a wooden plank. To her right, there is a wooden structure she is working on. Behind her, a bag of rags is hanging on the wall. The Rated Red logo is in the top right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with brown hair, wearing safety glasses, grey earmuffs, a white v-neck t-shirt, and light blue denim shorts with frayed hems",
+        "action": "holding a long wooden plank",
+        "position": "left"
+      },
+      {
+        "desc": "long, light-brown wooden plank",
+        "action": "being held and placed on a workbench",
+        "position": "center"
+      },
+      {
+        "desc": "person's arms and hands",
+        "action": "operating a grey circular saw",
+        "position": "right"
+      },
+      {
+        "desc": "grey circular saw with a black handle",
+        "action": "cutting wood",
+        "position": "right",
+        "id": "tool_miter_saw_1"
+      },
+      {
+        "desc": "wooden workbench",
+        "action": "static",
+        "position": "left",
+        "id": "furniture_workbench_1"
+      },
+      {
+        "desc": "red fire extinguisher",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "Rated Red logo with white and red text",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman holds a long wooden plank with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman places the wooden plank onto a workbench.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person operates a circular saw to cut a piece of wood.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Rated Red logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The woman is standing to the left of the frame, holding a wooden plank above a workbench. To the right, a person's arms are visible operating a circular saw on a separate wooden structure. The fire extinguisher is mounted on the wall in the background behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": [
+      "Person starts cutting wood with circular saw"
+    ]
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with light skin, wearing a white sleeveless top",
+        "action": "positioning wood and operating a saw",
+        "position": "center"
+      },
+      {
+        "desc": "long rectangular wooden plank, light brown, smooth texture",
+        "action": "being cut",
+        "position": "center"
+      },
+      {
+        "desc": "miter saw, grey and blue, with a circular blade and red laser guide",
+        "action": "cutting wood",
+        "position": "right"
+      },
+      {
+        "desc": "wooden workbench, light brown, stained surface",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "logo with text 'RATED RED' in white and red distressed font",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using a miter saw to cut a wooden plank.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red laser line is visible on the wood, indicating the cut path.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The saw blade is spinning and making contact with the wood.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's hands are holding the wood steady against the saw fence.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The person is positioned behind the wooden plank, holding it in place. The miter saw is to the right of the person and is positioned above the plank. The workbench is to the left of the saw. The 'RATED RED' logo is in the top right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with brown hair in a ponytail, wearing safety glasses, grey earmuffs, a white v-neck t-shirt, and light blue denim shorts",
+        "action": "measuring a wooden plank with a tape measure and marking it with a pen",
+        "position": "left"
+      },
+      {
+        "desc": "blue and grey miter saw with a circular blade",
+        "action": "being lowered onto a wooden plank",
+        "position": "right",
+        "id": "tool_miter_saw_1"
+      },
+      {
+        "desc": "long light-colored wooden plank",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "white bag with blue and red text reading 'FRAGS'",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "logo with white text 'RATED RED' inside a red and blue box",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is using a yellow tape measure to measure the length of a wooden plank.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is marking the wood with a black pen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A miter saw is being operated to cut a piece of wood.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The saw blade is spinning and descending towards the wood.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bag labeled 'FRAGS' is sitting on a workbench in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FRAGS",
+      "RATED RED"
+    ],
+    "spatial": "The woman is standing to the left of the miter saw. The wooden plank she is measuring extends from the left side towards the right side where the saw is positioned. The bag of 'FRAGS' is behind the woman on a shelf. The 'RATED RED' logo is in the top right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair in a ponytail, wearing safety glasses, grey earmuffs, a white v-neck t-shirt, and light blue denim shorts",
+        "action": "marking a wooden board with a pen",
+        "position": "left",
+        "id": "person_builder_1"
+      },
+      {
+        "desc": "long light-colored wooden plank with visible grain",
+        "action": "being measured and marked",
+        "position": "center"
+      },
+      {
+        "desc": "yellow tape measure",
+        "action": "extended along the wood",
+        "position": "center"
+      },
+      {
+        "desc": "bag of white rags with blue and red packaging",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "grey and blue Kobalt miter saw",
+        "action": "cutting a wooden board",
+        "position": "right"
+      },
+      {
+        "desc": "hand holding the miter saw handle",
+        "action": "operating the saw",
+        "position": "right"
+      },
+      {
+        "desc": "Rated Red logo in white, blue, and red",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is using a yellow tape measure to measure a wooden plank.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is marking the wood with a black pen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is operating a Kobalt miter saw to cut a piece of wood.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red laser line is visible on the wood under the saw blade.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bag in the background is labeled 'RAGS'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "RAGS",
+      "KOBALT"
+    ],
+    "spatial": "The woman is positioned to the left of the miter saw. She is standing in front of a workbench where the wooden plank lies. The bag of rags is behind the woman on the workbench. The miter saw is to the right of the woman and is cutting a separate piece of wood.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair, wearing a white v-neck t-shirt, light blue denim shorts with frayed hems, and grey earmuffs",
+        "action": "measuring a wooden plank with a tape measure",
+        "position": "left"
+      },
+      {
+        "desc": "long light-brown wooden plank",
+        "action": "being measured and cut",
+        "position": "center"
+      },
+      {
+        "desc": "yellow and black tape measure",
+        "action": "extended along the wood",
+        "position": "center"
+      },
+      {
+        "desc": "blue and grey Kobalt miter saw",
+        "action": "cutting the wooden plank",
+        "position": "right",
+        "id": "tool_miter_saw_1"
+      },
+      {
+        "desc": "Rated Red logo with red and blue text",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_rated_red_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman extends a yellow tape measure along a wooden plank.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The miter saw blade is lowered to cut through the wood.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red laser guide line is visible on the wood under the saw blade.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "KOBALT",
+      "RAGS"
+    ],
+    "spatial": "The woman is standing to the left of the wooden plank. The tape measure is held against the top surface of the plank. The miter saw is positioned to the right of the woman and is cutting the plank. The Rated Red logo is in the top right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a white sleeveless top and light blue denim shorts with frayed hems",
+        "action": "measuring wood with a tape measure",
+        "position": "left"
+      },
+      {
+        "desc": "yellow tape measure with black markings",
+        "action": "being held against a wooden plank",
+        "position": "center-left"
+      },
+      {
+        "desc": "light-colored wooden plank",
+        "action": "static",
+        "position": "center",
+        "id": "material_project_wood_1"
+      },
+      {
+        "desc": "blue and grey Kobalt miter saw with a red laser guide line",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "Rated Red logo with white text on a red and blue background",
+        "action": "static",
+        "position": "top-right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using a yellow tape measure to measure a wooden plank.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue Kobalt miter saw is positioned on the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red laser line is projected onto the wood by the saw.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Rated Red logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "KOBALT"
+    ],
+    "spatial": "The person is to the left of the miter saw. The tape measure is held on top of the wooden plank. The miter saw is positioned to the right of the person and the plank being measured.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with long brown hair, wearing a white t-shirt, blue jeans, grey earmuffs, and safety glasses",
+        "action": "operating a miter saw",
+        "position": "left"
+      },
+      {
+        "desc": "blue and grey miter saw with a circular blade",
+        "action": "cutting a wooden plank",
+        "position": "right",
+        "id": "tool_miter_saw_1"
+      },
+      {
+        "desc": "light-colored wooden plank",
+        "action": "being cut",
+        "position": "right",
+        "id": "material_project_wood_1"
+      },
+      {
+        "desc": "plastic bag of white rags with blue and red branding",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "Rated Red logo with white and red text",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is cutting a wooden plank with a miter saw.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red laser guide line is projected onto the wood.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The saw blade is spinning.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing safety gear including earmuffs and glasses.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "RAGS",
+      "KOBALT"
+    ],
+    "spatial": "The person is positioned to the left of the miter saw. The saw is cutting the wooden plank which rests on a work surface. The bag of rags is visible in the background behind the person.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair, wearing a white t-shirt, safety glasses, and grey earmuffs",
+        "action": "carrying a wooden plank and walking",
+        "position": "center"
+      },
+      {
+        "desc": "large wooden workbench with a light wood finish",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "bag of white rags with blue and red packaging",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "banner with 'RATED RED' text in red and white on a dark background",
+        "action": "static",
+        "position": "background",
+        "id": "graphic_overlay_1"
+      },
+      {
+        "desc": "plywood walls with visible wood grain",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "shelves holding paint cans and tools",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is carrying a piece of lumber across the workshop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing safety glasses and ear protection.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bag of rags is sitting on a workbench in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A 'RATED RED' banner hangs on the back wall.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Paint cans are arranged on a shelf above the workbench.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "RAGS",
+      "PAINT & CLEANING"
+    ],
+    "spatial": "The woman is walking behind the large wooden workbench in the foreground. The 'RATED RED' banner is on the wall behind the woman. The bag of rags is to the left of the woman on a counter. The shelves with paint cans are above the workbench.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair, wearing a white v-neck t-shirt, clear safety glasses, and grey earmuffs",
+        "action": "holding a wooden board",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden workbench",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "rectangular wooden board",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "banner with red and blue text on a grey background",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "wooden shelves with paint cans and tools",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a wooden board with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing safety glasses and earmuffs.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A 'RATED RED' banner hangs on the wall behind the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Wooden planks and tools are resting on the workbench.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The woman is standing behind the wooden workbench in the center of the frame. The 'RATED RED' banner is on the wall behind her. The wooden board she is holding is positioned in front of her torso. Shelves with various items are located above the workbench and to the sides.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with brown hair, wearing a white v-neck t-shirt, clear safety glasses, and grey earmuffs",
+        "action": "talking and gesturing with hands",
+        "position": "center"
+      },
+      {
+        "desc": "wooden shelf with yellow and blue bins and metal cans",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "poster with a large red letter 'R' on a white background with a grey border",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "logo with the text 'RATED RED' in a red and blue box",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is talking and gesturing with her hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing safety glasses and earmuffs.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'RATED RED' logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "R"
+    ],
+    "spatial": "The woman is in the center of the frame. The wooden shelf is behind her and to the left. The poster with the letter 'R' is to her right. The 'RATED RED' logo is in the top right corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with brown hair in a ponytail, wearing safety glasses, grey earmuffs, and a white v-neck t-shirt",
+        "action": "gesturing with right hand",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden plank",
+        "action": "being held",
+        "position": "center",
+        "id": "material_project_wood_1"
+      },
+      {
+        "desc": "blue plastic pocket hole jig",
+        "action": "static",
+        "position": "center",
+        "id": "tool_pocket_jig_1"
+      },
+      {
+        "desc": "red plastic storage bins",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "Rated Red logo with white text on red background",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman wearing safety gear gestures with her hand while speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person holds a vertical wooden board against a blue jig.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Rated Red logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The woman is positioned in the center of the frame. The blue jig is on the workbench in front of her. The red storage bins are mounted on the wall behind the woman to the left.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair in a ponytail, wearing a white short-sleeved t-shirt",
+        "action": "holding a wooden board and using a power drill",
+        "position": "right"
+      },
+      {
+        "desc": "light-colored wooden board with visible grain, vertical orientation",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "stack of two light-colored wooden boards, horizontal orientation",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "blue plastic pocket hole jig",
+        "action": "static",
+        "position": "center",
+        "id": "tool_pocket_jig_1"
+      },
+      {
+        "desc": "grey and black cordless power drill",
+        "action": "being used",
+        "position": "center",
+        "id": "tool_drill_1"
+      },
+      {
+        "desc": "Rated Red logo with white text on a red and blue background",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman is holding a vertical wooden board with her left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is using a power drill with her right hand on the wooden board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue pocket hole jig is positioned against the wooden board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A stack of wooden boards sits on the workbench to the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Rated Red logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The woman is positioned to the right of the vertical wooden board she is holding. The blue jig is clamped to the side of the board, and the drill is being applied to the jig. To the left of the woman and the active board, a stack of horizontal wooden boards rests on the workbench surface. The Rated Red logo is located in the top right corner of the frame, above the woman's shoulder.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": [
+      "Person starts using power drill on wood"
+    ]
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair in a ponytail, wearing a white short-sleeved t-shirt and light blue denim shorts",
+        "action": "operating a power drill",
+        "position": "center"
+      },
+      {
+        "desc": "vertical light-colored wooden plank with visible grain and a knot",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "grey and black power drill",
+        "action": "drilling into wood",
+        "position": "center"
+      },
+      {
+        "desc": "blue metal pocket hole jig",
+        "action": "static",
+        "position": "center",
+        "id": "tool_pocket_jig_1"
+      },
+      {
+        "desc": "wooden workbench surface",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "Rated Red logo with white text on blue and red background",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a power drill against a vertical wooden plank.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is drilling into the wood.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue pocket hole jig is sitting on the workbench.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Rated Red logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The woman is positioned to the right of the vertical wooden plank she is working on. The power drill is held in her hands, pressed against the wood. The blue pocket hole jig is on the workbench surface, located to the right of the vertical plank. The Rated Red logo is in the top right corner of the frame, above the woman.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with long brown hair, wearing a white t-shirt and light blue denim shorts",
+        "action": "holding a wooden plank upright in a jig",
+        "position": "right"
+      },
+      {
+        "desc": "blue metal pocket hole jig with a silver clamp and black handle",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "stack of light-colored wooden planks",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "wooden workbench with a light wood top",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "Rated Red logo with white text on a red and blue background",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a vertical wooden plank inside a blue jig.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The blue jig is clamped onto the wooden workbench.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A stack of wooden boards sits on the table to the left of the jig.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'RATED RED' logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The person is standing to the right of the workbench. The blue jig is in the center of the table, holding the wooden plank. The stack of wood planks is to the left of the jig.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with light skin, wearing a white short-sleeved t-shirt",
+        "action": "drilling into wood",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "blue plastic pocket hole jig with white measurement markings",
+        "action": "clamped to wood",
+        "position": "center/foreground",
+        "id": "tool_pocket_jig_1"
+      },
+      {
+        "desc": "vertical light-colored wooden board",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black power drill",
+        "action": "being used",
+        "position": "center",
+        "id": "tool_drill_1"
+      },
+      {
+        "desc": "Rated Red logo with white text on red and blue background",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using a black power drill to drive a screw into a wooden board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue pocket hole jig is clamped to the side of the vertical wooden board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The jig has visible measurement markings including '1/2', '5/8', '3/4', '7/8', '1', '1-1/8', '1-1/4'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "Board Thickness",
+      "1/2",
+      "5/8",
+      "3/4",
+      "7/8",
+      "1",
+      "1-1/8",
+      "1-1/4"
+    ],
+    "spatial": "The person is to the right of the wooden board and is holding the drill in front of the board. The blue jig is clamped to the side of the board, positioned below the person's arm. The Rated Red logo is in the top right corner of the frame, above the person's shoulder.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with light skin, wearing a white short-sleeved t-shirt",
+        "action": "operating a power drill",
+        "position": "right/foreground"
+      },
+      {
+        "desc": "blue plastic pocket hole jig with white measurement markings",
+        "action": "clamped to wood",
+        "position": "center/foreground",
+        "id": "tool_pocket_jig_1"
+      },
+      {
+        "desc": "light-colored wooden board, smooth surface",
+        "action": "static",
+        "position": "left/center"
+      },
+      {
+        "desc": "power drill, partially visible, grey and black body",
+        "action": "drilling into wood",
+        "position": "center"
+      },
+      {
+        "desc": "Rated Red logo, white text with red outline on a distressed white background",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using a power drill to create a pocket hole in a wooden board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue jig is clamped to the edge of the wood to guide the drill bit.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The jig features measurement markings for board thickness.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Rated Red logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "Board Thickness",
+      "1/2",
+      "5/8",
+      "3/4",
+      "7/8",
+      "1",
+      "1-1/8",
+      "1-1/4"
+    ],
+    "spatial": "The person is positioned to the right of the wooden board and is holding the power drill. The blue jig is clamped to the left side of the board, directly in front of the drill bit. The Rated Red logo is located in the top right corner of the frame, above the person's arm.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair, wearing a white short-sleeved t-shirt and blue jeans",
+        "action": "holding a wooden plank upright",
+        "position": "center-right"
+      },
+      {
+        "desc": "tall light-brown wooden plank with visible knots and grain",
+        "action": "being held upright",
+        "position": "center"
+      },
+      {
+        "desc": "blue metal clamp with a black handle",
+        "action": "static",
+        "position": "bottom-center"
+      },
+      {
+        "desc": "wooden workbench with a light-colored surface",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "red and white logo with distressed font",
+        "action": "static",
+        "position": "top-right"
+      },
+      {
+        "desc": "red plastic wall-mounted storage bins",
+        "action": "static",
+        "position": "background-left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a tall wooden plank upright with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bottom of the wooden plank is secured to the workbench by a blue clamp.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'RATED RED' logo is visible in the top right corner of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Red storage bins are mounted on the wall behind the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The woman is standing to the right of the tall wooden plank she is holding. The blue clamp is positioned at the bottom of the plank, securing it to the workbench. The 'RATED RED' logo is located in the upper right corner, above the woman's head. The red storage bins are on the wall in the background, to the left of the woman.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair in a ponytail, wearing a white short-sleeved t-shirt",
+        "action": "drilling into a wooden board",
+        "position": "center"
+      },
+      {
+        "desc": "vertical light-brown wooden plank",
+        "action": "being drilled",
+        "position": "center"
+      },
+      {
+        "desc": "blue Kreg pocket hole jig",
+        "action": "static",
+        "position": "bottom center",
+        "id": "tool_pocket_jig_1"
+      },
+      {
+        "desc": "black and grey cordless drill",
+        "action": "driving a screw",
+        "position": "center",
+        "id": "tool_drill_1"
+      },
+      {
+        "desc": "Rated Red logo with white and red text on a blue background",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "red fire extinguisher",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "bag of Kingsford charcoal",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is using a cordless drill to drive a screw into a vertical wooden plank.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden plank is clamped in a blue pocket hole jig.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is holding the top of the wooden plank with her left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Rated Red logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "KINGSFORD"
+    ],
+    "spatial": "The woman is standing in the center, holding a vertical wooden plank that is secured in a blue jig on the workbench. The drill is positioned against the wood in her right hand. To the left in the background, a red fire extinguisher hangs on the wall. To the right in the background, a bag of charcoal sits on a shelf.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with brown hair tied back, wearing a white v-neck t-shirt and light blue denim shorts",
+        "action": "holding a power drill and a wooden plank",
+        "position": "center"
+      },
+      {
+        "desc": "tall vertical wooden plank, light brown, natural wood grain",
+        "action": "being held upright",
+        "position": "center"
+      },
+      {
+        "desc": "black and white cordless power drill",
+        "action": "held in hand",
+        "position": "center"
+      },
+      {
+        "desc": "banner with blue and red text on a white background",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "red plastic storage bins",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "Rated Red logo, white and red text",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman is holding a tall wooden plank upright with her left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is holding a power drill in her right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman smiles at the camera while holding the tools.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The banner in the background displays the text 'RATED RED'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The woman is standing in the center of the frame, holding the wooden plank in front of her. The power drill is held in her right hand, positioned to the left of the plank. The banner is on the wall behind the woman. The red storage bins are mounted on the wall to the left and right of the banner.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      68,
+      70
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with brown hair tied back, wearing a white short-sleeved t-shirt knotted at the waist and light blue denim shorts",
+        "action": "holding a power drill and a wooden plank",
+        "position": "center"
+      },
+      {
+        "desc": "black and grey cordless power drill with a drill bit attached",
+        "action": "being held",
+        "position": "center-left"
+      },
+      {
+        "desc": "vertical light-brown wooden plank with visible grain and knots",
+        "action": "being held upright",
+        "position": "center-right"
+      },
+      {
+        "desc": "logo with 'RATED' in blue and 'RED' in red inside a white distressed border",
+        "action": "static",
+        "position": "top-right"
+      },
+      {
+        "desc": "large banner with 'RATED RED' text in distressed font",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "red plastic storage bins mounted on the wall",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman holds a cordless drill in her right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman holds a vertical wooden plank with her left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman smiles at the camera in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'RATED RED' logo is visible in the top right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Red storage bins are mounted on the wall behind the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "RATED RED"
+    ],
+    "spatial": "The woman is standing in the center of the frame, holding a drill in her right hand and a wooden plank in her left. The wooden plank is positioned to the right of the woman. The 'RATED RED' logo is located in the top right corner of the screen. The large banner is behind the woman on the wall.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      70,
+      72
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with brown hair tied back, wearing a white short-sleeved t-shirt knotted at the waist and light blue jeans",
+        "action": "driving a screw into wood",
+        "position": "center"
+      },
+      {
+        "desc": "cordless impact driver, grey and black with a battery pack",
+        "action": "being held and operated",
+        "position": "center",
+        "id": "tool_drill_1"
+      },
+      {
+        "desc": "light-colored wooden plank, vertical orientation",
+        "action": "static",
+        "position": "center-right"
+      },
+      {
+        "desc": "blue and black Irwin Quick-Grip clamp",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "Rated Red logo, white text on red background with blue border",
+        "action": "static",
+        "position": "top-right"
+      },
+      {
+        "desc": "red rectangular plastic object",
+        "action": "static",
+        "position": "foreground-left"
+      },
+      {
+        "desc": "wooden workbench, light-colored",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is using a cordless impact driver to drive a fastener into a vertical wooden plank.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden plank is secured to the workbench by a blue clamp.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is holding the tool with both hands for stability.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Rated Red logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "IRWIN",
+      "QUICK-GRIP",
+      "20V"
+    ],
+    "spatial": "The woman is standing behind the wooden workbench in the center of the frame. She is holding the impact driver in front of her, applying it to the vertical wooden plank which is to her right. The blue clamp is positioned above the plank, securing it to the table. The red plastic object is in the foreground on the left side of the workbench.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      72,
+      74
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair in a ponytail, wearing a white short-sleeved t-shirt and light blue denim shorts",
+        "action": "using a power drill on a wooden structure",
+        "position": "center"
+      },
+      {
+        "desc": "black and grey cordless power drill",
+        "action": "being held by the woman",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden planks and frame structure",
+        "action": "static",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "blue and black Irwin clamp",
+        "action": "clamped to the wood",
+        "position": "center/right"
+      },
+      {
+        "desc": "red rectangular plastic block",
+        "action": "static",
+        "position": "foreground/left"
+      },
+      {
+        "desc": "bag of rags with blue and white packaging",
+        "action": "static",
+        "position": "background/right"
+      },
+      {
+        "desc": "logo with 'RATED RED' in white and red text",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is using a cordless drill to drive a screw into a vertical wooden plank.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A blue Irwin clamp is securing the wooden structure to the workbench.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing light blue denim shorts with frayed hems.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bag labeled 'RAGS' is sitting on a table in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red plastic block is resting on the wooden work surface in the foreground.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "IRWIN",
+      "QUICK-GRIP",
+      "RAGS"
+    ],
+    "spatial": "The woman is standing behind the wooden workbench, holding the drill in front of her. The red plastic block is on the workbench in the foreground, to the left of the wooden structure she is working on. The bag of rags is on a separate table to the right of the woman. The 'RATED RED' logo is in the top right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      74,
+      76
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair in a ponytail, wearing a white t-shirt and light blue denim shorts",
+        "action": "working on a wooden structure",
+        "position": "center"
+      },
+      {
+        "desc": "wooden workbench, light-colored wood, sturdy construction",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "wooden planks and boards, light-colored, unfinished",
+        "action": "being handled",
+        "position": "center"
+      },
+      {
+        "desc": "bag of white rags with blue and red text",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "wall-mounted tools including clamps and a fire extinguisher",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "Rated Red logo, red and white text on a blue background",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman is assembling a wooden structure on a workbench.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "She is holding a piece of wood and positioning it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bag of rags is on a table to the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Tools are hanging on the wall in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Rated Red logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "RAGS"
+    ],
+    "spatial": "The woman is standing behind the workbench. The wooden planks are on the workbench in front of her. The bag of rags is to the right of the workbench. The tools are on the wall behind the woman. The Rated Red logo is in the top right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      76,
+      78
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair, wearing a white short-sleeved t-shirt",
+        "action": "holding and positioning a wooden plank",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden plank, rectangular, smooth",
+        "action": "being held upright",
+        "position": "center"
+      },
+      {
+        "desc": "large wooden workbench, light-colored wood, sturdy",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "wooden frame structure, partially assembled, light-colored wood",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "banner with 'RATED RED' logo, blue and red text on white background",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "shelves with paint cans and tools, wooden",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a vertical wooden plank with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "She is positioning the plank against a horizontal wooden board on the workbench.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The workbench is located in the foreground of the workshop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'RATED RED' banner is hanging on the wall behind the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The woman is standing behind the large wooden workbench. She is holding a vertical wooden plank in front of her, positioning it next to a horizontal wooden board that rests on the workbench. The 'RATED RED' banner is on the wall behind the woman and the workbench.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      78,
+      80
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with brown hair tied back, wearing a white sleeveless top and blue jeans",
+        "action": "operating a power drill",
+        "position": "center"
+      },
+      {
+        "desc": "cordless power drill, grey and black with a battery pack labeled '20V LITHIUM'",
+        "action": "drilling into wood",
+        "position": "center"
+      },
+      {
+        "desc": "vertical wooden plank, light-colored, unfinished",
+        "action": "being drilled",
+        "position": "right"
+      },
+      {
+        "desc": "vertical wooden plank, light-colored, unfinished",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "miter saw, grey and blue",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "logo with text 'RATED RED' in red and blue block letters",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a cordless drill with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The drill bit is penetrating the vertical wooden plank on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a white sleeveless top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The battery pack on the drill reads '20V LITHIUM'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "20V LITHIUM"
+    ],
+    "spatial": "The woman is positioned in the center, standing behind the wooden planks. She is holding the drill which is pressed against the right wooden plank. Another wooden plank stands to the left of the woman. A miter saw is visible in the background on the left side. The 'RATED RED' logo is in the top right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      80,
+      82
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with brown hair pulled back, wearing a white v-neck t-shirt",
+        "action": "drilling into wood",
+        "position": "center"
+      },
+      {
+        "desc": "cordless power drill, grey and black body with a long drill bit",
+        "action": "being held and operated",
+        "position": "center",
+        "id": "tool_drill_1"
+      },
+      {
+        "desc": "vertical wooden plank, light brown pine, smooth surface",
+        "action": "static",
+        "position": "right foreground"
+      },
+      {
+        "desc": "vertical wooden plank, light brown pine, smooth surface",
+        "action": "static",
+        "position": "left foreground"
+      },
+      {
+        "desc": "miter saw, grey and blue, stationary",
+        "action": "static",
+        "position": "left background",
+        "id": "tool_miter_saw_1"
+      },
+      {
+        "desc": "white bag with red and blue text",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "logo with 'RATED' in blue and 'RED' in red inside a white distressed box",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a cordless drill with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The drill bit is penetrating the side of the wooden plank on the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a white v-neck t-shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A miter saw is visible in the background on the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bag labeled 'RAGS' is sitting on a shelf in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "RAGS"
+    ],
+    "spatial": "The woman is positioned in the center, holding the drill which is inserted into the wooden plank on her right. Another wooden plank stands to her left in the foreground. The miter saw is located behind the left plank. The 'RATED RED' logo is in the top right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 40,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      82,
+      84
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with long brown hair in a ponytail, wearing a white t-shirt and light blue denim shorts",
+        "action": "drilling wood and lifting a wooden frame",
+        "position": "center"
+      },
+      {
+        "desc": "cordless power drill, black and grey",
+        "action": "driving a screw into wood",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden frame structure",
+        "action": "being assembled and lifted",
+        "position": "center",
+        "id": "material_project_wood_1"
+      },
+      {
+        "desc": "large wooden workbench",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "bag of rags, white with red and blue text",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "logo graphic with 'RATED RED' in distressed font",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person uses a power drill to drive a screw into a vertical wooden plank.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person lifts a large rectangular wooden frame structure.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden frame is placed on top of a workbench.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bag labeled 'RAGS' is visible on a shelf in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "RAGS"
+    ],
+    "spatial": "The person is standing behind the workbench, holding the wooden frame. The power drill is in the person's hands, positioned against the wood. The 'RATED RED' logo is in the top right corner of the screen, above the person. The bag of rags is on a shelf in the background, to the left of the person.",
+    "parse_success": true,
+    "chunk_idx": 41,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      84,
+      86
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair in a ponytail, wearing a white t-shirt and light blue denim shorts with frayed hems",
+        "action": "assembling a wooden frame using a power drill",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden frame structure, rectangular shape",
+        "action": "being assembled",
+        "position": "center"
+      },
+      {
+        "desc": "cordless power drill, grey and black body",
+        "action": "being held and operated",
+        "position": "center"
+      },
+      {
+        "desc": "large wooden workbench, light-colored wood",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "red rectangular plastic bin",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "wall sign with distressed white and red text on a dark background",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "digital logo overlay with red and white text",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is using a cordless drill to fasten screws into the wooden frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden frame is resting on top of the large workbench.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The red bin is sitting on the workbench to the left of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is leaning over the frame to operate the drill.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "RATED RED"
+    ],
+    "spatial": "The woman is standing behind the wooden frame, which is positioned on top of the workbench. She is holding the drill in her hands, applying it to the wood. The red bin is to the left of the frame on the table. The 'RATED RED' sign is on the wall in the background, behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 42,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      86,
+      88
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair, wearing a white t-shirt",
+        "action": "drilling a screw into wood",
+        "position": "center"
+      },
+      {
+        "desc": "cordless drill, grey and black body",
+        "action": "being held and operated",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden frame structure",
+        "action": "static",
+        "position": "foreground",
+        "id": "material_project_wood_1"
+      },
+      {
+        "desc": "shelves with yellow and white cans and bottles",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "Rated Red logo, red and blue text on white background",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman is using a cordless drill to drive a screw into a wooden frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is holding the drill with her right hand and stabilizing the wood with her left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Rated Red logo is visible in the top right corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The woman is positioned behind the wooden frame structure. She is holding the drill in front of her body, pressing it against the top beam of the frame. The shelves with cans are located in the background behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 43,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      88,
+      90
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair in a ponytail, wearing a white t-shirt",
+        "action": "holding a wooden frame",
+        "position": "center"
+      },
+      {
+        "desc": "large light-colored wooden frame structure with internal dividers",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "wall sign with large red distressed letters on a white background",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "Rated Red logo with white text on a blue and red background",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "power tools including a drill and saw on a workbench",
+        "action": "static",
+        "position": "background left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding the top edge of the wooden frame with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden frame is positioned in front of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign in the background displays the text 'RED'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'RATED RED' logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RED",
+      "RATED RED"
+    ],
+    "spatial": "The woman is standing behind the large wooden frame, holding its top edge. The wooden frame is in the foreground, obscuring the lower part of the woman's body. The 'RED' sign is on the wall behind the woman. The power tools are on a workbench to the left of the woman and behind the wooden frame.",
+    "parse_success": true,
+    "chunk_idx": 44,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      90,
+      92
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with brown hair tied back in a ponytail, wearing a white short-sleeved t-shirt",
+        "action": "leaning over a wooden structure",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden frame structure with visible grain and knots",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "red and white 'RATED RED' logo",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "red plastic storage bins mounted on a wall",
+        "action": "static",
+        "position": "background left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is leaning forward over a wooden frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman's hands are resting on the edge of the wooden structure.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'RATED RED' logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The woman is positioned behind the wooden frame in the foreground. The red storage bins are on the wall to the left of the woman. The 'RATED RED' logo is in the top right corner of the frame, above the woman's head.",
+    "parse_success": true,
+    "chunk_idx": 45,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      92,
+      94
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair tied in a ponytail, wearing a white short-sleeved t-shirt with a knot at the waist",
+        "action": "holding a wooden beam",
+        "position": "center"
+      },
+      {
+        "desc": "light-colored wooden beam, smooth texture, rectangular shape",
+        "action": "being held",
+        "position": "foreground"
+      },
+      {
+        "desc": "wooden vertical supports, light-colored wood",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "miter saw, silver and black",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "wall sign with large red letters on a white background",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "Rated Red logo, white text on blue and red background",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a wooden beam with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is looking to her right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden beam is resting on top of two vertical wooden supports.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A miter saw is visible on a workbench in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RED",
+      "RATED RED"
+    ],
+    "spatial": "The woman is standing behind the wooden beam and the vertical supports. The wooden beam is on top of the vertical supports. The miter saw is to the right of the woman in the background. The 'RED' sign is on the wall behind the woman. The 'RATED RED' logo is in the top right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 46,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      94,
+      96
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with brown hair tied back in a ponytail, wearing a white short-sleeved t-shirt knotted at the waist and light blue denim jeans",
+        "action": "operating a power drill",
+        "position": "center"
+      },
+      {
+        "desc": "cordless impact driver, silver and black with a long drill bit attached",
+        "action": "drilling into wood",
+        "position": "center"
+      },
+      {
+        "desc": "wooden frame structure made of light-colored lumber",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "Rated Red logo with red and blue text on a white background",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "yellow electrical cord",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is holding a cordless impact driver with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The drill bit is penetrating the vertical wooden post of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is leaning over the wooden structure to apply pressure to the drill.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Rated Red logo is visible in the upper right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The woman is positioned behind the wooden frame structure in the foreground. She is holding the power drill in front of her body, aiming it downwards into the wood. The yellow electrical cord is to the right of the woman in the background.",
+    "parse_success": true,
+    "chunk_idx": 47,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      96,
+      98
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with brown hair in a ponytail, wearing a white v-neck t-shirt",
+        "action": "drilling a wooden frame",
+        "position": "center"
+      },
+      {
+        "desc": "wooden frame structure made of light-colored lumber",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "black power drill",
+        "action": "being held by the woman",
+        "position": "center",
+        "id": "tool_drill_1"
+      },
+      {
+        "desc": "red plastic parts bin",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "Rated Red logo with red and blue text",
+        "action": "static",
+        "position": "top right",
+        "id": "logo_rated_red_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman is using a black power drill to work on a wooden frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is holding the drill with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red plastic bin sits on the workbench to the left of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Rated Red logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The woman is positioned behind the wooden frame structure in the foreground. She is holding the black power drill against the vertical post of the frame. The red plastic bin is to the left of the wooden frame on the workbench.",
+    "parse_success": true,
+    "chunk_idx": 48,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      98,
+      100
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair in a ponytail, wearing a white t-shirt and blue denim shorts",
+        "action": "using a power drill on a wooden frame",
+        "position": "center"
+      },
+      {
+        "desc": "rectangular wooden frame made of light-colored wood with three open sections",
+        "action": "static",
+        "position": "foreground",
+        "id": "material_project_wood_1"
+      },
+      {
+        "desc": "large wooden workbench with a light-colored top and legs",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "black power drill",
+        "action": "being held and operated",
+        "position": "center",
+        "id": "tool_drill_1"
+      },
+      {
+        "desc": "banner with 'RATED RED' text in a distressed font style, blue and red colors on a white background",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "small red rectangular plastic bin",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "wooden shelves holding various paint cans and tools",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is using a power drill to secure the wooden frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden frame is resting on top of the workbench.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is standing behind the wooden frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red bin is sitting on the workbench to the left of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'RATED RED' banner is hanging on the wall in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The woman is standing behind the wooden frame, which is positioned on top of the large workbench. The red bin is to the left of the frame on the workbench surface. The 'RATED RED' banner is on the wall behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 49,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      100,
+      102
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair, wearing a white v-neck t-shirt and blue jeans",
+        "action": "painting the wooden frame",
+        "position": "center"
+      },
+      {
+        "desc": "rectangular wooden frame, light brown, unfinished wood texture",
+        "action": "being painted",
+        "position": "center"
+      },
+      {
+        "desc": "paintbrush with black handle and bristles",
+        "action": "being held by the woman",
+        "position": "center",
+        "id": "tool_paintbrush_1"
+      },
+      {
+        "desc": "black protective gloves",
+        "action": "worn by the woman",
+        "position": "center",
+        "id": "safety_gloves_1"
+      },
+      {
+        "desc": "large wooden workbench, light brown",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "red fire extinguisher",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "Rated Red logo, red and blue text on white background",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is applying a dark coating to the wooden frame using a paintbrush.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing black gloves while painting.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden frame is resting on top of a large workbench.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Rated Red logo is visible in the top right corner of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The woman is standing behind the wooden frame, which is placed on top of the workbench. She is holding the paintbrush in her gloved hand, applying it to the top edge of the frame. The red fire extinguisher is mounted on the wall in the background, behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 50,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": [
+      "Person transitions from drilling to painting/staining wood"
+    ]
+  },
+  {
+    "time": [
+      102,
+      104
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair in a ponytail, wearing a white short-sleeved t-shirt and black gloves",
+        "action": "applying dark stain to a wooden structure",
+        "position": "right"
+      },
+      {
+        "desc": "light-colored wooden frame structure with visible wood grain",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "paintbrush with black handle and bristles coated in dark liquid",
+        "action": "being moved across wood",
+        "position": "center"
+      },
+      {
+        "desc": "red fire extinguisher with white label",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "yellow paint can with red and black label details",
+        "action": "static",
+        "position": "bottom center"
+      },
+      {
+        "desc": "Rated Red logo with white text on blue and red background",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is applying a dark stain to the top edge of a wooden frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "She is holding a paintbrush in her gloved hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden structure is positioned to the left of the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red fire extinguisher is mounted on the wall in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow paint can sits below the wooden structure.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The woman is positioned to the right of the wooden frame structure. She is holding a paintbrush which is touching the top surface of the wood. The red fire extinguisher is behind the woman and the wooden frame. The yellow paint can is below the area where the woman is working.",
+    "parse_success": true,
+    "chunk_idx": 51,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      104,
+      106
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair in a ponytail, wearing a white short-sleeved t-shirt and black gloves",
+        "action": "applying dark stain to wood",
+        "position": "right"
+      },
+      {
+        "desc": "light-colored wooden structure with visible grain, likely a cabinet or counter frame",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "paintbrush with a black handle and bristles coated in dark liquid",
+        "action": "being held and moved",
+        "position": "center",
+        "id": "tool_paintbrush_1"
+      },
+      {
+        "desc": "red fire extinguisher with a white label",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "yellow can with a black rim, containing dark liquid",
+        "action": "static",
+        "position": "bottom",
+        "id": "material_stain_1"
+      },
+      {
+        "desc": "logo with white text 'RATED RED' inside a red and blue distressed border",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is applying a dark stain to the top edge of the wooden structure using a paintbrush.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a black glove on her right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow can containing the dark liquid sits below the wooden structure.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red fire extinguisher is mounted on the wall in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'RATED RED' logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The woman is positioned to the right of the wooden structure. She is holding the paintbrush in her right hand, which is extended over the wood. The yellow can is located below the area where she is working. The fire extinguisher is behind the woman and the wooden structure.",
+    "parse_success": true,
+    "chunk_idx": 52,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      106,
+      108
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a white short-sleeved t-shirt, light blue denim shorts, and black protective gloves",
+        "action": "applying dark stain to wood",
+        "position": "right"
+      },
+      {
+        "desc": "wooden frame structure, light-colored wood with a vertical post partially coated in dark brown stain",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "crumpled grey and white cloth rag",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "yellow cylindrical can with a red stripe near the rim",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Rated Red logo, white text on a red and blue background",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person wearing black gloves is applying a dark stain to a wooden frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person holds a crumpled cloth in their left hand while working.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow can sits on the workbench behind the wooden frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Rated Red logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The person is positioned to the right of the wooden frame. The crumpled cloth is held in the person's hand, positioned near the base of the frame. The yellow can is located behind the wooden frame and to the left of the person's arm.",
+    "parse_success": true,
+    "chunk_idx": 53,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      108,
+      110
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with long brown hair, wearing a white t-shirt, light blue denim shorts, and black gloves",
+        "action": "applying dark stain to a wooden structure",
+        "position": "right"
+      },
+      {
+        "desc": "wooden shelving unit, partially stained dark brown, partially light natural wood",
+        "action": "being stained",
+        "position": "left",
+        "id": "material_project_wood_1"
+      },
+      {
+        "desc": "yellow cylindrical can with red and black text",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "crumpled grey and white rag",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black brush",
+        "action": "being used to apply stain",
+        "position": "center",
+        "id": "tool_paintbrush_1"
+      },
+      {
+        "desc": "Rated Red logo, red and blue text on white background",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is applying a dark stain to the wooden shelving unit using a brush.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding a crumpled rag in their other hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The yellow can of stain is sitting on the workbench.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Rated Red logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The person is to the right of the wooden shelving unit. The yellow can is on the workbench, in front of the person and to the right of the shelving unit. The crumpled rag is on the workbench, near the can. The Rated Red logo is in the top right corner of the frame.",
+    "parse_success": true,
+    "chunk_idx": 54,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      110,
+      112
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair in a ponytail, wearing a white t-shirt, light blue jeans, and black work gloves",
+        "action": "applying dark stain to a wooden shelf",
+        "position": "right",
+        "id": "person_builder_1"
+      },
+      {
+        "desc": "dark-stained wooden shelving unit with vertical dividers",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "yellow cylindrical metal can with a red stripe and black text",
+        "action": "static",
+        "position": "center",
+        "id": "material_stain_1"
+      },
+      {
+        "desc": "black paintbrush",
+        "action": "being held",
+        "position": "center",
+        "id": "tool_paintbrush_1"
+      },
+      {
+        "desc": "Rated Red logo with white text on a blue and red background",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is applying dark stain to the interior of the wooden shelving unit using a paintbrush.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The yellow can of stain is sitting on the workbench next to the wooden unit.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing black protective gloves while working.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The woman is standing to the right of the wooden shelving unit. The yellow can is positioned on the table in front of the shelving unit. The woman is holding the paintbrush in her right hand, applying it to the wood.",
+    "parse_success": true,
+    "chunk_idx": 55,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      112,
+      114
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair in a ponytail, wearing a white short-sleeved t-shirt and black gloves",
+        "action": "applying dark stain to a wooden shelf",
+        "position": "right"
+      },
+      {
+        "desc": "long rectangular wooden shelf unit with multiple compartments, dark brown finish",
+        "action": "static",
+        "position": "left",
+        "id": "material_project_wood_1"
+      },
+      {
+        "desc": "paintbrush with dark bristles",
+        "action": "being held and moved",
+        "position": "center"
+      },
+      {
+        "desc": "small open can containing dark liquid stain",
+        "action": "static",
+        "position": "bottom",
+        "id": "material_stain_1"
+      },
+      {
+        "desc": "crumpled grey rags",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "Rated Red logo with white text on a blue and red background",
+        "action": "static",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is applying a dark finish to the wooden shelf using a paintbrush.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing black protective gloves while working.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden shelf unit is resting on a workbench.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A can of dark stain is sitting on the table near the shelf.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Rated Red logo is visible in the top right corner of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED"
+    ],
+    "spatial": "The woman is positioned to the right of the wooden shelf unit. She is holding the paintbrush in her hand, applying it to the interior of the shelf. The can of stain and crumpled rags are on the table below the shelf and in front of the woman.",
+    "parse_success": true,
+    "chunk_idx": 56,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      114,
+      116
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair in a ponytail, wearing a white v-neck t-shirt and light blue denim shorts",
+        "action": "sitting on a wooden workbench and speaking",
+        "position": "center"
+      },
+      {
+        "desc": "wooden workbench, light brown, with a pair of black gloves resting on it",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "wooden shelving unit, dark stained, rectangular",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue and red lower-third graphic with white text",
+        "action": "static",
+        "position": "bottom-left"
+      },
+      {
+        "desc": "Rated Red logo, red and white text on a blue background",
+        "action": "static",
+        "position": "top-right"
+      },
+      {
+        "desc": "banner with Rated Red logo, hanging on the wall",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman is sitting on a wooden workbench in a workshop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is speaking to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A lower-third graphic displays the name 'AMANDA MERTZ' and the website 'RATEDRED.COM'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pair of black gloves is on the workbench next to the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The 'RATED RED' logo is visible in the top right corner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "AMANDA MERTZ",
+      "RATEDRED.COM"
+    ],
+    "spatial": "The woman is sitting on the wooden workbench. The black gloves are on the workbench to her left. The 'AMANDA MERTZ' graphic is at the bottom-left of the screen. The 'RATED RED' logo is in the top-right corner. A banner with the 'RATED RED' logo is on the wall behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 57,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": [
+      "Person sits on workbench for outro segment"
+    ]
+  },
+  {
+    "time": [
+      116,
+      118
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with brown hair tied back, wearing a white v-neck t-shirt and light blue denim shorts",
+        "action": "sitting on a wooden workbench and gesturing with her right hand",
+        "position": "center"
+      },
+      {
+        "desc": "wooden workbench with a light wood top and dark wooden legs",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "blue and red lower-third graphic with white text",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "Rated Red logo with red and white text on a blue background",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "banner with 'RATED RED' text in red and white on a dark background",
+        "action": "static",
+        "position": "background",
+        "id": "graphic_overlay_1"
+      },
+      {
+        "desc": "wooden shelves with various tools and paint cans",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman is sitting on a wooden workbench.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman gestures with her right hand while speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The lower-third graphic displays the name 'AMANDA MERTZ' and the website 'RATEDRED.COM'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The lower-third graphic changes to show the social media handle '@AMANDAMERTZ'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Rated Red logo is visible in the top right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A banner with the 'RATED RED' logo is on the wall behind the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "AMANDA MERTZ",
+      "RATEDRED.COM",
+      "@AMANDAMERTZ"
+    ],
+    "spatial": "The woman is sitting in the center of the frame on a wooden workbench. The lower-third graphic is at the bottom left, and the Rated Red logo is at the top right. Behind the woman, a banner is on the wall, and shelves with tools are to her left and right.",
+    "parse_success": true,
+    "chunk_idx": 58,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      118,
+      120
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair, wearing a white v-neck t-shirt tied at the waist and light blue denim shorts",
+        "action": "sitting on a wooden surface and speaking",
+        "position": "center"
+      },
+      {
+        "desc": "wooden workbench with a dark stain finish, featuring a rectangular frame structure",
+        "action": "static",
+        "position": "background",
+        "id": "furniture_workbench_1"
+      },
+      {
+        "desc": "blue and red lower-third graphic with white text",
+        "action": "static",
+        "position": "bottom left"
+      },
+      {
+        "desc": "Rated Red logo with red and white text on a blue background",
+        "action": "static",
+        "position": "top right"
+      },
+      {
+        "desc": "wooden shelves holding various paint cans and tools",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "banner with 'RATED RED' text in red and white",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is sitting on a wooden surface in a workshop setting.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is speaking to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The lower-third graphic displays the name 'AMANDA MERTZ' and the handle '@AMANDAMERTZ'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The Rated Red logo is visible in the top right corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wooden workbench is positioned behind the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "AMANDA MERTZ",
+      "@AMANDAMERTZ",
+      "ratedred"
+    ],
+    "spatial": "The woman is sitting in the center of the frame, in front of a wooden workbench. The lower-third graphic is located at the bottom left of the screen, while the Rated Red logo is in the top right corner. Shelves with tools and paint cans are visible on the wall behind the workbench.",
+    "parse_success": true,
+    "chunk_idx": 59,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      120,
+      122
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with brown hair tied back, wearing a white short-sleeved v-neck t-shirt and light blue denim shorts",
+        "action": "sitting on a wooden table and gesturing with hands",
+        "position": "center"
+      },
+      {
+        "desc": "unfinished wooden table, light-colored wood, rectangular top",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dark stained wooden console table, rectangular frame structure",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "banner with distressed style, blue and red text",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "blue and red lower-third graphic overlay",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "graphic_overlay_1"
+      },
+      {
+        "desc": "workshop setting with plywood walls and shelves holding tools and cans",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is sitting on the edge of a light-colored wooden table.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman gestures with her hands while speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dark wooden console table sits on a workbench behind the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'AMANDA MERTZ' is displayed in the lower-left corner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '@AMANDAMERTZ' is displayed below the name.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A banner reading 'RATED RED' hangs on the wall behind the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "YouTube",
+      "ratedred",
+      "RATED RED",
+      "AMANDA MERTZ",
+      "@AMANDAMERTZ"
+    ],
+    "spatial": "The woman is sitting on the wooden table in the foreground. Behind her is a dark wooden console table resting on a workbench. The 'RATED RED' banner is on the wall behind the console table. The name graphic is in the bottom-left corner of the screen.",
+    "parse_success": true,
+    "chunk_idx": 60,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      122,
+      124
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with long brown hair, wearing a white v-neck t-shirt and denim shorts",
+        "action": "sitting on a wooden table",
+        "position": "center"
+      },
+      {
+        "desc": "wooden table, light-colored wood, sturdy construction",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "wooden workbench frame, dark-stained wood, rectangular structure",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "Rated Red logo, distressed white and red text on a dark background",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "on-screen graphics, blue and red banners with white text",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman sits on a wooden table in a workshop setting.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a white t-shirt and denim shorts.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wooden workbench frame stands behind the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'AMANDA MERTZ' is displayed in a blue banner.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text '@AMANDAMERTZ' is displayed in a red banner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "YouTube ratedred",
+      "AMANDA MERTZ",
+      "@AMANDAMERTZ"
+    ],
+    "spatial": "The woman is sitting on top of the light-colored wooden table. The dark wooden workbench frame is behind the woman and the table. The 'RATED RED' sign is on the wall behind the workbench. The blue and red text banners are overlaid on the left side of the screen.",
+    "parse_success": true,
+    "chunk_idx": 61,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      124,
+      126
+    ],
+    "visible_entities": [
+      {
+        "desc": "wooden workbench with a metal frame, light wood top, and lower shelf",
+        "action": "static",
+        "position": "left",
+        "id": "furniture_workbench_1"
+      },
+      {
+        "desc": "assorted power tools and equipment including drills and a saw, sitting on the workbench shelves",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "large 'RATED RED' logo on a distressed background, featuring blue 'RATED' text and red 'RED' text",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "smaller 'RATED RED' logo with a white border",
+        "action": "static",
+        "position": "top"
+      },
+      {
+        "desc": "YouTube channel banner with a blue brushstroke background and white text",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "dark brown vertical wooden wall paneling",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "abstract red and white graphic animation with glitch effects",
+        "action": "appearing",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The scene displays a workshop setting with a workbench and tools on the left side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large 'RATED RED' logo is mounted on the wall behind the workbench.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The video transitions to an abstract red and white graphic animation.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'YouTube ratedred' is visible on a blue banner.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "YouTube ratedred"
+    ],
+    "spatial": "The wooden workbench is positioned on the left side of the frame, in front of a wall with a large 'RATED RED' logo. The dark brown wooden paneling is to the right of the workshop scene. The abstract graphic animation appears over the workshop scene on the left.",
+    "parse_success": true,
+    "chunk_idx": 62,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": [
+      "Scene transitions to outro graphics and logo animation"
+    ]
+  },
+  {
+    "time": [
+      126,
+      128
+    ],
+    "visible_entities": [
+      {
+        "desc": "Logo graphic featuring the word 'RATED' in white distressed font on a blue brushstroke background, and 'RED' in large red distressed outline font on a white brushstroke background",
+        "action": "static",
+        "position": "center",
+        "id": "logo_rated_red_1"
+      },
+      {
+        "desc": "Red liquid splashes resembling blood",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "Dark vertical wooden planks",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "Small logo with 'RATED' in blue and 'RED' in red on a white background",
+        "action": "static",
+        "position": "top"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The 'RATED RED' logo is displayed in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Red liquid splashes are visible behind the central logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wooden wall texture is visible on the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'RATED RED' appears in the top center.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "RATED RED"
+    ],
+    "spatial": "The large 'RATED RED' logo is in the center of the frame, positioned in front of red liquid splashes. The wooden planks are to the right of the central logo. A smaller version of the 'RATED RED' logo is located above the central logo at the top of the screen.",
+    "parse_success": true,
+    "chunk_idx": 63,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  },
+  {
+    "time": [
+      128,
+      130
+    ],
+    "visible_entities": [
+      {
+        "desc": "A 'RATED RED' logo featuring the word 'RATED' in white distressed font on a blue rectangular background, and the word 'RED' in a large red distressed font on a white paint-splatter background.",
+        "action": "static",
+        "position": "left",
+        "id": "logo_rated_red_1"
+      },
+      {
+        "desc": "A dark brown wooden wall with vertical planks.",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "A small 'RATED RED' logo with white text on a blue and red background.",
+        "action": "static",
+        "position": "top"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The 'RATED RED' logo is displayed on the left side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo is set against a dark background with red paint-splatter effects.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden wall is visible on the right side of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RATED RED",
+      "RATED RED"
+    ],
+    "spatial": "The large 'RATED RED' logo is positioned on the left side of the frame. The wooden wall is to the right of the logo. A smaller 'RATED RED' logo is located at the top center of the screen, above the main logo and the wall.",
+    "parse_success": true,
+    "chunk_idx": 64,
+    "video_id": "ytb_b5UbOtkTH6M",
+    "state_changes": []
+  }
+]

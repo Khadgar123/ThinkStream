@@ -1,0 +1,1944 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown baked biscuit with a flaky crust, split open to reveal a creamy filling of sausage and gravy",
+        "action": "static",
+        "position": "center",
+        "id": "biscuit_baked_1"
+      },
+      {
+        "desc": "whole golden-brown baked biscuit",
+        "action": "static",
+        "position": "left",
+        "id": "biscuit_baked_1"
+      },
+      {
+        "desc": "whole golden-brown baked biscuit",
+        "action": "static",
+        "position": "right",
+        "id": "biscuit_baked_1"
+      },
+      {
+        "desc": "large white bold sans-serif text overlay",
+        "action": "static",
+        "position": "left",
+        "id": "text_overlay_1"
+      },
+      {
+        "desc": "light blue textured cloth",
+        "action": "static",
+        "position": "background",
+        "id": "towel_kitchen_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'SAUSAGE GRAVY STUFFED BISCUITS' is overlaid on the left side of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The central biscuit is broken open to display its filling.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Three biscuits are arranged in a cluster.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SAUSAGE GRAVY",
+      "STUFFED",
+      "BISCUITS"
+    ],
+    "spatial": "The open biscuit is positioned in the center, resting on top of the two whole biscuits located to its left and right. The text overlay is superimposed on the left side of the frame, partially covering the left biscuit. The light blue cloth is visible in the background behind the biscuits.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown, round baked biscuits with a soft, flaky texture",
+        "action": "static",
+        "position": "center/foreground",
+        "id": "biscuit_baked_1"
+      },
+      {
+        "desc": "creamy white sausage gravy filling with visible chunks of browned sausage meat",
+        "action": "static",
+        "position": "inside the top biscuit",
+        "id": "gravy_sausage_1"
+      },
+      {
+        "desc": "large, bold, white sans-serif text with a slight drop shadow",
+        "action": "static",
+        "position": "center/foreground",
+        "id": "text_overlay_1"
+      },
+      {
+        "desc": "light blue and white patterned cloth napkin",
+        "action": "static",
+        "position": "background",
+        "id": "towel_kitchen_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The top biscuit is broken open to reveal the savory filling inside.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'SAUSAGE GRAVY STUFFED BISCUITS' is overlaid on the image.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The biscuits are arranged in a small pile.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SAUSAGE GRAVY",
+      "STUFFED",
+      "BISCUITS"
+    ],
+    "spatial": "The text is positioned in front of the biscuits, partially obscuring the top one. The broken biscuit is on top of the other whole biscuits. The biscuits are in front of the blue and white patterned cloth.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": []
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin and manicured nails",
+        "action": "holding a glass bowl",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "clear glass bowl containing raw pink ground meat",
+        "action": "being held",
+        "position": "center",
+        "id": "bowl_glass_1"
+      },
+      {
+        "desc": "grey non-stick pot",
+        "action": "static",
+        "position": "center",
+        "id": "pan_frying_1"
+      },
+      {
+        "desc": "black induction cooktop",
+        "action": "static",
+        "position": "center",
+        "id": "cooktop_black_1"
+      },
+      {
+        "desc": "metal whisk",
+        "action": "static",
+        "position": "right",
+        "id": "whisk_metal_1"
+      },
+      {
+        "desc": "light blue textured cloth",
+        "action": "static",
+        "position": "left",
+        "id": "towel_kitchen_1"
+      },
+      {
+        "desc": "white text overlay",
+        "action": "static",
+        "position": "bottom",
+        "id": "text_overlay_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pair of hands is holding a glass bowl filled with raw ground sausage over a pot.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'COUNTRY BREAKFAST SAUSAGE' is displayed at the bottom of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal whisk rests on the white surface to the right of the cooktop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "COUNTRY BREAKFAST SAUSAGE"
+    ],
+    "spatial": "The hands are holding the glass bowl directly above the grey pot, which sits on the black cooktop. The metal whisk is to the right of the cooktop. The light blue cloth is to the left of the cooktop. The text overlay is at the bottom of the frame.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": [
+      "transition from finished dish to raw ingredients - cooking process begins"
+    ]
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "raw ground meat, pink and red, textured, roughly spherical lump",
+        "action": "being broken apart",
+        "position": "center",
+        "id": "meat_ground_1"
+      },
+      {
+        "desc": "grey non-stick frying pan, round, with a silver metal handle",
+        "action": "static",
+        "position": "center",
+        "id": "pan_frying_1"
+      },
+      {
+        "desc": "wooden spatula, light brown, flat head",
+        "action": "breaking meat",
+        "position": "center",
+        "id": "spoon_wooden_1"
+      },
+      {
+        "desc": "metal wire whisk, silver, with a black handle",
+        "action": "static",
+        "position": "right",
+        "id": "whisk_metal_1"
+      },
+      {
+        "desc": "light blue textured cloth",
+        "action": "static",
+        "position": "left",
+        "id": "towel_kitchen_1"
+      },
+      {
+        "desc": "black induction cooktop with touch controls",
+        "action": "static",
+        "position": "bottom",
+        "id": "cooktop_black_1"
+      },
+      {
+        "desc": "white wooden surface, planked",
+        "action": "static",
+        "position": "background",
+        "id": "surface_wooden_1"
+      },
+      {
+        "desc": "human hands, light skin tone",
+        "action": "holding pan and spatula",
+        "position": "bottom left and bottom right",
+        "id": "person_chef_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using a wooden spatula to break apart a lump of raw ground meat in a frying pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The frying pan is sitting on a black induction cooktop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal whisk rests on the white wooden surface to the right of the pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A light blue cloth is placed to the left of the cooktop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'PROG' is visible on the cooktop control panel.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PROG"
+    ],
+    "spatial": "The frying pan is in the center of the frame, resting on the induction cooktop. The wooden spatula is inside the pan, interacting with the meat. The metal whisk is to the right of the pan on the white surface. The light blue cloth is to the left of the pan and cooktop.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": [
+      "meat being broken apart and placed in frying pan"
+    ]
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "holding the pan handle and stirring with a spoon",
+        "position": "bottom left and bottom right",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "grey non-stick frying pan with a silver metal handle",
+        "action": "being held and used for cooking",
+        "position": "center",
+        "id": "pan_frying_1"
+      },
+      {
+        "desc": "raw pink ground meat",
+        "action": "being broken apart and stirred",
+        "position": "center inside the pan",
+        "id": "meat_ground_1"
+      },
+      {
+        "desc": "wooden spoon with a smooth, light brown finish",
+        "action": "stirring the meat",
+        "position": "center right",
+        "id": "spoon_wooden_1"
+      },
+      {
+        "desc": "black induction cooktop with white text labels",
+        "action": "static",
+        "position": "bottom",
+        "id": "cooktop_black_1"
+      },
+      {
+        "desc": "metal wire whisk with a black handle",
+        "action": "static",
+        "position": "right",
+        "id": "whisk_metal_1"
+      },
+      {
+        "desc": "light teal cloth with a white geometric pattern",
+        "action": "static",
+        "position": "left",
+        "id": "towel_kitchen_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is using a wooden spoon to break up a clump of raw ground meat in a frying pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The meat is being stirred and separated into smaller pieces.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pan is sitting on a black induction cooktop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal whisk is resting on the surface to the right of the pan.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Pwr"
+    ],
+    "spatial": "The frying pan is in the center of the frame, resting on top of the black induction cooktop. The person's left hand is holding the pan handle on the left, while the right hand uses the wooden spoon inside the pan. The wire whisk is to the right of the pan, and the teal patterned cloth is to the left of the pan.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": []
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with manicured nails holding a silver metal handle",
+        "action": "holding the pan handle",
+        "position": "left",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "silver frying pan with a black rim",
+        "action": "containing cooking meat",
+        "position": "center",
+        "id": "pan_frying_1"
+      },
+      {
+        "desc": "ground meat, transitioning from pink to browned crumbles",
+        "action": "being stirred and cooking",
+        "position": "inside the pan",
+        "id": "meat_ground_1"
+      },
+      {
+        "desc": "wooden spoon, light brown, smooth",
+        "action": "stirring the meat",
+        "position": "center",
+        "id": "spoon_wooden_1"
+      },
+      {
+        "desc": "metal wire whisk with a black handle",
+        "action": "static",
+        "position": "right",
+        "id": "whisk_metal_1"
+      },
+      {
+        "desc": "light blue textured cloth",
+        "action": "static",
+        "position": "left",
+        "id": "towel_kitchen_1"
+      },
+      {
+        "desc": "black induction cooktop surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "cooktop_black_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand holds the handle of the frying pan on the left side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wooden spoon stirs the ground meat inside the pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ground meat is browning as it cooks in the pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal whisk rests on the white wooden surface to the right of the pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pan sits on a black induction cooktop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The frying pan is in the center of the frame, resting on the black cooktop. To the left of the pan is a light blue cloth. To the right of the pan, a metal whisk lies on the white wooden surface. The wooden spoon is inside the pan, mixing the meat.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": [
+      "meat transitioning from pink to browned - cooking progress"
+    ]
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "browned, crumbled ground meat with a glistening, oily texture",
+        "action": "static",
+        "position": "center",
+        "id": "meat_ground_1"
+      },
+      {
+        "desc": "light blue textured fabric",
+        "action": "static",
+        "position": "right",
+        "id": "towel_kitchen_1"
+      },
+      {
+        "desc": "human finger",
+        "action": "static",
+        "position": "bottom right",
+        "id": "person_chef_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Ground meat is being cooked in a pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A finger is visible at the bottom right edge of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The meat has a browned and crumbled appearance.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The browned ground meat fills the center and left portions of the frame. A light blue textured fabric is positioned on the far right edge. A human finger is visible at the bottom right corner, next to the blue fabric.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": []
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone",
+        "action": "pouring white powder",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "small clear glass bowl containing white flour",
+        "action": "being tilted",
+        "position": "center",
+        "id": "bowl_glass_1"
+      },
+      {
+        "desc": "grey frying pan with browned crumbled meat",
+        "action": "static",
+        "position": "center",
+        "id": "pan_frying_1"
+      },
+      {
+        "desc": "metal wire whisk with black handle",
+        "action": "static",
+        "position": "right",
+        "id": "whisk_metal_1"
+      },
+      {
+        "desc": "light teal textured cloth",
+        "action": "static",
+        "position": "left",
+        "id": "towel_kitchen_1"
+      },
+      {
+        "desc": "white text 'FLOUR' in bold sans-serif font",
+        "action": "static",
+        "position": "bottom-center",
+        "id": "text_label_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand pours white flour from a glass bowl into a pan of browned meat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'FLOUR' is overlaid on the screen to identify the ingredient.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FLOUR"
+    ],
+    "spatial": "The frying pan containing browned meat is in the center of the frame. A hand holding a glass bowl is positioned above the pan, pouring flour into it. A metal whisk lies to the right of the pan, and a teal cloth is to the left.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": [
+      "flour being added to browned meat - new ingredient step"
+    ]
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone",
+        "action": "pouring white powder",
+        "position": "right",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "small clear glass bowl",
+        "action": "being tipped",
+        "position": "center-right",
+        "id": "bowl_glass_1"
+      },
+      {
+        "desc": "white powder",
+        "action": "falling onto meat",
+        "position": "center"
+      },
+      {
+        "desc": "brown crumbled cooked meat",
+        "action": "static",
+        "position": "center",
+        "id": "meat_ground_1"
+      },
+      {
+        "desc": "grey non-stick frying pan",
+        "action": "static",
+        "position": "center",
+        "id": "pan_frying_1"
+      },
+      {
+        "desc": "wooden spoon, light brown",
+        "action": "stirring mixture",
+        "position": "center",
+        "id": "spoon_wooden_1"
+      },
+      {
+        "desc": "metal wire whisk",
+        "action": "static",
+        "position": "right",
+        "id": "whisk_metal_1"
+      },
+      {
+        "desc": "light teal textured cloth",
+        "action": "static",
+        "position": "left",
+        "id": "towel_kitchen_1"
+      },
+      {
+        "desc": "white text 'FLOUR'",
+        "action": "static",
+        "position": "bottom-center",
+        "id": "text_label_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand pours white powder from a small glass bowl into a frying pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The white powder falls onto brown crumbled meat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A wooden spoon stirs the meat and powder mixture in the pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'FLOUR' is displayed at the bottom of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "FLOUR"
+    ],
+    "spatial": "The frying pan is in the center of the frame, containing the meat and powder. The hand holding the glass bowl is to the right of the pan, pouring ingredients into it. The wooden spoon is inside the pan, mixing the contents. The metal whisk lies on the surface to the right of the pan. The teal cloth is positioned to the left of the pan.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": []
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "grey non-stick frying pan with a silver metal handle",
+        "action": "being held and stirred",
+        "position": "center",
+        "id": "pan_frying_1"
+      },
+      {
+        "desc": "brown crumbled sausage meat mixed with white flour",
+        "action": "being stirred",
+        "position": "inside the pan",
+        "id": "meat_ground_1"
+      },
+      {
+        "desc": "wooden spoon with a smooth, light-brown finish",
+        "action": "stirring the mixture",
+        "position": "center",
+        "id": "spoon_wooden_1"
+      },
+      {
+        "desc": "metal wire whisk with a black handle",
+        "action": "static",
+        "position": "right",
+        "id": "whisk_metal_1"
+      },
+      {
+        "desc": "light teal textured cloth",
+        "action": "static",
+        "position": "left",
+        "id": "towel_kitchen_1"
+      },
+      {
+        "desc": "black induction cooktop with white text labels",
+        "action": "static",
+        "position": "bottom",
+        "id": "cooktop_black_1"
+      },
+      {
+        "desc": "white wooden surface with vertical planks",
+        "action": "static",
+        "position": "background",
+        "id": "surface_wooden_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding the handle of the frying pan on the left side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wooden spoon is stirring the sausage and flour mixture inside the pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The metal whisk is resting on the white wooden surface to the right of the pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The light teal cloth is placed to the left of the frying pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'PROG' is visible on the control panel of the cooktop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PROG"
+    ],
+    "spatial": "The frying pan is in the center of the frame, resting on the black induction cooktop. The wooden spoon is inside the pan, stirring the food. The metal whisk is to the right of the pan, and the teal cloth is to the left of the pan.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand holding a clear glass bowl containing white liquid",
+        "action": "pouring liquid",
+        "position": "left"
+      },
+      {
+        "desc": "silver metal wire whisk",
+        "action": "stirring",
+        "position": "center",
+        "id": "whisk_metal_1"
+      },
+      {
+        "desc": "grey non-stick frying pan containing browned crumbled meat",
+        "action": "static",
+        "position": "center",
+        "id": "pan_frying_1"
+      },
+      {
+        "desc": "black induction cooktop",
+        "action": "static",
+        "position": "background",
+        "id": "cooktop_black_1"
+      },
+      {
+        "desc": "light teal textured cloth",
+        "action": "static",
+        "position": "left",
+        "id": "towel_kitchen_1"
+      },
+      {
+        "desc": "white wooden surface",
+        "action": "static",
+        "position": "background",
+        "id": "surface_wooden_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand pours white liquid from a glass bowl into a frying pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A whisk is used to stir the liquid into the browned meat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'MILK' appears on the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MILK"
+    ],
+    "spatial": "The frying pan is centered on the black cooktop. A hand holding a bowl is to the left of the pan, pouring liquid into it. The whisk is inside the pan, mixing the ingredients. A teal cloth is to the left of the cooktop, and a white wooden surface is visible in the background.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": [
+      "liquid (milk) being poured into pan - gravy base formation"
+    ]
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with fair skin holding a clear glass bowl",
+        "action": "pouring milk",
+        "position": "left",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "clear glass bowl containing white liquid",
+        "action": "being tilted",
+        "position": "left",
+        "id": "liquid_milk_1"
+      },
+      {
+        "desc": "white liquid (milk)",
+        "action": "flowing into pan",
+        "position": "center",
+        "id": "liquid_milk_1"
+      },
+      {
+        "desc": "silver frying pan with black handle",
+        "action": "static",
+        "position": "center",
+        "id": "pan_frying_1"
+      },
+      {
+        "desc": "brown crumbled cooked meat",
+        "action": "being mixed",
+        "position": "center",
+        "id": "meat_ground_1"
+      },
+      {
+        "desc": "metal wire whisk",
+        "action": "stirring mixture",
+        "position": "center",
+        "id": "whisk_metal_1"
+      },
+      {
+        "desc": "hand with fair skin holding whisk handle",
+        "action": "stirring",
+        "position": "bottom right",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "light blue textured cloth",
+        "action": "static",
+        "position": "left",
+        "id": "towel_kitchen_1"
+      },
+      {
+        "desc": "white wooden surface",
+        "action": "static",
+        "position": "background",
+        "id": "surface_wooden_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand pours white milk from a glass bowl into a frying pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The milk flows over brown crumbled meat in the pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand uses a metal whisk to stir the milk and meat mixture.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'MILK' is displayed at the bottom center of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "MILK"
+    ],
+    "spatial": "The frying pan is in the center of the frame, resting on a white wooden surface. A hand on the left holds a glass bowl above the pan, pouring milk into it. Another hand on the bottom right holds a whisk inside the pan, mixing the contents. A light blue cloth is visible to the left of the pan.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "pouring liquid and whisking",
+        "position": "foreground",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "clear glass bowl",
+        "action": "being tilted to pour",
+        "position": "center",
+        "id": "bowl_glass_1"
+      },
+      {
+        "desc": "metal whisk",
+        "action": "stirring mixture",
+        "position": "center",
+        "id": "whisk_metal_1"
+      },
+      {
+        "desc": "silver frying pan with black handle",
+        "action": "static",
+        "position": "center",
+        "id": "pan_frying_1"
+      },
+      {
+        "desc": "white liquid mixture with brown crumbled food pieces",
+        "action": "being stirred",
+        "position": "inside pan",
+        "id": "gravy_sausage_1"
+      },
+      {
+        "desc": "light teal textured cloth",
+        "action": "static",
+        "position": "left",
+        "id": "towel_kitchen_1"
+      },
+      {
+        "desc": "white wooden surface",
+        "action": "static",
+        "position": "background",
+        "id": "surface_wooden_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is pouring a white liquid from a glass bowl into a frying pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person is using a metal whisk to stir the contents of the pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pan contains a mixture of white liquid and brown crumbled food pieces.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "COOKING"
+    ],
+    "spatial": "The frying pan is in the center of the frame, resting on a white wooden surface. A light teal cloth is positioned to the left of the pan. The person's hands are in the foreground, holding the glass bowl over the pan and the whisk inside the pan.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "silver metal whisk with a black handle",
+        "action": "stirring the mixture",
+        "position": "center",
+        "id": "whisk_metal_1"
+      },
+      {
+        "desc": "creamy white sauce with brown crumbled sausage pieces",
+        "action": "being stirred",
+        "position": "center",
+        "id": "gravy_sausage_1"
+      },
+      {
+        "desc": "silver frying pan with a black rim",
+        "action": "static",
+        "position": "center",
+        "id": "pan_frying_1"
+      },
+      {
+        "desc": "light teal textured cloth",
+        "action": "static",
+        "position": "left",
+        "id": "towel_kitchen_1"
+      },
+      {
+        "desc": "white wooden surface",
+        "action": "static",
+        "position": "background",
+        "id": "surface_wooden_1"
+      },
+      {
+        "desc": "black induction cooktop",
+        "action": "static",
+        "position": "under pan",
+        "id": "cooktop_black_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding the handle of the whisk and stirring the contents of the pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pan contains a mixture of white liquid and brown meat crumbles.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pan is sitting on top of a black induction cooktop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A teal cloth is placed to the left of the cooktop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "COOKING WITH COOKIN"
+    ],
+    "spatial": "The silver frying pan is centered on the black induction cooktop. The teal cloth is to the left of the pan. The whisk is inside the pan, mixing the sauce and sausage. The white wooden surface is visible in the background to the right of the cooktop.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": [
+      "sauce thickening into creamy gravy consistency"
+    ]
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "hands with light skin tone",
+        "action": "whisking mixture",
+        "position": "bottom",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "metal whisk with black handle",
+        "action": "stirring food",
+        "position": "center",
+        "id": "whisk_metal_1"
+      },
+      {
+        "desc": "silver frying pan with black rim",
+        "action": "static",
+        "position": "center",
+        "id": "pan_frying_1"
+      },
+      {
+        "desc": "creamy white sauce with brown crumbled meat",
+        "action": "simmering",
+        "position": "inside pan",
+        "id": "gravy_sausage_1"
+      },
+      {
+        "desc": "light teal textured cloth",
+        "action": "static",
+        "position": "left",
+        "id": "towel_kitchen_1"
+      },
+      {
+        "desc": "white wooden surface",
+        "action": "static",
+        "position": "background",
+        "id": "surface_wooden_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is whisking a creamy mixture containing brown crumbles in a pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The mixture is bubbling slightly, indicating it is being heated.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pan is sitting on a black induction cooktop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "COOKING"
+    ],
+    "spatial": "The silver frying pan is centered on the white wooden surface. The light teal cloth is to the left of the pan. The hands are at the bottom of the frame, holding the whisk which is inside the pan.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": []
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone",
+        "action": "holding a small glass bowl",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "small clear glass bowl containing yellow powder",
+        "action": "being held over the pan",
+        "position": "center",
+        "id": "bowl_glass_1"
+      },
+      {
+        "desc": "small clear glass bowl containing green dried herbs",
+        "action": "being held over the pan",
+        "position": "center",
+        "id": "bowl_glass_1"
+      },
+      {
+        "desc": "silver frying pan with a metal handle",
+        "action": "static",
+        "position": "center",
+        "id": "pan_frying_1"
+      },
+      {
+        "desc": "creamy white sauce with brown crumbled meat chunks",
+        "action": "simmering",
+        "position": "inside the pan",
+        "id": "gravy_sausage_1"
+      },
+      {
+        "desc": "light blue textured cloth",
+        "action": "static",
+        "position": "left",
+        "id": "towel_kitchen_1"
+      },
+      {
+        "desc": "white wooden surface",
+        "action": "static",
+        "position": "background",
+        "id": "surface_wooden_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand holds a small glass bowl containing yellow powder over the pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand holds a small glass bowl containing green herbs over the pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'GARLIC POWDER' appears at the bottom of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'SAGE' appears at the bottom of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pan contains a mixture of white sauce and brown meat.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "GARLIC POWDER",
+      "SAGE"
+    ],
+    "spatial": "The frying pan is in the center of the frame, resting on a black surface. The hand is positioned above the pan, holding the small glass bowls. The light blue cloth is to the left of the pan. The white wooden surface is visible in the background to the right.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": [
+      "seasonings being added to finished gravy"
+    ]
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone holding a small clear glass bowl",
+        "action": "pouring seasoning",
+        "position": "left",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "silver frying pan containing creamy sausage gravy",
+        "action": "static",
+        "position": "center",
+        "id": "pan_frying_1"
+      },
+      {
+        "desc": "small clear glass bowl containing white and green spices",
+        "action": "being held",
+        "position": "left",
+        "id": "bowl_glass_1"
+      },
+      {
+        "desc": "silver spoon",
+        "action": "static",
+        "position": "left",
+        "id": "spoon_silver_1"
+      },
+      {
+        "desc": "light blue textured cloth",
+        "action": "static",
+        "position": "left",
+        "id": "towel_kitchen_1"
+      },
+      {
+        "desc": "black induction cooktop",
+        "action": "static",
+        "position": "center",
+        "id": "cooktop_black_1"
+      },
+      {
+        "desc": "white wooden surface",
+        "action": "static",
+        "position": "background",
+        "id": "surface_wooden_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand pours seasoning from a small glass bowl into the pan.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pan contains a creamy mixture with chunks of sausage.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pile of green and yellow spices sits in the center of the gravy.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A spoon rests inside the glass bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand holding the glass bowl is positioned to the left of the frying pan. The frying pan is centered on the black induction cooktop. The light blue cloth is to the left of the pan and underneath the hand. The white wooden surface is visible in the background to the right of the cooktop.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": []
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "silver metal whisk with a black handle",
+        "action": "stirring the mixture",
+        "position": "center",
+        "id": "whisk_metal_1"
+      },
+      {
+        "desc": "silver frying pan containing a creamy white sauce with brown crumbled meat",
+        "action": "static",
+        "position": "center",
+        "id": "pan_frying_1"
+      },
+      {
+        "desc": "light blue textured cloth",
+        "action": "static",
+        "position": "left",
+        "id": "towel_kitchen_1"
+      },
+      {
+        "desc": "person's hands",
+        "action": "holding the pan handle and whisk",
+        "position": "bottom",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white wooden surface",
+        "action": "static",
+        "position": "background",
+        "id": "surface_wooden_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is stirring a creamy mixture containing brown crumbles in a silver pan using a whisk.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pan is resting on a black induction cooktop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A light blue cloth is placed to the left of the pan.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The silver frying pan is centered on the black cooktop, which sits on a white wooden surface. A light blue cloth is positioned to the left of the pan. The person's hands are visible at the bottom, holding the pan handle and the whisk inside the pan.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": []
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "creamy white sauce with brown chunks and black specks",
+        "action": "simmering",
+        "position": "center",
+        "id": "gravy_sausage_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The creamy mixture is bubbling gently.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Small bubbles are forming and popping on the surface of the sauce.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The brown chunks are distributed throughout the creamy white sauce. Black specks are scattered across the surface of the mixture.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": []
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "rectangular metal baking sheet with a raised rim, lined with a sheet of white parchment paper",
+        "action": "being held and tilted by hands",
+        "position": "center",
+        "id": "baking_sheet_1"
+      },
+      {
+        "desc": "pair of hands with light skin tone",
+        "action": "holding the edges of the baking sheet",
+        "position": "bottom",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "light blue cloth with a white dotted texture",
+        "action": "static",
+        "position": "left",
+        "id": "towel_kitchen_1"
+      },
+      {
+        "desc": "white wooden surface with horizontal planks",
+        "action": "static",
+        "position": "background",
+        "id": "surface_wooden_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pair of hands holds a metal baking sheet lined with parchment paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The baking sheet is tilted towards the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A light blue cloth is visible on the left side of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The metal baking sheet is held in the center of the frame by a pair of hands at the bottom. The baking sheet is positioned above the white wooden surface. A light blue cloth is to the left of the baking sheet.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": [
+      "transition from gravy cooking to biscuit preparation phase"
+    ]
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "silver metal baking sheet lined with white parchment paper",
+        "action": "static",
+        "position": "center",
+        "id": "baking_sheet_1"
+      },
+      {
+        "desc": "round, pale yellow raw biscuit dough discs",
+        "action": "being topped with filling",
+        "position": "center",
+        "id": "dough_balls_1"
+      },
+      {
+        "desc": "light blue and white patterned kitchen towel",
+        "action": "static",
+        "position": "left",
+        "id": "towel_kitchen_1"
+      },
+      {
+        "desc": "white wooden surface with visible grain",
+        "action": "static",
+        "position": "background",
+        "id": "surface_wooden_1"
+      },
+      {
+        "desc": "white bold sans-serif text with black outline",
+        "action": "static",
+        "position": "bottom",
+        "id": "text_overlay_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand places a scoop of brownish filling onto the raw biscuit dough.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'GRANDS REFRIGERATED BISCUITS' is displayed at the bottom of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The biscuits are arranged in two vertical columns on the baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The left column of biscuits remains plain while the right column receives filling.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "GRANDS REFRIGERATED BISCUITS"
+    ],
+    "spatial": "The baking sheet is positioned in the center of the frame, resting on a white wooden surface. A blue patterned towel lies to the left of the baking sheet. The text overlay is located at the bottom of the screen, below the biscuits.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, short fingernails, no visible clothing on arms",
+        "action": "flattening dough",
+        "position": "foreground",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "pale yellow dough ball, soft texture, round shape",
+        "action": "being flattened",
+        "position": "center",
+        "id": "dough_balls_1"
+      },
+      {
+        "desc": "silver metal baking sheet with raised edges",
+        "action": "static",
+        "position": "background",
+        "id": "baking_sheet_1"
+      },
+      {
+        "desc": "white parchment paper, smooth texture",
+        "action": "static",
+        "position": "center",
+        "id": "parchment_paper_1"
+      },
+      {
+        "desc": "light teal cloth with white pattern",
+        "action": "static",
+        "position": "left",
+        "id": "towel_kitchen_1"
+      },
+      {
+        "desc": "pale yellow dough balls, round shape",
+        "action": "static",
+        "position": "top",
+        "id": "dough_balls_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is using both hands to press and flatten a ball of dough.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dough is being flattened on a sheet of white parchment paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Several other round dough balls are arranged on the baking sheet.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's hands are in the foreground, positioned over the center of the baking sheet. The dough being manipulated is on top of the white parchment paper, which lines the silver baking sheet. Other dough balls are located above and below the central dough ball. The teal cloth is to the left of the baking sheet.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": [
+      "dough being flattened and shaped on baking sheet"
+    ]
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "pair of hands with light skin tone",
+        "action": "shaping dough",
+        "position": "center foreground",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "round ball of pale yellow dough, smooth texture",
+        "action": "being manipulated",
+        "position": "center",
+        "id": "dough_balls_1"
+      },
+      {
+        "desc": "silver metal baking sheet with raised rim",
+        "action": "static",
+        "position": "background",
+        "id": "baking_sheet_1"
+      },
+      {
+        "desc": "white parchment paper, flat",
+        "action": "static",
+        "position": "center",
+        "id": "parchment_paper_1"
+      },
+      {
+        "desc": "light teal fabric towel with white geometric pattern",
+        "action": "static",
+        "position": "left",
+        "id": "towel_kitchen_1"
+      },
+      {
+        "desc": "additional round dough balls, pale yellow",
+        "action": "static",
+        "position": "top and bottom",
+        "id": "dough_balls_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Hands are pinching and folding the edges of a dough ball.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dough is resting on a sheet of white parchment paper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The parchment paper is lining a silver baking sheet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A teal towel is placed to the left of the baking sheet.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hands are in the center foreground, holding and shaping a ball of dough. The dough is on top of the white parchment paper, which is inside the silver baking sheet. Other dough balls are arranged vertically above and below the one being handled. The teal towel is to the left of the baking sheet.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": []
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with light skin, holding a glass bowl and a red silicone brush",
+        "action": "brushing dough with egg wash",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "clear glass bowl containing yellow liquid",
+        "action": "being held",
+        "position": "center-left",
+        "id": "liquid_egg_wash_1"
+      },
+      {
+        "desc": "red silicone pastry brush with a black handle",
+        "action": "brushing dough",
+        "position": "center",
+        "id": "brush_silicone_1"
+      },
+      {
+        "desc": "round balls of pale dough",
+        "action": "static",
+        "position": "center-right",
+        "id": "dough_balls_1"
+      },
+      {
+        "desc": "metal baking sheet lined with white parchment paper",
+        "action": "static",
+        "position": "background",
+        "id": "baking_sheet_1"
+      },
+      {
+        "desc": "light blue textured kitchen towel",
+        "action": "static",
+        "position": "left",
+        "id": "cloth_blue_1"
+      },
+      {
+        "desc": "white text 'EGG WASH' in bold sans-serif font",
+        "action": "static",
+        "position": "bottom",
+        "id": "text_label_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is applying egg wash to the dough balls using a red brush",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the text 'EGG WASH' is displayed at the bottom of the screen",
+        "confidence": 1.0
+      },
+      {
+        "fact": "a glass bowl containing yellow egg wash is held in the person's left hand",
+        "confidence": 1.0
+      },
+      {
+        "fact": "four balls of dough are arranged vertically on the baking sheet",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "EGG WASH"
+    ],
+    "spatial": "The person is holding the glass bowl of egg wash in their left hand and the red brush in their right hand. The baking sheet with the dough balls is positioned to the right of the bowl. The light blue towel is to the left of the baking sheet. The text 'EGG WASH' is located at the bottom center of the frame, below the hands.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": [
+      "egg wash being applied to dough balls"
+    ]
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a light blue textured towel or apron",
+        "action": "brushing dough with egg wash",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "red silicone basting brush with a black handle",
+        "action": "being used to brush dough",
+        "position": "right",
+        "id": "brush_silicone_1"
+      },
+      {
+        "desc": "small clear glass bowl containing yellow liquid",
+        "action": "being held",
+        "position": "left",
+        "id": "liquid_egg_wash_1"
+      },
+      {
+        "desc": "four round pale dough balls on parchment paper",
+        "action": "being brushed",
+        "position": "center",
+        "id": "dough_balls_1"
+      },
+      {
+        "desc": "metal baking sheet lined with white parchment paper",
+        "action": "static",
+        "position": "center",
+        "id": "baking_sheet_1"
+      },
+      {
+        "desc": "white text in bold sans-serif font",
+        "action": "static",
+        "position": "bottom",
+        "id": "text_overlay_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is brushing the tops of dough balls with a red silicone brush.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding a glass bowl of yellow egg wash in their left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'EGG WASH' is displayed at the bottom of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Four dough balls are arranged in a vertical column on the baking sheet.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "EGG WASH"
+    ],
+    "spatial": "The person's hands are positioned over the baking sheet. The glass bowl is held in the left hand, to the left of the dough balls. The red brush is in the right hand, applying liquid to the dough. The text 'EGG WASH' is located below the dough balls.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": []
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "Four round, pale yellow dough balls arranged vertically on a metal baking sheet lined with white parchment paper.",
+        "action": "being brushed with egg wash",
+        "position": "center"
+      },
+      {
+        "desc": "Small clear glass bowl containing bright yellow liquid egg wash.",
+        "action": "being held",
+        "position": "bottom left"
+      },
+      {
+        "desc": "Red silicone basting brush with a black handle.",
+        "action": "brushing the dough",
+        "position": "bottom right"
+      },
+      {
+        "desc": "Light blue textured kitchen towel.",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "Large, bold, white sans-serif text overlay.",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand uses a red silicone brush to apply egg wash to the bottom-most dough ball.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'BAKE' appears in large white letters over the scene.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Four dough balls are lined up in a column on the baking sheet.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "BAKE"
+    ],
+    "spatial": "The baking sheet with dough balls is in the center of the frame. The bowl of egg wash is held to the left of the dough balls. The red brush is in the hand on the right, touching the bottom dough ball. The blue towel is positioned to the left of the baking sheet. The text 'BAKE' is superimposed over the center of the image.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown baked bun with a soft, fluffy texture, broken open to reveal a creamy, chunky meat filling",
+        "action": "static",
+        "position": "center",
+        "id": "bun_baked_1"
+      },
+      {
+        "desc": "whole golden-brown baked buns with a smooth, shiny crust",
+        "action": "static",
+        "position": "bottom",
+        "id": "bun_baked_1"
+      },
+      {
+        "desc": "light blue cloth with a white dotted pattern",
+        "action": "static",
+        "position": "background",
+        "id": "towel_kitchen_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A baked bun is broken open to reveal its filling.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bun sits on top of other whole buns.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The filling inside the bun is creamy and chunky.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The broken bun is positioned on top of the whole buns. The whole buns are located below the broken bun. The light blue cloth is in the background behind the buns.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": [
+      "baked biscuits shown - baking complete"
+    ]
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "golden-brown baked bun with a soft, fluffy dough texture, broken open to reveal a savory filling of ground meat and rice grains",
+        "action": "static",
+        "position": "center",
+        "id": "bun_baked_1"
+      },
+      {
+        "desc": "golden-brown baked bun with a smooth, shiny crust",
+        "action": "static",
+        "position": "bottom left",
+        "id": "bun_baked_1"
+      },
+      {
+        "desc": "golden-brown baked bun with a smooth, shiny crust",
+        "action": "static",
+        "position": "bottom right",
+        "id": "bun_baked_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The top bun is broken open, exposing the internal filling.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The filling consists of cooked ground meat mixed with white rice.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Three buns are arranged in a small pile.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The broken bun is positioned on top of the other two buns. The bottom-left bun is next to the bottom-right bun. The buns are in the foreground, with a blurred light blue cloth in the background.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": []
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "Logo graphic featuring a red chili pepper and a teal fork",
+        "action": "static",
+        "position": "left",
+        "id": "logo_brand_1"
+      },
+      {
+        "desc": "Text 'SPICY SOUTHERN KITCHEN' in red, thin, sans-serif font",
+        "action": "static",
+        "position": "center",
+        "id": "logo_brand_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The logo graphic changes from a standalone red chili pepper to a red chili pepper impaled on a teal fork.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'SPICY SOUTHERN KITCHEN' remains static on the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SPICY SOUTHERN KITCHEN"
+    ],
+    "spatial": "The graphic element is positioned to the left of the text block. The word 'SPICY' is on the top line, located above the word 'KITCHEN'. The word 'SOUTHERN' is to the right of 'SPICY' on the top line.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": [
+      "transition to brand logo and outro"
+    ]
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "Logo graphic featuring a red chili pepper impaled on a teal fork, with red text 'SPICY SOUTHERN KITCHEN' where the fork forms the letter 'I', and teal text 'FULL RECIPE AT' above a red URL.",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a static logo for 'Spicy Southern Kitchen'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SPICY SOUTHERN",
+      "KITCHEN",
+      "FULL RECIPE AT",
+      "SPICYSOUTHERNKITCHEN.COM"
+    ],
+    "spatial": "The red chili pepper is positioned above the text 'SPICY SOUTHERN'. The teal fork is located to the left of the word 'SOUTHERN' and acts as the letter 'I' in 'KITCHEN'. The text 'FULL RECIPE AT' is below the main logo title, and the website URL is at the bottom of the screen.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "Cooking_Stuffed_Biscuits___Gravy",
+    "state_changes": []
+  }
+]

@@ -1,0 +1,2478 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "Text 'Fine' in a white serif font",
+        "action": "static",
+        "position": "center",
+        "id": "logo_fine_dining_tv"
+      },
+      {
+        "desc": "Text 'Dining' in a white serif font",
+        "action": "static",
+        "position": "center",
+        "id": "logo_fine_dining_tv"
+      },
+      {
+        "desc": "Text 'TV' in a white sans-serif font",
+        "action": "static",
+        "position": "center",
+        "id": "logo_fine_dining_tv"
+      },
+      {
+        "desc": "A horizontal yellow line",
+        "action": "static",
+        "position": "center",
+        "id": "logo_fine_dining_tv"
+      },
+      {
+        "desc": "A reflection of the text and line",
+        "action": "static",
+        "position": "bottom",
+        "id": "logo_fine_dining_tv"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'Fine' is visible at the top of the text block.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Dining' appears below 'Fine'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow line appears under the word 'Dining'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'TV' appears to the right of the yellow line.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A reflection of the logo elements is visible below the main text.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Fine",
+      "Dining",
+      "TV"
+    ],
+    "spatial": "The word 'Fine' is above the word 'Dining'. The yellow line is below the word 'Dining' and to the left of the word 'TV'. The reflection of the text and line is below the main text elements.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "Text logo reading 'Fine Dining TV' in white serif font, with a yellow underline beneath 'Dining'",
+        "action": "static",
+        "position": "center",
+        "id": "logo_fine_dining_tv"
+      },
+      {
+        "desc": "Faint reflection of the text logo",
+        "action": "static",
+        "position": "below",
+        "id": "logo_fine_dining_tv"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'Fine Dining TV' is displayed in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow line underlines the word 'Dining'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Fine",
+      "Dining",
+      "TV"
+    ],
+    "spatial": "The text 'Fine Dining TV' is centered on the screen. The reflection of the text is directly below the main text.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "Text logo reading 'Fine Dining TV' in white serif font, with a horizontal yellow line underlining the word 'Dining'.",
+        "action": "static",
+        "position": "center",
+        "id": "logo_fine_dining_tv"
+      },
+      {
+        "desc": "A reflection of the text logo, appearing inverted and slightly faded.",
+        "action": "static",
+        "position": "bottom",
+        "id": "logo_fine_dining_tv"
+      },
+      {
+        "desc": "A dark gray background with soft lighting effects and lens flares.",
+        "action": "static",
+        "position": "background",
+        "id": "logo_fine_dining_tv"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'Fine Dining TV' is displayed in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow line underlines the word 'Dining'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A reflection of the logo is visible below the main text.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Fine",
+      "Dining",
+      "TV"
+    ],
+    "spatial": "The 'Fine Dining TV' logo is centered on the screen. The reflection of the logo is located directly below the main text. The text is set against a dark gray background.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "white ceramic plate with a textured, dimpled rim",
+        "action": "static",
+        "position": "background",
+        "id": "plate_textured_rim"
+      },
+      {
+        "desc": "green sauce, smooth texture, circular pool",
+        "action": "static",
+        "position": "center",
+        "id": "green_sauce"
+      },
+      {
+        "desc": "brown sauce, glossy, thin ring",
+        "action": "static",
+        "position": "center",
+        "id": "brown_sauce"
+      },
+      {
+        "desc": "pale yellow ravioli, smooth surface",
+        "action": "static",
+        "position": "center",
+        "id": "ravioli_dumpling"
+      },
+      {
+        "desc": "dark green garnish, textured, small mound",
+        "action": "static",
+        "position": "center",
+        "id": "leaf_flower_garnish"
+      },
+      {
+        "desc": "red garnish, small, dark red",
+        "action": "static",
+        "position": "center",
+        "id": "leaf_flower_garnish"
+      },
+      {
+        "desc": "white text overlay, 'Gordon Ramsay's' in cursive script, 'LOBSTER RAVIOLI' in bold sans-serif font",
+        "action": "static",
+        "position": "foreground",
+        "id": "text_overlay_dish"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a close-up shot of a plated dish.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Gordon Ramsay's LOBSTER RAVIOLI' is overlaid on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pool of green sauce sits in the center of the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A ring of brown sauce surrounds the green sauce.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A single piece of ravioli is placed on top of the green sauce.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Garnishes are placed on top of the ravioli.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Gordon Ramsay's",
+      "LOBSTER",
+      "RAVIOLI"
+    ],
+    "spatial": "The text overlay is in the foreground, positioned above the food. The ravioli is in the center of the plate, resting on top of the green sauce. The brown sauce forms a ring around the green sauce. The garnishes are on top of the ravioli.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": [
+      "Scene transitions from logo animation to plated lobster ravioli dish with title overlay"
+    ]
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "white ceramic bowl with a wide rim and a central depression, containing a plated dish",
+        "action": "static",
+        "position": "center",
+        "id": "plated_components"
+      },
+      {
+        "desc": "green sauce, smooth and creamy texture, spread in a circular pool",
+        "action": "static",
+        "position": "center",
+        "id": "green_sauce"
+      },
+      {
+        "desc": "pale yellow ravioli, round shape, sitting on the green sauce",
+        "action": "static",
+        "position": "center",
+        "id": "ravioli_dumpling"
+      },
+      {
+        "desc": "brown sauce, thin consistency, drizzled in a ring around the green sauce",
+        "action": "static",
+        "position": "center",
+        "id": "brown_sauce"
+      },
+      {
+        "desc": "dark green garnish, granular texture resembling caviar or herbs, placed on top of the ravioli",
+        "action": "static",
+        "position": "center",
+        "id": "caviar_garnish"
+      },
+      {
+        "desc": "small purple flower garnish, delicate petals, placed next to the green garnish",
+        "action": "static",
+        "position": "center",
+        "id": "leaf_flower_garnish"
+      },
+      {
+        "desc": "white text overlay, 'Gordon Ramsay's' in cursive script font, 'LOBSTER' in large bold serif font, 'RAVIOLI' in smaller serif font",
+        "action": "static",
+        "position": "foreground",
+        "id": "text_overlay_dish"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video displays a static shot of a plated dish.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Gordon Ramsay's LOBSTER RAVIOLI' is overlaid on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ravioli is positioned in the center of the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The brown sauce forms a ring around the green sauce.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Gordon Ramsay's",
+      "LOBSTER",
+      "RAVIOLI"
+    ],
+    "spatial": "The text overlay is in the foreground, covering the center of the image. The white bowl is in the background, containing the food. The green sauce is in the center of the bowl, with the brown sauce surrounding it. The ravioli is on top of the green sauce. The garnishes are on top of the ravioli.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "white building facade with red brick upper section",
+        "action": "static",
+        "position": "background",
+        "id": "restaurant_exterior"
+      },
+      {
+        "desc": "black-framed large windows with interior lighting",
+        "action": "static",
+        "position": "center",
+        "id": "restaurant_exterior"
+      },
+      {
+        "desc": "black arched awning on metal poles",
+        "action": "static",
+        "position": "right",
+        "id": "restaurant_exterior"
+      },
+      {
+        "desc": "dark rectangular planters with embossed patterns",
+        "action": "static",
+        "position": "foreground",
+        "id": "restaurant_exterior"
+      },
+      {
+        "desc": "green spherical topiary bushes",
+        "action": "static",
+        "position": "foreground",
+        "id": "restaurant_exterior"
+      },
+      {
+        "desc": "purple flowers",
+        "action": "static",
+        "position": "foreground",
+        "id": "restaurant_exterior"
+      },
+      {
+        "desc": "black sign with white cursive text",
+        "action": "static",
+        "position": "right",
+        "id": "restaurant_exterior"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The scene shows a static exterior view of a building entrance.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Three planters containing green bushes and purple flowers are arranged in a row.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black awning covers the entrance on the right side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sign on the wall reads 'Lg'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Lg"
+    ],
+    "spatial": "The planters are in front of the building facade. The black awning is to the right of the central windows. The sign with the text 'Lg' is mounted on the wall under the awning. The green bushes are inside the planters.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": [
+      "Scene changes from food close-up to restaurant exterior facade"
+    ]
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a black suit jacket and black trousers",
+        "action": "walking away towards the right background",
+        "position": "right background",
+        "id": "person_suit"
+      },
+      {
+        "desc": "round dining table with a white tablecloth, black under-skirt, and a centerpiece on a silver stand",
+        "action": "static",
+        "position": "center",
+        "id": "dining_table"
+      },
+      {
+        "desc": "round dining table with a white tablecloth, set with plates and a pink drink",
+        "action": "static",
+        "position": "right foreground",
+        "id": "dining_table"
+      },
+      {
+        "desc": "beige upholstered armchairs with wooden legs",
+        "action": "static",
+        "position": "left foreground",
+        "id": "upholstered_chair"
+      },
+      {
+        "desc": "rectangular mirror with a dark frame",
+        "action": "static",
+        "position": "center right wall",
+        "id": "restaurant_window"
+      },
+      {
+        "desc": "large windows with horizontal blinds",
+        "action": "static",
+        "position": "background",
+        "id": "restaurant_window"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a black suit is walking away in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dining tables are set with white tablecloths and silverware.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A mirror hangs on the wall to the right of the central table.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The beige armchairs are in the left foreground, positioned in front of the central dining table. The central table is to the left of the wall-mounted mirror. The person in the black suit is walking in the background, to the right of the mirror.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": [
+      "Person in suit enters restaurant interior, camera shows dining room"
+    ]
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with light brown hair pulled back, wearing a white double-breasted chef's jacket with a small black microphone clipped to the front",
+        "action": "speaking",
+        "position": "center/foreground",
+        "id": "person_chef_clare_smyth"
+      },
+      {
+        "desc": "dining table with a white tablecloth and a small vase with a pink flower",
+        "action": "static",
+        "position": "background",
+        "id": "dining_table"
+      },
+      {
+        "desc": "white text overlay in sans-serif font",
+        "action": "static",
+        "position": "bottom left",
+        "id": "text_overlay_chef"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A text overlay identifies the woman as 'CLARE SMYTH MBE' and 'Chef Patron | Restaurant Gordon Ramsay'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small black microphone is clipped to the woman's chef jacket.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "CLARE SMYTH MBE",
+      "Chef Patron | Restaurant Gordon Ramsay"
+    ],
+    "spatial": "The woman is in the foreground, centered in the frame. The text overlay is located in the bottom left corner, below the woman's shoulder. A dining table with a white tablecloth is visible in the background behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": [
+      "Chef Clare Smyth begins speaking to camera"
+    ]
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with light brown hair pulled back, wearing a white double-breasted chef's coat with a black lavalier microphone clipped to the placket",
+        "action": "speaking",
+        "position": "center foreground",
+        "id": "person_chef_clare_smyth"
+      },
+      {
+        "desc": "white text overlay in sans-serif font",
+        "action": "static",
+        "position": "bottom left",
+        "id": "text_overlay_chef"
+      },
+      {
+        "desc": "dining table with a white tablecloth and a small vase with a pink flower",
+        "action": "static",
+        "position": "background right",
+        "id": "dining_table"
+      },
+      {
+        "desc": "dining table with a white tablecloth and a wine glass",
+        "action": "static",
+        "position": "background left",
+        "id": "dining_table"
+      },
+      {
+        "desc": "upholstered chair with light-colored fabric",
+        "action": "static",
+        "position": "background left",
+        "id": "upholstered_chair"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman in the white chef's coat is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black microphone is clipped to the woman's coat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'CLARE SMYTH MBE' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Chef Patron | Restaurant Gordon Ramsay' is displayed below the name.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pink flower is visible in a vase on the table in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "CLARE SMYTH MBE",
+      "Chef Patron | Restaurant Gordon Ramsay"
+    ],
+    "spatial": "The woman is in the center foreground, positioned in front of the dining tables and chairs in the background. The text overlay is located in the bottom left corner of the frame, below the woman's shoulder. The table with the pink flower is to the right of the woman in the background.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with light brown hair pulled back, wearing a white double-breasted chef's coat with a small black microphone clipped to the front",
+        "action": "speaking",
+        "position": "foreground",
+        "id": "person_chef_clare_smyth"
+      },
+      {
+        "desc": "white ceramic plate with a textured rim, containing a single pale yellow dumpling topped with black caviar, a green leaf, and a red garnish, sitting on a pool of bright green sauce with a brown sauce ring",
+        "action": "static",
+        "position": "center",
+        "id": "plate_textured_rim"
+      },
+      {
+        "desc": "white text overlay with the name 'CLARE SMYTH MBE' and the title 'Chef Patron | Restaurant Gordon Ramsay' below it",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "text_overlay_chef"
+      },
+      {
+        "desc": "blurred background showing a restaurant interior with tables covered in white tablecloths and chairs",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video cuts from a woman in a chef's coat speaking to a close-up of a plated dish.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is identified by on-screen text as 'CLARE SMYTH MBE'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dish features a single dumpling topped with caviar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dumpling is presented on a bed of green sauce.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "CLARE SMYTH MBE",
+      "Chef Patron | Restaurant Gordon Ramsay"
+    ],
+    "spatial": "The woman in the chef's coat is in the foreground, with the blurred restaurant setting behind her. The on-screen text is located in the bottom-left corner of the frame, below the woman. The plated dish is shown in a separate shot, centered in the frame.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "white ceramic plate with a textured, dimpled rim and a smooth, glossy center",
+        "action": "static",
+        "position": "center",
+        "id": "plate_textured_rim"
+      },
+      {
+        "desc": "large, pale yellow dumpling with a pleated, ruffled wrapper",
+        "action": "static",
+        "position": "center",
+        "id": "ravioli_dumpling"
+      },
+      {
+        "desc": "smooth, bright green sauce spread in a circular pool",
+        "action": "static",
+        "position": "center",
+        "id": "green_sauce"
+      },
+      {
+        "desc": "thin, glossy brown sauce drizzled in a ring",
+        "action": "static",
+        "position": "center",
+        "id": "brown_sauce"
+      },
+      {
+        "desc": "small pile of dark, glistening black caviar",
+        "action": "static",
+        "position": "center",
+        "id": "caviar_garnish"
+      },
+      {
+        "desc": "small, vibrant green leaf garnish",
+        "action": "static",
+        "position": "center",
+        "id": "leaf_flower_garnish"
+      },
+      {
+        "desc": "tiny, dark red edible flower petal",
+        "action": "static",
+        "position": "center",
+        "id": "leaf_flower_garnish"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A large dumpling sits in the center of a white plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dumpling rests on a pool of green sauce.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A ring of brown sauce surrounds the green sauce.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Black caviar is placed on top of the dumpling.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A green leaf and a red petal garnish the dish.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The dumpling is in the center of the plate, resting on top of the green sauce. The brown sauce forms a ring around the green sauce. The caviar is on top of the dumpling, with the green leaf and red petal placed next to it.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with light brown hair pulled back, wearing a white double-breasted chef's coat with a black lavalier microphone clipped to the front",
+        "action": "speaking",
+        "position": "center/foreground",
+        "id": "person_chef_clare_smyth"
+      },
+      {
+        "desc": "dining table with a white tablecloth and a small vase with a pink flower",
+        "action": "static",
+        "position": "background",
+        "id": "dining_table"
+      },
+      {
+        "desc": "upholstered chair with light-colored fabric",
+        "action": "static",
+        "position": "background/left",
+        "id": "upholstered_chair"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman in the white chef's coat is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black microphone is clipped to the woman's coat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dining table with a white tablecloth is visible in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is in the foreground, centered in the frame. Behind her and to the right is a dining table with a white tablecloth. To the left in the background, a chair is visible.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with light brown hair pulled back, wearing a white double-breasted chef's coat with a small black microphone clipped to the front",
+        "action": "speaking",
+        "position": "foreground center",
+        "id": "person_chef_clare_smyth"
+      },
+      {
+        "desc": "dining table covered with a white tablecloth and a dark under-cloth",
+        "action": "static",
+        "position": "background left",
+        "id": "dining_table"
+      },
+      {
+        "desc": "small glass vase containing a single pink flower",
+        "action": "static",
+        "position": "background right",
+        "id": "flower_vase"
+      },
+      {
+        "desc": "upholstered dining chairs with light-colored fabric",
+        "action": "static",
+        "position": "background",
+        "id": "upholstered_chair"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman in the white chef's coat is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small black microphone is clipped to the woman's chef coat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is positioned in front of a dining table.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman in the white chef's coat is in the foreground, positioned in front of the dining tables and chairs in the background. To her left, there is a table with a white tablecloth. To her right, a small vase with a pink flower sits on a surface.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with short blonde hair, wearing a white double-breasted chef's coat with a black lavalier microphone clipped to the front",
+        "action": "speaking",
+        "position": "foreground",
+        "id": "person_chef_clare_smyth"
+      },
+      {
+        "desc": "round dining table covered with a white tablecloth",
+        "action": "static",
+        "position": "background",
+        "id": "dining_table"
+      },
+      {
+        "desc": "small glass vase containing a single pink flower",
+        "action": "static",
+        "position": "background",
+        "id": "flower_vase"
+      },
+      {
+        "desc": "light-colored upholstered chair with wooden legs",
+        "action": "static",
+        "position": "background",
+        "id": "upholstered_chair"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman in the white chef's coat is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black microphone is clipped to the woman's coat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A vase with a pink flower sits on a table in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman in the chef's coat is in the foreground, positioned in front of the dining tables and chairs. To the right of the woman, a small vase with a pink flower rests on a table. To the left, a chair is visible behind the woman.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with light brown hair pulled back, wearing a white double-breasted chef's coat with black buttons and a small black microphone clipped to the front",
+        "action": "speaking",
+        "position": "foreground/center",
+        "id": "person_chef_clare_smyth"
+      },
+      {
+        "desc": "dining table covered with a white tablecloth",
+        "action": "static",
+        "position": "background/left",
+        "id": "dining_table"
+      },
+      {
+        "desc": "light purple upholstered chair",
+        "action": "static",
+        "position": "background/left",
+        "id": "upholstered_chair"
+      },
+      {
+        "desc": "small glass vase with a pink flower",
+        "action": "static",
+        "position": "background/right",
+        "id": "flower_vase"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman in the white chef's coat is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small black microphone is clipped to the woman's chef coat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dining table with a white tablecloth is visible in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman in the white chef's coat is in the foreground, positioned in front of the background elements. To her left, a light purple chair is next to a dining table covered with a white tablecloth. To her right, a small glass vase with a pink flower sits on a surface.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with light brown hair pulled back, wearing a white double-breasted chef's coat with a small black lavalier microphone clipped to the front",
+        "action": "gesturing with right hand while speaking",
+        "position": "center foreground"
+      },
+      {
+        "desc": "round dining table covered with a white tablecloth and a dark grey under-cloth",
+        "action": "static",
+        "position": "background left",
+        "id": "dining_table"
+      },
+      {
+        "desc": "small clear glass vase containing a single pink flower",
+        "action": "static",
+        "position": "background right",
+        "id": "flower_vase"
+      },
+      {
+        "desc": "light purple upholstered chair with wooden legs",
+        "action": "static",
+        "position": "background left",
+        "id": "upholstered_chair"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is gesturing with her right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A microphone is clipped to the woman's chef coat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pink flower is in a vase on a table in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is in the foreground, positioned in front of the dining tables and chairs. The table with the pink flower is to the right of the woman. The purple chair is to the left of the woman in the background.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with light brown hair pulled back, wearing a white double-breasted chef's coat with a small black microphone clipped to the front",
+        "action": "speaking",
+        "position": "center/foreground",
+        "id": "person_chef_clare_smyth"
+      },
+      {
+        "desc": "dining table covered with a white tablecloth and a dark under-cloth",
+        "action": "static",
+        "position": "background/left",
+        "id": "dining_table"
+      },
+      {
+        "desc": "upholstered chair with light purple fabric",
+        "action": "static",
+        "position": "background/left",
+        "id": "upholstered_chair"
+      },
+      {
+        "desc": "small glass vase containing a single pink flower",
+        "action": "static",
+        "position": "background/right",
+        "id": "flower_vase"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman in the white chef's coat is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small black microphone is clipped to the front of the woman's coat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dining table with a white tablecloth is situated behind the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is in the foreground, positioned in front of the dining tables. To her left, a chair is placed next to a table. To her right, a small vase with a pink flower sits on another table surface.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with light brown hair pulled back, wearing a white double-breasted chef's coat with a small black microphone clipped to the front",
+        "action": "speaking",
+        "position": "center/foreground",
+        "id": "person_chef_clare_smyth"
+      },
+      {
+        "desc": "dining table with a white tablecloth and a dark under-cloth",
+        "action": "static",
+        "position": "background",
+        "id": "dining_table"
+      },
+      {
+        "desc": "light purple upholstered chair",
+        "action": "static",
+        "position": "background left",
+        "id": "upholstered_chair"
+      },
+      {
+        "desc": "small glass vase with a single pink flower",
+        "action": "static",
+        "position": "background right",
+        "id": "flower_vase"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman in the white chef's coat is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small black microphone is clipped to the woman's chef coat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A table with a white tablecloth is behind the woman.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A single pink flower is in a vase on a table in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman in the white chef's coat is in the foreground. Behind her and to the left is a dining table with a white tablecloth and a light purple chair. To her right in the background, a small vase with a pink flower sits on another table.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "white rectangular tray",
+        "action": "static",
+        "position": "center",
+        "id": "kitchen_tray"
+      },
+      {
+        "desc": "white squeeze bottle with yellow liquid",
+        "action": "static",
+        "position": "left",
+        "id": "squeeze_bottle"
+      },
+      {
+        "desc": "piece of red raw meat on white napkin",
+        "action": "static",
+        "position": "center",
+        "id": "raw_ingredients"
+      },
+      {
+        "desc": "small white bowls containing ingredients (shrimp, diced tomatoes, egg yolk, sauce)",
+        "action": "static",
+        "position": "top",
+        "id": "kitchen_bowls"
+      },
+      {
+        "desc": "small glass bowls containing chopped green herbs",
+        "action": "static",
+        "position": "bottom",
+        "id": "kitchen_bowls"
+      },
+      {
+        "desc": "black-handled kitchen shears",
+        "action": "static",
+        "position": "bottom right",
+        "id": "kitchen_tools"
+      },
+      {
+        "desc": "pastry brush with wooden handle and light bristles",
+        "action": "static",
+        "position": "right",
+        "id": "kitchen_tools"
+      },
+      {
+        "desc": "knife with black handle",
+        "action": "static",
+        "position": "top right",
+        "id": "kitchen_knife"
+      },
+      {
+        "desc": "beige cutting board",
+        "action": "static",
+        "position": "right",
+        "id": "cutting_board"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A white tray holds various food ingredients and kitchen tools.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A piece of red meat rests on a white napkin on the tray.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Small bowls contain prepared ingredients like shrimp and diced tomatoes.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A pastry brush lies next to a smear of yellow liquid on the tray.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Kitchen shears are placed near the bowls of green herbs.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white tray is in the center, holding the ingredients. To the left of the tray is a squeeze bottle. The knife and cutting board are to the right of the tray. The bowls of ingredients are arranged at the top of the tray, while the herbs and shears are at the bottom.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": [
+      "Scene shifts to ingredient preparation area with raw components laid out"
+    ]
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "red and white marbled spherical food item, smooth texture, approximately 5cm diameter",
+        "action": "static",
+        "position": "center",
+        "id": "raw_ingredients"
+      },
+      {
+        "desc": "white square ceramic plate, glossy finish",
+        "action": "static",
+        "position": "center",
+        "id": "kitchen_tray"
+      },
+      {
+        "desc": "white round ceramic bowls, containing various ingredients including beige powder, pink chunks, and orange chunks",
+        "action": "static",
+        "position": "background",
+        "id": "kitchen_bowls"
+      },
+      {
+        "desc": "clear glass cups, cylindrical, containing fresh green leafy herbs",
+        "action": "static",
+        "position": "foreground",
+        "id": "kitchen_herbs"
+      },
+      {
+        "desc": "white rectangular serving tray, flat surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "kitchen_tray"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The red and white marbled food item rests on the white square plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The glass cups containing green herbs are positioned in the foreground.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The white bowls with ingredients are arranged in the background behind the plate.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The red and white marbled food item is centered on the white square plate. The clear glass cups with green herbs are in the foreground, to the right of the plate. The white bowls containing various ingredients are arranged in the background, behind the central plate.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "white rectangular serving tray",
+        "action": "static",
+        "position": "center",
+        "id": "kitchen_tray"
+      },
+      {
+        "desc": "small clear plastic cups filled with chopped green herbs",
+        "action": "static",
+        "position": "center",
+        "id": "kitchen_herbs"
+      },
+      {
+        "desc": "red cooked lobster tail",
+        "action": "static",
+        "position": "background",
+        "id": "raw_ingredients"
+      },
+      {
+        "desc": "black kitchen tongs",
+        "action": "static",
+        "position": "right",
+        "id": "kitchen_tools"
+      },
+      {
+        "desc": "yellow-handled utensils",
+        "action": "static",
+        "position": "background",
+        "id": "kitchen_tools"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A white rectangular tray holds multiple small clear cups containing chopped green herbs.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red cooked lobster tail sits on a plate in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Black kitchen tongs rest on the table to the right of the tray.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The white rectangular tray is in the center of the frame, holding several small clear cups filled with green herbs. The red cooked lobster tail is located in the background, to the left of the tray. The black kitchen tongs are positioned to the right of the tray.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "white ceramic bowl filled with diced raw salmon, pink-orange color, moist texture",
+        "action": "static",
+        "position": "center",
+        "id": "kitchen_bowls"
+      },
+      {
+        "desc": "white ceramic bowl filled with peeled raw shrimp, pale pink and white color",
+        "action": "static",
+        "position": "top left",
+        "id": "kitchen_bowls"
+      },
+      {
+        "desc": "white ceramic bowl containing yellow liquid, likely beaten egg or sauce",
+        "action": "static",
+        "position": "top right",
+        "id": "kitchen_bowls"
+      },
+      {
+        "desc": "woman with light brown hair pulled back, wearing a white chef's coat",
+        "action": "gesturing with hands",
+        "position": "center",
+        "id": "person_chef_clare_smyth"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A white bowl containing diced raw salmon sits in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bowl of raw shrimp is positioned to the top left of the salmon bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A bowl of yellow liquid is positioned to the top right of the salmon bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A woman in a white chef's coat is gesturing with her hands in front of her chest.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The bowl of diced salmon is in the center foreground. The bowl of shrimp is to the top left of the salmon bowl. The bowl of yellow liquid is to the top right of the salmon bowl. The woman is in the background, behind the bowls.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with light brown hair pulled back, wearing a white chef's coat",
+        "action": "gesturing with hands",
+        "position": "center",
+        "id": "person_chef_clare_smyth"
+      },
+      {
+        "desc": "dining table with white tablecloth",
+        "action": "static",
+        "position": "background",
+        "id": "dining_table"
+      },
+      {
+        "desc": "upholstered chair",
+        "action": "static",
+        "position": "background left",
+        "id": "upholstered_chair"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman is gesturing with both hands in front of her chest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The woman is wearing a white chef's coat.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dining table with a white tablecloth is visible in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman is in the foreground, centered in the frame. The dining table is behind her. The chair is to the left of the table in the background.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with blonde hair tied back, wearing a white chef's coat",
+        "action": "mixing ingredients in a glass bowl",
+        "position": "center",
+        "id": "person_chef_blonde"
+      },
+      {
+        "desc": "man with short brown hair, wearing a white chef's coat",
+        "action": "standing",
+        "position": "background left",
+        "id": "person_chef_male"
+      },
+      {
+        "desc": "clear glass bowl containing chopped vegetables",
+        "action": "static",
+        "position": "center foreground",
+        "id": "kitchen_bowls"
+      },
+      {
+        "desc": "light-colored wooden cutting board",
+        "action": "static",
+        "position": "center foreground",
+        "id": "cutting_board"
+      },
+      {
+        "desc": "long horizontal metal shelf",
+        "action": "static",
+        "position": "foreground",
+        "id": "kitchen_shelf"
+      },
+      {
+        "desc": "silver knife",
+        "action": "static",
+        "position": "center foreground",
+        "id": "kitchen_knife"
+      },
+      {
+        "desc": "white tray with small bowls and a yellow squeeze bottle",
+        "action": "static",
+        "position": "right foreground",
+        "id": "kitchen_tray"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The woman in the white chef's coat is mixing ingredients in a glass bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The glass bowl is placed on top of a wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver knife is resting on the wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal shelf runs horizontally across the foreground, partially obscuring the view of the chef.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A man in a white chef's coat is standing in the background to the left.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman in the white chef's coat is standing behind a long metal shelf that runs across the foreground. She is mixing ingredients in a glass bowl which is placed on top of a wooden cutting board. To the right of the cutting board, there is a white tray holding small bowls and a yellow bottle. A man in a white chef's coat is standing in the background to the left of the woman.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": [
+      "Active cooking begins - chef mixing ingredients in bowl"
+    ]
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with blonde hair tied back, wearing a white chef's coat",
+        "action": "mixing ingredients in a bowl",
+        "position": "center",
+        "id": "person_chef_blonde"
+      },
+      {
+        "desc": "clear glass bowl",
+        "action": "being held and stirred",
+        "position": "center foreground",
+        "id": "kitchen_bowls"
+      },
+      {
+        "desc": "chopped salad mixture with red tomatoes, white onions, and green herbs",
+        "action": "being mixed",
+        "position": "inside the bowl",
+        "id": "kitchen_herbs"
+      },
+      {
+        "desc": "metal spoon",
+        "action": "stirring the salad",
+        "position": "inside the bowl",
+        "id": "kitchen_tools"
+      },
+      {
+        "desc": "light-colored wooden cutting board",
+        "action": "static",
+        "position": "center foreground",
+        "id": "cutting_board"
+      },
+      {
+        "desc": "chef's knife with a black handle",
+        "action": "resting on the cutting board",
+        "position": "center foreground",
+        "id": "kitchen_knife"
+      },
+      {
+        "desc": "person with short brown hair, wearing a white chef's coat",
+        "action": "standing",
+        "position": "background left",
+        "id": "person_chef_male"
+      },
+      {
+        "desc": "stainless steel counter and kitchen equipment",
+        "action": "static",
+        "position": "background",
+        "id": "kitchen_counter"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The chef in the center is actively mixing a salad in a glass bowl using a spoon.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The salad contains visible chunks of red tomato, white onion, and green herbs.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A knife is resting on the wooden cutting board next to the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Another person in a white chef's coat is standing in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The chef is standing behind the counter, with the glass bowl and cutting board in front of her. The knife is on the cutting board to the right of the bowl. The second person is in the background to the left of the main chef.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "cylindrical mound of food, likely a tartare or salad, composed of pink diced chunks (possibly salmon or tuna), green herbs, and a white creamy binder",
+        "action": "static",
+        "position": "center/foreground",
+        "id": "tartare_mound"
+      },
+      {
+        "desc": "white square plate with raised edges and a glossy finish",
+        "action": "static",
+        "position": "center/foreground",
+        "id": "kitchen_tray"
+      },
+      {
+        "desc": "light beige or yellowish flat surface, likely a countertop or table",
+        "action": "static",
+        "position": "bottom/foreground",
+        "id": "kitchen_counter"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A cylindrical mound of food sits on a white square plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The food appears to be a mixture of diced pink ingredients and green herbs bound in a white sauce.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The plate rests on a flat, light-colored surface.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The food mound is centered on top of the white square plate. The plate is positioned in the foreground on the light-colored surface. The background is out of focus and located behind the plate.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with fair skin",
+        "action": "brushing the edge of a wrapper",
+        "position": "top left",
+        "id": "chef_hand"
+      },
+      {
+        "desc": "pale yellow pastry brush",
+        "action": "applying liquid to wrapper",
+        "position": "top left",
+        "id": "kitchen_tools"
+      },
+      {
+        "desc": "two round, pale yellow wrappers",
+        "action": "static",
+        "position": "center",
+        "id": "ravioli_dumpling"
+      },
+      {
+        "desc": "light-colored flat surface",
+        "action": "static",
+        "position": "background",
+        "id": "kitchen_counter"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand holds a pastry brush and applies liquid to the edge of the left wrapper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two round wrappers are placed side-by-side on the surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wrappers are pale yellow in color.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is positioned above the left wrapper, holding the brush which is touching the wrapper's edge. The left wrapper is to the left of the right wrapper. Both wrappers are resting on the light-colored surface.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": [
+      "Wrapper preparation starts - brushing dough edges"
+    ]
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with blonde hair tied back, wearing a white chef's coat",
+        "action": "using a yellow circular cutter on a wooden board",
+        "position": "left",
+        "id": "person_chef_blonde"
+      },
+      {
+        "desc": "person with short brown hair, wearing a white shirt and black apron",
+        "action": "static",
+        "position": "background right",
+        "id": "person_chef_male"
+      },
+      {
+        "desc": "pale yellow, thin, circular dough wrappers",
+        "action": "static",
+        "position": "foreground",
+        "id": "ravioli_dumpling"
+      },
+      {
+        "desc": "hand with fair skin",
+        "action": "pressing down on a dough wrapper",
+        "position": "top center",
+        "id": "chef_hand"
+      },
+      {
+        "desc": "yellow circular cutter tool",
+        "action": "being held and pressed",
+        "position": "left",
+        "id": "kitchen_tools"
+      },
+      {
+        "desc": "light-colored wooden cutting board",
+        "action": "static",
+        "position": "center",
+        "id": "cutting_board"
+      },
+      {
+        "desc": "stainless steel kitchen equipment and shelving",
+        "action": "static",
+        "position": "background",
+        "id": "kitchen_shelf"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a white chef's coat is using a yellow circular cutter on a wooden board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A hand is pressing down on a pale yellow dough wrapper.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two circular dough wrappers are lying on a surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A second person is standing in the background near stainless steel ovens.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the white chef's coat is to the left of the frame, standing behind a counter. The wooden cutting board is in front of this person. The hand is above the dough wrappers in the foreground. The second person is in the background to the right of the first person.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": [
+      "Dough cutting begins with circular cutter tool"
+    ]
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with blonde hair tied back, wearing a white chef's coat",
+        "action": "squeezing a yellow lemon",
+        "position": "left/foreground",
+        "id": "person_chef_blonde"
+      },
+      {
+        "desc": "yellow lemon, textured skin",
+        "action": "being squeezed",
+        "position": "center/foreground",
+        "id": "lemon"
+      },
+      {
+        "desc": "light-colored wooden cutting board, rectangular",
+        "action": "static",
+        "position": "bottom/center",
+        "id": "cutting_board"
+      },
+      {
+        "desc": "white rectangular dish, small",
+        "action": "static",
+        "position": "bottom/center",
+        "id": "kitchen_tray"
+      },
+      {
+        "desc": "person in background, wearing a white shirt and dark apron",
+        "action": "static",
+        "position": "background/right",
+        "id": "person_background_staff"
+      },
+      {
+        "desc": "stainless steel counter, reflective",
+        "action": "static",
+        "position": "middle ground",
+        "id": "kitchen_counter"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person in the white chef's coat is squeezing a yellow lemon with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The lemon is positioned over a light-colored wooden cutting board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small white rectangular dish sits on the cutting board next to the lemon.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A second person is visible in the background to the right.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the white chef's coat is standing behind the stainless steel counter. The wooden cutting board is on the counter in front of the person. The yellow lemon is being held by the person above the cutting board. The small white dish is to the right of the lemon on the cutting board. The second person is in the background to the right of the first person.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": [
+      "Lemon squeezing action starts"
+    ]
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a white chef's coat with visible buttons",
+        "action": "holding a small tin and spoon",
+        "position": "foreground"
+      },
+      {
+        "desc": "small round metal tin filled with green dried herbs",
+        "action": "being held",
+        "position": "center",
+        "id": "kitchen_herbs"
+      },
+      {
+        "desc": "silver spoon",
+        "action": "resting against the hand",
+        "position": "center"
+      },
+      {
+        "desc": "faint spiral pattern overlay",
+        "action": "appearing",
+        "position": "center",
+        "id": "pattern_overlay"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a white chef's coat is holding a small round tin of green herbs.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver spoon is held in the same hand as the tin.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A faint spiral pattern appears overlaid on the hand in the second frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person in the white chef's coat is in the foreground. The small tin of herbs is held in the person's hand, positioned centrally. The silver spoon is resting against the hand, above the tin.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone",
+        "action": "squeezing sauce onto plate",
+        "position": "top left",
+        "id": "chef_hand"
+      },
+      {
+        "desc": "white oval ceramic plate",
+        "action": "static",
+        "position": "center",
+        "id": "tartare_mound"
+      },
+      {
+        "desc": "brown viscous sauce",
+        "action": "forming a spiral pattern",
+        "position": "center",
+        "id": "brown_sauce"
+      },
+      {
+        "desc": "dark countertop surface",
+        "action": "static",
+        "position": "bottom",
+        "id": "kitchen_counter"
+      },
+      {
+        "desc": "reflection of kitchen staff in white uniforms",
+        "action": "static",
+        "position": "background",
+        "id": "person_background_staff"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is squeezing a bottle to dispense brown sauce.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sauce is being applied in a spiral shape on the white plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The plate is resting on a dark countertop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Reflections of people in white clothing are visible in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is positioned above the white oval plate, dispensing the brown sauce onto its surface. The plate is located in the center of the frame, resting on the dark countertop. The reflection of the kitchen staff appears behind the plate in the background.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": [
+      "Sauce plating begins - brown sauce spiral being applied"
+    ]
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with blonde hair tied back, wearing a white chef's coat",
+        "action": "plating food",
+        "position": "center",
+        "id": "person_chef_blonde"
+      },
+      {
+        "desc": "white round plate with a yellowish mound of food, green leaf, dark topping, and brown sauce swirls",
+        "action": "static",
+        "position": "foreground",
+        "id": "tartare_mound"
+      },
+      {
+        "desc": "person in a white chef's coat",
+        "action": "standing",
+        "position": "background right",
+        "id": "person_background_staff"
+      },
+      {
+        "desc": "metallic rectangular tray with a blue napkin and a spoon",
+        "action": "static",
+        "position": "bottom left",
+        "id": "kitchen_tray"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a white chef's coat is plating food on a white plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dish features a yellowish mound topped with a green leaf and a dark garnish.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Brown sauce swirls decorate the white plate around the food.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metallic tray with a spoon is on the counter to the left of the plate.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person plating the food is in the center, standing behind the counter. The white plate with the food is in the foreground, directly in front of the person. The metallic tray is to the left of the plate. Another person in a white chef's coat is in the background to the right.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "woman with blonde hair tied back, wearing a white chef's coat and white apron",
+        "action": "holding a plate",
+        "position": "center",
+        "id": "person_chef_blonde"
+      },
+      {
+        "desc": "white round plate with a yellow food mound, green leaves, purple garnish, and brown sauce swirls",
+        "action": "being held",
+        "position": "center/foreground",
+        "id": "tartare_mound"
+      },
+      {
+        "desc": "person in a white shirt and black pants",
+        "action": "standing",
+        "position": "background/left",
+        "id": "person_background_staff"
+      },
+      {
+        "desc": "stainless steel counter and shelves",
+        "action": "static",
+        "position": "background",
+        "id": "kitchen_counter"
+      },
+      {
+        "desc": "yellow squeeze bottles and metal tray on a wooden board",
+        "action": "static",
+        "position": "foreground/left",
+        "id": "squeeze_bottle"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman in a white chef's coat is holding a white plate with food.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The food on the plate is a yellow mound topped with green leaves and purple garnish.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "There are brown sauce swirls on the white plate around the food.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Another person in a white shirt is standing in the background behind the woman.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The woman holding the plate is in the center of the frame. The plate is held in front of her. The other person is to the left and behind the woman. The yellow bottles and metal tray are on a wooden board in the foreground to the left of the woman.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "single yellow ruffled ravioli topped with black caviar, a small purple edible flower, and a green leaf",
+        "action": "static",
+        "position": "center",
+        "id": "ravioli_dumpling"
+      },
+      {
+        "desc": "white round plate with a textured rim",
+        "action": "static",
+        "position": "center",
+        "id": "plate_textured_rim"
+      },
+      {
+        "desc": "brown sauce drizzled in concentric circles",
+        "action": "static",
+        "position": "center",
+        "id": "brown_sauce"
+      },
+      {
+        "desc": "dark green leaf base under the ravioli",
+        "action": "static",
+        "position": "center",
+        "id": "leaf_flower_garnish"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A single ravioli sits in the center of the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ravioli is garnished with black caviar and a purple flower.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Brown sauce is arranged in concentric circles around the ravioli.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The ravioli rests on top of a dark green leaf.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The yellow ravioli is in the center of the white plate. The brown sauce circles are around the ravioli. The caviar and flower are on top of the ravioli. The green leaf is underneath the ravioli.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      68,
+      70
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hand and forearm, wearing a dark suit sleeve and a silver wristwatch",
+        "action": "pouring green sauce from a squeeze bottle",
+        "position": "center",
+        "id": "person_suit"
+      },
+      {
+        "desc": "white squeeze bottle with a narrow nozzle",
+        "action": "being squeezed to dispense liquid",
+        "position": "center",
+        "id": "squeeze_bottle"
+      },
+      {
+        "desc": "white round plate with a yellow food stack topped with dark garnish and surrounded by concentric brown sauce rings",
+        "action": "static",
+        "position": "center",
+        "id": "tartare_mound"
+      },
+      {
+        "desc": "dark grey countertop surface",
+        "action": "static",
+        "position": "background",
+        "id": "kitchen_counter"
+      },
+      {
+        "desc": "rectangular light yellow cutting board",
+        "action": "static",
+        "position": "right",
+        "id": "cutting_board"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is pouring a green liquid sauce from a white bottle onto a plated dish.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The sauce is being applied to the top of a yellow food stack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The plate features concentric circles of brown sauce around the central food item.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A light yellow cutting board is positioned on the right side of the counter.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's hand is holding the white bottle directly above the center of the white plate. The plate is resting on the dark grey countertop. The yellow cutting board is located to the right of the plate.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": [
+      "Green sauce being poured from squeeze bottle onto plate"
+    ]
+  },
+  {
+    "time": [
+      70,
+      72
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with light skin tone",
+        "action": "holding a white ceramic pitcher",
+        "position": "top left",
+        "id": "chef_hand"
+      },
+      {
+        "desc": "small white ceramic pitcher with a smooth glossy finish",
+        "action": "pouring green liquid",
+        "position": "top left",
+        "id": "white_pitcher"
+      },
+      {
+        "desc": "large white plate with a textured, dimpled rim",
+        "action": "static",
+        "position": "center",
+        "id": "plate_textured_rim"
+      },
+      {
+        "desc": "large, pale yellow pasta dumpling with crimped edges",
+        "action": "static",
+        "position": "center",
+        "id": "ravioli_dumpling"
+      },
+      {
+        "desc": "dark green leafy vegetable bed",
+        "action": "static",
+        "position": "center",
+        "id": "leaf_flower_garnish"
+      },
+      {
+        "desc": "garnish consisting of black caviar, a green leaf, and a red flower petal",
+        "action": "static",
+        "position": "center",
+        "id": "caviar_garnish"
+      },
+      {
+        "desc": "thick, bright green sauce",
+        "action": "being poured onto the plate",
+        "position": "center",
+        "id": "green_sauce"
+      },
+      {
+        "desc": "thin, brown sauce swirl",
+        "action": "static",
+        "position": "center",
+        "id": "brown_sauce"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a small white pitcher and pouring a thick green sauce onto the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The green sauce is being poured to form a crescent shape around the central pasta dish.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A large yellow dumpling sits on top of a bed of dark greens in the center of the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dumpling is topped with black caviar, a green leaf, and a red flower petal.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A decorative swirl of brown sauce encircles the food on the white plate.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is above the white plate, holding the pitcher to the left of the central food item. The yellow dumpling is on top of the dark greens, which are in the center of the plate. The green sauce is being poured next to the dumpling, inside the ring of brown sauce.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": [
+      "Green sauce being poured from ceramic pitcher"
+    ]
+  },
+  {
+    "time": [
+      72,
+      74
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand holding a white ceramic pitcher",
+        "action": "pouring green sauce",
+        "position": "top center",
+        "id": "chef_hand"
+      },
+      {
+        "desc": "white textured plate with a wide rim",
+        "action": "static",
+        "position": "center",
+        "id": "plate_textured_rim"
+      },
+      {
+        "desc": "yellow ruffled pasta dumpling topped with black caviar and a green leaf",
+        "action": "static",
+        "position": "center",
+        "id": "ravioli_dumpling"
+      },
+      {
+        "desc": "bright green liquid sauce",
+        "action": "flowing onto the plate",
+        "position": "center",
+        "id": "green_sauce"
+      },
+      {
+        "desc": "brown sauce ring",
+        "action": "static",
+        "position": "center",
+        "id": "brown_sauce"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is pouring green sauce from a white pitcher onto the plate.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The green sauce is pooling around the base of the pasta dumpling.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pasta dumpling sits inside a ring of brown sauce.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand holding the white pitcher is positioned above the center of the plate. The yellow pasta dumpling is in the middle of the plate, surrounded by the green sauce being poured. The brown sauce forms a circle on the plate underneath the green sauce.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      74,
+      76
+    ],
+    "visible_entities": [
+      {
+        "desc": "white ceramic plate with a wide, textured rim and a smooth, glossy center well",
+        "action": "static",
+        "position": "center",
+        "id": "plate_textured_rim"
+      },
+      {
+        "desc": "pale yellow, ruffled pasta dumpling (tortellini) with a pleated edge",
+        "action": "static",
+        "position": "center",
+        "id": "ravioli_dumpling"
+      },
+      {
+        "desc": "bright green, opaque sauce pooled on the plate",
+        "action": "static",
+        "position": "center",
+        "id": "green_sauce"
+      },
+      {
+        "desc": "dark brown, glossy sauce drizzled in a thin, circular pattern",
+        "action": "static",
+        "position": "center",
+        "id": "brown_sauce"
+      },
+      {
+        "desc": "small mound of black caviar (fish roe) with distinct individual eggs",
+        "action": "static",
+        "position": "center",
+        "id": "caviar_garnish"
+      },
+      {
+        "desc": "small, dark red leaf garnish",
+        "action": "static",
+        "position": "center",
+        "id": "leaf_flower_garnish"
+      },
+      {
+        "desc": "small, bright green leaf garnish",
+        "action": "static",
+        "position": "center",
+        "id": "leaf_flower_garnish"
+      },
+      {
+        "desc": "the word 'Fine' in a faint, light-grey serif font",
+        "action": "static",
+        "position": "center",
+        "id": "logo_fine_dining_tv"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A white plate holds a single piece of pasta.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pasta rests on a pool of bright green sauce.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A ring of dark brown sauce encircles the green sauce.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The pasta is topped with a mound of black caviar.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Two small leaves, one red and one green, garnish the top of the pasta.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The word 'Fine' is visible in the center of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Fine"
+    ],
+    "spatial": "The pasta dumpling is in the center of the plate, resting on top of the green sauce. The brown sauce forms a circle around the green sauce. The caviar and leaf garnishes are on top of the pasta. The word 'Fine' is superimposed over the center of the scene.",
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  },
+  {
+    "time": [
+      76,
+      78
+    ],
+    "visible_entities": [
+      {
+        "desc": "White serif text reading 'Fine Dining TV' with a yellow underline beneath 'Dining', accompanied by a faint reflection below",
+        "action": "static",
+        "position": "center",
+        "id": "logo_fine_dining_tv"
+      },
+      {
+        "desc": "Bright white lens flare",
+        "action": "appearing",
+        "position": "center",
+        "id": "logo_fine_dining_tv"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A bright lens flare appears over the text logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Fine Dining TV' is displayed in white font.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow line underlines the word 'Dining'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Fine",
+      "Dining",
+      "TV"
+    ],
+    "spatial": "The text 'Fine Dining TV' is centered on the screen. The yellow underline is below the word 'Dining'. The reflection is below the main text. The lens flare appears in the center, overlapping the text.",
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": [
+      "Scene transitions back to Fine Dining TV logo with lens flare effect"
+    ]
+  },
+  {
+    "time": [
+      78,
+      80
+    ],
+    "visible_entities": [
+      {
+        "desc": "Logo text reading 'Fine Dining TV' in white serif font, with a yellow horizontal line under 'Dining', set against a dark grey background with a reflection below",
+        "action": "static",
+        "id": "logo_fine_dining_tv"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'Fine Dining TV' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A yellow line underlines the word 'Dining'.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The logo has a reflection on the surface below it.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Fine",
+      "Dining",
+      "TV"
+    ],
+    "spatial": "The word 'Fine' is above the word 'Dining'. The word 'TV' is to the right of 'Dining'. The reflection is below the main text.",
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "BciAdYxFujQ",
+    "state_changes": []
+  }
+]

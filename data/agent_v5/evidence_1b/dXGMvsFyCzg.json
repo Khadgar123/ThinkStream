@@ -1,0 +1,2121 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a grey long-sleeved quarter-zip pullover with a white 'PC' logo on the right chest and a white Nike swoosh on the left chest, and a bracelet on his right wrist",
+        "action": "standing and talking",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white text overlay reading 'Healthy Brownies' in a sans-serif font",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "text_overlay_1"
+      },
+      {
+        "desc": "white kitchen counter with various items including a black kettle and a small white appliance",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white container with a green label",
+        "action": "static",
+        "position": "foreground",
+        "id": "container_white_cylindrical_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is standing in a kitchen and speaking to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Healthy Brownies' is displayed at the bottom of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white container is sitting on the counter in front of the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Healthy Brownies"
+    ],
+    "spatial": "The man is standing in the center of the frame, behind a white counter. The 'Healthy Brownies' text is located in the bottom-left corner of the screen. A white container is on the counter in the foreground, in front of the man.",
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a grey long-sleeved quarter-zip pullover with a white Nike logo and a green and white 'PC' logo on the chest",
+        "action": "standing behind a counter",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white text overlay reading 'Healthy Brownies' in a sans-serif font",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "text_overlay_1"
+      },
+      {
+        "desc": "white kitchen counter with a silver kettle and a blender in the background",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "white container with a green label on the counter",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is standing behind a kitchen counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Healthy Brownies' is displayed at the bottom of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver kettle is visible on the counter behind the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Healthy Brownies"
+    ],
+    "spatial": "The man is standing behind the white kitchen counter. The text 'Healthy Brownies' is located at the bottom-left of the frame. The silver kettle is on the counter behind the man.",
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a grey long-sleeved pullover with a white 'PC' logo on the chest",
+        "action": "holding a white container",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white cylindrical container with green and brown label",
+        "action": "being held by the man",
+        "position": "center",
+        "id": "container_white_cylindrical_1"
+      },
+      {
+        "desc": "small white square bowl",
+        "action": "static",
+        "position": "left",
+        "id": "bowl_white_ceramic_1"
+      },
+      {
+        "desc": "cardboard egg carton containing brown eggs",
+        "action": "static",
+        "position": "right",
+        "id": "egg_brown_1"
+      },
+      {
+        "desc": "white text on a semi-transparent grey banner",
+        "action": "static",
+        "position": "bottom",
+        "id": "text_overlay_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is holding a white container in his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing behind a white counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A small white bowl is on the counter to the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "An egg carton with brown eggs is on the counter to the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Healthy Brownies' is displayed at the bottom of the screen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Healthy Brownies"
+    ],
+    "spatial": "The man is standing behind the white counter. The white bowl is to the left of the man, and the egg carton is to the right of the man. The text banner is at the bottom of the frame.",
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": [
+      "man began holding white container"
+    ]
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a grey long-sleeved quarter-zip pullover with a white Nike swoosh and a green logo on the chest",
+        "action": "holding a white container and presenting it to the camera",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "large white cylindrical container with a green label and an image of a brownie",
+        "action": "being held in the man's right hand",
+        "position": "center foreground",
+        "id": "container_white_cylindrical_1"
+      },
+      {
+        "desc": "white text overlay reading 'Healthy Brownies'",
+        "action": "static",
+        "position": "bottom left",
+        "id": "text_overlay_1"
+      },
+      {
+        "desc": "kitchen background with white cabinets, a black microwave, and a black kettle",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man holds up a white container with a green label.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'Healthy Brownies' appears on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a grey pullover with a Nike logo.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "Healthy Brownies"
+    ],
+    "spatial": "The man is standing in the center of the frame, holding the container in front of his chest. The kitchen counter and appliances are behind him. The text overlay is located at the bottom left of the screen.",
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a grey long-sleeved quarter-zip pullover with a white 'PC' logo on the right chest and a white Nike swoosh on the left chest",
+        "action": "holding two brown eggs, one in each hand, and looking down at them",
+        "position": "center"
+      },
+      {
+        "desc": "two brown eggs",
+        "action": "being held in the man's hands",
+        "position": "center",
+        "id": "egg_brown_1"
+      },
+      {
+        "desc": "white kitchen cabinets",
+        "action": "static",
+        "position": "top",
+        "id": "cabinets_white_1"
+      },
+      {
+        "desc": "silver metal mixing bowl",
+        "action": "static",
+        "position": "background right",
+        "id": "bowl_silver_mixing_1"
+      },
+      {
+        "desc": "white ceramic bowls",
+        "action": "static",
+        "position": "foreground right",
+        "id": "bowl_white_ceramic_1"
+      },
+      {
+        "desc": "black microwave oven",
+        "action": "static",
+        "position": "left",
+        "id": "microwave_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is holding a brown egg in his left hand and a brown egg in his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is looking down at the eggs he is holding.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver mixing bowl is sitting on the counter in the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "White bowls are on the counter in front of the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PC"
+    ],
+    "spatial": "The man is standing in the center of the kitchen, in front of the white cabinets. The black microwave is to the left of the man. The silver mixing bowl is on the counter behind the man and to his right. The white bowls are on the counter in front of the man and to his right.",
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": [
+      "switched to holding brown eggs"
+    ]
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a grey long-sleeved pullover with a white 'PC' logo on the chest and a black wristwatch",
+        "action": "cracking an egg",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "brown egg",
+        "action": "being cracked",
+        "position": "center",
+        "id": "egg_brown_1"
+      },
+      {
+        "desc": "white square ceramic bowl",
+        "action": "static",
+        "position": "center foreground",
+        "id": "bowl_white_square_1"
+      },
+      {
+        "desc": "white cylindrical container with a green label",
+        "action": "static",
+        "position": "right foreground",
+        "id": "container_white_cylindrical_1"
+      },
+      {
+        "desc": "grey egg carton containing brown eggs",
+        "action": "static",
+        "position": "right foreground",
+        "id": "egg_brown_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is holding a brown egg with both hands over a white bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is using his thumbs to crack the shell of the egg.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white container and an egg carton are sitting on the counter to the right of the bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PC"
+    ],
+    "spatial": "The man is standing behind the white counter. The white square bowl is on the counter directly in front of the man. The man is holding the egg above the bowl. To the right of the bowl, there is a white container and a grey egg carton.",
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": [
+      "started cracking egg"
+    ]
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a grey long-sleeved pullover with a white 'PC' logo and green text on the chest, wearing a dark beaded bracelet on the left wrist",
+        "action": "cracking an egg into a bowl",
+        "position": "center"
+      },
+      {
+        "desc": "white square ceramic bowl",
+        "action": "static",
+        "position": "center foreground",
+        "id": "bowl_white_square_1"
+      },
+      {
+        "desc": "white cylindrical container with a green label reading 'HERBALIFE'",
+        "action": "static",
+        "position": "right foreground",
+        "id": "container_white_cylindrical_1"
+      },
+      {
+        "desc": "brown egg",
+        "action": "being cracked",
+        "position": "center",
+        "id": "egg_brown_1"
+      },
+      {
+        "desc": "white kitchen counter",
+        "action": "static",
+        "position": "bottom",
+        "id": "counter_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is holding a brown egg with both hands over a white bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is cracking the egg, causing the yolk and white to fall into the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white container with a green label sits on the counter to the right of the bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PC",
+      "HERBALIFE"
+    ],
+    "spatial": "The person is standing behind the white kitchen counter. The white square bowl is on the counter directly in front of the person. The person is holding the egg above the bowl. The Herbalife container is to the right of the bowl on the counter.",
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a grey long-sleeved shirt with a small logo on the chest",
+        "action": "cracking an egg into a bowl",
+        "position": "center"
+      },
+      {
+        "desc": "white square bowl",
+        "action": "receiving egg contents",
+        "position": "center foreground",
+        "id": "bowl_white_square_1"
+      },
+      {
+        "desc": "brown egg",
+        "action": "being cracked",
+        "position": "center",
+        "id": "egg_brown_1"
+      },
+      {
+        "desc": "white container with green label",
+        "action": "static",
+        "position": "right foreground",
+        "id": "container_white_cylindrical_1"
+      },
+      {
+        "desc": "white measuring spoon",
+        "action": "static",
+        "position": "right foreground",
+        "id": "scoop_white_1"
+      },
+      {
+        "desc": "black frying pan",
+        "action": "static",
+        "position": "background left",
+        "id": "frying_pan_black_1"
+      },
+      {
+        "desc": "silver electric kettle",
+        "action": "static",
+        "position": "background left",
+        "id": "kettle_electric_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is cracking an egg with both hands over a white square bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The contents of the egg are falling into the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white container with a green label sits on the counter to the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black frying pan is visible on the stove in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "HERBALIFE"
+    ],
+    "spatial": "The person is standing behind the counter, centered in the frame. The white square bowl is on the counter in front of the person. The white container with the green label is to the right of the bowl. The black frying pan and silver kettle are on the counter in the background to the left.",
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a grey heathered t-shirt and a black wristband with white text",
+        "action": "cracking an egg",
+        "position": "center"
+      },
+      {
+        "desc": "brown eggshell, broken into two halves",
+        "action": "being held and separated",
+        "position": "center",
+        "id": "eggshell_brown_1"
+      },
+      {
+        "desc": "white square bowl containing egg yolk and white",
+        "action": "static",
+        "position": "bottom center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person separates the two halves of the eggshell",
+        "confidence": 1.0
+      },
+      {
+        "fact": "egg contents fall into the white bowl",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the bowl contains two egg yolks by the end of the clip",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "HER"
+    ],
+    "spatial": "The person is positioned behind the white bowl. The hands are holding the eggshell directly above the bowl. The egg yolk is inside the bowl.",
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": [
+      "egg fully cracked, shells separated"
+    ]
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a grey long-sleeved shirt with a white 'PC' logo on the chest and a black wristband",
+        "action": "cracking an egg into a bowl",
+        "position": "center"
+      },
+      {
+        "desc": "white square ceramic bowl containing a cracked egg with yellow yolk and clear white",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "brown eggshell halves",
+        "action": "being held",
+        "position": "center",
+        "id": "eggshell_brown_1"
+      },
+      {
+        "desc": "white cylindrical container with green and orange label",
+        "action": "being held",
+        "position": "center",
+        "id": "container_white_cylindrical_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is cracking a brown egg into a white square bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding a white container with a green label.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bowl contains a raw egg yolk and white.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PC"
+    ],
+    "spatial": "The person is standing behind a white table. The white square bowl is on the table in front of the person. The person is holding the eggshell halves and the white container in their hands above the table.",
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a grey long-sleeved quarter-zip pullover with a white logo on the left chest",
+        "action": "holding a white container and a white scoop",
+        "position": "center"
+      },
+      {
+        "desc": "large white cylindrical container with a green label and a white lid",
+        "action": "being held and rotated",
+        "position": "center",
+        "id": "container_white_cylindrical_1"
+      },
+      {
+        "desc": "small white plastic scoop",
+        "action": "being held",
+        "position": "center",
+        "id": "scoop_white_1"
+      },
+      {
+        "desc": "white kitchen cabinets",
+        "action": "static",
+        "position": "background",
+        "id": "cabinets_white_1"
+      },
+      {
+        "desc": "silver electric kettle",
+        "action": "static",
+        "position": "background",
+        "id": "kettle_electric_1"
+      },
+      {
+        "desc": "black and silver oven",
+        "action": "static",
+        "position": "left",
+        "id": "oven_black_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man holds a white container in his left hand and a white scoop in his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man rotates the container to show the label.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing in a kitchen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PC"
+    ],
+    "spatial": "The man is in the center of the frame, standing in front of a white kitchen counter. The white container is held in his left hand, and the white scoop is in his right hand. The silver kettle is on the counter behind him and to his left. The black oven is to the far left of the frame.",
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": [
+      "switched to holding powder container and scoop"
+    ]
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a grey long-sleeved quarter-zip pullover with a white 'PC' logo on the right chest and a white Nike swoosh on the left chest",
+        "action": "holding a white tub and a white scoop",
+        "position": "center"
+      },
+      {
+        "desc": "large white cylindrical tub with a green label band and an image of a chocolate drink",
+        "action": "being held in the man's left hand",
+        "position": "center",
+        "id": "container_white_cylindrical_1"
+      },
+      {
+        "desc": "white plastic scoop",
+        "action": "being held in the man's right hand",
+        "position": "center",
+        "id": "scoop_white_1"
+      },
+      {
+        "desc": "black and silver electric kettle",
+        "action": "static",
+        "position": "background left",
+        "id": "kettle_electric_1"
+      },
+      {
+        "desc": "white kitchen cabinets",
+        "action": "static",
+        "position": "background top",
+        "id": "cabinets_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man holds the white tub in his left hand and the scoop in his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man moves the scoop towards the tub.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tub has a green label.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PC"
+    ],
+    "spatial": "The man is standing in the center of the frame. He is holding the white tub in his left hand and the scoop in his right hand. The electric kettle is on the counter behind him to his left. The white cabinets are above the counter.",
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a grey long-sleeved pullover with a white Nike logo and a 'PC' logo on the chest",
+        "action": "holding a white tub and a scoop",
+        "position": "center"
+      },
+      {
+        "desc": "white cylindrical tub with a green label",
+        "action": "being held",
+        "position": "center",
+        "id": "container_white_cylindrical_1"
+      },
+      {
+        "desc": "small white scoop",
+        "action": "being held",
+        "position": "center",
+        "id": "scoop_white_1"
+      },
+      {
+        "desc": "white kitchen cabinets",
+        "action": "static",
+        "position": "background",
+        "id": "cabinets_white_1"
+      },
+      {
+        "desc": "silver electric kettle",
+        "action": "static",
+        "position": "background",
+        "id": "kettle_electric_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is holding a white tub in his left hand and a white scoop in his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing in a kitchen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a grey pullover with a white Nike logo.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PC",
+      "Nike"
+    ],
+    "spatial": "The man is standing in the center of the frame, in front of the white kitchen cabinets. The silver kettle is on the counter to the left of the man. The man is holding the white tub in his left hand and the scoop in his right hand.",
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a grey long-sleeved quarter-zip pullover with a white 'PC' logo on the right chest and a white Nike swoosh on the left chest",
+        "action": "holding a white tub and a white scoop",
+        "position": "center"
+      },
+      {
+        "desc": "white cylindrical tub with green and brown labeling",
+        "action": "being held in the man's left hand",
+        "position": "center-right",
+        "id": "container_white_cylindrical_1"
+      },
+      {
+        "desc": "white plastic scoop",
+        "action": "being held in the man's right hand",
+        "position": "center-left",
+        "id": "scoop_white_1"
+      },
+      {
+        "desc": "silver electric kettle",
+        "action": "static",
+        "position": "background left",
+        "id": "kettle_electric_1"
+      },
+      {
+        "desc": "white kitchen cabinets",
+        "action": "static",
+        "position": "top",
+        "id": "cabinets_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is holding a white scoop in his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is holding a white tub in his left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is standing in a kitchen.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PC"
+    ],
+    "spatial": "The man is in the center of the frame, holding the white tub in his left hand and the white scoop in his right hand. The silver kettle is on the counter to the left of the man. The white cabinets are above the man.",
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a grey long-sleeved quarter-zip pullover with a white Nike logo on the left chest and a white 'RC' logo on the right chest, wearing a bracelet on his right wrist",
+        "action": "holding a white tub and scooping powder",
+        "position": "center"
+      },
+      {
+        "desc": "white cylindrical tub with a green label and white lid",
+        "action": "being held and scooped from",
+        "position": "center foreground",
+        "id": "container_white_cylindrical_1"
+      },
+      {
+        "desc": "white kitchen cabinets",
+        "action": "static",
+        "position": "background",
+        "id": "cabinets_white_1"
+      },
+      {
+        "desc": "silver toaster",
+        "action": "static",
+        "position": "background left",
+        "id": "toaster_silver_1"
+      },
+      {
+        "desc": "small white bottle",
+        "action": "static",
+        "position": "background left",
+        "id": "bottle_white_small_1"
+      },
+      {
+        "desc": "stack of books",
+        "action": "static",
+        "position": "bottom right",
+        "id": "books_stack_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is holding a white tub in his left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is using his right hand to scoop powder from the tub.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tub has a green label.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RC",
+      "NIKE"
+    ],
+    "spatial": "The man is standing in the center of the frame, in front of white kitchen cabinets. The toaster and small white bottle are on the counter to the left of the man. The stack of books is on a surface to the right of the man.",
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": [
+      "started scooping powder from container"
+    ]
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a grey long-sleeved quarter-zip pullover with a white 'RC' logo on the chest and a black wristband",
+        "action": "scooping powder",
+        "position": "center"
+      },
+      {
+        "desc": "large white cylindrical tub with a green label and brown powder inside",
+        "action": "being held",
+        "position": "center",
+        "id": "container_white_cylindrical_1"
+      },
+      {
+        "desc": "white plastic scoop",
+        "action": "being used to scoop powder",
+        "position": "center",
+        "id": "scoop_white_1"
+      },
+      {
+        "desc": "white square bowl",
+        "action": "static",
+        "position": "bottom left",
+        "id": "bowl_white_square_1"
+      },
+      {
+        "desc": "carton of brown eggs",
+        "action": "static",
+        "position": "bottom right",
+        "id": "egg_brown_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is holding the white tub in his left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is using the white scoop to take brown powder out of the tub.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The white square bowl is sitting on the counter in front of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The carton of eggs is visible on the counter to the right.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RC"
+    ],
+    "spatial": "The man is standing in the center of the frame, holding the tub in front of his torso. The white bowl is on the counter to the left of the tub. The carton of eggs is on the counter to the right of the tub.",
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a grey long-sleeved pullover shirt with a textured pattern on the chest and a zipper at the neck",
+        "action": "scooping powder from a container",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white cylindrical tub with a green label band and a brown graphic, containing light brown powder",
+        "action": "being held and tilted",
+        "position": "center-right",
+        "id": "container_white_cylindrical_1"
+      },
+      {
+        "desc": "white plastic scoop",
+        "action": "being used to transfer powder",
+        "position": "center",
+        "id": "scoop_white_1"
+      },
+      {
+        "desc": "white square bowl",
+        "action": "static",
+        "position": "bottom-left",
+        "id": "bowl_white_square_1"
+      },
+      {
+        "desc": "white circular lid",
+        "action": "static",
+        "position": "bottom-right",
+        "id": "lid_white_1"
+      },
+      {
+        "desc": "white kitchen counter",
+        "action": "static",
+        "position": "bottom",
+        "id": "counter_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is holding the white tub in their left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is using a scoop in their right hand to take powder from the tub.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The white square bowl is sitting on the counter.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The lid of the tub is resting on the counter.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing behind the white kitchen counter. The white square bowl is on the counter in front of the person. The person is holding the white tub above the counter and to the right of the bowl. The white lid is on the counter to the right of the tub.",
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a grey t-shirt and a dark wristwatch",
+        "action": "scooping powder from a container",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white cylindrical container with a green label and a brown product image",
+        "action": "being held by the person",
+        "position": "right",
+        "id": "container_white_cylindrical_1"
+      },
+      {
+        "desc": "white plastic scoop",
+        "action": "transferring powder",
+        "position": "center",
+        "id": "scoop_white_1"
+      },
+      {
+        "desc": "white square bowl containing a brown liquid mixture",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person scoops powder from the white container using a white plastic scoop.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person pours the powder from the scoop into the white square bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bowl contains a brown liquid mixture.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned behind the white table. The white square bowl is on the table to the left of the person's hands. The person is holding the white cylindrical container in their right hand and the scoop in their left hand, positioned above the bowl.",
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a grey heathered t-shirt and dark pants",
+        "action": "scooping powder from a container",
+        "position": "background",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white plastic tub with green and brown label",
+        "action": "being held by a person",
+        "position": "right",
+        "id": "container_white_cylindrical_1"
+      },
+      {
+        "desc": "white square bowl containing brown powder and yellow egg yolks",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "translucent plastic scoop",
+        "action": "being used to transfer powder",
+        "position": "center",
+        "id": "scoop_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is scooping powder from a white tub.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is adding the powder to a bowl containing eggs.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The tub is labeled 'HERBALIFE'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "HERBALIFE",
+      "Personalized Protein Mix"
+    ],
+    "spatial": "The person is standing behind the table. The white bowl is on the left side of the table. The person is holding the white tub in their right hand above the bowl. The scoop is inside the tub.",
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a grey heathered long-sleeve shirt and dark pants",
+        "action": "holding a white scoop and a white tub",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white square ceramic bowl",
+        "action": "containing brown powder and yellow liquid",
+        "position": "center foreground",
+        "id": "bowl_white_square_1"
+      },
+      {
+        "desc": "white plastic measuring scoop",
+        "action": "being held over the bowl",
+        "position": "center",
+        "id": "scoop_white_1"
+      },
+      {
+        "desc": "large white cylindrical tub with green and brown label",
+        "action": "being held in the left hand",
+        "position": "right",
+        "id": "container_white_cylindrical_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds a white scoop over a bowl containing brown powder and yellow liquid",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person holds a large white tub in their left hand",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the tub has a green band and brown section on the label",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "GE"
+    ],
+    "spatial": "The white square bowl is on the table in the center foreground. The person is standing behind the bowl. The white scoop is held in the person's right hand, positioned directly above the bowl. The large white tub is held in the person's left hand, to the right of the bowl.",
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a grey long-sleeved quarter-zip pullover with a white 'PC' logo and green text on the left chest",
+        "action": "pouring powder from a white container into a white bowl",
+        "position": "center"
+      },
+      {
+        "desc": "white plastic container",
+        "action": "being held and tilted by the man",
+        "position": "center",
+        "id": "container_white_cylindrical_1"
+      },
+      {
+        "desc": "white bowl",
+        "action": "being held by the man",
+        "position": "center"
+      },
+      {
+        "desc": "silver electric kettle",
+        "action": "static",
+        "position": "background left",
+        "id": "kettle_electric_1"
+      },
+      {
+        "desc": "white kitchen cabinets",
+        "action": "static",
+        "position": "top",
+        "id": "cabinets_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is pouring a white powdery substance from a container into a bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is holding the bowl with his left hand and the container with his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a grey pullover with a 'PC' logo.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PC"
+    ],
+    "spatial": "The man is standing in the center of the frame, in front of the white kitchen cabinets. The silver kettle is on the counter to the left of the man. The white bowl is held below the white container as the man pours the contents.",
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": [
+      "started pouring powder into bowl"
+    ]
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a grey long-sleeved quarter-zip pullover with white 'RC' logo and green text on the chest, and a black wristband",
+        "action": "stirring a mixture in a container",
+        "position": "center"
+      },
+      {
+        "desc": "white square bowl containing a dark brown, thick, glossy mixture",
+        "action": "being held and stirred",
+        "position": "center foreground"
+      },
+      {
+        "desc": "white cylindrical container with green labeling and a scoop inside",
+        "action": "static",
+        "position": "right foreground",
+        "id": "container_white_cylindrical_1"
+      },
+      {
+        "desc": "white kitchen counter",
+        "action": "static",
+        "position": "bottom",
+        "id": "counter_white_1"
+      },
+      {
+        "desc": "white kitchen cabinets and backsplash",
+        "action": "static",
+        "position": "background",
+        "id": "cabinets_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is stirring a dark brown mixture in a white square bowl with a utensil.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is holding the bowl with his left hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The white cylindrical container is sitting on the counter to the right of the bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "RC"
+    ],
+    "spatial": "The man is standing behind the white kitchen counter. He is holding the white bowl in front of him. The white cylindrical container is to the right of the bowl on the counter. The kitchen cabinets are behind the man.",
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": [
+      "mixture formed, started stirring"
+    ]
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [
+      {
+        "desc": "white square ceramic bowl",
+        "action": "being held",
+        "position": "center",
+        "id": "bowl_white_square_1"
+      },
+      {
+        "desc": "thick dark brown chocolate mixture",
+        "action": "being stirred",
+        "position": "inside bowl",
+        "id": "mixture_chocolate_1"
+      },
+      {
+        "desc": "metal spoon",
+        "action": "stirring mixture",
+        "position": "center",
+        "id": "spoon_metal_1"
+      },
+      {
+        "desc": "hand with light skin tone",
+        "action": "holding bowl",
+        "position": "right",
+        "id": "person_chef_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a white square bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal spoon is stirring a thick, dark brown chocolate mixture inside the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The chocolate mixture has a glossy texture and coats the sides of the bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is on the right side of the frame, holding the white square bowl. The dark brown chocolate mixture is inside the bowl. The metal spoon is positioned in the center of the bowl, interacting with the mixture.",
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with light skin tone and manicured fingernails",
+        "action": "holding bowl and stirring",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white square ceramic bowl",
+        "action": "being held",
+        "position": "center",
+        "id": "bowl_white_square_1"
+      },
+      {
+        "desc": "dark brown thick chocolate mixture",
+        "action": "being stirred",
+        "position": "inside bowl",
+        "id": "mixture_chocolate_1"
+      },
+      {
+        "desc": "silver metal spoon",
+        "action": "stirring mixture",
+        "position": "inside bowl",
+        "id": "spoon_metal_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person holds a white square bowl with one hand",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person stirs a dark brown chocolate mixture with a silver spoon",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the chocolate mixture is thick and coats the sides of the bowl",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is holding the white square bowl in the center of the frame. The silver spoon is inside the bowl, submerged in the chocolate mixture. The chocolate mixture is contained within the bowl.",
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short light brown hair, wearing a grey long-sleeved quarter-zip pullover with a white 'PC' logo and green text on the left chest, and a small white Nike swoosh on the right chest",
+        "action": "standing and talking",
+        "position": "center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white kitchen cabinets",
+        "action": "static",
+        "position": "background",
+        "id": "cabinets_white_1"
+      },
+      {
+        "desc": "white countertop",
+        "action": "static",
+        "position": "background",
+        "id": "counter_white_1"
+      },
+      {
+        "desc": "small white bottle with a red label",
+        "action": "static",
+        "position": "background",
+        "id": "bottle_white_small_1"
+      },
+      {
+        "desc": "dark cylindrical appliance",
+        "action": "static",
+        "position": "background",
+        "id": "coffee_maker_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man is standing in a kitchen setting.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is talking to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white bottle and a dark appliance are on the counter behind the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PC",
+      "NIKE"
+    ],
+    "spatial": "The man is in the foreground, centered in the frame. Behind him and to his left (viewer's left) are a white bottle and a dark appliance resting on a white countertop. Above the countertop are white kitchen cabinets.",
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a grey long-sleeved quarter-zip pullover with a white 'PC' logo and green text on the left chest, and a white Nike swoosh on the right chest",
+        "action": "standing in a kitchen",
+        "position": "center"
+      },
+      {
+        "desc": "white upper kitchen cabinets",
+        "action": "static",
+        "position": "top",
+        "id": "cabinets_white_1"
+      },
+      {
+        "desc": "black coffee maker",
+        "action": "static",
+        "position": "left",
+        "id": "coffee_maker_1"
+      },
+      {
+        "desc": "white bottle with a red label",
+        "action": "static",
+        "position": "left",
+        "id": "bottle_white_small_1"
+      },
+      {
+        "desc": "silver metal bowl",
+        "action": "static",
+        "position": "right",
+        "id": "bowl_silver_mixing_1"
+      },
+      {
+        "desc": "stack of books or papers",
+        "action": "static",
+        "position": "bottom right",
+        "id": "books_stack_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man is standing in a kitchen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a grey pullover with a 'PC' logo.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A coffee maker and a white bottle are on the counter to the left of the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal bowl is on the counter to the right of the man.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PC"
+    ],
+    "spatial": "The man is in the center of the frame. The white cabinets are above the man. The coffee maker and white bottle are on the counter to the left of the man. The metal bowl is on the counter to the right of the man. The stack of books is in the bottom right corner, below the metal bowl.",
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [
+      {
+        "desc": "man with short brown hair, wearing a grey long-sleeved quarter-zip pullover with white 'PC' text on the chest",
+        "action": "standing and reaching towards the oven",
+        "position": "right"
+      },
+      {
+        "desc": "black built-in oven with a glossy finish and silver handle",
+        "action": "static",
+        "position": "left",
+        "id": "oven_black_1"
+      },
+      {
+        "desc": "black frying pan with a handle",
+        "action": "resting on the stovetop",
+        "position": "center",
+        "id": "frying_pan_black_1"
+      },
+      {
+        "desc": "silver metal mixing bowl",
+        "action": "static",
+        "position": "background",
+        "id": "bowl_silver_mixing_1"
+      },
+      {
+        "desc": "white kitchen cabinets",
+        "action": "static",
+        "position": "top",
+        "id": "cabinets_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man extends his left arm to touch or open the black oven door.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black frying pan sits on the gas stovetop next to the oven.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A silver mixing bowl is placed on the counter behind the stovetop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "PC"
+    ],
+    "spatial": "The man is standing to the right of the black oven. The frying pan is on the stovetop, which is located to the right of the oven and below the white cabinets. The silver bowl is on the counter behind the frying pan.",
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": [
+      "reached towards oven"
+    ]
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a grey long-sleeved shirt and a black bracelet with white lettering on the left wrist",
+        "action": "reaching into the microwave",
+        "position": "right",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "stainless steel microwave with a black control panel and an open door",
+        "action": "static",
+        "position": "left",
+        "id": "microwave_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person reaches their left hand into the open microwave.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The microwave door is open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The interior light of the microwave is on.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned to the right of the microwave. The person's left arm extends into the interior of the microwave. The open door is to the left of the microwave's main body.",
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": [
+      "reached into microwave"
+    ]
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a grey long-sleeved shirt and a gold watch on the left wrist",
+        "action": "removing a dish from the microwave",
+        "position": "right"
+      },
+      {
+        "desc": "white square ceramic baking dish containing a dark brown baked food item",
+        "action": "being held by the person",
+        "position": "center",
+        "id": "baking_dish_white_1"
+      },
+      {
+        "desc": "stainless steel microwave with a black control panel and glass door",
+        "action": "static",
+        "position": "left",
+        "id": "microwave_1"
+      },
+      {
+        "desc": "black frying pan",
+        "action": "static",
+        "position": "background",
+        "id": "frying_pan_black_1"
+      },
+      {
+        "desc": "silver metal mixing bowl",
+        "action": "static",
+        "position": "background",
+        "id": "bowl_silver_mixing_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is removing a white square dish from the microwave.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dish contains a dark brown baked substance.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding the dish with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black frying pan is sitting on the stovetop.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is standing to the right of the microwave. The person is holding the white dish in front of the open microwave door. The black frying pan is on the stovetop to the right of the microwave. The silver bowl is behind the frying pan.",
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": [
+      "removed baked item from microwave"
+    ]
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hands and wrists, wearing a black wristband with white text on the left wrist",
+        "action": "holding a white square dish",
+        "position": "foreground"
+      },
+      {
+        "desc": "white square ceramic dish containing a thick, dark brown chocolate mixture with swirl marks on the sides",
+        "action": "being held and tilted",
+        "position": "center"
+      },
+      {
+        "desc": "white kitchen counter surface",
+        "action": "static",
+        "position": "background",
+        "id": "counter_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a white square dish with both hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The dish contains a dark brown chocolate mixture.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person tilts the dish slightly to show the contents.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The wristband on the left wrist displays the text 'ALIFE'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ALIFE"
+    ],
+    "spatial": "The person's hands are in the foreground, holding the white square dish. The chocolate mixture is inside the dish. The white kitchen counter is visible in the background behind the hands and dish.",
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hands and left wrist wearing a black wristband with white text",
+        "action": "holding a white square bowl",
+        "position": "left"
+      },
+      {
+        "desc": "white square ceramic bowl containing a dark brown, thick, glossy substance",
+        "action": "being held and tilted",
+        "position": "center"
+      },
+      {
+        "desc": "white cylindrical container with a label",
+        "action": "static",
+        "position": "background left",
+        "id": "container_white_cylindrical_1"
+      },
+      {
+        "desc": "white glossy table surface",
+        "action": "static",
+        "position": "center",
+        "id": "counter_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is holding a white square bowl filled with a dark brown mixture.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person tilts the bowl slightly towards the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A white cylindrical container sits on the table in the background.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ALIF"
+    ],
+    "spatial": "The person's hands are holding the white square bowl in the foreground. The bowl is positioned above the white table surface. The white cylindrical container is to the left of the bowl in the background.",
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [
+      {
+        "desc": "person wearing a grey long-sleeved shirt, dark pants, and a wristwatch with a green band",
+        "action": "moving hands near the table",
+        "position": "left"
+      },
+      {
+        "desc": "white square bowl containing a dark brown substance",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white table surface",
+        "action": "static",
+        "position": "center",
+        "id": "counter_white_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person moves their hands over the table",
+        "confidence": 1.0
+      },
+      {
+        "fact": "white square bowl sits on the table",
+        "confidence": 1.0
+      },
+      {
+        "fact": "dark brown substance is inside the bowl",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is to the left of the white square bowl. The bowl is on the white table surface. The person's hands are near the bowl.",
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [
+      {
+        "desc": "person's hands and arms, wearing a dark grey long-sleeved top",
+        "action": "stirring chocolate mixture",
+        "position": "left/center",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "silver metal spoon",
+        "action": "stirring inside the bowl",
+        "position": "center",
+        "id": "spoon_metal_1"
+      },
+      {
+        "desc": "white square ceramic bowl",
+        "action": "static",
+        "position": "center",
+        "id": "bowl_white_square_1"
+      },
+      {
+        "desc": "thick dark brown chocolate mixture",
+        "action": "being stirred",
+        "position": "inside the bowl",
+        "id": "mixture_chocolate_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is stirring a thick chocolate mixture in a white bowl with a spoon.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The spoon is moving in a circular motion inside the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The chocolate mixture coats the sides of the bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's hands are holding the spoon and the bowl. The spoon is inside the bowl, submerged in the chocolate mixture. The bowl is resting on a white surface.",
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [
+      {
+        "desc": "hand with fair skin",
+        "action": "holding the bowl",
+        "position": "left",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white square bowl with rounded corners",
+        "action": "static",
+        "position": "center",
+        "id": "bowl_white_square_1"
+      },
+      {
+        "desc": "thick dark brown chocolate mixture",
+        "action": "being stirred",
+        "position": "inside the bowl",
+        "id": "mixture_chocolate_1"
+      },
+      {
+        "desc": "metal spoon",
+        "action": "stirring the mixture",
+        "position": "inside the bowl",
+        "id": "spoon_metal_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a white square bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal spoon is stirring a thick dark brown chocolate mixture inside the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The chocolate mixture has a smooth, glossy texture with some residue on the sides of the bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is to the left of the bowl, holding it steady. The metal spoon is inside the bowl, submerged in the chocolate mixture. The chocolate mixture is contained within the white square bowl.",
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      68,
+      70
+    ],
+    "visible_entities": [
+      {
+        "desc": "white square bowl containing thick, dark brown chocolate mixture",
+        "action": "being held",
+        "position": "center",
+        "id": "mixture_chocolate_1"
+      },
+      {
+        "desc": "metal spoon with chocolate residue",
+        "action": "stirring mixture",
+        "position": "center",
+        "id": "spoon_metal_1"
+      },
+      {
+        "desc": "hand with light skin tone",
+        "action": "holding bowl",
+        "position": "left",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "black clothing sleeve",
+        "action": "static",
+        "position": "left",
+        "id": "person_chef_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A hand is holding a white square bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A metal spoon is stirring a thick chocolate mixture inside the bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The chocolate mixture is dark brown and viscous.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The hand is on the left side of the frame, holding the white square bowl which is in the center. The metal spoon is inside the bowl, interacting with the chocolate mixture. The black clothing sleeve is visible on the far left, next to the hand.",
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      70,
+      72
+    ],
+    "visible_entities": [
+      {
+        "desc": "white square bowl with rounded corners, containing a thick, dark brown, glossy, and bubbly chocolate mixture",
+        "action": "being held and stirred",
+        "position": "center",
+        "id": "mixture_chocolate_1"
+      },
+      {
+        "desc": "silver metal spoon with a rounded bowl",
+        "action": "stirring the mixture",
+        "position": "left/center",
+        "id": "spoon_metal_1"
+      },
+      {
+        "desc": "person's hands with light skin tone",
+        "action": "holding the bowl and spoon",
+        "position": "left",
+        "id": "person_chef_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is stirring a thick, dark brown chocolate mixture inside a white square bowl using a silver spoon.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The chocolate mixture has a glossy texture with visible air bubbles on the surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Residue of the chocolate mixture is smeared along the inner walls of the bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person's hands are on the left side of the frame, holding the white square bowl which is positioned in the center. The silver spoon is inserted into the bowl from the left, with its handle extending out of the frame to the left.",
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  },
+  {
+    "time": [
+      72,
+      74
+    ],
+    "visible_entities": [
+      {
+        "desc": "person with fair skin, wearing a black long-sleeved garment",
+        "action": "holding a spoon and bowl",
+        "position": "left",
+        "id": "person_chef_1"
+      },
+      {
+        "desc": "white square ceramic bowl with rounded corners",
+        "action": "static",
+        "position": "center",
+        "id": "bowl_white_square_1"
+      },
+      {
+        "desc": "dark brown thick chocolate mixture with a glossy, viscous texture",
+        "action": "being stirred",
+        "position": "inside bowl",
+        "id": "mixture_chocolate_1"
+      },
+      {
+        "desc": "silver metal spoon with a thin handle",
+        "action": "stirring mixture",
+        "position": "center",
+        "id": "spoon_metal_1"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is stirring a thick chocolate mixture inside a white bowl.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The spoon is being used to mix the dark brown substance.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The chocolate mixture coats the sides of the bowl.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [],
+    "spatial": "The person is positioned to the left of the bowl. The spoon is inside the bowl, submerged in the chocolate mixture. The bowl rests on a white surface.",
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "dXGMvsFyCzg",
+    "state_changes": []
+  }
+]

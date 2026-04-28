@@ -1,0 +1,3558 @@
+[
+  {
+    "time": [
+      0,
+      2
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "state_changes": [],
+    "ocr": [],
+    "spatial": "",
+    "not_observable": [],
+    "parse_success": true,
+    "chunk_idx": 0,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      2,
+      4
+    ],
+    "visible_entities": [
+      {
+        "id": "text_overlay_1",
+        "attributes": [
+          "white",
+          "centered",
+          "fading_in",
+          "legible"
+        ],
+        "action": "appearing and displaying narrative text",
+        "position": "center of screen"
+      },
+      {
+        "id": "background_1",
+        "attributes": [
+          "purple",
+          "gradient",
+          "bokeh_effects"
+        ],
+        "action": "static background",
+        "position": "full frame"
+      },
+      {
+        "id": "light_flare_1",
+        "attributes": [
+          "white",
+          "bright",
+          "starburst"
+        ],
+        "action": "fading",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "White text appears on a purple background describing a baking process.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text mentions a 4th attempt at making gluten-free Viennese Whirls.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text describes previous failed attempts regarding taste and appearance.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A bright lens flare is visible in the center at the start of the chunk.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "Text overlay fades in and becomes fully legible.",
+      "The text orientation shifts from slightly tilted to straight.",
+      "The bright central flare diminishes as the text becomes clearer."
+    ],
+    "ocr": [
+      "FOR ALL THOSE WHO'VE BEEN FOLLOWING....",
+      "You'll know this is my 4th attempt at making gluten-free Viennese Whirls.",
+      "The first two attempts tasted great (but looked awful).",
+      "The third attempt looked great (but tasted awful).",
+      "And then the 4th attempt conquered everything..."
+    ],
+    "spatial": "White text is centered on a purple background with soft bokeh circles. A bright light flare originates from the center initially.",
+    "not_observable": [
+      "The actual Viennese Whirls",
+      "The person speaking or writing the text",
+      "The kitchen environment",
+      "Audio narration or music"
+    ],
+    "parse_success": true,
+    "chunk_idx": 1,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      4,
+      6
+    ],
+    "visible_entities": [
+      {
+        "id": "text_overlay_1",
+        "attributes": [
+          "white",
+          "centered",
+          "horizontal",
+          "legible",
+          "sans-serif"
+        ],
+        "action": "displaying static message",
+        "position": "center of frame"
+      },
+      {
+        "id": "background_1",
+        "attributes": [
+          "purple",
+          "gradient"
+        ],
+        "action": "static backdrop",
+        "position": "full frame"
+      },
+      {
+        "id": "bokeh_circles_1",
+        "attributes": [
+          "translucent",
+          "circular",
+          "out-of-focus",
+          "white/grey"
+        ],
+        "action": "fading in background",
+        "position": "scattered across background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A block of white text is fully legible and centered horizontally.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text details a history of baking attempts, specifically mentioning 'gluten-free Viennese Whirls'.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background features soft, out-of-focus light circles (bokeh) in addition to the purple gradient.",
+        "confidence": 0.9,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "text_overlay_1 has rotated from a slight angle to be perfectly horizontal",
+      "text_overlay_1 has increased in opacity/brightness compared to the previous chunk",
+      "background lighting has shifted from a central flare to scattered bokeh circles"
+    ],
+    "ocr": [
+      "FOR ALL THOSE WHO'VE BEEN FOLLOWING....",
+      "You'll know this is my 4th attempt at making gluten-free",
+      "Viennese Whirls.",
+      "The first two attempts tasted great (but looked awful).",
+      "The third attempt looked great (but tasted awful).",
+      "And then the 4th attempt conquered everything..."
+    ],
+    "spatial": "Centered white text block overlaid on a purple gradient background with scattered, faint bokeh light circles.",
+    "not_observable": [
+      "taste of the Viennese Whirls",
+      "visual appearance of the actual cookies",
+      "audio narration or music"
+    ],
+    "parse_success": true,
+    "chunk_idx": 2,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      6,
+      8
+    ],
+    "visible_entities": [
+      {
+        "id": "text_overlay_1",
+        "attributes": [
+          "white",
+          "centered",
+          "sans-serif",
+          "multi-line"
+        ],
+        "action": "displaying introductory message",
+        "position": "center of screen"
+      },
+      {
+        "id": "background_1",
+        "attributes": [
+          "purple",
+          "gradient"
+        ],
+        "action": "static",
+        "position": "full frame"
+      },
+      {
+        "id": "bokeh_circles_1",
+        "attributes": [
+          "faint",
+          "out-of-focus",
+          "white/translucent"
+        ],
+        "action": "fading",
+        "position": "background"
+      },
+      {
+        "id": "background_text_layers",
+        "attributes": [
+          "faint",
+          "large",
+          "repeated text"
+        ],
+        "action": "visible behind main text",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Text overlay displays a message about the creator's 4th attempt at making gluten-free Viennese Whirls",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Text mentions that the first two attempts tasted great but looked awful",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Text mentions that the third attempt looked great but tasted awful",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Text states the 4th attempt conquered everything",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Faint background text layers repeat the foreground text",
+        "confidence": 0.8,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "text_overlay_1 is fully stable and legible compared to previous chunk",
+      "background_text_layers and bokeh_circles_1 are visible but faint, suggesting a fading effect",
+      "no new title card yet (appears in subsequent frames)"
+    ],
+    "ocr": [
+      "FOR ALL THOSE WHO'VE BEEN FOLLOWING....",
+      "You'll know this is my 4th attempt at making gluten-free Viennese Whirls.",
+      "The first two attempts tasted great (but looked awful).",
+      "The third attempt looked great (but tasted awful).",
+      "And then the 4th attempt conquered everything..."
+    ],
+    "spatial": "Main text is centered in white against a purple background. Faint, larger copies of the text and bokeh circles are visible in the background layers.",
+    "not_observable": [
+      "The actual Viennese Whirls cookies",
+      "The taste of the cookies",
+      "The appearance of the failed attempts",
+      "Audio narration or music"
+    ],
+    "parse_success": true,
+    "chunk_idx": 3,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      8,
+      10
+    ],
+    "visible_entities": [
+      {
+        "id": "title_text_1",
+        "attributes": [
+          "white",
+          "centered",
+          "sans-serif",
+          "three lines"
+        ],
+        "action": "fading in and remaining static",
+        "position": "center of screen"
+      },
+      {
+        "id": "background_solid_1",
+        "attributes": [
+          "purple",
+          "solid color"
+        ],
+        "action": "transitioning to video scene",
+        "position": "full screen"
+      },
+      {
+        "id": "cookie_1",
+        "attributes": [
+          "swirled",
+          "beige",
+          "baked good"
+        ],
+        "action": "sitting on plate",
+        "position": "center left"
+      },
+      {
+        "id": "plate_1",
+        "attributes": [
+          "white",
+          "round"
+        ],
+        "action": "holding cookie",
+        "position": "center left"
+      },
+      {
+        "id": "mug_1",
+        "attributes": [
+          "white",
+          "ceramic",
+          "logo visible"
+        ],
+        "action": "sitting on surface",
+        "position": "top right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'How To Make Gluten-Free Viennese Whirls' appears on screen.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A swirled cookie sits on a white plate.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A white mug with a heart logo is visible in the background.",
+        "confidence": 0.9,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The background transitions from solid purple to a live video scene.",
+        "confidence": 0.95,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "The introductory text about '4th attempt' has disappeared.",
+      "A new title card 'How To Make Gluten-Free Viennese Whirls' has appeared.",
+      "The solid purple background has revealed a video scene with a cookie and mug."
+    ],
+    "ocr": [
+      "How To Make",
+      "Gluten-Free",
+      "Viennese Whirls",
+      "THE LOCAL BAKERY"
+    ],
+    "spatial": "The title text is centered over the scene. The cookie on the plate is positioned in the lower-left to center area. The mug is in the upper right corner.",
+    "not_observable": [
+      "Audio narration or music",
+      "The taste of the cookie",
+      "The specific ingredients used"
+    ],
+    "parse_success": true,
+    "chunk_idx": 4,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      10,
+      12
+    ],
+    "visible_entities": [
+      {
+        "id": "cookie_1",
+        "attributes": [
+          "Viennese whirl",
+          "swirled top",
+          "jam filling",
+          "buttercream filling",
+          "golden brown"
+        ],
+        "action": "sitting stationary on plate",
+        "position": "center-left on the plate"
+      },
+      {
+        "id": "plate_1",
+        "attributes": [
+          "white",
+          "round",
+          "ceramic"
+        ],
+        "action": "holding the cookie",
+        "position": "center of the frame"
+      },
+      {
+        "id": "mug_1",
+        "attributes": [
+          "white",
+          "ceramic",
+          "logo visible"
+        ],
+        "action": "sitting on countertop",
+        "position": "top right corner"
+      },
+      {
+        "id": "countertop_1",
+        "attributes": [
+          "dark",
+          "speckled",
+          "granite-like"
+        ],
+        "action": "supporting the plate and mug",
+        "position": "background surface"
+      },
+      {
+        "id": "title_text_1",
+        "attributes": [
+          "white text",
+          "purple overlay"
+        ],
+        "action": "fading out/disappearing",
+        "position": "center of screen"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A Viennese whirl cookie is displayed on a white plate.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A white mug with 'THE LOCAL BAKEHOUSE' logo is visible in the top right.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The purple title overlay fades away to reveal the clear video footage.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The cookie has a visible layer of red jam and white cream.",
+        "confidence": 0.9,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "The purple title card overlay ('How To Make Gluten-Free Viennese Whirls') fades out completely.",
+      "The scene transitions from a tinted overlay to a clear, natural color shot of the cookie."
+    ],
+    "ocr": [
+      "THE LOCAL BAKEHOUSE",
+      "How To Make Gluten-Free Viennese Whirls"
+    ],
+    "spatial": "The white plate with the cookie is positioned in the lower-left to center area. The mug is in the upper right. The dark countertop fills the rest of the background.",
+    "not_observable": [
+      "The taste of the cookie",
+      "The temperature of the mug's contents",
+      "Any audio narration or background music",
+      "The specific type of jam (though it looks red/strawberry/raspberry)"
+    ],
+    "parse_success": true,
+    "chunk_idx": 5,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      12,
+      14
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "state_changes": [],
+    "ocr": [],
+    "spatial": "",
+    "not_observable": [],
+    "parse_success": true,
+    "chunk_idx": 6,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      14,
+      16
+    ],
+    "visible_entities": [
+      {
+        "id": "cookie_1",
+        "attributes": [
+          "Viennese whirl",
+          "swirled top",
+          "jam filling",
+          "cream filling",
+          "golden-brown"
+        ],
+        "action": "resting on plate",
+        "position": "center-left"
+      },
+      {
+        "id": "plate_1",
+        "attributes": [
+          "white",
+          "round",
+          "ceramic"
+        ],
+        "action": "holding cookie",
+        "position": "center"
+      },
+      {
+        "id": "mug_1",
+        "attributes": [
+          "white",
+          "branded",
+          "ceramic"
+        ],
+        "action": "sitting on counter",
+        "position": "top-right"
+      },
+      {
+        "id": "countertop_1",
+        "attributes": [
+          "dark",
+          "speckled",
+          "granite-like"
+        ],
+        "action": "supporting objects",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A single Viennese whirl biscuit with cream and jam filling sits on a white plate.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A white mug with 'THE LOCAL BAKEHOUSE' logo is visible in the top right corner.",
+        "confidence": 0.95,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The title text overlay from previous seconds is no longer visible.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The scene is a static close-up shot of the finished bake.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "Title text 'How To Make Gluten-Free Viennese Whirls' has completely disappeared.",
+      "A slight transparency/overlay effect begins in the final frame, indicating a transition."
+    ],
+    "ocr": [
+      "THE LOCAL BAKEHOUSE"
+    ],
+    "spatial": "The cookie is centered on the white plate which occupies the lower-left to center area. The mug is positioned in the upper right quadrant. The dark countertop fills the rest of the frame.",
+    "not_observable": [
+      "Taste of the cookie",
+      "Smell of the baking",
+      "Audio narration",
+      "Temperature of the mug"
+    ],
+    "parse_success": true,
+    "chunk_idx": 7,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      16,
+      18
+    ],
+    "visible_entities": [
+      {
+        "id": "pure_spread_tub",
+        "attributes": [
+          "white",
+          "rectangular",
+          "branded"
+        ],
+        "action": "sitting on counter",
+        "position": "left"
+      },
+      {
+        "id": "butter_block",
+        "attributes": [
+          "wrapped",
+          "gold_and_green",
+          "rectangular"
+        ],
+        "action": "sitting on counter",
+        "position": "front_left"
+      },
+      {
+        "id": "flour_bag",
+        "attributes": [
+          "white",
+          "paper_bag"
+        ],
+        "action": "sitting on counter",
+        "position": "back_left_center"
+      },
+      {
+        "id": "pink_bag",
+        "attributes": [
+          "pink",
+          "packaging"
+        ],
+        "action": "sitting on counter",
+        "position": "back_center"
+      },
+      {
+        "id": "cornflour_box",
+        "attributes": [
+          "blue",
+          "cardboard_box",
+          "Sainsbury's branded"
+        ],
+        "action": "sitting on counter",
+        "position": "back_right_center"
+      },
+      {
+        "id": "vanilla_bottle",
+        "attributes": [
+          "dark_liquid",
+          "tall",
+          "Nielsen-Massey branded"
+        ],
+        "action": "standing on counter",
+        "position": "right"
+      },
+      {
+        "id": "recipe_note",
+        "attributes": [
+          "handwritten",
+          "white_paper",
+          "small"
+        ],
+        "action": "lying on counter",
+        "position": "front_center"
+      },
+      {
+        "id": "countertop",
+        "attributes": [
+          "black",
+          "speckled",
+          "reflective"
+        ],
+        "action": "supporting items",
+        "position": "bottom"
+      },
+      {
+        "id": "stool_legs",
+        "attributes": [
+          "silver",
+          "metal"
+        ],
+        "action": "standing in background",
+        "position": "background_left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A collection of baking ingredients is arranged on a black speckled countertop.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A handwritten note lists the recipe quantities in the center foreground.",
+        "confidence": 0.9,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Visible brands include Pure, Sainsbury's, and Nielsen-Massey.",
+        "confidence": 0.95,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The scene transitions via a fade effect from the finished cookie to the ingredients.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "The video transitions from the shot of the finished Viennese whirl on a plate to a shot of the raw ingredients laid out on the counter.",
+      "The camera zooms in slightly on the ingredients and the handwritten note."
+    ],
+    "ocr": [
+      "Pure",
+      "Unsalted English Butter by Sainsbury's",
+      "cornflour by Sainsbury's",
+      "NIELSEN-MASSEY",
+      "MADAGASCAR BOURBON VANILLA EXTRACT",
+      "80g unsalted butter",
+      "35g icing sugar",
+      "112g gluten free flour",
+      "30g cornflour",
+      "1/2 tsp vanilla"
+    ],
+    "spatial": "Ingredients are arranged in a loose row across the middle of the black countertop. A handwritten recipe note is placed centrally in the foreground. A stool is visible in the background on the left.",
+    "not_observable": [
+      "Audio narration or music",
+      "Smell of the ingredients",
+      "Texture of the flour inside the bag"
+    ],
+    "parse_success": true,
+    "chunk_idx": 8,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      18,
+      20
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "state_changes": [],
+    "ocr": [],
+    "spatial": "",
+    "not_observable": [],
+    "parse_success": true,
+    "chunk_idx": 9,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      20,
+      22
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "state_changes": [],
+    "ocr": [],
+    "spatial": "",
+    "not_observable": [],
+    "parse_success": true,
+    "chunk_idx": 10,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      22,
+      24
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "state_changes": [],
+    "ocr": [],
+    "spatial": "",
+    "not_observable": [],
+    "parse_success": true,
+    "chunk_idx": 11,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      24,
+      26
+    ],
+    "visible_entities": [
+      {
+        "id": "recipe_note",
+        "attributes": [
+          "pink",
+          "handwritten",
+          "sticky_note"
+        ],
+        "action": "displaying ingredients list",
+        "position": "center"
+      },
+      {
+        "id": "butter_block",
+        "attributes": [
+          "packaged",
+          "yellow_green_label",
+          "Sainsbury's_brand"
+        ],
+        "action": "sitting on counter",
+        "position": "left"
+      },
+      {
+        "id": "countertop",
+        "attributes": [
+          "dark",
+          "speckled",
+          "reflective"
+        ],
+        "action": "supporting items",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pink sticky note lists handwritten ingredients including 60g butter, 60g margarine, 35g icing sugar, 112g flour, 30g cornflour, and 1/4 tspn vanilla.",
+        "confidence": 0.95,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A block of unsalted English butter by Sainsbury's is visible next to the note.",
+        "confidence": 0.9,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "Camera zooms in closely on the handwritten recipe note and the butter packaging label, excluding other ingredients seen previously."
+    ],
+    "ocr": [
+      "60g unsalted butter",
+      "60g margarine",
+      "35g icing sugar",
+      "112g slr glf flour",
+      "30g cornflour",
+      "1/4 tspn vanilla",
+      "unsalted English butter by Sainsbury's"
+    ],
+    "spatial": "The pink recipe note is centered on the dark countertop. The butter block is positioned to the left of the note.",
+    "not_observable": [
+      "Other ingredients like the margarine tub, flour bags, or vanilla bottle which were visible in the wider shot previously.",
+      "Audio narration.",
+      "Smell of vanilla."
+    ],
+    "parse_success": true,
+    "chunk_idx": 12,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      26,
+      28
+    ],
+    "visible_entities": [
+      {
+        "id": "recipe_note",
+        "attributes": [
+          "pink",
+          "handwritten",
+          "paper",
+          "ingredient_list"
+        ],
+        "action": "displaying recipe quantities",
+        "position": "center"
+      },
+      {
+        "id": "countertop",
+        "attributes": [
+          "dark",
+          "speckled",
+          "granite-like"
+        ],
+        "action": "supporting the note",
+        "position": "background"
+      },
+      {
+        "id": "butter_block",
+        "attributes": [
+          "green_packaging",
+          "partially_visible"
+        ],
+        "action": "sitting on counter",
+        "position": "top_left_corner"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The handwritten note lists 60g unsalted butter and 60g margarine.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The note specifies 112g of 'slr glf flour' (self-raising gluten-free flour).",
+        "confidence": 0.9,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The camera has zoomed in significantly compared to the previous wide shot of ingredients.",
+        "confidence": 1.0,
+        "support_level": "inferred",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "Camera zooms in to focus exclusively on the handwritten recipe note.",
+      "Other ingredients (flour bags, sugar, vanilla) move out of the frame."
+    ],
+    "ocr": [
+      "60g unsalted butter",
+      "60g margarine",
+      "35g icing sugar",
+      "112g slr glf flour",
+      "30g cornflour",
+      "1/4 tspn vanilla"
+    ],
+    "spatial": "The pink recipe note is centered on the dark countertop. The edge of the butter packaging is visible in the top left corner.",
+    "not_observable": [
+      "The full view of the other ingredients (flour, sugar, vanilla bottle) which were visible in the previous chunk.",
+      "Audio narration."
+    ],
+    "parse_success": true,
+    "chunk_idx": 13,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      28,
+      30
+    ],
+    "visible_entities": [
+      {
+        "id": "recipe_note",
+        "attributes": [
+          "pink",
+          "handwritten",
+          "paper"
+        ],
+        "action": "displaying ingredients list",
+        "position": "center"
+      },
+      {
+        "id": "butter_block",
+        "attributes": [
+          "gold wrapper",
+          "partial"
+        ],
+        "action": "sitting on counter",
+        "position": "top left"
+      },
+      {
+        "id": "countertop",
+        "attributes": [
+          "dark",
+          "speckled",
+          "reflective"
+        ],
+        "action": "supporting items",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pink sticky note lists ingredients for a recipe.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The ingredients listed are 60g unsalted butter, 60g margarine, 35g icing sugar, 112g slr glf flour, 30g cornflour, and 1/4 tspn vanilla.",
+        "confidence": 0.95,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A block of butter is partially visible in the top left corner.",
+        "confidence": 0.9,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "The camera remains focused on the handwritten recipe note, similar to the previous chunk."
+    ],
+    "ocr": [
+      "60g unsalted butter",
+      "60g margarine",
+      "35g icing sugar",
+      "112g slr glf flour",
+      "30g cornflour",
+      "1/4 tspn vanilla"
+    ],
+    "spatial": "The pink recipe note is centered on the dark countertop. A butter block is partially visible in the top left corner.",
+    "not_observable": [
+      "The chef's hands",
+      "Sounds of speaking or writing",
+      "The full view of other ingredients like the flour bag or vanilla bottle (cropped out)"
+    ],
+    "parse_success": true,
+    "chunk_idx": 14,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      30,
+      32
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "state_changes": [],
+    "ocr": [],
+    "spatial": "",
+    "not_observable": [],
+    "parse_success": true,
+    "chunk_idx": 15,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      32,
+      34
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "state_changes": [],
+    "ocr": [],
+    "spatial": "",
+    "not_observable": [],
+    "parse_success": true,
+    "chunk_idx": 16,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      34,
+      36
+    ],
+    "visible_entities": [
+      {
+        "id": "recipe_note",
+        "attributes": [
+          "pink",
+          "handwritten",
+          "sticky_note",
+          "ingredient_list"
+        ],
+        "action": "lying on counter",
+        "position": "center"
+      },
+      {
+        "id": "butter_block",
+        "attributes": [
+          "packaging",
+          "Sainsbury's",
+          "unsalted"
+        ],
+        "action": "sitting on counter",
+        "position": "top_left"
+      },
+      {
+        "id": "countertop",
+        "attributes": [
+          "dark",
+          "speckled",
+          "reflective"
+        ],
+        "action": "supporting objects",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A pink sticky note lists handwritten ingredients for a recipe.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The recipe calls for 60g unsalted butter and 60g margarine.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The recipe lists 35g icing sugar and 112g slr glf flour.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The recipe includes 30g cornflour and 1/4 tspn vanilla.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A block of Sainsbury's unsalted English butter is partially visible in the top left corner.",
+        "confidence": 0.9,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "Camera has zoomed in significantly to focus exclusively on the handwritten recipe note.",
+      "Other ingredients like the flour bag and vanilla bottle are no longer in the frame."
+    ],
+    "ocr": [
+      "60g unsalted",
+      "butter",
+      "60g margarine",
+      "35g icing sugar",
+      "112g slr glf flour",
+      "30g cornflour",
+      "1/4 tspn vanilla"
+    ],
+    "spatial": "The pink recipe note is centered on the dark countertop. The corner of a butter block is visible in the upper left. Reflections are visible on the glossy counter surface.",
+    "not_observable": [
+      "Audio of the narrator reading the recipe",
+      "Smell of the ingredients",
+      "The rest of the kitchen environment"
+    ],
+    "parse_success": true,
+    "chunk_idx": 17,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      36,
+      38
+    ],
+    "visible_entities": [
+      {
+        "id": "chef_1",
+        "attributes": [
+          "female",
+          "green t-shirt",
+          "brown hair"
+        ],
+        "action": "standing behind counter, talking, gesturing with hands",
+        "position": "center of kitchen"
+      },
+      {
+        "id": "kitchen_counter_1",
+        "attributes": [
+          "black",
+          "granite-like"
+        ],
+        "action": "supporting ingredients",
+        "position": "foreground"
+      },
+      {
+        "id": "plate_1",
+        "attributes": [
+          "white",
+          "round"
+        ],
+        "action": "holding cookie",
+        "position": "front left on counter"
+      },
+      {
+        "id": "cookie_1",
+        "attributes": [
+          "yellow frosting",
+          "jam filling"
+        ],
+        "action": "sitting on plate",
+        "position": "on plate_1"
+      },
+      {
+        "id": "mug_1",
+        "attributes": [
+          "white",
+          "printed logo"
+        ],
+        "action": "sitting on counter",
+        "position": "next to plate_1"
+      },
+      {
+        "id": "butter_block_1",
+        "attributes": [
+          "rectangular",
+          "packaged"
+        ],
+        "action": "sitting on counter",
+        "position": "center left on counter"
+      },
+      {
+        "id": "pure_spread_tub_1",
+        "attributes": [
+          "white tub",
+          "rectangular"
+        ],
+        "action": "sitting on counter",
+        "position": "center on counter"
+      },
+      {
+        "id": "flour_bag_1",
+        "attributes": [
+          "white bag",
+          "tied"
+        ],
+        "action": "sitting on counter",
+        "position": "center right on counter"
+      },
+      {
+        "id": "pink_bag_1",
+        "attributes": [
+          "pink packaging",
+          "tied"
+        ],
+        "action": "sitting on counter",
+        "position": "right on counter"
+      },
+      {
+        "id": "cornflour_box_1",
+        "attributes": [
+          "blue box"
+        ],
+        "action": "sitting on counter",
+        "position": "far right on counter"
+      },
+      {
+        "id": "vanilla_bottle_1",
+        "attributes": [
+          "tall bottle",
+          "dark liquid"
+        ],
+        "action": "sitting on counter",
+        "position": "far right on counter"
+      },
+      {
+        "id": "cake_stand_1",
+        "attributes": [
+          "tiered",
+          "white cakes"
+        ],
+        "action": "displaying cakes",
+        "position": "background right"
+      },
+      {
+        "id": "kitchen_background_1",
+        "attributes": [
+          "light blue walls",
+          "white cabinets",
+          "window"
+        ],
+        "action": "surrounding chef",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman in a green t-shirt appears in the kitchen.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The ingredients shown in previous close-ups are arranged on the counter in front of her.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The chef gestures with her hands while speaking.",
+        "confidence": 0.9,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A tiered cake stand with cakes is visible in the background.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The chef's shirt has text 'BEARSLAND SINGLE BEAR'.",
+        "confidence": 0.9,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "Transition from close-up shots of ingredients to a wide shot of the chef in the kitchen.",
+      "Chef becomes visible for the first time.",
+      "Full arrangement of ingredients on the counter is revealed."
+    ],
+    "ocr": [
+      "BEARSLAND",
+      "SINGLE BEAR",
+      "NIELSEN-MASSEY",
+      "MADAGASCAR BOURBON VANILLA EXTRACT",
+      "cornflour by Sainsbury's",
+      "butter cream icing"
+    ],
+    "spatial": "The chef stands centrally behind a black kitchen counter. On the counter, from left to right, are a plate with a cookie, a mug, a block of butter, a tub of spread, a bag of flour, a pink bag of icing sugar, a blue box of cornflour, and a bottle of vanilla extract. Behind the chef to the right is a tiered cake stand. To the left is a window.",
+    "not_observable": [
+      "Audio of the chef speaking",
+      "Smell of the cookie or ingredients",
+      "Exact text on the mug (partially obscured/small)",
+      "Text on the flour bag (too small/blurry in wide shot)"
+    ],
+    "parse_success": true,
+    "chunk_idx": 18,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      38,
+      40
+    ],
+    "visible_entities": [
+      {
+        "id": "chef_1",
+        "attributes": [
+          "female",
+          "green_t-shirt",
+          "brown_hair"
+        ],
+        "action": "standing behind counter, gesturing, reaching for cookie",
+        "position": "center"
+      },
+      {
+        "id": "kitchen_counter_1",
+        "attributes": [
+          "black",
+          "granite"
+        ],
+        "action": "supporting items",
+        "position": "foreground"
+      },
+      {
+        "id": "plate_1",
+        "attributes": [
+          "white",
+          "round"
+        ],
+        "action": "holding cookie",
+        "position": "front left on counter"
+      },
+      {
+        "id": "cookie_1",
+        "attributes": [
+          "yellow",
+          "baked"
+        ],
+        "action": "sitting on plate, being touched",
+        "position": "on plate_1"
+      },
+      {
+        "id": "mug_1",
+        "attributes": [
+          "white",
+          "patterned"
+        ],
+        "action": "sitting on counter",
+        "position": "next to plate"
+      },
+      {
+        "id": "butter_block_1",
+        "attributes": [
+          "gold_wrapper",
+          "rectangular"
+        ],
+        "action": "sitting on counter",
+        "position": "center right on counter"
+      },
+      {
+        "id": "pure_spread_tub_1",
+        "attributes": [
+          "white",
+          "plastic"
+        ],
+        "action": "sitting on counter",
+        "position": "behind butter_block_1"
+      },
+      {
+        "id": "flour_bag_1",
+        "attributes": [
+          "white",
+          "paper"
+        ],
+        "action": "sitting on counter",
+        "position": "right of butter"
+      },
+      {
+        "id": "pink_bag_1",
+        "attributes": [
+          "pink",
+          "white"
+        ],
+        "action": "sitting on counter",
+        "position": "right of flour"
+      },
+      {
+        "id": "cornflour_box_1",
+        "attributes": [
+          "blue",
+          "cardboard"
+        ],
+        "action": "sitting on counter",
+        "position": "back right"
+      },
+      {
+        "id": "vanilla_bottle_1",
+        "attributes": [
+          "tall",
+          "white_label"
+        ],
+        "action": "sitting on counter",
+        "position": "far right"
+      },
+      {
+        "id": "cake_stand_1",
+        "attributes": [
+          "tiered",
+          "white_cake"
+        ],
+        "action": "displaying cake",
+        "position": "background right"
+      },
+      {
+        "id": "kitchen_background_1",
+        "attributes": [
+          "white_cabinets",
+          "window",
+          "mixer"
+        ],
+        "action": "surrounding scene",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A woman in a green shirt stands behind a kitchen counter with baking ingredients.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Ingredients including butter, flour, icing sugar, cornflour, and vanilla are lined up on the counter.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A plate with a cookie and a mug are on the counter to the woman's right.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman gestures with her hands while speaking.",
+        "confidence": 0.9,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The woman reaches for the cookie on the plate at the end of the clip.",
+        "confidence": 0.9,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A tiered cake is visible on a stand in the background.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "Camera view changes from close-up of recipe note and ingredients to a wide shot of the chef in the kitchen.",
+      "The recipe note is no longer visible in the lineup.",
+      "The chef begins interacting with the cookie on the plate."
+    ],
+    "ocr": [
+      "BEARSLAND",
+      "SINGLE BEAR",
+      "Pure",
+      "Nielsen-Massey"
+    ],
+    "spatial": "The chef stands centrally behind a black countertop. To her left (viewer's right), ingredients are lined up: butter, spread, flour, icing sugar, cornflour, and vanilla. To her right (viewer's left), a plate with a cookie and a mug are placed. In the background, white kitchen cabinets, a window, and a tiered cake on a stand are visible.",
+    "not_observable": [
+      "Audio of the chef speaking",
+      "Smell of the baking ingredients",
+      "Taste of the cookie"
+    ],
+    "parse_success": true,
+    "chunk_idx": 19,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      40,
+      42
+    ],
+    "visible_entities": [
+      {
+        "id": "chef_1",
+        "attributes": [
+          "female",
+          "green_shirt",
+          "brown_hair"
+        ],
+        "action": "talking, gesturing, picking up cookie, eating",
+        "position": "center_behind_counter"
+      },
+      {
+        "id": "cookie_1",
+        "attributes": [
+          "yellow",
+          "round"
+        ],
+        "action": "being_picked_up, being_eaten",
+        "position": "on_plate_then_in_hands"
+      },
+      {
+        "id": "plate_1",
+        "attributes": [
+          "white",
+          "round"
+        ],
+        "action": "holding_cookie",
+        "position": "front_center_counter"
+      },
+      {
+        "id": "mug_1",
+        "attributes": [
+          "white",
+          "patterned"
+        ],
+        "action": "sitting",
+        "position": "next_to_plate"
+      },
+      {
+        "id": "butter_block_1",
+        "attributes": [
+          "yellow_packaging"
+        ],
+        "action": "sitting",
+        "position": "right_side_counter"
+      },
+      {
+        "id": "pure_spread_tub_1",
+        "attributes": [
+          "white_tub"
+        ],
+        "action": "sitting",
+        "position": "right_side_counter"
+      },
+      {
+        "id": "flour_bag_1",
+        "attributes": [
+          "white_bag"
+        ],
+        "action": "sitting",
+        "position": "right_side_counter"
+      },
+      {
+        "id": "pink_bag_1",
+        "attributes": [
+          "pink_packaging"
+        ],
+        "action": "sitting",
+        "position": "right_side_counter"
+      },
+      {
+        "id": "cornflour_box_1",
+        "attributes": [
+          "blue_box"
+        ],
+        "action": "sitting",
+        "position": "right_side_counter"
+      },
+      {
+        "id": "vanilla_bottle_1",
+        "attributes": [
+          "dark_liquid",
+          "label"
+        ],
+        "action": "sitting",
+        "position": "far_right_counter"
+      },
+      {
+        "id": "cake_stand_1",
+        "attributes": [
+          "tiered_cake",
+          "pink_flowers"
+        ],
+        "action": "displayed",
+        "position": "background_right"
+      },
+      {
+        "id": "kitchen_background_1",
+        "attributes": [
+          "white_cabinets",
+          "window",
+          "extractor_fan"
+        ],
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The chef stands behind a kitchen counter with ingredients lined up.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The chef gestures with her hands while speaking.",
+        "confidence": 0.9,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The chef picks up a cookie from a white plate.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The chef takes a bite of the cookie.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A tiered cake is visible on a stand in the background.",
+        "confidence": 1.0,
+        "support_level": "carried_from_previous",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "chef_1 transitions from gesturing/talking to picking up and eating cookie_1",
+      "cookie_1 moves from plate_1 to chef_1's hands and mouth"
+    ],
+    "ocr": [
+      "BEARSLAND",
+      "SINGLE BEAR"
+    ],
+    "spatial": "Chef is centered in the foreground behind a black countertop. Ingredients (butter, spread, flour, icing sugar, cornflour, vanilla) are arranged on the right side of the counter. A plate with a cookie and a mug are in front of the chef. A tiered cake on a stand is visible in the background against white cabinets.",
+    "not_observable": [
+      "taste of the cookie",
+      "sound of chef speaking",
+      "smell of the baking"
+    ],
+    "parse_success": true,
+    "chunk_idx": 20,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      42,
+      44
+    ],
+    "visible_entities": [
+      {
+        "id": "chef_1",
+        "attributes": [
+          "female",
+          "green t-shirt",
+          "short hair"
+        ],
+        "action": "eating a cookie",
+        "position": "center kitchen"
+      },
+      {
+        "id": "cookie_1",
+        "attributes": [
+          "golden brown",
+          "round"
+        ],
+        "action": "being eaten",
+        "position": "in chef's hand/mouth"
+      },
+      {
+        "id": "plate_1",
+        "attributes": [
+          "white",
+          "round"
+        ],
+        "action": "sitting on counter",
+        "position": "front center"
+      },
+      {
+        "id": "mug_1",
+        "attributes": [
+          "white",
+          "patterned"
+        ],
+        "action": "sitting on counter",
+        "position": "next to plate"
+      },
+      {
+        "id": "butter_block_1",
+        "attributes": [
+          "packaged",
+          "yellow"
+        ],
+        "action": "sitting on counter",
+        "position": "right side"
+      },
+      {
+        "id": "pure_spread_tub_1",
+        "attributes": [
+          "white tub",
+          "labeled"
+        ],
+        "action": "sitting on counter",
+        "position": "right side"
+      },
+      {
+        "id": "flour_bag_1",
+        "attributes": [
+          "white bag",
+          "tied"
+        ],
+        "action": "sitting on counter",
+        "position": "right side"
+      },
+      {
+        "id": "pink_bag_1",
+        "attributes": [
+          "pink bag",
+          "tied"
+        ],
+        "action": "sitting on counter",
+        "position": "right side"
+      },
+      {
+        "id": "cornflour_box_1",
+        "attributes": [
+          "blue box"
+        ],
+        "action": "sitting on counter",
+        "position": "right side"
+      },
+      {
+        "id": "vanilla_bottle_1",
+        "attributes": [
+          "tall bottle",
+          "dark liquid"
+        ],
+        "action": "sitting on counter",
+        "position": "far right"
+      },
+      {
+        "id": "cake_stand_1",
+        "attributes": [
+          "tiered",
+          "white cake with pink flowers"
+        ],
+        "action": "standing in background",
+        "position": "background right"
+      },
+      {
+        "id": "kitchen_background_1",
+        "attributes": [
+          "white cabinets",
+          "window",
+          "extractor fan"
+        ],
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The chef picks up a cookie from a white plate.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The chef takes a bite of the cookie.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The chef is wearing a green t-shirt with the text 'BEARSLAND SINGLE BEAR'.",
+        "confidence": 0.9,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Various baking ingredients are arranged on the counter to the chef's left (viewer's right).",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "Chef transitions from gesturing/talking to picking up and eating the cookie."
+    ],
+    "ocr": [
+      "BEARSLAND",
+      "SINGLE BEAR",
+      "Pure"
+    ],
+    "spatial": "The chef stands centrally behind a black countertop. A plate with a cookie and a mug are directly in front of her. A row of ingredients (butter, spread, flour, icing sugar, cornflour, vanilla) is lined up on the right side of the counter. A tiered cake on a stand is visible in the background against white cabinets.",
+    "not_observable": [
+      "Sound of chewing",
+      "Taste of the cookie",
+      "Exact text on ingredient packaging (too small/blurry in wide shot)",
+      "Recipe note (not visible in this wide shot)"
+    ],
+    "parse_success": true,
+    "chunk_idx": 21,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      44,
+      46
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "state_changes": [],
+    "ocr": [],
+    "spatial": "",
+    "not_observable": [],
+    "parse_success": true,
+    "chunk_idx": 22,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      46,
+      48
+    ],
+    "visible_entities": [
+      {
+        "id": "chef_1",
+        "attributes": [
+          "female",
+          "green t-shirt",
+          "brown hair"
+        ],
+        "action": "standing behind counter, gesturing with hands, talking",
+        "position": "center"
+      },
+      {
+        "id": "kitchen_counter_1",
+        "attributes": [
+          "black",
+          "glossy"
+        ],
+        "action": "supporting ingredients",
+        "position": "foreground"
+      },
+      {
+        "id": "plate_1",
+        "attributes": [
+          "white",
+          "round"
+        ],
+        "action": "holding cookie",
+        "position": "center on counter"
+      },
+      {
+        "id": "cookie_1",
+        "attributes": [
+          "yellow",
+          "round"
+        ],
+        "action": "resting on plate",
+        "position": "on plate_1"
+      },
+      {
+        "id": "mug_1",
+        "attributes": [
+          "white",
+          "patterned"
+        ],
+        "action": "sitting on counter",
+        "position": "right of plate"
+      },
+      {
+        "id": "butter_block_1",
+        "attributes": [
+          "wrapped",
+          "gold/blue"
+        ],
+        "action": "sitting on counter",
+        "position": "right of mug"
+      },
+      {
+        "id": "pure_spread_tub_1",
+        "attributes": [
+          "white",
+          "rectangular"
+        ],
+        "action": "sitting on counter",
+        "position": "right of butter"
+      },
+      {
+        "id": "flour_bag_1",
+        "attributes": [
+          "white",
+          "paper bag"
+        ],
+        "action": "standing on counter",
+        "position": "right of spread"
+      },
+      {
+        "id": "pink_bag_1",
+        "attributes": [
+          "pink",
+          "paper bag"
+        ],
+        "action": "sitting on counter",
+        "position": "right of flour"
+      },
+      {
+        "id": "cornflour_box_1",
+        "attributes": [
+          "blue",
+          "cardboard box"
+        ],
+        "action": "standing on counter",
+        "position": "behind pink bag"
+      },
+      {
+        "id": "vanilla_bottle_1",
+        "attributes": [
+          "dark liquid",
+          "white label"
+        ],
+        "action": "standing on counter",
+        "position": "far right"
+      },
+      {
+        "id": "cake_stand_1",
+        "attributes": [
+          "tiered",
+          "white cake with pink flowers"
+        ],
+        "action": "displaying cake",
+        "position": "background right"
+      },
+      {
+        "id": "kitchen_background_1",
+        "attributes": [
+          "light blue walls",
+          "white cabinets",
+          "window"
+        ],
+        "action": "surrounding scene",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "chef_1 is standing behind the kitchen counter",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "chef_1 is wearing a green t-shirt with text",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "ingredients are arranged in a row on the counter",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "chef_1 is gesturing with her hands while talking",
+        "confidence": 0.9,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "a tiered cake is visible on a stand in the background",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "chef_1 continues to gesture and talk, hand moves near mouth in final frame",
+      "scene remains static with ingredients on counter"
+    ],
+    "ocr": [
+      "BEARSLAND",
+      "SINGLE BEAR",
+      "cornflour by Sainsbury's",
+      "butter cream icing",
+      "NIELSEN-MASSEY"
+    ],
+    "spatial": "Chef stands centrally behind a black countertop. Ingredients (plate, mug, butter, spread, flour, icing sugar, cornflour, vanilla) are lined up in front of her from left to right. A tiered cake on a stand is visible in the background to the right. Kitchen cabinets and a window are in the background.",
+    "not_observable": [
+      "audio of chef speaking",
+      "taste of the cookie",
+      "specific recipe instructions being spoken"
+    ],
+    "parse_success": true,
+    "chunk_idx": 23,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      48,
+      50
+    ],
+    "visible_entities": [
+      {
+        "id": "chef_1",
+        "attributes": [
+          "woman",
+          "green_shirt",
+          "brown_hair"
+        ],
+        "action": "gesturing with hands while talking",
+        "position": "center behind counter"
+      },
+      {
+        "id": "kitchen_counter_1",
+        "attributes": [
+          "black",
+          "glossy"
+        ],
+        "action": "supporting items",
+        "position": "foreground"
+      },
+      {
+        "id": "plate_1",
+        "attributes": [
+          "white",
+          "round"
+        ],
+        "action": "holding food",
+        "position": "front center on counter"
+      },
+      {
+        "id": "cookie_1",
+        "attributes": [
+          "yellow",
+          "piece_of_cake"
+        ],
+        "action": "resting on plate",
+        "position": "on plate_1"
+      },
+      {
+        "id": "mug_1",
+        "attributes": [
+          "white",
+          "patterned"
+        ],
+        "action": "sitting on counter",
+        "position": "next to plate"
+      },
+      {
+        "id": "butter_block_1",
+        "attributes": [
+          "wrapped",
+          "rectangular"
+        ],
+        "action": "sitting on counter",
+        "position": "right side"
+      },
+      {
+        "id": "pure_spread_tub_1",
+        "attributes": [
+          "white",
+          "rectangular"
+        ],
+        "action": "sitting on counter",
+        "position": "right side"
+      },
+      {
+        "id": "flour_bag_1",
+        "attributes": [
+          "white",
+          "paper_bag"
+        ],
+        "action": "sitting on counter",
+        "position": "right side"
+      },
+      {
+        "id": "pink_bag_1",
+        "attributes": [
+          "pink",
+          "sugar_bag"
+        ],
+        "action": "sitting on counter",
+        "position": "right side"
+      },
+      {
+        "id": "cornflour_box_1",
+        "attributes": [
+          "blue",
+          "box"
+        ],
+        "action": "sitting on counter",
+        "position": "far right"
+      },
+      {
+        "id": "vanilla_bottle_1",
+        "attributes": [
+          "dark_liquid",
+          "tall_bottle"
+        ],
+        "action": "sitting on counter",
+        "position": "far right"
+      },
+      {
+        "id": "cake_stand_1",
+        "attributes": [
+          "tiered",
+          "white_cake"
+        ],
+        "action": "displaying cake",
+        "position": "background right"
+      },
+      {
+        "id": "kitchen_background_1",
+        "attributes": [
+          "white_cabinets",
+          "window",
+          "extractor_fan"
+        ],
+        "action": "surrounding scene",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The chef is standing behind the kitchen counter gesturing with both hands.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Various baking ingredients including flour, butter, and vanilla extract are arranged on the counter.",
+        "confidence": 1.0,
+        "support_level": "carried_from_previous",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A piece of cake or cookie sits on a white plate in front of the chef.",
+        "confidence": 1.0,
+        "support_level": "carried_from_previous",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A tiered cake is visible on a stand in the background.",
+        "confidence": 1.0,
+        "support_level": "carried_from_previous",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The chef's shirt has the text 'BEARSLAND SINGLE BEAT' printed on it.",
+        "confidence": 0.9,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "Chef continues to gesture and talk, moving hands from a lower position to a mid-level explanatory gesture."
+    ],
+    "ocr": [
+      "BEARSLAND",
+      "SINGLE BEAT",
+      "Pure",
+      "Sainsbury's",
+      "NIELSEN-MASSEY"
+    ],
+    "spatial": "The chef stands centrally behind a black countertop. To her right (viewer's right), a line of ingredients (butter, spread, flour, icing sugar, cornflour, vanilla) is arranged. In front of her is a plate with food and a mug. Behind her to the right is a cake stand with a tiered cake. To the left is a window and kitchen cabinets.",
+    "not_observable": [
+      "Sound of chef speaking",
+      "Smell of baking",
+      "Taste of the food",
+      "Exact temperature of the kitchen"
+    ],
+    "parse_success": true,
+    "chunk_idx": 24,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      50,
+      52
+    ],
+    "visible_entities": [
+      {
+        "id": "chef_1",
+        "attributes": [
+          "female",
+          "green t-shirt",
+          "brown hair tied back"
+        ],
+        "action": "standing, gesturing with hands, touching mouth",
+        "position": "center behind counter"
+      },
+      {
+        "id": "kitchen_counter_1",
+        "attributes": [
+          "black",
+          "glossy"
+        ],
+        "action": "supporting items",
+        "position": "foreground"
+      },
+      {
+        "id": "plate_1",
+        "attributes": [
+          "white",
+          "round"
+        ],
+        "action": "holding food",
+        "position": "center on counter"
+      },
+      {
+        "id": "cookie_1",
+        "attributes": [
+          "yellow",
+          "baked good"
+        ],
+        "action": "sitting on plate",
+        "position": "on plate_1"
+      },
+      {
+        "id": "mug_1",
+        "attributes": [
+          "white",
+          "patterned"
+        ],
+        "action": "sitting on counter",
+        "position": "right of plate"
+      },
+      {
+        "id": "pure_spread_tub_1",
+        "attributes": [
+          "white",
+          "rectangular"
+        ],
+        "action": "sitting on counter",
+        "position": "right of mug"
+      },
+      {
+        "id": "flour_bag_1",
+        "attributes": [
+          "white",
+          "paper bag"
+        ],
+        "action": "sitting on counter",
+        "position": "right side"
+      },
+      {
+        "id": "pink_bag_1",
+        "attributes": [
+          "pink",
+          "paper bag"
+        ],
+        "action": "sitting on counter",
+        "position": "front right"
+      },
+      {
+        "id": "cornflour_box_1",
+        "attributes": [
+          "blue",
+          "cardboard box"
+        ],
+        "action": "sitting on counter",
+        "position": "back right"
+      },
+      {
+        "id": "vanilla_bottle_1",
+        "attributes": [
+          "dark liquid",
+          "white label"
+        ],
+        "action": "sitting on counter",
+        "position": "far right"
+      },
+      {
+        "id": "cake_stand_1",
+        "attributes": [
+          "metal",
+          "tiered"
+        ],
+        "action": "holding cake",
+        "position": "background right"
+      },
+      {
+        "id": "kitchen_background_1",
+        "attributes": [
+          "light blue walls",
+          "white cabinets",
+          "window"
+        ],
+        "action": "surrounding scene",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The chef is standing behind a kitchen counter with baking ingredients.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The chef gestures with her hands while speaking.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The chef brings her right hand up to her mouth in the final frame.",
+        "confidence": 0.9,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A piece of baked good (cookie/cake) sits on a white plate in front of the chef.",
+        "confidence": 1.0,
+        "support_level": "carried_from_previous",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Various baking ingredients including flour, icing sugar, cornflour, and vanilla extract are arranged on the counter.",
+        "confidence": 1.0,
+        "support_level": "carried_from_previous",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A tiered cake is visible on a stand in the background.",
+        "confidence": 1.0,
+        "support_level": "carried_from_previous",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "Chef moves her right hand towards her mouth.",
+      "Chef continues to gesture while talking."
+    ],
+    "ocr": [
+      "BEARSLAND",
+      "SINGLE BEAT",
+      "cornflour by Sainsbury's",
+      "NIELSEN-MASSEY"
+    ],
+    "spatial": "The chef stands centrally behind a black countertop. Ingredients are clustered on the right side of the counter. A plate with food and a mug are directly in front of her. A tiered cake stands on a rack behind her to the right. White cabinets and a window are visible in the background.",
+    "not_observable": [
+      "Audio of the chef speaking",
+      "Taste of the food",
+      "Specific recipe details being discussed"
+    ],
+    "parse_success": true,
+    "chunk_idx": 25,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      52,
+      54
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "state_changes": [],
+    "ocr": [],
+    "spatial": "",
+    "not_observable": [],
+    "parse_success": true,
+    "chunk_idx": 26,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      54,
+      56
+    ],
+    "visible_entities": [
+      {
+        "id": "chef_1",
+        "attributes": [
+          "female",
+          "green shirt",
+          "standing"
+        ],
+        "action": "gesturing with hands while talking",
+        "position": "center behind counter"
+      },
+      {
+        "id": "kitchen_counter_1",
+        "attributes": [
+          "black",
+          "reflective"
+        ],
+        "action": "supporting items",
+        "position": "foreground"
+      },
+      {
+        "id": "plate_1",
+        "attributes": [
+          "white",
+          "round"
+        ],
+        "action": "holding cookie",
+        "position": "on counter in front of chef"
+      },
+      {
+        "id": "cookie_1",
+        "attributes": [
+          "yellow",
+          "baked"
+        ],
+        "action": "resting on plate",
+        "position": "on plate_1"
+      },
+      {
+        "id": "mug_1",
+        "attributes": [
+          "white",
+          "patterned"
+        ],
+        "action": "sitting on counter",
+        "position": "next to plate"
+      },
+      {
+        "id": "butter_block_1",
+        "attributes": [
+          "packaged"
+        ],
+        "action": "sitting on counter",
+        "position": "on counter"
+      },
+      {
+        "id": "pure_spread_tub_1",
+        "attributes": [
+          "white tub"
+        ],
+        "action": "sitting on counter",
+        "position": "on counter"
+      },
+      {
+        "id": "flour_bag_1",
+        "attributes": [
+          "white bag"
+        ],
+        "action": "sitting on counter",
+        "position": "on counter"
+      },
+      {
+        "id": "pink_bag_1",
+        "attributes": [
+          "pink packaging"
+        ],
+        "action": "sitting on counter",
+        "position": "on counter"
+      },
+      {
+        "id": "cornflour_box_1",
+        "attributes": [
+          "blue box"
+        ],
+        "action": "sitting on counter",
+        "position": "on counter"
+      },
+      {
+        "id": "vanilla_bottle_1",
+        "attributes": [
+          "large bottle",
+          "white label"
+        ],
+        "action": "sitting on counter",
+        "position": "far right on counter"
+      },
+      {
+        "id": "cake_stand_1",
+        "attributes": [
+          "tiered",
+          "white cake with pink flowers"
+        ],
+        "action": "displaying cake",
+        "position": "background right"
+      },
+      {
+        "id": "kitchen_background_1",
+        "attributes": [
+          "light blue walls",
+          "white cabinets",
+          "window"
+        ],
+        "action": "surrounding scene",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The chef is standing behind a kitchen counter and gesturing with both hands.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A plate with a cookie and a mug are on the counter in front of the chef.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Various baking ingredients including flour, butter, and vanilla extract are arranged on the counter.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A tiered cake is visible on a stand in the background.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The chef is wearing a green t-shirt with the text 'BEARSLAND SINGLE BEAN'.",
+        "confidence": 0.9,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "Chef continues to gesture and talk, maintaining position behind the counter.",
+      "No significant changes in the arrangement of items on the counter compared to previous chunks."
+    ],
+    "ocr": [
+      "BEARSLAND",
+      "SINGLE BEAN"
+    ],
+    "spatial": "The chef stands centrally behind a black countertop. Ingredients are lined up on the right side of the counter. A plate and mug are directly in front of her. A window is to the left, and white cabinets and a cake stand are in the background to the right.",
+    "not_observable": [
+      "Audio of the chef speaking",
+      "Smell of the baking ingredients",
+      "Taste of the cookie"
+    ],
+    "parse_success": true,
+    "chunk_idx": 27,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      56,
+      58
+    ],
+    "visible_entities": [
+      {
+        "id": "chef_1",
+        "attributes": [
+          "female",
+          "green_t-shirt",
+          "brown_hair_tied_back"
+        ],
+        "action": "standing_behind_counter_gesturing_with_hands",
+        "position": "center"
+      },
+      {
+        "id": "kitchen_counter_1",
+        "attributes": [
+          "black",
+          "glossy"
+        ],
+        "action": "supporting_items",
+        "position": "foreground"
+      },
+      {
+        "id": "plate_1",
+        "attributes": [
+          "white",
+          "round"
+        ],
+        "action": "holding_cookie",
+        "position": "center_counter"
+      },
+      {
+        "id": "cookie_1",
+        "attributes": [
+          "yellow",
+          "round"
+        ],
+        "action": "resting_on_plate",
+        "position": "on_plate_1"
+      },
+      {
+        "id": "mug_1",
+        "attributes": [
+          "white",
+          "patterned"
+        ],
+        "action": "sitting_on_counter",
+        "position": "right_of_plate"
+      },
+      {
+        "id": "butter_block_1",
+        "attributes": [
+          "yellow_wrapper"
+        ],
+        "action": "sitting_on_counter",
+        "position": "right_side"
+      },
+      {
+        "id": "pure_spread_tub_1",
+        "attributes": [
+          "white_tub"
+        ],
+        "action": "sitting_on_counter",
+        "position": "right_side"
+      },
+      {
+        "id": "flour_bag_1",
+        "attributes": [
+          "white_bag"
+        ],
+        "action": "sitting_on_counter",
+        "position": "right_side"
+      },
+      {
+        "id": "pink_bag_1",
+        "attributes": [
+          "pink_packaging"
+        ],
+        "action": "sitting_on_counter",
+        "position": "right_side"
+      },
+      {
+        "id": "cornflour_box_1",
+        "attributes": [
+          "blue_box"
+        ],
+        "action": "sitting_on_counter",
+        "position": "far_right"
+      },
+      {
+        "id": "vanilla_bottle_1",
+        "attributes": [
+          "large_bottle",
+          "white_label"
+        ],
+        "action": "sitting_on_counter",
+        "position": "far_right"
+      },
+      {
+        "id": "cake_stand_1",
+        "attributes": [
+          "tiered",
+          "glass"
+        ],
+        "action": "holding_cake",
+        "position": "background_right"
+      },
+      {
+        "id": "kitchen_background_1",
+        "attributes": [
+          "white_cabinets",
+          "window",
+          "extractor_fan"
+        ],
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The chef is standing behind a kitchen counter with various baking ingredients.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The chef is wearing a green t-shirt with the text 'BEARSLAND SINGLE BEAT'.",
+        "confidence": 0.9,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The chef gestures with her hands while looking down at them in the later frames.",
+        "confidence": 0.95,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A cookie sits on a white plate in front of the chef.",
+        "confidence": 1.0,
+        "support_level": "carried_from_previous",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A large bottle of Nielsen-Massey vanilla extract is visible on the right side of the counter.",
+        "confidence": 0.9,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A tiered cake is visible on a stand in the background.",
+        "confidence": 1.0,
+        "support_level": "carried_from_previous",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "The chef shifts her gaze from the camera to her hands.",
+      "The chef continues to gesture with open palms."
+    ],
+    "ocr": [
+      "BEARSLAND",
+      "SINGLE BEAT",
+      "NIELSEN-MASSEY",
+      "MADAGASCAR BOURBON",
+      "VANILLA EXTRACT"
+    ],
+    "spatial": "The chef stands centrally behind a black countertop. To her right (viewer's right), a collection of baking ingredients (butter, flour, sugar, vanilla) are arranged. In front of her is a plate with a cookie and a mug. Behind her to the right is a tiered cake stand. White cabinets and a window are visible in the background.",
+    "not_observable": [
+      "The chef's speech",
+      "The specific brand of the flour bag",
+      "The specific brand of the pink bag",
+      "The taste of the cookie"
+    ],
+    "parse_success": true,
+    "chunk_idx": 28,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      58,
+      60
+    ],
+    "visible_entities": [
+      {
+        "id": "chef_1",
+        "attributes": [
+          "wearing green t-shirt",
+          "standing"
+        ],
+        "action": "talking and gesturing with hands",
+        "position": "center behind counter"
+      },
+      {
+        "id": "kitchen_counter_1",
+        "attributes": [
+          "black surface",
+          "reflective"
+        ],
+        "action": "supporting items",
+        "position": "foreground"
+      },
+      {
+        "id": "plate_1",
+        "attributes": [
+          "white",
+          "round"
+        ],
+        "action": "holding cookie",
+        "position": "center on counter"
+      },
+      {
+        "id": "cookie_1",
+        "attributes": [
+          "yellowish",
+          "baked good"
+        ],
+        "action": "sitting on plate",
+        "position": "on plate_1"
+      },
+      {
+        "id": "mug_1",
+        "attributes": [
+          "white",
+          "patterned"
+        ],
+        "action": "sitting on counter",
+        "position": "right of plate"
+      },
+      {
+        "id": "butter_block_1",
+        "attributes": [
+          "wrapped",
+          "rectangular"
+        ],
+        "action": "sitting on counter",
+        "position": "right of mug"
+      },
+      {
+        "id": "pure_spread_tub_1",
+        "attributes": [
+          "tub",
+          "white packaging"
+        ],
+        "action": "sitting on counter",
+        "position": "right of butter"
+      },
+      {
+        "id": "flour_bag_1",
+        "attributes": [
+          "white bag",
+          "paper packaging"
+        ],
+        "action": "sitting on counter",
+        "position": "right side"
+      },
+      {
+        "id": "pink_bag_1",
+        "attributes": [
+          "pink packaging"
+        ],
+        "action": "sitting on counter",
+        "position": "front right"
+      },
+      {
+        "id": "cornflour_box_1",
+        "attributes": [
+          "blue box"
+        ],
+        "action": "sitting on counter",
+        "position": "far right"
+      },
+      {
+        "id": "vanilla_bottle_1",
+        "attributes": [
+          "white bottle",
+          "tall"
+        ],
+        "action": "sitting on counter",
+        "position": "far right"
+      },
+      {
+        "id": "cake_stand_1",
+        "attributes": [
+          "tiered cake",
+          "decorated"
+        ],
+        "action": "displayed in background",
+        "position": "background right"
+      },
+      {
+        "id": "kitchen_background_1",
+        "attributes": [
+          "white cabinets",
+          "window",
+          "extractor fan"
+        ],
+        "action": "static background",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The chef is standing behind a kitchen counter talking to the camera.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "She is gesturing with both hands open in front of her.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A piece of cake or cookie sits on a white plate in front of her.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Various baking ingredients including flour, spread, and vanilla are arranged on the counter.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A tiered cake is visible on a stand in the background.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "Chef continues talking and gesturing, maintaining the same position as the previous chunk."
+    ],
+    "ocr": [
+      "BEARSLAND",
+      "SINGLE BEAT",
+      "NIELSEN-MASSEY",
+      "Cornflour"
+    ],
+    "spatial": "The chef stands centrally behind a black kitchen island. On the island, from left to right, are a plate with a cookie, a mug, a tub of spread, a block of butter, a bag of flour, a pink bag, a blue box, and a vanilla bottle. In the background to the right, a tiered cake sits on a stand near white kitchen cabinets and a stainless steel extractor hood.",
+    "not_observable": [
+      "sound of chef speaking",
+      "smell of baking",
+      "taste of the cookie"
+    ],
+    "parse_success": true,
+    "chunk_idx": 29,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      60,
+      62
+    ],
+    "visible_entities": [
+      {
+        "id": "chef_1",
+        "attributes": [
+          "woman",
+          "green_t-shirt",
+          "brown_hair_tied_back"
+        ],
+        "action": "talking_and_gesturing",
+        "position": "center_behind_counter"
+      },
+      {
+        "id": "plate_1",
+        "attributes": [
+          "white",
+          "round"
+        ],
+        "action": "holding_cookie",
+        "position": "center_counter"
+      },
+      {
+        "id": "cookie_1",
+        "attributes": [
+          "yellow",
+          "baked_good"
+        ],
+        "action": "resting_on_plate",
+        "position": "on_plate_1"
+      },
+      {
+        "id": "mug_1",
+        "attributes": [
+          "white",
+          "patterned"
+        ],
+        "action": "sitting",
+        "position": "right_of_plate"
+      },
+      {
+        "id": "butter_block_1",
+        "attributes": [
+          "wrapped",
+          "rectangular"
+        ],
+        "action": "sitting",
+        "position": "right_of_mug"
+      },
+      {
+        "id": "pure_spread_tub_1",
+        "attributes": [
+          "white_tub"
+        ],
+        "action": "sitting",
+        "position": "right_of_butter"
+      },
+      {
+        "id": "flour_bag_1",
+        "attributes": [
+          "white_bag"
+        ],
+        "action": "sitting",
+        "position": "right_of_spread"
+      },
+      {
+        "id": "pink_bag_1",
+        "attributes": [
+          "pink_packaging"
+        ],
+        "action": "sitting",
+        "position": "front_right"
+      },
+      {
+        "id": "cornflour_box_1",
+        "attributes": [
+          "blue_box"
+        ],
+        "action": "sitting",
+        "position": "far_right"
+      },
+      {
+        "id": "vanilla_bottle_1",
+        "attributes": [
+          "white_bottle",
+          "label"
+        ],
+        "action": "sitting",
+        "position": "far_right_front"
+      },
+      {
+        "id": "cake_stand_1",
+        "attributes": [
+          "tiered_cake",
+          "pink_decorations"
+        ],
+        "action": "displayed",
+        "position": "background_right"
+      },
+      {
+        "id": "kitchen_background_1",
+        "attributes": [
+          "white_cabinets",
+          "window",
+          "extractor_fan"
+        ],
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The chef is standing behind the kitchen counter talking to the camera.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The chef gestures with both hands while speaking.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The chef touches her mouth/lips with her hand.",
+        "confidence": 0.9,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "A cookie rests on a white plate in front of the chef.",
+        "confidence": 1.0,
+        "support_level": "carried_from_previous",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "Various baking ingredients are arranged on the counter to the right.",
+        "confidence": 1.0,
+        "support_level": "carried_from_previous",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text 'BEARSLAND SINGLE BEAT' is visible on the chef's shirt.",
+        "confidence": 0.9,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "Chef transitions from looking down to looking at the camera.",
+      "Chef brings hand to mouth, possibly wiping crumbs or emphasizing a point about taste."
+    ],
+    "ocr": [
+      "BEARSLAND",
+      "SINGLE BEAT",
+      "PURE",
+      "CORN FLOUR",
+      "NIELSEN-MASSEY"
+    ],
+    "spatial": "The chef stands centrally behind a black countertop. Ingredients are lined up on the right side of the counter. A tiered cake is visible on a stand in the background right. A window is on the left background.",
+    "not_observable": [
+      "Audio of the chef speaking",
+      "The specific taste of the cookie",
+      "The temperature of the kitchen"
+    ],
+    "parse_success": true,
+    "chunk_idx": 30,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      62,
+      64
+    ],
+    "visible_entities": [
+      {
+        "id": "text_overlay_1",
+        "attributes": [
+          "white",
+          "list",
+          "ingredients",
+          "recipe"
+        ],
+        "action": "displaying ingredient list",
+        "position": "center-left"
+      },
+      {
+        "id": "background_solid_1",
+        "attributes": [
+          "purple",
+          "solid color"
+        ],
+        "action": "filling screen",
+        "position": "full frame"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A purple screen displays a list of ingredients in white text.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The ingredient list includes butter, margarine, icing sugar, gluten-free flour, cornflour, and vanilla extract.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "Scene transitions from the chef in the kitchen to a full-screen purple graphic with text."
+    ],
+    "ocr": [
+      "INGREDIENTS",
+      "60g unsalted butter",
+      "60g margarine",
+      "35g icing sugar",
+      "112g self-raising gluten-free flour",
+      "30g cornflour",
+      "1/4 teaspoon vanilla extract"
+    ],
+    "spatial": "White text is aligned to the left side of the frame against a solid purple background.",
+    "not_observable": [
+      "chef",
+      "kitchen environment",
+      "cooking actions",
+      "audio"
+    ],
+    "parse_success": true,
+    "chunk_idx": 31,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      64,
+      66
+    ],
+    "visible_entities": [
+      {
+        "id": "background_solid_1",
+        "attributes": [
+          "purple",
+          "solid_color"
+        ],
+        "action": "serving as background for text",
+        "position": "full_frame"
+      },
+      {
+        "id": "text_overlay_1",
+        "attributes": [
+          "white",
+          "list_format",
+          "recipe_ingredients"
+        ],
+        "action": "displaying ingredient list",
+        "position": "center_left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A purple screen displays a list of ingredients in white text.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The ingredient list includes butter, margarine, icing sugar, gluten-free flour, cornflour, and vanilla extract.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "The scene transitions from the chef in the kitchen to a static purple graphic screen listing ingredients."
+    ],
+    "ocr": [
+      "INGREDIENTS",
+      "60g unsalted butter",
+      "60g margarine",
+      "35g icing sugar",
+      "112g self-raising gluten-free flour",
+      "30g cornflour",
+      "1/4 teaspoon vanilla extract"
+    ],
+    "spatial": "White text is left-aligned on a solid purple background, occupying the left-center portion of the frame.",
+    "not_observable": [
+      "The chef",
+      "The kitchen environment",
+      "Any cooking actions",
+      "Sounds of the chef speaking or eating"
+    ],
+    "parse_success": true,
+    "chunk_idx": 32,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      66,
+      68
+    ],
+    "visible_entities": [
+      {
+        "id": "text_overlay_1",
+        "attributes": [
+          "white",
+          "list",
+          "ingredients",
+          "static"
+        ],
+        "action": "displaying recipe ingredients",
+        "position": "left-aligned on screen"
+      },
+      {
+        "id": "background_solid_1",
+        "attributes": [
+          "purple",
+          "solid"
+        ],
+        "action": "static background",
+        "position": "full frame"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A list of ingredients is displayed in white text on a purple background.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The ingredients listed include unsalted butter, margarine, icing sugar, self-raising gluten-free flour, cornflour, and vanilla extract.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "Continuation of the static ingredients list from the previous chunk."
+    ],
+    "ocr": [
+      "INGREDIENTS",
+      "60g unsalted butter",
+      "60g margarine",
+      "35g icing sugar",
+      "112g self-raising gluten-free flour",
+      "30g cornflour",
+      "1/4 teaspoon vanilla extract"
+    ],
+    "spatial": "White text listing ingredients is aligned to the left side of a solid purple background.",
+    "not_observable": [],
+    "parse_success": true,
+    "chunk_idx": 33,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      68,
+      70
+    ],
+    "visible_entities": [
+      {
+        "id": "background_solid_1",
+        "attributes": [
+          "purple",
+          "solid"
+        ],
+        "action": "serving as background",
+        "position": "full_frame"
+      },
+      {
+        "id": "text_overlay_1",
+        "attributes": [
+          "white",
+          "list",
+          "ingredients"
+        ],
+        "action": "displaying recipe details",
+        "position": "center_left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A purple screen displays a list of ingredients in white text.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text lists quantities for butter, margarine, icing sugar, flour, cornflour, and vanilla extract.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "The ingredient list remains visible on the purple background, consistent with the previous chunk."
+    ],
+    "ocr": [
+      "INGREDIENTS",
+      "60g unsalted butter",
+      "60g margarine",
+      "35g icing sugar",
+      "112g self-raising gluten-free flour",
+      "30g cornflour",
+      "1/4 teaspoon vanilla extract"
+    ],
+    "spatial": "White text is aligned to the left side of the frame against a solid purple background.",
+    "not_observable": [
+      "chef",
+      "kitchen counter",
+      "cooking actions",
+      "audio"
+    ],
+    "parse_success": true,
+    "chunk_idx": 34,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      70,
+      72
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "state_changes": [],
+    "ocr": [],
+    "spatial": "",
+    "not_observable": [],
+    "parse_success": true,
+    "chunk_idx": 35,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      72,
+      74
+    ],
+    "visible_entities": [
+      {
+        "id": "text_overlay_1",
+        "attributes": [
+          "white_text",
+          "instructional",
+          "recipe_method"
+        ],
+        "action": "displaying cooking steps",
+        "position": "center-left"
+      },
+      {
+        "id": "background_solid_1",
+        "attributes": [
+          "purple",
+          "solid_color"
+        ],
+        "action": "serving as background",
+        "position": "full_screen"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A purple screen displays a list of instructions titled 'METHOD'.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text lists 6 steps for preparing the recipe.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "The screen transitions from a blank purple state to displaying the 'METHOD' text overlay."
+    ],
+    "ocr": [
+      "METHOD",
+      "1. Cream butter, marge, vanilla & sugar together.",
+      "2. Add flours and mix in well.",
+      "3. Pipe 2 inch circles onto baking parchment.",
+      "4. Bake for 15 mins in a 190 Celsius oven.",
+      "5. Allow to cool.",
+      "6. Fill with jam & buttercream."
+    ],
+    "spatial": "White text is left-aligned against a solid purple background filling the frame.",
+    "not_observable": [],
+    "parse_success": true,
+    "chunk_idx": 36,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      74,
+      76
+    ],
+    "visible_entities": [
+      {
+        "id": "text_overlay_1",
+        "attributes": [
+          "white text",
+          "recipe instructions",
+          "numbered list"
+        ],
+        "action": "displaying method steps",
+        "position": "center-left on screen"
+      },
+      {
+        "id": "background_solid_1",
+        "attributes": [
+          "purple",
+          "solid color"
+        ],
+        "action": "serving as background",
+        "position": "full screen"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A purple screen displays a list of cooking instructions titled 'METHOD'.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The method lists 6 steps involving creaming butter, adding flours, piping, baking, cooling, and filling.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "No change; the static 'METHOD' slide continues from the previous chunk."
+    ],
+    "ocr": [
+      "METHOD",
+      "1. Cream butter, marge, vanilla & sugar together.",
+      "2. Add flours and mix in well.",
+      "3. Pipe 2 inch circles onto baking parchment.",
+      "4. Bake for 15 mins in a 190 Celsius oven.",
+      "5. Allow to cool.",
+      "6. Fill with jam & buttercream."
+    ],
+    "spatial": "White text is aligned to the left side of the screen against a solid purple background.",
+    "not_observable": [
+      "audio",
+      "chef",
+      "kitchen environment",
+      "physical ingredients"
+    ],
+    "parse_success": true,
+    "chunk_idx": 37,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      76,
+      78
+    ],
+    "visible_entities": [],
+    "atomic_facts": [],
+    "state_changes": [],
+    "ocr": [],
+    "spatial": "",
+    "not_observable": [],
+    "parse_success": true,
+    "chunk_idx": 38,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  },
+  {
+    "time": [
+      78,
+      80
+    ],
+    "visible_entities": [
+      {
+        "id": "text_overlay_1",
+        "attributes": [
+          "white text",
+          "centered",
+          "outro message"
+        ],
+        "action": "displaying closing information and website URL",
+        "position": "center of screen"
+      },
+      {
+        "id": "background_solid_1",
+        "attributes": [
+          "purple",
+          "solid color"
+        ],
+        "action": "serving as background",
+        "position": "full screen"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A text overlay appears with a message directing viewers to other videos.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The text includes a 'Thanks for visiting!' message.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      },
+      {
+        "fact": "The website URL 'www.thelocalbakehouse.com' is displayed at the bottom.",
+        "confidence": 1.0,
+        "support_level": "direct_current_chunk",
+        "target_resolution_visible": true
+      }
+    ],
+    "state_changes": [
+      "Text overlay with outro message appears on the purple background, replacing the previous blank screen or method list."
+    ],
+    "ocr": [
+      "To see how to make the biscuits, look at my other videos on YouTube.",
+      "Thanks for visiting!",
+      "www.thelocalbakehouse.com"
+    ],
+    "spatial": "White text is centered on a solid purple background. The main message is at the top, followed by a thank you note, and the website URL is at the bottom.",
+    "not_observable": [
+      "Background music",
+      "Voiceover narration",
+      "Fade-in animation speed"
+    ],
+    "parse_success": true,
+    "chunk_idx": 39,
+    "video_id": "Gluten_Free_Viennese_Whirls"
+  }
+]
