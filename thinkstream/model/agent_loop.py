@@ -598,6 +598,52 @@ class StreamingAgentLoop:
             frame_paths=frame_paths,
         )
 
+        # 5. Debug: token count BEFORE generation
+        try:
+            debug_inputs = self.processor.apply_chat_template(
+                messages,
+                tokenize=True,
+                return_dict=True,
+                return_tensors="pt",
+                add_generation_prompt=True,
+            )
+            debug_token_count = debug_inputs["input_ids"].shape[1]
+        except Exception as e:
+            debug_token_count = -1
+            debug_err = str(e)
+
+        n_compressed = len(snapshot.get("compressed_segments", []))
+        n_recent = len(snapshot.get("recent_thinks", []))
+        recent_tok = self.memory.count_recent_tokens()
+        fp_len = len(frame_paths) if frame_paths else 0
+        fp_is_none = frame_paths is None
+
+        print(
+            f"[DEBUG step] chunk={chunk_idx} frame_paths_len={fp_len} "
+            f"frame_paths_is_none={fp_is_none} compressed={n_compressed} "
+            f"recent_thinks={n_recent} recent_tokens={recent_tok} "
+            f"prompt_tokens={debug_token_count}",
+            flush=True,
+        )
+        if debug_token_count > 20000:
+            # Dump the message structure to diagnose overflow
+            for i, m in enumerate(messages):
+                content = m.get("content", [])
+                if isinstance(content, list):
+                    for j, c in enumerate(content):
+                        ctype = c.get("type", "?")
+                        if ctype == "video":
+                            vid = c.get("video", "")
+                            if isinstance(vid, list):
+                                print(f"  msg[{i}].content[{j}] video list len={len(vid)}", flush=True)
+                            else:
+                                print(f"  msg[{i}].content[{j}] video={vid}", flush=True)
+                        elif ctype == "text":
+                            t = c.get("text", "")
+                            print(f"  msg[{i}].content[{j}] text_len={len(t)}", flush=True)
+                else:
+                    print(f"  msg[{i}] content_len={len(str(content))}", flush=True)
+
         # 5. Generate
         output_text = self.generate_fn(
             messages=messages,
