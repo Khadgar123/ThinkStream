@@ -233,9 +233,9 @@ def _classify_zone_from_text(text: str) -> str:
     """
     s = text.lstrip()
     if s.startswith("<visual_window>"):
-        return "visual_window_header"
+        return "visual_window"
     if s.startswith("<recalled_frames>"):
-        return "recalled_frames_header"
+        return "recalled_frames"
     if s.startswith("<memory>") or s.startswith("<compressed>") \
             or (s and s[0] == "[" and "]" in s[:30]):
         # `<memory>` may not appear if format_memory_block builds compressed
@@ -317,9 +317,9 @@ def _analyze_messages_zones(messages: List[Dict], tokenizer) -> Dict[str, Any]:
                 _bucket(zone)["text_tokens"] += tok
                 # Track which video zone we're "in" so the next video block
                 # gets attributed correctly.
-                if zone == "visual_window_header":
+                if zone == "visual_window":
                     last_video_zone = "visual_window"
-                elif zone == "recalled_frames_header":
+                elif zone == "recalled_frames":
                     last_video_zone = "recalled_frames"
 
             elif itype == "video":
@@ -906,7 +906,8 @@ class StreamingAgentLoop:
                 )
                 returned_chunks = recall_result.get("returned_chunks", [])
 
-                # Build recalled_frames info
+                # Build recalled_frames info (including frame_paths so we
+                # don't fallback to full-video decoding in recall_response).
                 recalled_frames = None
                 if returned_chunks and recall_result.get("source") == "historical_frames":
                     t_start = returned_chunks[0] * AGENT_CHUNK_SEC
@@ -916,6 +917,29 @@ class StreamingAgentLoop:
                         "n_frames": len(returned_chunks) * FRAMES_PER_CHUNK,
                         "source": "historical_frames",
                     }
+                    # Build recalled frame_paths by resolving per-chunk frames
+                    # under the same frames_root logic.
+                    vp = Path(video_path)
+                    if self.video_root:
+                        try:
+                            rel = vp.relative_to(Path(self.video_root))
+                            stem = rel.with_suffix("")
+                            frame_dir = Path(self.frames_root) / stem
+                        except ValueError:
+                            frame_dir = Path(self.frames_root) / vp.with_suffix("")
+                    else:
+                        frame_dir = Path(self.frames_root) / vp.with_suffix("")
+                    rf_paths = []
+                    if frame_dir.exists():
+                        for rc in returned_chunks:
+                            rc_start = rc * AGENT_CHUNK_SEC + 1
+                            rc_end = (rc + 1) * AGENT_CHUNK_SEC
+                            for fnum in range(rc_start, rc_end + 1):
+                                fp = frame_dir / f"frame_{fnum:06d}.jpg"
+                                if fp.exists():
+                                    rf_paths.append(str(fp))
+                    if rf_paths:
+                        recalled_frames["frame_paths"] = rf_paths
 
                 # Build recall_response input. The pending question is
                 # already expressed via the <queries> block (entry with
@@ -931,6 +955,7 @@ class StreamingAgentLoop:
                     recall_result=recall_result,
                     min_pixels=self.min_pixels,
                     max_pixels=self.max_pixels,
+                    frame_paths=frame_paths,
                 )
 
                 # Second generate (allow_recall=False to prevent infinite loop)
