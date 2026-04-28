@@ -98,11 +98,25 @@ class VLLMClient:
     async def _get_client(self):
         if self._client is None:
             from openai import AsyncOpenAI
+            import httpx
 
+            # v9.5: explicit httpx connection pool sized to the semaphore
+            # cap so the SDK path doesn't deadlock when other passes also
+            # cap concurrency >100 (default httpx max_connections).
+            limits = httpx.Limits(
+                max_connections=max(2048, self.max_concurrent * 2),
+                max_keepalive_connections=max(512, self.max_concurrent),
+                keepalive_expiry=120.0,
+            )
+            transport = httpx.AsyncHTTPTransport(limits=limits)
+            sdk_httpx = httpx.AsyncClient(
+                transport=transport, timeout=self.timeout,
+            )
             self._client = AsyncOpenAI(
                 base_url=self.api_base,
                 api_key=self.api_key,
                 timeout=self.timeout,
+                http_client=sdk_httpx,
             )
         return self._client
 
@@ -110,12 +124,23 @@ class VLLMClient:
         """httpx client used for raw-body POST when SDK extra_body merging
         doesn't reach vLLM (verified failure mode for chat_template_kwargs
         on the 397B server: SDK extra_body silently ignored, raw body
-        with chat_template_kwargs at top level works)."""
+        with chat_template_kwargs at top level works).
+
+        v9.5: connection-pool limits sized to allow concurrent=1024 on
+        pass1a without CLOSE_WAIT deadlocks. httpx default is 100
+        max_connections / 20 keepalive — far below our semaphore cap.
+        """
         if not hasattr(self, "_httpx_client") or self._httpx_client is None:
             import httpx
+            limits = httpx.Limits(
+                max_connections=max(2048, self.max_concurrent * 2),
+                max_keepalive_connections=max(512, self.max_concurrent),
+                keepalive_expiry=120.0,
+            )
             self._httpx_client = httpx.AsyncClient(
                 base_url=self.api_base, timeout=self.timeout,
                 headers={"Authorization": f"Bearer {self.api_key}"},
+                limits=limits,
             )
         return self._httpx_client
 

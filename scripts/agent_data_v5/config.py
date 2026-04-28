@@ -202,18 +202,18 @@ PASS_CONFIG = {
     # on pass3c — same reasoning applies pass-wide. Client timeout is
     # 5400s (90min) per VLLMClient default; do NOT shorten.
     "pass1a": {
-        # v9.5: thinking=False. Audit on batch1 showed thinking=True burned
-        # 50%+ of generation time on reasoning_content but the final JSON
-        # was either silent-empty (46.4%) or the same content thinking=False
-        # would produce in 1/2 the time. The retry-on-silent path
-        # (run_pass1a) recovers any quality loss; the strict-parse contract
-        # (parse_evidence_result) catches what the retry can't.
-        "max_tokens": 8192,    # was 16384 — no thinking budget needed now
+        # v9.5: thinking=False (raw POST path) — frees 16K reasoning
+        # budget; retry-on-silent + strict-parse keep quality. With no
+        # thinking, per-request load drops and we can run wider.
+        # max_tokens kept at 16K so a verbose chunk doesn't truncate
+        # the JSON before it closes — short chunks early-stop anyway.
+        # concurrent=1024: by safe_concurrency_for_pass calc, 32M //
+        # (1500+16384) ≈ 1789 fits in vLLM prefill budget. httpx pool
+        # uplifted in VLLMClient (limits=2048).
+        "max_tokens": 16384,
         "temperature": 0.3,
         "thinking": False,
-        "concurrent": 64,     # vision pass, chunk-level (2 frames/req)
-                              # lowered from 256 to avoid httpx connection-pool
-                              # exhaustion (default 100 conn) + CLOSE_WAIT deadlocks
+        "concurrent": 1024,
     },
     "pass1b": {
         "max_tokens": 60000,  # text-only, needs headroom for thinking explosion
