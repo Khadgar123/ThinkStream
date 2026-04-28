@@ -1,7 +1,13 @@
-# ThinkStream 设计（当前状态：v9.5）
+# ThinkStream 设计（当前状态：v9.5 + v11.3 增量）
 
 > Source of Truth: `git log` + `tests/` + `memory/`. 本文档是 **快照**——
 > 当代码与本文档分歧时以代码为准。最新 commit 见 `git log --oneline -10`。
+>
+> **v11.3 增量见 [`docs/v11.3_changelog.md`](v11.3_changelog.md)**——
+> SFT 权重重平衡（compress 0.8→2.5 等）、wandb 每类监控、token 驱动
+> 压缩范围、pass3 5 处非 think、vLLM eval（offline + streaming
+> chunk-lockstep）、多方案 recall 检索 audit、JSON 解析鲁棒化、
+> 0-chunk 过滤 + unique-think-rate 加权。本节以下仍是 v9.5 快照。
 >
 > v9.4.2 → v9.5 主要变化：
 > - 22 family（新增 F7/CR5/CR6/CR7 对齐 OVO SSR/CRR + STAR/PerceptionTest）

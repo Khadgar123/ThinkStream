@@ -91,11 +91,17 @@ class WeightedSFTTrainer(Trainer):
             except TypeError:
                 return super()._get_train_sampler()
 
+        # v11.3: optional per-sample uniqueness weighting on top of class-balance.
+        extra_weights = None
+        if getattr(self.args, "unique_think_weight", False):
+            extra_weights = [float(s.get("_unique_rate", 1.0)) for s in ds.samples]
+
         sampler = ClassBalancedDistributedSampler(
             sample_types=sample_types,
             num_samples=len(sample_types),
             seed=self.args.seed,
             smoothing=getattr(self.args, "class_balance_smoothing", 0.7),
+            extra_weights=extra_weights,
         )
         if self._audit_step_writer is not None:
             try:

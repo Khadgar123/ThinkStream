@@ -110,6 +110,18 @@ class DataArguments:
             "inv-freq gives ~4× and unblocks compress training."
         },
     )
+    unique_think_weight: bool = field(
+        default=False,
+        metadata={
+            "help": "v11.3: when True, multiply each sample's class-balanced "
+            "weight by its memory-uniqueness rate (set/len of recent_thinks). "
+            "Down-weights static-scene videos where the teacher correctly "
+            "reports 'scene unchanged' but those repeats add no training "
+            "signal. ~5% of videos see >5% repetition; the worst case (a "
+            "yoga session) is 28% repeated. Off by default — enable when "
+            "monitoring train/n_frac_silent shows over-fit on quiet scenes."
+        },
+    )
 
 
 @dataclass

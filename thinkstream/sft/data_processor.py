@@ -891,6 +891,28 @@ class PerTimestepDataset(Dataset):
                 )
             all_samples.extend(annotations)
 
+        # v11.3: defensive empty-sample filter. Catches:
+        #  (a) the 8 zero-chunk videos in batch1 that pass2 failed on —
+        #      they shouldn't produce SFT samples (pass3c needs thinks),
+        #      but if a corrupted row slips through the filter is cheap;
+        #  (b) any sample missing input.system / input.visual_window /
+        #      output (schema corruption);
+        #  (c) samples whose visual_window has 0 frames (pass2 rollout
+        #      truncated at chunk 0 with no useful content).
+        before = len(all_samples)
+        all_samples = [
+            s for s in all_samples
+            if isinstance(s.get("input"), dict)
+            and s["input"].get("system")
+            and isinstance(s["input"].get("visual_window"), dict)
+            and s["input"]["visual_window"].get("frames", 0) > 0
+            and s.get("output")
+        ]
+        empty_dropped = before - len(all_samples)
+        if empty_dropped > 0:
+            rank0_print(f"  Dropped {empty_dropped} empty/corrupted samples "
+                        f"(missing input/visual_window/output)")
+
         # Estimate num_tokens for every sample (used for length-based filtering
         # AND HF Trainer's group_by_length sampler). Skipping this leaves every
         # sample with default 3500 → batches are wildly heterogeneous → padding
@@ -909,6 +931,27 @@ class PerTimestepDataset(Dataset):
             filtered = before - len(all_samples)
             if filtered > 0:
                 rank0_print(f"  Filtered {filtered} overlong (>{max_tokens} tok)")
+
+        # v11.3: per-sample memory uniqueness (used by class-balanced sampler
+        # when --unique_think_weight is enabled). Down-weights samples whose
+        # memory snapshot has many duplicate thinks — typical for static-scene
+        # videos where the teacher correctly reports "scene unchanged" but
+        # those repeated entries don't add training value.
+        for s in all_samples:
+            mem = (s.get("input") or {}).get("memory") or {}
+            thinks = mem.get("recent_thinks") or []
+            texts = []
+            for t in thinks:
+                if isinstance(t, dict):
+                    texts.append(t.get("text", ""))
+                elif isinstance(t, str):
+                    texts.append(t)
+            if not texts:
+                # No thinks yet (early chunks): treat as fully-unique so
+                # warmup samples don't get accidentally down-weighted.
+                s["_unique_rate"] = 1.0
+            else:
+                s["_unique_rate"] = len(set(texts)) / len(texts)
 
         # Optional eval-side cap: keep in-loop eval fast on large val pools.
         # Deterministic subsample (seeded RNG) so train logs stay comparable
@@ -1185,7 +1228,17 @@ class ClassBalancedDistributedSampler(torch.utils.data.Sampler):
         seed: int = 0,
         replacement: bool = True,
         smoothing: float = 0.7,
+        extra_weights: Optional[List[float]] = None,
     ):
+        """
+        Args:
+            extra_weights: optional per-sample multiplier (v11.3) — used for
+                unique-think-rate weighting so static-scene videos with
+                duplicate thinks get sampled less. Length must match
+                sample_types. Multiplied into the inv-freq class weights
+                AFTER class normalization, so the class-balance property
+                is preserved on average.
+        """
         from collections import Counter
         if rank is None or world_size is None:
             try:
@@ -1218,9 +1271,15 @@ class ClassBalancedDistributedSampler(torch.utils.data.Sampler):
         cls_weights = {k: v / mean_w for k, v in cls_weights.items()}
         self._cls_weights_summary = cls_weights  # for logging
 
-        self.weights = torch.tensor(
-            [cls_weights[t] for t in sample_types], dtype=torch.double
-        )
+        weights_list = [cls_weights[t] for t in sample_types]
+        if extra_weights is not None:
+            if len(extra_weights) != len(sample_types):
+                raise ValueError(
+                    f"extra_weights length {len(extra_weights)} != "
+                    f"sample_types length {len(sample_types)}"
+                )
+            weights_list = [w * float(e) for w, e in zip(weights_list, extra_weights)]
+        self.weights = torch.tensor(weights_list, dtype=torch.double)
 
     def __iter__(self):
         g = torch.Generator()
