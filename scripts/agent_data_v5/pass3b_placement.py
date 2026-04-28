@@ -223,8 +223,27 @@ async def _check_visibility_one(
 
 
 def determine_sequence_type(card: Dict, availability: str) -> str:
-    """Map availability + family → behavior sequence type."""
-    if card.get("family") == "M1":
+    """Map availability + family → behavior sequence type.
+
+    v9.5 — multi_response dispatch widened beyond M1:
+      * F5 (REC repetition counting): OVO REC asks the same activity-count
+        question at multiple realtime probes; the answer increments as
+        more occurrences happen. Pure immediate_response would give the
+        student only the FINAL count.
+      * E2 (event_watch state-change Yes/No): OVO SSR asks
+        "Has step X happened yet?" at multiple probes — type=0 (No)
+        before, type=1 (Yes) after. Same question, answer flips. Pure
+        immediate_response gives only one snapshot.
+    Other families remain on the (immediate_response / event_watch /
+    recall_success) trio, which already covers RT/BT/single-probe FT.
+    """
+    family = card.get("family", "")
+    if family == "M1":
+        return "multi_response"
+    # NEW: SSR-style and REC-style families get multi-probe dispatch.
+    # availability still gates: a card whose evidence is purely in_future
+    # falls back to event_watch (it has no answer yet at ask_chunk).
+    if family in ("F5", "E2") and availability != "in_future":
         return "multi_response"
     if availability == "in_future":
         return "event_watch"
