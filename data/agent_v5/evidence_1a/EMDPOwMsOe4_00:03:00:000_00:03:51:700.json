@@ -9845,16 +9845,109 @@
       330,
       332
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
-    "ocr": [],
+    "visible_entities": [
+      {
+        "desc": "long white paper receipt with black printed text and numbers",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "black car dashboard console with a red triangular hazard light button",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "white Korean text overlay with a red glowing circle graphic",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "white Korean subtitle text at the bottom of the screen",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "finger with orange skin tone and a yellow band",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A long receipt is positioned in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The receipt displays columns of data including time, latitude, and longitude coordinates.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red hazard light button is visible on the dashboard to the right of the receipt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Korean text overlay reading '시간 위도 경도' is on the left side.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A subtitle at the bottom reads '최소한의 정보인 시간과 위도, 경도 정도만 나타내고요'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "시간",
+      "위도",
+      "경도",
+      "최소한의 정보인 시간과 위도, 경도 정도만 나타내고요",
+      "GPRMC,061129.400,A,3726.3879,N,12659.8803,E,0.01,269...",
+      "GPRMC,061130.400,A,3726.3879,N,12659.8803,E,0.03,269...",
+      "GPRMC,061131.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061132.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061133.400,A,3726.3879,N,12659.8803,E,0.03,269...",
+      "GPRMC,061134.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061135.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061136.400,A,3726.3879,N,12659.8803,E,0.03,269...",
+      "GPRMC,061137.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061138.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061139.400,A,3726.3879,N,12659.8803,E,0.03,269...",
+      "GPRMC,061140.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061141.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061142.400,A,3726.3879,N,12659.8803,E,0.03,269...",
+      "GPRMC,061143.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061144.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061145.400,A,3726.3879,N,12659.8803,E,0.03,269...",
+      "GPRMC,061146.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061147.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061148.400,A,3726.3879,N,12659.8803,E,0.03,269...",
+      "GPRMC,061149.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061150.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061151.400,A,3726.3879,N,12659.8803,E,0.03,269...",
+      "GPRMC,061152.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061153.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061154.400,A,3726.3879,N,12659.8803,E,0.03,269...",
+      "GPRMC,061155.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061156.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061157.400,A,3726.3879,N,12659.8803,E,0.03,269...",
+      "GPRMC,061158.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061159.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061200.400,A,3726.3879,N,12659.8803,E,0.03,269...",
+      "GPRMC,061201.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061202.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061203.400,A,3726.3879,N,12659.8803,E,0.03,269...",
+      "GPRMC,061204.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061205.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061206.400,A,3726.3879,N,12659.8803,E,0.03,269...",
+      "GPRMC,061207.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061208.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061209.400,A,3726.3879,N,12659.8803,E,0.03,269...",
+      "GPRMC,061210.400,A,3726.3879,N,12659.8803,E,0.02,269...",
+      "GPRMC,061211.400,A,3726.3879,N,12659.8803,E,0.02,269..."
+    ],
     "spatial": "",
-    "parse_success": false,
-    "_raw": "{\n  \"time\": [330, 332],\n  \"visible_entities\": [\n    {\n      \"desc\": \"long white paper receipt with black printed text and numbers\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black car dashboard console with a red triangular hazard light button\",\n      \"action\": \"static\",\n      \"position\": \"right\"\n    },\n    {\n      \"desc\": \"white Korean text overlay with a red glowing circle graphic\",\n      \"action\": \"static\",\n      \"position\": \"left\"\n    },\n    {\n      \"desc\": \"white Korean subtitle text at the bottom of the screen\",\n      \"action\": \"static\",\n      \"position\": \"bottom\"\n    },\n    {\n      \"desc\": \"finger with orange skin tone and a yellow band\",\n      \"action\": \"static\",\n      \"position\": \"right\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A long receipt is positioned in the center of the frame.\",\n    \"The receipt displays columns of data including time, latitude, and longitude coordinates.\",\n    \"A red hazard light button is visible on the dashboard to the right of the receipt.\",\n    \"Korean text overlay reading '시간 위도 경도' is on the left side.\",\n    \"A subtitle at the bottom reads '최소한의 정보인 시간과 위도, 경도 정도만 나타내고요'.\"\n  ],\n  \"ocr\": [\n    \"시간\",\n    \"위도\",\n    \"경도\",\n    \"최소한의 정보인 시간과 위도, 경도 정도만 나타내고요\",\n    \"GPRMC,061129.400,A,3726.3879,N,12659.8803,E,0.01,269...\",\n    \"GPRMC,061130.400,A,3726.3879,N,12659.8803,E,0.03,269...\",\n    \"GPRMC,061131.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061132.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061133.400,A,3726.3879,N,12659.8803,E,0.03,269...\",\n    \"GPRMC,061134.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061135.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061136.400,A,3726.3879,N,12659.8803,E,0.03,269...\",\n    \"GPRMC,061137.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061138.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061139.400,A,3726.3879,N,12659.8803,E,0.03,269...\",\n    \"GPRMC,061140.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061141.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061142.400,A,3726.3879,N,12659.8803,E,0.03,269...\",\n    \"GPRMC,061143.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061144.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061145.400,A,3726.3879,N,12659.8803,E,0.03,269...\",\n    \"GPRMC,061146.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061147.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061148.400,A,3726.3879,N,12659.8803,E,0.03,269...\",\n    \"GPRMC,061149.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061150.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061151.400,A,3726.3879,N,12659.8803,E,0.03,269...\",\n    \"GPRMC,061152.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061153.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061154.400,A,3726.3879,N,12659.8803,E,0.03,269...\",\n    \"GPRMC,061155.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061156.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061157.400,A,3726.3879,N,12659.8803,E,0.03,269...\",\n    \"GPRMC,061158.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061159.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061200.400,A,3726.3879,N,12659.8803,E,0.03,269...\",\n    \"GPRMC,061201.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061202.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061203.400,A,3726.3879,N,12659.8803,E,0.03,269...\",\n    \"GPRMC,061204.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061205.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061206.400,A,3726.3879,N,12659.8803,E,0.03,269...\",\n    \"GPRMC,061207.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061208.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061209.400,A,3726.3879,N,12659.8803,E,0.03,269...\",\n    \"GPRMC,061210.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061211.400,A,3726.3879,N,12659.8803,E,0.02,269...\",\n    \"GPRMC,061212.400,A,3726.3879,N,12659.88",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "parse_success": true,
     "chunk_idx": 165,
-    "video_id": "EMDPOwMsOe4_00:03:00:000_00:03:51:700"
+    "video_id": "EMDPOwMsOe4_00:03:00:000_00:03:51:700",
+    "_rescued": "parse"
   },
   {
     "time": [

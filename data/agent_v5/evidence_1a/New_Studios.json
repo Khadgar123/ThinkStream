@@ -4,128 +4,315 @@
       0,
       2
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "dark grey, boxy spacecraft with a long forward cannon and glowing blue engine thrusters",
+        "action": "flying through space",
+        "position": "left"
+      },
+      {
+        "desc": "large, dark, spherical planet with a visible curved horizon",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The spacecraft is flying towards the right side of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The spacecraft's engines are emitting bright blue light.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The planet is positioned in the background on the right.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [0, 2],\n  \"visible_entities\": [\n    {\n      \"desc\": \"dark grey, boxy spacecraft with a long forward cannon and glowing blue engine thrusters\",\n      \"action\": \"flying through space\",\n      \"position\": \"left\"\n    },\n    {\n      \"desc\": \"large, dark, spherical planet with a visible curved horizon\",\n      \"action\": \"static\",\n      \"position\": \"right\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The spacecraft is flying towards the right side of the frame.\",\n    \"The spacecraft's engines are emitting bright blue light.\",\n    \"The planet is positioned in the background on the right.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The spacecraft is to the left of the large planet. The planet is in the background on the right side of the frame.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The spacecraft is to the left of the large planet. The planet is in the background on the right side of the frame.",
+    "parse_success": true,
     "chunk_idx": 0,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       2,
       4
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "small, box-shaped spacecraft with a metallic body and glowing blue propulsion thrusters",
+        "action": "moving through space",
+        "position": "left"
+      },
+      {
+        "desc": "large, spherical celestial body with a textured, greyish-brown surface and visible craters",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A small spacecraft is moving through space with active blue thrusters.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The spacecraft is positioned to the left of a large planet.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [\n    2,\n    4\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"small, box-shaped spacecraft with a metallic body and glowing blue propulsion thrusters\",\n      \"action\": \"moving through space\",\n      \"position\": \"left\"\n    },\n    {\n      \"desc\": \"large, spherical celestial body with a textured, greyish-brown surface and visible craters\",\n      \"action\": \"static\",\n      \"position\": \"right\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A small spacecraft is moving through space with active blue thrusters.\",\n    \"The spacecraft is positioned to the left of a large planet.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The spacecraft is to the left of the large planet. The planet occupies the right side of the frame, while the spacecraft is in the left foreground against a starry background.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The spacecraft is to the left of the large planet. The planet occupies the right side of the frame, while the spacecraft is in the left foreground against a starry background.",
+    "parse_success": true,
     "chunk_idx": 1,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       4,
       6
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "small spacecraft with glowing blue engines",
+        "action": "flying through space",
+        "position": "left"
+      },
+      {
+        "desc": "large planet with a visible atmosphere and surface details",
+        "action": "static",
+        "position": "right"
+      },
+      {
+        "desc": "humanoid figure with dark, textured skin, wearing a dark green hooded robe with gold trim",
+        "action": "standing with mouth open",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A spacecraft is flying through space near a large planet.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A humanoid figure in a green robe is standing with its mouth open.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [4, 6],\n  \"visible_entities\": [\n    {\n      \"desc\": \"small spacecraft with glowing blue engines\",\n      \"action\": \"flying through space\",\n      \"position\": \"left\"\n    },\n    {\n      \"desc\": \"large planet with a visible atmosphere and surface details\",\n      \"action\": \"static\",\n      \"position\": \"right\"\n    },\n    {\n      \"desc\": \"humanoid figure with dark, textured skin, wearing a dark green hooded robe with gold trim\",\n      \"action\": \"standing with mouth open\",\n      \"position\": \"center\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A spacecraft is flying through space near a large planet.\",\n    \"A humanoid figure in a green robe is standing with its mouth open.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The spacecraft is to the left of the large planet. The humanoid figure is in the foreground, positioned in front of the dark space background.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The spacecraft is to the left of the large planet. The humanoid figure is in the foreground, positioned in front of the dark space background.",
+    "parse_success": true,
     "chunk_idx": 2,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       6,
       8
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "creature with dark, heavily textured and wrinkled skin, wispy grey hair, wearing a dark green velvet cloak with gold trim",
+        "action": "speaking",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "creature with dark, heavily textured and wrinkled skin is speaking",
+        "confidence": 1.0
+      },
+      {
+        "fact": "creature is wearing a dark green velvet cloak with gold trim",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [6, 8],\n  \"visible_entities\": [\n    {\n      \"desc\": \"creature with dark, heavily textured and wrinkled skin, wispy grey hair, wearing a dark green velvet cloak with gold trim\",\n      \"action\": \"speaking\",\n      \"position\": \"center\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"creature with dark, heavily textured and wrinkled skin is speaking\",\n    \"creature is wearing a dark green velvet cloak with gold trim\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The creature is centered in the frame against a dark, uniform background.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The creature is centered in the frame against a dark, uniform background.",
+    "parse_success": true,
     "chunk_idx": 3,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       8,
       10
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "creature with dark, textured, bark-like skin, wispy grey hair, wearing a dark green velvet cloak with gold trim",
+        "action": "turning head slightly",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The creature turns its head slightly to the right.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The creature is wearing a green cloak with gold piping.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [8, 10],\n  \"visible_entities\": [\n    {\n      \"desc\": \"creature with dark, textured, bark-like skin, wispy grey hair, wearing a dark green velvet cloak with gold trim\",\n      \"action\": \"turning head slightly\",\n      \"position\": \"center\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The creature turns its head slightly to the right.\",\n    \"The creature is wearing a green cloak with gold piping.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The creature is centered in the frame against a dark, blurry background.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The creature is centered in the frame against a dark, blurry background.",
+    "parse_success": true,
     "chunk_idx": 4,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       10,
       12
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
-    "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [\n    10,\n    12\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"figure with dark, wrinkled, textured skin and wispy grey hair, wearing a dark green hooded robe with gold trim\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"television test pattern with vertical color bars (grey, yellow, cyan, green, magenta, red, blue) and a dripping dark red liquid effect at the top\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    },\n    {\n      \"desc\": \"text reading 'SIGNAL JAM DETECTED' in a pixelated, light purple font\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A figure with dark, textured skin and a green robe is visible.\",\n    \"The text 'SIGNAL JAM DETECTED' is displayed on the screen.\",\n    \"A dark red liquid effect drips from the top of the test pattern.\"\n  ],\n  \"ocr\": [\n    \"SIGNAL JAM DETECTED\"\n  ],\n  \"spatial\": \"The figure is in the foreground, centered in the frame. The test pattern is behind the figure. The text 'SIGNAL JAM DETECTED' is superimposed over the center of the test pattern.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "visible_entities": [
+      {
+        "desc": "figure with dark, wrinkled, textured skin and wispy grey hair, wearing a dark green hooded robe with gold trim",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "television test pattern with vertical color bars (grey, yellow, cyan, green, magenta, red, blue) and a dripping dark red liquid effect at the top",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "text reading 'SIGNAL JAM DETECTED' in a pixelated, light purple font",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A figure with dark, textured skin and a green robe is visible.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'SIGNAL JAM DETECTED' is displayed on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A dark red liquid effect drips from the top of the test pattern.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SIGNAL JAM DETECTED"
+    ],
+    "spatial": "The figure is in the foreground, centered in the frame. The test pattern is behind the figure. The text 'SIGNAL JAM DETECTED' is superimposed over the center of the test pattern.",
+    "parse_success": true,
     "chunk_idx": 5,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       12,
       14
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
-    "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [12, 14],\n  \"visible_entities\": [\n    {\n      \"desc\": \"SMPTE color bars test pattern with vertical stripes of gray, yellow, cyan, green, magenta, red, and blue, and a lower section with blocks of cyan, yellow, white, magenta, black, and red\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    },\n    {\n      \"desc\": \"dark red viscous liquid resembling blood dripping from the top edge\",\n      \"action\": \"dripping down\",\n      \"position\": \"top\"\n    },\n    {\n      \"desc\": \"text 'SIGNAL JAM DETECTED' in a purple, digital-style font\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"text 'UNAUTHORIZED TRANSMISSION' in a purple, digital-style font\",\n      \"action\": \"appearing\",\n      \"position\": \"center\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"Dark red liquid drips down from the top of the screen over the test pattern.\",\n    \"The text 'SIGNAL JAM DETECTED' is displayed in the center of the screen.\",\n    \"The text 'UNAUTHORIZED TRANSMISSION' appears below the first line of text in the second frame.\"\n  ],\n  \"ocr\": [\n    \"SIGNAL JAM DETECTED\",\n    \"UNAUTHORIZED TRANSMISSION\"\n  ],\n  \"spatial\": \"The dripping red liquid is positioned above the text and flows down in front of the color bars. The text 'SIGNAL JAM DETECTED' is centered on the screen, with the text 'UNAUTHORIZED TRANSMISSION' appearing directly below it.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "visible_entities": [
+      {
+        "desc": "SMPTE color bars test pattern with vertical stripes of gray, yellow, cyan, green, magenta, red, and blue, and a lower section with blocks of cyan, yellow, white, magenta, black, and red",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "dark red viscous liquid resembling blood dripping from the top edge",
+        "action": "dripping down",
+        "position": "top"
+      },
+      {
+        "desc": "text 'SIGNAL JAM DETECTED' in a purple, digital-style font",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "text 'UNAUTHORIZED TRANSMISSION' in a purple, digital-style font",
+        "action": "appearing",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "Dark red liquid drips down from the top of the screen over the test pattern.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'SIGNAL JAM DETECTED' is displayed in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'UNAUTHORIZED TRANSMISSION' appears below the first line of text in the second frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SIGNAL JAM DETECTED",
+      "UNAUTHORIZED TRANSMISSION"
+    ],
+    "spatial": "The dripping red liquid is positioned above the text and flows down in front of the color bars. The text 'SIGNAL JAM DETECTED' is centered on the screen, with the text 'UNAUTHORIZED TRANSMISSION' appearing directly below it.",
+    "parse_success": true,
     "chunk_idx": 6,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       14,
       16
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
-    "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [\n    14,\n    16\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"Elderly man with thinning white hair, wearing a black suit jacket, a light-colored checkered button-down shirt, and a red pocket square\",\n      \"action\": \"gesturing with both hands raised and palms open\",\n      \"position\": \"center/foreground\"\n    },\n    {\n      \"desc\": \"Television test pattern graphic with vertical color bars (grey, yellow, cyan, green, magenta, red, blue) and lower geometric blocks\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    },\n    {\n      \"desc\": \"Text overlay reading 'SIGNAL JAM DETECTED' in purple and 'UNAUTHORIZED TRANSMISSION' in green\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The video transitions from a test pattern screen to a shot of a man.\",\n    \"The text 'SIGNAL JAM DETECTED' appears on the screen.\",\n    \"The text 'UNAUTHORIZED TRANSMISSION' appears below the first line.\",\n    \"The elderly man raises both hands in a gesture.\"\n  ],\n  \"ocr\": [\n    \"SIGNAL JAM DETECTED\",\n    \"UNAUTHORIZED TRANSMISSION\"\n  ],\n  \"spatial\": \"The elderly man is positioned in the foreground, centered in the frame. The test pattern graphic serves as the background behind the man. The text overlay is superimposed over the center of the test pattern.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "visible_entities": [
+      {
+        "desc": "Elderly man with thinning white hair, wearing a black suit jacket, a light-colored checkered button-down shirt, and a red pocket square",
+        "action": "gesturing with both hands raised and palms open",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "Television test pattern graphic with vertical color bars (grey, yellow, cyan, green, magenta, red, blue) and lower geometric blocks",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "Text overlay reading 'SIGNAL JAM DETECTED' in purple and 'UNAUTHORIZED TRANSMISSION' in green",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The video transitions from a test pattern screen to a shot of a man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'SIGNAL JAM DETECTED' appears on the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'UNAUTHORIZED TRANSMISSION' appears below the first line.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The elderly man raises both hands in a gesture.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SIGNAL JAM DETECTED",
+      "UNAUTHORIZED TRANSMISSION"
+    ],
+    "spatial": "The elderly man is positioned in the foreground, centered in the frame. The test pattern graphic serves as the background behind the man. The text overlay is superimposed over the center of the test pattern.",
+    "parse_success": true,
     "chunk_idx": 7,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
@@ -188,415 +375,1106 @@
       18,
       20
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "elderly man with short white hair, wearing a black suit jacket, a white patterned button-down shirt, and a red pocket square",
+        "action": "gesturing with hands",
+        "position": "center"
+      },
+      {
+        "desc": "black piano with framed pictures on top",
+        "action": "static",
+        "position": "background left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The man raises both hands with palms facing outward.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man moves his hands closer to his chest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is speaking.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [\n    18,\n    20\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"elderly man with short white hair, wearing a black suit jacket, a white patterned button-down shirt, and a red pocket square\",\n      \"action\": \"gesturing with hands\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black piano with framed pictures on top\",\n      \"action\": \"static\",\n      \"position\": \"background left\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The man raises both hands with palms facing outward.\",\n    \"The man moves his hands closer to his chest.\",\n    \"The man is speaking.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The man is in the center foreground. The black piano is behind him and to his left. The framed pictures are on top of the piano.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The man is in the center foreground. The black piano is behind him and to his left. The framed pictures are on top of the piano.",
+    "parse_success": true,
     "chunk_idx": 9,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       20,
       22
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "elderly man with thinning white hair, wearing a black suit jacket over a light-colored checkered button-down shirt",
+        "action": "gesturing with hands",
+        "position": "center"
+      },
+      {
+        "desc": "black piano, partially visible",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "framed pictures on the wall",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The elderly man raises both hands with palms facing inward.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's eyes are closed in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black piano is visible in the background on the left side.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [20, 22],\n  \"visible_entities\": [\n    {\n      \"desc\": \"elderly man with thinning white hair, wearing a black suit jacket over a light-colored checkered button-down shirt\",\n      \"action\": \"gesturing with hands\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black piano, partially visible\",\n      \"action\": \"static\",\n      \"position\": \"background left\"\n    },\n    {\n      \"desc\": \"framed pictures on the wall\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The elderly man raises both hands with palms facing inward.\",\n    \"The man's eyes are closed in the second frame.\",\n    \"A black piano is visible in the background on the left side.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The elderly man is in the center foreground. The black piano is behind him and to his left. The framed pictures are on the wall behind the man.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The elderly man is in the center foreground. The black piano is behind him and to his left. The framed pictures are on the wall behind the man.",
+    "parse_success": true,
     "chunk_idx": 10,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       22,
       24
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "elderly man with thinning white hair, wearing a black suit jacket, a light-colored checkered button-down shirt, and a red pocket square",
+        "action": "speaking and gesturing with hands",
+        "position": "center"
+      },
+      {
+        "desc": "black piano",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "framed pictures",
+        "action": "static",
+        "position": "background wall"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The elderly man is speaking with his mouth open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is gesturing with both hands raised.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black piano is visible in the background behind the man.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [22, 24],\n  \"visible_entities\": [\n    {\n      \"desc\": \"elderly man with thinning white hair, wearing a black suit jacket, a light-colored checkered button-down shirt, and a red pocket square\",\n      \"action\": \"speaking and gesturing with hands\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black piano\",\n      \"action\": \"static\",\n      \"position\": \"background left\"\n    },\n    {\n      \"desc\": \"framed pictures\",\n      \"action\": \"static\",\n      \"position\": \"background wall\"\n    },\n    {\n      \"desc\": \"green leafy plant\",\n      \"action\": \"static\",\n      \"position\": \"background right\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The elderly man is speaking with his mouth open.\",\n    \"The man is gesturing with both hands raised.\",\n    \"A black piano is visible in the background behind the man.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The elderly man is in the foreground, centered in the frame. The black piano is to the left of the man in the background. The green plant is to the right of the man in the background. The framed pictures are on the wall behind the man.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The elderly man is in the foreground, centered in the frame. The black piano is to the left of the man in the background. The green plant is to the right of the man in the background. The framed pictures are on the wall behind the man.",
+    "parse_success": true,
     "chunk_idx": 11,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       24,
       26
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "elderly man with thinning white hair, wearing a black suit jacket, a white button-down shirt with a fine grid pattern, and a red pocket square",
+        "action": "gesturing with both hands raised",
+        "position": "center"
+      },
+      {
+        "desc": "black grand piano",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "framed pictures and artwork",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The elderly man raises both hands with palms facing forward.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red pocket square in his jacket breast pocket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black piano is situated behind the man on the left side.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [24, 26],\n  \"visible_entities\": [\n    {\n      \"desc\": \"elderly man with thinning white hair, wearing a black suit jacket, a white button-down shirt with a fine grid pattern, and a red pocket square\",\n      \"action\": \"gesturing with both hands raised\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black grand piano\",\n      \"action\": \"static\",\n      \"position\": \"background left\"\n    },\n    {\n      \"desc\": \"framed pictures and artwork\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    },\n    {\n      \"desc\": \"green leafy plant\",\n      \"action\": \"static\",\n      \"position\": \"background right\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The elderly man raises both hands with palms facing forward.\",\n    \"The man is wearing a red pocket square in his jacket breast pocket.\",\n    \"A black piano is situated behind the man on the left side.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The elderly man is positioned in the center foreground. The black piano is located behind him to the left. The green plant is situated behind him to the right. Framed pictures are visible on the wall in the background.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The elderly man is positioned in the center foreground. The black piano is located behind him to the left. The green plant is situated behind him to the right. Framed pictures are visible on the wall in the background.",
+    "parse_success": true,
     "chunk_idx": 12,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       26,
       28
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "elderly man with white hair, wearing a black suit jacket and a light-colored checkered button-down shirt",
+        "action": "speaking and gesturing with hands",
+        "position": "center"
+      },
+      {
+        "desc": "black piano",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "framed pictures on wall",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The elderly man is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man gestures with both hands raised.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a black jacket over a checkered shirt.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [26, 28],\n  \"visible_entities\": [\n    {\n      \"desc\": \"elderly man with white hair, wearing a black suit jacket and a light-colored checkered button-down shirt\",\n      \"action\": \"speaking and gesturing with hands\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black piano\",\n      \"action\": \"static\",\n      \"position\": \"background left\"\n    },\n    {\n      \"desc\": \"framed pictures on wall\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The elderly man is speaking.\",\n    \"The man gestures with both hands raised.\",\n    \"The man is wearing a black jacket over a checkered shirt.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The elderly man is in the center foreground. A black piano is behind him to the left. Framed pictures are on the wall behind the man.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The elderly man is in the center foreground. A black piano is behind him to the left. Framed pictures are on the wall behind the man.",
+    "parse_success": true,
     "chunk_idx": 13,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       28,
       30
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "elderly man with thinning white hair, wearing a black suit jacket and a white checkered button-down shirt",
+        "action": "gesturing with hands",
+        "position": "center"
+      },
+      {
+        "desc": "black piano",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "framed pictures",
+        "action": "static",
+        "position": "background left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The elderly man raises both hands with palms facing inward.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a black jacket over a white shirt.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [28, 30],\n  \"visible_entities\": [\n    {\n      \"desc\": \"elderly man with thinning white hair, wearing a black suit jacket and a white checkered button-down shirt\",\n      \"action\": \"gesturing with hands\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black piano\",\n      \"action\": \"static\",\n      \"position\": \"background left\"\n    },\n    {\n      \"desc\": \"framed pictures\",\n      \"action\": \"static\",\n      \"position\": \"background left\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The elderly man raises both hands with palms facing inward.\",\n    \"The man is wearing a black jacket over a white shirt.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The elderly man is centered in the foreground. A black piano is located behind him to the left. Framed pictures are visible on the wall in the background behind the man.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The elderly man is centered in the foreground. A black piano is located behind him to the left. Framed pictures are visible on the wall in the background behind the man.",
+    "parse_success": true,
     "chunk_idx": 14,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       30,
       32
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "elderly man with white hair, wearing a black suit jacket, a white patterned button-down shirt, and a red pocket square",
+        "action": "gesturing with hands",
+        "position": "center"
+      },
+      {
+        "desc": "black piano",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "framed pictures",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The elderly man is gesturing with his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red pocket square in his jacket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black piano is visible in the background.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [30, 32],\n  \"visible_entities\": [\n    {\n      \"desc\": \"elderly man with white hair, wearing a black suit jacket, a white patterned button-down shirt, and a red pocket square\",\n      \"action\": \"gesturing with hands\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black piano\",\n      \"action\": \"static\",\n      \"position\": \"left\"\n    },\n    {\n      \"desc\": \"framed pictures\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The elderly man is gesturing with his hands.\",\n    \"The man is wearing a red pocket square in his jacket.\",\n    \"A black piano is visible in the background.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The elderly man is in the center of the frame. The black piano is to the left of the man. The framed pictures are on the wall behind the man.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The elderly man is in the center of the frame. The black piano is to the left of the man. The framed pictures are on the wall behind the man.",
+    "parse_success": true,
     "chunk_idx": 15,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       32,
       34
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
-    "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [32, 34],\n  \"visible_entities\": [\n    {\n      \"desc\": \"elderly man with short white hair, wearing a black suit jacket, a light-colored checkered shirt, and a red pocket square\",\n      \"action\": \"gesturing with right hand\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black duffel bag with white embroidered text, filled with stacks of US dollar bills\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The elderly man is gesturing with his right hand.\",\n    \"A black duffel bag is overflowing with stacks of cash.\",\n    \"The text on the bag reads 'SPACEBALLS THE MONEY'.\"\n  ],\n  \"ocr\": [\n    \"SPACEBALLS\",\n    \"THE MONEY\"\n  ],\n  \"spatial\": \"The elderly man is positioned behind the black duffel bag. The bag is sitting on a wooden surface in the foreground. The stacks of money are inside the bag.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "visible_entities": [
+      {
+        "desc": "elderly man with short white hair, wearing a black suit jacket, a light-colored checkered shirt, and a red pocket square",
+        "action": "gesturing with right hand",
+        "position": "center"
+      },
+      {
+        "desc": "black duffel bag with white embroidered text, filled with stacks of US dollar bills",
+        "action": "static",
+        "position": "foreground"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The elderly man is gesturing with his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black duffel bag is overflowing with stacks of cash.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text on the bag reads 'SPACEBALLS THE MONEY'.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SPACEBALLS",
+      "THE MONEY"
+    ],
+    "spatial": "The elderly man is positioned behind the black duffel bag. The bag is sitting on a wooden surface in the foreground. The stacks of money are inside the bag.",
+    "parse_success": true,
     "chunk_idx": 16,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       34,
       36
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
-    "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [\n    34,\n    36\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"black duffel bag with white embroidered text reading 'SPACEBALLS THE MONEY', filled with stacks of US dollar bills\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"elderly man with white hair, wearing a black suit jacket, a light-colored checkered button-down shirt, and a red pocket square\",\n      \"action\": \"speaking\",\n      \"position\": \"center\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The black duffel bag is filled with stacks of cash.\",\n    \"The bag has the text 'SPACEBALLS THE MONEY' embroidered on it.\",\n    \"The elderly man is speaking.\"\n  ],\n  \"ocr\": [\n    \"SPACEBALLS\",\n    \"THE MONEY\"\n  ],\n  \"spatial\": \"The black duffel bag is in the foreground, sitting on a wooden surface. The elderly man is in the background, positioned behind the bag.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "visible_entities": [
+      {
+        "desc": "black duffel bag with white embroidered text reading 'SPACEBALLS THE MONEY', filled with stacks of US dollar bills",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "elderly man with white hair, wearing a black suit jacket, a light-colored checkered button-down shirt, and a red pocket square",
+        "action": "speaking",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The black duffel bag is filled with stacks of cash.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The bag has the text 'SPACEBALLS THE MONEY' embroidered on it.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The elderly man is speaking.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SPACEBALLS",
+      "THE MONEY"
+    ],
+    "spatial": "The black duffel bag is in the foreground, sitting on a wooden surface. The elderly man is in the background, positioned behind the bag.",
+    "parse_success": true,
     "chunk_idx": 17,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       36,
       38
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "elderly man with thinning white hair, wearing a black suit jacket and a light-colored checkered button-down shirt",
+        "action": "speaking",
+        "position": "center"
+      },
+      {
+        "desc": "black piano with a blurred colorful object on top",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "dark rectangular framed picture",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The elderly man is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a black jacket over a checkered shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A piano is visible in the background on the left.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [36, 38],\n  \"visible_entities\": [\n    {\n      \"desc\": \"elderly man with thinning white hair, wearing a black suit jacket and a light-colored checkered button-down shirt\",\n      \"action\": \"speaking\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black piano with a blurred colorful object on top\",\n      \"action\": \"static\",\n      \"position\": \"left\"\n    },\n    {\n      \"desc\": \"dark rectangular framed picture\",\n      \"action\": \"static\",\n      \"position\": \"background right\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The elderly man is speaking.\",\n    \"The man is wearing a black jacket over a checkered shirt.\",\n    \"A piano is visible in the background on the left.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The elderly man is centered in the foreground. To his left, a black piano is visible in the background. To his right, a dark framed picture hangs on the wall behind him.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The elderly man is centered in the foreground. To his left, a black piano is visible in the background. To his right, a dark framed picture hangs on the wall behind him.",
+    "parse_success": true,
     "chunk_idx": 18,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       38,
       40
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "elderly man with thinning white hair, wearing a black suit jacket over a light-colored checkered button-down shirt",
+        "action": "speaking and gesturing with hands",
+        "position": "center"
+      },
+      {
+        "desc": "black piano with a glossy finish",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "framed pictures on the wall",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The elderly man is speaking with his mouth open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man raises his hands in front of his chest to gesture.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black piano is visible in the background behind the man.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [38, 40],\n  \"visible_entities\": [\n    {\n      \"desc\": \"elderly man with thinning white hair, wearing a black suit jacket over a light-colored checkered button-down shirt\",\n      \"action\": \"speaking and gesturing with hands\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black piano with a glossy finish\",\n      \"action\": \"static\",\n      \"position\": \"background left\"\n    },\n    {\n      \"desc\": \"framed pictures on the wall\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    },\n    {\n      \"desc\": \"green leafy plant\",\n      \"action\": \"static\",\n      \"position\": \"background right\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The elderly man is speaking with his mouth open.\",\n    \"The man raises his hands in front of his chest to gesture.\",\n    \"A black piano is visible in the background behind the man.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The elderly man is positioned in the center foreground. The black piano is to the left of the man in the background. A green plant is to the right of the man in the background. Framed pictures are hanging on the wall behind the man.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The elderly man is positioned in the center foreground. The black piano is to the left of the man in the background. A green plant is to the right of the man in the background. Framed pictures are hanging on the wall behind the man.",
+    "parse_success": true,
     "chunk_idx": 19,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       40,
       42
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "elderly man with short white hair and wrinkled skin, wearing a black suit jacket, a white checkered button-down shirt, and a red pocket square",
+        "action": "gesturing with both hands raised and thumbs up",
+        "position": "center"
+      },
+      {
+        "desc": "black grand piano with framed photos and artwork on top",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "green leafy potted plant",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The elderly man raises both hands in a thumbs-up gesture.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a black suit jacket with a red pocket square.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black piano is visible in the background on the left side.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [40, 42],\n  \"visible_entities\": [\n    {\n      \"desc\": \"elderly man with short white hair and wrinkled skin, wearing a black suit jacket, a white checkered button-down shirt, and a red pocket square\",\n      \"action\": \"gesturing with both hands raised and thumbs up\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black grand piano with framed photos and artwork on top\",\n      \"action\": \"static\",\n      \"position\": \"background left\"\n    },\n    {\n      \"desc\": \"green leafy potted plant\",\n      \"action\": \"static\",\n      \"position\": \"background right\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The elderly man raises both hands in a thumbs-up gesture.\",\n    \"The man is wearing a black suit jacket with a red pocket square.\",\n    \"A black piano is visible in the background on the left side.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The elderly man is positioned in the center foreground. The black piano is located behind him to the left. The green potted plant is situated behind him to the right.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The elderly man is positioned in the center foreground. The black piano is located behind him to the left. The green potted plant is situated behind him to the right.",
+    "parse_success": true,
     "chunk_idx": 20,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       42,
       44
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "elderly man with thinning white hair and deep facial wrinkles, wearing a black suit jacket, a white button-down shirt with a fine grid pattern, and a red pocket square",
+        "action": "speaking",
+        "position": "center"
+      },
+      {
+        "desc": "black piano, glossy finish",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "framed pictures, various sizes",
+        "action": "static",
+        "position": "background left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The elderly man is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red pocket square in his jacket pocket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black piano is visible in the background.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [42, 44],\n  \"visible_entities\": [\n    {\n      \"desc\": \"elderly man with thinning white hair and deep facial wrinkles, wearing a black suit jacket, a white button-down shirt with a fine grid pattern, and a red pocket square\",\n      \"action\": \"speaking\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black piano, glossy finish\",\n      \"action\": \"static\",\n      \"position\": \"background left\"\n    },\n    {\n      \"desc\": \"framed pictures, various sizes\",\n      \"action\": \"static\",\n      \"position\": \"background left\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The elderly man is speaking.\",\n    \"The man is wearing a red pocket square in his jacket pocket.\",\n    \"A black piano is visible in the background.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The elderly man is positioned in the center foreground. The black piano is located behind him and to his left. The framed pictures are situated above the piano on the wall.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The elderly man is positioned in the center foreground. The black piano is located behind him and to his left. The framed pictures are situated above the piano on the wall.",
+    "parse_success": true,
     "chunk_idx": 21,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       44,
       46
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "elderly man with white hair, wearing a black suit jacket, a light-colored checkered button-down shirt, and a red pocket square",
+        "action": "gesturing with open hands",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "black piano with framed pictures on top",
+        "action": "static",
+        "position": "background/left"
+      },
+      {
+        "desc": "framed artwork on the wall",
+        "action": "static",
+        "position": "background/right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The elderly man is gesturing with both hands open and palms facing up.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's mouth is open as if speaking or exclaiming.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black piano is visible in the background behind the man.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Framed pictures are resting on top of the piano.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [44, 46],\n  \"visible_entities\": [\n    {\n      \"desc\": \"elderly man with white hair, wearing a black suit jacket, a light-colored checkered button-down shirt, and a red pocket square\",\n      \"action\": \"gesturing with open hands\",\n      \"position\": \"center/foreground\"\n    },\n    {\n      \"desc\": \"black piano with framed pictures on top\",\n      \"action\": \"static\",\n      \"position\": \"background/left\"\n    },\n    {\n      \"desc\": \"framed artwork on the wall\",\n      \"action\": \"static\",\n      \"position\": \"background/right\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The elderly man is gesturing with both hands open and palms facing up.\",\n    \"The man's mouth is open as if speaking or exclaiming.\",\n    \"A black piano is visible in the background behind the man.\",\n    \"Framed pictures are resting on top of the piano.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The elderly man is in the foreground, centered in the frame. The black piano is behind him and to the left. The framed artwork is on the wall behind him and to the right.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The elderly man is in the foreground, centered in the frame. The black piano is behind him and to the left. The framed artwork is on the wall behind him and to the right.",
+    "parse_success": true,
     "chunk_idx": 22,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       46,
       48
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "elderly man with white hair, wearing a black suit jacket and a white checkered shirt",
+        "action": "gesturing with hands",
+        "position": "center"
+      },
+      {
+        "desc": "black piano with framed pictures on top",
+        "action": "static",
+        "position": "left background"
+      },
+      {
+        "desc": "green potted plant",
+        "action": "static",
+        "position": "right background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The elderly man raises both hands with open palms.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a black jacket over a white patterned shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Framed pictures are resting on top of the piano.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [46, 48],\n  \"visible_entities\": [\n    {\n      \"desc\": \"elderly man with white hair, wearing a black suit jacket and a white checkered shirt\",\n      \"action\": \"gesturing with hands\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black piano with framed pictures on top\",\n      \"action\": \"static\",\n      \"position\": \"left background\"\n    },\n    {\n      \"desc\": \"green potted plant\",\n      \"action\": \"static\",\n      \"position\": \"right background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The elderly man raises both hands with open palms.\",\n    \"The man is wearing a black jacket over a white patterned shirt.\",\n    \"Framed pictures are resting on top of the piano.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The elderly man is in the center foreground. The black piano is to the left of the man in the background. The green plant is to the right of the man in the background.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The elderly man is in the center foreground. The black piano is to the left of the man in the background. The green plant is to the right of the man in the background.",
+    "parse_success": true,
     "chunk_idx": 23,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       48,
       50
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "elderly man with short white hair, wearing a black suit jacket, a light-colored checkered button-down shirt, and a red pocket square",
+        "action": "gesturing with both hands raised and palms facing forward",
+        "position": "center"
+      },
+      {
+        "desc": "black upright piano",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "framed pictures and artwork",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The elderly man is gesturing with both hands raised.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red pocket square in his jacket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black piano is visible in the background to the left.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Framed pictures are placed on top of the piano.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [\n    48,\n    50\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"elderly man with short white hair, wearing a black suit jacket, a light-colored checkered button-down shirt, and a red pocket square\",\n      \"action\": \"gesturing with both hands raised and palms facing forward\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black upright piano\",\n      \"action\": \"static\",\n      \"position\": \"left\"\n    },\n    {\n      \"desc\": \"framed pictures and artwork\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    },\n    {\n      \"desc\": \"green leafy plant\",\n      \"action\": \"static\",\n      \"position\": \"right\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The elderly man is gesturing with both hands raised.\",\n    \"The man is wearing a red pocket square in his jacket.\",\n    \"A black piano is visible in the background to the left.\",\n    \"Framed pictures are placed on top of the piano.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The elderly man is centered in the foreground. To his left, a black piano is positioned against the wall. Framed pictures are sitting on top of the piano. To the man's right, a green plant is visible in the background.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The elderly man is centered in the foreground. To his left, a black piano is positioned against the wall. Framed pictures are sitting on top of the piano. To the man's right, a green plant is visible in the background.",
+    "parse_success": true,
     "chunk_idx": 24,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       50,
       52
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "elderly man with white hair, wearing a black suit jacket and a light-colored checkered button-down shirt",
+        "action": "gesturing with hands",
+        "position": "center"
+      },
+      {
+        "desc": "black piano with sheet music on the stand",
+        "action": "static",
+        "position": "left"
+      },
+      {
+        "desc": "framed pictures on the wall",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The elderly man raises both hands with palms facing inward while speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a black jacket over a patterned shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black piano is visible in the background to the left of the man.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [50, 52],\n  \"visible_entities\": [\n    {\n      \"desc\": \"elderly man with white hair, wearing a black suit jacket and a light-colored checkered button-down shirt\",\n      \"action\": \"gesturing with hands\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black piano with sheet music on the stand\",\n      \"action\": \"static\",\n      \"position\": \"left\"\n    },\n    {\n      \"desc\": \"framed pictures on the wall\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The elderly man raises both hands with palms facing inward while speaking.\",\n    \"The man is wearing a black jacket over a patterned shirt.\",\n    \"A black piano is visible in the background to the left of the man.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The elderly man is positioned in the center of the frame. To his left, a black piano is visible in the background. Framed pictures are hanging on the wall behind him.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The elderly man is positioned in the center of the frame. To his left, a black piano is visible in the background. Framed pictures are hanging on the wall behind him.",
+    "parse_success": true,
     "chunk_idx": 25,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       52,
       54
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "elderly man with white hair, wearing a black suit jacket, a light-colored checkered shirt, and a red pocket square",
+        "action": "speaking and gesturing with hands",
+        "position": "center"
+      },
+      {
+        "desc": "black piano with sheet music or books on top",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "background right"
+      },
+      {
+        "desc": "framed pictures on the wall",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The elderly man is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man gestures with his hands while talking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A red pocket square is visible in the man's jacket pocket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A piano is situated behind the man on the left side.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [52, 54],\n  \"visible_entities\": [\n    {\n      \"desc\": \"elderly man with white hair, wearing a black suit jacket, a light-colored checkered shirt, and a red pocket square\",\n      \"action\": \"speaking and gesturing with hands\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black piano with sheet music or books on top\",\n      \"action\": \"static\",\n      \"position\": \"background left\"\n    },\n    {\n      \"desc\": \"green leafy plant\",\n      \"action\": \"static\",\n      \"position\": \"background right\"\n    },\n    {\n      \"desc\": \"framed pictures on the wall\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The elderly man is speaking.\",\n    \"The man gestures with his hands while talking.\",\n    \"A red pocket square is visible in the man's jacket pocket.\",\n    \"A piano is situated behind the man on the left side.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The elderly man is in the center foreground. The black piano is behind him and to his left. The green plant is behind him and to his right. Framed pictures are on the wall in the background.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The elderly man is in the center foreground. The black piano is behind him and to his left. The green plant is behind him and to his right. Framed pictures are on the wall in the background.",
+    "parse_success": true,
     "chunk_idx": 26,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       54,
       56
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "elderly man with white hair, wearing a black suit jacket, a light-colored checkered button-down shirt, and a red pocket square",
+        "action": "speaking",
+        "position": "center"
+      },
+      {
+        "desc": "black piano",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "framed pictures",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The elderly man is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red pocket square in his jacket pocket.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [54, 56],\n  \"visible_entities\": [\n    {\n      \"desc\": \"elderly man with white hair, wearing a black suit jacket, a light-colored checkered button-down shirt, and a red pocket square\",\n      \"action\": \"speaking\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black piano\",\n      \"action\": \"static\",\n      \"position\": \"background left\"\n    },\n    {\n      \"desc\": \"framed pictures\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The elderly man is speaking.\",\n    \"The man is wearing a red pocket square in his jacket pocket.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The man is in the foreground, centered in the frame. The black piano is behind him to the left. Framed pictures are on the wall in the background behind the man.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The man is in the foreground, centered in the frame. The black piano is behind him to the left. Framed pictures are on the wall in the background behind the man.",
+    "parse_success": true,
     "chunk_idx": 27,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       56,
       58
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "elderly man with thinning white hair and wrinkled skin, wearing a black suit jacket, a white checkered button-down shirt, and a red pocket square",
+        "action": "speaking and gesturing with hands",
+        "position": "center"
+      },
+      {
+        "desc": "black piano with framed pictures and artwork resting on top",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "green leafy potted plant",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The elderly man is speaking, with his mouth open in the second frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is gesturing with his hands open and palms facing up.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black piano is visible in the background behind the man.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [56, 58],\n  \"visible_entities\": [\n    {\n      \"desc\": \"elderly man with thinning white hair and wrinkled skin, wearing a black suit jacket, a white checkered button-down shirt, and a red pocket square\",\n      \"action\": \"speaking and gesturing with hands\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black piano with framed pictures and artwork resting on top\",\n      \"action\": \"static\",\n      \"position\": \"background left\"\n    },\n    {\n      \"desc\": \"green leafy potted plant\",\n      \"action\": \"static\",\n      \"position\": \"background right\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The elderly man is speaking, with his mouth open in the second frame.\",\n    \"The man is gesturing with his hands open and palms facing up.\",\n    \"A black piano is visible in the background behind the man.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The elderly man is centered in the foreground. The black piano is to the left of the man in the background. The green potted plant is to the right of the man in the background.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The elderly man is centered in the foreground. The black piano is to the left of the man in the background. The green potted plant is to the right of the man in the background.",
+    "parse_success": true,
     "chunk_idx": 28,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       58,
       60
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "elderly man with thinning white hair, wearing a black suit jacket over a light-colored checkered button-down shirt",
+        "action": "speaking with mouth open",
+        "position": "center/foreground"
+      },
+      {
+        "desc": "black piano",
+        "action": "static",
+        "position": "left/background"
+      },
+      {
+        "desc": "framed pictures",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The elderly man is speaking with his mouth open.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is gesturing with his right hand.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black piano is visible in the background to the left.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [58, 60],\n  \"visible_entities\": [\n    {\n      \"desc\": \"elderly man with thinning white hair, wearing a black suit jacket over a light-colored checkered button-down shirt\",\n      \"action\": \"speaking with mouth open\",\n      \"position\": \"center/foreground\"\n    },\n    {\n      \"desc\": \"black piano\",\n      \"action\": \"static\",\n      \"position\": \"left/background\"\n    },\n    {\n      \"desc\": \"framed pictures\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The elderly man is speaking with his mouth open.\",\n    \"The man is gesturing with his right hand.\",\n    \"A black piano is visible in the background to the left.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The elderly man is in the center foreground. The black piano is to the left and behind the man. Framed pictures are on the wall in the background.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The elderly man is in the center foreground. The black piano is to the left and behind the man. Framed pictures are on the wall in the background.",
+    "parse_success": true,
     "chunk_idx": 29,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       60,
       62
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "elderly man with thinning white hair, wearing a black suit jacket, a light-colored checkered button-down shirt, and a red pocket square",
+        "action": "speaking",
+        "position": "center"
+      },
+      {
+        "desc": "black piano with sheet music or books on the stand",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "framed pictures on the wall",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The elderly man is speaking to the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red pocket square in his jacket.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A black piano is visible in the background behind the man.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [\n    60,\n    62\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"elderly man with thinning white hair, wearing a black suit jacket, a light-colored checkered button-down shirt, and a red pocket square\",\n      \"action\": \"speaking\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black piano with sheet music or books on the stand\",\n      \"action\": \"static\",\n      \"position\": \"background left\"\n    },\n    {\n      \"desc\": \"framed pictures on the wall\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The elderly man is speaking to the camera.\",\n    \"The man is wearing a red pocket square in his jacket.\",\n    \"A black piano is visible in the background behind the man.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The elderly man is positioned in the center foreground. The black piano is located to the left of the man in the background. Framed pictures are hanging on the wall behind the man.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The elderly man is positioned in the center foreground. The black piano is located to the left of the man in the background. Framed pictures are hanging on the wall behind the man.",
+    "parse_success": true,
     "chunk_idx": 30,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       62,
       64
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "elderly man with white hair, wearing a black suit jacket, a light-colored checkered button-down shirt, and a red pocket square",
+        "action": "speaking",
+        "position": "center"
+      },
+      {
+        "desc": "black piano with framed pictures on top",
+        "action": "static",
+        "position": "background left"
+      },
+      {
+        "desc": "green leafy plant",
+        "action": "static",
+        "position": "background right"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The elderly man is speaking.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is wearing a red pocket square in his jacket.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [62, 64],\n  \"visible_entities\": [\n    {\n      \"desc\": \"elderly man with white hair, wearing a black suit jacket, a light-colored checkered button-down shirt, and a red pocket square\",\n      \"action\": \"speaking\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black piano with framed pictures on top\",\n      \"action\": \"static\",\n      \"position\": \"background left\"\n    },\n    {\n      \"desc\": \"green leafy plant\",\n      \"action\": \"static\",\n      \"position\": \"background right\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The elderly man is speaking.\",\n    \"The man is wearing a red pocket square in his jacket.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The elderly man is in the foreground, centered in the frame. The black piano is behind him and to his left. The green plant is behind him and to his right.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The elderly man is in the foreground, centered in the frame. The black piano is behind him and to his left. The green plant is behind him and to his right.",
+    "parse_success": true,
     "chunk_idx": 31,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       64,
       66
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
-    "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [\n    64,\n    66\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"Title text 'SPACEBALLS' in a stylized, bold, light blue font with a glowing effect, and subtitle text 'THE NEW ONE' in smaller white capital letters below it.\",\n      \"action\": \"static\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The text 'SPACEBALLS' is displayed in the center of the screen.\",\n    \"The subtitle 'THE NEW ONE' appears below the main title.\"\n  ],\n  \"ocr\": [\n    \"SPACEBALLS\",\n    \"THE NEW ONE\"\n  ],\n  \"spatial\": \"The text 'THE NEW ONE' is located directly below the text 'SPACEBALLS'. Both text elements are centered on the black background.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "visible_entities": [
+      {
+        "desc": "Title text 'SPACEBALLS' in a stylized, bold, light blue font with a glowing effect, and subtitle text 'THE NEW ONE' in smaller white capital letters below it.",
+        "action": "static"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'SPACEBALLS' is displayed in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The subtitle 'THE NEW ONE' appears below the main title.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SPACEBALLS",
+      "THE NEW ONE"
+    ],
+    "spatial": "The text 'THE NEW ONE' is located directly below the text 'SPACEBALLS'. Both text elements are centered on the black background.",
+    "parse_success": true,
     "chunk_idx": 32,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       66,
       68
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
-    "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [\n    66,\n    68\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"Large, stylized, light blue text reading 'SPACEBALLS' with a 3D effect, followed by smaller white text reading 'THE NEW ONE' below it.\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"Glowing white text reading 'ONLY IN THEATERS APRIL 23, 2027' with a blurred, luminous effect.\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The title card 'SPACEBALLS THE NEW ONE' is displayed in the center of the screen.\",\n    \"The release date 'APRIL 23, 2027' is shown in glowing white text.\"\n  ],\n  \"ocr\": [\n    \"SPACEBALLS\",\n    \"THE NEW ONE\",\n    \"ONLY IN THEATERS\",\n    \"APRIL 23, 2027\"\n  ],\n  \"spatial\": \"The text 'THE NEW ONE' is positioned directly below the main title 'SPACEBALLS'. The glowing release date text appears in the center of the screen, replacing the previous title card.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "visible_entities": [
+      {
+        "desc": "Large, stylized, light blue text reading 'SPACEBALLS' with a 3D effect, followed by smaller white text reading 'THE NEW ONE' below it.",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "Glowing white text reading 'ONLY IN THEATERS APRIL 23, 2027' with a blurred, luminous effect.",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The title card 'SPACEBALLS THE NEW ONE' is displayed in the center of the screen.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The release date 'APRIL 23, 2027' is shown in glowing white text.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "SPACEBALLS",
+      "THE NEW ONE",
+      "ONLY IN THEATERS",
+      "APRIL 23, 2027"
+    ],
+    "spatial": "The text 'THE NEW ONE' is positioned directly below the main title 'SPACEBALLS'. The glowing release date text appears in the center of the screen, replacing the previous title card.",
+    "parse_success": true,
     "chunk_idx": 33,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   },
   {
     "time": [
       68,
       70
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
-    "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [\n    68,\n    70\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"White text in a bold, sans-serif font\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The text 'ONLY IN THEATERS' is displayed above the date.\",\n    \"The date 'APRIL 23, 2027' is displayed below the first line of text.\"\n  ],\n  \"ocr\": [\n    \"ONLY IN THEATERS\",\n    \"APRIL 23, 2027\"\n  ],\n  \"spatial\": \"The text 'ONLY IN THEATERS' is positioned above the text 'APRIL 23, 2027'. Both lines of text are centered on the black background.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "visible_entities": [
+      {
+        "desc": "White text in a bold, sans-serif font",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The text 'ONLY IN THEATERS' is displayed above the date.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The date 'APRIL 23, 2027' is displayed below the first line of text.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "ONLY IN THEATERS",
+      "APRIL 23, 2027"
+    ],
+    "spatial": "The text 'ONLY IN THEATERS' is positioned above the text 'APRIL 23, 2027'. Both lines of text are centered on the black background.",
+    "parse_success": true,
     "chunk_idx": 34,
-    "video_id": "New_Studios"
+    "video_id": "New_Studios",
+    "_rescued": "parse"
   }
 ]

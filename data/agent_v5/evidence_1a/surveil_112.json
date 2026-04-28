@@ -3953,16 +3953,48 @@
       152,
       154
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person with long dark hair, wearing a pink and black patterned saree",
+        "action": "standing and holding fabric",
+        "position": "center"
+      },
+      {
+        "desc": "person with long dark hair, wearing a green saree with a pink blouse",
+        "action": "standing and interacting with fabric",
+        "position": "right"
+      },
+      {
+        "desc": "shelves stacked with colorful folded fabrics",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "large green cloth hanging vertically",
+        "action": "static",
+        "position": "left"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a pink and black saree is holding a piece of patterned fabric.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A person in a green saree is standing next to the person in the pink saree.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Shelves filled with folded fabrics line the walls of the room.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "{\n  \"time\": [152, 154],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with long dark hair, wearing a pink and black patterned saree\",\n      \"action\": \"standing and holding fabric\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"person with long dark hair, wearing a green saree with a pink blouse\",\n      \"action\": \"standing and interacting with fabric\",\n      \"position\": \"right\"\n    },\n    {\n      \"person with short dark hair, wearing a white shirt\",\n      \"action\": \"standing\",\n      \"position\": \"far right\"\n    },\n    {\n      \"desc\": \"shelves stacked with colorful folded fabrics\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    },\n    {\n      \"desc\": \"large green cloth hanging vertically\",\n      \"action\": \"static\",\n      \"position\": \"left\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person in a pink and black saree is holding a piece of patterned fabric.\",\n    \"A person in a green saree is standing next to the person in the pink saree.\",\n    \"Shelves filled with folded fabrics line the walls of the room.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person in the pink and black saree is in the center, standing in front of the shelves. The person in the green saree is to the right of the person in the pink saree. A large green cloth hangs on the left side of the frame, next to the shelves.\"\n}",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person in the pink and black saree is in the center, standing in front of the shelves. The person in the green saree is to the right of the person in the pink saree. A large green cloth hangs on the left side of the frame, next to the shelves.",
+    "parse_success": true,
     "chunk_idx": 76,
-    "video_id": "surveil_112"
+    "video_id": "surveil_112",
+    "_rescued": "parse"
   },
   {
     "time": [

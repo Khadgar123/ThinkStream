@@ -4,256 +4,805 @@
       0,
       2
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person with dark hair, wearing a blue sleeveless top, black pants, and a backpack",
+        "action": "walking towards the camera",
+        "position": "center"
+      },
+      {
+        "desc": "black walking poles",
+        "action": "being held by the person",
+        "position": "center"
+      },
+      {
+        "desc": "body of water",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "green grassy bank",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "green trees",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person walks towards the camera on a grassy bank",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person holds a walking pole in each hand",
+        "confidence": 1.0
+      },
+      {
+        "fact": "reflection of the person is visible in the water below",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [0, 2],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with dark hair, wearing a blue sleeveless top, black pants, and a backpack\",\n      \"action\": \"walking towards the camera\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black walking poles\",\n      \"action\": \"being held by the person\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"body of water\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"green grassy bank\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"green trees\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"person walks towards the camera on a grassy bank\",\n    \"person holds a walking pole in each hand\",\n    \"reflection of the person is visible in the water below\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is walking on the grassy bank, which is behind the body of water in the foreground. The trees are in the background behind the person. The reflection of the person is visible in the water below them.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is walking on the grassy bank, which is behind the body of water in the foreground. The trees are in the background behind the person. The reflection of the person is visible in the water below them.",
+    "parse_success": true,
     "chunk_idx": 0,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       2,
       4
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a blue sleeveless tank top, black cropped pants, and a backpack",
+        "action": "walking forward",
+        "position": "center"
+      },
+      {
+        "desc": "black hiking poles",
+        "action": "being held",
+        "position": "center"
+      },
+      {
+        "desc": "body of water with reflections",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "green trees and grass",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is walking forward on a grassy bank",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is holding black hiking poles",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is near the edge of a body of water",
+        "confidence": 1.0
+      },
+      {
+        "fact": "reflection of the person is visible in the water",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [\n    2,\n    4\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with short dark hair, wearing a blue sleeveless tank top, black cropped pants, and a backpack\",\n      \"action\": \"walking forward\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"black hiking poles\",\n      \"action\": \"being held\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"body of water with reflections\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"green trees and grass\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"person is walking forward on a grassy bank\",\n    \"person is holding black hiking poles\",\n    \"person is near the edge of a body of water\",\n    \"reflection of the person is visible in the water\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is in the center of the frame, walking on the grassy bank. The body of water is in the foreground, below the person. The green trees and grass are in the background, behind the person.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is in the center of the frame, walking on the grassy bank. The body of water is in the foreground, below the person. The green trees and grass are in the background, behind the person.",
+    "parse_success": true,
     "chunk_idx": 1,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       4,
       6
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a blue sleeveless tank top, black capri pants, and carrying a large backpack with red and black coloring",
+        "action": "standing barefoot on the grassy bank",
+        "position": "center"
+      },
+      {
+        "desc": "calm body of water, likely a pond or stream, reflecting the surroundings",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dense green trees and foliage",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person stands barefoot on the grassy bank of a body of water.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a backpack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The water reflects the trees and the person standing nearby.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [4, 6],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with short dark hair, wearing a blue sleeveless tank top, black capri pants, and carrying a large backpack with red and black coloring\",\n      \"action\": \"standing barefoot on the grassy bank\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm body of water, likely a pond or stream, reflecting the surroundings\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"dense green trees and foliage\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person stands barefoot on the grassy bank of a body of water.\",\n    \"The person is wearing a backpack.\",\n    \"The water reflects the trees and the person standing nearby.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is standing on the grassy bank, which is behind the body of water in the foreground. The dense green trees are in the background behind the person.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is standing on the grassy bank, which is behind the body of water in the foreground. The dense green trees are in the background behind the person.",
+    "parse_success": true,
     "chunk_idx": 2,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       6,
       8
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "man with short dark hair, wearing a blue sleeveless tank top and dark shorts",
+        "action": "walking along the water's edge while carrying a backpack",
+        "position": "center"
+      },
+      {
+        "desc": "large black backpack with red accents and straps",
+        "action": "being carried by the man",
+        "position": "center"
+      },
+      {
+        "desc": "body of water with a reflective surface",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "green grassy bank",
+        "action": "static",
+        "position": "center"
+      },
+      {
+        "desc": "dense green trees and bushes",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man is walking along the edge of a body of water.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is carrying a large black and red backpack in his hands.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's reflection is visible in the water below him.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The setting is a grassy area with a line of trees in the background.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [6, 8],\n  \"visible_entities\": [\n    {\n      \"desc\": \"man with short dark hair, wearing a blue sleeveless tank top and dark shorts\",\n      \"action\": \"walking along the water's edge while carrying a backpack\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"large black backpack with red accents and straps\",\n      \"action\": \"being carried by the man\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"body of water with a reflective surface\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"green grassy bank\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"dense green trees and bushes\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A man is walking along the edge of a body of water.\",\n    \"The man is carrying a large black and red backpack in his hands.\",\n    \"The man's reflection is visible in the water below him.\",\n    \"The setting is a grassy area with a line of trees in the background.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The man is walking on the grassy bank which is behind the body of water. The man is holding the backpack in front of his torso. The trees are in the background behind the man and the grass.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The man is walking on the grassy bank which is behind the body of water. The man is holding the backpack in front of his torso. The trees are in the background behind the man and the grass.",
+    "parse_success": true,
     "chunk_idx": 3,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       8,
       10
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person with dark hair, wearing a light blue short-sleeved t-shirt, black cropped pants, and barefoot",
+        "action": "jumping into the water",
+        "position": "center"
+      },
+      {
+        "desc": "large black and red backpack",
+        "action": "being held by the person",
+        "position": "center"
+      },
+      {
+        "desc": "body of water with a grassy bank",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "green trees and bushes",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person holding a backpack is jumping off the grassy bank into the water.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is in mid-air above the water surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The reflection of the person is visible in the water below.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [8, 10],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with dark hair, wearing a light blue short-sleeved t-shirt, black cropped pants, and barefoot\",\n      \"action\": \"jumping into the water\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"large black and red backpack\",\n      \"action\": \"being held by the person\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"body of water with a grassy bank\",\n      \"action\": \"static\",\n      \"position\": \"bottom\"\n    },\n    {\n      \"desc\": \"green trees and bushes\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person holding a backpack is jumping off the grassy bank into the water.\",\n    \"The person is in mid-air above the water surface.\",\n    \"The reflection of the person is visible in the water below.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is above the body of water and in front of the green trees. The backpack is being held by the person. The grassy bank is next to the water.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is above the body of water and in front of the green trees. The backpack is being held by the person. The grassy bank is next to the water.",
+    "parse_success": true,
     "chunk_idx": 4,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       10,
       12
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person with dark hair, wearing a blue sleeveless top, black capri pants, and carrying a large red and black backpack",
+        "action": "jumping over a puddle",
+        "position": "center"
+      },
+      {
+        "desc": "muddy puddle of water",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "green grassy bank",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "green trees",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person is jumping over a puddle",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is carrying a backpack",
+        "confidence": 1.0
+      },
+      {
+        "fact": "reflection of the person is visible in the water",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person is wearing a blue sleeveless top",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [\n    10,\n    12\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with dark hair, wearing a blue sleeveless top, black capri pants, and carrying a large red and black backpack\",\n      \"action\": \"jumping over a puddle\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"muddy puddle of water\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"green grassy bank\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    },\n    {\n      \"desc\": \"green trees\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"person is jumping over a puddle\",\n    \"person is carrying a backpack\",\n    \"reflection of the person is visible in the water\",\n    \"person is wearing a blue sleeveless top\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is above the muddy puddle in the foreground. The grassy bank is behind the person. The trees are in the background behind the grassy bank.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is above the muddy puddle in the foreground. The grassy bank is behind the person. The trees are in the background behind the grassy bank.",
+    "parse_success": true,
     "chunk_idx": 5,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       12,
       14
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person with dark hair, wearing a blue short-sleeved t-shirt and black pants",
+        "action": "walking through shallow water carrying a large red backpack",
+        "position": "center"
+      },
+      {
+        "desc": "large red backpack with black straps",
+        "action": "being carried on the person's back",
+        "position": "center"
+      },
+      {
+        "desc": "shallow body of water with reflections",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "green grassy bank and trees",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is walking through a shallow body of water.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is carrying a large red backpack on their back.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is barefoot in the water.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [\n    12,\n    14\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with dark hair, wearing a blue short-sleeved t-shirt and black pants\",\n      \"action\": \"walking through shallow water carrying a large red backpack\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"large red backpack with black straps\",\n      \"action\": \"being carried on the person's back\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"shallow body of water with reflections\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"green grassy bank and trees\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person is walking through a shallow body of water.\",\n    \"The person is carrying a large red backpack on their back.\",\n    \"The person is barefoot in the water.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is in the center of the frame, walking through the water which is in the foreground. The large red backpack is on the person's back. The grassy bank and trees are behind the person in the background.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is in the center of the frame, walking through the water which is in the foreground. The large red backpack is on the person's back. The grassy bank and trees are behind the person in the background.",
+    "parse_success": true,
     "chunk_idx": 6,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       14,
       16
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a blue short-sleeved t-shirt and black pants",
+        "action": "wading through water",
+        "position": "center"
+      },
+      {
+        "desc": "large red and black hiking backpack with external straps",
+        "action": "being carried",
+        "position": "center"
+      },
+      {
+        "desc": "calm, dark water surface reflecting the surroundings",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "green grassy bank with dense trees in the background",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is wading through a body of water.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is carrying a large red and black backpack on their back.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The water level reaches the person's thighs.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's reflection is visible in the water below them.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [14, 16],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with short dark hair, wearing a blue short-sleeved t-shirt and black pants\",\n      \"action\": \"wading through water\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"large red and black hiking backpack with external straps\",\n      \"action\": \"being carried\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm, dark water surface reflecting the surroundings\",\n      \"action\": \"static\",\n      \"position\": \"bottom\"\n    },\n    {\n      \"desc\": \"green grassy bank with dense trees in the background\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person is wading through a body of water.\",\n    \"The person is carrying a large red and black backpack on their back.\",\n    \"The water level reaches the person's thighs.\",\n    \"The person's reflection is visible in the water below them.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is in the center of the frame, wading through the water which is below them. The large backpack is on the person's back. The grassy bank and trees are behind the person in the background.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is in the center of the frame, wading through the water which is below them. The large backpack is on the person's back. The grassy bank and trees are behind the person in the background.",
+    "parse_success": true,
     "chunk_idx": 7,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       16,
       18
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person with dark hair, wearing a bright blue sleeveless tank top and black pants",
+        "action": "wading through water",
+        "position": "center"
+      },
+      {
+        "desc": "large red and black backpack",
+        "action": "being carried on shoulders",
+        "position": "center"
+      },
+      {
+        "desc": "calm body of water with reflections",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "green grassy bank and trees",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is wading through a body of water.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is carrying a large red and black backpack on their shoulders.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The water level reaches the person's thighs.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's reflection is visible in the water below them.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [\n    16,\n    18\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with dark hair, wearing a bright blue sleeveless tank top and black pants\",\n      \"action\": \"wading through water\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"large red and black backpack\",\n      \"action\": \"being carried on shoulders\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm body of water with reflections\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"green grassy bank and trees\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person is wading through a body of water.\",\n    \"The person is carrying a large red and black backpack on their shoulders.\",\n    \"The water level reaches the person's thighs.\",\n    \"The person's reflection is visible in the water below them.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is in the center of the frame, wading through the water which is in the foreground. The large red and black backpack is on the person's shoulders. The green grassy bank and trees are behind the person in the background.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is in the center of the frame, wading through the water which is in the foreground. The large red and black backpack is on the person's shoulders. The green grassy bank and trees are behind the person in the background.",
+    "parse_success": true,
     "chunk_idx": 8,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       18,
       20
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person with dark hair, wearing a blue short-sleeved t-shirt and dark shorts",
+        "action": "wading through water",
+        "position": "center"
+      },
+      {
+        "desc": "large red and black backpack",
+        "action": "being held above head",
+        "position": "center"
+      },
+      {
+        "desc": "calm water surface",
+        "action": "reflecting the person and trees",
+        "position": "bottom"
+      },
+      {
+        "desc": "green trees and grassy bank",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "The person is wading through water that reaches their waist.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding a large red and black backpack above their head to keep it dry.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The water surface reflects the person and the background trees.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [18, 20],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with dark hair, wearing a blue short-sleeved t-shirt and dark shorts\",\n      \"action\": \"wading through water\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"large red and black backpack\",\n      \"action\": \"being held above head\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm water surface\",\n      \"action\": \"reflecting the person and trees\",\n      \"position\": \"bottom\"\n    },\n    {\n      \"desc\": \"green trees and grassy bank\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"The person is wading through water that reaches their waist.\",\n    \"The person is holding a large red and black backpack above their head to keep it dry.\",\n    \"The water surface reflects the person and the background trees.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is in the center of the frame, wading through the water. The backpack is held above the person's head. The green trees and grassy bank are in the background behind the person. The reflection of the person is visible in the water below them.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is in the center of the frame, wading through the water. The backpack is held above the person's head. The green trees and grassy bank are in the background behind the person. The reflection of the person is visible in the water below them.",
+    "parse_success": true,
     "chunk_idx": 9,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       20,
       22
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "man with dark hair and beard, wearing a light blue sleeveless tank top",
+        "action": "wading through water while holding a backpack overhead",
+        "position": "center"
+      },
+      {
+        "desc": "large hiking backpack, red and black, with visible straps and gear attached",
+        "action": "being held above the man's head",
+        "position": "center"
+      },
+      {
+        "desc": "calm, dark body of water reflecting the surroundings",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "lush green trees and grassy bank",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A man is wading through a body of water.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man is holding a large red and black backpack above his head to keep it dry.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The water level reaches the man's waist.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The man's reflection is visible in the water below him.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [\n    20,\n    22\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"man with dark hair and beard, wearing a light blue sleeveless tank top\",\n      \"action\": \"wading through water while holding a backpack overhead\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"large hiking backpack, red and black, with visible straps and gear attached\",\n      \"action\": \"being held above the man's head\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm, dark body of water reflecting the surroundings\",\n      \"action\": \"static\",\n      \"position\": \"bottom\"\n    },\n    {\n      \"desc\": \"lush green trees and grassy bank\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A man is wading through a body of water.\",\n    \"The man is holding a large red and black backpack above his head to keep it dry.\",\n    \"The water level reaches the man's waist.\",\n    \"The man's reflection is visible in the water below him.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The man is in the center of the frame, surrounded by water. The backpack is positioned directly above the man's head, held by his hands. The green trees and grass are in the background behind the man.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The man is in the center of the frame, surrounded by water. The backpack is positioned directly above the man's head, held by his hands. The green trees and grass are in the background behind the man.",
+    "parse_success": true,
     "chunk_idx": 10,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       22,
       24
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a light blue sleeveless top and blue shorts",
+        "action": "wading through water while holding a backpack",
+        "position": "center"
+      },
+      {
+        "desc": "large red and black hiking backpack with visible straps",
+        "action": "being held above the person's head",
+        "position": "center"
+      },
+      {
+        "desc": "calm body of water with green reflections",
+        "action": "static",
+        "position": "bottom"
+      },
+      {
+        "desc": "dense green trees and grassy bank",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "person wades through water",
+        "confidence": 1.0
+      },
+      {
+        "fact": "person holds a backpack above their head",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the backpack is kept dry above the water level",
+        "confidence": 1.0
+      },
+      {
+        "fact": "the water reflects the surrounding green trees",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [\n    22,\n    24\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with short dark hair, wearing a light blue sleeveless top and blue shorts\",\n      \"action\": \"wading through water while holding a backpack\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"large red and black hiking backpack with visible straps\",\n      \"action\": \"being held above the person's head\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm body of water with green reflections\",\n      \"action\": \"static\",\n      \"position\": \"bottom\"\n    },\n    {\n      \"desc\": \"dense green trees and grassy bank\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"person wades through water\",\n    \"person holds a backpack above their head\",\n    \"the backpack is kept dry above the water level\",\n    \"the water reflects the surrounding green trees\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is in the center of the frame, standing in the water. The backpack is held above the person's head. The water is below the person and the backpack. The trees and grass are in the background behind the person.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is in the center of the frame, standing in the water. The backpack is held above the person's head. The water is below the person and the backpack. The trees and grass are in the background behind the person.",
+    "parse_success": true,
     "chunk_idx": 11,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       24,
       26
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person with short hair, wearing a light blue short-sleeved t-shirt",
+        "action": "wading through water while holding a backpack",
+        "position": "center"
+      },
+      {
+        "desc": "large red and black hiking backpack with straps",
+        "action": "being held above the person's head",
+        "position": "center"
+      },
+      {
+        "desc": "calm, dark water reflecting the surroundings",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "lush green trees and tall grass",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is wading through water that reaches their waist.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding a large red and black backpack above their head to keep it dry.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The backpack is positioned directly above the person's head.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's reflection is visible in the water below them.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [\n    24,\n    26\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with short hair, wearing a light blue short-sleeved t-shirt\",\n      \"action\": \"wading through water while holding a backpack\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"large red and black hiking backpack with straps\",\n      \"action\": \"being held above the person's head\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm, dark water reflecting the surroundings\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"lush green trees and tall grass\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person is wading through water that reaches their waist.\",\n    \"The person is holding a large red and black backpack above their head to keep it dry.\",\n    \"The backpack is positioned directly above the person's head.\",\n    \"The person's reflection is visible in the water below them.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is in the center of the frame, wading in the water. The red and black backpack is held above the person's head. The green trees and grass are in the background behind the person and the water.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is in the center of the frame, wading in the water. The red and black backpack is held above the person's head. The green trees and grass are in the background behind the person and the water.",
+    "parse_success": true,
     "chunk_idx": 12,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       26,
       28
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person with short brown hair, wearing a light blue t-shirt",
+        "action": "wading through water while holding a backpack overhead",
+        "position": "center"
+      },
+      {
+        "desc": "large red and black backpack with tripod legs attached",
+        "action": "being held above the person's head",
+        "position": "center/top"
+      },
+      {
+        "desc": "calm river water with reflections",
+        "action": "static",
+        "position": "foreground/bottom"
+      },
+      {
+        "desc": "green trees and grassy bank",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is wading through waist-deep water.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding a large red and black backpack above their head to keep it dry.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A tripod is attached to the bottom of the backpack.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [26, 28],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with short brown hair, wearing a light blue t-shirt\",\n      \"action\": \"wading through water while holding a backpack overhead\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"large red and black backpack with tripod legs attached\",\n      \"action\": \"being held above the person's head\",\n      \"position\": \"center/top\"\n    },\n    {\n      \"desc\": \"calm river water with reflections\",\n      \"action\": \"static\",\n      \"position\": \"foreground/bottom\"\n    },\n    {\n      \"desc\": \"green trees and grassy bank\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person is wading through waist-deep water.\",\n    \"The person is holding a large red and black backpack above their head to keep it dry.\",\n    \"A tripod is attached to the bottom of the backpack.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is in the center of the frame, surrounded by water. The backpack is held directly above the person's head. The green trees and grass are in the background behind the person.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is in the center of the frame, surrounded by water. The backpack is held directly above the person's head. The green trees and grass are in the background behind the person.",
+    "parse_success": true,
     "chunk_idx": 13,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       28,
       30
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person with short dark hair, wearing a light blue short-sleeved t-shirt",
+        "action": "wading through water while holding a backpack overhead",
+        "position": "center"
+      },
+      {
+        "desc": "large hiking backpack, red and black, with visible straps",
+        "action": "being held above the person's head",
+        "position": "center"
+      },
+      {
+        "desc": "calm river water, dark green and reflective",
+        "action": "surrounding the person",
+        "position": "foreground"
+      },
+      {
+        "desc": "lush green trees and bushes",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is wading through a river with water reaching their waist.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding a red and black backpack high above their head to keep it dry.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The backpack is positioned directly above the person's head.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [28, 30],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with short dark hair, wearing a light blue short-sleeved t-shirt\",\n      \"action\": \"wading through water while holding a backpack overhead\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"large hiking backpack, red and black, with visible straps\",\n      \"action\": \"being held above the person's head\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm river water, dark green and reflective\",\n      \"action\": \"surrounding the person\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"lush green trees and bushes\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person is wading through a river with water reaching their waist.\",\n    \"The person is holding a red and black backpack high above their head to keep it dry.\",\n    \"The backpack is positioned directly above the person's head.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is in the center of the frame, surrounded by the river water. The red and black backpack is held above the person's head. The lush green trees are in the background behind the person and the river.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is in the center of the frame, surrounded by the river water. The red and black backpack is held above the person's head. The lush green trees are in the background behind the person and the river.",
+    "parse_success": true,
     "chunk_idx": 14,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       30,
       32
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person with light skin, wearing a light blue sleeveless top, submerged up to the chest",
+        "action": "holding a large red and black backpack above their head",
+        "position": "center"
+      },
+      {
+        "desc": "large red and black backpack with visible straps and a bulky shape",
+        "action": "being held aloft",
+        "position": "center"
+      },
+      {
+        "desc": "calm dark water with ripples and reflections",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dense green trees and bushes lining the riverbank",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is wading through water while holding a backpack high above their head.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The backpack is kept dry above the water level.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's reflection is visible in the water below them.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [30, 32],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with light skin, wearing a light blue sleeveless top, submerged up to the chest\",\n      \"action\": \"holding a large red and black backpack above their head\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"large red and black backpack with visible straps and a bulky shape\",\n      \"action\": \"being held aloft\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm dark water with ripples and reflections\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"dense green trees and bushes lining the riverbank\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person is wading through water while holding a backpack high above their head.\",\n    \"The backpack is kept dry above the water level.\",\n    \"The person's reflection is visible in the water below them.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is in the center of the frame, surrounded by water. The red and black backpack is held directly above the person's head. The green trees are in the background behind the person and the water.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is in the center of the frame, surrounded by water. The red and black backpack is held directly above the person's head. The green trees are in the background behind the person and the water.",
+    "parse_success": true,
     "chunk_idx": 15,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
@@ -318,320 +867,942 @@
       34,
       36
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person with dark hair, wearing a blue sleeveless top, holding a large red and black backpack above their head",
+        "action": "wading through water",
+        "position": "center"
+      },
+      {
+        "desc": "calm, dark river water reflecting the sky and trees",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dense green trees and bushes lining the river banks",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is wading through a river.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding a backpack above their head to keep it dry.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The water level reaches the person's chest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The backpack is red and black.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [34, 36],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with dark hair, wearing a blue sleeveless top, holding a large red and black backpack above their head\",\n      \"action\": \"wading through water\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm, dark river water reflecting the sky and trees\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"dense green trees and bushes lining the river banks\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person is wading through a river.\",\n    \"The person is holding a backpack above their head to keep it dry.\",\n    \"The water level reaches the person's chest.\",\n    \"The backpack is red and black.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is in the center of the river, surrounded by water. The dense green trees are behind the person on both the left and right banks. The person is holding the backpack above their head.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is in the center of the river, surrounded by water. The dense green trees are behind the person on both the left and right banks. The person is holding the backpack above their head.",
+    "parse_success": true,
     "chunk_idx": 17,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       36,
       38
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person with dark hair, wearing a blue top, carrying a large red and black backpack",
+        "action": "wading through water",
+        "position": "center"
+      },
+      {
+        "desc": "calm river water, dark green, reflecting the sky and trees",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dense green trees and bushes lining the riverbank",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is wading through a river with a backpack held above their head.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The water level is high, reaching the person's chest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is moving away from the camera towards the opposite bank.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [36, 38],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with dark hair, wearing a blue top, carrying a large red and black backpack\",\n      \"action\": \"wading through water\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm river water, dark green, reflecting the sky and trees\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"dense green trees and bushes lining the riverbank\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person is wading through a river with a backpack held above their head.\",\n    \"The water level is high, reaching the person's chest.\",\n    \"The person is moving away from the camera towards the opposite bank.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is in the center of the frame, surrounded by the river water. The dense green trees are in the background, behind the person and on both sides of the river.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is in the center of the frame, surrounded by the river water. The dense green trees are in the background, behind the person and on both sides of the river.",
+    "parse_success": true,
     "chunk_idx": 18,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       38,
       40
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person with dark hair, wearing a large red backpack and dark clothing, submerged in water up to the chest",
+        "action": "wading through water",
+        "position": "center"
+      },
+      {
+        "desc": "calm river water with green reflections",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dense green trees and bushes",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is wading through a river.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is carrying a large red backpack on their back.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The water is calm with ripples around the person.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [38, 40],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with dark hair, wearing a large red backpack and dark clothing, submerged in water up to the chest\",\n      \"action\": \"wading through water\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm river water with green reflections\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"dense green trees and bushes\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person is wading through a river.\",\n    \"The person is carrying a large red backpack on their back.\",\n    \"The water is calm with ripples around the person.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person with the red backpack is in the center of the frame, surrounded by the river water. The dense green trees are in the background behind the person and along the riverbanks.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person with the red backpack is in the center of the frame, surrounded by the river water. The dense green trees are in the background behind the person and along the riverbanks.",
+    "parse_success": true,
     "chunk_idx": 19,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       40,
       42
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person with wet skin, wearing a blue top, carrying a large red and black backpack",
+        "action": "wading through water",
+        "position": "center"
+      },
+      {
+        "desc": "calm river water with ripples and reflections",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dense green trees and bushes lining the riverbank",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is wading through a river with water reaching their chest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding a large red and black backpack above their head to keep it dry.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The backpack is positioned directly above the person's head.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [40, 42],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with wet skin, wearing a blue top, carrying a large red and black backpack\",\n      \"action\": \"wading through water\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm river water with ripples and reflections\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"dense green trees and bushes lining the riverbank\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person is wading through a river with water reaching their chest.\",\n    \"The person is holding a large red and black backpack above their head to keep it dry.\",\n    \"The backpack is positioned directly above the person's head.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is in the center of the river, surrounded by water. The red and black backpack is held above the person's head. The green trees are in the background, behind the person and the river.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is in the center of the river, surrounded by water. The red and black backpack is held above the person's head. The green trees are in the background, behind the person and the river.",
+    "parse_success": true,
     "chunk_idx": 20,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       42,
       44
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
-    "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [\n    42,\n    44\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with dark hair, wearing a red patterned top and light blue bottoms\",\n      \"action\": \"wading through water\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm river water with green reflections\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"dense green trees and bushes\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person is wading through a river with water reaching their waist.\",\n    \"The person is holding their arms up, possibly to keep something dry.\",\n    \"The water surface reflects the green trees from the background.\",\n    \"A semi-transparent watermark text is visible across the lower center of the frame.\"\n  ],\n  \"ocr\": [\n    \"shutterstock\"\n  ],\n  \"spatial\": \"The person is in the center of the frame, surrounded by the river water. The dense green trees are in the background behind the person. The watermark text is superimposed over the water in the foreground.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "visible_entities": [
+      {
+        "desc": "person with dark hair, wearing a red patterned top and light blue bottoms",
+        "action": "wading through water",
+        "position": "center"
+      },
+      {
+        "desc": "calm river water with green reflections",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dense green trees and bushes",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is wading through a river with water reaching their waist.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding their arms up, possibly to keep something dry.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The water surface reflects the green trees from the background.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "A semi-transparent watermark text is visible across the lower center of the frame.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "shutterstock"
+    ],
+    "spatial": "The person is in the center of the frame, surrounded by the river water. The dense green trees are in the background behind the person. The watermark text is superimposed over the water in the foreground.",
+    "parse_success": true,
     "chunk_idx": 21,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       44,
       46
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red and black patterned life vest, blue shorts, and a black helmet",
+        "action": "bending forward in water",
+        "position": "center"
+      },
+      {
+        "desc": "calm river water with ripples and reflections",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dense green trees and bushes on the riverbank",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person wearing a red life vest is bent over in the middle of a river.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's upper body is submerged or very close to the water surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The reflection of the person and the red life vest is visible in the water below them.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Green trees line the background behind the person.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [44, 46],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person wearing a red and black patterned life vest, blue shorts, and a black helmet\",\n      \"action\": \"bending forward in water\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm river water with ripples and reflections\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"dense green trees and bushes on the riverbank\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person wearing a red life vest is bent over in the middle of a river.\",\n    \"The person's upper body is submerged or very close to the water surface.\",\n    \"The reflection of the person and the red life vest is visible in the water below them.\",\n    \"Green trees line the background behind the person.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is in the center of the frame, surrounded by the river water. The dense green trees are located in the background behind the person. The reflection of the person is visible directly below them on the water's surface.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is in the center of the frame, surrounded by the river water. The dense green trees are located in the background behind the person. The reflection of the person is visible directly below them on the water's surface.",
+    "parse_success": true,
     "chunk_idx": 22,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       46,
       48
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
-    "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [46, 48],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with dark hair, wearing a light blue sleeveless top, holding a large red and black backpack\",\n      \"action\": \"wading through water while holding backpack overhead\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"red and black backpack with visible straps and buckles\",\n      \"action\": \"being held above the person's head\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm, dark water surface with ripples and reflections\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"dense green trees and bushes lining the riverbank\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    },\n    {\n      \"desc\": \"semi-transparent white watermark text\",\n      \"action\": \"static\",\n      \"position\": \"center\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person is wading through a river with water reaching their chest.\",\n    \"The person is holding a red and black backpack high above their head to keep it dry.\",\n    \"The backpack is reflected in the water below the person.\",\n    \"The text 'shutterstock' is visible as a watermark across the center of the image.\"\n  ],\n  \"ocr\": [\n    \"shutterstock\"\n  ],\n  \"spatial\": \"The person is in the center of the frame, surrounded by water. The red and black backpack is held above the person's head. The dense green trees are in the background behind the person. The watermark text is superimposed over the water in the foreground.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "visible_entities": [
+      {
+        "desc": "person with dark hair, wearing a light blue sleeveless top, holding a large red and black backpack",
+        "action": "wading through water while holding backpack overhead",
+        "position": "center"
+      },
+      {
+        "desc": "red and black backpack with visible straps and buckles",
+        "action": "being held above the person's head",
+        "position": "center"
+      },
+      {
+        "desc": "calm, dark water surface with ripples and reflections",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dense green trees and bushes lining the riverbank",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "semi-transparent white watermark text",
+        "action": "static",
+        "position": "center"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is wading through a river with water reaching their chest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding a red and black backpack high above their head to keep it dry.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The backpack is reflected in the water below the person.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The text 'shutterstock' is visible as a watermark across the center of the image.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "shutterstock"
+    ],
+    "spatial": "The person is in the center of the frame, surrounded by water. The red and black backpack is held above the person's head. The dense green trees are in the background behind the person. The watermark text is superimposed over the water in the foreground.",
+    "parse_success": true,
     "chunk_idx": 23,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       48,
       50
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
-    "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [48, 50],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with dark hair, wearing a white sleeveless top\",\n      \"action\": \"holding a large bouquet of red flowers above their head\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"large bouquet of red flowers, possibly roses, wrapped in dark material\",\n      \"action\": \"being held aloft\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"body of water, calm surface with ripples\",\n      \"action\": \"surrounding the person\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"dense green trees and foliage\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person is submerged in water up to their shoulders.\",\n    \"The person is holding a large bouquet of red flowers above their head to keep it dry.\",\n    \"The person is wearing a white sleeveless top.\",\n    \"The water has ripples spreading out from the person.\"\n  ],\n  \"ocr\": [\n    \"shutterstock\"\n  ],\n  \"spatial\": \"The person is in the center of the frame, surrounded by the water in the foreground. The person is holding the bouquet of red flowers above their head. The dense green trees are in the background, behind the person and the water.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "visible_entities": [
+      {
+        "desc": "person with dark hair, wearing a white sleeveless top",
+        "action": "holding a large bouquet of red flowers above their head",
+        "position": "center"
+      },
+      {
+        "desc": "large bouquet of red flowers, possibly roses, wrapped in dark material",
+        "action": "being held aloft",
+        "position": "center"
+      },
+      {
+        "desc": "body of water, calm surface with ripples",
+        "action": "surrounding the person",
+        "position": "foreground"
+      },
+      {
+        "desc": "dense green trees and foliage",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is submerged in water up to their shoulders.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding a large bouquet of red flowers above their head to keep it dry.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a white sleeveless top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The water has ripples spreading out from the person.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "shutterstock"
+    ],
+    "spatial": "The person is in the center of the frame, surrounded by the water in the foreground. The person is holding the bouquet of red flowers above their head. The dense green trees are in the background, behind the person and the water.",
+    "parse_success": true,
     "chunk_idx": 24,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       50,
       52
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
-    "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [50, 52],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person wearing a black wetsuit with red accents on the upper body and shoulders, wearing a red life vest\",\n      \"action\": \"balancing on a surfboard\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"white surfboard with blue trim\",\n      \"action\": \"floating on water\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm dark river water\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"dense green trees and bushes\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person in a wetsuit is balancing on a surfboard in the middle of a river.\",\n    \"The person is bending their knees and leaning forward to maintain stability.\",\n    \"The surfboard is floating on the surface of the water.\"\n  ],\n  \"ocr\": [\n    \"shutterstock\"\n  ],\n  \"spatial\": \"The person is standing on top of the surfboard. The surfboard is in the center of the river, surrounded by water. The dense green trees are in the background behind the person and the river.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "visible_entities": [
+      {
+        "desc": "person wearing a black wetsuit with red accents on the upper body and shoulders, wearing a red life vest",
+        "action": "balancing on a surfboard",
+        "position": "center"
+      },
+      {
+        "desc": "white surfboard with blue trim",
+        "action": "floating on water",
+        "position": "center"
+      },
+      {
+        "desc": "calm dark river water",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dense green trees and bushes",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a wetsuit is balancing on a surfboard in the middle of a river.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is bending their knees and leaning forward to maintain stability.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The surfboard is floating on the surface of the water.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "shutterstock"
+    ],
+    "spatial": "The person is standing on top of the surfboard. The surfboard is in the center of the river, surrounded by water. The dense green trees are in the background behind the person and the river.",
+    "parse_success": true,
     "chunk_idx": 25,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       52,
       54
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red and black life vest, dark shorts, and a dark top, with dark hair",
+        "action": "bending forward over a white board",
+        "position": "center"
+      },
+      {
+        "desc": "white board, flat and buoyant, partially submerged",
+        "action": "floating on the water surface",
+        "position": "center"
+      },
+      {
+        "desc": "river water, dark and calm with ripples",
+        "action": "flowing",
+        "position": "foreground"
+      },
+      {
+        "desc": "dense green trees and bushes",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a red and black life vest is bending forward over a white board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is balancing on the white board in the middle of the river.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The river is surrounded by green trees and bushes.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [52, 54],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person wearing a red and black life vest, dark shorts, and a dark top, with dark hair\",\n      \"action\": \"bending forward over a white board\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"white board, flat and buoyant, partially submerged\",\n      \"action\": \"floating on the water surface\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"river water, dark and calm with ripples\",\n      \"action\": \"flowing\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"dense green trees and bushes\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person in a red and black life vest is bending forward over a white board.\",\n    \"The person is balancing on the white board in the middle of the river.\",\n    \"The river is surrounded by green trees and bushes.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is on top of the white board, which is floating on the river water. The river is in front of the dense green trees and bushes that line the bank.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is on top of the white board, which is floating on the river water. The river is in front of the dense green trees and bushes that line the bank.",
+    "parse_success": true,
     "chunk_idx": 26,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       54,
       56
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red and black wetsuit with a white helmet",
+        "action": "bending forward on a white board",
+        "position": "center"
+      },
+      {
+        "desc": "white surfboard or paddleboard",
+        "action": "floating",
+        "position": "center"
+      },
+      {
+        "desc": "calm river water",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dense green trees and bushes",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a red and black wetsuit is bending forward on a white board.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is balancing on the board in the middle of the water.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The board is floating on the surface of the river.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [54, 56],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person wearing a red and black wetsuit with a white helmet\",\n      \"action\": \"bending forward on a white board\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"white surfboard or paddleboard\",\n      \"action\": \"floating\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm river water\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"dense green trees and bushes\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person in a red and black wetsuit is bending forward on a white board.\",\n    \"The person is balancing on the board in the middle of the water.\",\n    \"The board is floating on the surface of the river.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person in the wetsuit is on top of the white board. The board is in the center of the river water. The green trees are in the background behind the person and the water.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person in the wetsuit is on top of the white board. The board is in the center of the river water. The green trees are in the background behind the person and the water.",
+    "parse_success": true,
     "chunk_idx": 27,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       56,
       58
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red and black wetsuit or drysuit with a white helmet",
+        "action": "kneeling on a white surfboard",
+        "position": "center"
+      },
+      {
+        "desc": "white surfboard",
+        "action": "floating on the water",
+        "position": "center"
+      },
+      {
+        "desc": "calm river water",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dense green trees and bushes",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a red and black wetsuit is kneeling on a white surfboard in the middle of a river.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is holding onto the sides of the surfboard.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The surfboard is floating on the calm water surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Dense green foliage lines the riverbank in the background.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [56, 58],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person wearing a red and black wetsuit or drysuit with a white helmet\",\n      \"action\": \"kneeling on a white surfboard\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"white surfboard\",\n      \"action\": \"floating on the water\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm river water\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"dense green trees and bushes\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person in a red and black wetsuit is kneeling on a white surfboard in the middle of a river.\",\n    \"The person is holding onto the sides of the surfboard.\",\n    \"The surfboard is floating on the calm water surface.\",\n    \"Dense green foliage lines the riverbank in the background.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is on top of the white surfboard. The surfboard is in the center of the river, surrounded by water. The green trees are behind the person and the surfboard, forming the background.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is on top of the white surfboard. The surfboard is in the center of the river, surrounded by water. The green trees are behind the person and the surfboard, forming the background.",
+    "parse_success": true,
     "chunk_idx": 28,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       58,
       60
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person wearing a black wetsuit with red accents on the shoulders and back, carrying a large black backpack with red details",
+        "action": "standing in water and bending forward",
+        "position": "center"
+      },
+      {
+        "desc": "calm river water with ripples and reflections of green trees",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dense green forest with leafy trees and bushes",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person in a wetsuit is standing in a river.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is bending forward at the waist.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a backpack.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The water reflects the surrounding green trees.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [\n    58,\n    60\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person wearing a black wetsuit with red accents on the shoulders and back, carrying a large black backpack with red details\",\n      \"action\": \"standing in water and bending forward\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm river water with ripples and reflections of green trees\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"dense green forest with leafy trees and bushes\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person in a wetsuit is standing in a river.\",\n    \"The person is bending forward at the waist.\",\n    \"The person is wearing a backpack.\",\n    \"The water reflects the surrounding green trees.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is in the center of the frame, standing in the river water. The dense green forest is behind the person, lining the riverbank. The water is in the foreground, surrounding the person's legs.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is in the center of the frame, standing in the river water. The dense green forest is behind the person, lining the riverbank. The water is in the foreground, surrounding the person's legs.",
+    "parse_success": true,
     "chunk_idx": 29,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       60,
       62
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red top and dark shorts",
+        "action": "bending over in the water",
+        "position": "center"
+      },
+      {
+        "desc": "calm river water with ripples",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dense green trees and bushes",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person wearing a red top is bending over in the middle of the river.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person appears to be interacting with something in the water.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The river is surrounded by a dense forest.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [\n    60,\n    62\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person wearing a red top and dark shorts\",\n      \"action\": \"bending over in the water\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm river water with ripples\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"dense green trees and bushes\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person wearing a red top is bending over in the middle of the river.\",\n    \"The person appears to be interacting with something in the water.\",\n    \"The river is surrounded by a dense forest.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is in the center of the river, surrounded by the water. The dense green trees are behind the person, lining the riverbank.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is in the center of the river, surrounded by the water. The dense green trees are behind the person, lining the riverbank.",
+    "parse_success": true,
     "chunk_idx": 30,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       62,
       64
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red life vest and dark clothing",
+        "action": "wading through water",
+        "position": "center"
+      },
+      {
+        "desc": "calm river water with ripples",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dense green trees and bushes",
+        "action": "static",
+        "position": "background"
+      },
+      {
+        "desc": "tall green grass along the riverbank",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person wearing a red life vest is wading through the river.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is positioned in the center of the frame.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The river is surrounded by a dense forest of green trees.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [62, 64],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person wearing a red life vest and dark clothing\",\n      \"action\": \"wading through water\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm river water with ripples\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"dense green trees and bushes\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    },\n    {\n      \"desc\": \"tall green grass along the riverbank\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person wearing a red life vest is wading through the river.\",\n    \"The person is positioned in the center of the frame.\",\n    \"The river is surrounded by a dense forest of green trees.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is in the center of the river, surrounded by water. The riverbank with tall grass is behind the person. The dense green trees are in the background, behind the riverbank.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is in the center of the river, surrounded by water. The riverbank with tall grass is behind the person. The dense green trees are in the background, behind the riverbank.",
+    "parse_success": true,
     "chunk_idx": 31,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       64,
       66
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
-    "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [\n    64,\n    66\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person wearing a red life jacket and dark shorts\",\n      \"action\": \"wading through the water\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm river water with green reflections\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"dense green trees and bushes\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person wearing a red life jacket is wading through the river.\",\n    \"The person is moving away from the camera towards the far bank.\",\n    \"The water reflects the green foliage of the surrounding trees.\"\n  ],\n  \"ocr\": [\n    \"shutterstock\"\n  ],\n  \"spatial\": \"The person is in the center of the frame, surrounded by the river water. The dense green trees are in the background behind the person and line the riverbank.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "visible_entities": [
+      {
+        "desc": "person wearing a red life jacket and dark shorts",
+        "action": "wading through the water",
+        "position": "center"
+      },
+      {
+        "desc": "calm river water with green reflections",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dense green trees and bushes",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person wearing a red life jacket is wading through the river.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is moving away from the camera towards the far bank.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The water reflects the green foliage of the surrounding trees.",
+        "confidence": 1.0
+      }
+    ],
+    "ocr": [
+      "shutterstock"
+    ],
+    "spatial": "The person is in the center of the frame, surrounded by the river water. The dense green trees are in the background behind the person and line the riverbank.",
+    "parse_success": true,
     "chunk_idx": 32,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       66,
       68
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red and black life vest, dark shorts, and a blue top",
+        "action": "bending over in the water",
+        "position": "center"
+      },
+      {
+        "desc": "calm, dark river water with ripples",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dense green trees and bushes",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is bending over in the river.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a red and black life vest.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The river is surrounded by green trees.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [\n    66,\n    68\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person wearing a red and black life vest, dark shorts, and a blue top\",\n      \"action\": \"bending over in the water\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm, dark river water with ripples\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"dense green trees and bushes\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person is bending over in the river.\",\n    \"The person is wearing a red and black life vest.\",\n    \"The river is surrounded by green trees.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is in the center of the frame, standing in the water. The water is in the foreground, and the trees are in the background behind the person.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is in the center of the frame, standing in the water. The water is in the foreground, and the trees are in the background behind the person.",
+    "parse_success": true,
     "chunk_idx": 33,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       68,
       70
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person wearing a red and black patterned top and blue shorts",
+        "action": "bending forward in the water",
+        "position": "center"
+      },
+      {
+        "desc": "calm, dark river water",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dense green trees and foliage",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is bending forward at the waist in the river.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person's upper body is submerged or close to the water surface.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The river is surrounded by a forest.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [68, 70],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person wearing a red and black patterned top and blue shorts\",\n      \"action\": \"bending forward in the water\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm, dark river water\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"dense green trees and foliage\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person is bending forward at the waist in the river.\",\n    \"The person's upper body is submerged or close to the water surface.\",\n    \"The river is surrounded by a forest.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is in the center of the frame, surrounded by the river water. The dense green trees are behind the person and line the banks of the river.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is in the center of the frame, surrounded by the river water. The dense green trees are behind the person and line the banks of the river.",
+    "parse_success": true,
     "chunk_idx": 34,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       70,
       72
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue shirt and a red backpack",
+        "action": "wading through water",
+        "position": "center"
+      },
+      {
+        "desc": "calm, dark river water with ripples",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dense green trees and bushes lining the riverbank",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person wearing a blue shirt and red backpack is wading through the river.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is positioned in the center of the frame, moving away from the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The river is surrounded by dense green vegetation on both banks.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [\n    70,\n    72\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person wearing a blue shirt and a red backpack\",\n      \"action\": \"wading through water\",\n      \"position\": \"center\"\n    },\n    {\n      \"desc\": \"calm, dark river water with ripples\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"dense green trees and bushes lining the riverbank\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person wearing a blue shirt and red backpack is wading through the river.\",\n    \"The person is positioned in the center of the frame, moving away from the camera.\",\n    \"The river is surrounded by dense green vegetation on both banks.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is in the center of the river, surrounded by water in the foreground and trees in the background. The trees are located on the banks behind and to the sides of the person.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is in the center of the river, surrounded by water in the foreground and trees in the background. The trees are located on the banks behind and to the sides of the person.",
+    "parse_success": true,
     "chunk_idx": 35,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       72,
       74
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person wearing a black top with red accents and blue shorts",
+        "action": "wading through water",
+        "position": "center/background"
+      },
+      {
+        "desc": "calm, murky river water",
+        "action": "static",
+        "position": "foreground/bottom"
+      },
+      {
+        "desc": "dense green trees and bushes",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person is wading through the water away from the camera.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing blue shorts and a black top.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The water is calm with slight ripples.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Dense green vegetation lines the riverbank.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [72, 74],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person wearing a black top with red accents and blue shorts\",\n      \"action\": \"wading through water\",\n      \"position\": \"center/background\"\n    },\n    {\n      \"desc\": \"calm, murky river water\",\n      \"action\": \"static\",\n      \"position\": \"foreground/bottom\"\n    },\n    {\n      \"desc\": \"dense green trees and bushes\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person is wading through the water away from the camera.\",\n    \"The person is wearing blue shorts and a black top.\",\n    \"The water is calm with slight ripples.\",\n    \"Dense green vegetation lines the riverbank.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is in the center of the frame, wading through the water which occupies the foreground. The dense green trees and bushes are located behind the person on the riverbank.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is in the center of the frame, wading through the water which occupies the foreground. The dense green trees and bushes are located behind the person on the riverbank.",
+    "parse_success": true,
     "chunk_idx": 36,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
@@ -684,31 +1855,89 @@
       76,
       78
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person wearing a blue shirt and dark pants, carrying a large dark object on their shoulder",
+        "action": "standing still",
+        "position": "center background"
+      },
+      {
+        "desc": "calm brown river water with ripples",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dense green trees and bushes",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person stands on the far bank of the river.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is carrying a large dark object on their shoulder.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The water in the foreground reflects the green trees.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [76, 78],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person wearing a blue shirt and dark pants, carrying a large dark object on their shoulder\",\n      \"action\": \"standing still\",\n      \"position\": \"center background\"\n    },\n    {\n      \"desc\": \"calm brown river water with ripples\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"dense green trees and bushes\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person stands on the far bank of the river.\",\n    \"The person is carrying a large dark object on their shoulder.\",\n    \"The water in the foreground reflects the green trees.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is standing on the riverbank in the background, behind the water in the foreground. The dense green trees are behind the person.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is standing on the riverbank in the background, behind the water in the foreground. The dense green trees are behind the person.",
+    "parse_success": true,
     "chunk_idx": 38,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   },
   {
     "time": [
       78,
       80
     ],
-    "visible_entities": [],
-    "atomic_facts": [],
+    "visible_entities": [
+      {
+        "desc": "person with dark hair, wearing a blue short-sleeved shirt and dark shorts",
+        "action": "standing on the riverbank",
+        "position": "background"
+      },
+      {
+        "desc": "calm river water with ripples and reflections",
+        "action": "static",
+        "position": "foreground"
+      },
+      {
+        "desc": "dense green trees and bushes",
+        "action": "static",
+        "position": "background"
+      }
+    ],
+    "atomic_facts": [
+      {
+        "fact": "A person stands on the far bank of the river.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The person is wearing a blue shirt.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "The river water reflects the surrounding greenery.",
+        "confidence": 1.0
+      },
+      {
+        "fact": "Dense vegetation lines the riverbank.",
+        "confidence": 1.0
+      }
+    ],
     "ocr": [],
-    "spatial": "",
-    "parse_success": false,
-    "_raw": "```json\n{\n  \"time\": [\n    78,\n    80\n  ],\n  \"visible_entities\": [\n    {\n      \"desc\": \"person with dark hair, wearing a blue short-sleeved shirt and dark shorts\",\n      \"action\": \"standing on the riverbank\",\n      \"position\": \"background\"\n    },\n    {\n      \"desc\": \"calm river water with ripples and reflections\",\n      \"action\": \"static\",\n      \"position\": \"foreground\"\n    },\n    {\n      \"desc\": \"dense green trees and bushes\",\n      \"action\": \"static\",\n      \"position\": \"background\"\n    }\n  ],\n  \"atomic_facts\": [\n    \"A person stands on the far bank of the river.\",\n    \"The person is wearing a blue shirt.\",\n    \"The river water reflects the surrounding greenery.\",\n    \"Dense vegetation lines the riverbank.\"\n  ],\n  \"ocr\": [],\n  \"spatial\": \"The person is standing on the riverbank in the background, surrounded by green trees and bushes. The river water is in the foreground, extending from the bottom of the frame up to the bank where the person is located.\"\n}\n```",
-    "_silent_empty": true,
-    "_retry_failed": true,
+    "spatial": "The person is standing on the riverbank in the background, surrounded by green trees and bushes. The river water is in the foreground, extending from the bottom of the frame up to the bank where the person is located.",
+    "parse_success": true,
     "chunk_idx": 39,
-    "video_id": "16883074"
+    "video_id": "16883074",
+    "_rescued": "parse"
   }
 ]

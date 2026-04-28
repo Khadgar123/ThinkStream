@@ -54,6 +54,132 @@ def build_evidence_request(
     }
 
 
+def _walker_rescue(s: str) -> Optional[Dict]:
+    """Element-by-element walker for truncated JSON. Returns a dict with the
+    expected fields when ANY array yielded a closed element, else None.
+
+    Rationale: when max_tokens cuts a response mid-element, json.loads and
+    brace-balance both fail to close the outer object. But the prefix of
+    `visible_entities` / `atomic_facts` is intact and recoverable.
+    """
+    out: Dict = {"visible_entities": [], "atomic_facts": [], "ocr": [], "spatial": ""}
+
+    def _walk_objects(start: int) -> List[Dict]:
+        items: List[Dict] = []
+        i = start
+        n = len(s)
+        while i < n:
+            while i < n and s[i] in " \t\n\r,":
+                i += 1
+            if i >= n or s[i] == "]":
+                break
+            if s[i] != "{":
+                break
+            depth = 0
+            j = i
+            in_str = False
+            esc = False
+            closed = False
+            while j < n:
+                c = s[j]
+                if esc:
+                    esc = False
+                elif c == "\\":
+                    esc = True
+                elif in_str:
+                    if c == '"':
+                        in_str = False
+                else:
+                    if c == '"':
+                        in_str = True
+                    elif c == "{":
+                        depth += 1
+                    elif c == "}":
+                        depth -= 1
+                        if depth == 0:
+                            try:
+                                items.append(json.loads(s[i : j + 1]))
+                            except (json.JSONDecodeError, ValueError):
+                                pass
+                            closed = True
+                            j += 1
+                            break
+                j += 1
+            if not closed:
+                break
+            i = j
+        return items
+
+    def _walk_strings(start: int) -> List[str]:
+        items: List[str] = []
+        i = start
+        n = len(s)
+        while i < n:
+            while i < n and s[i] in " \t\n\r,":
+                i += 1
+            if i >= n or s[i] == "]":
+                break
+            if s[i] != '"':
+                break
+            j = i + 1
+            esc = False
+            closed = False
+            while j < n:
+                if esc:
+                    esc = False
+                elif s[j] == "\\":
+                    esc = True
+                elif s[j] == '"':
+                    closed = True
+                    break
+                j += 1
+            if not closed:
+                break
+            try:
+                items.append(json.loads(s[i : j + 1]))
+            except (json.JSONDecodeError, ValueError):
+                pass
+            i = j + 1
+        return items
+
+    m = re.search(r'"visible_entities"\s*:\s*\[', s)
+    if m:
+        out["visible_entities"] = _walk_objects(m.end())
+    m = re.search(r'"atomic_facts"\s*:\s*\[', s)
+    if m:
+        objs = _walk_objects(m.end())
+        out["atomic_facts"] = objs if objs else _walk_strings(m.end())
+    m = re.search(r'"ocr"\s*:\s*\[', s)
+    if m:
+        out["ocr"] = _walk_strings(m.end())
+    m = re.search(r'"spatial"\s*:\s*"', s)
+    if m:
+        i = m.end() - 1
+        j = i + 1
+        esc = False
+        while j < len(s):
+            if esc:
+                esc = False
+            elif s[j] == "\\":
+                esc = True
+            elif s[j] == '"':
+                try:
+                    out["spatial"] = json.loads(s[i : j + 1])
+                except (json.JSONDecodeError, ValueError):
+                    pass
+                break
+            j += 1
+
+    if (
+        out["visible_entities"]
+        or out["atomic_facts"]
+        or out["ocr"]
+        or out["spatial"].strip()
+    ):
+        return out
+    return None
+
+
 def parse_evidence_result(raw: Optional[str], meta: Dict) -> Dict:
     """Parse 397B evidence output. No state_changes expected (comes from 1-B).
 
@@ -88,12 +214,12 @@ def parse_evidence_result(raw: Optional[str], meta: Dict) -> Dict:
     try:
         parsed = json.loads(raw)
     except (json.JSONDecodeError, ValueError):
+        # Fallback 1: brace-balance scan, EARLIEST { first. The earliest is
+        # the top-level object; using `reversed(positions)` would prefer an
+        # inner entity dict and silently lose visible_entities/atomic_facts.
         positions = [i for i, c in enumerate(raw) if c == '{']
-        if not positions:
-            default["_raw"] = raw[:4000]
-            return default
         parsed = None
-        for start_idx in reversed(positions):
+        for start_idx in positions:
             depth = 0
             for i in range(start_idx, len(raw)):
                 if raw[i] == '{':
@@ -102,12 +228,22 @@ def parse_evidence_result(raw: Optional[str], meta: Dict) -> Dict:
                     depth -= 1
                     if depth == 0:
                         try:
-                            parsed = json.loads(raw[start_idx:i + 1])
+                            cand = json.loads(raw[start_idx:i + 1])
                         except (json.JSONDecodeError, ValueError):
-                            pass
+                            cand = None
+                        if isinstance(cand, dict) and (
+                            cand.get("visible_entities")
+                            or cand.get("atomic_facts")
+                            or cand.get("ocr")
+                            or cand.get("spatial")
+                        ):
+                            parsed = cand
                         break
             if parsed is not None:
                 break
+        # Fallback 2: element walker — survives mid-element truncation.
+        if parsed is None:
+            parsed = _walker_rescue(raw)
         if parsed is None:
             default["_raw"] = raw[:4000]
             return default
