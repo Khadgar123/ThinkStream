@@ -57,24 +57,28 @@ DEFAULT_VISUAL_WINDOW_SEC = 24.0  # 12 chunks × 2s, matches agent_loop default
 # ─── Frame sampling ──────────────────────────────────────────────────────────
 
 
-def sample_frame_paths(frames_root: Path, video_basename: str,
+def sample_frame_paths(frame_dir: Path,
                        t_start: float, t_end: float, n_frames: int):
     """Pick at most n_frames frame paths from [t_start, t_end].
 
     Frames are pre-extracted at 1 fps (extract_frames.py): file names look
     like {basename}/{idx:06d}.jpg where idx is the second offset (0-based).
     """
-    frame_dir = Path(frames_root) / video_basename
     if not frame_dir.exists():
         return None
     all_frames = sorted(frame_dir.glob("*.jpg"))
     if not all_frames:
         return None
     # Filter to [t_start, t_end] by frame index (== second offset).
+    # Frame files are named frame_{idx:06d}.jpg (1-based) or {idx:06d}.jpg.
     in_range = []
     for fp in all_frames:
         try:
-            idx = int(fp.stem)
+            stem = fp.stem
+            if stem.startswith("frame_"):
+                idx = int(stem[6:])
+            else:
+                idx = int(stem)
         except ValueError:
             continue
         if t_start <= idx <= t_end:
@@ -137,17 +141,25 @@ def eval_one_probe(model, processor, pad_id,
     return processor.tokenizer.decode(new_tokens, skip_special_tokens=True)
 
 
-def _frames_for_probe(frames_root, video_path, mode, ask_t,
+def _frames_for_probe(frames_root, video_root, video_path, mode, ask_t,
                       visual_window_sec, max_frames):
     """Pick frame range for a probe at time ask_t (seconds)."""
-    basename = Path(video_path).stem
+    vp = Path(video_path)
+    if video_root:
+        try:
+            rel = vp.relative_to(Path(video_root))
+            frame_dir = Path(frames_root) / rel.with_suffix("")
+        except ValueError:
+            frame_dir = Path(frames_root) / vp.with_suffix("")
+    else:
+        frame_dir = Path(frames_root) / vp.with_suffix("")
     if mode == "streaming":
         t_start = max(0.0, ask_t - visual_window_sec)
         t_end = ask_t
     else:  # offline
         t_start = 0.0
         t_end = ask_t
-    return sample_frame_paths(frames_root, basename, t_start, t_end, max_frames)
+    return sample_frame_paths(frame_dir, t_start, t_end, max_frames)
 
 
 def _strict_letter(text: str):
@@ -179,7 +191,7 @@ def eval_mcq_base(sample, model, processor, pad_id, video_root, frames_root,
     if not Path(video_path).exists():
         return None
     realtime = float(sample["realtime"])
-    fp = _frames_for_probe(frames_root, video_path, mode, realtime,
+    fp = _frames_for_probe(frames_root, video_root, video_path, mode, realtime,
                            visual_window_sec, max_frames)
     if not fp:
         return None
@@ -206,7 +218,7 @@ def eval_rec_base(sample, model, processor, pad_id, video_root, frames_root,
     probes = []
     for probe in sample["test_info"]:
         ask_t = float(probe["realtime"])
-        fp = _frames_for_probe(frames_root, video_path, mode, ask_t,
+        fp = _frames_for_probe(frames_root, video_root, video_path, mode, ask_t,
                                visual_window_sec, max_frames)
         if not fp:
             continue
@@ -243,7 +255,7 @@ def eval_ssr_base(sample, model, processor, pad_id, video_root, frames_root,
     probes = []
     for probe in sample["test_info"]:
         ask_t = float(probe["realtime"])
-        fp = _frames_for_probe(frames_root, video_path, mode, ask_t,
+        fp = _frames_for_probe(frames_root, video_root, video_path, mode, ask_t,
                                visual_window_sec, max_frames)
         if not fp:
             continue
@@ -268,7 +280,7 @@ def eval_crr_base(sample, model, processor, pad_id, video_root, frames_root,
     probes = []
     for probe in sample["test_info"]:
         ask_t = float(probe["realtime"])
-        fp = _frames_for_probe(frames_root, video_path, mode, ask_t,
+        fp = _frames_for_probe(frames_root, video_root, video_path, mode, ask_t,
                                visual_window_sec, max_frames)
         if not fp:
             continue

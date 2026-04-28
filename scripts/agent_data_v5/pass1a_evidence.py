@@ -81,6 +81,9 @@ def parse_evidence_result(raw: Optional[str], meta: Dict) -> Dict:
         return default
 
     raw = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip()
+    # Strip markdown code-block wrappers so json.loads can parse directly.
+    raw = raw.removeprefix("```json").removeprefix("```").strip()
+    raw = raw.removesuffix("```").strip()
 
     try:
         parsed = json.loads(raw)

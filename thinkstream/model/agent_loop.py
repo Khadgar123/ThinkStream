@@ -12,6 +12,7 @@ This guarantees train/inference format identity.
 
 import json
 import logging
+import os
 from copy import deepcopy
 from pathlib import Path
 from typing import Callable, Dict, List, Optional
@@ -679,6 +680,11 @@ class StreamingAgentLoop:
 
         # 6. Parse output
         parsed = parse_agent_output(output_text)
+
+        if os.environ.get("AGENT_DEBUG"):
+            print(f"[AGENT_DEBUG] chunk={chunk_idx} user_input={user_input!r}")
+            print(f"[AGENT_DEBUG] raw_output={output_text!r}")
+            print(f"[AGENT_DEBUG] parsed action={parsed['action']!r} think_len={len(parsed['think'])}")
 
         # 7. Update memory state based on action
         if parsed["think"]:
