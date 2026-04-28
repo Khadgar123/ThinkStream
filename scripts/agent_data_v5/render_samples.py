@@ -13,9 +13,17 @@ Called after Pass 4 verify, before writing final JSONL.
 
 import json
 import logging
+import re
 from copy import deepcopy
 from pathlib import Path
 from typing import Dict, List, Optional
+
+# v11.3: extract per-chunk response from sample.output. For multi-probe
+# families (F7/CR5/F5 multi_response), pass3c bakes per-chunk answers
+# into <response>...</response> via progressive_answers (pass3c_samples.py:
+# 892-899). card.canonical_answer holds only the final-state answer, so
+# using it as metadata.gold_answer would mismatch every pre-event chunk.
+_RESPONSE_RE = re.compile(r'<response>(.*?)</response>', re.DOTALL)
 
 from .config import (
     AGENT_CHUNK_SEC,
@@ -253,9 +261,28 @@ def render_sample(
         card = cards_map[card_id]
     else:
         card = {}
+    # v11.3: per-chunk gold_answer for multi-probe families. For F7/CR5/F5
+    # multi_response samples, pass3c substitutes the per-probe answer into
+    # <response>...</response> at each chunk (e.g., "No" before step_chunk,
+    # "Yes" after). card.canonical_answer is the final-state answer, so it
+    # mismatches every pre-event chunk. GRPO reads metadata.gold_answer
+    # for R_correctness — using card.canonical_answer would penalize the
+    # model for outputting the correct per-chunk answer. Parse from
+    # sample.output instead, fall back to canonical_answer when no
+    # <response> tag (silent / recall_query / compress samples).
+    canonical = card.get("canonical_answer", "")
+    output_text = sample.get("output", "") or ""
+    m = _RESPONSE_RE.search(output_text)
+    per_chunk_answer = m.group(1).strip() if m else ""
+    gold_answer = per_chunk_answer or canonical
+
     metadata = {
         "gold_action": sample.get("action", "silent"),
-        "gold_answer": card.get("canonical_answer", ""),
+        "gold_answer": gold_answer,
+        # Keep the card-level canonical separately so GRPO / eval can
+        # tell when a sample's gold_answer diverges from the card final
+        # answer (signal that it's a multi-probe pre-event chunk).
+        "canonical_answer": canonical,
         "answer_form": card.get("answer_form", ""),
         "family": card.get("family", ""),
         "availability": sample.get("sequence_type", ""),

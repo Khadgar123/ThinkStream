@@ -95,7 +95,22 @@ _RECALL_KEYWORD_RULES = """Rules:
   No paraphrasing, no synonyms — BM25 is lexical, "shirt" won't match "top",
   "trailer" won't match "vehicle". If the gold says "light blue top", your
   keyword is "blue top" or "blue", not "shirt".
-- Prefer entity nouns + distinctive actions + materials/colors/shapes.
+- BAN GENERIC WORDS (they appear in many chunks → no discrimination):
+    verbs:     "appears, appeared, shows, showing, stands, standing,
+                moves, moving, holding, sitting, walking, looking"
+    nouns:     "person, man, woman, thing, object, scene, view,
+                background, foreground, frame, video, camera, hand"
+    spatial:   "vertical, horizontal, left, right, top, bottom,
+                front, back, center, side"
+    status:    "visible, active, current, present, recent"
+  These add zero retrieval signal because every chunk has them.
+- INSTEAD, pick keywords that are RARE in the video — proper nouns,
+  brand/product names, specific colors+materials, distinctive object
+  parts, named actions ("braiding", "soldering", "kneading" — not
+  "doing", "working").
+- A good 3-keyword query has each keyword appearing in ≤5 chunks of
+  the full video. If "blue" appears in 30 chunks, drop it — pick
+  "denim" or "blue cap" or whatever modifier the gold uses.
 - NO answer values (don't leak the answer that the question is asking for).
 - NO pronouns ("he/she/it/they"), NO stop words.
 - Lowercase, space-separated."""
