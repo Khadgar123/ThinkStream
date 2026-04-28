@@ -78,18 +78,24 @@ SPAN_WEIGHTS = {
 ACTION_WEIGHTS = {
     # ── Core behaviors (SFT teaches mechanism + timing) ──
     "response": 1.5,            # Answering visible questions — highest value
-    "silent": 1.0,              # Default silent (with active queries — teaches restraint)
+    # v11.4 (Path B from v11.3 postmortem): silent 1.0 → 1.2. The first
+    # v11.3 SFT run showed silent_acc 99% → 86% — silent was crowded out
+    # by compress (compress×7.2 vs silent gradient share). Bumping silent
+    # from 1.0 to 1.2 + reducing compress 2.5→1.8 brings the ratio back
+    # to ~3.6×, still favoring compress (still need it strong) but no
+    # longer crushing silent.
+    "silent": 1.2,
 
     # ── Recall mechanism (SFT teaches format, RL optimizes timing) ──
-    "recall_query": 1.5,        # 0.8 → 1.5: format must be reliably emitted
-    "recall_response": 1.5,     # 1.0 → 1.5: post-recall response is deterministic
-    "recall_silent": 1.0,       # 0.8 → 1.0: failed-recall silent
+    "recall_query": 1.5,
+    "recall_response": 1.5,
+    "recall_silent": 1.0,
     "proactive_recall_query": 1.5,
     "proactive_recall_silent": 1.0,
 
     # ── Compression mechanism (SFT teaches summary quality) ──
-    "compress": 2.5,            # 0.8 → 2.5: highest priority — compress collapse fix
-    "merge_compress": 2.5,
+    "compress": 1.8,            # v11.4 (Path B): 2.5 → 1.8 — see silent comment
+    "merge_compress": 1.8,      # mirror compress
 }
 
 
@@ -294,6 +300,95 @@ def register_special_tokens(processor, model_type: str):
         rank0_print(f"Added {num_added} special tokens: {new_tokens}")
 
     return processor
+
+
+def smart_init_special_token_embeddings(model, processor, special_tokens: list):
+    """v11.4 fix: copy natural-word embeddings into new special-token slots.
+
+    Background — the v11.3 SFT run produced eval/action_acc=0.98
+    teacher-forced but free-generation outputs `</think>responseThe...`
+    (skipping <action>/</action>/<response> tags entirely). Root cause:
+    HF's default resize_token_embeddings initializes new rows as the
+    mean of existing embeddings, producing very small magnitude. Even
+    with SPAN_WEIGHTS["action"]=8.0 the gradient can't move the new
+    embeddings far enough in 1 epoch — at sampling time, dot products
+    against the well-trained natural-word "response" beat the small-
+    magnitude `<action>` token, so the model emits "response" as plain
+    text right after `</think>` instead of the structural token.
+
+    Fix: for each new tag like `<action>`, find the underlying natural
+    word ("action") in the existing tokenizer and copy that word's
+    embedding into the new slot. Magnitude is now in the normal range
+    from step 0; the structural tokens compete fairly with natural
+    English right out of the gate.
+
+    Tags handled:
+      `<X>`   ←  embedding of word X
+      `</X>`  ←  same as `<X>` (no separate "/X" word in vocab)
+      multi-word tags (e.g. `<recall_result>`) split on `_` and average
+
+    Call AFTER `model.resize_token_embeddings(...)` and BEFORE training.
+    Side effect: also writes the same vector into the LM-head row for
+    each new token (necessary when tie_word_embeddings=False; harmless
+    when tied because the LM head IS the input embedding).
+    """
+    import re as _re
+    import torch as _torch
+
+    tokenizer = processor.tokenizer
+    embed = model.get_input_embeddings()
+    lm_head = model.get_output_embeddings()  # may be None or tied
+
+    initialized = []
+    skipped = []
+    for tag in special_tokens:
+        tag_id = tokenizer.convert_tokens_to_ids(tag)
+        if tag_id is None or tag_id == tokenizer.unk_token_id:
+            skipped.append((tag, "tag_not_in_vocab"))
+            continue
+        # Strip < > / and split on _ to get inner word(s).
+        inner = _re.sub(r"[<>/]", "", tag).strip()
+        if not inner:
+            skipped.append((tag, "empty_inner"))
+            continue
+        # Tokenize the inner word and average if multi-token.
+        word_ids = tokenizer.encode(inner, add_special_tokens=False)
+        if not word_ids:
+            skipped.append((tag, f"no_tokens_for_{inner!r}"))
+            continue
+        # Underscore-separated names (e.g. "recall_result") get word-by-
+        # word averaging so the seed embedding represents the concept.
+        if "_" in inner:
+            parts = inner.split("_")
+            part_vecs = []
+            for p in parts:
+                pids = tokenizer.encode(p, add_special_tokens=False)
+                if pids:
+                    part_vecs.append(embed.weight.data[pids].mean(dim=0))
+            if not part_vecs:
+                skipped.append((tag, "no_part_tokens"))
+                continue
+            seed = _torch.stack(part_vecs).mean(dim=0)
+        else:
+            seed = embed.weight.data[word_ids].mean(dim=0)
+
+        with _torch.no_grad():
+            embed.weight.data[tag_id].copy_(seed)
+            if lm_head is not None and lm_head is not embed and \
+               lm_head.weight.shape[0] >= tag_id + 1:
+                lm_head.weight.data[tag_id].copy_(seed)
+        initialized.append((tag, inner, tag_id))
+
+    rank0_print(
+        f"[smart_init] initialized {len(initialized)} special-token embeddings "
+        f"from natural words; skipped {len(skipped)}"
+    )
+    for tag, src, tid in initialized[:8]:
+        rank0_print(f"  {tag} (id={tid}) ← embed_of({src!r})")
+    if skipped:
+        for tag, reason in skipped[:4]:
+            rank0_print(f"  ⚠ skipped {tag}: {reason}")
+    return {"initialized": initialized, "skipped": skipped}
 
 
 # ---------------------------------------------------------------------------
@@ -657,31 +752,49 @@ def _extract_eval_positions(
 
     Returns:
         {
+            "pre_action_position": int | None
+                # v11.4: position whose ARGMAX should equal <action>.
+                # The token at this position is the one BEFORE <action>
+                # in the assistant span (typically </think>). Teacher-
+                # forcing argmax here measures CLOSED-BOOK format
+                # compliance — does the model decide to emit <action>
+                # when it should? Critical: action_keyword_positions
+                # measures "given <action>, predict the keyword" which
+                # is open-book and missed the v11.3 cold-start bug
+                # (model's <action> embedding stayed near init magnitude
+                # so model never emitted <action> in free generation
+                # despite scoring 0.98 on the open-book metric).
+            "action_open_token_id": int | None
+                # The expected token id at pre_action_position+1; trainer
+                # compares argmax(logits[pre_action_position]) against this.
             "action_keyword_positions": [int, ...]
                 # tokens between <action> and </action>; argmax match here
-                # gives eval/action_accuracy.
+                # gives eval/action_accuracy (open-book).
             "post_action_position": int | None
                 # first token after </action>; for silent samples, this
                 # should equal <|im_end|>. argmax match gives
                 # eval/silent_eos_rate (filtered to silent samples).
             "summary_span_positions": [int, ...]
                 # tokens between <summary> and </summary> (compress samples
-                # only). v11.3: surfaces compress-range copying accuracy as
-                # eval/summary_argmax_acc — proxy for "did the model learn
-                # to echo the trigger's range into the JSON time_range".
+                # only).
             "query_span_positions": [int, ...]
                 # tokens between <query> and </query> (recall_query samples).
-                # v11.3: gives eval/query_argmax_acc — proxy for recall query
-                # JSON format + content quality under teacher forcing.
+            "response_span_positions": [int, ...]
+                # v11.4: tokens between <response> and </response> (response
+                # / recall_response samples). Gives eval/response_argmax_acc
+                # — token-level answer-content accuracy under teacher forcing.
             "sample_type": str
                 # passed through so trainer can bucket per class.
         }
     """
     meta: Dict = {
+        "pre_action_position": None,
+        "action_open_token_id": None,
         "action_keyword_positions": [],
         "post_action_position": None,
         "summary_span_positions": [],
         "query_span_positions": [],
+        "response_span_positions": [],
         "sample_type": sample_type,
     }
     if "action" not in span_ids:
@@ -693,33 +806,34 @@ def _extract_eval_positions(
     summary_close_id = span_ids.get("summary", {}).get("close")
     query_open_id = span_ids.get("query", {}).get("open")
     query_close_id = span_ids.get("query", {}).get("close")
+    response_open_id = span_ids.get("response", {}).get("open")
+    response_close_id = span_ids.get("response", {}).get("close")
 
     in_action = False
     in_summary = False
     in_query = False
+    in_response = False
     saw_action_close = False
     upper = min(ans_end + 2, seq_len)
     for i in range(ans_start, upper):
         tok = input_ids_flat[i]
         if tok == action_open_id:
+            # v11.4: position right BEFORE <action> is where the model
+            # must DECIDE to emit <action> (closed-book format gate).
+            if i > 0:
+                meta["pre_action_position"] = i - 1
+                meta["action_open_token_id"] = action_open_id
             in_action = True
             continue
         if tok == action_close_id:
             in_action = False
             saw_action_close = True
-            # Position immediately after </action>: the transition token
-            # that determines whether to continue (response/query/summary)
-            # or stop (<|im_end|>).
             if i + 1 < seq_len:
                 meta["post_action_position"] = i + 1
-            # Don't break — keep walking to capture summary/query spans.
             continue
         if in_action:
             meta["action_keyword_positions"].append(i)
             continue
-        # After </action>: scan for summary/query spans (compress/recall_query
-        # samples). These are skipped when their span tokens aren't registered
-        # (span_ids.get returned None).
         if not saw_action_close:
             continue
         if summary_open_id is not None and tok == summary_open_id:
@@ -734,10 +848,18 @@ def _extract_eval_positions(
         if query_close_id is not None and tok == query_close_id:
             in_query = False
             continue
+        if response_open_id is not None and tok == response_open_id:
+            in_response = True
+            continue
+        if response_close_id is not None and tok == response_close_id:
+            in_response = False
+            continue
         if in_summary:
             meta["summary_span_positions"].append(i)
         elif in_query:
             meta["query_span_positions"].append(i)
+        elif in_response:
+            meta["response_span_positions"].append(i)
 
     return meta
 

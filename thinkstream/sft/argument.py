@@ -100,14 +100,18 @@ class DataArguments:
         },
     )
     class_balance_smoothing: float = field(
-        default=1.0,
+        default=0.85,
         metadata={
             "help": "Smoothing exponent on inv-freq weights. "
             "1.0 = pure inverse frequency (most aggressive rebalance), "
-            "0.5 = √(inv-freq), 0.0 = uniform. v11.3: bumped 0.7 → 1.0 "
-            "because 0.7 only delivered ~2.6× boost to compress (25% base "
-            "freq) — insufficient to overcome silent's 70% prior. Pure "
-            "inv-freq gives ~4× and unblocks compress training."
+            "0.5 = √(inv-freq), 0.0 = uniform. v11.4 (Path B): 1.0 → 0.85. "
+            "v11.3's 1.0 over-corrected — silent (70% data) got 6× LESS "
+            "sampling than uniform, combined with ACTION_WEIGHTS[compress]=2.5 "
+            "produced 7.2× compress/silent gradient ratio and silent_acc "
+            "regressed 99%→86% on eval. 0.85 is the calibrated midpoint "
+            "(measured ratio ~3.6×, compress still favored but silent no "
+            "longer crushed). Don't go back to 0.7 — that's v11.2's value "
+            "which caused compress collapse."
         },
     )
     unique_think_weight: bool = field(

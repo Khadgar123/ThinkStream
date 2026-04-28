@@ -36,6 +36,8 @@ from thinkstream.sft.trainer import WeightedSFTTrainer
 from thinkstream.sft.data_processor import (
     make_per_timestep_data_module,
     register_special_tokens,
+    smart_init_special_token_embeddings,
+    SPECIAL_TOKENS_AGENT,
 )
 from thinkstream.sft.argument import ModelArguments, DataArguments, TrainingArguments
 
@@ -131,6 +133,20 @@ def train(attn_implementation="flash_attention_2"):
 
     # Resize embeddings for added special tokens (must be before DeepSpeed init)
     model.resize_token_embeddings(len(processor.tokenizer))
+
+    # v11.4: smart-init the new special-token embeddings from natural-word
+    # equivalents. Without this, HF's default mean-init produces tiny-
+    # magnitude embeddings that lose at sampling time to well-trained
+    # natural English ("response" the word beats <action> the structural
+    # token at logit comparison). The first v11.3 SFT run produced
+    # `</think>responseThe video...` in free generation — root cause was
+    # this cold-start. See docs/v11.3_sft_run_postmortem.md.
+    if data_args.model_type == "qwen3vl":
+        _agent_tags = [t for t in SPECIAL_TOKENS_AGENT
+                       if t not in ("<think>", "</think>")]
+    else:
+        _agent_tags = list(SPECIAL_TOKENS_AGENT)
+    smart_init_special_token_embeddings(model, processor, _agent_tags)
 
     model.config.use_cache = False
 

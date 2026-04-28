@@ -303,13 +303,22 @@ class WeightedSFTTrainer(Trainer):
             "action_total":  defaultdict(int),
             "post_match":    defaultdict(int),
             "post_total":    defaultdict(int),
-            # v11.3: per-token argmax counts inside <summary>/<query> spans.
-            # Compress range coverage = summary tokens correctly predicted /
-            # total summary tokens (teacher-forced). Same idea for recall query.
+            # v11.3: per-token argmax counts inside <summary>/<query>/<response>
+            # spans. Compress range coverage / recall query format / response
+            # content quality, all teacher-forced.
             "summary_match": defaultdict(int),
             "summary_total": defaultdict(int),
             "query_match":   defaultdict(int),
             "query_total":   defaultdict(int),
+            # v11.4: response content argmax (response / recall_response samples).
+            "response_match": defaultdict(int),
+            "response_total": defaultdict(int),
+            # v11.4: closed-book format compliance — does the model emit
+            # <action> at the pre-action position? action_acc above is
+            # teacher-forced "given <action>, what's inside" (open-book);
+            # this measures "did you decide to start <action>".
+            "format_match":  defaultdict(int),
+            "format_total":  defaultdict(int),
         }
 
     @staticmethod
@@ -380,6 +389,27 @@ class WeightedSFTTrainer(Trainer):
                     self._eval_acc["query_match"][stype] += m
                     self._eval_acc["query_match"]["_all"] += m
 
+                # v11.4: response span (response / recall_response samples).
+                response_positions = meta.get("response_span_positions") or []
+                if response_positions:
+                    m, n = self._argmax_match_at(preds, input_ids, b, response_positions, L)
+                    self._eval_acc["response_total"][stype] += n
+                    self._eval_acc["response_total"]["_all"] += n
+                    self._eval_acc["response_match"][stype] += m
+                    self._eval_acc["response_match"]["_all"] += m
+
+                # v11.4: closed-book format compliance — at the position
+                # before <action>, does the model's argmax equal <action>?
+                pre_action_pos = meta.get("pre_action_position")
+                action_open_id = meta.get("action_open_token_id")
+                if (pre_action_pos is not None and action_open_id is not None
+                        and 0 <= pre_action_pos < L):
+                    self._eval_acc["format_total"][stype] += 1
+                    self._eval_acc["format_total"]["_all"] += 1
+                    if preds[b, pre_action_pos].item() == int(action_open_id):
+                        self._eval_acc["format_match"][stype] += 1
+                        self._eval_acc["format_match"]["_all"] += 1
+
     def _all_reduce_eval_acc(self) -> None:
         """Sum per-rank counters across DDP world. No-op if not distributed."""
         if not (dist.is_available() and dist.is_initialized()):
@@ -395,11 +425,13 @@ class WeightedSFTTrainer(Trainer):
         all_keys = sorted({k for ks in gathered for k in ks})
         if not all_keys:
             return
-        # Pack 8 counters × len(all_keys) into one tensor for a single all_reduce
+        # Pack 12 counters × len(all_keys) into one tensor for a single all_reduce
         n = len(all_keys)
         bands = [
             "action_match", "action_total", "post_match", "post_total",
             "summary_match", "summary_total", "query_match", "query_total",
+            # v11.4
+            "response_match", "response_total", "format_match", "format_total",
         ]
         buf = torch.zeros(len(bands) * n, dtype=torch.long, device=device)
         for bi, band in enumerate(bands):
@@ -461,6 +493,34 @@ class WeightedSFTTrainer(Trainer):
                 continue
             out[f"eval/query_argmax_acc_{stype}"] = (
                 self._eval_acc["query_match"].get(stype, 0) / tot
+            )
+        # v11.4: response content argmax (response / recall_response samples).
+        r_tot = self._eval_acc["response_total"].get("_all", 0)
+        if r_tot > 0:
+            out["eval/response_argmax_acc"] = (
+                self._eval_acc["response_match"].get("_all", 0) / r_tot
+            )
+        for stype, tot in self._eval_acc["response_total"].items():
+            if stype == "_all" or tot == 0:
+                continue
+            out[f"eval/response_argmax_acc_{stype}"] = (
+                self._eval_acc["response_match"].get(stype, 0) / tot
+            )
+        # v11.4: CLOSED-BOOK format compliance — does the model emit <action>
+        # at the pre-action position? Critical contrast against open-book
+        # eval/action_accuracy: action_acc=0.98 + format_compliance=0.05
+        # is the smoking gun for the cold-start init bug (model knows what
+        # token follows <action>, but never emits <action> itself).
+        f_tot = self._eval_acc["format_total"].get("_all", 0)
+        if f_tot > 0:
+            out["eval/format_compliance"] = (
+                self._eval_acc["format_match"].get("_all", 0) / f_tot
+            )
+        for stype, tot in self._eval_acc["format_total"].items():
+            if stype == "_all" or tot == 0:
+                continue
+            out[f"eval/format_compliance_{stype}"] = (
+                self._eval_acc["format_match"].get(stype, 0) / tot
             )
         return out
 
