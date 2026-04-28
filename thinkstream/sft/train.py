@@ -129,24 +129,32 @@ def train(attn_implementation="flash_attention_2"):
 
     # ── Processor + special tokens ──
     processor = AutoProcessor.from_pretrained(model_args.model_name_or_path)
-    register_special_tokens(processor, data_args.model_type)
-
-    # Resize embeddings for added special tokens (must be before DeepSpeed init)
-    model.resize_token_embeddings(len(processor.tokenizer))
-
-    # v11.4: smart-init the new special-token embeddings from natural-word
-    # equivalents. Without this, HF's default mean-init produces tiny-
-    # magnitude embeddings that lose at sampling time to well-trained
-    # natural English ("response" the word beats <action> the structural
-    # token at logit comparison). The first v11.3 SFT run produced
-    # `</think>responseThe video...` in free generation — root cause was
-    # this cold-start. See docs/v11.3_sft_run_postmortem.md.
-    if data_args.model_type == "qwen3vl":
-        _agent_tags = [t for t in SPECIAL_TOKENS_AGENT
-                       if t not in ("<think>", "</think>")]
+    # v11.4: industry-convention default — DON'T add agent tags as new
+    # tokenizer entries. Tags stay as TEXT in assistant content and BPE
+    # tokenizes them as multi-token sequences (e.g. <action> → < + action
+    # + >). Every sub-token is well-trained existing vocab, so there's
+    # no cold-start magnitude bug. DeepEyes / ReMemR1 / Qwen-VL official
+    # finetune all follow this pattern. See docs/v11.4_special_token_research.md.
+    #
+    # Set add_agent_special_tokens=True only for inference-efficient
+    # single-token tags (legacy mode). Then smart_init runs to seed the
+    # new tokens from natural-word embeddings (mitigates but doesn't
+    # eliminate the cold-start risk).
+    if model_args.add_agent_special_tokens:
+        rank0_print("[v11.4 legacy] register_special_tokens enabled — "
+                    "adding agent tags to vocab + smart_init seeding")
+        register_special_tokens(processor, data_args.model_type)
+        model.resize_token_embeddings(len(processor.tokenizer))
+        if data_args.model_type == "qwen3vl":
+            _agent_tags = [t for t in SPECIAL_TOKENS_AGENT
+                           if t not in ("<think>", "</think>")]
+        else:
+            _agent_tags = list(SPECIAL_TOKENS_AGENT)
+        smart_init_special_token_embeddings(model, processor, _agent_tags)
     else:
-        _agent_tags = list(SPECIAL_TOKENS_AGENT)
-    smart_init_special_token_embeddings(model, processor, _agent_tags)
+        rank0_print("[v11.4 industry mode] add_agent_special_tokens=False — "
+                    "agent tags will be tokenized as multi-token sequences "
+                    "by the base BPE; no resize, no smart_init.")
 
     model.config.use_cache = False
 

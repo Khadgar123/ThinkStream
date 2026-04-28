@@ -642,20 +642,33 @@ _SPAN_TOKEN_CACHE: Dict[int, Dict[str, Dict]] = {}
 
 
 def _resolve_span_token_ids(tokenizer) -> Dict[str, Dict]:
-    """Resolve open/close token IDs for each loss-weighted span.
+    """Resolve open/close token SEQUENCES for each loss-weighted span.
 
-    Returns: {"think": {"open": id, "close": id, "weight": float}, ...}
+    v11.4 industry mode: agent tags are NOT registered as single-token
+    vocab entries by default. The base BPE tokenizes `<action>` as a
+    multi-token sequence (typically `<` + `action` + `>` for Qwen, but
+    could be other splits for different tokenizers). We resolve each
+    span's open/close as the SEQUENCE the tokenizer produces — this
+    works uniformly whether the tag is single-token (legacy mode after
+    register_special_tokens) or multi-token (industry mode).
 
-    Skips spans whose tokens aren't in vocab (defensive against tokenizer
-    drift or models that don't register all SPECIAL_TOKENS_AGENT). Logs
-    once per tokenizer so missing spans surface in training output.
+    Returns: {"think": {"open_seq": List[int], "close_seq": List[int],
+                        "weight": float, "open": int (=open_seq[0]),
+                        "close": int (=close_seq[-1])}, ...}
+
+    Both `open_seq` and the legacy single-id `open` keys are present
+    so existing call sites that read `info["open"]` still work
+    (they'll see the FIRST token of the open sequence, which is the
+    natural anchor — e.g., `<` for `<action>`).
+
+    Skips spans where the tokenizer can't encode the tag string (rare;
+    indicates a fundamental tokenizer issue).
     """
     cache_key = id(tokenizer)
     cached = _SPAN_TOKEN_CACHE.get(cache_key)
     if cached is not None:
         return cached
 
-    vocab = tokenizer.get_vocab()
     spans_def = [
         ("think",    "<think>",    "</think>"),
         ("action",   "<action>",   "</action>"),
@@ -664,31 +677,48 @@ def _resolve_span_token_ids(tokenizer) -> Dict[str, Dict]:
         ("summary",  "<summary>",  "</summary>"),
     ]
     result: Dict[str, Dict] = {}
-    missing: List[str] = []
+    failed: List[str] = []
     for name, open_str, close_str in spans_def:
-        open_id = vocab.get(open_str)
-        close_id = vocab.get(close_str)
-        if open_id is None or close_id is None:
-            missing.append(name)
+        open_seq = tokenizer.encode(open_str, add_special_tokens=False)
+        close_seq = tokenizer.encode(close_str, add_special_tokens=False)
+        if not open_seq or not close_seq:
+            failed.append(name)
             continue
         result[name] = {
-            "open": open_id,
-            "close": close_id,
+            "open_seq": open_seq,
+            "close_seq": close_seq,
+            "open": open_seq[0],          # legacy compat: first token of seq
+            "close": close_seq[-1],       # legacy compat: last token of seq
             "weight": SPAN_WEIGHTS[name],
         }
 
-    if missing:
+    if failed:
         rank0_print(
-            f"[span-weight] missing tokens for spans {missing} — "
+            f"[span-weight] tokenizer can't encode spans {failed} — "
             f"those spans fall back to default weight 1.0."
         )
-    rank0_print(
-        f"[span-weight] active spans: "
-        f"{ {k: v['weight'] for k, v in result.items()} }"
+    multi_token = [name for name, info in result.items()
+                   if len(info["open_seq"]) > 1]
+    summary = ", ".join(
+        f"{k}(w={v['weight']},open_len={len(v['open_seq'])})"
+        for k, v in result.items()
     )
+    rank0_print(f"[span-weight] active spans: {summary}")
+    if multi_token:
+        rank0_print(
+            f"[span-weight] multi-token spans (industry mode): {multi_token} — "
+            f"sequence matching enabled in _build_token_loss_weight."
+        )
 
     _SPAN_TOKEN_CACHE[cache_key] = result
     return result
+
+
+def _seq_match_at(haystack: List[int], pos: int, needle: List[int]) -> bool:
+    """Check if needle starts at pos in haystack."""
+    if pos + len(needle) > len(haystack):
+        return False
+    return haystack[pos: pos + len(needle)] == needle
 
 
 def _build_token_loss_weight(
@@ -700,13 +730,20 @@ def _build_token_loss_weight(
 ) -> torch.Tensor:
     """Walk assistant span and assign per-token weight by enclosing tag.
 
+    v11.4 industry mode: span open/close are token SEQUENCES (multi-token
+    when tags aren't registered as single tokens, length-1 when they are).
+    Sequence-matching at each position so the same code handles both
+    industry mode (`<action>` = `<` + `action` + `>` = 3 tokens) and
+    legacy mode (`<action>` = single token id).
+
     Tokens outside [ans_start, ans_end+1] get default weight (zeroed by
     valid_mask in compute_loss anyway, but kept consistent for safety).
 
-    Open-tag tokens are assigned the NEW span's weight; close-tag tokens
-    are assigned the CURRENT span's weight (so the closing tag itself
-    counts as part of its own span). This matches VideoLLM-online's
-    indicator-on-decision-tokens convention.
+    Open-tag sub-tokens are all assigned the NEW span's weight; close-tag
+    sub-tokens are assigned the CURRENT span's weight (so the closing
+    tag itself counts as part of its own span). This matches VideoLLM-
+    online's indicator-on-decision-tokens convention, generalized to
+    multi-token tags.
     """
     weight = torch.full(
         (1, seq_len), SPAN_WEIGHTS["default"], dtype=torch.float
@@ -714,28 +751,55 @@ def _build_token_loss_weight(
     if not span_ids:
         return weight
 
-    open_to_span = {info["open"]: name for name, info in span_ids.items()}
-    close_ids_set = {info["close"] for info in span_ids.values()}
+    # Pre-extract sequences for fast checks. Sort opens by length DESC so
+    # if any one tag's open seq is a prefix of another's (rare but
+    # possible), the longer match wins.
+    open_specs = sorted(
+        [(name, info["open_seq"]) for name, info in span_ids.items()],
+        key=lambda x: -len(x[1]),
+    )
 
     current_span: Optional[str] = None
-    # Iterate over the same range that `labels` unmasks
-    # (labels[0, ans_start: ans_end + 2] in preprocess_per_timestep)
-    # so the weight tensor aligns 1:1 with the unmasked labels.
+    current_close_seq: Optional[List[int]] = None
     upper = min(ans_end + 2, seq_len)
-    for i in range(ans_start, upper):
-        tok = input_ids_flat[i]
+    i = ans_start
+    while i < upper:
+        # 1. If currently in a span, check for its close sequence first.
+        if current_span is not None and current_close_seq is not None:
+            if _seq_match_at(input_ids_flat, i, current_close_seq):
+                w = span_ids[current_span]["weight"]
+                end = min(i + len(current_close_seq), upper)
+                for j in range(i, end):
+                    weight[0, j] = w
+                i = end
+                current_span = None
+                current_close_seq = None
+                continue
 
-        # Entering a new span — token itself belongs to new span.
-        if tok in open_to_span:
-            current_span = open_to_span[tok]
+        # 2. Try to match an open sequence (only if not already in a span).
+        matched = None
+        if current_span is None:
+            for name, seq in open_specs:
+                if _seq_match_at(input_ids_flat, i, seq):
+                    matched = (name, seq)
+                    break
 
+        if matched is not None:
+            name, seq = matched
+            w = span_ids[name]["weight"]
+            end = min(i + len(seq), upper)
+            for j in range(i, end):
+                weight[0, j] = w
+            i = end
+            current_span = name
+            current_close_seq = span_ids[name]["close_seq"]
+            continue
+
+        # 3. Inside a span but not at boundary: apply current weight.
         if current_span is not None:
             weight[0, i] = span_ids[current_span]["weight"]
-        # else: leave default 1.0
-
-        # Closing a span — token belongs to current span, then exit.
-        if tok in close_ids_set:
-            current_span = None
+        # else: leave default 1.0 (between spans).
+        i += 1
 
     return weight
 
@@ -800,14 +864,17 @@ def _extract_eval_positions(
     if "action" not in span_ids:
         return meta
 
-    action_open_id = span_ids["action"]["open"]
-    action_close_id = span_ids["action"]["close"]
-    summary_open_id = span_ids.get("summary", {}).get("open")
-    summary_close_id = span_ids.get("summary", {}).get("close")
-    query_open_id = span_ids.get("query", {}).get("open")
-    query_close_id = span_ids.get("query", {}).get("close")
-    response_open_id = span_ids.get("response", {}).get("open")
-    response_close_id = span_ids.get("response", {}).get("close")
+    # v11.4: span open/close are SEQUENCES (length 1 in legacy single-token
+    # mode, length 2-4 in industry multi-token mode). Walk with sequence
+    # matching so the same code handles both modes.
+    action_open_seq = span_ids["action"]["open_seq"]
+    action_close_seq = span_ids["action"]["close_seq"]
+    summary_open_seq = span_ids.get("summary", {}).get("open_seq")
+    summary_close_seq = span_ids.get("summary", {}).get("close_seq")
+    query_open_seq = span_ids.get("query", {}).get("open_seq")
+    query_close_seq = span_ids.get("query", {}).get("close_seq")
+    response_open_seq = span_ids.get("response", {}).get("open_seq")
+    response_close_seq = span_ids.get("response", {}).get("close_seq")
 
     in_action = False
     in_summary = False
@@ -815,51 +882,77 @@ def _extract_eval_positions(
     in_response = False
     saw_action_close = False
     upper = min(ans_end + 2, seq_len)
-    for i in range(ans_start, upper):
-        tok = input_ids_flat[i]
-        if tok == action_open_id:
-            # v11.4: position right BEFORE <action> is where the model
-            # must DECIDE to emit <action> (closed-book format gate).
+    i = ans_start
+    while i < upper:
+        # Action open
+        if not in_action and _seq_match_at(input_ids_flat, i, action_open_seq):
+            # v11.4: pre_action_position is the position right BEFORE the
+            # FIRST token of the <action> sequence — the position whose
+            # argmax should be the <action> sequence's first token.
             if i > 0:
                 meta["pre_action_position"] = i - 1
-                meta["action_open_token_id"] = action_open_id
+                meta["action_open_token_id"] = action_open_seq[0]
             in_action = True
+            i += len(action_open_seq)
             continue
-        if tok == action_close_id:
+        # Action close
+        if in_action and _seq_match_at(input_ids_flat, i, action_close_seq):
             in_action = False
             saw_action_close = True
-            if i + 1 < seq_len:
-                meta["post_action_position"] = i + 1
+            after = i + len(action_close_seq)
+            if after < seq_len:
+                meta["post_action_position"] = after
+            i = after
             continue
+        # Action keyword tokens (between open and close)
         if in_action:
             meta["action_keyword_positions"].append(i)
+            i += 1
             continue
         if not saw_action_close:
+            i += 1
             continue
-        if summary_open_id is not None and tok == summary_open_id:
+        # Summary span
+        if summary_open_seq and not in_summary and \
+                _seq_match_at(input_ids_flat, i, summary_open_seq):
             in_summary = True
+            i += len(summary_open_seq)
             continue
-        if summary_close_id is not None and tok == summary_close_id:
+        if summary_close_seq and in_summary and \
+                _seq_match_at(input_ids_flat, i, summary_close_seq):
             in_summary = False
+            i += len(summary_close_seq)
             continue
-        if query_open_id is not None and tok == query_open_id:
+        # Query span
+        if query_open_seq and not in_query and \
+                _seq_match_at(input_ids_flat, i, query_open_seq):
             in_query = True
+            i += len(query_open_seq)
             continue
-        if query_close_id is not None and tok == query_close_id:
+        if query_close_seq and in_query and \
+                _seq_match_at(input_ids_flat, i, query_close_seq):
             in_query = False
+            i += len(query_close_seq)
             continue
-        if response_open_id is not None and tok == response_open_id:
+        # Response span
+        if response_open_seq and not in_response and \
+                _seq_match_at(input_ids_flat, i, response_open_seq):
             in_response = True
+            i += len(response_open_seq)
             continue
-        if response_close_id is not None and tok == response_close_id:
+        if response_close_seq and in_response and \
+                _seq_match_at(input_ids_flat, i, response_close_seq):
             in_response = False
+            i += len(response_close_seq)
             continue
+        # Inside a payload span: tag this token for argmax tracking.
         if in_summary:
             meta["summary_span_positions"].append(i)
         elif in_query:
             meta["query_span_positions"].append(i)
         elif in_response:
             meta["response_span_positions"].append(i)
+        i += 1
 
     return meta
 

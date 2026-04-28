@@ -17,6 +17,27 @@ class ModelArguments:
     tune_mm_llm: bool = field(default=True)
     tune_mm_mlp: bool = field(default=True)
     tune_mm_vision: bool = field(default=False)
+    add_agent_special_tokens: bool = field(
+        default=False,
+        metadata={
+            "help": "v11.4: industry-convention default is False — agent "
+            "structural tags (<action>, <response>, <query>, <summary>, "
+            "etc.) are kept as TEXT in assistant content and tokenized as "
+            "multi-token sequences by the existing BPE. This sidesteps "
+            "the cold-start magnitude bug that v11.3 hit when these tags "
+            "were registered as new single-token vocab entries — every "
+            "sub-token is already well-trained, so the model learns the "
+            "tag sequence naturally without smart_init. DeepEyes / "
+            "ReMemR1 / Qwen-VL official finetune all follow this pattern. "
+            "Set True only if you specifically need single-token tags for "
+            "inference efficiency AND are willing to retrain with smart_init "
+            "(see thinkstream/sft/data_processor.py:smart_init_special_token_embeddings). "
+            "Caveat: the existing v11.3 ckpt was trained with this flag "
+            "implicitly True (legacy register_special_tokens path) and "
+            "cannot be directly continued with False — you'd need to "
+            "retrain from a fresh base model."
+        },
+    )
 
 
 @dataclass
