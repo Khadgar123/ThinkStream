@@ -90,22 +90,37 @@ Requirements:
 {dedup_instruction}
 Output the response text only:"""
 
-RECALL_QUERY_PROMPT_WITH_RANGE = """Generate a retrieval query for this scenario:
-- Question: "{question}"
-- Visible memory context: {visible_context}
+_RECALL_KEYWORD_RULES = """Rules:
+- Pick 3-5 keywords that APPEAR LITERALLY in the gold evidence text below.
+  No paraphrasing, no synonyms — BM25 is lexical, "shirt" won't match "top",
+  "trailer" won't match "vehicle". If the gold says "light blue top", your
+  keyword is "blue top" or "blue", not "shirt".
+- Prefer entity nouns + distinctive actions + materials/colors/shapes.
+- NO answer values (don't leak the answer that the question is asking for).
+- NO pronouns ("he/she/it/they"), NO stop words.
+- Lowercase, space-separated."""
 
-Generate 3-5 discriminative keywords to locate the relevant past observation.
-NO answer values, NO pronouns. Include entity descriptions + action anchors.
-The relevant past observation is around time {time_range} seconds.
+RECALL_QUERY_PROMPT_WITH_RANGE = """Generate a retrieval query that BM25 can use to locate the gold evidence below.
+
+QUESTION (for context, do NOT extract keywords from this): "{question}"
+VISIBLE MEMORY (for context, NOT the source of keywords): {visible_context}
+
+GOLD EVIDENCE TEXT (extract keywords FROM THIS, literal match required):
+{gold_evidence}
+
+{rules}
 
 Output JSON: {{"query": "keyword1 keyword2 keyword3", "time_range": "{time_range}"}}"""
 
-RECALL_QUERY_PROMPT_KEYWORD_ONLY = """Generate a retrieval query for this scenario:
-- Question: "{question}"
-- Visible memory context: {visible_context}
+RECALL_QUERY_PROMPT_KEYWORD_ONLY = """Generate a retrieval query that BM25 can use to locate the gold evidence below.
 
-Generate 3-5 discriminative keywords to locate the relevant past observation.
-NO answer values, NO pronouns. Include entity descriptions + action anchors.
+QUESTION (for context, do NOT extract keywords from this): "{question}"
+VISIBLE MEMORY (for context, NOT the source of keywords): {visible_context}
+
+GOLD EVIDENCE TEXT (extract keywords FROM THIS, literal match required):
+{gold_evidence}
+
+{rules}
 
 Output JSON: {{"query": "keyword1 keyword2 keyword3"}}"""
 
@@ -243,7 +258,7 @@ async def _generate_response(card: Dict, snapshot: Dict, evidence: List[Dict],
 
 
 def _compute_recall_time_range(
-    card: Dict, snapshot: Dict, slack_sec: int = 4,
+    card: Dict, snapshot: Dict, slack_sec: int = 2,
 ) -> str:
     """Pick a tight time_range for a recall query.
 
@@ -252,11 +267,14 @@ def _compute_recall_time_range(
     answer actually lives. Falls back to "0-max(visible)" when support
     is missing (rare, mostly silent samples).
 
-    `slack_sec` of 4s on each side compensates for: (a) teacher
-    label imprecision, (b) the model's natural uncertainty about exact
-    boundaries, (c) chunk_sec=2s quantization — a 4s slack ≈ ±2 chunks.
-    Without slack the model would learn "predict exact range" which is
-    OOD vs how a human user phrases recall.
+    `slack_sec` of 2s on each side (= ±1 chunk) compensates for the
+    model's natural uncertainty about exact chunk boundaries at inference
+    time. v11.3 audit data: slack=0 gives BM25_time hit@1=0.87, slack=4
+    drops it to 0.28 (audit table — the ±4s "halo" dilutes the search
+    space enough that a wrong-but-keyword-rich chunk often outscores
+    gold). slack=2 trades a small accuracy hit for inference-time
+    robustness; the inference model's predicted boundary is rarely
+    perfect at chunk granularity.
     """
     support = card.get("support_chunks") or []
     if support:
@@ -277,7 +295,8 @@ def _compute_recall_time_range(
 
 
 async def _generate_recall_query(card: Dict, snapshot: Dict,
-                                  client, video_id: str, chunk_idx: int) -> Optional[Dict]:
+                                  client, video_id: str, chunk_idx: int,
+                                  rollout: Optional[Dict] = None) -> Optional[Dict]:
     """Generate recall query JSON via 397B.
 
     Two schemas are produced in mix RECALL_TIME_RANGE_FRACTION=0.7
@@ -285,6 +304,15 @@ async def _generate_recall_query(card: Dict, snapshot: Dict,
     the retriever uses time_range to pre-filter when present and falls
     back to full archive when absent. Training on both teaches the model
     to volunteer time_range only when confident.
+
+    v11.3: prompt now includes the gold-chunk think text (resolved from
+    `rollout["thinks"]` filtered to support_chunks). This anchors the
+    teacher's keyword extraction to the literal chunk text — without
+    it, BM25_keyword tops out at 21% hit@1 (audit data) because teacher
+    paraphrases ("brown hair blue shirt orange trailer" vs gold
+    "man in light blue top against vehicle"). With gold-text anchoring,
+    BM25_keyword should approach the 87% ceiling that bm25_time hits
+    when the time window is exact.
     """
     visible_parts = []
     for seg in snapshot.get("compressed_segments", []):
@@ -292,6 +320,27 @@ async def _generate_recall_query(card: Dict, snapshot: Dict,
     for item in snapshot.get("recent_thinks", []):
         visible_parts.append(f"[{item['time']}] {item.get('text', '')}")
     visible_context = "\n".join(visible_parts[-10:]) or "(minimal)"
+
+    # Build gold evidence text from support_chunks of the rollout's thinks.
+    # Falls back to a generic note when rollout/support_chunks unavailable
+    # (rare; legacy callers that don't pass rollout still work but produce
+    # weaker queries).
+    gold_evidence_lines = []
+    if rollout is not None:
+        support = card.get("support_chunks") or []
+        if support:
+            obs_lookup = {o.get("chunk_idx"): o for o in rollout.get("thinks", [])}
+            for c in support:
+                obs = obs_lookup.get(c)
+                if obs and obs.get("think"):
+                    gold_evidence_lines.append(
+                        f"[chunk {c}, t={c*int(AGENT_CHUNK_SEC)}-"
+                        f"{(c+1)*int(AGENT_CHUNK_SEC)}s] {obs['think']}"
+                    )
+    gold_evidence = "\n".join(gold_evidence_lines) if gold_evidence_lines else (
+        "(no gold evidence supplied; pick keywords from the visible "
+        "memory that best describe the question's subject)"
+    )
 
     time_range = _compute_recall_time_range(card, snapshot)
     # Deterministic per-(video, chunk) split so re-runs of pass3c with
@@ -304,6 +353,8 @@ async def _generate_recall_query(card: Dict, snapshot: Dict,
         prompt = RECALL_QUERY_PROMPT_WITH_RANGE.format(
             question=card.get("question", ""),
             visible_context=visible_context,
+            gold_evidence=gold_evidence,
+            rules=_RECALL_KEYWORD_RULES,
             time_range=time_range,
         )
         fallback = {"query": card.get("question", "")[:30], "time_range": time_range}
@@ -311,6 +362,8 @@ async def _generate_recall_query(card: Dict, snapshot: Dict,
         prompt = RECALL_QUERY_PROMPT_KEYWORD_ONLY.format(
             question=card.get("question", ""),
             visible_context=visible_context,
+            gold_evidence=gold_evidence,
+            rules=_RECALL_KEYWORD_RULES,
         )
         fallback = {"query": card.get("question", "")[:30]}
 
@@ -524,7 +577,10 @@ def _simulate_recall_result(card: Dict, rollout: Dict, ask_chunk: int,
     # to failure: this is a "bad query" signal the agent should learn from.
     if query_json is not None and returned:
         kw = _extract_query_keywords(query_json)
-        if kw and not _query_overlaps_chunks(kw, returned, rollout, threshold=1):
+        # v11.3: threshold 1 → 2. With the new prompt anchoring keywords to
+        # gold chunk text, ≥2 lexical hits is realistic and screens out
+        # paraphrased queries that were previously accepted at the 1-hit bar.
+        if kw and not _query_overlaps_chunks(kw, returned, rollout, threshold=2):
             return {"source": "failure",
                     "text_content": "No matching results found.",
                     "returned_chunks": []}
@@ -694,7 +750,7 @@ async def generate_trajectory_samples(
             # where any LLM-generated query string returned oracle chunks,
             # teaching the agent that query content doesn't matter.
             query_json = await _generate_recall_query(
-                card, snapshot, client, video_id, ask)
+                card, snapshot, client, video_id, ask, rollout=rollout)
 
             noise = random.random()
             noise_type = "oracle" if noise < 0.7 else "noisy" if noise < 0.9 else "distractor" if noise < 0.95 else "failure"
@@ -759,7 +815,7 @@ async def generate_trajectory_samples(
             #          + found_think + found_response (all independent, queries_state stable).
             tasks = [
                 _generate_fork_think(base_think, queries_state, client, video_id, ask),
-                _generate_recall_query(card, snapshot, client, video_id, ask),
+                _generate_recall_query(card, snapshot, client, video_id, ask, rollout=rollout),
                 _generate_recall_think(card, recall_result, client, video_id, ask),
             ]
             tasks += [
