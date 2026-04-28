@@ -1,9 +1,15 @@
-# ThinkStream 设计（当前状态：v9.5 + v11.3 增量）
+# ThinkStream 设计（当前状态：v9.5 + v11.3 + v11.4 增量）
 
 > Source of Truth: `git log` + `tests/` + `memory/`. 本文档是 **快照**——
 > 当代码与本文档分歧时以代码为准。最新 commit 见 `git log --oneline -10`。
 >
-> **v11.3 增量见 [`docs/v11.3_changelog.md`](v11.3_changelog.md)**——
+> **v11.4 RL 增量见 [`docs/v11.4_rl_design.md`](v11.4_rl_design.md)** ——
+> RL 数学原理（GRPO vs GDPO 公式推导）、3 处 reward bug 修复（timing 用
+> last response、recall 失败显式 -0.2、range coverage=0 显式 -0.2）、
+> `aggregate_grpo` 作 DeepSeekMath baseline 可选模式、vLLM batched
+> streaming rollout（chunk-lockstep × group_size，opt-in）。
+>
+> **v11.3 增量见 [`docs/v11.3_changelog.md`](v11.3_changelog.md)** ——
 > SFT 权重重平衡（compress 0.8→2.5 等）、wandb 每类监控、token 驱动
 > 压缩范围、pass3 5 处非 think、vLLM eval（offline + streaming
 > chunk-lockstep）、多方案 recall 检索 audit、JSON 解析鲁棒化、
