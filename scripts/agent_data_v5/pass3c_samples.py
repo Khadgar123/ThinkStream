@@ -875,14 +875,34 @@ async def generate_trajectory_samples(
             # followup_response: queries_state mutates each iteration via answer
             # append, so cross-iteration parallel is unsafe. Within-iteration
             # gather of (fc_think, resp) is safe — both use the same queries_state.
+            #
+            # v9.5: progressive_answers — when placement carries a
+            # {chunk_idx: answer_str} map (F5/F7/CR5 multi_probe families),
+            # the per-probe gold answer overrides card.canonical_answer.
+            # F5 → cumulative count "1"/"2"/"3"; F7 → "No"/"Yes" flip;
+            # CR5 → silent before clue / descriptive after. Without this
+            # override every probe would reuse the same final answer
+            # (the bug that made OVO REC/SSR/CRR untrainable).
+            progressive = (kc.get("progressive_answers") or {}) if isinstance(kc, dict) else {}
             for fc in kc.get("followup_response", []):
                 prior = [a["text"] if isinstance(a, dict) else str(a)
                          for a in queries_state[-1]["answers"]]
-                fc_think, resp = await asyncio.gather(
-                    _generate_fork_think(_get_think(fc), queries_state, client, video_id, fc),
-                    _generate_response(card, _get_snapshot(fc), evidence,
-                                       client, video_id, fc, prior_answers=prior),
-                )
+                # If the placement specified a per-chunk gold answer, use
+                # it directly (no LLM call) — these are deterministic.
+                progressive_answer = progressive.get(fc)
+                if progressive_answer is None:
+                    progressive_answer = progressive.get(str(fc))
+                if progressive_answer is not None:
+                    fc_think = await _generate_fork_think(
+                        _get_think(fc), queries_state, client, video_id, fc,
+                    )
+                    resp = str(progressive_answer)
+                else:
+                    fc_think, resp = await asyncio.gather(
+                        _generate_fork_think(_get_think(fc), queries_state, client, video_id, fc),
+                        _generate_response(card, _get_snapshot(fc), evidence,
+                                           client, video_id, fc, prior_answers=prior),
+                    )
                 if resp is None:
                     logger.warning(f"  [{video_id}] followup response gen failed at chunk {fc}")
                     continue

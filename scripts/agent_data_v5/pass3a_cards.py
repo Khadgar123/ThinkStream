@@ -35,20 +35,20 @@ logger = logging.getLogger(__name__)
 #       Layer-0/1 perceptual families don't — specifically targeting OVO
 #       CRR/ASI/SSR/EPM tasks where batch1 had near-zero coverage.
 FAMILY_TARGETS = {
-    # v9.5: trimmed from sum=38 → sum=28 (post-verify mean drops from
-    # ~21.6 to ~15-16 cards/video). Reduces pass3a verify calls by ~30%
-    # and pass3c sample calls similarly. Distribution kept proportional;
-    # OVO-critical families (F5/F6/N1/CR1-4 = force-attempt) untouched.
+    # v9.5: trimmed from sum=38 → sum=32 (added F7+CR5 for OVO SSR/CRR).
+    # Post-verify mean ~17-18 cards/video.
     "F1": 2, "F2": 3, "F3": 2, "F4": 2,
     "E1": 2, "E2": 2, "P1": 2, "C1": 2,
     "R1": 1, "S1": 2, "M1": 1,
-    "F5": 2,  # repetition counting (OVO REC) — force-attempt family
+    "F5": 2,  # repetition counting (OVO REC) — force-attempt
     "F6": 2,  # future prediction (OVO FPD) — force-attempt
+    "F7": 2,  # step-progress binary multi-probe (OVO SSR) — force-attempt — v9.5 new
     "N1": 2,  # hallucination detection (OVO HLD) — force-attempt
     "CR1": 2, # causal why (state_change → cause attribution)
     "CR2": 2, # temporal ordering (3 distinguishable events)
     "CR3": 1, # goal / intent inference
     "CR4": 2, # compositional multi-observation (AND/OR)
+    "CR5": 2, # clue-delayed descriptive multi-probe (OVO CRR) — v9.5 new
 }
 
 # Families that MUST be attempted on every video, even when classify_chunks
@@ -60,8 +60,8 @@ FAMILY_TARGETS = {
 # and decide if multi-chunk reasoning is possible; structural classify_chunks
 # would miss many candidates.
 FAMILY_FORCE_ATTEMPT = {
-    "F5", "F6", "N1", "F3", "E2", "S1",
-    "CR1", "CR2", "CR3", "CR4",
+    "F5", "F6", "F7", "N1", "F3", "E2", "S1",
+    "CR1", "CR2", "CR3", "CR4", "CR5",
 }
 
 # Retention class derived from family (not from 397B).
@@ -75,7 +75,9 @@ RETENTION_CLASS = {
     "E1": "high", "S1": "high", "M1": "high",
     "F5": "low",      # exact count must persist
     "F6": "medium",   # process-aware
+    "F7": "low",      # per-step state — must persist exactly
     "N1": "low",      # specific entity absence
+    "CR5": "high",    # clue-delayed event — both ask context + clue must be retained
     "CR1": "high",    # cause needs to be retained from earlier chunk
     "CR2": "high",    # all 3 ordered events must be retained
     "CR3": "medium",  # goal is gist-level, survives compression
@@ -501,6 +503,90 @@ CRITICAL — if the answer can be obtained from ANY single chunk alone, the
 question is NOT compositional and is INVALID. Verify the dependency: both
 sub-observations must be needed to distinguish the correct option from the
 distractors. If you cannot construct such a question, output `[]`.
+
+{evidence}
+""" + _OUTPUT_SCHEMA,
+
+    # v9.5 — OVO SSR alignment. Multi-probe binary "Has step X happened yet?"
+    # Generated cards have an EXTRA field `step_chunk` marking when the step
+    # actually completes (used by pass3b multi_response to flip No→Yes at the
+    # right moment). canonical_answer here is the FINAL state ("Yes") since
+    # pass3b derives per-probe answers from step_chunk.
+    "F7": """Based on the following video chunks, generate UP TO {n} STEP-PROGRESS
+questions aligned with OVOBench SSR.
+
+The video shows a procedural / instructional / multi-step activity (cooking,
+DIY, exercise, tutorial). Identify {n} DISTINCT named steps that complete at
+identifiable chunks (e.g., "pour the egg", "flip the steak", "tighten the bolt",
+"start the engine").
+
+For each step, generate a question of the form:
+  "Has the step '<step description>' been done by now?"
+canonical_answer: "Yes" (the FINAL state — the step is observed completing
+                  at step_chunk in the video; pass3b will flip the answer
+                  to "No" at chunks before step_chunk during multi-probe
+                  rendering).
+answer_form: "binary".
+visibility_type: "transient" (the answer flips from No→Yes at step_chunk).
+
+REQUIRED extra fields per card (in addition to the standard schema):
+  "step_chunk": the chunk_idx where the step is OBSERVED COMPLETING. The
+                multi-probe engine uses this to render "No" responses at
+                chunks < step_chunk and "Yes" at chunks >= step_chunk.
+  "step_label": short human-readable label for the step (≤6 words, no
+                trailing period).
+
+support_chunks: [step_chunk] — single chunk where the step completion is
+visible (the model needs this for evidence retention; usually identical to
+step_chunk).
+
+CRITICAL — pick steps that are visually unambiguous at step_chunk. If a step
+is gradual or hard to localize (e.g., "the dough rises"), SKIP it; OVO SSR
+expects clean before/after binary judgments.
+
+If fewer than {n} clean steps exist, output fewer cards. Output `[]` only if
+the video has no procedural structure at all.
+
+{evidence}
+""" + _OUTPUT_SCHEMA,
+
+    # v9.5 — OVO CRR alignment. Multi-probe descriptive answer with clue
+    # delay. The model must answer "I don't know yet" / silent at probes
+    # before clue_chunk and a free-text descriptive answer at probes from
+    # clue_chunk onward. canonical_answer is the post-clue descriptive answer.
+    "CR5": """Based on the following video chunks, generate UP TO {n} CLUE-DELAYED
+descriptive questions aligned with OVOBench CRR.
+
+Find a moment in the video where:
+  - At chunk A (the "ask" moment), an entity, situation, or unresolved
+    interaction sets up a question that someone would naturally wonder
+    about (e.g., "two people are talking — what do they do next?",
+    "the woman walks toward the car — what does she do to the car?",
+    "the player stares at the puzzle — what does she try to do?").
+  - At chunk B > A (the "clue" moment), the answer becomes visible
+    (e.g., "she pushes him into the water", "they walk to a dark
+    corridor", "she rotates the puzzle piece").
+
+For each such (A, B) pair, generate a card:
+  question: a natural-language descriptive question about the unresolved
+            event at chunk A. The wording should make sense AT chunk A
+            without requiring B's information.
+  canonical_answer: a 5-15 word free-text DESCRIPTIVE answer that is only
+                    derivable from chunk B and onward. NO MCQ letters.
+  answer_form: "descriptive".
+  visibility_type: "transient".
+
+REQUIRED extra fields:
+  "ask_chunk": A — chunk where the question is naturally asked.
+  "clue_chunk": B — chunk where the answer becomes visible (B > A).
+
+support_chunks: [B] — single chunk where the resolution is visible.
+
+CRITICAL — the question MUST be ambiguous at chunk A (no choice between
+discrete options) and MUST become unambiguous at chunk B. Skip any case
+where the answer is already visible at chunk A.
+
+If the video has no such ask→clue structure, output `[]`.
 
 {evidence}
 """ + _OUTPUT_SCHEMA,
