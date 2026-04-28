@@ -150,6 +150,15 @@ class HybridRetriever:
         if not query_text.strip() or not archive:
             return _empty_recall()
 
+        # Pre-filter by query.time_range when present. Same semantics as
+        # bm25_retrieve — keeps the two retrievers behaviour-compatible
+        # so SFT samples generated against either render identical recall_result
+        # text under the same query.
+        from thinkstream.model.agent_loop import filter_archive_by_time_range
+        archive = filter_archive_by_time_range(archive, query.get("time_range"))
+        if not archive:
+            return _empty_recall()
+
         # 1. BM25 (text)
         try:
             from rank_bm25 import BM25Okapi

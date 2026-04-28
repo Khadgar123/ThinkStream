@@ -339,7 +339,7 @@ def main():
     p.add_argument("--frames_root", default="data/agent_v5/frames")
     p.add_argument("--n", type=int, default=200,
                    help="Max samples to evaluate (after filtering scorable)")
-    p.add_argument("--retriever", default="bm25", choices=["bm25", "hybrid"])
+    p.add_argument("--retriever", default="hybrid", choices=["bm25", "hybrid"])
     p.add_argument("--alpha", type=float, default=0.5)
     p.add_argument("--siglip_path", default="google/siglip-base-patch16-224")
     p.add_argument("--compress_mode", default="system",

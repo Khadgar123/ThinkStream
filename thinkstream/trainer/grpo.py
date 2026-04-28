@@ -185,22 +185,54 @@ def _compute_response_reward(
     return 0.1  # wrong answer
 
 
+def _compute_recall_hit_rate(
+    returned_chunks_per_chunk: List[List[int]],
+    support_chunks: List[int],
+) -> Optional[float]:
+    """Recall@K hit-rate over the rollout.
+
+    Returns |∪returned ∩ support| / |support| ∈ [0, 1] when the rollout
+    actually recalled and support is known; None otherwise (caller treats
+    as "no signal", neutral). Union across all recall events in the
+    rollout — the agent can call recall multiple times and we credit any
+    match.
+    """
+    if not support_chunks:
+        return None
+    union = set()
+    for chunks in returned_chunks_per_chunk:
+        if chunks:
+            union.update(int(c) for c in chunks)
+    if not union:
+        return None  # never recalled (or recall always failed)
+    gold = set(int(c) for c in support_chunks)
+    return len(union & gold) / len(gold)
+
+
 def _compute_recall_quality_reward(
     predicted_actions: List[str],
     chunk_texts: List[str],
     gt_answer: str,
     model_answer: Optional[str],
+    returned_chunks_per_chunk: Optional[List[List[int]]] = None,
+    support_chunks: Optional[List[int]] = None,
 ) -> float:
     """Recall quality: was recall well-used, well-formed, and necessary?
 
-    Rewards:
-      recall → correct response: 1.0 (recall was useful)
-      recall → wrong/no response: 0.3 (recall mechanism OK, result bad)
-      no recall + correct response: 0.8 (didn't need recall, good)
-      no recall + wrong response: 0.0 (maybe should have recalled)
-      unnecessary recall (answer was easy): -0.3
+    Components:
+      query_quality   ∈ [0.2, 1.0]   — JSON well-formed, no answer leakage
+      hit_rate        ∈ [0, 1]       — |returned ∩ support| / |support|
+      outcome         scaling         — recall→correct = 1.0× ; recall→wrong = 0.5×
 
-    Also checks query format quality.
+    Final = outcome × (0.5 × query_quality + 0.5 × hit_rate)  when recall fired
+                                                              and hit_rate available
+          = outcome × query_quality                           when hit_rate missing
+                                                              (legacy / silent-only)
+
+    Also penalises:
+      unnecessary recall (silent-only sample): -0.3
+      no recall + wrong response                : 0.0
+      no recall + correct response              : 0.8
     """
     used_recall = "recall" in predicted_actions
 
@@ -217,25 +249,32 @@ def _compute_recall_quality_reward(
                 try:
                     q = json.loads(query_match.group(1))
                     has_query = bool(q.get("query", ""))
-                    has_range = bool(q.get("time_range", ""))
-                    # Check query doesn't contain answer value
+                    # time_range is now optional (keyword_only schema is
+                    # 30% of SFT). Don't penalise its absence — the
+                    # retriever falls back to the full archive.
                     query_text = q.get("query", "").lower()
                     answer_in_query = gt_answer.lower() in query_text if gt_answer else False
                     query_quality = 1.0
-                    if not has_query or not has_range:
+                    if not has_query:
                         query_quality -= 0.3
                     if answer_in_query:
                         query_quality -= 0.5  # answer leakage penalty
                 except (json.JSONDecodeError, ValueError):
                     query_quality = 0.2  # bad JSON
 
-        # Did recall lead to correct answer?
+        # Retrieval hit-rate (sparse signal — drives the model to pick
+        # discriminative keywords / correct time_range).
+        hit_rate = _compute_recall_hit_rate(
+            returned_chunks_per_chunk or [], support_chunks or []
+        )
+        if hit_rate is not None:
+            quality = 0.5 * query_quality + 0.5 * hit_rate
+        else:
+            quality = query_quality
+
         gt_clean = _extract_literal_answer(gt_answer) if gt_answer else None
         answer_correct = (model_answer == gt_clean) if gt_clean and model_answer else False
-
-        if answer_correct:
-            return query_quality  # recall + correct = full quality reward
-        return query_quality * 0.5  # recall + wrong = partial
+        return quality if answer_correct else quality * 0.5
     else:
         # No recall used
         gt_clean = _extract_literal_answer(gt_answer) if gt_answer else None
@@ -658,6 +697,11 @@ def rollout(
                     "compress_budget": int(
                         result.get("compress_budget", 0)
                     ),
+                    # Retriever output (used by recall_quality hit-rate reward).
+                    # Empty when the rollout didn't recall this chunk.
+                    "recall_returned_chunks": list(
+                        result.get("recall_returned_chunks") or []
+                    ),
                     "window_start": chunk_idx * 2,
                     "window_end": (chunk_idx + 1) * 2,
                 })
@@ -678,6 +722,7 @@ def rollout(
                 "generated_tokens": [],
                 "memory_token_count": [],   # per-gen post-step memory size
                 "compress_budget": [],      # per-gen budget (constant within a run, kept per-gen for symmetry)
+                "recall_returned_chunks": [],  # per-gen retriever output
             }
             for g in range(group_size):
                 if ci < len(per_gen_results[g]):
@@ -687,11 +732,15 @@ def rollout(
                     )
                     merged["memory_token_count"].append(cr_g.get("memory_token_count", 0))
                     merged["compress_budget"].append(cr_g.get("compress_budget", 0))
+                    merged["recall_returned_chunks"].append(
+                        list(cr_g.get("recall_returned_chunks") or [])
+                    )
                 else:
                     # Pad with empty if this gen finished early
                     merged["generated_tokens"].append(torch.tensor([]))
                     merged["memory_token_count"].append(0)
                     merged["compress_budget"].append(0)
+                    merged["recall_returned_chunks"].append([])
             merged_chunk_results.append(merged)
 
         all_rollout_results.append({
@@ -839,6 +888,7 @@ def calc_rewards(
         metadata = raw_sample.get("metadata", {})
         gt_answer = metadata.get("gold_answer", "")
         answer_form = metadata.get("answer_form", "")
+        support_chunks = list(metadata.get("support_chunks") or [])
 
         # Timing: use chunk_idx from sample
         gt_chunk_idx = raw_sample.get("chunk_idx")
@@ -916,8 +966,18 @@ def calc_rewards(
                 time_r = 0.0
 
             # ─── R_recall_quality (sparse, applies only if rollout recalled) ───
+            # Per-chunk retriever output for this gen — empty list when
+            # the chunk's action wasn't recall.
+            returned_per_chunk = [
+                cr.get("recall_returned_chunks", [[]] * group_size)[g]
+                if isinstance(cr.get("recall_returned_chunks"), list)
+                else []
+                for cr in chunk_results
+            ]
             recall_r = _compute_recall_quality_reward(
-                predicted_actions, chunk_texts, gt_answer, model_answer
+                predicted_actions, chunk_texts, gt_answer, model_answer,
+                returned_chunks_per_chunk=returned_per_chunk,
+                support_chunks=support_chunks,
             )
 
             # ─── R_silent_quality (dense, always applies — streaming-specific) ───

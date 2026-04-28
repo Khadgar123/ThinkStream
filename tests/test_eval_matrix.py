@@ -34,18 +34,31 @@ import pytest
 # ─── 1. test_set_agent helpers (pure-Python, no torch needed) ────────────────
 
 
-def _load_helpers_from_source(path: str, names):
+def _load_helpers_from_source(path: str, names, extra_globals=None):
     """Re-exec selected def blocks from a script. Faster + more isolated than
     importing the full module — even with stubs, importing pulls module-level
-    side effects we don't need. Pre-seeds common deps (re, Path) since most
-    helpers use them.
+    side effects we don't need. Pre-seeds common deps (re, Path, typing) since
+    most helpers use them.
+
+    extra_globals: optional dict of extra names to seed (constants like
+    AGENT_CHUNK_SEC, module-level config) before exec.
     """
+    import typing
     src = Path(path).read_text()
     out: Dict = {
         "re": re,
         "Path": Path,
         "defaultdict": __import__("collections").defaultdict,
+        # Type-annotation names commonly used in signatures
+        "List": typing.List,
+        "Dict": typing.Dict,
+        "Optional": typing.Optional,
+        "Any": typing.Any,
+        "Tuple": typing.Tuple,
+        "Callable": typing.Callable,
     }
+    if extra_globals:
+        out.update(extra_globals)
     for name in names:
         m = re.search(rf"^def {name}\(.*?(?=^def |\Z)", src,
                       re.MULTILINE | re.DOTALL)
@@ -408,14 +421,15 @@ def test_queries_cap_default_safe():
     assert "pending" in src.lower() and "keep" in src.lower()
 
 
-def test_recall_text_cap_default_safe():
-    """Default RECALL_TEXT_MAX_CHARS must be the SFT-aligned safe value (800)."""
+def test_recall_text_cap_aligned_to_sft():
+    """RECALL_TEXT_MAX_CHARS=1600 ≈ 4 thinks × THINK_TOKENS.max(100) × ~4
+    char/tok — the upper bound of SFT's recall_result text_content
+    distribution. Below this is over-tightening; above is wasted budget."""
     src = (ROOT / "thinkstream" / "data" / "agent_protocol.py").read_text()
     m = re.search(r"^RECALL_TEXT_MAX_CHARS\s*=\s*(\d+)", src, re.MULTILINE)
     assert m, "RECALL_TEXT_MAX_CHARS not set"
-    assert int(m.group(1)) == 800, \
-        f"default recall char-cap must be 800; got {m.group(1)}"
-    # And the build_user_content path uses the constant (not a hardcoded literal)
+    assert int(m.group(1)) == 1600, \
+        f"default recall char-cap must be 1600 (SFT upper bound); got {m.group(1)}"
     block = src[src.find("Zone C continued: Recall result"):
                 src.find("Zone D: User input")]
     assert "RECALL_TEXT_MAX_CHARS" in block, \
@@ -653,99 +667,33 @@ def test_run_matrix_runs_both_profiles():
     assert 'for prof in "${PROFILES[@]}"' in src
 
 
-def test_analyze_messages_zones_classifies_correctly():
-    """_analyze_messages_zones must bucket text items by leading tag and
-    attribute video items to the most recent visual zone (visual_window
-    or recalled_frames)."""
-    src = (ROOT / "thinkstream" / "model" / "agent_loop.py").read_text()
-    assert "def _analyze_messages_zones(" in src
-    assert "def _classify_zone_from_text(" in src
-    # Each zone tag must be checked
-    for tag in ("<visual_window>", "<recalled_frames>", "<memory>",
-                "<queries>", "<recall_result>", "<user_input>"):
-        assert tag in src, f"_classify_zone_from_text missing tag {tag}"
-    # Per-frame visual estimate constant
-    assert "EST_TOKENS_PER_FRAME" in src
-
-
-def test_step_emits_debug_trace_when_enabled():
-    """When self.debug=True, step() must populate parsed['debug_trace']
-    with memory_before, zones, memory_after, and raw_messages_summary."""
-    src = (ROOT / "thinkstream" / "model" / "agent_loop.py").read_text()
-    # debug attr set in __init__
-    assert "self.debug = " in src
-    # step end captures
-    for field in ("memory_before", "zones", "memory_after",
-                  "raw_messages_summary", "compress_trigger_text"):
-        assert f'"{field}"' in src, f"debug_trace missing {field}"
-
-
-def test_debug_streaming_script_exists_and_compiles():
-    """scripts/eval/debug_streaming.py is the single-sample debug entry."""
-    p = ROOT / "scripts" / "eval" / "debug_streaming.py"
-    assert p.exists(), "debug_streaming.py must exist"
-    # AST-parseable
-    import ast as _ast
-    _ast.parse(p.read_text())
-    # Has the human-readable print helpers
-    src = p.read_text()
-    assert "def print_step_trace" in src
-    assert "def print_summary" in src
-    assert "loop.debug = True" in src
-    assert "OVERFLOW IMMINENT" in src or "🚨" in src
-
-
-def test_should_compress_emergency_trigger():
-    """v9.4.2: emergency compress trigger when individual thinks are
-    pathologically long (1.5× normal threshold + len≥2). Without this,
-    a verbose model emitting 1000-tok thinks would carry 2000+ tok in
-    recent_thinks before COMPRESS_RANGE_MIN=4 fires."""
+def test_should_compress_matches_sft():
+    """should_compress is single-condition (>=480 tok AND >=4 thinks),
+    matching SFT pass2_rollout. No emergency / 1.5× / len>=2 branches —
+    those would be OOD vs training."""
     src = (ROOT / "thinkstream" / "model" / "agent_loop.py").read_text()
     sc_block = src[src.find("def should_compress("):
                    src.find("def compress(")]
-    # Standard trigger: tokens>=480 AND len>=4
     assert "COMPRESS_TOKEN_THRESHOLD" in sc_block
     assert "COMPRESS_RANGE_MIN" in sc_block
-    # Emergency trigger: tokens >= 1.5× threshold AND len >= 2
-    assert "1.5" in sc_block, "emergency trigger should use 1.5× threshold"
-    assert "n_thinks >= 2" in sc_block or "len(self.recent_thinks) >= 2" in sc_block, \
-        "emergency trigger needs minimum-2 condition"
+    assert "1.5" not in sc_block, "no 1.5× emergency trigger (OOD vs SFT)"
+    assert "len(self.recent_thinks) >= 2" not in sc_block
 
 
-def test_summary_capped_at_storage_time():
-    """v9.4.2: incoming <summary> text must be capped at 200 tok at compress()
-    time, NOT only when merging. Verbose model summaries used to bloat the
-    compressed_segments zone to ~2000 tok before merge fired."""
+def test_summary_cap_aligned_with_sft():
+    """Both incoming summary and merged segments cap at SUMMARY_TOKENS_MAX
+    (=180), matching SFT config.py. Going above 180 is OOD; going below is
+    over-tightening (model never trained on shorter)."""
     src = (ROOT / "thinkstream" / "model" / "agent_loop.py").read_text()
-    # Find compress() body
+    assert "SUMMARY_TOKENS_MAX = 180" in src, "module-level cap constant"
     cmp_block = src[src.find("def compress("):
-                    src.find("def add_query(") if "def add_query(" in src
-                    else src.find("# --- Queries tracking")]
-    # Must encode and truncate BEFORE append
-    assert "Cap summary text BEFORE storing" in cmp_block, \
-        "compress() must cap summary text before append"
-    assert "len(ids) > 200" in cmp_block
-    assert "_tokenizer.decode(ids[:200])" in cmp_block
-    # Truncation must happen before the .append(summary) line
-    cap_pos = cmp_block.find("len(ids) > 200")
+                    src.find("# --- Queries tracking")]
+    assert "len(ids) > SUMMARY_TOKENS_MAX" in cmp_block
+    assert "_tokenizer.decode(ids[:SUMMARY_TOKENS_MAX])" in cmp_block
+    # Incoming cap must run BEFORE append
+    cap_pos = cmp_block.find("len(ids) > SUMMARY_TOKENS_MAX")
     append_pos = cmp_block.find("self.compressed_segments.append(summary)")
-    assert cap_pos < append_pos, \
-        "cap must be applied BEFORE append, else 5 segments can stack uncapped"
-
-
-def test_compressed_segment_merge_cap_aligned_with_sft():
-    """Merged compressed segments capped at 200 tokens — matches the SFT
-    data construction value (config.py); going below would OOD the model
-    relative to training distribution."""
-    src = (ROOT / "thinkstream" / "model" / "agent_loop.py").read_text()
-    merge_block = src[src.find("Merge oldest two"):
-                      src.find("self.compressed_segments.insert(0, merged)") + 60]
-    m = re.search(r"len\(ids\)\s*>\s*(\d+)", merge_block)
-    assert m, "merge cap not found"
-    cap = int(m.group(1))
-    # SFT was constructed at 200; eval cap should match (or be tighter,
-    # which still works because SFT saw segments ≤200 already).
-    assert cap == 200, f"merge cap {cap} should equal SFT-baked value 200"
+    assert cap_pos < append_pos, "incoming cap must precede append"
 
 
 def test_no_dangling_model_max_length_flag():
@@ -801,3 +749,217 @@ def test_ovo_base_dispatch_routes_by_task():
     dispatch({"task": "CRR"});  assert calls["last"] == ("crr", "CRR")
     # Unknown task → None
     assert dispatch({"task": "ZZZ"}) is None
+
+
+def test_render_sample_injects_recalled_frames():
+    """SFT recall_response samples must carry `recalled_frames` with
+    frame_paths so the model trains on visual recall, not text-only.
+    Without this, eval feeding `<recalled_frames>` + frames is OOD vs SFT."""
+    from scripts.agent_data_v5.render_samples import _build_recalled_frames
+    # historical_frames recall with returned_chunks → produces frame_paths
+    rr = {
+        "source": "historical_frames",
+        "text_content": "[10s] foo",
+        "returned_chunks": [5, 6, 7, 8],
+    }
+    # Per-video frame list: 1fps, 2 frames per chunk → indices [10..15] map
+    # to chunks 5..7. Provide enough to cover chunk 8.
+    all_frames = [f"frame_{i:06d}.jpg" for i in range(1, 21)]
+    rf = _build_recalled_frames(rr, all_frames)
+    assert rf is not None
+    assert rf["source"] == "historical_frames"
+    assert rf["time_range"] == [10, 18]   # min(5)*2 to (max(8)+1)*2
+    assert rf["n_frames"] == 8            # 4 chunks × 2 frames
+    assert "frame_paths" in rf and len(rf["frame_paths"]) == 8
+
+    # failure / no chunks → None (text-only recall, legacy behaviour)
+    assert _build_recalled_frames({"source": "failure",
+                                   "returned_chunks": []}, all_frames) is None
+    assert _build_recalled_frames({"source": "historical_frames",
+                                   "returned_chunks": []}, all_frames) is None
+    assert _build_recalled_frames(None, all_frames) is None
+
+    # Without all_frame_paths → header still emitted, but no frame_paths
+    rf_no_paths = _build_recalled_frames(rr, None)
+    assert rf_no_paths is not None
+    assert "frame_paths" not in rf_no_paths
+
+
+def test_render_sample_threads_frame_paths():
+    """render_sample / render_trajectory / render_video_samples must accept
+    and forward all_frame_paths so the pipeline can plumb it from
+    extract_frames output."""
+    import inspect
+    from scripts.agent_data_v5 import render_samples
+    for fn_name in ("render_sample", "render_trajectory", "render_video_samples"):
+        sig = inspect.signature(getattr(render_samples, fn_name))
+        assert "all_frame_paths" in sig.parameters, \
+            f"{fn_name} must accept all_frame_paths"
+
+
+def test_pipeline_passes_video_frames_to_render():
+    """pipeline.py's RENDER step must pass the per-video extracted frame
+    list to render_video_samples (otherwise recalled_frames.frame_paths
+    stays empty and SFT trains on text-only recall)."""
+    src = (ROOT / "scripts" / "agent_data_v5" / "pipeline.py").read_text()
+    block = src[src.find("RENDER: Building SFT-ready samples"):
+                src.find("PASS 4: Verify + Filter")]
+    assert "all_frame_paths=" in block, \
+        "render call must thread all_frame_paths"
+    assert "video_frames.get(vid" in block, \
+        "must source from per-video extracted frame list"
+
+
+def test_parse_time_range_handles_all_formats():
+    """parse_time_range accepts 'a-b', [a,b], (a,b), and rejects junk."""
+    h = _load_helpers_from_source(
+        str(ROOT / "thinkstream" / "model" / "agent_loop.py"),
+        ["parse_time_range"],
+    )
+    parse_time_range = h["parse_time_range"]
+    # Stub Optional (referenced in signature)
+    assert parse_time_range("10-30") == (10.0, 30.0)
+    assert parse_time_range("10.5-30.5") == (10.5, 30.5)
+    assert parse_time_range([5, 15]) == (5.0, 15.0)
+    assert parse_time_range((5, 15)) == (5.0, 15.0)
+    # Falsy / malformed → None (caller falls back to full archive)
+    assert parse_time_range(None) is None
+    assert parse_time_range("") is None
+    assert parse_time_range("abc") is None
+    assert parse_time_range("10") is None       # no dash
+    assert parse_time_range([1, 2, 3]) is None  # wrong arity
+
+
+def test_filter_archive_by_time_range_keeps_overlapping_chunks():
+    """An item is kept iff its chunk window [c*2, c*2+2] overlaps
+    [t_start, t_end]."""
+    h = _load_helpers_from_source(
+        str(ROOT / "thinkstream" / "model" / "agent_loop.py"),
+        ["parse_time_range", "filter_archive_by_time_range"],
+        extra_globals={"AGENT_CHUNK_SEC": 2.0},
+    )
+    filter_archive_by_time_range = h["filter_archive_by_time_range"]
+    archive = [
+        {"chunk": 0, "text": "a"},   # window 0-2
+        {"chunk": 1, "text": "b"},   # window 2-4
+        {"chunk": 2, "text": "c"},   # window 4-6
+        {"chunk": 3, "text": "d"},   # window 6-8
+        {"chunk": 5, "text": "e"},   # window 10-12
+    ]
+    out = filter_archive_by_time_range(archive, "3-7", chunk_sec=2.0)
+    assert [a["chunk"] for a in out] == [1, 2, 3]
+    assert filter_archive_by_time_range(archive, None, chunk_sec=2.0) == archive
+    out2 = filter_archive_by_time_range(archive, "7-3", chunk_sec=2.0)
+    assert [a["chunk"] for a in out2] == [1, 2, 3]
+
+
+def test_bm25_retrieve_calls_time_range_filter():
+    """bm25_retrieve must invoke filter_archive_by_time_range before
+    scoring (source-level check — env can't import the module)."""
+    src = (ROOT / "thinkstream" / "model" / "agent_loop.py").read_text()
+    fn = src[src.find("def bm25_retrieve("):
+             src.find("# Backward compat alias")]
+    assert "filter_archive_by_time_range(archive, query.get(\"time_range\"))" in fn, \
+        "bm25_retrieve must filter archive by query.time_range"
+    # And HybridRetriever must do the same
+    hsrc = (ROOT / "thinkstream" / "model" / "retrieval.py").read_text()
+    h_block = hsrc[hsrc.find("class HybridRetriever"):
+                   hsrc.find("@staticmethod")]
+    assert "filter_archive_by_time_range" in h_block, \
+        "HybridRetriever must filter archive by time_range too"
+
+
+def test_recall_query_two_schemas_present():
+    """pass3c_samples must define BOTH RECALL_QUERY_PROMPT_WITH_RANGE and
+    RECALL_QUERY_PROMPT_KEYWORD_ONLY, and the keyword-only schema must
+    NOT include time_range in its JSON output template."""
+    src = (ROOT / "scripts" / "agent_data_v5" / "pass3c_samples.py").read_text()
+    assert "RECALL_QUERY_PROMPT_WITH_RANGE" in src
+    assert "RECALL_QUERY_PROMPT_KEYWORD_ONLY" in src
+    # Keyword-only block must not template a time_range field
+    ko = src[src.find("RECALL_QUERY_PROMPT_KEYWORD_ONLY"):
+             src.find("RECALL_TIME_RANGE_FRACTION")]
+    assert '"time_range"' not in ko, \
+        "keyword_only schema must NOT contain time_range field"
+    # Mix ratio is exposed
+    assert "RECALL_TIME_RANGE_FRACTION" in src
+
+
+def test_recall_time_range_uses_support_chunks():
+    """_compute_recall_time_range must derive the window from card's
+    support_chunks (with slack), not the legacy 0-max-history."""
+    h = _load_helpers_from_source(
+        str(ROOT / "scripts" / "agent_data_v5" / "pass3c_samples.py"),
+        ["_compute_recall_time_range"],
+        extra_globals={"AGENT_CHUNK_SEC": 2.0},
+    )
+    fn = h["_compute_recall_time_range"]
+    # support_chunks = [5, 6, 7] → t in [10, 16] → with 4s slack → "6-20"
+    card = {"support_chunks": [5, 6, 7]}
+    snapshot = {"compressed_segments": [], "recent_thinks": []}
+    assert fn(card, snapshot, slack_sec=4) == "6-20"
+    # No support → fallback to visible-history bound
+    snap2 = {"compressed_segments": [], "recent_thinks": [{"time": "0-2", "text": "x"}]}
+    assert fn({}, snap2) == "0-2"
+
+
+def test_recall_quality_reward_uses_hit_rate():
+    """_compute_recall_quality_reward folds in retrieval hit-rate when
+    support_chunks + returned_chunks are available."""
+    src = (ROOT / "thinkstream" / "trainer" / "grpo.py").read_text()
+    assert "def _compute_recall_hit_rate(" in src
+    assert "returned_chunks_per_chunk" in src
+    block = src[src.find("def _compute_recall_quality_reward("):
+                src.find("def _compute_format_reward(")]
+    assert "_compute_recall_hit_rate(" in block
+    assert "0.5 * query_quality + 0.5 * hit_rate" in block
+
+
+def test_recall_hit_rate_helper_correctness():
+    """_compute_recall_hit_rate returns |union ∩ gold|/|gold|, None when
+    either input is empty/missing."""
+    h = _load_helpers_from_source(
+        str(ROOT / "thinkstream" / "trainer" / "grpo.py"),
+        ["_compute_recall_hit_rate"],
+    )
+    fn = h["_compute_recall_hit_rate"]
+    # Perfect hit
+    assert fn([[5, 6, 7]], [5, 6, 7]) == 1.0
+    # Partial hit (2/3)
+    assert abs(fn([[5, 6]], [5, 6, 7]) - (2 / 3)) < 1e-6
+    # Multiple recall events: union counts
+    assert fn([[5], [6, 7]], [5, 6, 7]) == 1.0
+    # Miss
+    assert fn([[10, 11]], [5, 6, 7]) == 0.0
+    # No support → None (no signal)
+    assert fn([[5]], []) is None
+    # Never recalled → None (legacy: query_quality alone)
+    assert fn([[], [], []], [5, 6]) is None
+
+
+def test_rollout_records_recall_returned_chunks():
+    """Rollout must persist `recall_returned_chunks` per chunk per gen so
+    the reward function can compute hit-rate."""
+    src = (ROOT / "thinkstream" / "trainer" / "grpo.py").read_text()
+    # Per-gen capture
+    assert '"recall_returned_chunks": list(' in src
+    # Per-chunk merged capture
+    merge_block = src[src.find("max_chunks_seen = max(len(g)"):
+                      src.find("merged_chunk_results.append(merged)") + 50]
+    assert '"recall_returned_chunks": []' in merge_block
+    assert 'merged["recall_returned_chunks"]' in merge_block
+
+
+def test_eval_default_retriever_is_hybrid():
+    """eval scripts default to hybrid (BM25 + visual embedding) — pure
+    BM25 is kept as a baseline via --retriever bm25."""
+    for f in ("scripts/eval/ovo/eval_full.py",
+              "scripts/eval/test_set_agent.py"):
+        src = (ROOT / f).read_text()
+        m = re.search(
+            r'add_argument\(\s*"--retriever",\s*default="(\w+)"',
+            src,
+        )
+        assert m, f"{f}: --retriever flag with default not found"
+        assert m.group(1) == "hybrid", \
+            f"{f}: default retriever should be 'hybrid', got {m.group(1)!r}"

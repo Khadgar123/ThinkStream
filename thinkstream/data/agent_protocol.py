@@ -114,12 +114,13 @@ def format_memory_block(memory: Dict) -> str:
     return "\n".join(parts)
 
 
-# v9.4.2: eval-side caps. Default values match SFT distribution P95 and
-# fit comfortably in model_max_length=16384. The "32k" eval profile
-# (scripts/eval/eval_profiles.py) loosens these for Qwen3-VL's native
-# 32k context — see that file for per-profile budget calculation.
+# Eval-side caps. Aligned to SFT distribution upper bounds:
+#   - QUERIES_HISTORY_CAP=8 ≥ MAX_QUESTIONS_PER_TRAJECTORY=6 (no trim in dist)
+#   - RECALL_TEXT_MAX_CHARS=1600 ≈ 4 × THINK_TOKENS.max(100 tok × ~4 char)
+# Both are upper-bound guards; SFT samples never hit them.
+# The "32k" eval profile (scripts/eval/eval_profiles.py) loosens further.
 QUERIES_HISTORY_CAP = 8
-RECALL_TEXT_MAX_CHARS = 800
+RECALL_TEXT_MAX_CHARS = 1600
 
 
 def format_queries_block(queries: List[Dict]) -> str:

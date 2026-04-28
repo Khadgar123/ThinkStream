@@ -783,7 +783,8 @@ async def run_pipeline(
         video_path = v_info.get("video_path", "")
         vid_cards = {c["card_id"]: c for c in cards_map.get(vid, [])}
         rendered = render_video_samples(
-            vid_samples, rollout_map[vid], video_path, vid, vid_cards)
+            vid_samples, rollout_map[vid], video_path, vid, vid_cards,
+            all_frame_paths=video_frames.get(vid, []))
         rendered_samples.extend(rendered)
 
     logger.info(f"Rendered {len(rendered_samples)} samples from {len(raw_by_vid)} videos")

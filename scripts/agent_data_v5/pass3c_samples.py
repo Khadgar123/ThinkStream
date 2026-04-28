@@ -90,14 +90,32 @@ Requirements:
 {dedup_instruction}
 Output the response text only:"""
 
-RECALL_QUERY_PROMPT = """Generate a retrieval query for this scenario:
+RECALL_QUERY_PROMPT_WITH_RANGE = """Generate a retrieval query for this scenario:
+- Question: "{question}"
+- Visible memory context: {visible_context}
+
+Generate 3-5 discriminative keywords to locate the relevant past observation.
+NO answer values, NO pronouns. Include entity descriptions + action anchors.
+The relevant past observation is around time {time_range} seconds.
+
+Output JSON: {{"query": "keyword1 keyword2 keyword3", "time_range": "{time_range}"}}"""
+
+RECALL_QUERY_PROMPT_KEYWORD_ONLY = """Generate a retrieval query for this scenario:
 - Question: "{question}"
 - Visible memory context: {visible_context}
 
 Generate 3-5 discriminative keywords to locate the relevant past observation.
 NO answer values, NO pronouns. Include entity descriptions + action anchors.
 
-Output JSON: {{"query": "keyword1 keyword2 keyword3", "time_range": "{time_range}"}}"""
+Output JSON: {{"query": "keyword1 keyword2 keyword3"}}"""
+
+# Mix ratio of with-time-range vs keyword-only recall queries in SFT.
+# Both schemas are valid at inference; the retriever falls back to the
+# full archive when time_range is absent. Training on both teaches the
+# model to use time_range when it has a confident estimate of when the
+# evidence occurred (typically true for the cards in v9.4) and to skip
+# it when uncertain.
+RECALL_TIME_RANGE_FRACTION = 0.7
 
 
 # v9.3: forms whose canonical_answer is ALREADY the exact eval-format answer.
@@ -220,17 +238,29 @@ async def _generate_response(card: Dict, snapshot: Dict, evidence: List[Dict],
     return raw or None
 
 
-async def _generate_recall_query(card: Dict, snapshot: Dict,
-                                  client, video_id: str, chunk_idx: int) -> Optional[Dict]:
-    """Generate recall query JSON via 397B."""
-    visible_parts = []
-    for seg in snapshot.get("compressed_segments", []):
-        visible_parts.append(f"[{seg['time_range']}] {seg['text'][:80]}")
-    for item in snapshot.get("recent_thinks", []):
-        visible_parts.append(f"[{item['time']}] {item.get('text', '')}")
-    visible_context = "\n".join(visible_parts[-10:]) or "(minimal)"
+def _compute_recall_time_range(
+    card: Dict, snapshot: Dict, slack_sec: int = 4,
+) -> str:
+    """Pick a tight time_range for a recall query.
 
-    all_times = []
+    Uses card.support_chunks (the gold evidence chunks) when available —
+    that's the only place we have ground-truth knowledge of where the
+    answer actually lives. Falls back to "0-max(visible)" when support
+    is missing (rare, mostly silent samples).
+
+    `slack_sec` of 4s on each side compensates for: (a) teacher
+    label imprecision, (b) the model's natural uncertainty about exact
+    boundaries, (c) chunk_sec=2s quantization — a 4s slack ≈ ±2 chunks.
+    Without slack the model would learn "predict exact range" which is
+    OOD vs how a human user phrases recall.
+    """
+    support = card.get("support_chunks") or []
+    if support:
+        t0 = max(0, min(support) * AGENT_CHUNK_SEC - slack_sec)
+        t1 = (max(support) + 1) * AGENT_CHUNK_SEC + slack_sec
+        return f"{int(t0)}-{int(t1)}"
+    # Fallback: full visible history (legacy v9.2 behaviour)
+    all_times: List[int] = []
     for seg in snapshot.get("compressed_segments", []):
         all_times.extend(seg["time_range"])
     for item in snapshot.get("recent_thinks", []):
@@ -239,13 +269,46 @@ async def _generate_recall_query(card: Dict, snapshot: Dict,
                 all_times.append(int(float(p)))
             except (ValueError, TypeError):
                 pass
-    time_range = f"0-{max(all_times)}" if all_times else "0-60"
+    return f"0-{max(all_times)}" if all_times else "0-60"
 
-    prompt = RECALL_QUERY_PROMPT.format(
-        question=card.get("question", ""),
-        visible_context=visible_context,
-        time_range=time_range,
-    )
+
+async def _generate_recall_query(card: Dict, snapshot: Dict,
+                                  client, video_id: str, chunk_idx: int) -> Optional[Dict]:
+    """Generate recall query JSON via 397B.
+
+    Two schemas are produced in mix RECALL_TIME_RANGE_FRACTION=0.7
+    (with_time_range) / 0.3 (keyword_only). Both are valid at inference —
+    the retriever uses time_range to pre-filter when present and falls
+    back to full archive when absent. Training on both teaches the model
+    to volunteer time_range only when confident.
+    """
+    visible_parts = []
+    for seg in snapshot.get("compressed_segments", []):
+        visible_parts.append(f"[{seg['time_range']}] {seg['text'][:80]}")
+    for item in snapshot.get("recent_thinks", []):
+        visible_parts.append(f"[{item['time']}] {item.get('text', '')}")
+    visible_context = "\n".join(visible_parts[-10:]) or "(minimal)"
+
+    time_range = _compute_recall_time_range(card, snapshot)
+    # Deterministic per-(video, chunk) split so re-runs of pass3c with
+    # the same video set produce the same schema choice — important for
+    # cache stability and reproducibility.
+    schema_seed = f"{video_id}_{chunk_idx}_{card.get('card_id', '')}"
+    use_time_range = (hash(schema_seed) % 100) < int(RECALL_TIME_RANGE_FRACTION * 100)
+
+    if use_time_range:
+        prompt = RECALL_QUERY_PROMPT_WITH_RANGE.format(
+            question=card.get("question", ""),
+            visible_context=visible_context,
+            time_range=time_range,
+        )
+        fallback = {"query": card.get("question", "")[:30], "time_range": time_range}
+    else:
+        prompt = RECALL_QUERY_PROMPT_KEYWORD_ONLY.format(
+            question=card.get("question", ""),
+            visible_context=visible_context,
+        )
+        fallback = {"query": card.get("question", "")[:30]}
 
     # Keep thinking — picking discriminative keywords requires reasoning,
     # and bad recall queries cause downstream recall failure at inference.
@@ -256,20 +319,29 @@ async def _generate_recall_query(card: Dict, snapshot: Dict,
         request_id=f"{video_id}_query_{chunk_idx}",
     )
     if not raw:
-        return {"query": card.get("question", "")[:30], "time_range": time_range}
+        return fallback
 
     raw = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip()
+    parsed = None
     try:
-        return json.loads(raw)
+        parsed = json.loads(raw)
     except (json.JSONDecodeError, ValueError):
         start = raw.find("{")
         end = raw.rfind("}")
         if start >= 0 and end > start:
             try:
-                return json.loads(raw[start:end + 1])
+                parsed = json.loads(raw[start:end + 1])
             except (json.JSONDecodeError, ValueError):
                 pass
-    return {"query": card.get("question", "")[:30], "time_range": time_range}
+    if parsed is None:
+        return fallback
+
+    # Enforce schema: keyword_only path must NOT carry time_range
+    # (otherwise both schemas collapse and the keyword_only training
+    # signal is lost).
+    if not use_time_range:
+        parsed.pop("time_range", None)
+    return parsed
 
 
 async def _generate_fork_think(

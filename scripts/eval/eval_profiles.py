@@ -84,9 +84,9 @@ EVAL_PROFILES: Dict[str, Dict] = {
         # Tokenizer / model
         "model_max_length": 16384,
         "max_new_tokens_default": 128,
-        # agent_protocol caps
+        # agent_protocol caps (aligned to SFT distribution upper bounds)
         "queries_history_cap": 8,
-        "recall_text_max_chars": 800,
+        "recall_text_max_chars": 1600,
         # For the comparison report
         "subtotal_tokens_estimate": 7408,
         "headroom_tokens_estimate": 8976,

@@ -646,7 +646,7 @@ def main():
                    help="Comma-separated subset (e.g., CRR,SSR,REC). Default: all 12.")
     p.add_argument("--n_per_task", type=int, default=None,
                    help="Cap samples per task (for quick smoke-tests)")
-    p.add_argument("--retriever", default="bm25", choices=["bm25", "hybrid"])
+    p.add_argument("--retriever", default="hybrid", choices=["bm25", "hybrid"])
     p.add_argument("--alpha", type=float, default=0.5)
     p.add_argument("--siglip_path", default="google/siglip-base-patch16-224")
     p.add_argument("--compress_mode", default="system", choices=["system", "self"])
