@@ -1029,6 +1029,21 @@ def test_streaming_eval_records_query_schema_and_compress_quality():
     assert "RECALL SCHEMA / COMPRESS QUALITY" in src
 
 
+def test_render_metadata_includes_gold_compress_chunks():
+    """Compress samples must carry metadata.gold_compress_chunks (the
+    teacher's chosen chunks for that compression event) so RL/eval can
+    score the model's summary time_range vs teacher's choice."""
+    src = (ROOT / "scripts" / "agent_data_v5" / "render_samples.py").read_text()
+    # The metadata dict must list gold_compress_chunks
+    meta_block = src[src.find("metadata = {"):src.find("# Build complete SFT sample")]
+    assert '"gold_compress_chunks":' in meta_block, \
+        "render_sample metadata must include gold_compress_chunks"
+    # And it must be populated from the compression_events lookup
+    assert "gold_compress_chunks: List[int]" in src or \
+           "gold_compress_chunks = sorted" in src, \
+        "gold_compress_chunks must be derived from compression_events"
+
+
 def test_make_retriever_accepts_agent_model():
     """make_retriever's signature exposes agent_model + agent_processor
     so the hybrid retriever can reuse Qwen3-VL's vision tower instead of

@@ -219,9 +219,11 @@ def render_sample(
     if rf is not None:
         inp["recalled_frames"] = rf
 
-    # For compress samples, add compress_trigger to user_input
+    # For compress samples, add compress_trigger to user_input AND
+    # remember the gold compressed-chunks set so RL/eval can score the
+    # model's <summary> time_range against teacher's choice.
+    gold_compress_chunks: List[int] = []
     if sample.get("action") == "compress":
-        # Find the compression event for this chunk
         for event in rollout.get("compression_events", []):
             if event.get("trigger_chunk") == chunk_idx:
                 cr = event.get("compressed_thinks_chunks", [])
@@ -229,6 +231,7 @@ def render_sample(
                     time_start = min(cr) * AGENT_CHUNK_SEC
                     time_end = (max(cr) + 1) * AGENT_CHUNK_SEC
                     inp["user_input"] = f'<compress_trigger range="{time_start}-{time_end}"/>'
+                    gold_compress_chunks = sorted(int(c) for c in cr)
                 break
 
     # Build metadata for RL reward computation.
@@ -257,6 +260,10 @@ def render_sample(
         "family": card.get("family", ""),
         "availability": sample.get("sequence_type", ""),
         "support_chunks": card.get("support_chunks", []),
+        # Gold compressed-chunks (for compress samples) — empty list for
+        # non-compress samples. Used by streaming-eval / RL to score
+        # the model's <summary> time_range vs teacher's policy choice.
+        "gold_compress_chunks": gold_compress_chunks,
     }
 
     # Build complete SFT sample
