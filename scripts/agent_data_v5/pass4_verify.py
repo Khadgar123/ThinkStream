@@ -722,6 +722,42 @@ def verify_base_sample_consistency(sample: Dict) -> Tuple[bool, str]:
     return True, "pass"
 
 
+def verify_support_chunks_have_evidence(sample: Dict,
+                                          evidence: Optional[List[Dict]] = None) -> Tuple[bool, str]:
+    """Check 14b (v9.5): support_chunks must reference 1-A chunks that
+    actually contain evidence.
+
+    Catches the case where pass3a picked silent-empty chunks (parse_success
+    True but all fields empty under pre-v9.5 contract) as support. Such
+    cards are unanswerable by definition — the chunks have no signal —
+    and would teach the student to hallucinate.
+
+    No-op when `evidence` is not threaded through (the existing
+    filter_samples API doesn't pass it; pipeline.py adds the rich check
+    where evidence is available).
+    """
+    if evidence is None:
+        return True, "pass"
+    metadata = sample.get("metadata", {})
+    support_chunks = metadata.get("support_chunks") or []
+    if not support_chunks:
+        return True, "pass"
+    ev_by_idx = {cap.get("chunk_idx", -1): cap for cap in evidence}
+    empty_supports = []
+    for sc in support_chunks:
+        cap = ev_by_idx.get(sc)
+        if cap is None:
+            continue  # missing — likely a different bug, don't double-count
+        has_ev = bool(cap.get("visible_entities") or cap.get("atomic_facts")
+                      or cap.get("ocr")
+                      or (cap.get("spatial") and str(cap.get("spatial")).strip()))
+        if not has_ev:
+            empty_supports.append(sc)
+    if empty_supports:
+        return False, f"support_chunks_empty_evidence: {empty_supports}"
+    return True, "pass"
+
+
 def verify_recall_evidence_reachable(sample: Dict, rollout: Dict = None) -> Tuple[bool, str]:
     """Check 14: For recall samples, the evidence chunk exists before ask_chunk.
 

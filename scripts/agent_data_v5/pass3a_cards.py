@@ -35,16 +35,20 @@ logger = logging.getLogger(__name__)
 #       Layer-0/1 perceptual families don't — specifically targeting OVO
 #       CRR/ASI/SSR/EPM tasks where batch1 had near-zero coverage.
 FAMILY_TARGETS = {
-    "F1": 3, "F2": 4, "F3": 2, "F4": 2,
-    "E1": 3, "E2": 2, "P1": 2, "C1": 2,
-    "R1": 1, "S1": 2, "M1": 2,
-    "F5": 3,  # repetition counting (OVO REC) — was 2
-    "F6": 3,  # future prediction (OVO FPD) — was 2
-    "N1": 2,  # hallucination detection (OVO HLD) — MC since v9.3
-    "CR1": 2, # causal why (state_change → cause attribution) — v9.4
-    "CR2": 2, # temporal ordering (3 distinguishable events) — v9.4
-    "CR3": 1, # goal / intent inference — v9.4
-    "CR4": 2, # compositional multi-observation (AND/OR) — v9.4
+    # v9.5: trimmed from sum=38 → sum=28 (post-verify mean drops from
+    # ~21.6 to ~15-16 cards/video). Reduces pass3a verify calls by ~30%
+    # and pass3c sample calls similarly. Distribution kept proportional;
+    # OVO-critical families (F5/F6/N1/CR1-4 = force-attempt) untouched.
+    "F1": 2, "F2": 3, "F3": 2, "F4": 2,
+    "E1": 2, "E2": 2, "P1": 2, "C1": 2,
+    "R1": 1, "S1": 2, "M1": 1,
+    "F5": 2,  # repetition counting (OVO REC) — force-attempt family
+    "F6": 2,  # future prediction (OVO FPD) — force-attempt
+    "N1": 2,  # hallucination detection (OVO HLD) — force-attempt
+    "CR1": 2, # causal why (state_change → cause attribution)
+    "CR2": 2, # temporal ordering (3 distinguishable events)
+    "CR3": 1, # goal / intent inference
+    "CR4": 2, # compositional multi-observation (AND/OR)
 }
 
 # Families that MUST be attempted on every video, even when classify_chunks
@@ -564,13 +568,32 @@ def _get_primary_action(cap: Dict) -> str:
     return ""
 
 
+def chunk_has_evidence(cap: Dict) -> bool:
+    """Whether a 1-A chunk has any usable signal for question generation.
+
+    A chunk passes iff at least one of (visible_entities, atomic_facts,
+    ocr, spatial) is non-empty. Silent-empty chunks (json-valid but all
+    fields empty — 46% of pre-v9.5 batch1) are filtered out so they
+    don't get mistakenly chosen as support_chunks.
+    """
+    return bool(cap.get("visible_entities") or cap.get("atomic_facts")
+                or cap.get("ocr")
+                or (cap.get("spatial") and str(cap.get("spatial")).strip()))
+
+
 def classify_chunks(evidence: List[Dict]) -> Dict[str, List[int]]:
     """Classify chunks by family using structural fields.
 
     Primary path: 1-A direct fields (ocr, visible_entities, atomic_facts).
     Fallback path for P1/C1/R1: 1-A action/desc fields when 1-B fields
     (state_changes, entity_id) are missing, to reduce false negatives.
+
+    v9.5: silent-empty chunks (parse_success=False or _silent_empty=True
+    or all evidence fields empty) are pre-filtered. Without this, ~46% of
+    batch1 chunks looked "selectable" but contributed no signal — pass3a
+    would pick them as support, then pass4 would later reject the cards.
     """
+    evidence = [cap for cap in evidence if chunk_has_evidence(cap)]
     fc = {f: [] for f in FAMILY_TARGETS}
 
     for cap in evidence:

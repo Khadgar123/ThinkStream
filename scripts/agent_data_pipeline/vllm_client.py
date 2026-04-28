@@ -106,6 +106,43 @@ class VLLMClient:
             )
         return self._client
 
+    async def _get_httpx_client(self):
+        """httpx client used for raw-body POST when SDK extra_body merging
+        doesn't reach vLLM (verified failure mode for chat_template_kwargs
+        on the 397B server: SDK extra_body silently ignored, raw body
+        with chat_template_kwargs at top level works)."""
+        if not hasattr(self, "_httpx_client") or self._httpx_client is None:
+            import httpx
+            self._httpx_client = httpx.AsyncClient(
+                base_url=self.api_base, timeout=self.timeout,
+                headers={"Authorization": f"Bearer {self.api_key}"},
+            )
+        return self._httpx_client
+
+    async def _call_one_raw(
+        self, messages, max_tokens, temperature, request_id, enable_thinking,
+    ):
+        """Raw POST path — bypasses OpenAI SDK so chat_template_kwargs
+        actually reaches vLLM. Returns (content_str_or_None, prompt_tokens,
+        completion_tokens). Used only when enable_thinking is non-None,
+        because SDK is fine for the rest.
+        """
+        body = {
+            "model": self.model,
+            "messages": messages,
+            "max_tokens": max_tokens,
+            "temperature": temperature,
+        }
+        if enable_thinking is not None:
+            body["chat_template_kwargs"] = {"enable_thinking": bool(enable_thinking)}
+        client = await self._get_httpx_client()
+        resp = await client.post("/chat/completions", json=body)
+        resp.raise_for_status()
+        data = resp.json()
+        content = data["choices"][0]["message"]["content"]
+        usage = data.get("usage") or {}
+        return content, usage.get("prompt_tokens", 0), usage.get("completion_tokens", 0)
+
     async def _call_one(
         self,
         messages: List[Dict],
@@ -118,18 +155,45 @@ class VLLMClient:
         """Make a single API call with semaphore-controlled concurrency and retry.
 
         Args:
-            enable_thinking: when False, ask vLLM (with --enable-reasoning) to
-              skip the reasoning phase via Qwen3 chat-template kwargs. This
-              cuts a 16K-token reasoning budget down to actual content tokens
-              and prevents the 30-min timeout cascade we hit on pass3c.
-              None = leave server default; True = force on; False = force off.
+            enable_thinking: when False, ask vLLM to skip the reasoning
+              phase via Qwen3 chat-template kwargs (`<think></think>`
+              empty placeholder injected by the chat template).
+              v9.5: routes through raw httpx POST (not the OpenAI SDK)
+              because the SDK's `extra_body` is silently dropped on the
+              397B server — verified curl-vs-SDK A/B by user. SDK path
+              kept for `enable_thinking is None` (no-op = server default).
         """
-        # Build extra_body for per-request reasoning control
-        extra_body = None
+        # When the caller explicitly toggles thinking, take the raw POST
+        # path so chat_template_kwargs lands at request-body top level.
         if enable_thinking is not None:
-            extra_body = {
-                "chat_template_kwargs": {"enable_thinking": bool(enable_thinking)}
-            }
+            async with self.semaphore:
+                for attempt in range(max_retries):
+                    try:
+                        result, ptok, ctok = await self._call_one_raw(
+                            messages, max_tokens, temperature, request_id,
+                            enable_thinking,
+                        )
+                        self.stats.completed += 1
+                        self.stats.total_input_tokens += ptok
+                        self.stats.total_output_tokens += ctok
+                        if self.stats.completed % 50 == 0:
+                            logger.info(
+                                "Progress: %d/%d completed (%.1f req/s, %.1f tok/s)",
+                                self.stats.completed, self.stats.total,
+                                self.stats.throughput_rps, self.stats.throughput_tps,
+                            )
+                        return result
+                    except Exception as e:
+                        logger.warning(
+                            "raw-call attempt %d failed [%s]: %s",
+                            attempt + 1, request_id, e,
+                        )
+                        if attempt >= max_retries - 1:
+                            self.stats.failed += 1
+                            self.stats.errors.append(f"{request_id}: {e}")
+                            return None
+                        await asyncio.sleep(min(2 ** attempt, 30))
+                return None
 
         async with self.semaphore:
             client = await self._get_client()
@@ -141,8 +205,6 @@ class VLLMClient:
                         max_tokens=max_tokens,
                         temperature=temperature,
                     )
-                    if extra_body is not None:
-                        create_kwargs["extra_body"] = extra_body
                     response = await client.chat.completions.create(**create_kwargs)
                     result = response.choices[0].message.content
                     usage = response.usage

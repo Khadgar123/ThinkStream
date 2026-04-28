@@ -55,7 +55,19 @@ def build_evidence_request(
 
 
 def parse_evidence_result(raw: Optional[str], meta: Dict) -> Dict:
-    """Parse 397B evidence output. No state_changes expected (comes from 1-B)."""
+    """Parse 397B evidence output. No state_changes expected (comes from 1-B).
+
+    parse_success contract (v9.5):
+      - True  iff JSON parsed AND at least one of
+              (visible_entities, atomic_facts, ocr, spatial) is non-empty
+      - False otherwise (raw retained as _raw for retry / debug)
+
+    Old code (pre-v9.5) treated any json-decodable string as success even when
+    every field was empty. Audit on batch1 showed 46.4% of chunks were
+    silent-empty under that contract — videos with rich visible content but
+    the model returned `{"time":[t,t]}` and nothing else. The strict
+    contract here lets `run_pass1a` detect those and retry.
+    """
     default = {
         "time": meta["time"],
         "visible_entities": [],
@@ -99,24 +111,41 @@ def parse_evidence_result(raw: Optional[str], meta: Dict) -> Dict:
 
     raw_facts = parsed.get("atomic_facts", [])
     raw_entities = parsed.get("visible_entities", [])
+    ocr = parsed.get("ocr", []) or []
+    spatial = parsed.get("spatial", "") or ""
 
+    # Empty-content guard: a JSON-valid but content-empty response is a
+    # silent failure (~46% baseline). Mark it so the retry path can pick it
+    # up; keep _raw so we can post-mortem the failure mode.
+    has_content = bool(raw_entities or raw_facts or ocr or
+                       (isinstance(spatial, str) and spatial.strip()))
     return {
         "time": parsed.get("time", meta["time"]),
         "visible_entities": [_normalize_entity(e) for e in raw_entities],
         "atomic_facts": [_normalize_atomic_fact(f) for f in raw_facts],
-        "ocr": parsed.get("ocr", []),
-        "spatial": parsed.get("spatial", ""),
-        "parse_success": True,
+        "ocr": ocr,
+        "spatial": spatial,
+        "parse_success": has_content,
+        **({} if has_content else {"_raw": raw[:4000], "_silent_empty": True}),
     }
 
 
 def _normalize_atomic_fact(fact) -> dict:
+    """v9.5: prompt now emits atomic_facts as list[str]. Old prompts emitted
+    list[dict] with confidence/target_resolution_visible. Normalize either
+    shape to the dict form so downstream pass3 code (which reads
+    cap['atomic_facts'][i]['fact']) keeps working without churn.
+
+    Confidence is set to 1.0 for backward-compat with pass3a's
+    `confidence >= 0.7` filter (which is now effectively a no-op since the
+    new prompt drops the field — 99.7% of v9.4 facts already had >=0.7).
+    """
     if isinstance(fact, str):
-        return {"fact": fact, "confidence": 0.5, "target_resolution_visible": False, "parse_repaired": True}
+        return {"fact": fact, "confidence": 1.0}
     if not isinstance(fact, dict):
-        return {"fact": str(fact), "confidence": 0.0, "target_resolution_visible": False, "parse_repaired": True}
-    fact.setdefault("confidence", 0.5)
-    fact.setdefault("target_resolution_visible", True)
+        return {"fact": str(fact), "confidence": 0.0, "parse_repaired": True}
+    # Legacy dict shape — keep its confidence if present
+    fact.setdefault("confidence", 1.0)
     return fact
 
 
@@ -143,26 +172,58 @@ async def run_pass1a(
     client,
     semaphore: Optional[asyncio.Semaphore] = None,
 ) -> List[Dict]:
-    """Annotate all chunks in parallel. Returns sorted captions list."""
+    """Annotate all chunks in parallel. Returns sorted captions list.
+
+    Retry policy (v9.5): silent-empty responses (json-valid but no
+    entities/facts/ocr/spatial) are retried once at higher temperature
+    (0.7) to break the deterministic "model decided nothing was worth
+    reporting" failure mode. Audit on batch1 showed ~46% of chunks
+    failed silently under temperature=0.3 + thinking=True; the retry
+    path recovers most of them with no concurrency impact (the retry
+    re-uses the same client semaphore).
+    """
+
+    # v9.5: enable_thinking=False routes through raw httpx so the
+    # chat_template_kwargs actually reaches vLLM (SDK extra_body is
+    # dropped on this server — see vllm_client._call_one_raw).
+    enable_thinking = bool(PASS_CONFIG["pass1a"].get("thinking", True))
+
+    async def _call(messages, max_tokens, temperature, request_id):
+        if semaphore:
+            async with semaphore:
+                return await client._call_one(
+                    messages=messages, max_tokens=max_tokens,
+                    temperature=temperature, request_id=request_id,
+                    enable_thinking=enable_thinking,
+                )
+        return await client._call_one(
+            messages=messages, max_tokens=max_tokens,
+            temperature=temperature, request_id=request_id,
+            enable_thinking=enable_thinking,
+        )
 
     async def annotate_chunk(chunk_idx):
         request = build_evidence_request(chunk_idx, frame_paths, video_id)
-        if semaphore:
-            async with semaphore:
-                result = await client._call_one(
-                    messages=request["messages"],
-                    max_tokens=request["max_tokens"],
-                    temperature=request["temperature"],
-                    request_id=request["id"],
-                )
-        else:
-            result = await client._call_one(
-                messages=request["messages"],
-                max_tokens=request["max_tokens"],
-                temperature=request["temperature"],
-                request_id=request["id"],
-            )
+        result = await _call(
+            request["messages"], request["max_tokens"],
+            request["temperature"], request["id"],
+        )
         caption = parse_evidence_result(result, request["_meta"])
+
+        # Retry once if silent-empty. Higher temperature breaks the
+        # deterministic "I see nothing worth reporting" path.
+        if caption.get("_silent_empty") or not caption.get("parse_success"):
+            retry_result = await _call(
+                request["messages"], request["max_tokens"],
+                0.7, f'{request["id"]}_retry',
+            )
+            retry_caption = parse_evidence_result(retry_result, request["_meta"])
+            if retry_caption.get("parse_success"):
+                caption = retry_caption
+            else:
+                # Both attempts failed — keep flag for downstream to skip
+                caption["_retry_failed"] = True
+
         caption["chunk_idx"] = chunk_idx
         caption["video_id"] = video_id
         return caption

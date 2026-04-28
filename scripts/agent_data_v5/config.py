@@ -202,9 +202,15 @@ PASS_CONFIG = {
     # on pass3c — same reasoning applies pass-wide. Client timeout is
     # 5400s (90min) per VLLMClient default; do NOT shorten.
     "pass1a": {
-        "max_tokens": 16384,
+        # v9.5: thinking=False. Audit on batch1 showed thinking=True burned
+        # 50%+ of generation time on reasoning_content but the final JSON
+        # was either silent-empty (46.4%) or the same content thinking=False
+        # would produce in 1/2 the time. The retry-on-silent path
+        # (run_pass1a) recovers any quality loss; the strict-parse contract
+        # (parse_evidence_result) catches what the retry can't.
+        "max_tokens": 8192,    # was 16384 — no thinking budget needed now
         "temperature": 0.3,
-        "thinking": True,
+        "thinking": False,
         "concurrent": 64,     # vision pass, chunk-level (2 frames/req)
                               # lowered from 256 to avoid httpx connection-pool
                               # exhaustion (default 100 conn) + CLOSE_WAIT deadlocks
@@ -348,18 +354,52 @@ Based on the frames above, output a STRICT JSON object:
 {{
   "time": [{start}, {end}],
   "visible_entities": [
-    {{"desc": "appearance description (clothing/color/material/size)", "action": "what doing", "position": "where in frame"}}
+    {{"desc": "fine-grained appearance", "action": "verb phrase or 'static'", "position": "left/center/right/top/bottom/foreground/background"}}
   ],
-  "atomic_facts": [
-    {{
-      "fact": "precise observable statement",
-      "confidence": 0.0-1.0,
-      "target_resolution_visible": true
-    }}
-  ],
+  "atomic_facts": ["precise observable statement", ...],
   "ocr": ["exact text if visible"],
-  "spatial": "brief spatial layout description"
+  "spatial": "spatial relations between entities, sentence-form"
 }}
+
+CRITICAL — minimum output requirement:
+- The frames above almost always contain SOMETHING describable: a person,
+  an object being manipulated, a setting, on-screen text, a tool, food, etc.
+- visible_entities MUST have ≥1 element AND atomic_facts MUST have ≥1 element,
+  even if the scene is dim/blurry/transition. The only exception is a fully
+  black or fully white frame.
+- Empty arrays mean "I gave up" — not allowed.
+
+visible_entities[].desc — FINE-GRAINED (downstream questions ask 'What style of
+  tattoo / what pattern on shorts / what material for the wing'). Include ALL
+  observable attributes:
+  - For people: clothing color + clothing pattern + hair + skin + accessories
+    (e.g., "person with long blonde hair, white sleeveless top with floral
+    pattern, blue jeans")
+  - For objects: color + material/texture + pattern/style + size + condition
+    (e.g., "wooden stick, smooth, light-brown, ~30cm long")
+  - For text/graphics: font/style + color + content
+  - For animals: species + color/markings + size
+
+visible_entities[].action — MUST be non-empty:
+  - moving entities: verb phrase ("picking up wrench", "walking left")
+  - static entities: literally "static"
+
+atomic_facts — list of strings (NO confidence/target_resolution fields):
+  - ≥1 fact must be ACTION-TYPE ("person opens the box", "the dog runs to
+    the door"), not only state descriptions
+  - state-type facts also welcome ("box is on the table")
+  - include OCR-derived facts when text presents key info ("the price tag
+    reads $14.99")
+
+ocr — array of EXACT text strings as they appear, preserving case/punctuation.
+
+spatial — write 1-3 SENTENCES describing inter-entity relations using these
+  prepositions: left of / right of / above / below / in front of / behind /
+  on / under / inside / holding / near / next to. Example:
+  "Person is to the right of the bird cage. The cage is on a wooden table.
+  The 'CALL ON ME' note is above the 'I'm here for you' note."
+  This sentence-form replaces structured spatial_relations to keep schema simple
+  and LLM output stable.
 
 Rules:
 - Only describe what is VISIBLE in these frames (no comparison to other clips)
@@ -368,20 +408,6 @@ Rules:
   matches (e.g., "the man in the black polo shirt") so downstream entity
   linking can match by string. Do not paraphrase the same entity differently.
 - Do NOT include sounds, smells, emotions, or inferred intentions
-
-confidence calibration (CRITICAL — do not default to 1.0):
-- 0.95-1.0: clear, sharp, central-frame observation, full duration
-- 0.80-0.94: clear but partial occlusion, off-center, or brief duration
-- 0.60-0.79: small detail, motion blur, or only one frame shows it
-- 0.40-0.59: low-resolution detail, fast camera motion, edge of frame
-- < 0.40: borderline visible, you would not bet on it
-About 30-50% of facts in a typical clip should fall below 0.95. If every fact
-you list is 1.0, you are over-claiming.
-
-target_resolution_visible:
-- false when the detail (text under ~12px, fine pattern, distant object)
-  would be unreadable for a student model at standard training resolution
-- aim for ~10-30% of facts marked false in a typical clip — not 0%
 
 Output JSON only:"""
 
