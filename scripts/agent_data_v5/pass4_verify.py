@@ -857,8 +857,14 @@ def label_difficulty(sample: Dict) -> str:
 # ---------------------------------------------------------------------------
 
 
-def verify_sample(sample: Dict) -> Dict:
-    """Run all 14 checks on a single sample."""
+def verify_sample(sample: Dict, evidence: Optional[List[Dict]] = None) -> Dict:
+    """Run all 15 checks on a single sample.
+
+    `evidence` is the per-video 1-A/1-B caption list. When supplied,
+    `verify_support_chunks_have_evidence` (v9.5) actually runs and
+    rejects cards whose support_chunks point to silent-empty 1-A
+    chunks. When None (legacy callers), that check is a no-op.
+    """
     checks = {}
 
     for name, func in [
@@ -880,6 +886,10 @@ def verify_sample(sample: Dict) -> Dict:
         passed, reason = func(sample)
         checks[name] = {"passed": passed, "reason": reason}
 
+    # v9.5 — only fires when evidence is threaded in
+    passed, reason = verify_support_chunks_have_evidence(sample, evidence)
+    checks["support_chunks_have_evidence"] = {"passed": passed, "reason": reason}
+
     difficulty = label_difficulty(sample)
     all_passed = all(c["passed"] for c in checks.values())
 
@@ -897,14 +907,18 @@ def verify_sample(sample: Dict) -> Dict:
 
 def verify_trajectory(
     trajectory_samples: List[Dict],
+    evidence: Optional[List[Dict]] = None,
 ) -> Tuple[List[Dict], Dict]:
     """Verify all samples in a trajectory + trajectory-level checks.
 
     Returns (verified_samples, trajectory_stats).
+
+    `evidence` is the per-video 1-A/1-B captions (passed through to
+    verify_sample for v9.5's support_chunks_have_evidence check).
     """
     # Per-sample checks
     for sample in trajectory_samples:
-        verify_sample(sample)
+        verify_sample(sample, evidence=evidence)
 
     # Trajectory-level check 12: if trajectory distribution is invalid,
     # drop the ENTIRE trajectory (not just individual samples)
@@ -949,14 +963,23 @@ def verify_trajectory(
     return passed, stats
 
 
-def filter_samples(samples: List[Dict]) -> Tuple[List[Dict], Dict]:
+def filter_samples(
+    samples: List[Dict],
+    evidence_map: Optional[Dict[str, List[Dict]]] = None,
+) -> Tuple[List[Dict], Dict]:
     """Filter all samples through verification.
 
     Groups by trajectory_id, runs per-trajectory checks,
     then aggregates stats.
 
+    `evidence_map` maps video_id → 1-A/1-B caption list. When supplied,
+    the v9.5 support_chunks_have_evidence check fires and rejects cards
+    whose support_chunks reference silent-empty 1-A chunks. Legacy
+    callers without evidence_map see that check as no-op (pass).
+
     Returns: (passed_samples, aggregate_stats)
     """
+    evidence_map = evidence_map or {}
     # Normalize messages-format if needed
     for sample in samples:
         if "output" not in sample:
@@ -987,7 +1010,9 @@ def filter_samples(samples: List[Dict]) -> Tuple[List[Dict], Dict]:
     all_stats = []
 
     for (vid, tid), traj_samples in by_traj.items():
-        passed, stats = verify_trajectory(traj_samples)
+        passed, stats = verify_trajectory(
+            traj_samples, evidence=evidence_map.get(vid),
+        )
         stats["video_id"] = vid
         all_passed.extend(passed)
         all_stats.append(stats)

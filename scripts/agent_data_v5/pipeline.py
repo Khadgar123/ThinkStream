@@ -798,7 +798,10 @@ async def run_pipeline(
     logger.info("PASS 4: Verify + Filter (on rendered samples)")
     logger.info("=" * 60)
 
-    passed_samples, stats = filter_samples(rendered_samples)
+    # v9.5: pass evidence_map so verify_support_chunks_have_evidence fires
+    passed_samples, stats = filter_samples(
+        rendered_samples, evidence_map=evidence_map,
+    )
     logger.info(f"Verification: {stats['passed']}/{stats['total']} passed ({stats['pass_rate']:.1%})")
     logger.info(f"Fail reasons: {stats['fail_reasons']}")
     logger.info(f"Action dist: {stats['action_distribution']}")

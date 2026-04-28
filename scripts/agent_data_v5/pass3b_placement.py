@@ -285,6 +285,17 @@ def compute_placement(
 ) -> Optional[Dict]:
     """Compute behavior sequence blueprint (key_chunks)."""
     num_chunks = rollout["num_chunks"]
+
+    # v9.5 — CR7 (object permanence): force ask_chunk to resolve_chunk so
+    # the model has already seen pre-occlusion → occlusion → resolve before
+    # being asked "where is X now?". Default placement might pick ask_chunk
+    # before occlusion, making the question structurally unanswerable from
+    # what's been observed.
+    if card.get("family") == "CR7":
+        rc = card.get("resolve_chunk")
+        if isinstance(rc, int) and 0 <= rc < num_chunks:
+            ask_chunk = rc
+
     key_chunks = {"ask": ask_chunk}
 
     if sequence_type == "immediate_response":

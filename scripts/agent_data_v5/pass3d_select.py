@@ -66,11 +66,15 @@ FAMILY_TO_OVO: Dict[str, List[str]] = {
     "M1": ["ACR"],
     "F5": ["REC"],
     "F6": ["FPD"],
+    "F7": ["SSR"],            # v9.5 — step-progress binary multi-probe (primary OVO SSR alignment)
     "N1": ["HLD"],
     "CR1": ["CRR", "EPM"],   # causal why = clue-reveal; effect-after-cause = EPM
     "CR2": ["ASI", "SSR"],   # event ordering = action sequence inference
     "CR3": ["ASI"],          # goal/intent = high-level action sequence understanding
     "CR4": ["OJR", "CRR"],   # compositional AND/OR over observations
+    "CR5": ["CRR"],           # v9.5 — clue-delayed descriptive multi-probe (primary OVO CRR alignment)
+    "CR6": [],                # v9.5 — STAR-Feasibility, no OVO mapping (still scored by IFD/submodular)
+    "CR7": [],                # v9.5 — PerceptionTest object permanence, no OVO mapping
 }
 
 
