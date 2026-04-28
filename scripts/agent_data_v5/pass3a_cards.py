@@ -35,22 +35,46 @@ logger = logging.getLogger(__name__)
 #       Layer-0/1 perceptual families don't — specifically targeting OVO
 #       CRR/ASI/SSR/EPM tasks where batch1 had near-zero coverage.
 FAMILY_TARGETS = {
-    # v9.5: 22 families. Post-verify mean ~18-20 cards/video.
-    "F1": 2, "F2": 3, "F3": 2, "F4": 2,
-    "E1": 2, "E2": 2, "P1": 2, "C1": 2,
-    "R1": 1, "S1": 2, "M1": 1,
-    "F5": 2,  # repetition counting (OVO REC) — force-attempt
-    "F6": 2,  # future prediction (OVO FPD) — force-attempt
-    "F7": 2,  # step-progress binary multi-probe (OVO SSR) — force-attempt
-    "N1": 2,  # hallucination detection (OVO HLD) — force-attempt
-    "CR1": 2, # causal why (state_change → cause attribution)
-    "CR2": 2, # temporal ordering (3 distinguishable events)
-    "CR3": 1, # goal / intent inference
-    "CR4": 2, # compositional multi-observation (AND/OR)
-    "CR5": 2, # clue-delayed descriptive multi-probe (OVO CRR)
-    "CR6": 2, # feasibility / plausibility (STAR-Feas) — v9.5 new
-    "CR7": 2, # object permanence after occlusion (PerceptionTest) — v9.5 new
+    # v11.5: targets calibrated against OVOBench task frequencies (1640 samples,
+    # 12 tasks). Goal: STRICT SUPERSET of every OVO (task, form) combination
+    # while keeping per-video volume small enough to avoid overfitting on the
+    # 312-video batch1. Total ≈25 cards/video × 312 = ~7,800 cards.
+    #
+    # OVO ratios (sorted): EPM 18.1% / HLD 11.3% / OJR 11.2% / STU 10.9% /
+    # OCR 9.1% / ASI 9.0% / ATR 7.1% / ACR 6.6% / FPD 6.2% / REC 5.0% /
+    # CRR 2.9% / SSR 2.6%. Targets below mirror these proportions with each
+    # task served by ≥1 family that emits the right form.
+    #
+    # OCR (9.1%) → 2 cards
+    "F1": 2,
+    # ATR (7.1%) → 2 cards (F2 attribute-MC + S1 descriptive scene)
+    "F2": 1, "S1": 1,
+    # OJR (11.2%) → 3 cards (F3 number + R1 re-id + CR4 compositional)
+    "F3": 1, "R1": 1, "CR4": 1,
+    # STU (10.9%) → 2 cards
+    "F4": 2,
+    # ACR (6.6%) → 2 cards (E1 short MC + M1 full-video summary)
+    "E1": 1, "M1": 1,
+    # EPM (18.1%) → 4 cards (E2 event-watch with binary+MC mix +
+    #              C1 comparison + CR1 causal-why)
+    "E2": 2, "C1": 1, "CR1": 1,
+    # CRR (2.9%) → 2 cards (CR1 above shares; CR5 forces descriptive form)
+    "CR5": 1,
+    # ASI (9.0%) → 2 cards (P1 procedure + CR2 ordering)
+    "P1": 1, "CR2": 1,
+    # SSR (2.6%) → 1 card (F7 step-progress binary multi-probe)
+    "F7": 1,
+    # REC (5.0%) → 1 card (F5 repetition counting, open number)
+    "F5": 1,
+    # FPD (6.2%) → 1 card (F6 future prediction)
+    "F6": 1,
+    # HLD (11.3%) → 2 cards (N1 — multi-tier ask placement gives 6 placements)
+    "N1": 2,
+    # CR3/CR6/CR7 — kept at 1 each so teacher attempts; eligibility on batch1
+    # is sparse and these may yield zero on many videos (acceptable).
+    "CR3": 1, "CR6": 1, "CR7": 1,
 }
+# Total = 25 cards/video × 312 videos = 7,800 corpus pre-verify (vs old 41×312=12,792).
 
 # Families that MUST be attempted on every video, even when classify_chunks
 # returns zero chunks for them. v9.1 audit found F5=4 cards across 312 videos
@@ -63,6 +87,11 @@ FAMILY_TARGETS = {
 FAMILY_FORCE_ATTEMPT = {
     "F5", "F6", "F7", "N1", "F3", "E2", "S1",
     "CR1", "CR2", "CR3", "CR4", "CR5", "CR6", "CR7",
+    # v11.5: M1 (full-video summary) doesn't appear in classify_chunks output —
+    # it operates over the whole evidence regardless of per-chunk signals. Add
+    # to FORCE_ATTEMPT so every video gets exactly 1 M1 card (covers OVO ACR
+    # 6.6% bucket together with E1).
+    "M1",
 }
 
 # Retention class derived from family (not from 397B).
@@ -114,7 +143,7 @@ Output a JSON array. Each element MUST have exactly these fields:
 
 canonical_answer format rules (STRICT — these go directly into eval matching):
 - binary: exactly "Yes" or "No" (English, capitalized)
-- multiple_choice: exactly one letter "A", "B", "C", or "D" — nothing else
+- multiple_choice: exactly one letter — "A", "B", "C", "D", or "E" (when 5 options)
 - number: digits only, no units, no words (e.g. "3" not "3 times" not "three")
 - short_exact: 1-5 English words, no articles, lowercase unless a proper noun
 - descriptive: 1-3 sentences
@@ -124,15 +153,23 @@ Entity reference rules:
   NEVER by ID ("person_1") — the model cannot see IDs at inference time.
 
 Multiple-choice rules (MUST FOLLOW for any answer_form="multiple_choice"):
-- Embed all four options inline: "...question? A. <opt> B. <opt> C. <opt> D. <opt>"
-- The four options must be MUTUALLY EXCLUSIVE and SAME-TYPE (all colors, all
-  counts, all entities — never mix types).
-- Distractors (the 3 wrong options) MUST come from THIS video's evidence:
-  attributes/entities/actions visible in OTHER chunks. Never invent wording
-  the video does not reflect — the eval splits chunks per OVO and a fabricated
-  distractor that contradicts a non-target chunk leaks the answer.
-- Randomize the position of the correct answer across A/B/C/D — do NOT bias
-  toward A. Across one video's cards, all four positions should appear.
+- DEFAULT to 4 options (A/B/C/D). Use 3 options (A/B/C) ONLY when the video
+  yields exactly 2 plausible distractors — never invent a 4th. Use 2 options
+  (A/B) for forced-binary contrasts where the labels are NOT Yes/No (e.g.
+  "left/right", "before/after"). Use 5 options (A/B/C/D/E) ONLY when 4
+  plausible distractors exist and adding the 5th meaningfully tightens the
+  test — do not pad. v11.5: this matches OVOBench's mc2/mc3/mc4/mc5 spread
+  (predominantly mc4 ≥75% of the time; mc2/3/5 are minority but present).
+- Embed all options inline: "...question? A. <opt> B. <opt> ..." (no trailing
+  comma, no "etc.", no "and others").
+- Options must be MUTUALLY EXCLUSIVE and SAME-TYPE (all colors, all counts,
+  all entities — never mix types).
+- Distractors MUST come from THIS video's evidence: attributes / entities /
+  actions visible in OTHER chunks. Never invent wording the video does not
+  reflect — the eval splits chunks per OVO and a fabricated distractor that
+  contradicts a non-target chunk leaks the answer.
+- Randomize the position of the correct answer across the available letters
+  — do NOT bias toward A. Across one video's cards, all positions should appear.
 - canonical_answer is the LETTER only; do not include the option text."""
 
 # Per-family prompt templates
@@ -197,8 +234,13 @@ visibility_type: "transient" (actions change).
   "Is the bread already in the oven?" — answered "No" before the event chunk
   and "Yes" after. canonical_answer reflects the state AT support_chunks.
 - THE REST as multiple_choice (clue-reveal / CRR): "What just changed?" with
-  4 options drawn from state_changes across this video; correct option = the
+  options drawn from state_changes across this video; correct option = the
   state_change at support_chunks.
+- Default 4 options. Allowed variants when natural: 3 options (only 2 plausible
+  distractors from this video's other state_changes), 5 options (4 strong
+  distractors), or 2 options A/B (forced contrast e.g. "before X / after X" —
+  these are NOT Yes/No, so they stay multiple_choice not binary). v11.5: this
+  matches OVO EPM mc2/mc3/mc4/mc5 spread.
 canonical_answer for MC is the LETTER.
 visibility_type: "transient".
 
@@ -331,13 +373,18 @@ OVO HLD format (verified against ovo_bench_new.json: 186/186 samples):
 - The QUESTION asks about something the agent CANNOT actually answer from
   the visible evidence (the asked-about entity / action / state is NOT
   shown in any chunk above).
-- The four MC options consist of:
-    * THREE plausible-but-absent answers (entities / actions / attributes
-      that match the video genre but DO NOT appear in the evidence above).
-    * ONE option that is literally the string "Unable to answer".
-- The CORRECT answer is "Unable to answer" — the agent must recognize
-  that the question is unanswerable from the observed video and refuse.
-- canonical_answer: the LETTER (A/B/C/D) pointing to "Unable to answer".
+- Options structure (mirror OVO HLD distribution: 80% mc4 / 10% mc3 /
+  7.5% mc2 / 2.7% mc5):
+    * The MAJORITY of cards: 4 options = 3 plausible-but-absent + 1 "Unable
+      to answer".
+    * Some cards: 3 options = 2 plausible-but-absent + 1 "Unable to answer"
+      (use when only 2 strong distractors are available — never pad weak ones).
+    * Occasional cards: 2 options = 1 plausible-but-absent + 1 "Unable to
+      answer" (a forced binary; use when only 1 strong distractor exists).
+    * Rare cards: 5 options = 4 plausible-but-absent + 1 "Unable to answer"
+      (only when 4 strong distractors exist).
+- The CORRECT answer is ALWAYS "Unable to answer".
+- canonical_answer: the LETTER pointing to "Unable to answer".
 
 Examples (OVO real samples):
   Q: "Where was the tray before I removed it from the oven?"

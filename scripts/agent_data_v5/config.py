@@ -107,9 +107,15 @@ MAX_CANDIDATES_PER_VIDEO = {
 }
 
 # Per-video FINAL sample cap (applied after render).
-MAX_SAMPLES_PER_VIDEO = 50
+# v11.5: 50 → 30 for batch1 (312 videos). With FAMILY_TARGETS now ≈25 cards/video
+# and 3 placements/card max, capping at 30 forces submodular selection to keep
+# the most diverse 30 — prevents same-video near-duplicates from dominating
+# loss on a small batch and reduces overfit risk.
+MAX_SAMPLES_PER_VIDEO = 30
 # Hard caps for trajectory planning
-MAX_TRAJECTORIES_PER_VIDEO = 15     # 240s videos (~120 chunks) need 12+ to keep //12 rule
+# v11.5: 15 → 10. Small batch1 needs fewer trajectories per video so corpus-
+# level diversity (across the 312 videos) wins over within-video repetition.
+MAX_TRAJECTORIES_PER_VIDEO = 10
 MAX_QUESTIONS_PER_TRAJECTORY = 6    # beyond this queries_state gets too long
 MAX_ACTIVE_QUERIES = 2              # max unanswered questions at any time
 

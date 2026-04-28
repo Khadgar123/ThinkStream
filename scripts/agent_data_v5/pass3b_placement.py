@@ -220,6 +220,148 @@ async def _check_visibility_one(
 
 
 # ---------------------------------------------------------------------------
+# Closed-Book Leakage Filter (cert-length, EgoSchema-style)
+# ---------------------------------------------------------------------------
+#
+# A card "leaks" when a teacher with no video access can still produce the
+# canonical answer from question wording alone — e.g. an MC where 3 distractors
+# are implausible, a question that contains its own answer ("how many tires
+# does the 4-wheel cart have?"), or a common-sense factoid. These leaked cards
+# train the student to ignore the video and pattern-match on text, so we drop
+# them before trajectory planning.
+#
+# Skipped for descriptive cards: gold answers there are sentences, not labels,
+# and a closed-book attempt is too noisy to drive a reliable drop signal.
+
+CLOSED_BOOK_LEAK_PROMPT = """You CANNOT see any video, image, or context. Try to answer the question below using ONLY the question wording itself (and any options it contains). Do not guess; if the wording does not let you decide, output "UNKNOWN".
+
+Question: {question}
+
+Output JSON only: {{"answer": "..."}}
+- multiple_choice: output ONE letter (A/B/C/D)
+- binary: output exactly "Yes" or "No"
+- number: digits only, no words, no units
+- short_exact: 1-3 words, lowercase
+- if you cannot decide from the wording: output "UNKNOWN"
+"""
+
+
+def _extract_closed_book_pred(raw: str) -> str:
+    raw = re.sub(r"<think>.*?</think>", "", raw, flags=re.DOTALL).strip()
+    s = raw.removeprefix("```json").removeprefix("```").strip()
+    s = s.removesuffix("```").strip()
+    try:
+        d = json.loads(s)
+        return str(d.get("answer", "")).strip()
+    except (json.JSONDecodeError, ValueError):
+        pass
+    m = re.search(r'"answer"\s*:\s*"([^"]*)"', raw)
+    if m:
+        return m.group(1).strip()
+    return ""
+
+
+def _matches_canonical(pred: str, gold: str, form: str) -> bool:
+    """Form-aware exact-match. Conservative: descriptive always returns False
+    (handled at caller), and partial/UNKNOWN never matches."""
+    if not pred or not gold or pred.strip().upper() == "UNKNOWN":
+        return False
+    p, g = pred.strip(), gold.strip()
+    if form == "multiple_choice":
+        return bool(p) and bool(g) and p[:1].upper() == g[:1].upper()
+    if form == "binary":
+        return p.lower() == g.lower() and p.lower() in ("yes", "no")
+    if form == "number":
+        pd = re.sub(r"\D", "", p)
+        gd = re.sub(r"\D", "", g)
+        return bool(pd) and pd == gd
+    if form == "short_exact":
+        pt = set(p.lower().split())
+        gt = set(g.lower().split())
+        if not pt or not gt:
+            return False
+        # Conservative: require gold-token coverage ≥0.7 to call it a leak.
+        # Single-word gold needs an exact hit.
+        if len(gt) == 1:
+            return next(iter(gt)) in pt
+        return len(pt & gt) / len(gt) >= 0.7
+    return False
+
+
+async def _check_closed_book_leak(card: Dict, client, video_id: str) -> bool:
+    """Returns True iff teacher answers correctly without seeing the video.
+    A True verdict means the card is leaked through wording / weak distractors
+    and should be dropped from training."""
+    form = (card.get("answer_form") or "").strip()
+    gold = (card.get("canonical_answer") or "").strip()
+    question = (card.get("question") or "").strip()
+    if not gold or not question or form == "descriptive":
+        return False
+
+    _vis_cfg = PASS_CONFIG.get("pass3b_visibility", {})
+    raw = await client._call_one(
+        messages=[{
+            "role": "user",
+            "content": CLOSED_BOOK_LEAK_PROMPT.format(question=question),
+        }],
+        max_tokens=200,
+        temperature=0.0,
+        enable_thinking=False,
+        request_id=f"{video_id}_cb_{card.get('card_id', '')}",
+    )
+    if not raw:
+        return False
+    pred = _extract_closed_book_pred(raw)
+    return _matches_canonical(pred, gold, form)
+
+
+async def filter_leaked_placements(
+    placements: List[Dict],
+    cards_map: Dict[str, Dict],
+    client,
+    video_id: str,
+) -> Tuple[List[Dict], Dict[str, int]]:
+    """Drop placements whose card leaks closed-book. One LLM call per UNIQUE
+    card, not per placement. Returns (kept, stats)."""
+    if not client or not placements:
+        return placements, {"checked": 0, "leaked": 0, "dropped": 0}
+
+    # Distinct cards across all placements.
+    unique_cards: Dict[str, Dict] = {}
+    for p in placements:
+        cid = p["card_id"]
+        if cid in unique_cards:
+            continue
+        c = cards_map.get(cid)
+        if c is not None:
+            unique_cards[cid] = c
+
+    if not unique_cards:
+        return placements, {"checked": 0, "leaked": 0, "dropped": 0}
+
+    tasks = [
+        _check_closed_book_leak(card, client, video_id)
+        for card in unique_cards.values()
+    ]
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+    leaked: Set[str] = set()
+    for cid, res in zip(unique_cards.keys(), results):
+        if isinstance(res, Exception):
+            logger.debug(f"  [{video_id}] closed-book check error for {cid}: {res}")
+            continue
+        if res:
+            leaked.add(cid)
+
+    kept = [p for p in placements if p["card_id"] not in leaked]
+    stats = {
+        "checked": len(unique_cards),
+        "leaked": len(leaked),
+        "dropped": len(placements) - len(kept),
+    }
+    return kept, stats
+
+
+# ---------------------------------------------------------------------------
 # Behavior Sequence Types
 # ---------------------------------------------------------------------------
 
@@ -605,11 +747,13 @@ async def compute_all_placements(
             visual_hi = min(support_end + VISUAL_WINDOW_CHUNKS - 1, num_chunks - 1)
             if visual_hi > visual_lo:
                 span = visual_hi - visual_lo
-                # Sample 2 within visual window for SoftAsk diversity.
-                visual_asks = sorted(set([
-                    visual_lo + max(1, span // 3),
-                    visual_lo + max(1, (2 * span) // 3),
-                ]))
+                # v11.5: 1 T1 sample (was 2). With T2 + T3 = 1 each, this gives a
+                # genuine 1:1:1 difficulty mix across transient cards. The
+                # previous "2 visual asks for SoftAsk diversity" inflated T1 to
+                # ~38% of placements and let the model lean on visual-window
+                # lookups instead of memory/recall — bad on a 312-video batch
+                # where in-window over-training generalises poorly.
+                visual_asks = [visual_lo + max(1, span // 2)]
                 for ask in visual_asks:
                     if not (visual_lo <= ask <= visual_hi):
                         continue
@@ -727,6 +871,21 @@ async def compute_all_placements(
                 llm_placements.append(p)
 
     all_placements = immediate_placements + llm_placements
+
+    # v11.5: closed-book leakage filter. Drop placements whose card can be
+    # answered without the video — these train the student to pattern-match on
+    # text instead of grounding in frames. EgoSchema-style cert-length idea
+    # adapted for our card schema (one LLM call per unique card).
+    if client:
+        cards_map_for_leak = {c.get("card_id"): c for c in cards if c.get("card_id")}
+        all_placements, leak_stats = await filter_leaked_placements(
+            all_placements, cards_map_for_leak, client, video_id,
+        )
+        if leak_stats["checked"]:
+            logger.info(
+                f"  [{video_id}] 3-B closed-book leak: {leak_stats['leaked']}/"
+                f"{leak_stats['checked']} cards leaked, dropped {leak_stats['dropped']} placements"
+            )
 
     # v9.3: tier distribution log so we can audit difficulty mix per video.
     tier_dist = {}
@@ -886,11 +1045,12 @@ def plan_trajectories(
         cards_map = {}
     rng = random.Random(seed)
 
-    # Dynamic target: ~1 trajectory per 12 chunks (was 20).
-    # v9.1 audit: previous 20-chunk divisor gave only 30% capacity utilization
-    # (avg 3.5/video vs MAX=10). Tightening the divisor + bumping per-traj cap
-    # roughly doubles trajectories per video, increasing fork-sample volume.
-    target = min(max(3, num_chunks // 12), MAX_TRAJECTORIES_PER_VIDEO)
+    # Dynamic target: 1 trajectory per 18 chunks (~36s).
+    # v11.5: 12 → 18. With batch1 = 312 videos, generating ~6 trajs/video gives
+    # ~1900 trajs corpus-wide which over-trains within-video patterns. 18-chunk
+    # divisor yields ~3-5 trajs/video median (corpus ~1100 trajs) — better
+    # corpus diversity per training step, reduced overfitting on small batch.
+    target = min(max(2, num_chunks // 18), MAX_TRAJECTORIES_PER_VIDEO)
     max_placements_per_traj = min(
         max(max_placements_per_traj, 6),  # was effectively 5
         MAX_QUESTIONS_PER_TRAJECTORY,
