@@ -340,6 +340,13 @@ def render_sample(
     if "base_role" in sample:
         rendered["base_role"] = sample["base_role"]
 
+    # Propagate v12 protocol fields so pass4_verify can dispatch correctly
+    if "protocol_version" in sample:
+        rendered["protocol_version"] = sample["protocol_version"]
+    for v12_key in ("v12_assistant_turn_1", "v12_assistant_turn_2", "v12_inter_chunk"):
+        if v12_key in sample:
+            rendered[v12_key] = sample[v12_key]
+
     return rendered
 
 
