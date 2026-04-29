@@ -1,0 +1,276 @@
+[
+  {
+    "question": "What text appears on the white label of the vacuum-sealed package held by the person in chunk 17? A. 1/2 pound B. 1 LB Hamb C. 1/2 lb steak D. 1 lb lamb",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      17
+    ],
+    "visibility_type": "transient",
+    "family": "F1",
+    "card_id": "XCL9tB47Zso_F1_001",
+    "_verified": true
+  },
+  {
+    "question": "What is the numerical weight value written on the label of the bag held by the person in chunk 20?",
+    "canonical_answer": "1",
+    "answer_form": "number",
+    "support_chunks": [
+      20
+    ],
+    "visibility_type": "transient",
+    "family": "F1",
+    "card_id": "XCL9tB47Zso_F1_002",
+    "_verified": true
+  },
+  {
+    "question": "What is the color of the rolling pin resting on the countertop? A. Dusty pink B. Light blue C. Light brown D. White",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "visibility_type": "persistent",
+    "family": "F2",
+    "card_id": "XCL9tB47Zso_F2_003",
+    "_verified": true
+  },
+  {
+    "question": "What entities are present on the countertop and how are they arranged?",
+    "canonical_answer": "A light-colored wooden countertop supports a wooden rolling pin resting diagonally near the center. Two packages of raw red ground meat sealed in clear plastic sit in the foreground and to the right of the pin. A white vacuum sealer machine is partially visible on the far left edge of the counter surface.",
+    "answer_form": "descriptive",
+    "support_chunks": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "visibility_type": "persistent",
+    "family": "S1",
+    "card_id": "XCL9tB47Zso_S1_004",
+    "_verified": true
+  },
+  {
+    "question": "Did the video display BOTH a solid dusty pink background AND a white appliance? A. Only the white appliance B. Both the pink background and white appliance C. Only the pink background D. Neither the pink background nor white appliance",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      0,
+      5
+    ],
+    "visibility_type": "transient",
+    "family": "CR4",
+    "card_id": "XCL9tB47Zso_CR4_007",
+    "_verified": true
+  },
+  {
+    "question": "Where is the white kitchen appliance positioned on the countertop? A. In the foreground B. Behind the rolling pin C. On the left side D. To the right of the rolling pin",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      3,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "visibility_type": "persistent",
+    "family": "F4",
+    "card_id": "XCL9tB47Zso_F4_008",
+    "_verified": true
+  },
+  {
+    "question": "Where is the flat package of meat positioned relative to the rolling pin in chunks 4 through 9? A. Behind the rolling pin B. On the left side C. In the foreground D. To the right of the rolling pin",
+    "canonical_answer": "D",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "visibility_type": "persistent",
+    "family": "F4",
+    "card_id": "XCL9tB47Zso_F4_009",
+    "_verified": true
+  },
+  {
+    "question": "What action is the person performing in the video? A. sealing B. watching C. pressing D. subscribing",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      27,
+      28,
+      29,
+      30
+    ],
+    "visibility_type": "persistent",
+    "family": "E1",
+    "card_id": "XCL9tB47Zso_E1_010",
+    "_verified": true
+  },
+  {
+    "question": "Describe the visual sequence from the introductory text to the final kitchen setup.",
+    "canonical_answer": "At 0s, the text 'Hamburger Tip' displays on a pink background; at 2s, the title 'Vacuum Sealing Hamburger Tip' centers on screen; at 6s, the view shifts to a wooden countertop with a rolling pin; at 8s, vacuum sealed meat packages appear in the foreground; at 10s, a white appliance is visible on the left edge.",
+    "answer_form": "descriptive",
+    "support_chunks": [
+      0,
+      1,
+      3,
+      4,
+      5
+    ],
+    "visibility_type": "transient",
+    "family": "M1",
+    "card_id": "XCL9tB47Zso_M1_011",
+    "_verified": true
+  },
+  {
+    "question": "Has the person started using the yellow rolling pin to flatten the meat yet?",
+    "canonical_answer": "Yes",
+    "answer_form": "binary",
+    "support_chunks": [
+      29
+    ],
+    "visibility_type": "transient",
+    "family": "E2",
+    "card_id": "XCL9tB47Zso_E2_012",
+    "_verified": true
+  },
+  {
+    "question": "What does the person do with the rolling pin and the package of meat?",
+    "canonical_answer": "The person uses the rolling pin to flatten the meat inside the plastic bag.",
+    "answer_form": "descriptive",
+    "support_chunks": [
+      29,
+      30,
+      31,
+      32
+    ],
+    "visibility_type": "transient",
+    "ask_chunk": 15,
+    "clue_chunk": 30,
+    "family": "CR5",
+    "card_id": "XCL9tB47Zso_CR5_015",
+    "_verified": true
+  },
+  {
+    "question": "Which step happens immediately after the hand touches the top package of the meat stack? A. Moving a bag of pink substance out of view B. Lifting a vacuum-sealed bag of flat meat C. Touching the top package of a stack D. Holding a package in the air to show the label",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      14,
+      15
+    ],
+    "visibility_type": "transient",
+    "family": "P1",
+    "card_id": "XCL9tB47Zso_P1_016",
+    "_verified": true
+  },
+  {
+    "question": "Has the step 'flatten the meat with a rolling pin' been done by now?",
+    "canonical_answer": "Yes",
+    "answer_form": "binary",
+    "support_chunks": [
+      43,
+      44
+    ],
+    "visibility_type": "transient",
+    "family": "F7",
+    "card_id": "XCL9tB47Zso_F7_018",
+    "_verified": true
+  },
+  {
+    "question": "What brand is the wooden rolling pin? A. KitchenAid B. Unable to answer C. Cuisinart D. OXO",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      4,
+      8,
+      12,
+      16,
+      20,
+      24,
+      28,
+      32,
+      36
+    ],
+    "visibility_type": "persistent",
+    "family": "N1",
+    "card_id": "XCL9tB47Zso_N1_019",
+    "_verified": true
+  },
+  {
+    "question": "Where was the meat stored before being placed on the counter? A. Refrigerator B. Freezer C. Pantry D. Unable to answer",
+    "canonical_answer": "D",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      9,
+      18,
+      27
+    ],
+    "visibility_type": "persistent",
+    "family": "N1",
+    "card_id": "XCL9tB47Zso_N1_020",
+    "_verified": true
+  },
+  {
+    "question": "What food preparation task is the person demonstrating? A. Flattening meat cuts for tenderizing B. Vacuum sealing hamburger meat C. Storing marinated meat in bags D. Forming ground meat into patties",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      0,
+      3,
+      21,
+      27
+    ],
+    "visibility_type": "persistent",
+    "family": "CR3",
+    "card_id": "XCL9tB47Zso_CR3_021",
+    "_verified": true
+  },
+  {
+    "question": "Given what is visible so far, could the person flatten the meat using the rolling pin? A. No — rolling pin is not visible on the counter B. Yes — rolling pin, meat, and countertop are all present C. No — meat is not inside a plastic bag D. No — no flat surface is visible for working",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      13,
+      14,
+      15,
+      16,
+      17
+    ],
+    "visibility_type": "persistent",
+    "family": "CR6",
+    "card_id": "XCL9tB47Zso_CR6_022",
+    "_verified": true
+  },
+  {
+    "question": "After the person finishes flattening the meat with the rolling pin, where is the ground meat now? A. Inside the plastic bag B. On the rolling pin C. Loose on the cutting board D. In the vacuum sealer machine",
+    "canonical_answer": "A",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      40,
+      45
+    ],
+    "visibility_type": "transient",
+    "occlusion_chunk": 40,
+    "resolve_chunk": 45,
+    "family": "CR7",
+    "card_id": "XCL9tB47Zso_CR7_023",
+    "_verified": true
+  }
+]

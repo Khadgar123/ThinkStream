@@ -1,0 +1,333 @@
+[
+  {
+    "question": "Which object is held by the person to process the apple in chunks 8 through 10? A. Red mechanical peeler B. Silver fork C. Silver hand peeler D. Glass jar",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      8,
+      9,
+      10
+    ],
+    "visibility_type": "transient",
+    "family": "F1",
+    "card_id": "Homemade_Applesauce_F1_001",
+    "_verified": true
+  },
+  {
+    "question": "How many peeled apples are arranged on the cutting board in chunk 8?",
+    "canonical_answer": "6",
+    "answer_form": "number",
+    "support_chunks": [
+      8,
+      9
+    ],
+    "visibility_type": "transient",
+    "family": "F1",
+    "card_id": "Homemade_Applesauce_F1_002",
+    "_verified": true
+  },
+  {
+    "question": "What is the color of the mechanical apple peeler machine shown on the counter? A. Silver B. Red C. Yellow D. White",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "visibility_type": "persistent",
+    "family": "F2",
+    "card_id": "Homemade_Applesauce_F2_003",
+    "_verified": true
+  },
+  {
+    "question": "What entities are present and what are they doing?",
+    "canonical_answer": "A red mechanical peeler removes apple skin in a continuous spiral strip while the fruit rotates on a threaded rod. A person uses a silver hand peeler to skin apples on a white cutting board next to six peeled apples. A glass jar holds thick yellow applesauce being stirred with a silver fork. Whole red and yellow apples sit in the background behind the peeling device.",
+    "answer_form": "descriptive",
+    "support_chunks": [
+      0,
+      4,
+      8
+    ],
+    "visibility_type": "persistent",
+    "family": "S1",
+    "card_id": "Homemade_Applesauce_S1_004",
+    "_verified": true
+  },
+  {
+    "question": "How many lemon halves are visible on the cutting board?",
+    "canonical_answer": "2",
+    "answer_form": "number",
+    "support_chunks": [
+      24
+    ],
+    "visibility_type": "transient",
+    "family": "F3",
+    "card_id": "Homemade_Applesauce_F3_005",
+    "_verified": true
+  },
+  {
+    "question": "Which entity is present in both the hand-peeling and knife-slicing phases of the video? A. Silver metal apple peeler tool B. Person wearing black long-sleeved shirt and striped apron C. Red mechanical apple peeler with spiral rod D. Silver metal apple corer with circular blades",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      8,
+      9,
+      10,
+      15,
+      16,
+      17,
+      18
+    ],
+    "visibility_type": "transient",
+    "family": "R1",
+    "card_id": "Homemade_Applesauce_R1_006",
+    "_verified": true
+  },
+  {
+    "question": "Did the person use BOTH a silver fork AND were whole red apples visible in the background? A. only silver fork used B. only whole red apples visible C. both silver fork used and whole red apples visible D. neither silver fork used nor whole red apples visible",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      0,
+      7
+    ],
+    "visibility_type": "transient",
+    "family": "CR4",
+    "card_id": "Homemade_Applesauce_CR4_007",
+    "_verified": true
+  },
+  {
+    "question": "Where are the fully peeled apples positioned relative to the red mechanical peeler during the machine peeling scene? A. To the right B. In the background C. To the left D. Below the peeler",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      7
+    ],
+    "visibility_type": "persistent",
+    "family": "F4",
+    "card_id": "Homemade_Applesauce_F4_008",
+    "_verified": true
+  },
+  {
+    "question": "Where are the six peeled apples placed during the hand-peeling process? A. On the cutting board B. Inside the glass jar C. On the mechanical peeler D. On the dark countertop",
+    "canonical_answer": "A",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "visibility_type": "persistent",
+    "family": "F4",
+    "card_id": "Homemade_Applesauce_F4_009",
+    "_verified": true
+  },
+  {
+    "question": "What action is the person performing with the fork inside the glass jar? A. lifting B. stirring C. clapping D. sprinkling",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      0
+    ],
+    "visibility_type": "transient",
+    "family": "E1",
+    "card_id": "Homemade_Applesauce_E1_010",
+    "_verified": true
+  },
+  {
+    "question": "Describe the key steps involved in processing the apples as they appear in the video.",
+    "canonical_answer": "At 0s, a fork stirs yellow food in a glass jar; at 4s, a red machine peels an apple into a long strip; at 16s, a person uses a handheld silver peeler on an apple; at 18s, six peeled apples sit on a white cutting board.",
+    "answer_form": "descriptive",
+    "support_chunks": [
+      0,
+      2,
+      8,
+      9
+    ],
+    "visibility_type": "transient",
+    "family": "M1",
+    "card_id": "Homemade_Applesauce_M1_011",
+    "_verified": true
+  },
+  {
+    "question": "Has the person wearing a striped apron started pouring clear liquid into the white pot containing the apple slices?",
+    "canonical_answer": "Yes",
+    "answer_form": "binary",
+    "support_chunks": [
+      24
+    ],
+    "visibility_type": "transient",
+    "family": "E2",
+    "card_id": "Homemade_Applesauce_E2_012",
+    "_verified": true
+  },
+  {
+    "question": "What change occurs in the tool usage by the person wearing a striped apron during this segment? A. Began transferring apple slices from cutting board to pot B. Switched from corer to chef's knife for slicing apples C. Apple peeling machine starts operating D. Started using apple corer/slicer tool on peeled apples",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      15
+    ],
+    "visibility_type": "transient",
+    "family": "E2",
+    "card_id": "Homemade_Applesauce_E2_013",
+    "_verified": true
+  },
+  {
+    "question": "How has the tool used for peeling apples changed during the video? A. From a knife to a mechanical peeler B. From a mechanical peeler to a hand-held peeler C. From a hand-held peeler to a mechanical peeler D. From a mechanical peeler to a knife",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "visibility_type": "transient",
+    "family": "C1",
+    "card_id": "Homemade_Applesauce_C1_014",
+    "_verified": true
+  },
+  {
+    "question": "Which tool will the person use to process the food mixture?",
+    "canonical_answer": "The person uses a metal potato masher with a black handle to mash the yellowish food mixture in the white pot.",
+    "answer_form": "descriptive",
+    "support_chunks": [
+      46,
+      47,
+      48
+    ],
+    "visibility_type": "transient",
+    "ask_chunk": 42,
+    "clue_chunk": 48,
+    "family": "CR5",
+    "card_id": "Homemade_Applesauce_CR5_016",
+    "_verified": true
+  },
+  {
+    "question": "What step is performed immediately before the person transfers the apple slices into the pot? A. Removing apple slices from the corer tool B. Slicing apple wedges into smaller pieces with a knife C. Peeling apples using a red mechanical device D. Pressing a metal corer tool through the apples",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      18,
+      19,
+      20
+    ],
+    "visibility_type": "transient",
+    "family": "P1",
+    "card_id": "Homemade_Applesauce_P1_017",
+    "_verified": true
+  },
+  {
+    "question": "Has the step 'pour water into pot' been done by now?",
+    "canonical_answer": "Yes",
+    "answer_form": "binary",
+    "support_chunks": [
+      24
+    ],
+    "visibility_type": "transient",
+    "step_chunk": 24,
+    "step_label": "pour water into pot",
+    "family": "F7",
+    "card_id": "Homemade_Applesauce_F7_019",
+    "_verified": true
+  },
+  {
+    "question": "What will happen to the apple mounted on the red mechanical device? A. It will be stirred into the jar of yellow sauce. B. It will be returned to the pile of whole apples. C. It will be peeled by the rotating mechanical device. D. It will be peeled manually with a silver hand tool.",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "visibility_type": "transient",
+    "family": "F6",
+    "card_id": "Homemade_Applesauce_F6_021",
+    "_verified": true
+  },
+  {
+    "question": "What brand of apples did the person use for this recipe? A. Gala apples B. Granny Smith apples C. Unable to answer D. Honeycrisp apples",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      5,
+      10,
+      15,
+      20,
+      25,
+      30,
+      35,
+      40,
+      45
+    ],
+    "visibility_type": "persistent",
+    "family": "N1",
+    "card_id": "Homemade_Applesauce_N1_022",
+    "_verified": true
+  },
+  {
+    "question": "Where did the person store the finished apple mixture? A. In the refrigerator B. Unable to answer C. In the pantry D. In the freezer",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      0,
+      5,
+      10,
+      15,
+      20,
+      25,
+      30,
+      35,
+      40,
+      45
+    ],
+    "visibility_type": "persistent",
+    "family": "N1",
+    "card_id": "Homemade_Applesauce_N1_023",
+    "_verified": true
+  },
+  {
+    "question": "What dish is the person preparing? A. Apple pie B. Apple cider C. Applesauce D. Apple crisp",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      0,
+      6,
+      12,
+      24,
+      27
+    ],
+    "visibility_type": "persistent",
+    "family": "CR3",
+    "card_id": "Homemade_Applesauce_CR3_024",
+    "_verified": true
+  },
+  {
+    "question": "Given what is visible so far, could the person peel another apple? A. No — no peeler visible B. Yes — peeler and whole apples are both visible C. No — no whole apples visible D. No — no table visible",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "visibility_type": "persistent",
+    "family": "CR6",
+    "card_id": "Homemade_Applesauce_CR6_025",
+    "_verified": true
+  }
+]

@@ -1,0 +1,264 @@
+[
+  {
+    "question": "What color is the plastic container visible on the ground in the first few seconds? A. Blue B. Green C. Brown D. White",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "visibility_type": "transient",
+    "family": "F2",
+    "card_id": "dwxUUBLkM3E_F2_001",
+    "_verified": true
+  },
+  {
+    "question": "What entities are present and what are they doing?",
+    "canonical_answer": "Large tree trunks with rough, dark grey bark stand in the foreground, featuring deep hollows and cavities exposed within the wood. White snow covers the ground beneath the trees where a green plastic container sits in the corner. A wooden house with a snow-covered roof appears in the distance against a clear blue sky above bare branches.",
+    "answer_form": "descriptive",
+    "support_chunks": [
+      0,
+      1,
+      2,
+      3,
+      8,
+      9
+    ],
+    "visibility_type": "persistent",
+    "family": "S1",
+    "card_id": "dwxUUBLkM3E_S1_002",
+    "_verified": true
+  },
+  {
+    "question": "How many tree trunks are visible in the foreground cluster?",
+    "canonical_answer": "3",
+    "answer_form": "number",
+    "support_chunks": [
+      37
+    ],
+    "visibility_type": "transient",
+    "family": "F3",
+    "card_id": "dwxUUBLkM3E_F3_003",
+    "_verified": true
+  },
+  {
+    "question": "Which of the previously seen entities is visible in the final segments? A. <thick branch extending to the left> B. <brown squirrel with fluffy tail> C. <brown wooden log cabin with horizontal siding> D. <dark rectangular structure possibly a shed>",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "visibility_type": "persistent",
+    "family": "R1",
+    "card_id": "dwxUUBLkM3E_R1_004",
+    "_verified": true
+  },
+  {
+    "question": "Did the video show BOTH a green plastic tub on the ground AND a tree trunk with a large vertical hollow? A. Only the green plastic tub was shown B. Only the tree trunk with a hollow was shown C. Both the green plastic tub and the hollow were shown D. Neither the green plastic tub nor the hollow was shown",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      1,
+      7
+    ],
+    "visibility_type": "transient",
+    "family": "CR4",
+    "card_id": "dwxUUBLkM3E_CR4_005",
+    "_verified": true
+  },
+  {
+    "question": "Where is the green plastic container located in chunks 1 through 3? A. in the distance B. on the left side C. bottom right corner D. in the background",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      1,
+      2,
+      3
+    ],
+    "visibility_type": "persistent",
+    "family": "F4",
+    "card_id": "dwxUUBLkM3E_F4_006",
+    "_verified": true
+  },
+  {
+    "question": "Where is the wooden house with a porch situated in chunk 9? A. in the background B. bottom right corner C. in the distance D. on the left side",
+    "canonical_answer": "A",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      9
+    ],
+    "visibility_type": "transient",
+    "family": "F4",
+    "card_id": "dwxUUBLkM3E_F4_007",
+    "_verified": true
+  },
+  {
+    "question": "Describe the sequence of visible landscape features and camera movements throughout the clip.",
+    "canonical_answer": "At 0s, a large tree trunk stands static against a blue sky; at 6s, a thick branch connects two trunks above snow; at 14s, the camera pans left to show a vertical hollow in the bark; at 18s, the view shifts further left revealing a wooden house with a snow-covered roof in the background.",
+    "answer_form": "descriptive",
+    "support_chunks": [
+      0,
+      3,
+      7,
+      9
+    ],
+    "visibility_type": "transient",
+    "family": "M1",
+    "card_id": "dwxUUBLkM3E_M1_009",
+    "_verified": true
+  },
+  {
+    "question": "Is the hand holding the weathered wooden plank yet?",
+    "canonical_answer": "Yes",
+    "answer_form": "binary",
+    "support_chunks": [
+      56
+    ],
+    "visibility_type": "transient",
+    "family": "E2",
+    "card_id": "dwxUUBLkM3E_E2_010",
+    "_verified": true
+  },
+  {
+    "question": "What change occurs regarding the object in the hand? A. The hand begins holding a wooden plank B. The hand begins gripping a teal sled handle C. The hand begins holding wood shavings D. The hand begins holding a mixture of sunflower seeds",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      53
+    ],
+    "visibility_type": "transient",
+    "family": "E2",
+    "card_id": "dwxUUBLkM3E_E2_011",
+    "_verified": true
+  },
+  {
+    "question": "How has the visible object near the cabin changed from the earlier to the later segment? A. From a car to outdoor furniture B. From outdoor furniture to a car C. From a tree trunk to a horizontal branch D. From a horizontal branch to a tree trunk",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      11,
+      20
+    ],
+    "visibility_type": "transient",
+    "family": "C1",
+    "card_id": "dwxUUBLkM3E_C1_012",
+    "_verified": true
+  },
+  {
+    "question": "What happens at the base of the foreground tree trunk?",
+    "canonical_answer": "Hand releases beige seeds",
+    "answer_form": "descriptive",
+    "support_chunks": [
+      54
+    ],
+    "visibility_type": "transient",
+    "ask_chunk": 48,
+    "clue_chunk": 54,
+    "family": "CR5",
+    "card_id": "dwxUUBLkM3E_CR5_013",
+    "_verified": true
+  },
+  {
+    "question": "What action does the person perform immediately after holding a mixture of sunflower seeds and grains? A. Hand holding a rough wooden plank B. Hand holding a small pile of light-brown wood shavings C. Hand touching the black handle of a sled D. Hand holding a small pile of flat, beige seeds",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      52,
+      53
+    ],
+    "visibility_type": "transient",
+    "family": "P1",
+    "card_id": "dwxUUBLkM3E_P1_014",
+    "_verified": true
+  },
+  {
+    "question": "Has the step 'drop seeds from hand' been done by now?",
+    "canonical_answer": "Yes",
+    "answer_form": "binary",
+    "support_chunks": [
+      54
+    ],
+    "visibility_type": "transient",
+    "step_chunk": 54,
+    "step_label": "drop seeds from hand",
+    "family": "F7",
+    "card_id": "dwxUUBLkM3E_F7_016",
+    "_verified": true
+  },
+  {
+    "question": "What is about to happen? A. The camera will zoom in on the tree bark B. The camera will pan left to reveal a house C. The camera will pan right to show the green tub D. The camera will tilt up to show the sky",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      6,
+      7,
+      8,
+      9
+    ],
+    "visibility_type": "transient",
+    "family": "F6",
+    "card_id": "dwxUUBLkM3E_F6_017",
+    "_verified": true
+  },
+  {
+    "question": "What specific type of wood is the brown wooden cabin constructed from? A. Pine B. Cedar C. Unable to answer D. Oak",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      10,
+      15,
+      20,
+      25,
+      30,
+      35,
+      40,
+      45
+    ],
+    "visibility_type": "persistent",
+    "family": "N1",
+    "card_id": "dwxUUBLkM3E_N1_018",
+    "_verified": true
+  },
+  {
+    "question": "What object is the brown squirrel carrying in its mouth while climbing? A. A nut B. Unable to answer C. A leaf D. A twig",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      10
+    ],
+    "visibility_type": "transient",
+    "family": "N1",
+    "card_id": "dwxUUBLkM3E_N1_019",
+    "_verified": true
+  },
+  {
+    "question": "Given what is visible so far, could the person scatter the beige seeds onto the white snow? A. Yes — human hand holding seeds and snow-covered ground are both visible B. No — no seeds visible in the scene C. No — no white snow visible on the ground D. No — no human hand visible holding the objects",
+    "canonical_answer": "A",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      54
+    ],
+    "visibility_type": "transient",
+    "family": "CR6",
+    "card_id": "dwxUUBLkM3E_CR6_020",
+    "_verified": true
+  },
+  {
+    "question": "After the camera cuts to the cabin view, what is the state of the object on the ground? A. Completely removed B. Partially buried in snow C. Hanging in a tree D. Inside the cabin",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      12
+    ],
+    "visibility_type": "transient",
+    "family": "CR7",
+    "card_id": "dwxUUBLkM3E_CR7_021",
+    "_verified": true
+  }
+]

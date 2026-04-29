@@ -1,0 +1,268 @@
+[
+  {
+    "question": "What is the primary color of the helmet worn by the person riding the Segway? A. Black B. Green C. White D. Blue",
+    "canonical_answer": "A",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      0,
+      1,
+      3,
+      5,
+      6,
+      8
+    ],
+    "visibility_type": "persistent",
+    "family": "F2",
+    "card_id": "eHhkhwSOy8U_F2_001",
+    "_verified": true
+  },
+  {
+    "question": "What entities are present and what are they doing?",
+    "canonical_answer": "A person wearing a black helmet and dark jacket rides a black Segway with large knobby tires along a gravel path. A steep rocky hillside with sparse vegetation rises in the background behind the rider. Another person wearing a green shirt walks nearby on the left side of the path. A black dog runs on the gravel to the right of the Segway rider.",
+    "answer_form": "descriptive",
+    "support_chunks": [
+      0,
+      2,
+      10
+    ],
+    "visibility_type": "transient",
+    "family": "S1",
+    "card_id": "eHhkhwSOy8U_S1_002",
+    "_verified": true
+  },
+  {
+    "question": "How many people are visible?",
+    "canonical_answer": "2",
+    "answer_form": "number",
+    "support_chunks": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "visibility_type": "persistent",
+    "family": "F3",
+    "card_id": "eHhkhwSOy8U_F3_003",
+    "_verified": true
+  },
+  {
+    "question": "Did the Segway rider wear BOTH a dark jacket with white stripes on the sleeves AND a black vest over a white long-sleeved shirt during the video? A. Only the jacket with stripes was worn B. Only the vest over white shirt was worn C. Both outfits were worn at different times D. Neither outfit was worn",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      1,
+      6
+    ],
+    "visibility_type": "transient",
+    "family": "CR4",
+    "card_id": "eHhkhwSOy8U_CR4_005",
+    "_verified": true
+  },
+  {
+    "question": "Where is the rocky vegetated hillside situated in the scene? A. to the left B. on Segway C. on gravel path D. in background",
+    "canonical_answer": "D",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      0,
+      1,
+      2,
+      3,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "visibility_type": "persistent",
+    "family": "F4",
+    "card_id": "eHhkhwSOy8U_F4_006",
+    "_verified": true
+  },
+  {
+    "question": "Where is the person wearing a dark green long-sleeved shirt standing relative to the Segway rider? A. to the left B. in background C. on Segway D. on gravel path",
+    "canonical_answer": "A",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      2,
+      3,
+      5,
+      6
+    ],
+    "visibility_type": "transient",
+    "family": "F4",
+    "card_id": "eHhkhwSOy8U_F4_007",
+    "_verified": true
+  },
+  {
+    "question": "What action is the person wearing dark clothing and a helmet performing? A. Riding a Segway alone B. Riding a motorcycle C. Riding a Segway with a dog",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      19
+    ],
+    "visibility_type": "transient",
+    "family": "E1",
+    "card_id": "eHhkhwSOy8U_E1_008",
+    "_verified": true
+  },
+  {
+    "question": "Describe the sequence of actions involving the Segway rider and the pedestrian during the clip.",
+    "canonical_answer": "At 0s, a person wearing a dark helmet rides a Segway on a gravel path; at 4s, another person in a green shirt stands nearby and gestures with their hands towards the rider; at 6s, the person in the green jacket extends their hand towards the person on the Segway; at 12s, the Segway becomes stationary on the path while the walking person moves to the left.",
+    "answer_form": "descriptive",
+    "support_chunks": [
+      0,
+      2,
+      3,
+      6
+    ],
+    "visibility_type": "transient",
+    "family": "M1",
+    "card_id": "eHhkhwSOy8U_M1_009",
+    "_verified": true
+  },
+  {
+    "question": "Has the person wearing dark clothing started riding a motorcycle yet?",
+    "canonical_answer": "Yes",
+    "answer_form": "binary",
+    "support_chunks": [
+      18,
+      21
+    ],
+    "visibility_type": "transient",
+    "family": "E2",
+    "card_id": "eHhkhwSOy8U_E2_010",
+    "_verified": true
+  },
+  {
+    "question": "What just changed in the rider's surroundings during the supported segments? A. The person switched to operating a bicycle on the path. B. Another person started walking beside the rider on the path. C. A black dog started walking beside the rider on the path. D. The person switched to operating a motorcycle on the path.",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      24,
+      27
+    ],
+    "visibility_type": "transient",
+    "family": "E2",
+    "card_id": "eHhkhwSOy8U_E2_011",
+    "_verified": true
+  },
+  {
+    "question": "How has the presence of people on the trail changed from the start to the middle of the video? A. The rider remains completely alone B. The rider removes their safety helmet C. A second person appears near the rider D. The Segway is parked and abandoned",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      0,
+      2
+    ],
+    "visibility_type": "transient",
+    "family": "C1",
+    "card_id": "eHhkhwSOy8U_C1_012",
+    "_verified": true
+  },
+  {
+    "question": "A person rides a Segway on a gravel path. Who do they encounter next?",
+    "canonical_answer": "person in green jacket extending hand",
+    "answer_form": "descriptive",
+    "support_chunks": [
+      2,
+      3
+    ],
+    "visibility_type": "transient",
+    "ask_chunk": 0,
+    "clue_chunk": 3,
+    "family": "CR5",
+    "card_id": "eHhkhwSOy8U_CR5_014",
+    "_verified": true
+  },
+  {
+    "question": "Has the step 'ride alongside a dog' been done by now?",
+    "canonical_answer": "Yes",
+    "answer_form": "binary",
+    "support_chunks": [
+      24,
+      26
+    ],
+    "visibility_type": "transient",
+    "step_chunk": 24,
+    "step_label": "ride alongside a dog",
+    "family": "F7",
+    "card_id": "eHhkhwSOy8U_F7_016",
+    "_verified": true
+  },
+  {
+    "question": "How many times did the person wearing dark green walk?",
+    "canonical_answer": "2",
+    "answer_form": "number",
+    "support_chunks": [
+      4,
+      6
+    ],
+    "visibility_type": "transient",
+    "family": "F5",
+    "card_id": "eHhkhwSOy8U_F5_017",
+    "_verified": true
+  },
+  {
+    "question": "What is the brand of the black helmet worn by the rider? A. Bell B. Shark C. Unable to answer D. Arai",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      0,
+      3,
+      6,
+      9,
+      27
+    ],
+    "visibility_type": "persistent",
+    "family": "N1",
+    "card_id": "eHhkhwSOy8U_N1_019",
+    "_verified": true
+  },
+  {
+    "question": "What model name is assigned to the two-wheeled self-balancing vehicle? A. Ranger B. Explorer C. Voyager D. Unable to answer",
+    "canonical_answer": "D",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      0,
+      3,
+      6,
+      9,
+      12,
+      24,
+      27
+    ],
+    "visibility_type": "persistent",
+    "family": "N1",
+    "card_id": "eHhkhwSOy8U_N1_020",
+    "_verified": true
+  },
+  {
+    "question": "Given what is visible so far, could the person wearing a black helmet and vest start riding the Segway? A. No — the Segway is not visible in the frame B. Yes — person is standing on the Segway, path is clear, and vehicle is present C. No — the person is not standing on the platform D. No — the path is blocked by a large obstacle",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      5,
+      6
+    ],
+    "visibility_type": "persistent",
+    "family": "CR6",
+    "card_id": "eHhkhwSOy8U_CR6_021",
+    "_verified": true
+  },
+  {
+    "question": "After the camera cuts to the stationary Segway scene, where is the person in the green jacket? A. Riding the Segway B. Walking to the left of the rider C. Standing on the right side D. Sitting on the gravel path",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      3,
+      6
+    ],
+    "visibility_type": "transient",
+    "occlusion_chunk": 3,
+    "resolve_chunk": 6,
+    "family": "CR7",
+    "card_id": "eHhkhwSOy8U_CR7_022",
+    "_verified": true
+  }
+]

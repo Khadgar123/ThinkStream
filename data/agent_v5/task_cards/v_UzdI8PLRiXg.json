@@ -1,0 +1,257 @@
+[
+  {
+    "question": "What color is the crumpled cloth lying on the table surface? A. Yellow B. Silver C. Green D. Black",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "visibility_type": "persistent",
+    "family": "F2",
+    "card_id": "v_UzdI8PLRiXg_F2_001",
+    "_verified": true
+  },
+  {
+    "question": "What entities are present on the table and what is the person doing with the handheld device?",
+    "canonical_answer": "A person wearing a black short-sleeved shirt holds a black handheld device with a white barcode label over a table. A silver metal block rests on top of a yellow rectangular sponge. A crumpled green cloth lies on the table surface to the left. A transparent glass containing yellow liquid stands in the background. The objects remain stationary while the device hovers above them.",
+    "answer_form": "descriptive",
+    "support_chunks": [
+      2,
+      5,
+      9
+    ],
+    "visibility_type": "persistent",
+    "family": "S1",
+    "card_id": "v_UzdI8PLRiXg_S1_002",
+    "_verified": true
+  },
+  {
+    "question": "How many hands are visible holding the knife while cutting the book?",
+    "canonical_answer": "1",
+    "answer_form": "number",
+    "support_chunks": [
+      77
+    ],
+    "visibility_type": "transient",
+    "family": "F3",
+    "card_id": "v_UzdI8PLRiXg_F3_003",
+    "_verified": true
+  },
+  {
+    "question": "Which of the previously seen objects is resting on the sponge in the current view? A. <black handheld scanner with barcode label> B. <green textured cloth or rag> C. <rectangular grey sharpening stone> D. <clear glass with yellow liquid>",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "visibility_type": "persistent",
+    "family": "R1",
+    "card_id": "v_UzdI8PLRiXg_R1_004",
+    "_verified": true
+  },
+  {
+    "question": "Where is the silver rectangular metal object positioned relative to the yellow rectangular sponge?",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      2,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "visibility_type": "persistent",
+    "options": "A. in the background B. to the left of the sponge C. on top of the yellow sponge D. in the person's hand",
+    "family": "F4",
+    "card_id": "v_UzdI8PLRiXg_F4_006",
+    "_verified": true
+  },
+  {
+    "question": "What action is the person performing in the final segment? A. wiping B. manipulating C. pouring D. stacking",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      55
+    ],
+    "visibility_type": "transient",
+    "family": "E1",
+    "card_id": "v_UzdI8PLRiXg_E1_008",
+    "_verified": true
+  },
+  {
+    "question": "Describe the sequence of actions involving the handheld device and the objects on the table throughout the video.",
+    "canonical_answer": "At 0s, a silver block rests on a yellow notepad beside a green cloth; at 4s, a person enters holding a black handheld device over the table; at 6s, the metal block is positioned on top of a yellow sponge; at 18s, the person moves the black device away from the camera.",
+    "answer_form": "descriptive",
+    "support_chunks": [
+      0,
+      2,
+      3,
+      9
+    ],
+    "visibility_type": "transient",
+    "family": "M1",
+    "card_id": "v_UzdI8PLRiXg_M1_009",
+    "_verified": true
+  },
+  {
+    "question": "Has the person started sharpening the knife with the orange handle against the stone yet?",
+    "canonical_answer": "No",
+    "answer_form": "binary",
+    "support_chunks": [
+      11,
+      12,
+      13
+    ],
+    "visibility_type": "transient",
+    "family": "E2",
+    "card_id": "v_UzdI8PLRiXg_E2_010",
+    "_verified": true
+  },
+  {
+    "question": "What action is the person performing in this segment? A. Sharpening a knife on a stone B. Cutting a yellow sheet with a knife C. Slicing into the cover of a book with a utility knife D. Picking up a glass of yellow liquid",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      71
+    ],
+    "visibility_type": "transient",
+    "family": "E2",
+    "card_id": "v_UzdI8PLRiXg_E2_011",
+    "_verified": true
+  },
+  {
+    "question": "How has the scene composition changed from the start to the end? A. The glass of liquid disappears from the table B. A person enters holding a black device C. The table surface changes to a different color D. The green cloth is removed from the scene",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      0,
+      2
+    ],
+    "visibility_type": "transient",
+    "family": "C1",
+    "card_id": "v_UzdI8PLRiXg_C1_012",
+    "_verified": true
+  },
+  {
+    "question": "The person holds a knife with an orange handle near a sharpening stone. What do they do with the knife?",
+    "canonical_answer": "They sharpen the knife blade by rubbing it against the stone.",
+    "answer_form": "descriptive",
+    "support_chunks": [
+      22
+    ],
+    "visibility_type": "transient",
+    "ask_chunk": 11,
+    "clue_chunk": 22,
+    "family": "CR5",
+    "card_id": "v_UzdI8PLRiXg_CR5_014",
+    "_verified": true
+  },
+  {
+    "question": "What step came IMMEDIATELY before the person cuts the yellow sheet? A. Sharpening a knife on a grey stone B. Pressing a tool onto a yellow pad C. Sharpening a knife on a yellow stone D. Releasing a metallic object onto a pad",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      25,
+      26
+    ],
+    "visibility_type": "transient",
+    "family": "P1",
+    "card_id": "v_UzdI8PLRiXg_P1_015",
+    "_verified": true
+  },
+  {
+    "question": "Has the step 'sharpen the knife' been done by now?",
+    "canonical_answer": "Yes",
+    "answer_form": "binary",
+    "support_chunks": [
+      22,
+      23,
+      24
+    ],
+    "visibility_type": "transient",
+    "step_chunk": 22,
+    "step_label": "sharpen the knife",
+    "family": "F7",
+    "card_id": "v_UzdI8PLRiXg_F7_017",
+    "_verified": true
+  },
+  {
+    "question": "What will the person do next? A. Pick up the silver metal block B. Move the handheld device away from the table C. Pour the yellow liquid from the glass D. Wipe the surface with the green cloth",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      6,
+      7,
+      8,
+      9
+    ],
+    "visibility_type": "transient",
+    "family": "F6",
+    "card_id": "v_UzdI8PLRiXg_F6_019",
+    "_verified": true
+  },
+  {
+    "question": "What color are the person's pants? A. Blue jeans B. Black trousers C. Grey shorts D. Unable to answer",
+    "canonical_answer": "D",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      0,
+      9,
+      18,
+      27,
+      36,
+      45,
+      54,
+      63,
+      72,
+      81
+    ],
+    "visibility_type": "persistent",
+    "family": "N1",
+    "card_id": "v_UzdI8PLRiXg_N1_020",
+    "_verified": true
+  },
+  {
+    "question": "Given what is visible so far, could the person wearing a black short-sleeved shirt sharpen the knife? A. No — no knife with an orange handle visible B. Yes — knife and sharpening stone are both present C. No — no sharpening stone visible D. No — no sponge or support for the stone visible",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      11,
+      22
+    ],
+    "visibility_type": "persistent",
+    "family": "CR6",
+    "card_id": "v_UzdI8PLRiXg_CR6_023",
+    "_verified": true
+  },
+  {
+    "question": "After the camera angle changes during the sharpening process, what is the state of the green cloth? A. Folded B. Crumpled C. Wet D. Burning",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      22,
+      33
+    ],
+    "visibility_type": "transient",
+    "occlusion_chunk": 22,
+    "resolve_chunk": 33,
+    "family": "CR7",
+    "card_id": "v_UzdI8PLRiXg_CR7_024",
+    "_verified": true
+  }
+]

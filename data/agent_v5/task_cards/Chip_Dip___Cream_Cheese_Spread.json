@@ -1,0 +1,295 @@
+[
+  {
+    "question": "What word appears directly after \"Cream\" on the blue box? A. Beans B. Cheese C. Value D. Pack",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "visibility_type": "persistent",
+    "family": "F1",
+    "card_id": "Chip_Dip___Cream_Cheese_Spread_F1_001",
+    "_verified": true
+  },
+  {
+    "question": "How many cans of chili are visible inside the glass dish?",
+    "canonical_answer": "1",
+    "answer_form": "number",
+    "support_chunks": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "visibility_type": "persistent",
+    "family": "F1",
+    "card_id": "Chip_Dip___Cream_Cheese_Spread_F1_002",
+    "_verified": true
+  },
+  {
+    "question": "What material is the clear baking dish made of? A. Plastic B. Metal C. Glass D. Cardboard",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      0,
+      3,
+      7,
+      9
+    ],
+    "visibility_type": "persistent",
+    "family": "F2",
+    "card_id": "Chip_Dip___Cream_Cheese_Spread_F2_003",
+    "_verified": true
+  },
+  {
+    "question": "What entities are present and what are they doing?",
+    "canonical_answer": "A clear rectangular glass baking dish sits on a dark speckled granite countertop containing a red can of Hormel Chili with a yellow lid. A blue box of Great Value Cream Cheese is placed next to the chili can inside the dish. A clear plastic container filled with shredded yellow cheese is positioned to the left of the baking dish.",
+    "answer_form": "descriptive",
+    "support_chunks": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "visibility_type": "persistent",
+    "family": "S1",
+    "card_id": "Chip_Dip___Cream_Cheese_Spread_S1_004",
+    "_verified": true
+  },
+  {
+    "question": "How many hands are visible holding the baking dish?",
+    "canonical_answer": "2",
+    "answer_form": "number",
+    "support_chunks": [
+      28,
+      29
+    ],
+    "visibility_type": "transient",
+    "family": "F3",
+    "card_id": "Chip_Dip___Cream_Cheese_Spread_F3_005",
+    "_verified": true
+  },
+  {
+    "question": "Which of these previously seen items is visible on the countertop in this segment? A. <red and yellow can of Hormel Chili> B. <clear plastic container filled with shredded yellow cheese> C. <red silicone utensil with a cross-shaped handle> D. <blue box of Great Value Cream Cheese>",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      10
+    ],
+    "visibility_type": "transient",
+    "family": "R1",
+    "card_id": "Chip_Dip___Cream_Cheese_Spread_R1_006",
+    "_verified": true
+  },
+  {
+    "question": "Did the video show BOTH a blue cream cheese box AND a red silicone trivet? A. Only the blue box appeared B. Only the red trivet appeared C. Both the blue box and red trivet appeared D. Neither appeared",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      0,
+      7
+    ],
+    "visibility_type": "transient",
+    "family": "CR4",
+    "card_id": "Chip_Dip___Cream_Cheese_Spread_CR4_007",
+    "_verified": true
+  },
+  {
+    "question": "Where is the clear plastic container filled with shredded yellow cheese positioned relative to the glass baking dish in the initial scenes? A. inside the baking dish B. to the left of the baking dish C. on top of the trivet D. under the spray can",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "visibility_type": "persistent",
+    "family": "F4",
+    "card_id": "Chip_Dip___Cream_Cheese_Spread_F4_008",
+    "_verified": true
+  },
+  {
+    "question": "What action is the person performing with the spoon in the glass dish? A. Displaying ingredients B. Showing casserole C. Spreading mixture D. Arranging products",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      20,
+      21,
+      22
+    ],
+    "visibility_type": "transient",
+    "family": "E1",
+    "card_id": "Chip_Dip___Cream_Cheese_Spread_E1_010",
+    "_verified": true
+  },
+  {
+    "question": "Describe the sequence of preparation steps shown in the video, including specific timestamps for when ingredients are added or manipulated.",
+    "canonical_answer": "At 0s, ingredients including chili and cream cheese are displayed on the counter; at 14s, a hand sprays the inside of the glass baking dish; at 16s, a block of cream cheese is placed into the dish on a red trivet; at 18s, a block of butter sits inside the glass dish on the countertop.",
+    "answer_form": "descriptive",
+    "support_chunks": [
+      0,
+      7,
+      8,
+      9
+    ],
+    "visibility_type": "transient",
+    "family": "M1",
+    "card_id": "Chip_Dip___Cream_Cheese_Spread_M1_011",
+    "_verified": true
+  },
+  {
+    "question": "Has the shredded cheese topping melted yet?",
+    "canonical_answer": "Yes",
+    "answer_form": "binary",
+    "support_chunks": [
+      30,
+      31,
+      32,
+      33,
+      34
+    ],
+    "visibility_type": "persistent",
+    "family": "E2",
+    "card_id": "Chip_Dip___Cream_Cheese_Spread_E2_012",
+    "_verified": true
+  },
+  {
+    "question": "What action is being performed in this clip? A. Spreading orange mixture over white layer B. Placing block of cream cheese into dish C. Pouring shredded yellow cheese onto the sauce D. Pressing down on block of pale yellow food",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      24,
+      25,
+      26
+    ],
+    "visibility_type": "transient",
+    "family": "E2",
+    "card_id": "Chip_Dip___Cream_Cheese_Spread_E2_013",
+    "_verified": true
+  },
+  {
+    "question": "How has the state of the cream cheese changed between the early and later clips? A. It remains sealed in its blue packaging. B. It changes from a boxed package to an unwrapped block. C. It changes from a liquid form to a solid can. D. It changes from shredded yellow cheese to a white block.",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      2,
+      8
+    ],
+    "visibility_type": "transient",
+    "family": "C1",
+    "card_id": "Chip_Dip___Cream_Cheese_Spread_C1_014",
+    "_verified": true
+  },
+  {
+    "question": "Has the step 'pour shredded cheese' been done by now?",
+    "canonical_answer": "Yes",
+    "answer_form": "binary",
+    "support_chunks": [
+      24,
+      25,
+      26
+    ],
+    "visibility_type": "transient",
+    "step_chunk": 24,
+    "step_label": "pour shredded cheese",
+    "family": "F7",
+    "card_id": "Chip_Dip___Cream_Cheese_Spread_F7_019",
+    "_verified": true
+  },
+  {
+    "question": "What temperature was the oven set to for baking this dish? A. 350 degrees B. 400 degrees C. Unable to answer D. 425 degrees",
+    "canonical_answer": "C",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      0,
+      30
+    ],
+    "visibility_type": "persistent",
+    "family": "N1",
+    "card_id": "Chip_Dip___Cream_Cheese_Spread_N1_022",
+    "_verified": true
+  },
+  {
+    "question": "What brand of shredded cheese was used in the recipe? A. Kraft B. Unable to answer C. Sargento D. Tillamook",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      0,
+      3,
+      6,
+      24,
+      27
+    ],
+    "visibility_type": "persistent",
+    "family": "N1",
+    "card_id": "Chip_Dip___Cream_Cheese_Spread_N1_023",
+    "_verified": true
+  },
+  {
+    "question": "What dish is being prepared? A. Frito Pie B. Chili Cheese Dip C. Chili Macaroni D. Chili Dog Casserole",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      0,
+      8,
+      14,
+      18
+    ],
+    "visibility_type": "persistent",
+    "family": "CR3",
+    "card_id": "Chip_Dip___Cream_Cheese_Spread_CR3_024",
+    "_verified": true
+  },
+  {
+    "question": "Given what is visible so far, could the person begin assembling the chili cheese casserole? A. Yes — baking dish, chili can, cream cheese, and shredded cheese are all present B. No — no glass baking dish visible on the counter C. No — no can of chili visible among the items D. No — no box of cream cheese visible to use",
+    "canonical_answer": "A",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "visibility_type": "persistent",
+    "family": "CR6",
+    "card_id": "Chip_Dip___Cream_Cheese_Spread_CR6_025",
+    "_verified": true
+  },
+  {
+    "question": "After the orange mixture is spread over the dish, where is the white creamy layer? A. On top of the orange mixture B. Under the orange mixture C. Inside the cream cheese box D. On the granite countertop",
+    "canonical_answer": "B",
+    "answer_form": "multiple_choice",
+    "support_chunks": [
+      22,
+      23,
+      24,
+      25,
+      26
+    ],
+    "visibility_type": "transient",
+    "occlusion_chunk": 20,
+    "resolve_chunk": 24,
+    "family": "CR7",
+    "card_id": "Chip_Dip___Cream_Cheese_Spread_CR7_026",
+    "_verified": true
+  }
+]
