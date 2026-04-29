@@ -1059,6 +1059,15 @@ def plan_trajectories(
     # v12.0 dynamic target: 1 trajectory per 30 chunks (~60s) — research-
     # backed (16-benchmark survey: streaming median = 1 q/min, MMDuet2 RL
     # convergence = 3.3 q/video). With 2.6-min videos this yields ~2-3 traj.
+    # REVERTED (2026-04-30): user audit "2-3 trajectories is reasonable".
+    # Previous TRAJ_DIVISOR=20 + min_floor=3 attempt produced 3-4 trajs/video
+    # which felt too dense for a streaming-QA agent. Restore v12.0 formula:
+    #   30  chunks → max(2, 1) = 2 trajs
+    #   60  chunks → max(2, 2) = 2 trajs
+    #   73  chunks → max(2, 2) = 2 trajs (median 73-chunk video)
+    #   90  chunks → max(2, 3) = 3 trajs
+    #   150 chunks → max(2, 5) = 5 trajs (capped)
+    # Distribution: 78% videos get 2 trajs, 21% get 3, ~5% get 4-5.
     target = min(max(2, num_chunks // 30), MAX_TRAJECTORIES_PER_VIDEO)
     max_placements_per_traj = min(
         max_placements_per_traj,
