@@ -393,6 +393,83 @@ def test_trajectory_outcome_v124_empty_questions():
     print("✓ trajectory_outcome_v124 empty-questions")
 
 
+def test_trajectory_outcome_v124_multi_response_per_ask():
+    """v12.4 multi-response: F7-style card with 4 ask_chunks. Model answers
+    at 3 of 4 → outcome = 0.75 (not 1.0 as a fused-window would give)."""
+    from thinkstream.trainer.v12_rewards import compute_trajectory_outcome_v12 as f
+
+    rollout = [
+        # Question's ask_chunks = [40, 41, 42, 45]
+        {"chunk_idx": 40, "kind": "answer", "answer_text": "Yes"},   # ask 40 ✓
+        {"chunk_idx": 41, "kind": "answer", "answer_text": "Yes"},   # ask 41 ✓
+        {"chunk_idx": 42, "kind": "answer", "answer_text": ""},      # ask 42 ✗ (silent)
+        # ask 45 — model answers at chunk 46 (within window)
+        {"chunk_idx": 45, "kind": "answer", "answer_text": ""},
+        {"chunk_idx": 46, "kind": "answer", "answer_text": "Yes"},   # ask 45 ✓ (late within window)
+    ]
+    questions = [{
+        "card_id": "F7_001", "gold_answer": "Yes",
+        "answer_form": "binary", "ask_chunks": [40, 41, 42, 45],
+    }]
+    res = f(rollout, questions, answer_window_chunks=5)
+    # Per-ask scores: 1, 1, 0, 1 → mean 0.75
+    assert abs(res["outcome"] - 0.75) < 1e-6, res
+    assert res["n_questions"] == 1
+    # n_answered: 1 (ask40) + 1 (ask41) + 0 (ask42 silent) + 1 (ask45 via 46) = 3
+    assert res["n_answered"] == 3
+    assert res["n_correct"] == 3
+    print(f"✓ trajectory_outcome_v124 multi-response 3/4 = {res['outcome']:.3f}")
+
+
+def test_trajectory_outcome_v124_multi_response_no_overlap():
+    """v12.4 — a late answer at ask_2 must NOT also count for ask_1's window."""
+    from thinkstream.trainer.v12_rewards import compute_trajectory_outcome_v12 as f
+
+    rollout = [
+        # ask_chunks=[10, 12], window_chunks=5
+        # Model is silent at chunk 10 (ask_1).
+        # Model answers at chunk 12 (ask_2) — should ONLY count for ask_2,
+        # not also for ask_1 which had window [10, 11] (next ask − 1).
+        {"chunk_idx": 10, "kind": "answer", "answer_text": ""},
+        {"chunk_idx": 11, "kind": "answer", "answer_text": ""},
+        {"chunk_idx": 12, "kind": "answer", "answer_text": "Yes"},
+    ]
+    questions = [{
+        "card_id": "M1", "gold_answer": "Yes",
+        "answer_form": "binary", "ask_chunks": [10, 12],
+    }]
+    res = f(rollout, questions, answer_window_chunks=5)
+    # ask_1 (chunk 10): window [10, 11] (since next ask=12, so window_end=11)
+    #   → no answer found → score 0
+    # ask_2 (chunk 12): window [12, 17] → answer "Yes" → score 1
+    # mean: 0.5
+    assert abs(res["outcome"] - 0.5) < 1e-6, (
+        f"expected 0.5 (only ask_2 satisfied), got {res['outcome']:.3f}; "
+        f"per_q_outcomes={res.get('per_q_outcomes')}"
+    )
+    assert res["n_answered"] == 1
+    assert res["n_correct"] == 1
+    print(f"✓ trajectory_outcome_v124 non-overlap windows = {res['outcome']:.3f}")
+
+
+def test_trajectory_outcome_v124_single_response_unchanged():
+    """v12.4 — single-response cards (91% of questions) should behave the same
+    as v12.3 semantics: window = [ask, ask + answer_window]."""
+    from thinkstream.trainer.v12_rewards import compute_trajectory_outcome_v12 as f
+
+    rollout = [
+        {"chunk_idx": 4, "kind": "answer", "answer_text": ""},
+        {"chunk_idx": 5, "kind": "answer", "answer_text": "red apron"},
+    ]
+    questions = [{
+        "card_id": "F1", "gold_answer": "red apron",
+        "answer_form": "literal", "ask_chunks": [5],
+    }]
+    res = f(rollout, questions, answer_window_chunks=5)
+    assert res["outcome"] == 1.0
+    print("✓ trajectory_outcome_v124 single-response unchanged")
+
+
 def test_per_chunk_silent_quality_v124():
     """v12.4 per-chunk silent_quality from gold_action_per_chunk map."""
     from thinkstream.trainer.v12_rewards import compute_per_chunk_silent_quality_v12 as f
@@ -475,6 +552,9 @@ if __name__ == "__main__":
     test_trajectory_outcome_v124_single_question()
     test_trajectory_outcome_v124_multi_question_mixed()
     test_trajectory_outcome_v124_empty_questions()
+    test_trajectory_outcome_v124_multi_response_per_ask()
+    test_trajectory_outcome_v124_multi_response_no_overlap()
+    test_trajectory_outcome_v124_single_response_unchanged()
     test_per_chunk_silent_quality_v124()
     test_per_chunk_silent_quality_perfect_silence()
     test_silent_quality_v12_complements_outcome()

@@ -301,44 +301,69 @@ def compute_trajectory_outcome_v12(
     n_correct = 0
 
     for q in trajectory_questions:
-        ask_chunks = q.get("ask_chunks") or []
+        ask_chunks = sorted(q.get("ask_chunks") or [])
         if not ask_chunks:
             # No canonical ask_chunk — treat as unanswerable, score 0.
             per_q_outcomes.append(0.0)
             continue
-        # Window: first ask_chunk to ask_chunk + answer_window
-        ask_start = min(ask_chunks)
-        ask_end = max(ask_chunks) + answer_window_chunks
 
-        # Find the FIRST non-empty answer in the window
-        model_answer = None
-        for ci in range(ask_start, ask_end + 1):
-            out = by_chunk.get(ci)
-            if out is None:
+        # v12.4 multi-response handling (user feedback 2026-04-29):
+        #   F7 step-progress + M1 descriptive multi-probe families repeat
+        #   the same question at multiple chunks (e.g., ask_chunks=[40,41,42,45]).
+        #   pass3c emits independent response samples at each ask_chunk →
+        #   the model must answer at EACH ask, not just the first.
+        #
+        # Score each ask_chunk INDEPENDENTLY with a NON-OVERLAPPING window:
+        #   ask_i window = [ask_i, min(ask_{i+1} - 1, ask_i + answer_window)]
+        # This prevents the answer at ask_2 from also satisfying ask_1's window.
+        # Question's outcome = mean over its ask_chunks (each ask = 1 chance).
+        #
+        # Single-response cards (most: 91% of questions) have ask_chunks of
+        # length 1 → window = [ask, ask + answer_window], same as v12.3 semantic.
+        per_ask_scores: List[float] = []
+        for i, ask_chunk in enumerate(ask_chunks):
+            if i + 1 < len(ask_chunks):
+                # Multi-response: window ends right before next ask
+                window_end = min(
+                    ask_chunks[i + 1] - 1,
+                    ask_chunk + answer_window_chunks,
+                )
+            else:
+                window_end = ask_chunk + answer_window_chunks
+            # Find the FIRST non-empty answer in this ask's window
+            model_answer = None
+            for ci in range(ask_chunk, window_end + 1):
+                out = by_chunk.get(ci)
+                if out is None:
+                    continue
+                if out.get("kind") == "answer" and out.get("answer_text"):
+                    model_answer = out["answer_text"]
+                    break
+            if model_answer is None:
+                per_ask_scores.append(0.0)
                 continue
-            if out.get("kind") == "answer" and out.get("answer_text"):
-                model_answer = out["answer_text"]
-                break
-
-        if model_answer is None:
-            per_q_outcomes.append(0.0)
-            continue
-        n_answered += 1
-
-        # Score this question's answer
-        if answer_form_judge is not None:
-            score = float(answer_form_judge(
-                model_answer, q.get("gold_answer", ""),
-                q.get("answer_form", ""),
-            ))
-        else:
-            score = compute_outcome_reward_v12(
-                model_answer, q.get("gold_answer", ""),
-                answer_form=q.get("answer_form", ""),
-            )
-        per_q_outcomes.append(score)
-        if score >= 1.0:
-            n_correct += 1
+            n_answered += 1
+            if answer_form_judge is not None:
+                ask_score = float(answer_form_judge(
+                    model_answer, q.get("gold_answer", ""),
+                    q.get("answer_form", ""),
+                ))
+            else:
+                ask_score = compute_outcome_reward_v12(
+                    model_answer, q.get("gold_answer", ""),
+                    answer_form=q.get("answer_form", ""),
+                )
+            if ask_score >= 1.0:
+                n_correct += 1
+            per_ask_scores.append(ask_score)
+        # Question outcome = mean over its asks (gives multi-response questions
+        # higher weight in the average than single-response, which matches
+        # their higher density of supervision signal).
+        q_outcome = (
+            sum(per_ask_scores) / len(per_ask_scores)
+            if per_ask_scores else 0.0
+        )
+        per_q_outcomes.append(q_outcome)
 
     mean_outcome = sum(per_q_outcomes) / len(per_q_outcomes)
     return {

@@ -1249,31 +1249,47 @@ def _calc_rewards_v12_trajectory(
             # Mask=0 if trajectory has no questions (base-only)
             all_masks["outcome"].append(1.0 if questions else 0.0)
 
-            # ── timing (averaged over questions) ──
+            # ── timing (per-ask-chunk averaged) ──
+            # v12.4 multi-response handling: each ask_chunk gets its own
+            # non-overlapping window for timing. Mirrors per-ask scoring
+            # in compute_trajectory_outcome_v12 above.
             per_q_timings = []
-            for q, q_score in zip(questions, outcome_res.get("per_q_outcomes", [])):
-                ask_chunks = q.get("ask_chunks") or []
+            by_chunk_idx = {
+                out.get("chunk_idx"): out
+                for out in chunk_outputs
+                if out.get("chunk_idx") is not None
+            }
+            for q in questions:
+                ask_chunks = sorted(q.get("ask_chunks") or [])
                 if not ask_chunks:
                     continue
-                # Find model's answer chunk for this question
-                model_chunk = None
-                ask_start = min(ask_chunks)
-                ask_end = max(ask_chunks) + answer_window_chunks
-                for out in chunk_outputs:
-                    ci = out.get("chunk_idx")
-                    if ci is None:
-                        continue
-                    if (ci is not None and ask_start <= ci <= ask_end
-                            and out.get("kind") == "answer"
-                            and out.get("answer_text")):
-                        model_chunk = ci
-                        break
-                t = _compute_timing_reward_v12(
-                    answer_chunk=model_chunk,
-                    visible_start_chunk=ask_start,
-                    visible_end_chunk=ask_end,
-                )
-                per_q_timings.append(t)
+                per_ask_t: List[float] = []
+                for i, ask_chunk in enumerate(ask_chunks):
+                    if i + 1 < len(ask_chunks):
+                        window_end = min(
+                            ask_chunks[i + 1] - 1,
+                            ask_chunk + answer_window_chunks,
+                        )
+                    else:
+                        window_end = ask_chunk + answer_window_chunks
+                    # Find model's first answer in this ask's window
+                    model_chunk = None
+                    for ci in range(ask_chunk, window_end + 1):
+                        out = by_chunk_idx.get(ci)
+                        if out is None:
+                            continue
+                        if (out.get("kind") == "answer"
+                                and out.get("answer_text")):
+                            model_chunk = ci
+                            break
+                    t = _compute_timing_reward_v12(
+                        answer_chunk=model_chunk,
+                        visible_start_chunk=ask_chunk,
+                        visible_end_chunk=window_end,
+                    )
+                    per_ask_t.append(t)
+                if per_ask_t:
+                    per_q_timings.append(sum(per_ask_t) / len(per_ask_t))
             timing_avg = (
                 sum(per_q_timings) / len(per_q_timings)
                 if per_q_timings else 0.0
