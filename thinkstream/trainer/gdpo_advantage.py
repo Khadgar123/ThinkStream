@@ -55,6 +55,55 @@ DEFAULT_REWARD_WEIGHTS: Dict[str, float] = {
 }
 
 
+# ===========================================================================
+# v12.0 reward design — agentic reframing + timing-bucket reward.
+# ===========================================================================
+# 5 components (vs v11's 8) per design doc §5 + survey verdict in
+# docs/v12.0_protocol_migration_design.md §11. Drops:
+#   - recall_quality / recall_hit_rate / range_tightness → folded into
+#     `outcome` (incorrect recall → wrong answer → outcome=0)
+#   - silent_quality / num_responses → folded into `timing` (silent through
+#     visibility window = -0.5; answer in window = +1)
+#   - overflow_pen → replaced by compress_quality on the compress turn itself
+#
+# What's NEW: explicit `timing` component with bucket structure
+# (early=-1, on_time=+1, late_partial=+0.5, missed=-0.5). NO prior released
+# streaming-video paper or agentic RL paper has this — confirmed by the
+# v12.0 survey. ThinkStream is the first.
+#
+# Multi-level GRPO advantage aggregation (ReMemR1 ICLR'26 pattern):
+#   final_advantage = α · outcome_advantage + (1−α) · state_advantage
+#   outcome_advantage   = GRPO-norm(correctness, group_by=video_uid)
+#   state_advantage     = GRPO-norm(timing + format + compress_q − spam,
+#                                   group_by=(video_uid, chunk_idx))
+#   default α = 0.7 (ReMemR1 default 0.8 is HotpotQA — ThinkStream has
+#   stronger per-step signal so we skew toward state).
+#
+# IMPORTANT — spam is ADDITIVE, NOT MULTIPLICATIVE.
+# DeepEyesV2's `(1 - search_penalty) * acc` shape under-penalises when
+# acc=0 (spam free) and over-penalises when acc=1 (already getting full
+# reward). Linear additive `−spam_w * spam_score` decouples cleanly.
+V12_REWARD_DICT_KEYS: tuple = (
+    "outcome",          # 0/1 final answer correctness (LLM-judge or rule)
+    "timing",           # bucketed timing reward (-1 early / +1 on / +0.5 late / -0.5 missed)
+    "format",           # 0/1 — tags balanced, JSON parses, exactly one terminal
+    "spam",             # >=0 — penalty for excess tool calls (additive)
+    "compress_quality", # 0..1 — only on compress turns, ROUGE/coverage vs gold summary
+)
+
+V12_DEFAULT_REWARD_WEIGHTS: Dict[str, float] = {
+    "outcome":          1.0,    # primary signal
+    "timing":           0.3,    # explicit time penalty/bonus
+    "format":           0.1,    # weak — let outcome carry it
+    "spam":            -0.2,    # NEGATIVE — additive penalty (sign in weight,
+                                #            so r = sum(w * x) is the formula)
+    "compress_quality": 0.2,    # only contributes when chunk has compress action
+}
+
+# Multi-level advantage mixing coefficient. final_adv = α·outcome + (1-α)·state
+V12_ADVANTAGE_MIX_ALPHA: float = 0.7
+
+
 def per_reward_group_norm(
     reward_col: torch.Tensor,
     mask_col: torch.Tensor,

@@ -908,11 +908,34 @@ def rollout(
 from thinkstream.trainer.gdpo_advantage import (
     REWARD_DICT_KEYS,
     DEFAULT_REWARD_WEIGHTS,
+    V12_REWARD_DICT_KEYS,
+    V12_DEFAULT_REWARD_WEIGHTS,
+    V12_ADVANTAGE_MIX_ALPHA,
     per_reward_group_norm as _gdpo_per_reward_group_norm,
     aggregate_gdpo as _gdpo_aggregate,
     aggregate_grpo as _grpo_aggregate,
     aggregate_advantages as _aggregate_advantages,
 )
+
+# v12.0 reward components — pure helpers in trainer/v12_rewards.py so unit
+# tests can run on CPU without the model stack. Re-exported here for the
+# rollout / GRPO caller convenience.
+from thinkstream.trainer.v12_rewards import (
+    compute_outcome_reward_v12 as _compute_outcome_reward_v12,
+    compute_timing_reward_v12 as _compute_timing_reward_v12,
+    compute_format_reward_v12 as _compute_format_reward_v12,
+    compute_spam_score_v12 as _compute_spam_score_v12,
+    compute_compress_quality_v12 as _compute_compress_quality_v12,
+    aggregate_v12_advantages as _aggregate_v12_advantages,
+)
+
+
+# ===========================================================================
+# v12.0 reward components: see thinkstream/trainer/v12_rewards.py
+# Re-imported above for in-grpo callers. Functions defined inline here are
+# v11 components only.
+# ===========================================================================
+
 
 
 def _compute_silent_quality_reward(
