@@ -932,6 +932,22 @@ from thinkstream.trainer.v12_rewards import (
     aggregate_v12_advantages as _aggregate_v12_advantages,
 )
 
+# v12.2 chunk-level rollout (MemAgent recurrent pattern + ReMemR1 mixed
+# advantage). The `aggregate_v12_advantages` re-export above is the v1
+# implementation kept for backward compatibility (singleton groups → adv=0);
+# `compute_mixed_advantage_v12` here is the line-by-line ReMemR1 port
+# (singleton groups → preserve raw signal). Trainer can opt into v2 once
+# the streaming rollout is wired through ChunkLevelRolloutLoop.
+from thinkstream.trainer.v12_rollout import (
+    ChunkLevelRolloutConfig as _V12RolloutConfig,
+    ChunkLevelRolloutLoop as _V12ChunkLevelRolloutLoop,
+    VideoTrajectoryState as _V12VideoTrajectoryState,
+    compute_1d_grpo_advantage as _compute_1d_grpo_advantage_remem,
+    compute_mixed_advantage_v12 as _compute_mixed_advantage_v12_remem,
+    chunk_results_from_loop_result as _chunk_results_from_loop_result,
+    default_v12_update_state as _default_v12_update_state,
+)
+
 
 # ===========================================================================
 # v12.0 reward components: see thinkstream/trainer/v12_rewards.py
