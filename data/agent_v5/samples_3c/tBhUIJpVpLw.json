@@ -1,0 +1,2731 @@
+[
+  {
+    "chunk_idx": 0,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A blonde man in a black cap and white shirt stands at a green-walled kitchen counter. He looks down handling an object on a red cutting board. His hands shift as he works. Behind him, a microwave and bottles sit on the counter near cabinets.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 1,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man leans his upper body closer to the counter surface. His hands press down on the red cutting board. A silver bowl appears in the bottom right corner. He continues looking down at the workspace. White cabinets and green walls stay visible behind him. His posture shifts slightly forward during the task.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 2,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera view shifts lower, revealing a white stovetop with a large black pot and a silver pot. The man's hand reaches down to adjust a knob on the stove front. On the adjacent red cutting board, a potato and a black-handled knife rest near various bottles and jars. The man's torso remains visible on the left.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 5,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues to operate the silver garlic press with both hands, squeezing the handles together firmly. The press is positioned directly over a small glass jar sitting on the red cutting board. His arms are extended forward as he applies pressure to the tool, crushing contents into the container below.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 6,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues to firmly squeeze the handles of the silver garlic press with both hands. He maintains the tool's position directly over the small glass jar on the red cutting board, applying pressure to crush the contents. His arms remain extended forward while the surrounding kitchen items stay stationary.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 7,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man continues to squeeze the silver garlic press with both hands over the small jar on the red cutting board. His arms remain extended forward, applying pressure to the tool. The surrounding kitchen items, including the black pot and various spice jars, remain stationary in the background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [0, 14], \"text\": \"[0-4] A blonde man in a black cap and white shirt stands at a green-walled kitchen counter, handling an object on a red cutting board. He leans forward, pressing down on the workspace as a silver bowl appears in the corner. White cabinets and a microwave are visible behind him.\\n[4-8] The camera lowers to show a white stovetop with a large black pot and silver pot. The man adjusts a stove knob. On the red cutting board, a potato and black-handled knife rest near bottles and jars. He reaches for a small jar behind the black pot.\\n[8-14] Holding a silver metal garlic press with both hands, the man positions it over the red cutting board near a small glass jar. He squeezes the handles firmly, extending his arms to crush ingredients into the container, maintaining pressure while surrounding kitchen items remain stationary.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='0-14'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The man is using a knife to cut a brown food item on a red cutting board. | The man is wearing a black baseball cap. | The kitchen has green walls and white cabinets. | A stainless steel sink is visible to the left of the man. | A black microwave sits on the counter behind the cutting board. | A man is standing at a kitchen counter. | The man is using his hands to prepare food on a red cutting board. | A stainless steel sink is visible to the left of the man. | The kitchen has green walls and white cabinets. | person turns a knob on the white stove | large dark grey pot is on the front burner | silver pot is on the back burner",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 8,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues rotating the handle of the silver manual can opener attached to the small can on the red cutting board. His hands twist the mechanism steadily to cut the lid, while the black pot and various spice jars remain stationary on the white stovetop and counter behind the workspace.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 11,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man tilts the opened can over the large black pot, emptying the red contents into the vessel. He uses his right hand to scrape the inside of the can, ensuring all the sauce is removed while his left hand holds the metal container steady above the stove.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 12,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man places his right hand directly into the large black pot on the stovetop, stirring the dark red liquid mixture he just poured. His arm moves in a circular motion within the vessel, agitating the contents while the red cutting board and various spice jars remain stationary on the counter behind the stove.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 13,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man withdraws his hand from the large black pot on the white stovetop, ending the stirring action. The dark red liquid and chunks remain inside the vessel. The red cutting board with the silver can opener and spice jars stays stationary in the background near the microwave and green wall.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 14,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A hand enters from the left, reaching toward the silver manual can opener resting on the red cutting board. The large black pot remains on the white stovetop, filled with dark red liquid and chunks. Various spice jars and a silver saucepan sit stationary on the counter and stove behind the main cooking vessel.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [14, 26], \"text\": \"[14-20] The man rotates the handle of a silver manual can opener attached to a small can on a red cutting board. After cutting the lid, he releases the tool onto the board and reaches for the can. [20-24] He lifts the opened can, which has a tomato label, and tilts it over a large black pot on the stove. He pours the red contents into the vessel, using his hand to scrape the inside and ensure all the sauce is removed. [24-26] The man places his right hand directly into the large black pot, stirring the dark red liquid mixture in a circular motion while spice jars remain stationary in the background.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='14-26'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A person is using a manual can opener to open a metal can. | The can is resting on a red cutting board. | A black pot is sitting on the counter to the right of the cutting board. | A person is using a manual can opener to open a metal can. | The can is resting on a red cutting board. | A black pot is visible in the foreground. | Various cooking ingredients, including oil and spices, are arranged on the counter behind the cutting board. | A person is using a silver manual can opener to cut the lid of a metal can. | The can has a label depicting red tomatoes. | The can opener is resting on the red cutting board in the second frame. | A black pot is positioned on the counter to the right of the cutting board. | The person is using both hands to crack an egg into the black pot.",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 15,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man holds a black-handled knife and begins cutting a brown vegetable on the red cutting board. The large black pot filled with dark red liquid sits on the white stovetop in the foreground. Spice jars and the silver can opener remain stationary on the counter behind the cutting area.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 16,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man uses a black-handled knife to slice a brown vegetable on the red cutting board, cutting off a small piece. The large black pot containing dark red liquid remains in the foreground on the stove, with spice jars and a silver can opener visible on the counter behind.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 17,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man places the black-handled knife on the red cutting board next to the cut vegetable piece. He reaches his left hand toward a white container near the microwave while his right hand remains near the chopped ingredient on the board. The large black pot sits on the stove in the foreground.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 18,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man holds a silver peeler in his right hand and begins peeling the top of a brown vegetable standing upright on the red cutting board. A black-handled knife rests nearby on the board, while a large black pot sits on the stove in the foreground.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 19,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board with a silver peeler, using both hands to stabilize it while scraping the skin. The black-handled knife rests nearby on the board, and the large black pot remains on the stove in the foreground.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 20,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board with a silver peeler. He holds the vegetable steady with his left hand while scraping downwards with his right, causing thin strips of skin to accumulate on the board near the black knife.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [28, 36], \"text\": \"[28-30] A hand reaches toward a silver manual can opener resting on a red cutting board, next to a large black pot filled with dark red liquid and chunks on a white stovetop. [30-34] The man uses a black-handled knife to slice a brown vegetable on the red board, cutting off a small piece, while spice jars and a silver saucepan sit stationary in the background. [34-36] He places the knife on the cutting board next to the cut vegetable piece and reaches his left hand toward a white container near a microwave, leaving the chopped ingredient on the board.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='28-36'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A hand is moving near the red cutting board on the left side of the frame. | A dark grey pot containing dark red liquid and sliced vegetables sits on the stovetop. | A stainless steel pot is positioned to the right of the grey pot. | Spice jars are lined up in the background behind the pots. | A person is using a knife to cut a potato on a red cutting board. | A large pot containing dark red liquid and beet chunks sits on the stovetop. | A smaller silver pot is positioned to the right of the large pot. | started chopping potato | The person is holding a knife in their right hand and an onion in their left hand. | The person is slicing a piece off the onion on the red cutting board. | A silver microwave is visible in the background behind the cutting area. | A large yellow jug of oil sits on the counter to the right of the microwave.",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 21,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "tBhUIJpVpLw_CR6_024",
+    "sequence_type": "immediate_response",
+    "action": "response",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board, stabilizing it with his left hand while scraping with his right. Thin strips of skin accumulate on the board near the black-handled knife as he works. The large black pot sits on the stove in the foreground, while various spice jars and bottles line the counter behind the cutting board.</think><answer>B</answer>",
+    "queries": [],
+    "user_input": "Given what is visible so far, could the person wearing a white short-sleeved shirt cut the carrot? A. No — no knife visible B. Yes — knife, cutting board, and carrot are all present C. No — no cutting board visible D. No — no carrot visible",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 22,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "tBhUIJpVpLw_CR6_024",
+    "sequence_type": "immediate_response",
+    "action": "silent",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board, scraping downwards with a silver peeler in his right hand. More thin strips of skin accumulate on the board near the black-handled knife. His left hand stabilizes the vegetable as he works, while the large black pot remains stationary on the stove in the foreground.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person wearing a white short-sleeved shirt cut the carrot? A. No — no knife visible B. Yes — knife, cutting board, and carrot are all present C. No — no cutting board visible D. No — no carrot visible",
+        "ask_time": 42,
+        "answers": [
+          {
+            "text": "B",
+            "time": 42
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 23,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board using a silver peeler in his right hand. He holds the vegetable steady with his left hand while scraping downwards, adding more thin strips of skin to the pile near the black-handled knife. The large black pot remains on the stove in the foreground.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person wearing a white short-sleeved shirt cut the carrot? A. No — no knife visible B. Yes — knife, cutting board, and carrot are all present C. No — no cutting board visible D. No — no carrot visible",
+        "ask_time": 42,
+        "answers": [
+          {
+            "text": "B",
+            "time": 42
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 24,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board. He scrapes downwards with a silver peeler in his right hand, adding thin strips of skin to the pile near the black-handled knife. His left hand stabilizes the vegetable, while the large black pot sits stationary on the stove in the foreground.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [26, 44], \"text\": \"[26-28] The man withdraws his hand from a large black pot on a white stovetop, ending the stirring action. Dark red liquid and chunks remain inside. A red cutting board with a silver can opener and spice jars stays stationary near a microwave. [36-44] The man uses a silver peeler to peel a brown vegetable on the red cutting board. He stabilizes it with his left hand while scraping with his right, accumulating skin strips near a black-handled knife. Background items include a microwave, a blue container labeled \\\"SA\\\", an oil bottle, and spice jars. The large black pot sits on the stove in the foreground.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person wearing a white short-sleeved shirt cut the carrot? A. No — no knife visible B. Yes — knife, cutting board, and carrot are all present C. No — no cutting board visible D. No — no carrot visible",
+        "ask_time": 42,
+        "answers": [
+          {
+            "text": "B",
+            "time": 42
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='26-44'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A large dark grey pot sits on the front burner of the stove. | The pot contains a dark red liquid with solid chunks submerged in it. | A smaller silver pot is positioned on the back burner to the right. | A red cutting board is placed on the counter to the left of the stove. | A potato and a garlic press are resting on the red cutting board. | The person is holding a silver vegetable peeler in their right hand. | A brown sweet potato sits on the red cutting board. | A black-handled knife rests on the red cutting board. | The microwave is located behind the food preparation area. | A jar of garlic cloves is visible on the counter to the right. | started peeling phase - holding vegetable peeler | The person is using their hands to peel a small green vegetable over the cutting board.",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 25,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board, scraping downwards with a silver peeler in his right hand. His left hand stabilizes the vegetable as thin strips of skin accumulate near the black-handled knife. The large black pot sits stationary on the stove in the foreground.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person wearing a white short-sleeved shirt cut the carrot? A. No — no knife visible B. Yes — knife, cutting board, and carrot are all present C. No — no cutting board visible D. No — no carrot visible",
+        "ask_time": 42,
+        "answers": [
+          {
+            "text": "B",
+            "time": 42
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 27,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board, scraping downwards with a silver peeler in his right hand. Thin strips of skin accumulate near the black-handled knife as his left hand stabilizes and rotates the vegetable. The large black pot remains stationary on the stove in the foreground.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person wearing a white short-sleeved shirt cut the carrot? A. No — no knife visible B. Yes — knife, cutting board, and carrot are all present C. No — no cutting board visible D. No — no carrot visible",
+        "ask_time": 42,
+        "answers": [
+          {
+            "text": "B",
+            "time": 42
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 28,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board using a silver peeler. He rotates the vegetable with his left hand while scraping downwards with his right, adding thin skin strips to the pile near the black-handled knife. The large black pot sits stationary in the foreground.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person wearing a white short-sleeved shirt cut the carrot? A. No — no knife visible B. Yes — knife, cutting board, and carrot are all present C. No — no cutting board visible D. No — no carrot visible",
+        "ask_time": 42,
+        "answers": [
+          {
+            "text": "B",
+            "time": 42
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 29,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board, holding it with his left hand while scraping downwards with a peeler in his right. Thin strips of skin accumulate near the black-handled knife as he rotates the vegetable. The large black pot remains stationary in the foreground.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [48, 58], \"text\": \"A man continues peeling a brown vegetable on a red cutting board, scraping downwards with a silver peeler in his right hand. His left hand stabilizes and rotates the vegetable as thin strips of skin accumulate in a pile near a black-handled knife. A large black pot sits stationary on the stove in the foreground throughout the process.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person wearing a white short-sleeved shirt cut the carrot? A. No — no knife visible B. Yes — knife, cutting board, and carrot are all present C. No — no cutting board visible D. No — no carrot visible",
+        "ask_time": 42,
+        "answers": [
+          {
+            "text": "B",
+            "time": 42
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='48-58'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The person is using both hands to peel a small orange vegetable over the cutting board. | Orange peels are scattered on the red cutting board. | A knife is resting on the cutting board next to the peels. | Various kitchen ingredients and containers are arranged on the counter behind the cutting board. | A person is using a peeler to remove the skin from an orange vegetable. | Vegetable peels are scattered on the red cutting board. | A knife is lying on the red cutting board. | The salt container has the text 'SA' visible on it. | A person is peeling an orange vegetable over a red cutting board. | Vegetable peels are scattered on the red cutting board. | A knife is resting on the cutting board near the peels. | A large jug of apple cider vinegar is sitting on the counter.",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 30,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the orange vegetable on the red board, scraping downwards with a peeler. He rotates the vegetable in his left hand, depositing more thin skin strips onto the pile near the black knife. The large black pot remains visible in the bottom right corner.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person wearing a white short-sleeved shirt cut the carrot? A. No — no knife visible B. Yes — knife, cutting board, and carrot are all present C. No — no cutting board visible D. No — no carrot visible",
+        "ask_time": 42,
+        "answers": [
+          {
+            "text": "B",
+            "time": 42
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 31,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the orange vegetable, gripping it with his left hand while scraping downwards with a peeler in his right. Thin strips of skin accumulate on the red cutting board near the black-handled knife. The large black pot remains stationary in the bottom right foreground.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person wearing a white short-sleeved shirt cut the carrot? A. No — no knife visible B. Yes — knife, cutting board, and carrot are all present C. No — no cutting board visible D. No — no carrot visible",
+        "ask_time": 42,
+        "answers": [
+          {
+            "text": "B",
+            "time": 42
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 32,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the orange vegetable over the red cutting board, scraping downwards with a peeler in his right hand. He rotates the vegetable in his left hand, depositing more thin strips onto the growing pile of peels near the black-handled knife. Background items remain stationary.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person wearing a white short-sleeved shirt cut the carrot? A. No — no knife visible B. Yes — knife, cutting board, and carrot are all present C. No — no cutting board visible D. No — no carrot visible",
+        "ask_time": 42,
+        "answers": [
+          {
+            "text": "B",
+            "time": 42
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 33,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man stops peeling the orange vegetable and sets the silver peeler down on the red cutting board near the pile of skins. He then picks up the black-handled knife with his right hand while holding the orange vegetable upright with his left, preparing to cut as background items remain stationary.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person wearing a white short-sleeved shirt cut the carrot? A. No — no knife visible B. Yes — knife, cutting board, and carrot are all present C. No — no cutting board visible D. No — no carrot visible",
+        "ask_time": 42,
+        "answers": [
+          {
+            "text": "B",
+            "time": 42
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 34,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man places the peeled orange vegetable upright on the red cutting board. He withdraws his hands from the workspace, leaving the vegetable standing near the black-handled knife and silver peeler. The camera remains fixed on the stationary counter setup with the prepared vegetable and background ingredients.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [58, 66], \"text\": \"[58-66] A man wearing a light-colored shirt stands at a counter, peeling an orange vegetable over a red cutting board. He holds the vegetable in his left hand and uses a peeler in his right hand to scrape downwards, removing thin strips of skin. These peels accumulate on the board near a black-handled knife. The man rotates the vegetable periodically to access unpeeled sections. In the background, a microwave, a salt container labeled 'SA', a dark bottle, a large oil jug, and a bag of ingredients are visible. A metal tool rests on the board's right side. A large black pot remains stationary in the bottom right foreground. The man continues this peeling action consistently throughout the clip, adding to the pile of skins.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person wearing a white short-sleeved shirt cut the carrot? A. No — no knife visible B. Yes — knife, cutting board, and carrot are all present C. No — no cutting board visible D. No — no carrot visible",
+        "ask_time": 42,
+        "answers": [
+          {
+            "text": "B",
+            "time": 42
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='58-66'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "evidence_anchor",
+    "gold_caption": "A person is using a peeler to remove the skin from an orange vegetable over a red cutting board. | Orange vegetable peels are scattered on the red cutting board. | A black-handled knife is resting on the cutting board. | A large yellow jug and a bag of cashews are sitting on the counter to the right of the cutting board. | A blue and white container labeled 'SALT' is visible in the background. | A person is peeling a carrot over a red cutting board. | Carrot peels are accumulating on the cutting board. | A vegetable peeler is resting on the cutting board. | A jug of cooking oil is sitting on the counter. | person is peeling a carrot over a red cutting board | orange carrot peelings are scattered on the red cutting board | a black-handled knife is resting on the cutting board",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 35,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A person wearing a white shirt holds the peeled orange vegetable upright with the left hand and begins slicing the top with a black-handled knife held in the right hand on the red cutting board, resuming food preparation after a brief pause.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person wearing a white short-sleeved shirt cut the carrot? A. No — no knife visible B. Yes — knife, cutting board, and carrot are all present C. No — no cutting board visible D. No — no carrot visible",
+        "ask_time": 42,
+        "answers": [
+          {
+            "text": "B",
+            "time": 42
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 36,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The person slices through the center of the orange vegetable on the red cutting board with a black-handled knife. The left hand holds the vegetable steady while the right hand cuts downward, separating a large chunk. Background items including the oil jug and spice containers remain unchanged on the counter.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person wearing a white short-sleeved shirt cut the carrot? A. No — no knife visible B. Yes — knife, cutting board, and carrot are all present C. No — no cutting board visible D. No — no carrot visible",
+        "ask_time": 42,
+        "answers": [
+          {
+            "text": "B",
+            "time": 42
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 37,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The person holds a small, flat slice of orange vegetable on the red cutting board with their right hand while positioning a black-handled knife over it with their left hand, appearing to prepare for further slicing. The larger remaining vegetable piece sits nearby, and background items like the oil jug and spice containers remain stationary on the counter.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person wearing a white short-sleeved shirt cut the carrot? A. No — no knife visible B. Yes — knife, cutting board, and carrot are all present C. No — no cutting board visible D. No — no carrot visible",
+        "ask_time": 42,
+        "answers": [
+          {
+            "text": "B",
+            "time": 42
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 38,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The person slices a small piece of orange vegetable on the red cutting board using a black-handled knife held in the left hand. The right hand holds the vegetable steady. The knife blade moves downward through the vegetable piece. Background items remain unchanged.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [68, 76], \"text\": \"[68-70] A man places a peeled orange vegetable upright on a red cutting board near a black-handled knife and silver peeler, then withdraws his hands. [70-74] Wearing a white shirt, he resumes food preparation, using his left hand to steady the vegetable and his right hand to wield the knife, slicing off the top and cutting through the center to separate a large chunk. Background items like an oil jug and spice containers remain stationary. [74-76] He switches grip, holding a small flat slice of the vegetable with his right hand while positioning the knife with his left hand, appearing to prepare for further slicing.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person wearing a white short-sleeved shirt cut the carrot? A. No — no knife visible B. Yes — knife, cutting board, and carrot are all present C. No — no cutting board visible D. No — no carrot visible",
+        "ask_time": 42,
+        "answers": [
+          {
+            "text": "B",
+            "time": 42
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='68-76'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "evidence_anchor",
+    "gold_caption": "A person is moving their hands near the left edge of the counter. | A large knife is resting on the red cutting board. | A peeled orange vegetable sits on the cutting board. | A bag of nuts is visible on the right side of the counter. | A person is using a knife to slice an orange vegetable on a red cutting board. | The person holds the vegetable steady with their left hand while cutting with their right. | A bag of nuts and a jug of oil are sitting on the counter in the background. | transitioned from peeling to cutting vegetables | The person is cutting an orange carrot on a red cutting board. | The person moves the cut carrot pieces to the right side of the board. | A bag of cashews sits on the counter next to a bottle of oil. | A blue shaker labeled 'SALT' is visible in the background.",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 39,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The person continues slicing the small piece of orange vegetable on the red cutting board. The left hand holds the black-handled knife, cutting downwards while the right hand stabilizes the vegetable piece. The knife blade slices through the vegetable, creating smaller chunks.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person wearing a white short-sleeved shirt cut the carrot? A. No — no knife visible B. Yes — knife, cutting board, and carrot are all present C. No — no cutting board visible D. No — no carrot visible",
+        "ask_time": 42,
+        "answers": [
+          {
+            "text": "B",
+            "time": 42
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 40,
+    "sample_type": "recall_query",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "tBhUIJpVpLw_E1_010",
+    "sequence_type": "recall_fail_then_found",
+    "action": "recall",
+    "output": "<think>The knife blade completes a downward slice through the orange vegetable piece, separating a small cube. The left hand maintains steady grip on the black handle while the right hand adjusts the vegetable on the red cutting board. More diced pieces join the small pile near the blade as hands move.</think><tool_call>\n{\"name\": \"recall\", \"arguments\": {\"query\": \"blonde man black cap white shirt green-walled kitchen\", \"time_range\": \"0-4\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person wearing a white short-sleeved shirt cut the carrot? A. No — no knife visible B. Yes — knife, cutting board, and carrot are all present C. No — no cutting board visible D. No — no carrot visible",
+        "ask_time": 42,
+        "answers": [
+          {
+            "text": "B",
+            "time": 42
+          }
+        ]
+      },
+      {
+        "question": "What action is the person performing in the first clip?",
+        "ask_time": 80,
+        "answers": []
+      }
+    ],
+    "user_input": "What action is the person performing in the first clip?",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 40,
+    "sample_type": "recall_silent",
+    "prompt_type": "POST_RECALL_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "tBhUIJpVpLw_E1_010",
+    "sequence_type": "recall_fail_then_found",
+    "action": "silent",
+    "output": "<think>The recall source indicates a failure, meaning no matching video segments or frames were retrieved. Consequently, there is no visual evidence available to identify the action performed in the first clip.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person wearing a white short-sleeved shirt cut the carrot? A. No — no knife visible B. Yes — knife, cutting board, and carrot are all present C. No — no cutting board visible D. No — no carrot visible",
+        "ask_time": 42,
+        "answers": [
+          {
+            "text": "B",
+            "time": 42
+          }
+        ]
+      },
+      {
+        "question": "What action is the person performing in the first clip?",
+        "ask_time": 80,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": {
+      "source": "failure",
+      "text_content": "No matching results found.",
+      "returned_chunks": []
+    },
+    "protocol_version": "v12",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 41,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "tBhUIJpVpLw_E1_010",
+    "sequence_type": "recall_fail_then_found",
+    "action": "silent",
+    "output": "<think>A person slices an orange vegetable chunk on a red cutting board with a black-handled knife. The left hand guides the blade downwards while the right hand stabilizes the piece. Diced fragments join the existing pile. The background oil jug and salt container remain stationary.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person wearing a white short-sleeved shirt cut the carrot? A. No — no knife visible B. Yes — knife, cutting board, and carrot are all present C. No — no cutting board visible D. No — no carrot visible",
+        "ask_time": 42,
+        "answers": [
+          {
+            "text": "B",
+            "time": 42
+          }
+        ]
+      },
+      {
+        "question": "What action is the person performing in the first clip?",
+        "ask_time": 80,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 41,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "tBhUIJpVpLw_E1_010",
+    "sequence_type": "recall_fail_then_found",
+    "action": "response",
+    "output": "<think>Person slices orange vegetable on red board with black-handled knife. Left hand guides blade downwards while right hand stabilizes piece. Diced fragments accumulate into pile as knife cuts through. Background oil jug and salt container remain stationary.</think><answer>cutting food</answer>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person wearing a white short-sleeved shirt cut the carrot? A. No — no knife visible B. Yes — knife, cutting board, and carrot are all present C. No — no cutting board visible D. No — no carrot visible",
+        "ask_time": 42,
+        "answers": [
+          {
+            "text": "B",
+            "time": 42
+          }
+        ]
+      },
+      {
+        "question": "What action is the person performing in the first clip?",
+        "ask_time": 80,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 41,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "tBhUIJpVpLw_E1_010",
+    "sequence_type": "recall_fail_then_found",
+    "action": "silent",
+    "output": "<think>The person slices the orange vegetable chunk on the red cutting board. The left hand guides the black-handled knife downwards while the right hand stabilizes the piece. Diced fragments join the existing pile as the blade cuts through the vegetable. Background items like the oil jug and salt container remain stationary.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person wearing a white short-sleeved shirt cut the carrot? A. No — no knife visible B. Yes — knife, cutting board, and carrot are all present C. No — no cutting board visible D. No — no carrot visible",
+        "ask_time": 42,
+        "answers": [
+          {
+            "text": "B",
+            "time": 42
+          }
+        ]
+      },
+      {
+        "question": "What action is the person performing in the first clip?",
+        "ask_time": 80,
+        "answers": [
+          {
+            "text": "cutting food",
+            "time": 82
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 0,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A blonde man in a black cap and white shirt stands at a green-walled kitchen counter. He looks down handling an object on a red cutting board. His hands shift as he works. Behind him, a microwave and bottles sit on the counter near cabinets.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 1,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man leans his upper body closer to the counter surface. His hands press down on the red cutting board. A silver bowl appears in the bottom right corner. He continues looking down at the workspace. White cabinets and green walls stay visible behind him. His posture shifts slightly forward during the task.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 2,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera view shifts lower, revealing a white stovetop with a large black pot and a silver pot. The man's hand reaches down to adjust a knob on the stove front. On the adjacent red cutting board, a potato and a black-handled knife rest near various bottles and jars. The man's torso remains visible on the left.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "warmup",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 5,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues to operate the silver garlic press with both hands, squeezing the handles together firmly. The press is positioned directly over a small glass jar sitting on the red cutting board. His arms are extended forward as he applies pressure to the tool, crushing contents into the container below.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 6,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues to firmly squeeze the handles of the silver garlic press with both hands. He maintains the tool's position directly over the small glass jar on the red cutting board, applying pressure to crush the contents. His arms remain extended forward while the surrounding kitchen items stay stationary.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 7,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man continues to squeeze the silver garlic press with both hands over the small jar on the red cutting board. His arms remain extended forward, applying pressure to the tool. The surrounding kitchen items, including the black pot and various spice jars, remain stationary in the background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [0, 14], \"text\": \"[0-4] A blonde man in a black cap and white shirt stands at a green-walled kitchen counter, handling an object on a red cutting board. He leans forward, pressing down on the workspace as a silver bowl appears in the corner. White cabinets and a microwave are visible behind him.\\n[4-8] The camera lowers to show a white stovetop with a large black pot and silver pot. The man adjusts a stove knob. On the red cutting board, a potato and black-handled knife rest near bottles and jars. He reaches for a small jar behind the black pot.\\n[8-14] Holding a silver metal garlic press with both hands, the man positions it over the red cutting board near a small glass jar. He squeezes the handles firmly, extending his arms to crush ingredients into the container, maintaining pressure while surrounding kitchen items remain stationary.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='0-14'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The man is using a knife to cut a brown food item on a red cutting board. | The man is wearing a black baseball cap. | The kitchen has green walls and white cabinets. | A stainless steel sink is visible to the left of the man. | A black microwave sits on the counter behind the cutting board. | A man is standing at a kitchen counter. | The man is using his hands to prepare food on a red cutting board. | A stainless steel sink is visible to the left of the man. | The kitchen has green walls and white cabinets. | person turns a knob on the white stove | large dark grey pot is on the front burner | silver pot is on the back burner",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 8,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues rotating the handle of the silver manual can opener attached to the small can on the red cutting board. His hands twist the mechanism steadily to cut the lid, while the black pot and various spice jars remain stationary on the white stovetop and counter behind the workspace.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 11,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man tilts the opened can over the large black pot, emptying the red contents into the vessel. He uses his right hand to scrape the inside of the can, ensuring all the sauce is removed while his left hand holds the metal container steady above the stove.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 12,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man places his right hand directly into the large black pot on the stovetop, stirring the dark red liquid mixture he just poured. His arm moves in a circular motion within the vessel, agitating the contents while the red cutting board and various spice jars remain stationary on the counter behind the stove.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 13,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man withdraws his hand from the large black pot on the white stovetop, ending the stirring action. The dark red liquid and chunks remain inside the vessel. The red cutting board with the silver can opener and spice jars stays stationary in the background near the microwave and green wall.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 14,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A hand enters from the left, reaching toward the silver manual can opener resting on the red cutting board. The large black pot remains on the white stovetop, filled with dark red liquid and chunks. Various spice jars and a silver saucepan sit stationary on the counter and stove behind the main cooking vessel.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [14, 26], \"text\": \"[14-20] The man rotates the handle of a silver manual can opener attached to a small can on a red cutting board. After cutting the lid, he releases the tool onto the board and reaches for the can. [20-24] He lifts the opened can, which has a tomato label, and tilts it over a large black pot on the stove. He pours the red contents into the vessel, using his hand to scrape the inside and ensure all the sauce is removed. [24-26] The man places his right hand directly into the large black pot, stirring the dark red liquid mixture in a circular motion while spice jars remain stationary in the background.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='14-26'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "evidence_anchor",
+    "gold_caption": "A person is using a manual can opener to open a metal can. | The can is resting on a red cutting board. | A black pot is sitting on the counter to the right of the cutting board. | A person is using a manual can opener to open a metal can. | The can is resting on a red cutting board. | A black pot is visible in the foreground. | Various cooking ingredients, including oil and spices, are arranged on the counter behind the cutting board. | A person is using a silver manual can opener to cut the lid of a metal can. | The can has a label depicting red tomatoes. | The can opener is resting on the red cutting board in the second frame. | A black pot is positioned on the counter to the right of the cutting board. | The person is using both hands to crack an egg into the black pot.",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 15,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man holds a black-handled knife and begins cutting a brown vegetable on the red cutting board. The large black pot filled with dark red liquid sits on the white stovetop in the foreground. Spice jars and the silver can opener remain stationary on the counter behind the cutting area.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 16,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man uses a black-handled knife to slice a brown vegetable on the red cutting board, cutting off a small piece. The large black pot containing dark red liquid remains in the foreground on the stove, with spice jars and a silver can opener visible on the counter behind.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 17,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man places the black-handled knife on the red cutting board next to the cut vegetable piece. He reaches his left hand toward a white container near the microwave while his right hand remains near the chopped ingredient on the board. The large black pot sits on the stove in the foreground.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 18,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man holds a silver peeler in his right hand and begins peeling the top of a brown vegetable standing upright on the red cutting board. A black-handled knife rests nearby on the board, while a large black pot sits on the stove in the foreground.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 19,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board with a silver peeler, using both hands to stabilize it while scraping the skin. The black-handled knife rests nearby on the board, and the large black pot remains on the stove in the foreground.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 20,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board with a silver peeler. He holds the vegetable steady with his left hand while scraping downwards with his right, causing thin strips of skin to accumulate on the board near the black knife.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [28, 36], \"text\": \"[28-30] A hand reaches toward a silver manual can opener resting on a red cutting board, next to a large black pot filled with dark red liquid and chunks on a white stovetop. [30-34] The man uses a black-handled knife to slice a brown vegetable on the red board, cutting off a small piece, while spice jars and a silver saucepan sit stationary in the background. [34-36] He places the knife on the cutting board next to the cut vegetable piece and reaches his left hand toward a white container near a microwave, leaving the chopped ingredient on the board.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='28-36'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A hand is moving near the red cutting board on the left side of the frame. | A dark grey pot containing dark red liquid and sliced vegetables sits on the stovetop. | A stainless steel pot is positioned to the right of the grey pot. | Spice jars are lined up in the background behind the pots. | A person is using a knife to cut a potato on a red cutting board. | A large pot containing dark red liquid and beet chunks sits on the stovetop. | A smaller silver pot is positioned to the right of the large pot. | started chopping potato | The person is holding a knife in their right hand and an onion in their left hand. | The person is slicing a piece off the onion on the red cutting board. | A silver microwave is visible in the background behind the cutting area. | A large yellow jug of oil sits on the counter to the right of the microwave.",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 21,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board, stabilizing it with his left hand while scraping with his right. Thin strips of skin accumulate on the board near the black-handled knife as he works. The large black pot sits on the stove in the foreground, while various spice jars and bottles line the counter behind the cutting board.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 22,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "tBhUIJpVpLw_F1_001",
+    "sequence_type": "immediate_response",
+    "action": "response",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board, scraping downwards with a silver peeler in his right hand. More thin strips of skin accumulate on the board near the black-handled knife. His left hand stabilizes the vegetable as he works, while the large black pot remains stationary on the stove in the foreground.</think><answer>C</answer>",
+    "queries": [],
+    "user_input": "Which text string is captured in the OCR data for chunk 16? A. SALT B. APPLE C. Hodgson Mill D. MASON",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 23,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "tBhUIJpVpLw_F1_001",
+    "sequence_type": "immediate_response",
+    "action": "silent",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board using a silver peeler in his right hand. He holds the vegetable steady with his left hand while scraping downwards, adding more thin strips of skin to the pile near the black-handled knife. The large black pot remains on the stove in the foreground.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Which text string is captured in the OCR data for chunk 16? A. SALT B. APPLE C. Hodgson Mill D. MASON",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "C",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 24,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board. He scrapes downwards with a silver peeler in his right hand, adding thin strips of skin to the pile near the black-handled knife. His left hand stabilizes the vegetable, while the large black pot sits stationary on the stove in the foreground.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [26, 44], \"text\": \"[26-28] The man withdraws his hand from a large black pot on a white stovetop, ending the stirring action. Dark red liquid and chunks remain inside. A red cutting board with a silver can opener and spice jars stays stationary near a microwave. [36-44] The man uses a silver peeler to peel a brown vegetable on the red cutting board. He stabilizes it with his left hand while scraping with his right, accumulating skin strips near a black-handled knife. Background items include a microwave, a blue container labeled \\\"SA\\\", an oil bottle, and spice jars. The large black pot sits on the stove in the foreground.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Which text string is captured in the OCR data for chunk 16? A. SALT B. APPLE C. Hodgson Mill D. MASON",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "C",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='26-44'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A large dark grey pot sits on the front burner of the stove. | The pot contains a dark red liquid with solid chunks submerged in it. | A smaller silver pot is positioned on the back burner to the right. | A red cutting board is placed on the counter to the left of the stove. | A potato and a garlic press are resting on the red cutting board. | The person is holding a silver vegetable peeler in their right hand. | A brown sweet potato sits on the red cutting board. | A black-handled knife rests on the red cutting board. | The microwave is located behind the food preparation area. | A jar of garlic cloves is visible on the counter to the right. | started peeling phase - holding vegetable peeler | The person is using their hands to peel a small green vegetable over the cutting board.",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 25,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board, scraping downwards with a silver peeler in his right hand. His left hand stabilizes the vegetable as thin strips of skin accumulate near the black-handled knife. The large black pot sits stationary on the stove in the foreground.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Which text string is captured in the OCR data for chunk 16? A. SALT B. APPLE C. Hodgson Mill D. MASON",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "C",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 26,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board, scraping downwards with a silver peeler in his right hand. His left hand stabilizes and rotates the vegetable as thin strips of skin accumulate near the black-handled knife. The large black pot sits stationary on the stove in the foreground.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Which text string is captured in the OCR data for chunk 16? A. SALT B. APPLE C. Hodgson Mill D. MASON",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "C",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 27,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board, scraping downwards with a silver peeler in his right hand. Thin strips of skin accumulate near the black-handled knife as his left hand stabilizes and rotates the vegetable. The large black pot remains stationary on the stove in the foreground.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Which text string is captured in the OCR data for chunk 16? A. SALT B. APPLE C. Hodgson Mill D. MASON",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "C",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 28,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board using a silver peeler. He rotates the vegetable with his left hand while scraping downwards with his right, adding thin skin strips to the pile near the black-handled knife. The large black pot sits stationary in the foreground.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Which text string is captured in the OCR data for chunk 16? A. SALT B. APPLE C. Hodgson Mill D. MASON",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "C",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 29,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board, holding it with his left hand while scraping downwards with a peeler in his right. Thin strips of skin accumulate near the black-handled knife as he rotates the vegetable. The large black pot remains stationary in the foreground.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [48, 58], \"text\": \"A man continues peeling a brown vegetable on a red cutting board, scraping downwards with a silver peeler in his right hand. His left hand stabilizes and rotates the vegetable as thin strips of skin accumulate in a pile near a black-handled knife. A large black pot sits stationary on the stove in the foreground throughout the process.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Which text string is captured in the OCR data for chunk 16? A. SALT B. APPLE C. Hodgson Mill D. MASON",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "C",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='48-58'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The person is using both hands to peel a small orange vegetable over the cutting board. | Orange peels are scattered on the red cutting board. | A knife is resting on the cutting board next to the peels. | Various kitchen ingredients and containers are arranged on the counter behind the cutting board. | A person is using a peeler to remove the skin from an orange vegetable. | Vegetable peels are scattered on the red cutting board. | A knife is lying on the red cutting board. | The salt container has the text 'SA' visible on it. | A person is peeling an orange vegetable over a red cutting board. | Vegetable peels are scattered on the red cutting board. | A knife is resting on the cutting board near the peels. | A large jug of apple cider vinegar is sitting on the counter.",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 30,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the orange vegetable on the red board, scraping downwards with a peeler. He rotates the vegetable in his left hand, depositing more thin skin strips onto the pile near the black knife. The large black pot remains visible in the bottom right corner.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Which text string is captured in the OCR data for chunk 16? A. SALT B. APPLE C. Hodgson Mill D. MASON",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "C",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 31,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the orange vegetable, gripping it with his left hand while scraping downwards with a peeler in his right. Thin strips of skin accumulate on the red cutting board near the black-handled knife. The large black pot remains stationary in the bottom right foreground.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Which text string is captured in the OCR data for chunk 16? A. SALT B. APPLE C. Hodgson Mill D. MASON",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "C",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 32,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the orange vegetable over the red cutting board, scraping downwards with a peeler in his right hand. He rotates the vegetable in his left hand, depositing more thin strips onto the growing pile of peels near the black-handled knife. Background items remain stationary.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Which text string is captured in the OCR data for chunk 16? A. SALT B. APPLE C. Hodgson Mill D. MASON",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "C",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 33,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man stops peeling the orange vegetable and sets the silver peeler down on the red cutting board near the pile of skins. He then picks up the black-handled knife with his right hand while holding the orange vegetable upright with his left, preparing to cut as background items remain stationary.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Which text string is captured in the OCR data for chunk 16? A. SALT B. APPLE C. Hodgson Mill D. MASON",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "C",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 34,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man places the peeled orange vegetable upright on the red cutting board. He withdraws his hands from the workspace, leaving the vegetable standing near the black-handled knife and silver peeler. The camera remains fixed on the stationary counter setup with the prepared vegetable and background ingredients.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [58, 66], \"text\": \"[58-66] A man wearing a light-colored shirt stands at a counter, peeling an orange vegetable over a red cutting board. He holds the vegetable in his left hand and uses a peeler in his right hand to scrape downwards, removing thin strips of skin. These peels accumulate on the board near a black-handled knife. The man rotates the vegetable periodically to access unpeeled sections. In the background, a microwave, a salt container labeled 'SA', a dark bottle, a large oil jug, and a bag of ingredients are visible. A metal tool rests on the board's right side. A large black pot remains stationary in the bottom right foreground. The man continues this peeling action consistently throughout the clip, adding to the pile of skins.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Which text string is captured in the OCR data for chunk 16? A. SALT B. APPLE C. Hodgson Mill D. MASON",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "C",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='58-66'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A person is using a peeler to remove the skin from an orange vegetable over a red cutting board. | Orange vegetable peels are scattered on the red cutting board. | A black-handled knife is resting on the cutting board. | A large yellow jug and a bag of cashews are sitting on the counter to the right of the cutting board. | A blue and white container labeled 'SALT' is visible in the background. | A person is peeling a carrot over a red cutting board. | Carrot peels are accumulating on the cutting board. | A vegetable peeler is resting on the cutting board. | A jug of cooking oil is sitting on the counter. | person is peeling a carrot over a red cutting board | orange carrot peelings are scattered on the red cutting board | a black-handled knife is resting on the cutting board",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 35,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A person wearing a white shirt holds the peeled orange vegetable upright with the left hand and begins slicing the top with a black-handled knife held in the right hand on the red cutting board, resuming food preparation after a brief pause.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Which text string is captured in the OCR data for chunk 16? A. SALT B. APPLE C. Hodgson Mill D. MASON",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "C",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 36,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The person slices through the center of the orange vegetable on the red cutting board with a black-handled knife. The left hand holds the vegetable steady while the right hand cuts downward, separating a large chunk. Background items including the oil jug and spice containers remain unchanged on the counter.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Which text string is captured in the OCR data for chunk 16? A. SALT B. APPLE C. Hodgson Mill D. MASON",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "C",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 37,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The person holds a small, flat slice of orange vegetable on the red cutting board with their right hand while positioning a black-handled knife over it with their left hand, appearing to prepare for further slicing. The larger remaining vegetable piece sits nearby, and background items like the oil jug and spice containers remain stationary on the counter.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Which text string is captured in the OCR data for chunk 16? A. SALT B. APPLE C. Hodgson Mill D. MASON",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "C",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 38,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The person slices a small piece of orange vegetable on the red cutting board using a black-handled knife held in the left hand. The right hand holds the vegetable steady. The knife blade moves downward through the vegetable piece. Background items remain unchanged.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [68, 76], \"text\": \"[68-70] A man places a peeled orange vegetable upright on a red cutting board near a black-handled knife and silver peeler, then withdraws his hands. [70-74] Wearing a white shirt, he resumes food preparation, using his left hand to steady the vegetable and his right hand to wield the knife, slicing off the top and cutting through the center to separate a large chunk. Background items like an oil jug and spice containers remain stationary. [74-76] He switches grip, holding a small flat slice of the vegetable with his right hand while positioning the knife with his left hand, appearing to prepare for further slicing.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Which text string is captured in the OCR data for chunk 16? A. SALT B. APPLE C. Hodgson Mill D. MASON",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "C",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='68-76'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A person is moving their hands near the left edge of the counter. | A large knife is resting on the red cutting board. | A peeled orange vegetable sits on the cutting board. | A bag of nuts is visible on the right side of the counter. | A person is using a knife to slice an orange vegetable on a red cutting board. | The person holds the vegetable steady with their left hand while cutting with their right. | A bag of nuts and a jug of oil are sitting on the counter in the background. | transitioned from peeling to cutting vegetables | The person is cutting an orange carrot on a red cutting board. | The person moves the cut carrot pieces to the right side of the board. | A bag of cashews sits on the counter next to a bottle of oil. | A blue shaker labeled 'SALT' is visible in the background.",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 39,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The person continues slicing the small piece of orange vegetable on the red cutting board. The left hand holds the black-handled knife, cutting downwards while the right hand stabilizes the vegetable piece. The knife blade slices through the vegetable, creating smaller chunks.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Which text string is captured in the OCR data for chunk 16? A. SALT B. APPLE C. Hodgson Mill D. MASON",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "C",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 0,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A blonde man in a black cap and white shirt stands at a green-walled kitchen counter. He looks down handling an object on a red cutting board. His hands shift as he works. Behind him, a microwave and bottles sit on the counter near cabinets.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 1,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man leans his upper body closer to the counter surface. His hands press down on the red cutting board. A silver bowl appears in the bottom right corner. He continues looking down at the workspace. White cabinets and green walls stay visible behind him. His posture shifts slightly forward during the task.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 2,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera view shifts lower, revealing a white stovetop with a large black pot and a silver pot. The man's hand reaches down to adjust a knob on the stove front. On the adjacent red cutting board, a potato and a black-handled knife rest near various bottles and jars. The man's torso remains visible on the left.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 3,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man withdraws his hand from the stove dial and reaches forward toward the counter items behind the large black pot. His hand touches a small jar among the various bottles and spices. The potato and knife stay on the red cutting board.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 4,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man now holds a silver metal garlic press with both hands, squeezing the handles together. He positions the tool directly over the red cutting board near the large black pot. His arms extend forward as he operates the press, crushing ingredients into a container.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 5,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues to operate the silver garlic press with both hands, squeezing the handles together firmly. The press is positioned directly over a small glass jar sitting on the red cutting board. His arms are extended forward as he applies pressure to the tool, crushing contents into the container below.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 6,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues to firmly squeeze the handles of the silver garlic press with both hands. He maintains the tool's position directly over the small glass jar on the red cutting board, applying pressure to crush the contents. His arms remain extended forward while the surrounding kitchen items stay stationary.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 7,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man continues to squeeze the silver garlic press with both hands over the small jar on the red cutting board. His arms remain extended forward, applying pressure to the tool. The surrounding kitchen items, including the black pot and various spice jars, remain stationary in the background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [0, 14], \"text\": \"[0-4] A blonde man in a black cap and white shirt stands at a green-walled kitchen counter, handling an object on a red cutting board. He leans forward, pressing down on the workspace as a silver bowl appears in the corner. White cabinets and a microwave are visible behind him.\\n[4-8] The camera lowers to show a white stovetop with a large black pot and silver pot. The man adjusts a stove knob. On the red cutting board, a potato and black-handled knife rest near bottles and jars. He reaches for a small jar behind the black pot.\\n[8-14] Holding a silver metal garlic press with both hands, the man positions it over the red cutting board near a small glass jar. He squeezes the handles firmly, extending his arms to crush ingredients into the container, maintaining pressure while surrounding kitchen items remain stationary.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='0-14'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "evidence_anchor",
+    "gold_caption": "The man is using a knife to cut a brown food item on a red cutting board. | The man is wearing a black baseball cap. | The kitchen has green walls and white cabinets. | A stainless steel sink is visible to the left of the man. | A black microwave sits on the counter behind the cutting board. | A man is standing at a kitchen counter. | The man is using his hands to prepare food on a red cutting board. | A stainless steel sink is visible to the left of the man. | The kitchen has green walls and white cabinets. | person turns a knob on the white stove | large dark grey pot is on the front burner | silver pot is on the back burner",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 8,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues rotating the handle of the silver manual can opener attached to the small can on the red cutting board. His hands twist the mechanism steadily to cut the lid, while the black pot and various spice jars remain stationary on the white stovetop and counter behind the workspace.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 9,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man finishes turning the handle of the silver manual can opener on the small can resting on the red cutting board. He releases the tool, leaving it lying on the board next to the can. His hand then reaches toward the top of the opened can, while the black pot and spice jars remain stationary in the background.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 10,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "tBhUIJpVpLw_F2_003",
+    "sequence_type": "immediate_response",
+    "action": "response",
+    "output": "<think>The man lifts the opened can with a tomato label from the red cutting board. He positions it over the large black pot on the stove and tilts it, pouring the contents into the vessel while his hands guide the flow.</think><answer>B</answer>",
+    "queries": [],
+    "user_input": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 11,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "tBhUIJpVpLw_F2_003",
+    "sequence_type": "immediate_response",
+    "action": "silent",
+    "output": "<think>The man tilts the opened can over the large black pot, emptying the red contents into the vessel. He uses his right hand to scrape the inside of the can, ensuring all the sauce is removed while his left hand holds the metal container steady above the stove.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 12,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man places his right hand directly into the large black pot on the stovetop, stirring the dark red liquid mixture he just poured. His arm moves in a circular motion within the vessel, agitating the contents while the red cutting board and various spice jars remain stationary on the counter behind the stove.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 13,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man withdraws his hand from the large black pot on the white stovetop, ending the stirring action. The dark red liquid and chunks remain inside the vessel. The red cutting board with the silver can opener and spice jars stays stationary in the background near the microwave and green wall.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 14,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A hand enters from the left, reaching toward the silver manual can opener resting on the red cutting board. The large black pot remains on the white stovetop, filled with dark red liquid and chunks. Various spice jars and a silver saucepan sit stationary on the counter and stove behind the main cooking vessel.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [14, 26], \"text\": \"[14-20] The man rotates the handle of a silver manual can opener attached to a small can on a red cutting board. After cutting the lid, he releases the tool onto the board and reaches for the can. [20-24] He lifts the opened can, which has a tomato label, and tilts it over a large black pot on the stove. He pours the red contents into the vessel, using his hand to scrape the inside and ensure all the sauce is removed. [24-26] The man places his right hand directly into the large black pot, stirring the dark red liquid mixture in a circular motion while spice jars remain stationary in the background.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='14-26'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A person is using a manual can opener to open a metal can. | The can is resting on a red cutting board. | A black pot is sitting on the counter to the right of the cutting board. | A person is using a manual can opener to open a metal can. | The can is resting on a red cutting board. | A black pot is visible in the foreground. | Various cooking ingredients, including oil and spices, are arranged on the counter behind the cutting board. | A person is using a silver manual can opener to cut the lid of a metal can. | The can has a label depicting red tomatoes. | The can opener is resting on the red cutting board in the second frame. | A black pot is positioned on the counter to the right of the cutting board. | The person is using both hands to crack an egg into the black pot.",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 15,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man holds a black-handled knife and begins cutting a brown vegetable on the red cutting board. The large black pot filled with dark red liquid sits on the white stovetop in the foreground. Spice jars and the silver can opener remain stationary on the counter behind the cutting area.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 16,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man uses a black-handled knife to slice a brown vegetable on the red cutting board, cutting off a small piece. The large black pot containing dark red liquid remains in the foreground on the stove, with spice jars and a silver can opener visible on the counter behind.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 17,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man places the black-handled knife on the red cutting board next to the cut vegetable piece. He reaches his left hand toward a white container near the microwave while his right hand remains near the chopped ingredient on the board. The large black pot sits on the stove in the foreground.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 18,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man holds a silver peeler in his right hand and begins peeling the top of a brown vegetable standing upright on the red cutting board. A black-handled knife rests nearby on the board, while a large black pot sits on the stove in the foreground.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 19,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board with a silver peeler, using both hands to stabilize it while scraping the skin. The black-handled knife rests nearby on the board, and the large black pot remains on the stove in the foreground.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 20,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board with a silver peeler. He holds the vegetable steady with his left hand while scraping downwards with his right, causing thin strips of skin to accumulate on the board near the black knife.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [28, 36], \"text\": \"[28-30] A hand reaches toward a silver manual can opener resting on a red cutting board, next to a large black pot filled with dark red liquid and chunks on a white stovetop. [30-34] The man uses a black-handled knife to slice a brown vegetable on the red board, cutting off a small piece, while spice jars and a silver saucepan sit stationary in the background. [34-36] He places the knife on the cutting board next to the cut vegetable piece and reaches his left hand toward a white container near a microwave, leaving the chopped ingredient on the board.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='28-36'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A hand is moving near the red cutting board on the left side of the frame. | A dark grey pot containing dark red liquid and sliced vegetables sits on the stovetop. | A stainless steel pot is positioned to the right of the grey pot. | Spice jars are lined up in the background behind the pots. | A person is using a knife to cut a potato on a red cutting board. | A large pot containing dark red liquid and beet chunks sits on the stovetop. | A smaller silver pot is positioned to the right of the large pot. | started chopping potato | The person is holding a knife in their right hand and an onion in their left hand. | The person is slicing a piece off the onion on the red cutting board. | A silver microwave is visible in the background behind the cutting area. | A large yellow jug of oil sits on the counter to the right of the microwave.",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 21,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board, stabilizing it with his left hand while scraping with his right. Thin strips of skin accumulate on the board near the black-handled knife as he works. The large black pot sits on the stove in the foreground, while various spice jars and bottles line the counter behind the cutting board.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 23,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board using a silver peeler in his right hand. He holds the vegetable steady with his left hand while scraping downwards, adding more thin strips of skin to the pile near the black-handled knife. The large black pot remains on the stove in the foreground.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 24,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board. He scrapes downwards with a silver peeler in his right hand, adding thin strips of skin to the pile near the black-handled knife. His left hand stabilizes the vegetable, while the large black pot sits stationary on the stove in the foreground.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [26, 44], \"text\": \"[26-28] The man withdraws his hand from a large black pot on a white stovetop, ending the stirring action. Dark red liquid and chunks remain inside. A red cutting board with a silver can opener and spice jars stays stationary near a microwave. [36-44] The man uses a silver peeler to peel a brown vegetable on the red cutting board. He stabilizes it with his left hand while scraping with his right, accumulating skin strips near a black-handled knife. Background items include a microwave, a blue container labeled \\\"SA\\\", an oil bottle, and spice jars. The large black pot sits on the stove in the foreground.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='26-44'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A large dark grey pot sits on the front burner of the stove. | The pot contains a dark red liquid with solid chunks submerged in it. | A smaller silver pot is positioned on the back burner to the right. | A red cutting board is placed on the counter to the left of the stove. | A potato and a garlic press are resting on the red cutting board. | The person is holding a silver vegetable peeler in their right hand. | A brown sweet potato sits on the red cutting board. | A black-handled knife rests on the red cutting board. | The microwave is located behind the food preparation area. | A jar of garlic cloves is visible on the counter to the right. | started peeling phase - holding vegetable peeler | The person is using their hands to peel a small green vegetable over the cutting board.",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 25,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board, scraping downwards with a silver peeler in his right hand. His left hand stabilizes the vegetable as thin strips of skin accumulate near the black-handled knife. The large black pot sits stationary on the stove in the foreground.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 27,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board, scraping downwards with a silver peeler in his right hand. Thin strips of skin accumulate near the black-handled knife as his left hand stabilizes and rotates the vegetable. The large black pot remains stationary on the stove in the foreground.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 28,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board using a silver peeler. He rotates the vegetable with his left hand while scraping downwards with his right, adding thin skin strips to the pile near the black-handled knife. The large black pot sits stationary in the foreground.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 29,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man continues peeling the brown vegetable on the red cutting board, holding it with his left hand while scraping downwards with a peeler in his right. Thin strips of skin accumulate near the black-handled knife as he rotates the vegetable. The large black pot remains stationary in the foreground.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [48, 58], \"text\": \"A man continues peeling a brown vegetable on a red cutting board, scraping downwards with a silver peeler in his right hand. His left hand stabilizes and rotates the vegetable as thin strips of skin accumulate in a pile near a black-handled knife. A large black pot sits stationary on the stove in the foreground throughout the process.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='48-58'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The person is using both hands to peel a small orange vegetable over the cutting board. | Orange peels are scattered on the red cutting board. | A knife is resting on the cutting board next to the peels. | Various kitchen ingredients and containers are arranged on the counter behind the cutting board. | A person is using a peeler to remove the skin from an orange vegetable. | Vegetable peels are scattered on the red cutting board. | A knife is lying on the red cutting board. | The salt container has the text 'SA' visible on it. | A person is peeling an orange vegetable over a red cutting board. | Vegetable peels are scattered on the red cutting board. | A knife is resting on the cutting board near the peels. | A large jug of apple cider vinegar is sitting on the counter.",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 30,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the orange vegetable on the red board, scraping downwards with a peeler. He rotates the vegetable in his left hand, depositing more thin skin strips onto the pile near the black knife. The large black pot remains visible in the bottom right corner.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 31,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the orange vegetable, gripping it with his left hand while scraping downwards with a peeler in his right. Thin strips of skin accumulate on the red cutting board near the black-handled knife. The large black pot remains stationary in the bottom right foreground.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 32,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man continues peeling the orange vegetable over the red cutting board, scraping downwards with a peeler in his right hand. He rotates the vegetable in his left hand, depositing more thin strips onto the growing pile of peels near the black-handled knife. Background items remain stationary.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 33,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man stops peeling the orange vegetable and sets the silver peeler down on the red cutting board near the pile of skins. He then picks up the black-handled knife with his right hand while holding the orange vegetable upright with his left, preparing to cut as background items remain stationary.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 34,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man places the peeled orange vegetable upright on the red cutting board. He withdraws his hands from the workspace, leaving the vegetable standing near the black-handled knife and silver peeler. The camera remains fixed on the stationary counter setup with the prepared vegetable and background ingredients.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [58, 66], \"text\": \"[58-66] A man wearing a light-colored shirt stands at a counter, peeling an orange vegetable over a red cutting board. He holds the vegetable in his left hand and uses a peeler in his right hand to scrape downwards, removing thin strips of skin. These peels accumulate on the board near a black-handled knife. The man rotates the vegetable periodically to access unpeeled sections. In the background, a microwave, a salt container labeled 'SA', a dark bottle, a large oil jug, and a bag of ingredients are visible. A metal tool rests on the board's right side. A large black pot remains stationary in the bottom right foreground. The man continues this peeling action consistently throughout the clip, adding to the pile of skins.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='58-66'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A person is using a peeler to remove the skin from an orange vegetable over a red cutting board. | Orange vegetable peels are scattered on the red cutting board. | A black-handled knife is resting on the cutting board. | A large yellow jug and a bag of cashews are sitting on the counter to the right of the cutting board. | A blue and white container labeled 'SALT' is visible in the background. | A person is peeling a carrot over a red cutting board. | Carrot peels are accumulating on the cutting board. | A vegetable peeler is resting on the cutting board. | A jug of cooking oil is sitting on the counter. | person is peeling a carrot over a red cutting board | orange carrot peelings are scattered on the red cutting board | a black-handled knife is resting on the cutting board",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 35,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A person wearing a white shirt holds the peeled orange vegetable upright with the left hand and begins slicing the top with a black-handled knife held in the right hand on the red cutting board, resuming food preparation after a brief pause.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 36,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The person slices through the center of the orange vegetable on the red cutting board with a black-handled knife. The left hand holds the vegetable steady while the right hand cuts downward, separating a large chunk. Background items including the oil jug and spice containers remain unchanged on the counter.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 37,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The person holds a small, flat slice of orange vegetable on the red cutting board with their right hand while positioning a black-handled knife over it with their left hand, appearing to prepare for further slicing. The larger remaining vegetable piece sits nearby, and background items like the oil jug and spice containers remain stationary on the counter.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 38,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The person slices a small piece of orange vegetable on the red cutting board using a black-handled knife held in the left hand. The right hand holds the vegetable steady. The knife blade moves downward through the vegetable piece. Background items remain unchanged.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [68, 76], \"text\": \"[68-70] A man places a peeled orange vegetable upright on a red cutting board near a black-handled knife and silver peeler, then withdraws his hands. [70-74] Wearing a white shirt, he resumes food preparation, using his left hand to steady the vegetable and his right hand to wield the knife, slicing off the top and cutting through the center to separate a large chunk. Background items like an oil jug and spice containers remain stationary. [74-76] He switches grip, holding a small flat slice of the vegetable with his right hand while positioning the knife with his left hand, appearing to prepare for further slicing.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='68-76'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A person is moving their hands near the left edge of the counter. | A large knife is resting on the red cutting board. | A peeled orange vegetable sits on the cutting board. | A bag of nuts is visible on the right side of the counter. | A person is using a knife to slice an orange vegetable on a red cutting board. | The person holds the vegetable steady with their left hand while cutting with their right. | A bag of nuts and a jug of oil are sitting on the counter in the background. | transitioned from peeling to cutting vegetables | The person is cutting an orange carrot on a red cutting board. | The person moves the cut carrot pieces to the right side of the board. | A bag of cashews sits on the counter next to a bottle of oil. | A blue shaker labeled 'SALT' is visible in the background.",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  },
+  {
+    "chunk_idx": 39,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The person continues slicing the small piece of orange vegetable on the red cutting board. The left hand holds the black-handled knife, cutting downwards while the right hand stabilizes the vegetable piece. The knife blade slices through the vegetable, creating smaller chunks.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the cutting board used on the counter in the video? A. Green B. Red C. White D. Black",
+        "ask_time": 20,
+        "answers": [
+          {
+            "text": "B",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "tBhUIJpVpLw",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/tBhUIJpVpLw.mp4"
+  }
+]

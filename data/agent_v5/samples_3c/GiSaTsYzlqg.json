@@ -1,0 +1,2990 @@
+[
+  {
+    "chunk_idx": 0,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A man with a beard and short dark hair, wearing a light green t-shirt, stands in a kitchen. He starts with an open-mouthed smile. His expression changes to a closed-mouth smile, showing his teeth, while his head tilts slightly. The background remains static with kitchen shelves and hanging pots visible.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 1,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The view cuts to a close-up of golden-brown, textured cookies resting on a silver wire cooling rack. Several round biscuits, appearing to contain oats, sit on a dark countertop. A blurred bowl of white ingredients is visible in the background. The camera angle shifts slightly, showing a different arrangement of the baked goods on the rack.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 2,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene shifts to show the golden-brown cookies arranged in a dark woven basket lined with a white cloth napkin. A stack of textured biscuits sits on the left, while individual cookies rest separately on the fabric, displaying the baked goods' crispy, oat-filled surfaces.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "warmup",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 5,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A YouTube interface overlay appears in the top left corner displaying channel information and a red subscribe button. Simultaneously, a hand pours a white, granular ingredient from a small glass dish into the larger clear bowl containing chunks of pale yellow butter.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 6,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand finishes pouring white granular ingredients from a small glass dish into a larger bowl containing butter chunks. The empty dish is lifted away. In the top left corner, a cursor clicks the red subscribe button on a YouTube overlay, changing it to a grey subscribed status and activating the notification bell icon.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 7,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A white bowl pours a fine white powder into the clear glass mixing bowl, forming a mound over the previous ingredients. The YouTube subscription overlay disappears from the top left corner. Blurred kitchen items, including a jar of oats and an oil bottle, remain visible in the background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [0, 14], \"text\": \"[0-2] A bearded man with short dark hair in a light green t-shirt stands in a kitchen, smiling at the camera. [2-6] The view cuts to golden-brown, textured oat cookies cooling on a silver wire rack, then arranged in a dark woven basket lined with a white cloth napkin. [6-10] The man reappears, closing his eyes then gesturing with open hands, before the scene shifts to a clear glass bowl holding chunks of pale yellow butter. [10-14] A YouTube interface overlay for \\\"Warren Nash\\\" appears as a hand pours a white granular ingredient into the bowl. A cursor clicks the red \\\"SUBSCRIBE\\\" button, changing it to a grey \\\"SUBSCRIBED\\\" status and activating the notification bell icon.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='0-14'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The man is facing forward and speaking. | A black microphone is clipped to the collar of the man's t-shirt. | Pots and pans are hanging on a rack to the left of the man. | Glass jars are arranged on a shelf to the right of the man. | Cookies are resting on a metal wire rack. | The cookies have a rough, textured surface. | cut to finished cookies on cooling rack (intro flash-forward) | A hand picks up a golden-brown oatmeal cookie from a white cloth. | The cookies are resting on a white cloth inside a woven basket. | A metal cooling rack is visible in the background. | hand picks up cookie (first action) | The video cuts from a close-up of cookies to a man standing in a kitchen.",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 8,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand tilts a clear glass jar secured with a silver metal clasp, pouring a thick stream of dry rolled oats into the bowl. The oats fall onto the existing pile of white powder and butter, adding a coarse texture to the mixture as the jar empties.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 9,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Pouring continues from the glass jar until the scene cuts to the bowl filled with oats. A close-up of the clear glass bowl contains a large pile of rolled oats. The oats cover the white powder and butter chunks. The dry ingredients settle together in the container. The hand and jar disappear from view.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 10,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "GiSaTsYzlqg_F7_018",
+    "sequence_type": "multi_response",
+    "action": "response",
+    "output": "<think>A stream of white granulated sugar pours into the clear glass bowl, landing on top of the pile of rolled oats. The white mound grows larger as the ingredient flows down from above, covering the center of the oat mixture within the transparent container. The pouring action continues covering the dry ingredients below.</think><answer>Yes</answer>",
+    "queries": [
+      {
+        "question": "Has the step 'pour liquid into bowl with oats' been done by now?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 32
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 11,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "GiSaTsYzlqg_F7_018",
+    "sequence_type": "multi_response",
+    "action": "response",
+    "output": "<think>The view cuts to a close-up of a hand holding a silver metal measuring spoon filled with a small mound of fine white powder. The spoon is positioned directly above the glass mixing bowl containing the oats and sugar mixture. A blurred glass jar filled with oats is visible in the background behind the spoon.</think><answer>Yes</answer>",
+    "queries": [
+      {
+        "question": "Has the step 'pour liquid into bowl with oats' been done by now?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 32
+          },
+          {
+            "text": "Yes",
+            "time": 20
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 12,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "GiSaTsYzlqg_F7_018",
+    "sequence_type": "multi_response",
+    "action": "response",
+    "output": "<think>A metal measuring spoon holds white powder over the bowl before a wooden spoon appears to stir the contents. The wooden utensil mixes the rolled oats and white granules inside the clear glass bowl. The hand moves the spoon to blend the components together thoroughly on the dark countertop in the kitchen.</think><answer>Yes</answer>",
+    "queries": [
+      {
+        "question": "Has the step 'pour liquid into bowl with oats' been done by now?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 32
+          },
+          {
+            "text": "Yes",
+            "time": 20
+          },
+          {
+            "text": "Yes",
+            "time": 22
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 14,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The wooden spoon continues mixing the dry ingredients within the clear glass bowl. The rolled oats and white powders are thoroughly combined into a uniform, crumbly consistency. The camera maintains a close-up perspective on the bowl's interior as the spoon moves through the mixture on the dark countertop.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [14, 28], \"text\": \"[14-16] A white bowl pours fine white powder into a clear glass mixing bowl as a YouTube overlay disappears; blurred items including a jar of oats and oil bottle are visible. [16-20] A hand tilts a clear glass jar with a silver metal clasp, pouring dry rolled oats onto the powder and butter chunks. [20-22] White granulated sugar streams into the bowl, creating a mound over the oats. [22-24] A hand holds a silver metal measuring spoon with white powder above the mix. [24-28] A wooden spoon stirs the rolled oats, sugar, and flour, blending them into a uniform, crumbly texture on the dark countertop.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Has the step 'pour liquid into bowl with oats' been done by now?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 32
+          },
+          {
+            "text": "Yes",
+            "time": 20
+          },
+          {
+            "text": "Yes",
+            "time": 22
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='14-28'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "evidence_anchor",
+    "gold_caption": "White granular powder is being poured into the clear glass bowl. | The pile of powder inside the bowl increases in size. | The YouTube overlay displays the channel name 'Warren Nash' and '18K subscribers'. | A person is pouring rolled oats from a glass jar into a bowl. | A mound of white powder sits inside a clear glass bowl. | A stream of oats is falling between the jar and the bowl. | oats pouring from jar begins (new ingredient) | A person is pouring dry rolled oats from a glass jar. | The oats are falling into a white bowl below. | A black kettle is visible in the background. | A stream of white liquid is being poured into the glass bowl. | The liquid covers the dry oats at the bottom of the bowl.",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 15,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A wooden spoon, coated in fine white powder, is lifted from the glass bowl containing the mixed dry ingredients. In the background, a glass jar filled with oats and a small white ramekin become clearly visible on the dark countertop as the spoon moves away.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the step 'pour liquid into bowl with oats' been done by now?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 32
+          },
+          {
+            "text": "Yes",
+            "time": 20
+          },
+          {
+            "text": "Yes",
+            "time": 22
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 16,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "GiSaTsYzlqg_F7_018",
+    "sequence_type": "multi_response",
+    "action": "response",
+    "output": "<think>The glass bowl with mixed dry ingredients stays in the foreground. The camera reveals a silver saucepan on a white and pink striped cloth to the left. In the background, bottles of oil on a red tray and a large glass jar filled with oats are now visible on the counter.</think><answer>Yes</answer>",
+    "queries": [],
+    "user_input": "Has the step 'pour liquid into bowl with oats' been done by now?",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 17,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera cuts to a close-up of the silver saucepan resting on the striped cloth. Inside, melted yellow butter with white solids is visible. A thin stream of golden amber liquid pours into the mixture, creating ripples on the surface. The glass bowl with dry ingredients is partially visible in the top right corner.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 18,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A metal spoon pours a thick, golden amber liquid into the stainless steel saucepan containing melted butter. The viscous stream mixes with the yellow fat and white solids resting on the striped cloth. The glass bowl with dry ingredients stays partially visible in the upper right corner as the pouring continues.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 19,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>After the golden liquid is poured, a pink spatula enters the stainless steel saucepan containing melted butter. The utensil begins to stir the mixture, blending the amber syrup into the yellow fat and white solids resting on the striped cloth. The camera focuses closely on the swirling liquids inside the metal pot.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 20,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A pink spatula stirs golden syrup and melted butter inside a silver saucepan. Ingredients blend into a swirling yellow fluid with white solids on a striped cloth. The camera keeps a close-up view of the mixing process.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 21,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A pink spatula stirs the golden liquid mixture inside the silver saucepan. The camera cuts to the glass bowl with dry ingredients. The silver saucepan is then tilted above the bowl, pouring the melted butter and syrup mixture onto the dry oat and flour blend.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [28, 42], \"text\": \"[28-32] A wooden spoon mixes dry ingredients in a clear glass bowl on a dark countertop. Rolled oats and white powders combine into a uniform, crumbly consistency. The spoon, coated in fine white powder, is lifted away, revealing a background glass jar filled with oats and a small white ramekin. [32-34] The view widens to show a silver saucepan on a white and pink striped cloth to the left. In the background, bottles of oil on a red tray and a large glass jar filled with oats become visible. [34-38] In a close-up of the silver saucepan, a metal spoon pours a thick, golden amber liquid into melted yellow butter containing white solids. [38-42] A pink spatula enters the saucepan and stirs the mixture, blending the viscous syrup into the yellow fat and white solids, creating a swirling yellow fluid.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='28-42'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A wooden spoon is stirring a granular mixture inside a glass bowl. | The mixture is light beige and has a flaky texture. | The bowl is transparent and contains the mixture. | A wooden spoon is being used to stir or scoop the white powder in the glass bowl. | The glass bowl is filled with a white, fine-grained substance. | A small white bowl sits on the counter to the right of the glass bowl. | A stainless steel saucepan is placed onto the striped kitchen towel. | A glass bowl filled with white flour sits in the foreground. | A jar of oats is visible on the right side of the counter. | saucepan placed on cloth (new vessel introduced) | A glass bowl filled with flour sits on the counter. | A metal saucepan rests on a striped towel.",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 22,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A silver saucepan tilts over a clear glass bowl containing dry oat and flour mixture. A steady stream of golden-yellow liquid pours from the pan into the bowl, landing on the dry ingredients. The flow continues, transitioning from a thick stream to a thinner trickle as the pouring action proceeds.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 27,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A wooden spoon mixes the ingredients in a glass bowl, blending the oats and liquid into a uniform, crumbly texture. A hand holds the bowl steady on the right side. The spoon lifts a portion of the mixture, showing its cohesive, dough-like consistency.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 28,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene changes to show a rectangular metal baking tray lined with white parchment paper. A hand holds the right side of the tray, placing it on the dark countertop. Blurred kitchen items, including oil bottles and the silver saucepan, are visible in the background behind the tray.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 29,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The scene widens to show the baking tray lined with white paper on the right. A clear glass bowl filled with the mixed oat crumble is now central in the foreground. In the background left, a silver saucepan and a glass jar of oats sit on the dark countertop.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [42, 58], \"text\": \"[42-48] A silver saucepan pours a golden-yellow liquid mixture into a clear glass bowl containing a blend of dry oats and flour, creating a central pool. [48-50] A hand uses a silver spoon to add a small amount of dark brown liquid into the yellow pool. [50-56] A wooden spoon vigorously stirs the contents, blending the wet and dry ingredients. The mixture transforms from separate components into a cohesive, sticky, crumbly mass as a hand stabilizes the bowl. [56-58] The scene shifts to a rectangular metal baking tray lined with white parchment paper being placed on a dark countertop, with kitchen items visible in the background.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='42-58'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A pink spatula is stirring a yellow-green viscous liquid inside a silver pot. | A clear glass bowl containing a white granular substance sits in the foreground. | A jar filled with beige flakes is visible in the background behind the glass bowl. | The silver pot rests on a pink and white striped cloth. | A metal bowl is pouring a yellow-green liquid into a glass bowl. | The liquid flows in a continuous stream onto the white granular substance. | The glass bowl contains a pile of white granular material. | pouring liquid from metal bowl (transfer step) | A yellow-green liquid is being poured from a metal strainer into a glass bowl. | The liquid lands on a pile of white powder inside the bowl. | The liquid pools on top of the powder. | A large jar of ingredients sits in the background.",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 30,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Two hands enter the frame and reach into the central glass bowl containing the oat mixture. The fingers grasp a handful of the crumbly texture, lifting and manipulating the ingredients above the rest of the contents near the parchment-lined baking tray.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 31,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Two hands press and squeeze the crumbly oat mixture inside the clear glass bowl. The fingers manipulate the ingredients, compacting the loose crumbs into a cohesive texture. The parchment-lined baking tray sits stationary on the right side of the dark countertop.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 32,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>After pressing the ingredients, a hand holds a formed, round ball of the textured oat mixture above the glass bowl. The parchment-lined baking tray remains visible on the right side of the dark countertop. The mixture appears cohesive and bound together, ready to be placed on the sheet.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 33,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand holds a formed, textured ball of oat mixture above the glass bowl. The view cuts to a parchment-lined baking tray holding several similar oat balls. A hand reaches in to place another formed ball onto the center of the sheet, joining the others arranged in rows.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 34,
+    "sample_type": "recall_query",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "GiSaTsYzlqg_R1_006",
+    "sequence_type": "recall_success",
+    "action": "recall",
+    "output": "<think>A hand places a formed ball of the crumbly oat mixture onto the center of the parchment-lined baking sheet, joining several other similar mounds arranged in rows. The hand withdraws, leaving the textured dough balls spaced apart on the metal tray.</think><tool_call>\n{\"name\": \"recall\", \"arguments\": {\"query\": \"wooden spoon dry ingredients rolled oats\", \"time_range\": \"26-28\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Has the step 'pour liquid into bowl with oats' been done by now?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 32
+          },
+          {
+            "text": "Yes",
+            "time": 20
+          },
+          {
+            "text": "Yes",
+            "time": 22
+          },
+          {
+            "text": "Yes",
+            "time": 24
+          }
+        ]
+      },
+      {
+        "question": "Which of the previously seen items is visible again in this scene? A. <black electric kettle in background> B. <green jar partially visible in background> C. <chunks of yellow butter on dark surface> D. <silver metal measuring spoon with engraved text>",
+        "ask_time": 68,
+        "answers": []
+      }
+    ],
+    "user_input": "Which of the previously seen items is visible again in this scene? A. <black electric kettle in background> B. <green jar partially visible in background> C. <chunks of yellow butter on dark surface> D. <silver metal measuring spoon with engraved text>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 34,
+    "sample_type": "recall_response",
+    "prompt_type": "POST_RECALL_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "GiSaTsYzlqg_R1_006",
+    "sequence_type": "recall_success",
+    "action": "response",
+    "output": "<think>The recall source is historical_frames, yet the retrieved text describes a wooden spoon mixing ingredients, which does not match any of the specific items listed in the question options.</think><answer>B</answer>",
+    "queries": [
+      {
+        "question": "Has the step 'pour liquid into bowl with oats' been done by now?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 32
+          },
+          {
+            "text": "Yes",
+            "time": 20
+          },
+          {
+            "text": "Yes",
+            "time": 22
+          },
+          {
+            "text": "Yes",
+            "time": 24
+          }
+        ]
+      },
+      {
+        "question": "Which of the previously seen items is visible again in this scene? A. <black electric kettle in background> B. <green jar partially visible in background> C. <chunks of yellow butter on dark surface> D. <silver metal measuring spoon with engraved text>",
+        "ask_time": 68,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": {
+      "source": "historical_frames",
+      "text_content": "[[26, 28]] A wooden spoon mixes the dry ingredients, blending the rolled oats with the white sugar and flour inside the clear glass bowl. The spoon moves through the mixture, coating the oats and combining everything into a uniform, crumbly texture on the dark kitchen countertop.",
+      "returned_chunks": [
+        13
+      ]
+    },
+    "protocol_version": "v12",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 35,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "GiSaTsYzlqg_R1_006",
+    "sequence_type": "recall_success",
+    "action": "silent",
+    "output": "<think>A hand places a formed ball of crumbly oat mixture onto the center of the parchment-lined baking sheet, joining other similar mounds arranged in rows. The hand withdraws, leaving the textured dough balls spaced apart on the metal tray.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the step 'pour liquid into bowl with oats' been done by now?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 32
+          },
+          {
+            "text": "Yes",
+            "time": 20
+          },
+          {
+            "text": "Yes",
+            "time": 22
+          },
+          {
+            "text": "Yes",
+            "time": 24
+          }
+        ]
+      },
+      {
+        "question": "Which of the previously seen items is visible again in this scene? A. <black electric kettle in background> B. <green jar partially visible in background> C. <chunks of yellow butter on dark surface> D. <silver metal measuring spoon with engraved text>",
+        "ask_time": 68,
+        "answers": [
+          {
+            "text": "B",
+            "time": 68
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 36,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A metal baking tray lined with white parchment paper rests on a dark countertop, displaying nine distinct mounds of the textured oat mixture arranged in three rows. The hand is absent, showing the placement process is finished. The unbaked cookies are spaced evenly apart across the sheet.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the step 'pour liquid into bowl with oats' been done by now?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 32
+          },
+          {
+            "text": "Yes",
+            "time": 20
+          },
+          {
+            "text": "Yes",
+            "time": 22
+          },
+          {
+            "text": "Yes",
+            "time": 24
+          }
+        ]
+      },
+      {
+        "question": "Which of the previously seen items is visible again in this scene? A. <black electric kettle in background> B. <green jar partially visible in background> C. <chunks of yellow butter on dark surface> D. <silver metal measuring spoon with engraved text>",
+        "ask_time": 68,
+        "answers": [
+          {
+            "text": "B",
+            "time": 68
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 37,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A rectangular metal baking tray lined with white parchment paper rests on a black countertop, displaying nine distinct, unbaked mounds of textured oat mixture. The cookies are spaced apart in three rough rows, remaining stationary as the camera holds the shot.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [60, 74], \"text\": \"[60-64] Two hands reach into a central glass bowl containing a crumbly oat mixture. The fingers grasp and manipulate the ingredients, pressing and squeezing the loose crumbs inside the bowl to compact them into a cohesive texture. [64-68] A hand holds a formed, round ball of the textured oat mixture above the bowl, showing the mixture is now bound together. [68-74] A hand places the formed ball onto a parchment-lined baking tray sitting on the right side of the dark countertop, joining other similar mounds arranged in rows. The hand withdraws, leaving the metal baking tray displaying nine distinct mounds of the textured oat mixture arranged in three rows, spaced evenly apart.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Has the step 'pour liquid into bowl with oats' been done by now?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 32
+          },
+          {
+            "text": "Yes",
+            "time": 20
+          },
+          {
+            "text": "Yes",
+            "time": 22
+          },
+          {
+            "text": "Yes",
+            "time": 24
+          }
+        ]
+      },
+      {
+        "question": "Which of the previously seen items is visible again in this scene? A. <black electric kettle in background> B. <green jar partially visible in background> C. <chunks of yellow butter on dark surface> D. <silver metal measuring spoon with engraved text>",
+        "ask_time": 68,
+        "answers": [
+          {
+            "text": "B",
+            "time": 68
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='60-74'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A person is using both hands to mix a crumbly mixture inside a glass bowl. | The mixture consists of light-brown crumbs. | The baking tray is positioned to the right of the bowl. | A metal pot containing utensils sits to the left of the bowl. | mixing crumbs with hands (coating preparation) | The person is using both hands to roll the beige mixture into a ball shape. | The person is wearing a silver ring on their left ring finger. | The glass bowl is sitting on a black countertop. | The oil bottle is positioned to the left of the glass bowl. | rolling mixture into balls (shaping action) | A person is using both hands to press breadcrumbs onto a small food item. | The food item is being lifted out of the glass bowl.",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 38,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand guides the metal baking tray lined with white parchment paper and holding nine unbaked oat mounds onto a wire rack inside an open oven. The dark oven interior is illuminated, highlighting the raw cookies as they are positioned centrally on the rack for baking.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the step 'pour liquid into bowl with oats' been done by now?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 32
+          },
+          {
+            "text": "Yes",
+            "time": 20
+          },
+          {
+            "text": "Yes",
+            "time": 22
+          },
+          {
+            "text": "Yes",
+            "time": 24
+          }
+        ]
+      },
+      {
+        "question": "Which of the previously seen items is visible again in this scene? A. <black electric kettle in background> B. <green jar partially visible in background> C. <chunks of yellow butter on dark surface> D. <silver metal measuring spoon with engraved text>",
+        "ask_time": 68,
+        "answers": [
+          {
+            "text": "B",
+            "time": 68
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 42,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Inside the illuminated oven, nine golden-brown, textured oat cookies rest on a parchment-lined baking tray. A hand wearing a blue and white striped oven mitt reaches into the frame from the left, grasping the edge of the metal tray to remove the baked cookies.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the step 'pour liquid into bowl with oats' been done by now?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 32
+          },
+          {
+            "text": "Yes",
+            "time": 20
+          },
+          {
+            "text": "Yes",
+            "time": 22
+          },
+          {
+            "text": "Yes",
+            "time": 24
+          }
+        ]
+      },
+      {
+        "question": "Which of the previously seen items is visible again in this scene? A. <black electric kettle in background> B. <green jar partially visible in background> C. <chunks of yellow butter on dark surface> D. <silver metal measuring spoon with engraved text>",
+        "ask_time": 68,
+        "answers": [
+          {
+            "text": "B",
+            "time": 68
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 43,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand wearing a blue and white striped oven mitt pulls the metal baking tray containing golden-brown cookies out of the illuminated oven. Simultaneously, a digital YouTube interface overlay appears in the top left corner, displaying a cursor clicking a red subscribe button next to the channel name Warren Nash.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the step 'pour liquid into bowl with oats' been done by now?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 32
+          },
+          {
+            "text": "Yes",
+            "time": 20
+          },
+          {
+            "text": "Yes",
+            "time": 22
+          },
+          {
+            "text": "Yes",
+            "time": 24
+          }
+        ]
+      },
+      {
+        "question": "Which of the previously seen items is visible again in this scene? A. <black electric kettle in background> B. <green jar partially visible in background> C. <chunks of yellow butter on dark surface> D. <silver metal measuring spoon with engraved text>",
+        "ask_time": 68,
+        "answers": [
+          {
+            "text": "B",
+            "time": 68
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 44,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The view shifts to a thick wooden cutting board resting on a black countertop, with a large glass jar of oats and oil bottles visible in the background. A YouTube overlay in the top left corner displays a cursor clicking the notification bell icon next to a grey \"SUBSCRIBED\" button.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [74, 88], \"text\": \"From [74-76], a rectangular metal baking tray lined with white parchment paper holds nine distinct, unbaked mounds of textured oat mixture on a black countertop. Between [76-80], a hand guides the tray onto a wire rack inside an open, illuminated oven, where it rests securely. By [82-84], the nine oat mounds transform from pale dough into golden-brown, baked cookies with a textured surface. At [84-86], a hand wearing a blue and white striped oven mitt reaches into the frame from the left. From [86-88], the hand pulls the tray of golden-brown cookies out. Simultaneously, a digital YouTube interface overlay appears in the top left, displaying a cursor clicking a red 'SUBSCRIBE' button next to the channel name 'Warren Nash'.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Has the step 'pour liquid into bowl with oats' been done by now?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 32
+          },
+          {
+            "text": "Yes",
+            "time": 20
+          },
+          {
+            "text": "Yes",
+            "time": 22
+          },
+          {
+            "text": "Yes",
+            "time": 24
+          }
+        ]
+      },
+      {
+        "question": "Which of the previously seen items is visible again in this scene? A. <black electric kettle in background> B. <green jar partially visible in background> C. <chunks of yellow butter on dark surface> D. <silver metal measuring spoon with engraved text>",
+        "ask_time": 68,
+        "answers": [
+          {
+            "text": "B",
+            "time": 68
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='74-88'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The food balls are baking inside the oven. | The baking sheet is resting on an oven rack. | The checkered floor is visible through the oven door glass. | A white cloth or oven mitt enters the frame from the left side. | The baked goods are arranged on a baking sheet inside the oven. | The oven light illuminates the baking sheet and food. | A hand wearing a blue and white striped oven mitt pulls a baking sheet out of the oven. | The baking sheet contains several golden-brown cookies. | The YouTube overlay shows the channel name 'Warren Nash' and a 'SUBSCRIBE' button. | The cursor clicks the 'SUBSCRIBE' button, changing it to 'SUBSCRIBED'. | cookies removed from oven (baking complete) | A mouse cursor hovers over the notification bell icon in the YouTube interface overlay.",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 45,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A metal baking tray lined with white parchment paper, holding golden-brown baked oat cookies, is placed onto the wooden cutting board. In the top left corner, a YouTube interface overlay remains visible, displaying a grey 'SUBSCRIBED' button and a notification bell icon next to the channel name.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the step 'pour liquid into bowl with oats' been done by now?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 32
+          },
+          {
+            "text": "Yes",
+            "time": 20
+          },
+          {
+            "text": "Yes",
+            "time": 22
+          },
+          {
+            "text": "Yes",
+            "time": 24
+          }
+        ]
+      },
+      {
+        "question": "Which of the previously seen items is visible again in this scene? A. <black electric kettle in background> B. <green jar partially visible in background> C. <chunks of yellow butter on dark surface> D. <silver metal measuring spoon with engraved text>",
+        "ask_time": 68,
+        "answers": [
+          {
+            "text": "B",
+            "time": 68
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 48,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The split-screen outro layout continues. The left panel displays golden-brown oat cookies on a black wire cooling rack. The right panel features a solid orange background with white text \"MORE VIDEOS YOU'LL LOVE...\" above a white rectangle and \"CLICK TO SUBSCRIBE\" with a curved arrow. An orange \"WARREN NASH\" banner is visible in the top left corner.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the step 'pour liquid into bowl with oats' been done by now?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 32
+          },
+          {
+            "text": "Yes",
+            "time": 20
+          },
+          {
+            "text": "Yes",
+            "time": 22
+          },
+          {
+            "text": "Yes",
+            "time": 24
+          }
+        ]
+      },
+      {
+        "question": "Which of the previously seen items is visible again in this scene? A. <black electric kettle in background> B. <green jar partially visible in background> C. <chunks of yellow butter on dark surface> D. <silver metal measuring spoon with engraved text>",
+        "ask_time": 68,
+        "answers": [
+          {
+            "text": "B",
+            "time": 68
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 49,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The split-screen outro layout persists. The video frame on the left, previously showing cookies on a wire rack, transitions to a solid white background. The orange panel on the right remains static, displaying \"MORE VIDEOS YOU'LL LOVE...\" above a white placeholder box and \"CLICK TO SUBSCRIBE\" text with an arrow.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the step 'pour liquid into bowl with oats' been done by now?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 32
+          },
+          {
+            "text": "Yes",
+            "time": 20
+          },
+          {
+            "text": "Yes",
+            "time": 22
+          },
+          {
+            "text": "Yes",
+            "time": 24
+          }
+        ]
+      },
+      {
+        "question": "Which of the previously seen items is visible again in this scene? A. <black electric kettle in background> B. <green jar partially visible in background> C. <chunks of yellow butter on dark surface> D. <silver metal measuring spoon with engraved text>",
+        "ask_time": 68,
+        "answers": [
+          {
+            "text": "B",
+            "time": 68
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 50,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The video holds on a static end screen layout. The left side shows a white background with an orange \"WARREN NASH\" logo. The right side features a solid orange panel with white text \"MORE VIDEOS YOU'LL LOVE...\" above a blank white rectangle and \"CLICK TO SUBSCRIBE\" with a curved arrow.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [88, 100], \"text\": \"[88-90] A thick wooden cutting board rests on a black countertop with a glass jar of oats and oil bottles in the background. A YouTube overlay displays a cursor clicking the notification bell next to a grey \\\"SUBSCRIBED\\\" button. [90-92] A metal baking tray lined with parchment paper holding golden-brown oat cookies is placed on the board; the \\\"SUBSCRIBED\\\" overlay remains. [92-94] The overlay vanishes, revealing oil bottles on a red tray and the oats jar. [94-96] The view shifts to a split-screen outro. The right features an orange panel with \\\"MORE VIDEOS YOU'LL LOVE...\\\", a white box, and \\\"CLICK TO SUBSCRIBE\\\" with an arrow. The left shows a \\\"WARREN NASH\\\" banner over a video of a hand using a spatula to lift a cookie. [96-98] The left panel displays cookies on a black wire cooling rack. [98-100] The left panel transitions to a solid white background while the right orange panel remains static.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Has the step 'pour liquid into bowl with oats' been done by now?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 32
+          },
+          {
+            "text": "Yes",
+            "time": 20
+          },
+          {
+            "text": "Yes",
+            "time": 22
+          },
+          {
+            "text": "Yes",
+            "time": 24
+          }
+        ]
+      },
+      {
+        "question": "Which of the previously seen items is visible again in this scene? A. <black electric kettle in background> B. <green jar partially visible in background> C. <chunks of yellow butter on dark surface> D. <silver metal measuring spoon with engraved text>",
+        "ask_time": 68,
+        "answers": [
+          {
+            "text": "B",
+            "time": 68
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='88-100'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A hand reaches into the frame to touch or pick up a cookie. | The cookies are arranged on a metal cooling rack. | The text 'WARREN NASH' is displayed in the top left corner. | The text 'MORE VIDEOS YOU'LL LOVE...' is displayed above a white box. | The text 'CLICK TO SUBSCRIBE' is displayed below the white box. | The video displays a static end screen layout. | The text 'WARREN NASH' is visible in the top left corner. | The text 'MORE VIDEOS YOU'LL LOVE...' is positioned above a white rectangle. | The text 'CLICK TO SUBSCRIBE' is positioned above a curved arrow. | end screen graphics appear (video conclusion) | The video displays a static end screen layout. | The text 'MORE VIDEOS YOU'LL LOVE...' is positioned above a white rectangular placeholder.",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 0,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A man with a beard and short dark hair, wearing a light green t-shirt, stands in a kitchen. He starts with an open-mouthed smile. His expression changes to a closed-mouth smile, showing his teeth, while his head tilts slightly. The background remains static with kitchen shelves and hanging pots visible.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 1,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The view cuts to a close-up of golden-brown, textured cookies resting on a silver wire cooling rack. Several round biscuits, appearing to contain oats, sit on a dark countertop. A blurred bowl of white ingredients is visible in the background. The camera angle shifts slightly, showing a different arrangement of the baked goods on the rack.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 2,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene shifts to show the golden-brown cookies arranged in a dark woven basket lined with a white cloth napkin. A stack of textured biscuits sits on the left, while individual cookies rest separately on the fabric, displaying the baked goods' crispy, oat-filled surfaces.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "warmup",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 3,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The video cuts back to the man in the light green t-shirt standing in the kitchen. He starts with eyes closed and lips pressed, then opens his eyes and raises both hands outward in a gesture. The kitchen background with hanging pots and shelves remains visible behind him throughout the shot.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 4,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the light green t-shirt smiles at the camera. The scene then cuts to a close-up of a hand holding a clear glass bowl containing chunks of pale yellow butter. Blurred white bowls and ingredients are visible on the dark countertop in the background.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 5,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A YouTube interface overlay appears in the top left corner displaying channel information and a red subscribe button. Simultaneously, a hand pours a white, granular ingredient from a small glass dish into the larger clear bowl containing chunks of pale yellow butter.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 6,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand finishes pouring white granular ingredients from a small glass dish into a larger bowl containing butter chunks. The empty dish is lifted away. In the top left corner, a cursor clicks the red subscribe button on a YouTube overlay, changing it to a grey subscribed status and activating the notification bell icon.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 7,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A white bowl pours a fine white powder into the clear glass mixing bowl, forming a mound over the previous ingredients. The YouTube subscription overlay disappears from the top left corner. Blurred kitchen items, including a jar of oats and an oil bottle, remain visible in the background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [0, 14], \"text\": \"[0-2] A bearded man with short dark hair in a light green t-shirt stands in a kitchen, smiling at the camera. [2-6] The view cuts to golden-brown, textured oat cookies cooling on a silver wire rack, then arranged in a dark woven basket lined with a white cloth napkin. [6-10] The man reappears, closing his eyes then gesturing with open hands, before the scene shifts to a clear glass bowl holding chunks of pale yellow butter. [10-14] A YouTube interface overlay for \\\"Warren Nash\\\" appears as a hand pours a white granular ingredient into the bowl. A cursor clicks the red \\\"SUBSCRIBE\\\" button, changing it to a grey \\\"SUBSCRIBED\\\" status and activating the notification bell icon.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='0-14'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "evidence_anchor",
+    "gold_caption": "The man is facing forward and speaking. | A black microphone is clipped to the collar of the man's t-shirt. | Pots and pans are hanging on a rack to the left of the man. | Glass jars are arranged on a shelf to the right of the man. | Cookies are resting on a metal wire rack. | The cookies have a rough, textured surface. | cut to finished cookies on cooling rack (intro flash-forward) | A hand picks up a golden-brown oatmeal cookie from a white cloth. | The cookies are resting on a white cloth inside a woven basket. | A metal cooling rack is visible in the background. | hand picks up cookie (first action) | The video cuts from a close-up of cookies to a man standing in a kitchen.",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 8,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand tilts a clear glass jar secured with a silver metal clasp, pouring a thick stream of dry rolled oats into the bowl. The oats fall onto the existing pile of white powder and butter, adding a coarse texture to the mixture as the jar empties.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 9,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Pouring continues from the glass jar until the scene cuts to the bowl filled with oats. A close-up of the clear glass bowl contains a large pile of rolled oats. The oats cover the white powder and butter chunks. The dry ingredients settle together in the container. The hand and jar disappear from view.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 10,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A stream of white granulated sugar pours into the clear glass bowl, landing on top of the pile of rolled oats. The white mound grows larger as the ingredient flows down from above, covering the center of the oat mixture within the transparent container. The pouring action continues covering the dry ingredients below.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 11,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The view cuts to a close-up of a hand holding a silver metal measuring spoon filled with a small mound of fine white powder. The spoon is positioned directly above the glass mixing bowl containing the oats and sugar mixture. A blurred glass jar filled with oats is visible in the background behind the spoon.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 12,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "GiSaTsYzlqg_F1_001",
+    "sequence_type": "immediate_response",
+    "action": "response",
+    "output": "<think>A metal measuring spoon holds white powder over the bowl before a wooden spoon appears to stir the contents. The wooden utensil mixes the rolled oats and white granules inside the clear glass bowl. The hand moves the spoon to blend the components together thoroughly on the dark countertop in the kitchen.</think><answer>C</answer>",
+    "queries": [],
+    "user_input": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 13,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "GiSaTsYzlqg_F1_001",
+    "sequence_type": "immediate_response",
+    "action": "silent",
+    "output": "<think>A wooden spoon mixes the dry ingredients, blending the rolled oats with the white sugar and flour inside the clear glass bowl. The spoon moves through the mixture, coating the oats and combining everything into a uniform, crumbly texture on the dark kitchen countertop.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "C",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 14,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The wooden spoon continues mixing the dry ingredients within the clear glass bowl. The rolled oats and white powders are thoroughly combined into a uniform, crumbly consistency. The camera maintains a close-up perspective on the bowl's interior as the spoon moves through the mixture on the dark countertop.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [14, 28], \"text\": \"[14-16] A white bowl pours fine white powder into a clear glass mixing bowl as a YouTube overlay disappears; blurred items including a jar of oats and oil bottle are visible. [16-20] A hand tilts a clear glass jar with a silver metal clasp, pouring dry rolled oats onto the powder and butter chunks. [20-22] White granulated sugar streams into the bowl, creating a mound over the oats. [22-24] A hand holds a silver metal measuring spoon with white powder above the mix. [24-28] A wooden spoon stirs the rolled oats, sugar, and flour, blending them into a uniform, crumbly texture on the dark countertop.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "C",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='14-28'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "White granular powder is being poured into the clear glass bowl. | The pile of powder inside the bowl increases in size. | The YouTube overlay displays the channel name 'Warren Nash' and '18K subscribers'. | A person is pouring rolled oats from a glass jar into a bowl. | A mound of white powder sits inside a clear glass bowl. | A stream of oats is falling between the jar and the bowl. | oats pouring from jar begins (new ingredient) | A person is pouring dry rolled oats from a glass jar. | The oats are falling into a white bowl below. | A black kettle is visible in the background. | A stream of white liquid is being poured into the glass bowl. | The liquid covers the dry oats at the bottom of the bowl.",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 15,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A wooden spoon, coated in fine white powder, is lifted from the glass bowl containing the mixed dry ingredients. In the background, a glass jar filled with oats and a small white ramekin become clearly visible on the dark countertop as the spoon moves away.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "C",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 16,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The glass bowl with mixed dry ingredients stays in the foreground. The camera reveals a silver saucepan on a white and pink striped cloth to the left. In the background, bottles of oil on a red tray and a large glass jar filled with oats are now visible on the counter.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "C",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 19,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>After the golden liquid is poured, a pink spatula enters the stainless steel saucepan containing melted butter. The utensil begins to stir the mixture, blending the amber syrup into the yellow fat and white solids resting on the striped cloth. The camera focuses closely on the swirling liquids inside the metal pot.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "C",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 20,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A pink spatula stirs golden syrup and melted butter inside a silver saucepan. Ingredients blend into a swirling yellow fluid with white solids on a striped cloth. The camera keeps a close-up view of the mixing process.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "C",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 21,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A pink spatula stirs the golden liquid mixture inside the silver saucepan. The camera cuts to the glass bowl with dry ingredients. The silver saucepan is then tilted above the bowl, pouring the melted butter and syrup mixture onto the dry oat and flour blend.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [28, 42], \"text\": \"[28-32] A wooden spoon mixes dry ingredients in a clear glass bowl on a dark countertop. Rolled oats and white powders combine into a uniform, crumbly consistency. The spoon, coated in fine white powder, is lifted away, revealing a background glass jar filled with oats and a small white ramekin. [32-34] The view widens to show a silver saucepan on a white and pink striped cloth to the left. In the background, bottles of oil on a red tray and a large glass jar filled with oats become visible. [34-38] In a close-up of the silver saucepan, a metal spoon pours a thick, golden amber liquid into melted yellow butter containing white solids. [38-42] A pink spatula enters the saucepan and stirs the mixture, blending the viscous syrup into the yellow fat and white solids, creating a swirling yellow fluid.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "C",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='28-42'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A wooden spoon is stirring a granular mixture inside a glass bowl. | The mixture is light beige and has a flaky texture. | The bowl is transparent and contains the mixture. | A wooden spoon is being used to stir or scoop the white powder in the glass bowl. | The glass bowl is filled with a white, fine-grained substance. | A small white bowl sits on the counter to the right of the glass bowl. | A stainless steel saucepan is placed onto the striped kitchen towel. | A glass bowl filled with white flour sits in the foreground. | A jar of oats is visible on the right side of the counter. | saucepan placed on cloth (new vessel introduced) | A glass bowl filled with flour sits on the counter. | A metal saucepan rests on a striped towel.",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 22,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A silver saucepan tilts over a clear glass bowl containing dry oat and flour mixture. A steady stream of golden-yellow liquid pours from the pan into the bowl, landing on the dry ingredients. The flow continues, transitioning from a thick stream to a thinner trickle as the pouring action proceeds.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "C",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 27,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A wooden spoon mixes the ingredients in a glass bowl, blending the oats and liquid into a uniform, crumbly texture. A hand holds the bowl steady on the right side. The spoon lifts a portion of the mixture, showing its cohesive, dough-like consistency.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "C",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 28,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene changes to show a rectangular metal baking tray lined with white parchment paper. A hand holds the right side of the tray, placing it on the dark countertop. Blurred kitchen items, including oil bottles and the silver saucepan, are visible in the background behind the tray.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "C",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 29,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The scene widens to show the baking tray lined with white paper on the right. A clear glass bowl filled with the mixed oat crumble is now central in the foreground. In the background left, a silver saucepan and a glass jar of oats sit on the dark countertop.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [42, 58], \"text\": \"[42-48] A silver saucepan pours a golden-yellow liquid mixture into a clear glass bowl containing a blend of dry oats and flour, creating a central pool. [48-50] A hand uses a silver spoon to add a small amount of dark brown liquid into the yellow pool. [50-56] A wooden spoon vigorously stirs the contents, blending the wet and dry ingredients. The mixture transforms from separate components into a cohesive, sticky, crumbly mass as a hand stabilizes the bowl. [56-58] The scene shifts to a rectangular metal baking tray lined with white parchment paper being placed on a dark countertop, with kitchen items visible in the background.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "C",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='42-58'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A pink spatula is stirring a yellow-green viscous liquid inside a silver pot. | A clear glass bowl containing a white granular substance sits in the foreground. | A jar filled with beige flakes is visible in the background behind the glass bowl. | The silver pot rests on a pink and white striped cloth. | A metal bowl is pouring a yellow-green liquid into a glass bowl. | The liquid flows in a continuous stream onto the white granular substance. | The glass bowl contains a pile of white granular material. | pouring liquid from metal bowl (transfer step) | A yellow-green liquid is being poured from a metal strainer into a glass bowl. | The liquid lands on a pile of white powder inside the bowl. | The liquid pools on top of the powder. | A large jar of ingredients sits in the background.",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 30,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Two hands enter the frame and reach into the central glass bowl containing the oat mixture. The fingers grasp a handful of the crumbly texture, lifting and manipulating the ingredients above the rest of the contents near the parchment-lined baking tray.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "C",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 31,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Two hands press and squeeze the crumbly oat mixture inside the clear glass bowl. The fingers manipulate the ingredients, compacting the loose crumbs into a cohesive texture. The parchment-lined baking tray sits stationary on the right side of the dark countertop.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "C",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 35,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand places a formed ball of crumbly oat mixture onto the center of the parchment-lined baking sheet, joining other similar mounds arranged in rows. The hand withdraws, leaving the textured dough balls spaced apart on the metal tray.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "C",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 36,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A metal baking tray lined with white parchment paper rests on a dark countertop, displaying nine distinct mounds of the textured oat mixture arranged in three rows. The hand is absent, showing the placement process is finished. The unbaked cookies are spaced evenly apart across the sheet.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "C",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 37,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A rectangular metal baking tray lined with white parchment paper rests on a black countertop, displaying nine distinct, unbaked mounds of textured oat mixture. The cookies are spaced apart in three rough rows, remaining stationary as the camera holds the shot.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [60, 74], \"text\": \"[60-64] Two hands reach into a central glass bowl containing a crumbly oat mixture. The fingers grasp and manipulate the ingredients, pressing and squeezing the loose crumbs inside the bowl to compact them into a cohesive texture. [64-68] A hand holds a formed, round ball of the textured oat mixture above the bowl, showing the mixture is now bound together. [68-74] A hand places the formed ball onto a parchment-lined baking tray sitting on the right side of the dark countertop, joining other similar mounds arranged in rows. The hand withdraws, leaving the metal baking tray displaying nine distinct mounds of the textured oat mixture arranged in three rows, spaced evenly apart.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "C",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='60-74'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A person is using both hands to mix a crumbly mixture inside a glass bowl. | The mixture consists of light-brown crumbs. | The baking tray is positioned to the right of the bowl. | A metal pot containing utensils sits to the left of the bowl. | mixing crumbs with hands (coating preparation) | The person is using both hands to roll the beige mixture into a ball shape. | The person is wearing a silver ring on their left ring finger. | The glass bowl is sitting on a black countertop. | The oil bottle is positioned to the left of the glass bowl. | rolling mixture into balls (shaping action) | A person is using both hands to press breadcrumbs onto a small food item. | The food item is being lifted out of the glass bowl.",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 38,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand guides the metal baking tray lined with white parchment paper and holding nine unbaked oat mounds onto a wire rack inside an open oven. The dark oven interior is illuminated, highlighting the raw cookies as they are positioned centrally on the rack for baking.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "C",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 42,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Inside the illuminated oven, nine golden-brown, textured oat cookies rest on a parchment-lined baking tray. A hand wearing a blue and white striped oven mitt reaches into the frame from the left, grasping the edge of the metal tray to remove the baked cookies.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "C",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 43,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand wearing a blue and white striped oven mitt pulls the metal baking tray containing golden-brown cookies out of the illuminated oven. Simultaneously, a digital YouTube interface overlay appears in the top left corner, displaying a cursor clicking a red subscribe button next to the channel name Warren Nash.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "C",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 44,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The view shifts to a thick wooden cutting board resting on a black countertop, with a large glass jar of oats and oil bottles visible in the background. A YouTube overlay in the top left corner displays a cursor clicking the notification bell icon next to a grey \"SUBSCRIBED\" button.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [74, 88], \"text\": \"From [74-76], a rectangular metal baking tray lined with white parchment paper holds nine distinct, unbaked mounds of textured oat mixture on a black countertop. Between [76-80], a hand guides the tray onto a wire rack inside an open, illuminated oven, where it rests securely. By [82-84], the nine oat mounds transform from pale dough into golden-brown, baked cookies with a textured surface. At [84-86], a hand wearing a blue and white striped oven mitt reaches into the frame from the left. From [86-88], the hand pulls the tray of golden-brown cookies out. Simultaneously, a digital YouTube interface overlay appears in the top left, displaying a cursor clicking a red 'SUBSCRIBE' button next to the channel name 'Warren Nash'.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "C",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='74-88'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The food balls are baking inside the oven. | The baking sheet is resting on an oven rack. | The checkered floor is visible through the oven door glass. | A white cloth or oven mitt enters the frame from the left side. | The baked goods are arranged on a baking sheet inside the oven. | The oven light illuminates the baking sheet and food. | A hand wearing a blue and white striped oven mitt pulls a baking sheet out of the oven. | The baking sheet contains several golden-brown cookies. | The YouTube overlay shows the channel name 'Warren Nash' and a 'SUBSCRIBE' button. | The cursor clicks the 'SUBSCRIBE' button, changing it to 'SUBSCRIBED'. | cookies removed from oven (baking complete) | A mouse cursor hovers over the notification bell icon in the YouTube interface overlay.",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 45,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A metal baking tray lined with white parchment paper, holding golden-brown baked oat cookies, is placed onto the wooden cutting board. In the top left corner, a YouTube interface overlay remains visible, displaying a grey 'SUBSCRIBED' button and a notification bell icon next to the channel name.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "C",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 48,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The split-screen outro layout continues. The left panel displays golden-brown oat cookies on a black wire cooling rack. The right panel features a solid orange background with white text \"MORE VIDEOS YOU'LL LOVE...\" above a white rectangle and \"CLICK TO SUBSCRIBE\" with a curved arrow. An orange \"WARREN NASH\" banner is visible in the top left corner.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "C",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 49,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The split-screen outro layout persists. The video frame on the left, previously showing cookies on a wire rack, transitions to a solid white background. The orange panel on the right remains static, displaying \"MORE VIDEOS YOU'LL LOVE...\" above a white placeholder box and \"CLICK TO SUBSCRIBE\" text with an arrow.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "C",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 50,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The video holds on a static end screen layout. The left side shows a white background with an orange \"WARREN NASH\" logo. The right side features a solid orange panel with white text \"MORE VIDEOS YOU'LL LOVE...\" above a blank white rectangle and \"CLICK TO SUBSCRIBE\" with a curved arrow.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [88, 100], \"text\": \"[88-90] A thick wooden cutting board rests on a black countertop with a glass jar of oats and oil bottles in the background. A YouTube overlay displays a cursor clicking the notification bell next to a grey \\\"SUBSCRIBED\\\" button. [90-92] A metal baking tray lined with parchment paper holding golden-brown oat cookies is placed on the board; the \\\"SUBSCRIBED\\\" overlay remains. [92-94] The overlay vanishes, revealing oil bottles on a red tray and the oats jar. [94-96] The view shifts to a split-screen outro. The right features an orange panel with \\\"MORE VIDEOS YOU'LL LOVE...\\\", a white box, and \\\"CLICK TO SUBSCRIBE\\\" with an arrow. The left shows a \\\"WARREN NASH\\\" banner over a video of a hand using a spatula to lift a cookie. [96-98] The left panel displays cookies on a black wire cooling rack. [98-100] The left panel transitions to a solid white background while the right orange panel remains static.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What subscriber count is displayed on the YouTube interface overlay during the initial mixing steps? A. 13K B. 73 C. 18K D. 500",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "C",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='88-100'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A hand reaches into the frame to touch or pick up a cookie. | The cookies are arranged on a metal cooling rack. | The text 'WARREN NASH' is displayed in the top left corner. | The text 'MORE VIDEOS YOU'LL LOVE...' is displayed above a white box. | The text 'CLICK TO SUBSCRIBE' is displayed below the white box. | The video displays a static end screen layout. | The text 'WARREN NASH' is visible in the top left corner. | The text 'MORE VIDEOS YOU'LL LOVE...' is positioned above a white rectangle. | The text 'CLICK TO SUBSCRIBE' is positioned above a curved arrow. | end screen graphics appear (video conclusion) | The video displays a static end screen layout. | The text 'MORE VIDEOS YOU'LL LOVE...' is positioned above a white rectangular placeholder.",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 0,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A man with a beard and short dark hair, wearing a light green t-shirt, stands in a kitchen. He starts with an open-mouthed smile. His expression changes to a closed-mouth smile, showing his teeth, while his head tilts slightly. The background remains static with kitchen shelves and hanging pots visible.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 1,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The view cuts to a close-up of golden-brown, textured cookies resting on a silver wire cooling rack. Several round biscuits, appearing to contain oats, sit on a dark countertop. A blurred bowl of white ingredients is visible in the background. The camera angle shifts slightly, showing a different arrangement of the baked goods on the rack.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 2,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene shifts to show the golden-brown cookies arranged in a dark woven basket lined with a white cloth napkin. A stack of textured biscuits sits on the left, while individual cookies rest separately on the fabric, displaying the baked goods' crispy, oat-filled surfaces.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 3,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The video cuts back to the man in the light green t-shirt standing in the kitchen. He starts with eyes closed and lips pressed, then opens his eyes and raises both hands outward in a gesture. The kitchen background with hanging pots and shelves remains visible behind him throughout the shot.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 4,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the light green t-shirt smiles at the camera. The scene then cuts to a close-up of a hand holding a clear glass bowl containing chunks of pale yellow butter. Blurred white bowls and ingredients are visible on the dark countertop in the background.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 5,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A YouTube interface overlay appears in the top left corner displaying channel information and a red subscribe button. Simultaneously, a hand pours a white, granular ingredient from a small glass dish into the larger clear bowl containing chunks of pale yellow butter.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 6,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand finishes pouring white granular ingredients from a small glass dish into a larger bowl containing butter chunks. The empty dish is lifted away. In the top left corner, a cursor clicks the red subscribe button on a YouTube overlay, changing it to a grey subscribed status and activating the notification bell icon.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 7,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A white bowl pours a fine white powder into the clear glass mixing bowl, forming a mound over the previous ingredients. The YouTube subscription overlay disappears from the top left corner. Blurred kitchen items, including a jar of oats and an oil bottle, remain visible in the background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [0, 14], \"text\": \"[0-2] A bearded man with short dark hair in a light green t-shirt stands in a kitchen, smiling at the camera. [2-6] The view cuts to golden-brown, textured oat cookies cooling on a silver wire rack, then arranged in a dark woven basket lined with a white cloth napkin. [6-10] The man reappears, closing his eyes then gesturing with open hands, before the scene shifts to a clear glass bowl holding chunks of pale yellow butter. [10-14] A YouTube interface overlay for \\\"Warren Nash\\\" appears as a hand pours a white granular ingredient into the bowl. A cursor clicks the red \\\"SUBSCRIBE\\\" button, changing it to a grey \\\"SUBSCRIBED\\\" status and activating the notification bell icon.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='0-14'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The man is facing forward and speaking. | A black microphone is clipped to the collar of the man's t-shirt. | Pots and pans are hanging on a rack to the left of the man. | Glass jars are arranged on a shelf to the right of the man. | Cookies are resting on a metal wire rack. | The cookies have a rough, textured surface. | cut to finished cookies on cooling rack (intro flash-forward) | A hand picks up a golden-brown oatmeal cookie from a white cloth. | The cookies are resting on a white cloth inside a woven basket. | A metal cooling rack is visible in the background. | hand picks up cookie (first action) | The video cuts from a close-up of cookies to a man standing in a kitchen.",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 8,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand tilts a clear glass jar secured with a silver metal clasp, pouring a thick stream of dry rolled oats into the bowl. The oats fall onto the existing pile of white powder and butter, adding a coarse texture to the mixture as the jar empties.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 10,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A stream of white granulated sugar pours into the clear glass bowl, landing on top of the pile of rolled oats. The white mound grows larger as the ingredient flows down from above, covering the center of the oat mixture within the transparent container. The pouring action continues covering the dry ingredients below.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 11,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The view cuts to a close-up of a hand holding a silver metal measuring spoon filled with a small mound of fine white powder. The spoon is positioned directly above the glass mixing bowl containing the oats and sugar mixture. A blurred glass jar filled with oats is visible in the background behind the spoon.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 12,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "GiSaTsYzlqg_F2_003",
+    "sequence_type": "immediate_response",
+    "action": "response",
+    "output": "<think>A metal measuring spoon holds white powder over the bowl before a wooden spoon appears to stir the contents. The wooden utensil mixes the rolled oats and white granules inside the clear glass bowl. The hand moves the spoon to blend the components together thoroughly on the dark countertop in the kitchen.</think><answer>B</answer>",
+    "queries": [],
+    "user_input": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 13,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "GiSaTsYzlqg_F2_003",
+    "sequence_type": "immediate_response",
+    "action": "silent",
+    "output": "<think>A wooden spoon mixes the dry ingredients, blending the rolled oats with the white sugar and flour inside the clear glass bowl. The spoon moves through the mixture, coating the oats and combining everything into a uniform, crumbly texture on the dark kitchen countertop.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "B",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 14,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The wooden spoon continues mixing the dry ingredients within the clear glass bowl. The rolled oats and white powders are thoroughly combined into a uniform, crumbly consistency. The camera maintains a close-up perspective on the bowl's interior as the spoon moves through the mixture on the dark countertop.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [14, 28], \"text\": \"[14-16] A white bowl pours fine white powder into a clear glass mixing bowl as a YouTube overlay disappears; blurred items including a jar of oats and oil bottle are visible. [16-20] A hand tilts a clear glass jar with a silver metal clasp, pouring dry rolled oats onto the powder and butter chunks. [20-22] White granulated sugar streams into the bowl, creating a mound over the oats. [22-24] A hand holds a silver metal measuring spoon with white powder above the mix. [24-28] A wooden spoon stirs the rolled oats, sugar, and flour, blending them into a uniform, crumbly texture on the dark countertop.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "B",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='14-28'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "White granular powder is being poured into the clear glass bowl. | The pile of powder inside the bowl increases in size. | The YouTube overlay displays the channel name 'Warren Nash' and '18K subscribers'. | A person is pouring rolled oats from a glass jar into a bowl. | A mound of white powder sits inside a clear glass bowl. | A stream of oats is falling between the jar and the bowl. | oats pouring from jar begins (new ingredient) | A person is pouring dry rolled oats from a glass jar. | The oats are falling into a white bowl below. | A black kettle is visible in the background. | A stream of white liquid is being poured into the glass bowl. | The liquid covers the dry oats at the bottom of the bowl.",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 15,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A wooden spoon, coated in fine white powder, is lifted from the glass bowl containing the mixed dry ingredients. In the background, a glass jar filled with oats and a small white ramekin become clearly visible on the dark countertop as the spoon moves away.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "B",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 16,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The glass bowl with mixed dry ingredients stays in the foreground. The camera reveals a silver saucepan on a white and pink striped cloth to the left. In the background, bottles of oil on a red tray and a large glass jar filled with oats are now visible on the counter.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "B",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 19,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>After the golden liquid is poured, a pink spatula enters the stainless steel saucepan containing melted butter. The utensil begins to stir the mixture, blending the amber syrup into the yellow fat and white solids resting on the striped cloth. The camera focuses closely on the swirling liquids inside the metal pot.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "B",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 20,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A pink spatula stirs golden syrup and melted butter inside a silver saucepan. Ingredients blend into a swirling yellow fluid with white solids on a striped cloth. The camera keeps a close-up view of the mixing process.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "B",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 21,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A pink spatula stirs the golden liquid mixture inside the silver saucepan. The camera cuts to the glass bowl with dry ingredients. The silver saucepan is then tilted above the bowl, pouring the melted butter and syrup mixture onto the dry oat and flour blend.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [28, 42], \"text\": \"[28-32] A wooden spoon mixes dry ingredients in a clear glass bowl on a dark countertop. Rolled oats and white powders combine into a uniform, crumbly consistency. The spoon, coated in fine white powder, is lifted away, revealing a background glass jar filled with oats and a small white ramekin. [32-34] The view widens to show a silver saucepan on a white and pink striped cloth to the left. In the background, bottles of oil on a red tray and a large glass jar filled with oats become visible. [34-38] In a close-up of the silver saucepan, a metal spoon pours a thick, golden amber liquid into melted yellow butter containing white solids. [38-42] A pink spatula enters the saucepan and stirs the mixture, blending the viscous syrup into the yellow fat and white solids, creating a swirling yellow fluid.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "B",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='28-42'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A wooden spoon is stirring a granular mixture inside a glass bowl. | The mixture is light beige and has a flaky texture. | The bowl is transparent and contains the mixture. | A wooden spoon is being used to stir or scoop the white powder in the glass bowl. | The glass bowl is filled with a white, fine-grained substance. | A small white bowl sits on the counter to the right of the glass bowl. | A stainless steel saucepan is placed onto the striped kitchen towel. | A glass bowl filled with white flour sits in the foreground. | A jar of oats is visible on the right side of the counter. | saucepan placed on cloth (new vessel introduced) | A glass bowl filled with flour sits on the counter. | A metal saucepan rests on a striped towel.",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 22,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A silver saucepan tilts over a clear glass bowl containing dry oat and flour mixture. A steady stream of golden-yellow liquid pours from the pan into the bowl, landing on the dry ingredients. The flow continues, transitioning from a thick stream to a thinner trickle as the pouring action proceeds.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "B",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 27,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A wooden spoon mixes the ingredients in a glass bowl, blending the oats and liquid into a uniform, crumbly texture. A hand holds the bowl steady on the right side. The spoon lifts a portion of the mixture, showing its cohesive, dough-like consistency.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "B",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 28,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene changes to show a rectangular metal baking tray lined with white parchment paper. A hand holds the right side of the tray, placing it on the dark countertop. Blurred kitchen items, including oil bottles and the silver saucepan, are visible in the background behind the tray.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "B",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 29,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The scene widens to show the baking tray lined with white paper on the right. A clear glass bowl filled with the mixed oat crumble is now central in the foreground. In the background left, a silver saucepan and a glass jar of oats sit on the dark countertop.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [42, 58], \"text\": \"[42-48] A silver saucepan pours a golden-yellow liquid mixture into a clear glass bowl containing a blend of dry oats and flour, creating a central pool. [48-50] A hand uses a silver spoon to add a small amount of dark brown liquid into the yellow pool. [50-56] A wooden spoon vigorously stirs the contents, blending the wet and dry ingredients. The mixture transforms from separate components into a cohesive, sticky, crumbly mass as a hand stabilizes the bowl. [56-58] The scene shifts to a rectangular metal baking tray lined with white parchment paper being placed on a dark countertop, with kitchen items visible in the background.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "B",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='42-58'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A pink spatula is stirring a yellow-green viscous liquid inside a silver pot. | A clear glass bowl containing a white granular substance sits in the foreground. | A jar filled with beige flakes is visible in the background behind the glass bowl. | The silver pot rests on a pink and white striped cloth. | A metal bowl is pouring a yellow-green liquid into a glass bowl. | The liquid flows in a continuous stream onto the white granular substance. | The glass bowl contains a pile of white granular material. | pouring liquid from metal bowl (transfer step) | A yellow-green liquid is being poured from a metal strainer into a glass bowl. | The liquid lands on a pile of white powder inside the bowl. | The liquid pools on top of the powder. | A large jar of ingredients sits in the background.",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 30,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Two hands enter the frame and reach into the central glass bowl containing the oat mixture. The fingers grasp a handful of the crumbly texture, lifting and manipulating the ingredients above the rest of the contents near the parchment-lined baking tray.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "B",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 31,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Two hands press and squeeze the crumbly oat mixture inside the clear glass bowl. The fingers manipulate the ingredients, compacting the loose crumbs into a cohesive texture. The parchment-lined baking tray sits stationary on the right side of the dark countertop.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "B",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 35,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand places a formed ball of crumbly oat mixture onto the center of the parchment-lined baking sheet, joining other similar mounds arranged in rows. The hand withdraws, leaving the textured dough balls spaced apart on the metal tray.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "B",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 36,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A metal baking tray lined with white parchment paper rests on a dark countertop, displaying nine distinct mounds of the textured oat mixture arranged in three rows. The hand is absent, showing the placement process is finished. The unbaked cookies are spaced evenly apart across the sheet.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "B",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 37,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A rectangular metal baking tray lined with white parchment paper rests on a black countertop, displaying nine distinct, unbaked mounds of textured oat mixture. The cookies are spaced apart in three rough rows, remaining stationary as the camera holds the shot.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [60, 74], \"text\": \"[60-64] Two hands reach into a central glass bowl containing a crumbly oat mixture. The fingers grasp and manipulate the ingredients, pressing and squeezing the loose crumbs inside the bowl to compact them into a cohesive texture. [64-68] A hand holds a formed, round ball of the textured oat mixture above the bowl, showing the mixture is now bound together. [68-74] A hand places the formed ball onto a parchment-lined baking tray sitting on the right side of the dark countertop, joining other similar mounds arranged in rows. The hand withdraws, leaving the metal baking tray displaying nine distinct mounds of the textured oat mixture arranged in three rows, spaced evenly apart.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "B",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='60-74'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A person is using both hands to mix a crumbly mixture inside a glass bowl. | The mixture consists of light-brown crumbs. | The baking tray is positioned to the right of the bowl. | A metal pot containing utensils sits to the left of the bowl. | mixing crumbs with hands (coating preparation) | The person is using both hands to roll the beige mixture into a ball shape. | The person is wearing a silver ring on their left ring finger. | The glass bowl is sitting on a black countertop. | The oil bottle is positioned to the left of the glass bowl. | rolling mixture into balls (shaping action) | A person is using both hands to press breadcrumbs onto a small food item. | The food item is being lifted out of the glass bowl.",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 38,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand guides the metal baking tray lined with white parchment paper and holding nine unbaked oat mounds onto a wire rack inside an open oven. The dark oven interior is illuminated, highlighting the raw cookies as they are positioned centrally on the rack for baking.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "B",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 42,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Inside the illuminated oven, nine golden-brown, textured oat cookies rest on a parchment-lined baking tray. A hand wearing a blue and white striped oven mitt reaches into the frame from the left, grasping the edge of the metal tray to remove the baked cookies.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "B",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 43,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand wearing a blue and white striped oven mitt pulls the metal baking tray containing golden-brown cookies out of the illuminated oven. Simultaneously, a digital YouTube interface overlay appears in the top left corner, displaying a cursor clicking a red subscribe button next to the channel name Warren Nash.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "B",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 44,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The view shifts to a thick wooden cutting board resting on a black countertop, with a large glass jar of oats and oil bottles visible in the background. A YouTube overlay in the top left corner displays a cursor clicking the notification bell icon next to a grey \"SUBSCRIBED\" button.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [74, 88], \"text\": \"From [74-76], a rectangular metal baking tray lined with white parchment paper holds nine distinct, unbaked mounds of textured oat mixture on a black countertop. Between [76-80], a hand guides the tray onto a wire rack inside an open, illuminated oven, where it rests securely. By [82-84], the nine oat mounds transform from pale dough into golden-brown, baked cookies with a textured surface. At [84-86], a hand wearing a blue and white striped oven mitt reaches into the frame from the left. From [86-88], the hand pulls the tray of golden-brown cookies out. Simultaneously, a digital YouTube interface overlay appears in the top left, displaying a cursor clicking a red 'SUBSCRIBE' button next to the channel name 'Warren Nash'.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "B",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='74-88'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The food balls are baking inside the oven. | The baking sheet is resting on an oven rack. | The checkered floor is visible through the oven door glass. | A white cloth or oven mitt enters the frame from the left side. | The baked goods are arranged on a baking sheet inside the oven. | The oven light illuminates the baking sheet and food. | A hand wearing a blue and white striped oven mitt pulls a baking sheet out of the oven. | The baking sheet contains several golden-brown cookies. | The YouTube overlay shows the channel name 'Warren Nash' and a 'SUBSCRIBE' button. | The cursor clicks the 'SUBSCRIBE' button, changing it to 'SUBSCRIBED'. | cookies removed from oven (baking complete) | A mouse cursor hovers over the notification bell icon in the YouTube interface overlay.",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 45,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A metal baking tray lined with white parchment paper, holding golden-brown baked oat cookies, is placed onto the wooden cutting board. In the top left corner, a YouTube interface overlay remains visible, displaying a grey 'SUBSCRIBED' button and a notification bell icon next to the channel name.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "B",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 48,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The split-screen outro layout continues. The left panel displays golden-brown oat cookies on a black wire cooling rack. The right panel features a solid orange background with white text \"MORE VIDEOS YOU'LL LOVE...\" above a white rectangle and \"CLICK TO SUBSCRIBE\" with a curved arrow. An orange \"WARREN NASH\" banner is visible in the top left corner.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "B",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 49,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The split-screen outro layout persists. The video frame on the left, previously showing cookies on a wire rack, transitions to a solid white background. The orange panel on the right remains static, displaying \"MORE VIDEOS YOU'LL LOVE...\" above a white placeholder box and \"CLICK TO SUBSCRIBE\" text with an arrow.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "B",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  },
+  {
+    "chunk_idx": 50,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The video holds on a static end screen layout. The left side shows a white background with an orange \"WARREN NASH\" logo. The right side features a solid orange panel with white text \"MORE VIDEOS YOU'LL LOVE...\" above a blank white rectangle and \"CLICK TO SUBSCRIBE\" with a curved arrow.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [88, 100], \"text\": \"[88-90] A thick wooden cutting board rests on a black countertop with a glass jar of oats and oil bottles in the background. A YouTube overlay displays a cursor clicking the notification bell next to a grey \\\"SUBSCRIBED\\\" button. [90-92] A metal baking tray lined with parchment paper holding golden-brown oat cookies is placed on the board; the \\\"SUBSCRIBED\\\" overlay remains. [92-94] The overlay vanishes, revealing oil bottles on a red tray and the oats jar. [94-96] The view shifts to a split-screen outro. The right features an orange panel with \\\"MORE VIDEOS YOU'LL LOVE...\\\", a white box, and \\\"CLICK TO SUBSCRIBE\\\" with an arrow. The left shows a \\\"WARREN NASH\\\" banner over a video of a hand using a spatula to lift a cookie. [96-98] The left panel displays cookies on a black wire cooling rack. [98-100] The left panel transitions to a solid white background while the right orange panel remains static.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the short-sleeved t-shirt worn by the man with the dark beard?",
+        "ask_time": 24,
+        "answers": [
+          {
+            "text": "B",
+            "time": 24
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='88-100'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A hand reaches into the frame to touch or pick up a cookie. | The cookies are arranged on a metal cooling rack. | The text 'WARREN NASH' is displayed in the top left corner. | The text 'MORE VIDEOS YOU'LL LOVE...' is displayed above a white box. | The text 'CLICK TO SUBSCRIBE' is displayed below the white box. | The video displays a static end screen layout. | The text 'WARREN NASH' is visible in the top left corner. | The text 'MORE VIDEOS YOU'LL LOVE...' is positioned above a white rectangle. | The text 'CLICK TO SUBSCRIBE' is positioned above a curved arrow. | end screen graphics appear (video conclusion) | The video displays a static end screen layout. | The text 'MORE VIDEOS YOU'LL LOVE...' is positioned above a white rectangular placeholder.",
+    "video_id": "GiSaTsYzlqg",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos/GiSaTsYzlqg.mp4"
+  }
+]

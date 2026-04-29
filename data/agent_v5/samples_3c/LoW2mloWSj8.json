@@ -1,0 +1,2221 @@
+[
+  {
+    "chunk_idx": 0,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Two bare feet rest on a lined notebook. The right foot grips a yellow pencil with a blue eraser between the big and second toes. The left foot lies flat nearby. White text overlay reads \"JiMMY KHaN- FooT WriTer\". The toes flex slightly, adjusting the pencil. A grey textured surface appears at the top.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 1,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The feet separate, revealing the left foot gripping a hollow orange cap between the toes. The right foot holds the pencil vertically with the tip pointing up. The left foot moves inward, positioning the cap over the pencil's tip held by the right foot.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 2,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The left foot, gripping a hollow orange cap, moves inward to meet the right foot holding the yellow pencil vertically. The toes of the left foot align the cap with the pencil's tip. The left foot then presses forward, sliding the orange cap onto the pencil point held steady by the right foot's toes.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "warmup",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 5,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot maintains its vertical grip on the yellow pencil, pressing the tip onto the lined paper to form a small blue mark. The left foot remains stationary at the top left, holding the orange cap between the toes. The white text overlay persists at the top.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 6,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot writes blue ink characters on the lined paper, forming visible strokes with the yellow pencil. The left foot remains stationary at the top left, holding the orange cap between the toes. The white text overlay stays fixed at the top against the grey background.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 7,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The right foot writes blue ink characters on the lined paper, forming a word in Urdu script. The left foot remains stationary at the top left, gripping the hollow orange cap between the toes. The white text overlay persists at the top against the grey background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [0, 14], \"text\": \"[0-2] Two bare feet rest on a lined notebook. The right foot grips a yellow pencil with a blue eraser between the big and second toes; the left foot lies flat nearby. A grey textured surface appears at the top. White text \\\"JiMMY KHaN- FooT WriTer\\\" overlays the scene.\\n[2-6] The feet separate; the left foot now grips a hollow orange cap between toes. The right foot holds the pencil vertically with the tip pointing up. The left foot moves inward, positioning the cap over the pencil's tip and sliding it onto the point held steady by the right foot's toes.\\n[6-14] The feet separate widely across the page. The left foot moves to the far left edge, gripping the hollow orange cap. The right foot shifts to the right side, holding the yellow pencil vertically with its tip resting on the lined paper. It presses down to create small blue marks and writes visible blue ink characters. The text overlay persists against the grey background.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='0-14'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "evidence_anchor",
+    "gold_caption": "A pair of feet is gripping a yellow pencil. | The pencil is positioned between the big toe and the second toe of the right foot. | The feet are resting on a sheet of lined paper. | The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame. | The right foot holds a yellow pencil between the big toe and second toe. | The left foot holds an orange pen cap between the big toe and second toe. | The feet are positioned over a sheet of lined paper. | The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame. | A person is using their feet to hold a yellow pencil and an orange pen cap. | The toes of the left foot are gripping the orange pen cap. | The toes of the right foot are gripping the yellow pencil. | The feet are positioned over an open notebook.",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 8,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot continues writing blue ink characters on the lined paper, extending the Urdu script further. The left foot remains stationary at the top left edge, gripping the hollow orange cap between the toes. The white text overlay persists at the top against the grey background.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 9,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot continues to write blue Urdu characters on the lined paper using a yellow pencil with a blue eraser. The left foot remains stationary at the top left edge, gripping a hollow orange cap between the toes. The white text overlay \"JiMMY KHaN- FooT WriTer\" persists at the top against the grey background.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 10,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot, gripping a yellow pencil with a blue eraser between the toes, completes writing blue Urdu characters on the lined notebook. The left foot remains stationary at the top left, holding an orange cap. The pencil lifts slightly from the paper surface as the writing stroke concludes.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 11,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot continues writing blue Urdu script on the lined paper, maneuvering the yellow pencil with a blue eraser to add characters to the left of the existing text. The left foot remains stationary at the top left, gripping the hollow orange cap between the toes. The white text overlay persists.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 12,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot, gripping a yellow pencil with a blue eraser between the toes, continues writing blue Urdu script on the lined notebook page. The left foot stays fixed at the top left edge, holding a hollow orange cap. The white text overlay remains visible at the top against the grey concrete background.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 13,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot extends the blue Urdu script further to the left using the yellow pencil with a blue eraser held between toes. The left foot remains stationary, anchoring the paper with the hollow orange cap. The white text overlay persists at the top against the grey surface.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 14,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The right foot maneuvers the yellow pencil to write additional blue Urdu characters on the lined paper, extending the text line further to the left. The left foot stays fixed at the top left corner, holding the orange cap between toes to secure the notebook. The white overlay text remains constant at the top.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [14, 28], \"text\": \"[14-28] The right foot grips a yellow pencil with a blue eraser between the toes, writing blue Urdu characters on lined white paper. The script extends from right to left as the foot maneuvers the pencil to form words. Simultaneously, the left foot remains stationary at the top left edge, anchoring the paper by gripping a hollow orange cap between the toes. The white text overlay \\\"JiMMY KHaN- FooT WriTer\\\" persists at the top against the grey concrete background throughout the sequence. The writing action continues steadily, adding characters to the existing blue ink text.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='14-28'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "evidence_anchor",
+    "gold_caption": "A person is writing on a piece of paper using their right foot. | The right foot is holding a yellow pen and writing in blue ink. | The left foot is holding the yellow pen cap between the toes. | The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the screen. | A foot on the right is holding a yellow pen and writing blue ink on the paper. | A foot on the left is holding the yellow cap of the pen. | The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame. | Blue Arabic or Urdu script is being written on the notebook page. | A person is writing Urdu script on a piece of paper using their foot. | The right foot holds the pen and is actively moving to form letters. | The left foot holds the pen cap and remains stationary. | The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen.",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 15,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot continues writing blue Urdu script on the lined paper, maneuvering the yellow pencil further left to extend the line of text. The left foot remains stationary at the top left edge, gripping the orange cap to anchor the notebook. The white text overlay persists at the top against the grey background.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 16,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "LoW2mloWSj8_R1_006",
+    "sequence_type": "immediate_response",
+    "action": "response",
+    "output": "<think>The right foot continues maneuvering the yellow pencil, adding further blue Urdu characters to the existing line on the white lined paper. The script extends leftward as the toes grip and guide the pen. Meanwhile, the left foot remains fixed at the top left edge, holding the orange cap to anchor the notebook steady.</think><answer>B</answer>",
+    "queries": [],
+    "user_input": "Which of the previously seen entities is back on screen? A. <foot holding orange pen cap> B. <foot holding yellow pen with blue cap> C. <foot holding yellow pencil with purple tip> D. <hand holding yellow pen cap>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 17,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "LoW2mloWSj8_R1_006",
+    "sequence_type": "immediate_response",
+    "action": "silent",
+    "output": "<think>The right foot continues writing blue Urdu characters on the lined paper, extending the text line further left with the yellow pencil. The left foot remains stationary at the top left, gripping the orange cap to secure the notebook. The white text overlay persists at the top against the grey background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Which of the previously seen entities is back on screen? A. <foot holding orange pen cap> B. <foot holding yellow pen with blue cap> C. <foot holding yellow pencil with purple tip> D. <hand holding yellow pen cap>",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "B",
+            "time": 32
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 18,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot continues writing blue Urdu script on the lined paper, extending the text line further left with the yellow pencil. The left foot remains stationary at the top left edge, gripping the orange cap to anchor the notebook. The white text overlay persists at the top against the grey background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Which of the previously seen entities is back on screen? A. <foot holding orange pen cap> B. <foot holding yellow pen with blue cap> C. <foot holding yellow pencil with purple tip> D. <hand holding yellow pen cap>",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "B",
+            "time": 32
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 19,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot guides the yellow pencil further left, inscribing additional blue Urdu characters onto the lined paper. The left foot stays anchored at the top left edge, holding the orange cap between toes to secure the notebook. The white text overlay remains visible at the top against the grey surface.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Which of the previously seen entities is back on screen? A. <foot holding orange pen cap> B. <foot holding yellow pen with blue cap> C. <foot holding yellow pencil with purple tip> D. <hand holding yellow pen cap>",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "B",
+            "time": 32
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 20,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot moves below the main line of blue Urdu script to write the number \"17\" on the lined paper. The left foot stays fixed at the top left, gripping the orange cap to secure the notebook. The completed text line remains visible above the new numerals being formed by the pencil held between the toes.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Which of the previously seen entities is back on screen? A. <foot holding orange pen cap> B. <foot holding yellow pen with blue cap> C. <foot holding yellow pencil with purple tip> D. <hand holding yellow pen cap>",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "B",
+            "time": 32
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 21,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The right foot writes blue Urdu characters next to the number \"17\" below the main text line on the lined paper. The left foot remains stationary at the top left edge, gripping the orange cap to secure the notebook. The white text overlay persists at the top against the grey background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [28, 42], \"text\": \"[28-40] The right foot maneuvers a yellow pencil with a blue tip to inscribe blue Urdu characters on lined paper, extending the text line further to the left. The left foot remains fixed at the top left edge, gripping an orange pen cap between its toes to anchor the notebook steady against the grey surface. The white overlay text \\\"JiMMY KHaN- FooT WriTer\\\" persists at the top. [40-42] The right foot shifts position below the main line of script to write the number \\\"17\\\" in blue ink. The left foot maintains its hold on the orange cap to secure the paper as the numerals are formed.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Which of the previously seen entities is back on screen? A. <foot holding orange pen cap> B. <foot holding yellow pen with blue cap> C. <foot holding yellow pencil with purple tip> D. <hand holding yellow pen cap>",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "B",
+            "time": 32
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='28-42'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A person is using their feet to hold a pen and write on a piece of paper. | The writing is in blue ink and appears to be in a cursive script. | The left foot is holding the top edge of the paper to keep it steady. | The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen. | A person is writing on lined paper using a pencil held between the toes of their right foot. | The left foot is holding an orange object between the big toe and second toe. | Blue ink script is visible on the paper. | The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen. | A person is using their toes to hold a pencil and write on a piece of paper. | The writing appears to be in a cursive script, likely Urdu or Arabic. | The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen. | A foot is holding an orange pen cap between its toes.",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 22,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot writes additional blue Urdu characters next to the number \"17\" on the lined paper, extending the lower line of text. The toes manipulate the yellow pencil to form the script while the left foot remains stationary at the top left, gripping the orange cap to secure the notebook against the grey surface.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Which of the previously seen entities is back on screen? A. <foot holding orange pen cap> B. <foot holding yellow pen with blue cap> C. <foot holding yellow pencil with purple tip> D. <hand holding yellow pen cap>",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "B",
+            "time": 32
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 26,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot continues writing blue Urdu script on the second line, moving the yellow pencil leftward across the page. The left foot stays fixed at the top left, holding the orange cap to secure the paper. The white text overlay remains visible at the top against the grey background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Which of the previously seen entities is back on screen? A. <foot holding orange pen cap> B. <foot holding yellow pen with blue cap> C. <foot holding yellow pencil with purple tip> D. <hand holding yellow pen cap>",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "B",
+            "time": 32
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 27,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot continues maneuvering the yellow pencil, inscribing additional blue Urdu characters onto the second line of the lined paper. The pencil tip presses down to extend the script leftward. Meanwhile, the left foot remains stationary at the top left edge, gripping the orange cap to stabilize the notebook against the grey surface.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Which of the previously seen entities is back on screen? A. <foot holding orange pen cap> B. <foot holding yellow pen with blue cap> C. <foot holding yellow pencil with purple tip> D. <hand holding yellow pen cap>",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "B",
+            "time": 32
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 28,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The right foot maneuvers the yellow pencil leftward, adding blue Urdu script to the second line. The left foot stays fixed at the top left, gripping the orange cap to secure the paper. The white overlay text remains visible against the grey surface.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [42, 56], \"text\": \"[42-56] The white text overlay \\\"JiMMY KHaN- FooT WriTer\\\" persists at the top against the grey background. The left foot remains stationary at the top left edge, gripping an orange cap to secure the lined notebook. The right foot, holding a yellow pencil with a blue tip, actively writes blue Urdu script. Between 42s and 48s, the right foot writes blue Urdu characters next to the number \\\"17\\\" below the main text line. From 48s to 56s, the right foot continues inscribing additional blue Urdu characters on the second line, moving the pencil leftward to extend the text. The toes manipulate the pencil to form the script, adding to the line. The left foot stays fixed, holding the orange cap to keep the paper steady on the grey surface as the writing progresses.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Which of the previously seen entities is back on screen? A. <foot holding orange pen cap> B. <foot holding yellow pen with blue cap> C. <foot holding yellow pencil with purple tip> D. <hand holding yellow pen cap>",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "B",
+            "time": 32
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='42-56'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A foot is writing Urdu script on a piece of lined paper using a pen held between the toes. | A hand is holding a small orange object steady on the left side of the paper. | The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen. | A person is writing Urdu script on lined paper using a pencil held by their right foot. | The left foot is holding an orange pen cap to keep the paper in place. | The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen. | The writing surface is a grey concrete floor. | A hand is writing purple text on a piece of lined paper. | The text being written is in a script resembling Urdu or Arabic. | A second hand is holding a yellow object on the left side of the frame. | The paper is placed on a grey, textured surface. | A person is writing Urdu script on lined paper using a pen held between their toes.",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 29,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot maneuvers the yellow pencil further left, extending the line of blue Urdu script on the second row. The left foot remains stationary at the top left edge, gripping the orange cap to anchor the notebook. The white text overlay persists against the grey background as the writing action continues steadily.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Which of the previously seen entities is back on screen? A. <foot holding orange pen cap> B. <foot holding yellow pen with blue cap> C. <foot holding yellow pencil with purple tip> D. <hand holding yellow pen cap>",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "B",
+            "time": 32
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 0,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Two bare feet rest on a lined notebook. The right foot grips a yellow pencil with a blue eraser between the big and second toes. The left foot lies flat nearby. White text overlay reads \"JiMMY KHaN- FooT WriTer\". The toes flex slightly, adjusting the pencil. A grey textured surface appears at the top.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 1,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The feet separate, revealing the left foot gripping a hollow orange cap between the toes. The right foot holds the pencil vertically with the tip pointing up. The left foot moves inward, positioning the cap over the pencil's tip held by the right foot.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 2,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The left foot, gripping a hollow orange cap, moves inward to meet the right foot holding the yellow pencil vertically. The toes of the left foot align the cap with the pencil's tip. The left foot then presses forward, sliding the orange cap onto the pencil point held steady by the right foot's toes.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 3,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The feet separate widely across the notebook page. The left foot moves to the far left edge, gripping the hollow orange cap between the toes. The right foot shifts to the right side, holding the yellow pencil vertically with its tip resting on the lined paper, poised as if to write.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 4,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot presses the yellow pencil tip onto the lined paper, creating a small blue mark. The left foot remains stationary at the top left edge, gripping the hollow orange cap between the toes. The white text overlay persists at the top against the grey background.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 5,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot maintains its vertical grip on the yellow pencil, pressing the tip onto the lined paper to form a small blue mark. The left foot remains stationary at the top left, holding the orange cap between the toes. The white text overlay persists at the top.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 6,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot writes blue ink characters on the lined paper, forming visible strokes with the yellow pencil. The left foot remains stationary at the top left, holding the orange cap between the toes. The white text overlay stays fixed at the top against the grey background.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 7,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The right foot writes blue ink characters on the lined paper, forming a word in Urdu script. The left foot remains stationary at the top left, gripping the hollow orange cap between the toes. The white text overlay persists at the top against the grey background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [0, 14], \"text\": \"[0-2] Two bare feet rest on a lined notebook. The right foot grips a yellow pencil with a blue eraser between the big and second toes; the left foot lies flat nearby. A grey textured surface appears at the top. White text \\\"JiMMY KHaN- FooT WriTer\\\" overlays the scene.\\n[2-6] The feet separate; the left foot now grips a hollow orange cap between toes. The right foot holds the pencil vertically with the tip pointing up. The left foot moves inward, positioning the cap over the pencil's tip and sliding it onto the point held steady by the right foot's toes.\\n[6-14] The feet separate widely across the page. The left foot moves to the far left edge, gripping the hollow orange cap. The right foot shifts to the right side, holding the yellow pencil vertically with its tip resting on the lined paper. It presses down to create small blue marks and writes visible blue ink characters. The text overlay persists against the grey background.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='0-14'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "evidence_anchor",
+    "gold_caption": "A pair of feet is gripping a yellow pencil. | The pencil is positioned between the big toe and the second toe of the right foot. | The feet are resting on a sheet of lined paper. | The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame. | The right foot holds a yellow pencil between the big toe and second toe. | The left foot holds an orange pen cap between the big toe and second toe. | The feet are positioned over a sheet of lined paper. | The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame. | A person is using their feet to hold a yellow pencil and an orange pen cap. | The toes of the left foot are gripping the orange pen cap. | The toes of the right foot are gripping the yellow pencil. | The feet are positioned over an open notebook.",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 8,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot continues writing blue ink characters on the lined paper, extending the Urdu script further. The left foot remains stationary at the top left edge, gripping the hollow orange cap between the toes. The white text overlay persists at the top against the grey background.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 9,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot continues to write blue Urdu characters on the lined paper using a yellow pencil with a blue eraser. The left foot remains stationary at the top left edge, gripping a hollow orange cap between the toes. The white text overlay \"JiMMY KHaN- FooT WriTer\" persists at the top against the grey background.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 10,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot, gripping a yellow pencil with a blue eraser between the toes, completes writing blue Urdu characters on the lined notebook. The left foot remains stationary at the top left, holding an orange cap. The pencil lifts slightly from the paper surface as the writing stroke concludes.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 11,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot continues writing blue Urdu script on the lined paper, maneuvering the yellow pencil with a blue eraser to add characters to the left of the existing text. The left foot remains stationary at the top left, gripping the hollow orange cap between the toes. The white text overlay persists.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 12,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot, gripping a yellow pencil with a blue eraser between the toes, continues writing blue Urdu script on the lined notebook page. The left foot stays fixed at the top left edge, holding a hollow orange cap. The white text overlay remains visible at the top against the grey concrete background.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 13,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot extends the blue Urdu script further to the left using the yellow pencil with a blue eraser held between toes. The left foot remains stationary, anchoring the paper with the hollow orange cap. The white text overlay persists at the top against the grey surface.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 14,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The right foot maneuvers the yellow pencil to write additional blue Urdu characters on the lined paper, extending the text line further to the left. The left foot stays fixed at the top left corner, holding the orange cap between toes to secure the notebook. The white overlay text remains constant at the top.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [14, 28], \"text\": \"[14-28] The right foot grips a yellow pencil with a blue eraser between the toes, writing blue Urdu characters on lined white paper. The script extends from right to left as the foot maneuvers the pencil to form words. Simultaneously, the left foot remains stationary at the top left edge, anchoring the paper by gripping a hollow orange cap between the toes. The white text overlay \\\"JiMMY KHaN- FooT WriTer\\\" persists at the top against the grey concrete background throughout the sequence. The writing action continues steadily, adding characters to the existing blue ink text.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='14-28'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A person is writing on a piece of paper using their right foot. | The right foot is holding a yellow pen and writing in blue ink. | The left foot is holding the yellow pen cap between the toes. | The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the screen. | A foot on the right is holding a yellow pen and writing blue ink on the paper. | A foot on the left is holding the yellow cap of the pen. | The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame. | Blue Arabic or Urdu script is being written on the notebook page. | A person is writing Urdu script on a piece of paper using their foot. | The right foot holds the pen and is actively moving to form letters. | The left foot holds the pen cap and remains stationary. | The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen.",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 15,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot continues writing blue Urdu script on the lined paper, maneuvering the yellow pencil further left to extend the line of text. The left foot remains stationary at the top left edge, gripping the orange cap to anchor the notebook. The white text overlay persists at the top against the grey background.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 19,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot guides the yellow pencil further left, inscribing additional blue Urdu characters onto the lined paper. The left foot stays anchored at the top left edge, holding the orange cap between toes to secure the notebook. The white text overlay remains visible at the top against the grey surface.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 20,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot moves below the main line of blue Urdu script to write the number \"17\" on the lined paper. The left foot stays fixed at the top left, gripping the orange cap to secure the notebook. The completed text line remains visible above the new numerals being formed by the pencil held between the toes.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 21,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The right foot writes blue Urdu characters next to the number \"17\" below the main text line on the lined paper. The left foot remains stationary at the top left edge, gripping the orange cap to secure the notebook. The white text overlay persists at the top against the grey background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [28, 42], \"text\": \"[28-40] The right foot maneuvers a yellow pencil with a blue tip to inscribe blue Urdu characters on lined paper, extending the text line further to the left. The left foot remains fixed at the top left edge, gripping an orange pen cap between its toes to anchor the notebook steady against the grey surface. The white overlay text \\\"JiMMY KHaN- FooT WriTer\\\" persists at the top. [40-42] The right foot shifts position below the main line of script to write the number \\\"17\\\" in blue ink. The left foot maintains its hold on the orange cap to secure the paper as the numerals are formed.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='28-42'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "evidence_anchor",
+    "gold_caption": "A person is using their feet to hold a pen and write on a piece of paper. | The writing is in blue ink and appears to be in a cursive script. | The left foot is holding the top edge of the paper to keep it steady. | The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen. | A person is writing on lined paper using a pencil held between the toes of their right foot. | The left foot is holding an orange object between the big toe and second toe. | Blue ink script is visible on the paper. | The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen. | A person is using their toes to hold a pencil and write on a piece of paper. | The writing appears to be in a cursive script, likely Urdu or Arabic. | The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen. | A foot is holding an orange pen cap between its toes.",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 22,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot writes additional blue Urdu characters next to the number \"17\" on the lined paper, extending the lower line of text. The toes manipulate the yellow pencil to form the script while the left foot remains stationary at the top left, gripping the orange cap to secure the notebook against the grey surface.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 23,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot writes additional blue Urdu script below the primary line, completing characters next to the number '17'. The yellow pencil remains gripped between the toes during this action. The left foot stays fixed at the top left corner, clutching the orange cap to stabilize the notebook on the grey background.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 24,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "LoW2mloWSj8_CR6_024",
+    "sequence_type": "immediate_response",
+    "action": "response",
+    "output": "<think>The right foot continues writing blue Urdu script on the second line below the main sentence. The yellow pencil forms characters at the end of this lower line. The left foot stays stationary at the top left edge, holding the orange cap to keep the lined paper steady on the grey background.</think><answer>C</answer>",
+    "queries": [],
+    "user_input": "Given what is visible so far, could the person write on the paper? A. No — no pencil or pen visible B. No — no lined paper visible C. Yes — pencil or pen, lined paper, and feet are all visible D. No — no feet visible to hold the tool",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 25,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "LoW2mloWSj8_CR6_024",
+    "sequence_type": "immediate_response",
+    "action": "silent",
+    "output": "<think>The right foot continues inscribing blue Urdu script on the second line below the primary sentence. The yellow pencil moves to form additional characters, extending the text line further left. The left foot remains fixed at the top left corner, holding the orange cap to stabilize the notebook on the grey background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person write on the paper? A. No — no pencil or pen visible B. No — no lined paper visible C. Yes — pencil or pen, lined paper, and feet are all visible D. No — no feet visible to hold the tool",
+        "ask_time": 48,
+        "answers": [
+          {
+            "text": "C",
+            "time": 48
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 26,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot continues writing blue Urdu script on the second line, moving the yellow pencil leftward across the page. The left foot stays fixed at the top left, holding the orange cap to secure the paper. The white text overlay remains visible at the top against the grey background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person write on the paper? A. No — no pencil or pen visible B. No — no lined paper visible C. Yes — pencil or pen, lined paper, and feet are all visible D. No — no feet visible to hold the tool",
+        "ask_time": 48,
+        "answers": [
+          {
+            "text": "C",
+            "time": 48
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 27,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot continues maneuvering the yellow pencil, inscribing additional blue Urdu characters onto the second line of the lined paper. The pencil tip presses down to extend the script leftward. Meanwhile, the left foot remains stationary at the top left edge, gripping the orange cap to stabilize the notebook against the grey surface.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person write on the paper? A. No — no pencil or pen visible B. No — no lined paper visible C. Yes — pencil or pen, lined paper, and feet are all visible D. No — no feet visible to hold the tool",
+        "ask_time": 48,
+        "answers": [
+          {
+            "text": "C",
+            "time": 48
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 28,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The right foot maneuvers the yellow pencil leftward, adding blue Urdu script to the second line. The left foot stays fixed at the top left, gripping the orange cap to secure the paper. The white overlay text remains visible against the grey surface.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [42, 56], \"text\": \"[42-56] The white text overlay \\\"JiMMY KHaN- FooT WriTer\\\" persists at the top against the grey background. The left foot remains stationary at the top left edge, gripping an orange cap to secure the lined notebook. The right foot, holding a yellow pencil with a blue tip, actively writes blue Urdu script. Between 42s and 48s, the right foot writes blue Urdu characters next to the number \\\"17\\\" below the main text line. From 48s to 56s, the right foot continues inscribing additional blue Urdu characters on the second line, moving the pencil leftward to extend the text. The toes manipulate the pencil to form the script, adding to the line. The left foot stays fixed, holding the orange cap to keep the paper steady on the grey surface as the writing progresses.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person write on the paper? A. No — no pencil or pen visible B. No — no lined paper visible C. Yes — pencil or pen, lined paper, and feet are all visible D. No — no feet visible to hold the tool",
+        "ask_time": 48,
+        "answers": [
+          {
+            "text": "C",
+            "time": 48
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='42-56'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A foot is writing Urdu script on a piece of lined paper using a pen held between the toes. | A hand is holding a small orange object steady on the left side of the paper. | The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen. | A person is writing Urdu script on lined paper using a pencil held by their right foot. | The left foot is holding an orange pen cap to keep the paper in place. | The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen. | The writing surface is a grey concrete floor. | A hand is writing purple text on a piece of lined paper. | The text being written is in a script resembling Urdu or Arabic. | A second hand is holding a yellow object on the left side of the frame. | The paper is placed on a grey, textured surface. | A person is writing Urdu script on lined paper using a pen held between their toes.",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 29,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot maneuvers the yellow pencil further left, extending the line of blue Urdu script on the second row. The left foot remains stationary at the top left edge, gripping the orange cap to anchor the notebook. The white text overlay persists against the grey background as the writing action continues steadily.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Given what is visible so far, could the person write on the paper? A. No — no pencil or pen visible B. No — no lined paper visible C. Yes — pencil or pen, lined paper, and feet are all visible D. No — no feet visible to hold the tool",
+        "ask_time": 48,
+        "answers": [
+          {
+            "text": "C",
+            "time": 48
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 0,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Two bare feet rest on a lined notebook. The right foot grips a yellow pencil with a blue eraser between the big and second toes. The left foot lies flat nearby. White text overlay reads \"JiMMY KHaN- FooT WriTer\". The toes flex slightly, adjusting the pencil. A grey textured surface appears at the top.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 1,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The feet separate, revealing the left foot gripping a hollow orange cap between the toes. The right foot holds the pencil vertically with the tip pointing up. The left foot moves inward, positioning the cap over the pencil's tip held by the right foot.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 2,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The left foot, gripping a hollow orange cap, moves inward to meet the right foot holding the yellow pencil vertically. The toes of the left foot align the cap with the pencil's tip. The left foot then presses forward, sliding the orange cap onto the pencil point held steady by the right foot's toes.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 3,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The feet separate widely across the notebook page. The left foot moves to the far left edge, gripping the hollow orange cap between the toes. The right foot shifts to the right side, holding the yellow pencil vertically with its tip resting on the lined paper, poised as if to write.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 4,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot presses the yellow pencil tip onto the lined paper, creating a small blue mark. The left foot remains stationary at the top left edge, gripping the hollow orange cap between the toes. The white text overlay persists at the top against the grey background.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 5,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot maintains its vertical grip on the yellow pencil, pressing the tip onto the lined paper to form a small blue mark. The left foot remains stationary at the top left, holding the orange cap between the toes. The white text overlay persists at the top.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 6,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot writes blue ink characters on the lined paper, forming visible strokes with the yellow pencil. The left foot remains stationary at the top left, holding the orange cap between the toes. The white text overlay stays fixed at the top against the grey background.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 7,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The right foot writes blue ink characters on the lined paper, forming a word in Urdu script. The left foot remains stationary at the top left, gripping the hollow orange cap between the toes. The white text overlay persists at the top against the grey background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [0, 14], \"text\": \"[0-2] Two bare feet rest on a lined notebook. The right foot grips a yellow pencil with a blue eraser between the big and second toes; the left foot lies flat nearby. A grey textured surface appears at the top. White text \\\"JiMMY KHaN- FooT WriTer\\\" overlays the scene.\\n[2-6] The feet separate; the left foot now grips a hollow orange cap between toes. The right foot holds the pencil vertically with the tip pointing up. The left foot moves inward, positioning the cap over the pencil's tip and sliding it onto the point held steady by the right foot's toes.\\n[6-14] The feet separate widely across the page. The left foot moves to the far left edge, gripping the hollow orange cap. The right foot shifts to the right side, holding the yellow pencil vertically with its tip resting on the lined paper. It presses down to create small blue marks and writes visible blue ink characters. The text overlay persists against the grey background.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='0-14'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "evidence_anchor",
+    "gold_caption": "A pair of feet is gripping a yellow pencil. | The pencil is positioned between the big toe and the second toe of the right foot. | The feet are resting on a sheet of lined paper. | The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame. | The right foot holds a yellow pencil between the big toe and second toe. | The left foot holds an orange pen cap between the big toe and second toe. | The feet are positioned over a sheet of lined paper. | The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame. | A person is using their feet to hold a yellow pencil and an orange pen cap. | The toes of the left foot are gripping the orange pen cap. | The toes of the right foot are gripping the yellow pencil. | The feet are positioned over an open notebook.",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 8,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "LoW2mloWSj8_F1_002",
+    "sequence_type": "immediate_response",
+    "action": "response",
+    "output": "<think>The right foot continues writing blue ink characters on the lined paper, extending the Urdu script further. The left foot remains stationary at the top left edge, gripping the hollow orange cap between the toes. The white text overlay persists at the top against the grey background.</think><answer>4</answer>",
+    "queries": [],
+    "user_input": "How many words appear in the white text overlay at the top of the frame?",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 9,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "LoW2mloWSj8_F1_002",
+    "sequence_type": "immediate_response",
+    "action": "silent",
+    "output": "<think>The right foot continues to write blue Urdu characters on the lined paper using a yellow pencil with a blue eraser. The left foot remains stationary at the top left edge, gripping a hollow orange cap between the toes. The white text overlay \"JiMMY KHaN- FooT WriTer\" persists at the top against the grey background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "How many words appear in the white text overlay at the top of the frame?",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "4",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 10,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot, gripping a yellow pencil with a blue eraser between the toes, completes writing blue Urdu characters on the lined notebook. The left foot remains stationary at the top left, holding an orange cap. The pencil lifts slightly from the paper surface as the writing stroke concludes.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "How many words appear in the white text overlay at the top of the frame?",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "4",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 11,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot continues writing blue Urdu script on the lined paper, maneuvering the yellow pencil with a blue eraser to add characters to the left of the existing text. The left foot remains stationary at the top left, gripping the hollow orange cap between the toes. The white text overlay persists.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "How many words appear in the white text overlay at the top of the frame?",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "4",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 12,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot, gripping a yellow pencil with a blue eraser between the toes, continues writing blue Urdu script on the lined notebook page. The left foot stays fixed at the top left edge, holding a hollow orange cap. The white text overlay remains visible at the top against the grey concrete background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "How many words appear in the white text overlay at the top of the frame?",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "4",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 13,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot extends the blue Urdu script further to the left using the yellow pencil with a blue eraser held between toes. The left foot remains stationary, anchoring the paper with the hollow orange cap. The white text overlay persists at the top against the grey surface.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "How many words appear in the white text overlay at the top of the frame?",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "4",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 14,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The right foot maneuvers the yellow pencil to write additional blue Urdu characters on the lined paper, extending the text line further to the left. The left foot stays fixed at the top left corner, holding the orange cap between toes to secure the notebook. The white overlay text remains constant at the top.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [14, 28], \"text\": \"[14-28] The right foot grips a yellow pencil with a blue eraser between the toes, writing blue Urdu characters on lined white paper. The script extends from right to left as the foot maneuvers the pencil to form words. Simultaneously, the left foot remains stationary at the top left edge, anchoring the paper by gripping a hollow orange cap between the toes. The white text overlay \\\"JiMMY KHaN- FooT WriTer\\\" persists at the top against the grey concrete background throughout the sequence. The writing action continues steadily, adding characters to the existing blue ink text.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "How many words appear in the white text overlay at the top of the frame?",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "4",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='14-28'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A person is writing on a piece of paper using their right foot. | The right foot is holding a yellow pen and writing in blue ink. | The left foot is holding the yellow pen cap between the toes. | The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the screen. | A foot on the right is holding a yellow pen and writing blue ink on the paper. | A foot on the left is holding the yellow cap of the pen. | The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame. | Blue Arabic or Urdu script is being written on the notebook page. | A person is writing Urdu script on a piece of paper using their foot. | The right foot holds the pen and is actively moving to form letters. | The left foot holds the pen cap and remains stationary. | The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen.",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 15,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot continues writing blue Urdu script on the lined paper, maneuvering the yellow pencil further left to extend the line of text. The left foot remains stationary at the top left edge, gripping the orange cap to anchor the notebook. The white text overlay persists at the top against the grey background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "How many words appear in the white text overlay at the top of the frame?",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "4",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 19,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot guides the yellow pencil further left, inscribing additional blue Urdu characters onto the lined paper. The left foot stays anchored at the top left edge, holding the orange cap between toes to secure the notebook. The white text overlay remains visible at the top against the grey surface.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "How many words appear in the white text overlay at the top of the frame?",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "4",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 20,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot moves below the main line of blue Urdu script to write the number \"17\" on the lined paper. The left foot stays fixed at the top left, gripping the orange cap to secure the notebook. The completed text line remains visible above the new numerals being formed by the pencil held between the toes.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "How many words appear in the white text overlay at the top of the frame?",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "4",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 21,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The right foot writes blue Urdu characters next to the number \"17\" below the main text line on the lined paper. The left foot remains stationary at the top left edge, gripping the orange cap to secure the notebook. The white text overlay persists at the top against the grey background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [28, 42], \"text\": \"[28-40] The right foot maneuvers a yellow pencil with a blue tip to inscribe blue Urdu characters on lined paper, extending the text line further to the left. The left foot remains fixed at the top left edge, gripping an orange pen cap between its toes to anchor the notebook steady against the grey surface. The white overlay text \\\"JiMMY KHaN- FooT WriTer\\\" persists at the top. [40-42] The right foot shifts position below the main line of script to write the number \\\"17\\\" in blue ink. The left foot maintains its hold on the orange cap to secure the paper as the numerals are formed.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "How many words appear in the white text overlay at the top of the frame?",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "4",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='28-42'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A person is using their feet to hold a pen and write on a piece of paper. | The writing is in blue ink and appears to be in a cursive script. | The left foot is holding the top edge of the paper to keep it steady. | The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen. | A person is writing on lined paper using a pencil held between the toes of their right foot. | The left foot is holding an orange object between the big toe and second toe. | Blue ink script is visible on the paper. | The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen. | A person is using their toes to hold a pencil and write on a piece of paper. | The writing appears to be in a cursive script, likely Urdu or Arabic. | The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen. | A foot is holding an orange pen cap between its toes.",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 22,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot writes additional blue Urdu characters next to the number \"17\" on the lined paper, extending the lower line of text. The toes manipulate the yellow pencil to form the script while the left foot remains stationary at the top left, gripping the orange cap to secure the notebook against the grey surface.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "How many words appear in the white text overlay at the top of the frame?",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "4",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 26,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot continues writing blue Urdu script on the second line, moving the yellow pencil leftward across the page. The left foot stays fixed at the top left, holding the orange cap to secure the paper. The white text overlay remains visible at the top against the grey background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "How many words appear in the white text overlay at the top of the frame?",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "4",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 27,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot continues maneuvering the yellow pencil, inscribing additional blue Urdu characters onto the second line of the lined paper. The pencil tip presses down to extend the script leftward. Meanwhile, the left foot remains stationary at the top left edge, gripping the orange cap to stabilize the notebook against the grey surface.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "How many words appear in the white text overlay at the top of the frame?",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "4",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 28,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The right foot maneuvers the yellow pencil leftward, adding blue Urdu script to the second line. The left foot stays fixed at the top left, gripping the orange cap to secure the paper. The white overlay text remains visible against the grey surface.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [42, 56], \"text\": \"[42-56] The white text overlay \\\"JiMMY KHaN- FooT WriTer\\\" persists at the top against the grey background. The left foot remains stationary at the top left edge, gripping an orange cap to secure the lined notebook. The right foot, holding a yellow pencil with a blue tip, actively writes blue Urdu script. Between 42s and 48s, the right foot writes blue Urdu characters next to the number \\\"17\\\" below the main text line. From 48s to 56s, the right foot continues inscribing additional blue Urdu characters on the second line, moving the pencil leftward to extend the text. The toes manipulate the pencil to form the script, adding to the line. The left foot stays fixed, holding the orange cap to keep the paper steady on the grey surface as the writing progresses.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "How many words appear in the white text overlay at the top of the frame?",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "4",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='42-56'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A foot is writing Urdu script on a piece of lined paper using a pen held between the toes. | A hand is holding a small orange object steady on the left side of the paper. | The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen. | A person is writing Urdu script on lined paper using a pencil held by their right foot. | The left foot is holding an orange pen cap to keep the paper in place. | The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen. | The writing surface is a grey concrete floor. | A hand is writing purple text on a piece of lined paper. | The text being written is in a script resembling Urdu or Arabic. | A second hand is holding a yellow object on the left side of the frame. | The paper is placed on a grey, textured surface. | A person is writing Urdu script on lined paper using a pen held between their toes.",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 29,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot maneuvers the yellow pencil further left, extending the line of blue Urdu script on the second row. The left foot remains stationary at the top left edge, gripping the orange cap to anchor the notebook. The white text overlay persists against the grey background as the writing action continues steadily.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "How many words appear in the white text overlay at the top of the frame?",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "4",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 0,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Two bare feet rest on a lined notebook. The right foot grips a yellow pencil with a blue eraser between the big and second toes. The left foot lies flat nearby. White text overlay reads \"JiMMY KHaN- FooT WriTer\". The toes flex slightly, adjusting the pencil. A grey textured surface appears at the top.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 1,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The feet separate, revealing the left foot gripping a hollow orange cap between the toes. The right foot holds the pencil vertically with the tip pointing up. The left foot moves inward, positioning the cap over the pencil's tip held by the right foot.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 2,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The left foot, gripping a hollow orange cap, moves inward to meet the right foot holding the yellow pencil vertically. The toes of the left foot align the cap with the pencil's tip. The left foot then presses forward, sliding the orange cap onto the pencil point held steady by the right foot's toes.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 3,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The feet separate widely across the notebook page. The left foot moves to the far left edge, gripping the hollow orange cap between the toes. The right foot shifts to the right side, holding the yellow pencil vertically with its tip resting on the lined paper, poised as if to write.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 4,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot presses the yellow pencil tip onto the lined paper, creating a small blue mark. The left foot remains stationary at the top left edge, gripping the hollow orange cap between the toes. The white text overlay persists at the top against the grey background.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 5,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot maintains its vertical grip on the yellow pencil, pressing the tip onto the lined paper to form a small blue mark. The left foot remains stationary at the top left, holding the orange cap between the toes. The white text overlay persists at the top.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 6,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot writes blue ink characters on the lined paper, forming visible strokes with the yellow pencil. The left foot remains stationary at the top left, holding the orange cap between the toes. The white text overlay stays fixed at the top against the grey background.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 7,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The right foot writes blue ink characters on the lined paper, forming a word in Urdu script. The left foot remains stationary at the top left, gripping the hollow orange cap between the toes. The white text overlay persists at the top against the grey background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [0, 14], \"text\": \"[0-2] Two bare feet rest on a lined notebook. The right foot grips a yellow pencil with a blue eraser between the big and second toes; the left foot lies flat nearby. A grey textured surface appears at the top. White text \\\"JiMMY KHaN- FooT WriTer\\\" overlays the scene.\\n[2-6] The feet separate; the left foot now grips a hollow orange cap between toes. The right foot holds the pencil vertically with the tip pointing up. The left foot moves inward, positioning the cap over the pencil's tip and sliding it onto the point held steady by the right foot's toes.\\n[6-14] The feet separate widely across the page. The left foot moves to the far left edge, gripping the hollow orange cap. The right foot shifts to the right side, holding the yellow pencil vertically with its tip resting on the lined paper. It presses down to create small blue marks and writes visible blue ink characters. The text overlay persists against the grey background.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='0-14'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "evidence_anchor",
+    "gold_caption": "A pair of feet is gripping a yellow pencil. | The pencil is positioned between the big toe and the second toe of the right foot. | The feet are resting on a sheet of lined paper. | The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame. | The right foot holds a yellow pencil between the big toe and second toe. | The left foot holds an orange pen cap between the big toe and second toe. | The feet are positioned over a sheet of lined paper. | The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame. | A person is using their feet to hold a yellow pencil and an orange pen cap. | The toes of the left foot are gripping the orange pen cap. | The toes of the right foot are gripping the yellow pencil. | The feet are positioned over an open notebook.",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 8,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "LoW2mloWSj8_F2_003",
+    "sequence_type": "immediate_response",
+    "action": "response",
+    "output": "<think>The right foot continues writing blue ink characters on the lined paper, extending the Urdu script further. The left foot remains stationary at the top left edge, gripping the hollow orange cap between the toes. The white text overlay persists at the top against the grey background.</think><answer>D</answer>",
+    "queries": [],
+    "user_input": "What color is the body of the writing instrument held by the right foot? A. Blue B. Orange C. Purple D. Yellow",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 9,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "LoW2mloWSj8_F2_003",
+    "sequence_type": "immediate_response",
+    "action": "silent",
+    "output": "<think>The right foot continues to write blue Urdu characters on the lined paper using a yellow pencil with a blue eraser. The left foot remains stationary at the top left edge, gripping a hollow orange cap between the toes. The white text overlay \"JiMMY KHaN- FooT WriTer\" persists at the top against the grey background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the body of the writing instrument held by the right foot? A. Blue B. Orange C. Purple D. Yellow",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "D",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 10,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot, gripping a yellow pencil with a blue eraser between the toes, completes writing blue Urdu characters on the lined notebook. The left foot remains stationary at the top left, holding an orange cap. The pencil lifts slightly from the paper surface as the writing stroke concludes.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the body of the writing instrument held by the right foot? A. Blue B. Orange C. Purple D. Yellow",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "D",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 11,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot continues writing blue Urdu script on the lined paper, maneuvering the yellow pencil with a blue eraser to add characters to the left of the existing text. The left foot remains stationary at the top left, gripping the hollow orange cap between the toes. The white text overlay persists.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the body of the writing instrument held by the right foot? A. Blue B. Orange C. Purple D. Yellow",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "D",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 12,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot, gripping a yellow pencil with a blue eraser between the toes, continues writing blue Urdu script on the lined notebook page. The left foot stays fixed at the top left edge, holding a hollow orange cap. The white text overlay remains visible at the top against the grey concrete background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the body of the writing instrument held by the right foot? A. Blue B. Orange C. Purple D. Yellow",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "D",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 13,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot extends the blue Urdu script further to the left using the yellow pencil with a blue eraser held between toes. The left foot remains stationary, anchoring the paper with the hollow orange cap. The white text overlay persists at the top against the grey surface.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the body of the writing instrument held by the right foot? A. Blue B. Orange C. Purple D. Yellow",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "D",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 14,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The right foot maneuvers the yellow pencil to write additional blue Urdu characters on the lined paper, extending the text line further to the left. The left foot stays fixed at the top left corner, holding the orange cap between toes to secure the notebook. The white overlay text remains constant at the top.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [14, 28], \"text\": \"[14-28] The right foot grips a yellow pencil with a blue eraser between the toes, writing blue Urdu characters on lined white paper. The script extends from right to left as the foot maneuvers the pencil to form words. Simultaneously, the left foot remains stationary at the top left edge, anchoring the paper by gripping a hollow orange cap between the toes. The white text overlay \\\"JiMMY KHaN- FooT WriTer\\\" persists at the top against the grey concrete background throughout the sequence. The writing action continues steadily, adding characters to the existing blue ink text.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the body of the writing instrument held by the right foot? A. Blue B. Orange C. Purple D. Yellow",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "D",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='14-28'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A person is writing on a piece of paper using their right foot. | The right foot is holding a yellow pen and writing in blue ink. | The left foot is holding the yellow pen cap between the toes. | The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the screen. | A foot on the right is holding a yellow pen and writing blue ink on the paper. | A foot on the left is holding the yellow cap of the pen. | The text 'JiMMY KHaN- FooT WriTer' is visible at the top of the frame. | Blue Arabic or Urdu script is being written on the notebook page. | A person is writing Urdu script on a piece of paper using their foot. | The right foot holds the pen and is actively moving to form letters. | The left foot holds the pen cap and remains stationary. | The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen.",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 15,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot continues writing blue Urdu script on the lined paper, maneuvering the yellow pencil further left to extend the line of text. The left foot remains stationary at the top left edge, gripping the orange cap to anchor the notebook. The white text overlay persists at the top against the grey background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the body of the writing instrument held by the right foot? A. Blue B. Orange C. Purple D. Yellow",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "D",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 19,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot guides the yellow pencil further left, inscribing additional blue Urdu characters onto the lined paper. The left foot stays anchored at the top left edge, holding the orange cap between toes to secure the notebook. The white text overlay remains visible at the top against the grey surface.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the body of the writing instrument held by the right foot? A. Blue B. Orange C. Purple D. Yellow",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "D",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 20,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot moves below the main line of blue Urdu script to write the number \"17\" on the lined paper. The left foot stays fixed at the top left, gripping the orange cap to secure the notebook. The completed text line remains visible above the new numerals being formed by the pencil held between the toes.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the body of the writing instrument held by the right foot? A. Blue B. Orange C. Purple D. Yellow",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "D",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 21,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The right foot writes blue Urdu characters next to the number \"17\" below the main text line on the lined paper. The left foot remains stationary at the top left edge, gripping the orange cap to secure the notebook. The white text overlay persists at the top against the grey background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [28, 42], \"text\": \"[28-40] The right foot maneuvers a yellow pencil with a blue tip to inscribe blue Urdu characters on lined paper, extending the text line further to the left. The left foot remains fixed at the top left edge, gripping an orange pen cap between its toes to anchor the notebook steady against the grey surface. The white overlay text \\\"JiMMY KHaN- FooT WriTer\\\" persists at the top. [40-42] The right foot shifts position below the main line of script to write the number \\\"17\\\" in blue ink. The left foot maintains its hold on the orange cap to secure the paper as the numerals are formed.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the body of the writing instrument held by the right foot? A. Blue B. Orange C. Purple D. Yellow",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "D",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='28-42'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A person is using their feet to hold a pen and write on a piece of paper. | The writing is in blue ink and appears to be in a cursive script. | The left foot is holding the top edge of the paper to keep it steady. | The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen. | A person is writing on lined paper using a pencil held between the toes of their right foot. | The left foot is holding an orange object between the big toe and second toe. | Blue ink script is visible on the paper. | The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen. | A person is using their toes to hold a pencil and write on a piece of paper. | The writing appears to be in a cursive script, likely Urdu or Arabic. | The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen. | A foot is holding an orange pen cap between its toes.",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 22,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot writes additional blue Urdu characters next to the number \"17\" on the lined paper, extending the lower line of text. The toes manipulate the yellow pencil to form the script while the left foot remains stationary at the top left, gripping the orange cap to secure the notebook against the grey surface.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the body of the writing instrument held by the right foot? A. Blue B. Orange C. Purple D. Yellow",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "D",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 26,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot continues writing blue Urdu script on the second line, moving the yellow pencil leftward across the page. The left foot stays fixed at the top left, holding the orange cap to secure the paper. The white text overlay remains visible at the top against the grey background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the body of the writing instrument held by the right foot? A. Blue B. Orange C. Purple D. Yellow",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "D",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 27,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot continues maneuvering the yellow pencil, inscribing additional blue Urdu characters onto the second line of the lined paper. The pencil tip presses down to extend the script leftward. Meanwhile, the left foot remains stationary at the top left edge, gripping the orange cap to stabilize the notebook against the grey surface.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the body of the writing instrument held by the right foot? A. Blue B. Orange C. Purple D. Yellow",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "D",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 28,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The right foot maneuvers the yellow pencil leftward, adding blue Urdu script to the second line. The left foot stays fixed at the top left, gripping the orange cap to secure the paper. The white overlay text remains visible against the grey surface.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [42, 56], \"text\": \"[42-56] The white text overlay \\\"JiMMY KHaN- FooT WriTer\\\" persists at the top against the grey background. The left foot remains stationary at the top left edge, gripping an orange cap to secure the lined notebook. The right foot, holding a yellow pencil with a blue tip, actively writes blue Urdu script. Between 42s and 48s, the right foot writes blue Urdu characters next to the number \\\"17\\\" below the main text line. From 48s to 56s, the right foot continues inscribing additional blue Urdu characters on the second line, moving the pencil leftward to extend the text. The toes manipulate the pencil to form the script, adding to the line. The left foot stays fixed, holding the orange cap to keep the paper steady on the grey surface as the writing progresses.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the body of the writing instrument held by the right foot? A. Blue B. Orange C. Purple D. Yellow",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "D",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='42-56'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A foot is writing Urdu script on a piece of lined paper using a pen held between the toes. | A hand is holding a small orange object steady on the left side of the paper. | The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen. | A person is writing Urdu script on lined paper using a pencil held by their right foot. | The left foot is holding an orange pen cap to keep the paper in place. | The text 'JiMMY KHaN- FooT WriTer' is displayed at the top of the screen. | The writing surface is a grey concrete floor. | A hand is writing purple text on a piece of lined paper. | The text being written is in a script resembling Urdu or Arabic. | A second hand is holding a yellow object on the left side of the frame. | The paper is placed on a grey, textured surface. | A person is writing Urdu script on lined paper using a pen held between their toes.",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  },
+  {
+    "chunk_idx": 29,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The right foot maneuvers the yellow pencil further left, extending the line of blue Urdu script on the second row. The left foot remains stationary at the top left edge, gripping the orange cap to anchor the notebook. The white text overlay persists against the grey background as the writing action continues steadily.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the body of the writing instrument held by the right foot? A. Blue B. Orange C. Purple D. Yellow",
+        "ask_time": 16,
+        "answers": [
+          {
+            "text": "D",
+            "time": 16
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "LoW2mloWSj8",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/VATEX/videos/LoW2mloWSj8.mp4"
+  }
+]

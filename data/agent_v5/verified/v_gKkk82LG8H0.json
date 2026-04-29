@@ -16,7 +16,7 @@
         "user_input": "",
         "recall_result": null
       },
-      "output": "<think>A man with dreadlocks in a white tank top actively strikes a drum in the foreground, his hands blurring with motion. Behind him, another individual hits yellow conga drums. In the background, a person wearing white pants walks further away along a stone pathway.</think><action>silent</action>",
+      "output": "<think>A man with dreadlocks in a white tank top actively strikes a drum in the foreground, his hands blurring with motion. Behind him, another individual hits yellow conga drums. In the background, a person wearing white pants walks further away along a stone pathway.</think><answer></answer>",
       "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_gKkk82LG8H0.mp4",
       "video_id": "v_gKkk82LG8H0",
       "chunk_idx": 0,
@@ -29,12 +29,15 @@
       "metadata": {
         "gold_action": "silent",
         "gold_answer": "",
+        "canonical_answer": "",
         "answer_form": "",
         "family": "",
         "availability": "base",
-        "support_chunks": []
+        "support_chunks": [],
+        "gold_compress_chunks": []
       },
       "base_role": "evidence_anchor",
+      "protocol_version": "v12",
       "verification": {
         "passed": true,
         "checks": {
@@ -89,6 +92,1109 @@
           "recall_evidence_reachable": {
             "passed": true,
             "reason": "pass"
+          },
+          "metadata_complete": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "support_chunks_have_evidence": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 0,
+          "video_end": 6,
+          "frames": 6
+        },
+        "memory": {
+          "compressed_segments": [],
+          "recent_thinks": [
+            "[0-2] A man with dreadlocks in a white tank top actively strikes a drum in the foreground, his hands blurring with motion. Behind him, another individual hits yellow conga drums. In the background, a person wearing white pants walks further away along a stone pathway.",
+            "[2-4] The foreground drummer shifts from clapping hands to striking the drum head with both palms. Behind him, the second musician continues playing the yellow congas. In the background, the person in white walks further away on the stone path, while another individual's legs appear briefly on the right side."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>Legs wearing light shorts and dark shoes appear on the right edge. The foreground drummer tilts their head back slightly while striking the drum heads rapidly. The background drummer continues playing the yellow congas. The barefoot person in white pants walks further away on the stone path to the left.</think><answer></answer>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_gKkk82LG8H0.mp4",
+      "video_id": "v_gKkk82LG8H0",
+      "chunk_idx": 2,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "canonical_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": [],
+        "gold_compress_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "protocol_version": "v12",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "metadata_complete": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "support_chunks_have_evidence": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 72,
+          "video_end": 96,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                28
+              ],
+              "text": "[0-14] A man with long dreadlocks wearing a white tank top sits in the foreground, energetically striking a drum with his hands. Behind him, a second musician plays a set of yellow conga drums. To the left, a barefoot individual dressed in white pants over black leggings walks away along a stone pathway. Throughout the sequence, the foreground drummer varies his movements, clapping his hands, tilting his head back, and opening his mouth as if chanting or singing. At one point, legs wearing light shorts and dark shoes appear briefly on the right edge of the frame. The background musician maintains a consistent rhythm on the congas, occasionally looking upward while playing. The scene is brightly lit, highlighting the stone path and the musicians' white clothing. [14-20] A barefoot person wearing white garments over black leggings walks left along a stone path. In the foreground, a drummer with dreadlocks strikes a drum with both hands, occasionally glancing at the second musician behind him who plays yellow congas. [20-24] The barefoot individual moves further away to the left. The foreground drummer gazes upward while playing, and the background musician looks up, maintaining the rhythm on the congas. [24-28] A person in"
+            },
+            {
+              "time_range": [
+                28,
+                42
+              ],
+              "text": "[28-34] A barefoot individual in white garments walks away left. The foreground musician with dreadlocks strikes drums, tilting his head back then forward. Behind him, a second musician in white plays yellow congas. Two people in shorts stand on the far right.\n[34-40] The foreground drummer faces the camera, mouth open, then smiles and raises a thumbs-up with his right hand while striking the drum with his left. The background musician plays congas as the barefoot individual walks further away.\n[40-42] The foreground drummer lowers his hand, laughs, and resumes drumming. The background musician strikes the yellow congas while the barefoot individual continues walking away on the left path."
+            },
+            {
+              "time_range": [
+                42,
+                56
+              ],
+              "text": "[42-56] A foreground drummer with dreadlocks and a white tank top actively strikes drum heads with both hands, shifting his gaze from forward to right and tilting his head back with his mouth open. Behind him, a second musician with dreadlocks plays yellow congas rhythmically, facing left. To the left, a barefoot individual in white garments remains stationary on a stone path. On the far right, spectators' legs in shorts and sneakers are visible standing on the floor. The foreground drummer's hands blur from speed as he maintains the beat."
+            },
+            {
+              "time_range": [
+                56,
+                70
+              ],
+              "text": "[56-60] The foreground drummer with dreadlocks strikes the drum, head lowering then tilting back with mouth open, while the background musician plays yellow congas. A barefoot individual in white garments stands on the left stone path initially but disappears. A person in a red shirt and green shorts appears on the right. [60-64] The foreground drummer lowers his head rapidly, hair obscuring his face, then lifts it back. The background musician continues playing facing left. Spectators' legs in khaki shorts and blue sneakers stand on the right floor; the left path is clear. [64-70] The foreground drummer maintains rhythm with head tilted back. An individual in white garments becomes partially visible on the far left edge, standing on the stone path. Spectators' legs in shorts and sneakers remain visible on the right floor."
+            },
+            {
+              "time_range": [
+                70,
+                84
+              ],
+              "text": "[70-74] The foreground drummer with dreadlocks and a white tank top strikes a drum while gazing at the camera, mouth open. Behind him, a second musician plays yellow congas. To the left, a barefoot person in white pants stands on a stone path, while spectators' legs are visible on the right. [74-78] The drummer shifts his gaze left, then tilts his head back while continuing to strike the drum. The background musician maintains rhythm on the congas. [78-82] The drummer faces forward and forward-left, striking rhythmically. The second musician continues playing. The person in white pants remains on the left path. [82-84] The foreground drummer turns his head left while playing. The background musician plays the yellow congas. The barefoot individual in white pants stands on the stone path, and spectators' legs in shorts and sneakers are visible on the right floor."
+            }
+          ],
+          "recent_thinks": [
+            "[84-86] The foreground drummer with dreadlocks continues striking the drum, shifting his gaze slightly forward while maintaining an open mouth. Behind him, the second musician keeps playing the yellow congas. To the left, the barefoot individual in white pants remains standing on the stone path, and spectators' legs are still visible on the right.",
+            "[86-88] The foreground drummer continues striking the drum with head tilted back, while the background musician plays yellow congas. The scene becomes significantly overexposed, washing out details of the barefoot individual on the left and spectators on the right, leaving mostly bright white light surrounding the musicians.",
+            "[88-90] The lighting adjusts from severe overexposure, revealing a green post with a yellow \"GIFT SHOP\" sign on the left. A person wearing a pink shirt stands in the background near a doorway. The foreground drummer in a white tank top and the background musician playing yellow congas continue their performance. Spectators are visible in the distance.",
+            "[90-92] The view zooms in on the percussion instruments. A yellow sign reading \"GIFT SHOP\" is mounted on a green post to the left, near a standing person in a white shirt and blue shorts. The foreground musician's hands strike the drum heads rapidly, while the background musician continues playing the yellow congas.",
+            "[92-94] The camera remains zoomed in on the percussion instruments. The yellow sign on the green post reveals the text \"WATER SLIDE POOL\" below \"GIFT SHOP.\" The foreground musician's hands strike the drum heads rapidly, and the background musician plays the yellow congas while spectators stand nearby."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The camera remains close to the percussion instruments, showing hands striking the drum heads rapidly. A green post with a yellow sign reading \"GIFT SHOP\" and \"WATER SLIDE POOL\" is visible on the left. Spectators stand in the background near the entrance. In the final moments, a hand moves very close to the lens, partially obscuring the view.</think><answer></answer>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_gKkk82LG8H0.mp4",
+      "video_id": "v_gKkk82LG8H0",
+      "chunk_idx": 47,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "canonical_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": [],
+        "gold_compress_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "protocol_version": "v12",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "metadata_complete": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "support_chunks_have_evidence": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 90,
+          "video_end": 114,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                56
+              ],
+              "text": "[0-14] A man with long dreadlocks wearing a white tank top sits in the foreground, energetically striking a drum with his hands. Behind him, a second musician plays a set of yellow conga drums. To the left, a barefoot individual dressed in white pants over black leggings walks away along a stone pathway. Throughout the sequence, the foreground drummer varies his movements, clapping his hands, tilting his head back, and opening his mouth as if chanting or singing. At one point, legs wearing light shorts and dark shoes appear briefly on the right edge of the frame. The background musician maintains a consistent rhythm on the congas, occasionally looking upward while playing. The scene is brightly lit, highlighting the stone path and the musicians' white clothing. [14-20] A barefoot person wearing white garments over black leggings walks left along a stone path. In the foreground, a drummer with dreadlocks strikes a drum with both hands, occasionally glancing at the second musician behind him who plays yellow congas. [20-24] The barefoot individual moves further away to the left. The foreground drummer gazes upward while playing, and the background musician looks up, maintaining the rhythm on the congas. [24-28] A person in"
+            },
+            {
+              "time_range": [
+                56,
+                70
+              ],
+              "text": "[56-60] The foreground drummer with dreadlocks strikes the drum, head lowering then tilting back with mouth open, while the background musician plays yellow congas. A barefoot individual in white garments stands on the left stone path initially but disappears. A person in a red shirt and green shorts appears on the right. [60-64] The foreground drummer lowers his head rapidly, hair obscuring his face, then lifts it back. The background musician continues playing facing left. Spectators' legs in khaki shorts and blue sneakers stand on the right floor; the left path is clear. [64-70] The foreground drummer maintains rhythm with head tilted back. An individual in white garments becomes partially visible on the far left edge, standing on the stone path. Spectators' legs in shorts and sneakers remain visible on the right floor."
+            },
+            {
+              "time_range": [
+                70,
+                84
+              ],
+              "text": "[70-74] The foreground drummer with dreadlocks and a white tank top strikes a drum while gazing at the camera, mouth open. Behind him, a second musician plays yellow congas. To the left, a barefoot person in white pants stands on a stone path, while spectators' legs are visible on the right. [74-78] The drummer shifts his gaze left, then tilts his head back while continuing to strike the drum. The background musician maintains rhythm on the congas. [78-82] The drummer faces forward and forward-left, striking rhythmically. The second musician continues playing. The person in white pants remains on the left path. [82-84] The foreground drummer turns his head left while playing. The background musician plays the yellow congas. The barefoot individual in white pants stands on the stone path, and spectators' legs in shorts and sneakers are visible on the right floor."
+            },
+            {
+              "time_range": [
+                84,
+                96
+              ],
+              "text": "[84-88] A foreground drummer with dreadlocks and a white tank top strikes a drum with an open mouth while a background musician plays yellow congas; severe overexposure briefly washes out the scene, obscuring a barefoot individual in white pants on the left and spectators on the right. [88-92] As lighting adjusts, a green post with a yellow sign reading \"GIFT SHOP\" appears on the left near a standing person in a white shirt and blue shorts, while a person in pink stands in the background doorway. [92-96] The camera zooms in on the musicians' hands rapidly striking the drum heads; the sign reveals additional text \"WATER SLIDE POOL\" before a hand moves very close to the lens, partially blocking the view of the performance and nearby spectators."
+            },
+            {
+              "time_range": [
+                96,
+                110
+              ],
+              "text": "[96-104] The camera maintains a tight close-up on hands rapidly striking drum heads featuring rope tuning, while yellow conga drums are played by a musician in the background. To the left, a green post supports a yellow sign reading \"GIFT SHOP\" and \"WATER SLIDE POOL,\" with spectators' legs in blue and white shorts standing on the stone path nearby. [104-108] The angle widens slightly to reveal the drummer's white tank top and pants as hands continue to rhythmically strike the instrument skins, with the yellow congas positioned behind the foreground drums. [108-110] The camera pulls back fully to reveal two musicians with dreadlocks in white tank tops drumming; the foreground musician plays the rope-tuned drums while the background musician plays the yellow congas. Spectators in pink shirts and denim shorts stand behind them near a large red sign board on the right."
+            }
+          ],
+          "recent_thinks": [
+            "[110-112] Two musicians with dreadlocks in white tank tops continue drumming. The foreground musician plays a drum while the background musician plays yellow congas. Spectators stand near a red sign board in the background. A person wearing white garments appears on the far right edge."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The scene shifts to show three people from behind moving away on the stone path. On the left, an individual wears a long white skirt. In the center, a person wears a white tank top with text and black shorts. On the right, someone wears white pants with a high slit. They appear to be linking arms or holding hands while moving.</think><answer></answer>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_gKkk82LG8H0.mp4",
+      "video_id": "v_gKkk82LG8H0",
+      "chunk_idx": 56,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "canonical_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": [],
+        "gold_compress_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "protocol_version": "v12",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "metadata_complete": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "support_chunks_have_evidence": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 92,
+          "video_end": 116,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                56
+              ],
+              "text": "[0-14] A man with long dreadlocks wearing a white tank top sits in the foreground, energetically striking a drum with his hands. Behind him, a second musician plays a set of yellow conga drums. To the left, a barefoot individual dressed in white pants over black leggings walks away along a stone pathway. Throughout the sequence, the foreground drummer varies his movements, clapping his hands, tilting his head back, and opening his mouth as if chanting or singing. At one point, legs wearing light shorts and dark shoes appear briefly on the right edge of the frame. The background musician maintains a consistent rhythm on the congas, occasionally looking upward while playing. The scene is brightly lit, highlighting the stone path and the musicians' white clothing. [14-20] A barefoot person wearing white garments over black leggings walks left along a stone path. In the foreground, a drummer with dreadlocks strikes a drum with both hands, occasionally glancing at the second musician behind him who plays yellow congas. [20-24] The barefoot individual moves further away to the left. The foreground drummer gazes upward while playing, and the background musician looks up, maintaining the rhythm on the congas. [24-28] A person in"
+            },
+            {
+              "time_range": [
+                56,
+                70
+              ],
+              "text": "[56-60] The foreground drummer with dreadlocks strikes the drum, head lowering then tilting back with mouth open, while the background musician plays yellow congas. A barefoot individual in white garments stands on the left stone path initially but disappears. A person in a red shirt and green shorts appears on the right. [60-64] The foreground drummer lowers his head rapidly, hair obscuring his face, then lifts it back. The background musician continues playing facing left. Spectators' legs in khaki shorts and blue sneakers stand on the right floor; the left path is clear. [64-70] The foreground drummer maintains rhythm with head tilted back. An individual in white garments becomes partially visible on the far left edge, standing on the stone path. Spectators' legs in shorts and sneakers remain visible on the right floor."
+            },
+            {
+              "time_range": [
+                70,
+                84
+              ],
+              "text": "[70-74] The foreground drummer with dreadlocks and a white tank top strikes a drum while gazing at the camera, mouth open. Behind him, a second musician plays yellow congas. To the left, a barefoot person in white pants stands on a stone path, while spectators' legs are visible on the right. [74-78] The drummer shifts his gaze left, then tilts his head back while continuing to strike the drum. The background musician maintains rhythm on the congas. [78-82] The drummer faces forward and forward-left, striking rhythmically. The second musician continues playing. The person in white pants remains on the left path. [82-84] The foreground drummer turns his head left while playing. The background musician plays the yellow congas. The barefoot individual in white pants stands on the stone path, and spectators' legs in shorts and sneakers are visible on the right floor."
+            },
+            {
+              "time_range": [
+                84,
+                96
+              ],
+              "text": "[84-88] A foreground drummer with dreadlocks and a white tank top strikes a drum with an open mouth while a background musician plays yellow congas; severe overexposure briefly washes out the scene, obscuring a barefoot individual in white pants on the left and spectators on the right. [88-92] As lighting adjusts, a green post with a yellow sign reading \"GIFT SHOP\" appears on the left near a standing person in a white shirt and blue shorts, while a person in pink stands in the background doorway. [92-96] The camera zooms in on the musicians' hands rapidly striking the drum heads; the sign reveals additional text \"WATER SLIDE POOL\" before a hand moves very close to the lens, partially blocking the view of the performance and nearby spectators."
+            },
+            {
+              "time_range": [
+                96,
+                110
+              ],
+              "text": "[96-104] The camera maintains a tight close-up on hands rapidly striking drum heads featuring rope tuning, while yellow conga drums are played by a musician in the background. To the left, a green post supports a yellow sign reading \"GIFT SHOP\" and \"WATER SLIDE POOL,\" with spectators' legs in blue and white shorts standing on the stone path nearby. [104-108] The angle widens slightly to reveal the drummer's white tank top and pants as hands continue to rhythmically strike the instrument skins, with the yellow congas positioned behind the foreground drums. [108-110] The camera pulls back fully to reveal two musicians with dreadlocks in white tank tops drumming; the foreground musician plays the rope-tuned drums while the background musician plays the yellow congas. Spectators in pink shirts and denim shorts stand behind them near a large red sign board on the right."
+            }
+          ],
+          "recent_thinks": [
+            "[110-112] Two musicians with dreadlocks in white tank tops continue drumming. The foreground musician plays a drum while the background musician plays yellow congas. Spectators stand near a red sign board in the background. A person wearing white garments appears on the far right edge.",
+            "[112-114] The scene shifts to show three people from behind moving away on the stone path. On the left, an individual wears a long white skirt. In the center, a person wears a white tank top with text and black shorts. On the right, someone wears white pants with a high slit. They appear to be linking arms or holding hands while moving."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>Three individuals stand on a stone path grid, viewed from behind. The person on the left wears a long white skirt, while the person on the right wears white pants with a high slit. Both outer individuals hold out the sides of their white garments, extending the fabric horizontally while linking arms with the central figure.</think><answer></answer>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_gKkk82LG8H0.mp4",
+      "video_id": "v_gKkk82LG8H0",
+      "chunk_idx": 57,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_0",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "canonical_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": [],
+        "gold_compress_chunks": []
+      },
+      "base_role": "question_window",
+      "protocol_version": "v12",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "metadata_complete": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "support_chunks_have_evidence": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 94,
+          "video_end": 118,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                56
+              ],
+              "text": "[0-14] A man with long dreadlocks wearing a white tank top sits in the foreground, energetically striking a drum with his hands. Behind him, a second musician plays a set of yellow conga drums. To the left, a barefoot individual dressed in white pants over black leggings walks away along a stone pathway. Throughout the sequence, the foreground drummer varies his movements, clapping his hands, tilting his head back, and opening his mouth as if chanting or singing. At one point, legs wearing light shorts and dark shoes appear briefly on the right edge of the frame. The background musician maintains a consistent rhythm on the congas, occasionally looking upward while playing. The scene is brightly lit, highlighting the stone path and the musicians' white clothing. [14-20] A barefoot person wearing white garments over black leggings walks left along a stone path. In the foreground, a drummer with dreadlocks strikes a drum with both hands, occasionally glancing at the second musician behind him who plays yellow congas. [20-24] The barefoot individual moves further away to the left. The foreground drummer gazes upward while playing, and the background musician looks up, maintaining the rhythm on the congas. [24-28] A person in"
+            },
+            {
+              "time_range": [
+                56,
+                70
+              ],
+              "text": "[56-60] The foreground drummer with dreadlocks strikes the drum, head lowering then tilting back with mouth open, while the background musician plays yellow congas. A barefoot individual in white garments stands on the left stone path initially but disappears. A person in a red shirt and green shorts appears on the right. [60-64] The foreground drummer lowers his head rapidly, hair obscuring his face, then lifts it back. The background musician continues playing facing left. Spectators' legs in khaki shorts and blue sneakers stand on the right floor; the left path is clear. [64-70] The foreground drummer maintains rhythm with head tilted back. An individual in white garments becomes partially visible on the far left edge, standing on the stone path. Spectators' legs in shorts and sneakers remain visible on the right floor."
+            },
+            {
+              "time_range": [
+                70,
+                84
+              ],
+              "text": "[70-74] The foreground drummer with dreadlocks and a white tank top strikes a drum while gazing at the camera, mouth open. Behind him, a second musician plays yellow congas. To the left, a barefoot person in white pants stands on a stone path, while spectators' legs are visible on the right. [74-78] The drummer shifts his gaze left, then tilts his head back while continuing to strike the drum. The background musician maintains rhythm on the congas. [78-82] The drummer faces forward and forward-left, striking rhythmically. The second musician continues playing. The person in white pants remains on the left path. [82-84] The foreground drummer turns his head left while playing. The background musician plays the yellow congas. The barefoot individual in white pants stands on the stone path, and spectators' legs in shorts and sneakers are visible on the right floor."
+            },
+            {
+              "time_range": [
+                84,
+                96
+              ],
+              "text": "[84-88] A foreground drummer with dreadlocks and a white tank top strikes a drum with an open mouth while a background musician plays yellow congas; severe overexposure briefly washes out the scene, obscuring a barefoot individual in white pants on the left and spectators on the right. [88-92] As lighting adjusts, a green post with a yellow sign reading \"GIFT SHOP\" appears on the left near a standing person in a white shirt and blue shorts, while a person in pink stands in the background doorway. [92-96] The camera zooms in on the musicians' hands rapidly striking the drum heads; the sign reveals additional text \"WATER SLIDE POOL\" before a hand moves very close to the lens, partially blocking the view of the performance and nearby spectators."
+            },
+            {
+              "time_range": [
+                96,
+                110
+              ],
+              "text": "[96-104] The camera maintains a tight close-up on hands rapidly striking drum heads featuring rope tuning, while yellow conga drums are played by a musician in the background. To the left, a green post supports a yellow sign reading \"GIFT SHOP\" and \"WATER SLIDE POOL,\" with spectators' legs in blue and white shorts standing on the stone path nearby. [104-108] The angle widens slightly to reveal the drummer's white tank top and pants as hands continue to rhythmically strike the instrument skins, with the yellow congas positioned behind the foreground drums. [108-110] The camera pulls back fully to reveal two musicians with dreadlocks in white tank tops drumming; the foreground musician plays the rope-tuned drums while the background musician plays the yellow congas. Spectators in pink shirts and denim shorts stand behind them near a large red sign board on the right."
+            }
+          ],
+          "recent_thinks": [
+            "[110-112] Two musicians with dreadlocks in white tank tops continue drumming. The foreground musician plays a drum while the background musician plays yellow congas. Spectators stand near a red sign board in the background. A person wearing white garments appears on the far right edge.",
+            "[112-114] The scene shifts to show three people from behind moving away on the stone path. On the left, an individual wears a long white skirt. In the center, a person wears a white tank top with text and black shorts. On the right, someone wears white pants with a high slit. They appear to be linking arms or holding hands while moving.",
+            "[114-116] Three individuals stand on a stone path grid, viewed from behind. The person on the left wears a long white skirt, while the person on the right wears white pants with a high slit. Both outer individuals hold out the sides of their white garments, extending the fabric horizontally while linking arms with the central figure."
+          ]
+        },
+        "queries": [
+          {
+            "question": "What gesture does the man with dreadlocks in the white sleeveless top make during the drumming performance?",
+            "answers": [
+              {
+                "text": "The provided evidence describes the man with dreadlocks in the white sleeveless top energetically striking the drum heads with both hands and turning his head in various directions during the performance. However, the available text segments do not contain any description of him raising his hand to make a thumbs-up gesture. The evidence focuses exclusively on his drumming actions and head movements rather than any specific hand signals like a thumbs-up.",
+                "time": 50
+              },
+              {
+                "text": "The man raises his right hand to give a thumbs-up gesture.",
+                "time": 36
+              },
+              {
+                "text": "The man raises his right hand to give a thumbs-up gesture.",
+                "time": 38
+              },
+              {
+                "text": "The man raises his right hand to give a thumbs-up gesture.",
+                "time": 40
+              }
+            ]
+          },
+          {
+            "question": "How has the activity of the person in the background wearing white changed from the first segment to the second segment? A. From walking away to playing drums B. From playing drums to walking away C. From playing drums to clapping hands D. From clapping hands to walking away",
+            "answers": []
+          }
+        ],
+        "user_input": "How has the activity of the person in the background wearing white changed from the first segment to the second segment? A. From walking away to playing drums B. From playing drums to walking away C. From playing drums to clapping hands D. From clapping hands to walking away",
+        "recall_result": null
+      },
+      "output": "<think>Three individuals remain linked arms on the stone grid path, facing away. Outer figures hold white garments horizontally. Central person wears white tank top with black text and black shorts. Spectator with black bag stands left, child in blue is visible on the right.</think><tool_call>\n{\"name\": \"recall\", \"arguments\": {\"query\": \"yellow conga drums white pants stone pathway\", \"time_range\": \"0-4\"}}\n</tool_call>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_gKkk82LG8H0.mp4",
+      "video_id": "v_gKkk82LG8H0",
+      "chunk_idx": 58,
+      "sample_type": "recall_query",
+      "action": "recall",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "recall_success",
+      "trajectory_id": "traj_0",
+      "card_id": "v_gKkk82LG8H0_C1_014",
+      "metadata": {
+        "gold_action": "recall",
+        "gold_answer": "B",
+        "canonical_answer": "B",
+        "answer_form": "multiple_choice",
+        "family": "C1",
+        "availability": "recall_success",
+        "support_chunks": [
+          0,
+          1
+        ],
+        "gold_compress_chunks": []
+      },
+      "protocol_version": "v12",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "metadata_complete": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "support_chunks_have_evidence": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "medium",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "The system retrieved past observations based on your recall query. Review the recall_result and decide:\n\n1) <think>analysis</think><action>response</action><response>answer</response>\n   If the result contains enough evidence to answer.\n\n2) <think>analysis</think><action>silent</action>\n   If the result is insufficient or irrelevant.\n\nThink: analyze whether the recall result answers the question (20-40 tokens).",
+        "visual_window": {
+          "video_start": 94,
+          "video_end": 118,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                56
+              ],
+              "text": "[0-14] A man with long dreadlocks wearing a white tank top sits in the foreground, energetically striking a drum with his hands. Behind him, a second musician plays a set of yellow conga drums. To the left, a barefoot individual dressed in white pants over black leggings walks away along a stone pathway. Throughout the sequence, the foreground drummer varies his movements, clapping his hands, tilting his head back, and opening his mouth as if chanting or singing. At one point, legs wearing light shorts and dark shoes appear briefly on the right edge of the frame. The background musician maintains a consistent rhythm on the congas, occasionally looking upward while playing. The scene is brightly lit, highlighting the stone path and the musicians' white clothing. [14-20] A barefoot person wearing white garments over black leggings walks left along a stone path. In the foreground, a drummer with dreadlocks strikes a drum with both hands, occasionally glancing at the second musician behind him who plays yellow congas. [20-24] The barefoot individual moves further away to the left. The foreground drummer gazes upward while playing, and the background musician looks up, maintaining the rhythm on the congas. [24-28] A person in"
+            },
+            {
+              "time_range": [
+                56,
+                70
+              ],
+              "text": "[56-60] The foreground drummer with dreadlocks strikes the drum, head lowering then tilting back with mouth open, while the background musician plays yellow congas. A barefoot individual in white garments stands on the left stone path initially but disappears. A person in a red shirt and green shorts appears on the right. [60-64] The foreground drummer lowers his head rapidly, hair obscuring his face, then lifts it back. The background musician continues playing facing left. Spectators' legs in khaki shorts and blue sneakers stand on the right floor; the left path is clear. [64-70] The foreground drummer maintains rhythm with head tilted back. An individual in white garments becomes partially visible on the far left edge, standing on the stone path. Spectators' legs in shorts and sneakers remain visible on the right floor."
+            },
+            {
+              "time_range": [
+                70,
+                84
+              ],
+              "text": "[70-74] The foreground drummer with dreadlocks and a white tank top strikes a drum while gazing at the camera, mouth open. Behind him, a second musician plays yellow congas. To the left, a barefoot person in white pants stands on a stone path, while spectators' legs are visible on the right. [74-78] The drummer shifts his gaze left, then tilts his head back while continuing to strike the drum. The background musician maintains rhythm on the congas. [78-82] The drummer faces forward and forward-left, striking rhythmically. The second musician continues playing. The person in white pants remains on the left path. [82-84] The foreground drummer turns his head left while playing. The background musician plays the yellow congas. The barefoot individual in white pants stands on the stone path, and spectators' legs in shorts and sneakers are visible on the right floor."
+            },
+            {
+              "time_range": [
+                84,
+                96
+              ],
+              "text": "[84-88] A foreground drummer with dreadlocks and a white tank top strikes a drum with an open mouth while a background musician plays yellow congas; severe overexposure briefly washes out the scene, obscuring a barefoot individual in white pants on the left and spectators on the right. [88-92] As lighting adjusts, a green post with a yellow sign reading \"GIFT SHOP\" appears on the left near a standing person in a white shirt and blue shorts, while a person in pink stands in the background doorway. [92-96] The camera zooms in on the musicians' hands rapidly striking the drum heads; the sign reveals additional text \"WATER SLIDE POOL\" before a hand moves very close to the lens, partially blocking the view of the performance and nearby spectators."
+            },
+            {
+              "time_range": [
+                96,
+                110
+              ],
+              "text": "[96-104] The camera maintains a tight close-up on hands rapidly striking drum heads featuring rope tuning, while yellow conga drums are played by a musician in the background. To the left, a green post supports a yellow sign reading \"GIFT SHOP\" and \"WATER SLIDE POOL,\" with spectators' legs in blue and white shorts standing on the stone path nearby. [104-108] The angle widens slightly to reveal the drummer's white tank top and pants as hands continue to rhythmically strike the instrument skins, with the yellow congas positioned behind the foreground drums. [108-110] The camera pulls back fully to reveal two musicians with dreadlocks in white tank tops drumming; the foreground musician plays the rope-tuned drums while the background musician plays the yellow congas. Spectators in pink shirts and denim shorts stand behind them near a large red sign board on the right."
+            }
+          ],
+          "recent_thinks": [
+            "[110-112] Two musicians with dreadlocks in white tank tops continue drumming. The foreground musician plays a drum while the background musician plays yellow congas. Spectators stand near a red sign board in the background. A person wearing white garments appears on the far right edge.",
+            "[112-114] The scene shifts to show three people from behind moving away on the stone path. On the left, an individual wears a long white skirt. In the center, a person wears a white tank top with text and black shorts. On the right, someone wears white pants with a high slit. They appear to be linking arms or holding hands while moving.",
+            "[114-116] Three individuals stand on a stone path grid, viewed from behind. The person on the left wears a long white skirt, while the person on the right wears white pants with a high slit. Both outer individuals hold out the sides of their white garments, extending the fabric horizontally while linking arms with the central figure."
+          ]
+        },
+        "queries": [
+          {
+            "question": "What gesture does the man with dreadlocks in the white sleeveless top make during the drumming performance?",
+            "answers": [
+              {
+                "text": "The provided evidence describes the man with dreadlocks in the white sleeveless top energetically striking the drum heads with both hands and turning his head in various directions during the performance. However, the available text segments do not contain any description of him raising his hand to make a thumbs-up gesture. The evidence focuses exclusively on his drumming actions and head movements rather than any specific hand signals like a thumbs-up.",
+                "time": 50
+              },
+              {
+                "text": "The man raises his right hand to give a thumbs-up gesture.",
+                "time": 36
+              },
+              {
+                "text": "The man raises his right hand to give a thumbs-up gesture.",
+                "time": 38
+              },
+              {
+                "text": "The man raises his right hand to give a thumbs-up gesture.",
+                "time": 40
+              }
+            ]
+          },
+          {
+            "question": "How has the activity of the person in the background wearing white changed from the first segment to the second segment? A. From walking away to playing drums B. From playing drums to walking away C. From playing drums to clapping hands D. From clapping hands to walking away",
+            "answers": []
+          }
+        ],
+        "user_input": "",
+        "recall_result": {
+          "source": "historical_frames",
+          "text_content": "[[0, 2]] A man with dreadlocks in a white tank top actively strikes a drum in the foreground, his hands blurring with motion. Behind him, another individual hits yellow conga drums. In the background, a person wearing white pants walks further away along a stone pathway.\n[[2, 4]] The foreground drummer shifts from clapping hands to striking the drum head with both palms. Behind him, the second musician continues playing the yellow congas. In the background, the person in white walks further away on the stone path, while another individual's legs appear briefly on the right side.",
+          "returned_chunks": [
+            0,
+            1
+          ]
+        },
+        "recalled_frames": {
+          "time_range": [
+            0,
+            4
+          ],
+          "n_frames": 4,
+          "source": "historical_frames",
+          "frame_paths": [
+            "/home/tione/notebook/gaozhenkun/hzh/ThinkStream/data/agent_v5/frames/v_gKkk82LG8H0/frame_000001.jpg",
+            "/home/tione/notebook/gaozhenkun/hzh/ThinkStream/data/agent_v5/frames/v_gKkk82LG8H0/frame_000002.jpg",
+            "/home/tione/notebook/gaozhenkun/hzh/ThinkStream/data/agent_v5/frames/v_gKkk82LG8H0/frame_000003.jpg",
+            "/home/tione/notebook/gaozhenkun/hzh/ThinkStream/data/agent_v5/frames/v_gKkk82LG8H0/frame_000004.jpg"
+          ]
+        }
+      },
+      "output": "<think>The historical frames show the background person in white walking away in both segments, failing to provide evidence of drumming or clapping required to answer the question.</think><answer>B</answer>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_gKkk82LG8H0.mp4",
+      "video_id": "v_gKkk82LG8H0",
+      "chunk_idx": 58,
+      "sample_type": "recall_response",
+      "action": "response",
+      "prompt_type": "POST_RECALL_PROMPT",
+      "sequence_type": "recall_success",
+      "trajectory_id": "traj_0",
+      "card_id": "v_gKkk82LG8H0_C1_014",
+      "metadata": {
+        "gold_action": "response",
+        "gold_answer": "B",
+        "canonical_answer": "B",
+        "answer_form": "multiple_choice",
+        "family": "C1",
+        "availability": "recall_success",
+        "support_chunks": [
+          0,
+          1
+        ],
+        "gold_compress_chunks": []
+      },
+      "protocol_version": "v12",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "metadata_complete": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "support_chunks_have_evidence": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "medium",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 96,
+          "video_end": 120,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                56
+              ],
+              "text": "[0-14] A man with long dreadlocks wearing a white tank top sits in the foreground, energetically striking a drum with his hands. Behind him, a second musician plays a set of yellow conga drums. To the left, a barefoot individual dressed in white pants over black leggings walks away along a stone pathway. Throughout the sequence, the foreground drummer varies his movements, clapping his hands, tilting his head back, and opening his mouth as if chanting or singing. At one point, legs wearing light shorts and dark shoes appear briefly on the right edge of the frame. The background musician maintains a consistent rhythm on the congas, occasionally looking upward while playing. The scene is brightly lit, highlighting the stone path and the musicians' white clothing. [14-20] A barefoot person wearing white garments over black leggings walks left along a stone path. In the foreground, a drummer with dreadlocks strikes a drum with both hands, occasionally glancing at the second musician behind him who plays yellow congas. [20-24] The barefoot individual moves further away to the left. The foreground drummer gazes upward while playing, and the background musician looks up, maintaining the rhythm on the congas. [24-28] A person in"
+            },
+            {
+              "time_range": [
+                56,
+                70
+              ],
+              "text": "[56-60] The foreground drummer with dreadlocks strikes the drum, head lowering then tilting back with mouth open, while the background musician plays yellow congas. A barefoot individual in white garments stands on the left stone path initially but disappears. A person in a red shirt and green shorts appears on the right. [60-64] The foreground drummer lowers his head rapidly, hair obscuring his face, then lifts it back. The background musician continues playing facing left. Spectators' legs in khaki shorts and blue sneakers stand on the right floor; the left path is clear. [64-70] The foreground drummer maintains rhythm with head tilted back. An individual in white garments becomes partially visible on the far left edge, standing on the stone path. Spectators' legs in shorts and sneakers remain visible on the right floor."
+            },
+            {
+              "time_range": [
+                70,
+                84
+              ],
+              "text": "[70-74] The foreground drummer with dreadlocks and a white tank top strikes a drum while gazing at the camera, mouth open. Behind him, a second musician plays yellow congas. To the left, a barefoot person in white pants stands on a stone path, while spectators' legs are visible on the right. [74-78] The drummer shifts his gaze left, then tilts his head back while continuing to strike the drum. The background musician maintains rhythm on the congas. [78-82] The drummer faces forward and forward-left, striking rhythmically. The second musician continues playing. The person in white pants remains on the left path. [82-84] The foreground drummer turns his head left while playing. The background musician plays the yellow congas. The barefoot individual in white pants stands on the stone path, and spectators' legs in shorts and sneakers are visible on the right floor."
+            },
+            {
+              "time_range": [
+                84,
+                96
+              ],
+              "text": "[84-88] A foreground drummer with dreadlocks and a white tank top strikes a drum with an open mouth while a background musician plays yellow congas; severe overexposure briefly washes out the scene, obscuring a barefoot individual in white pants on the left and spectators on the right. [88-92] As lighting adjusts, a green post with a yellow sign reading \"GIFT SHOP\" appears on the left near a standing person in a white shirt and blue shorts, while a person in pink stands in the background doorway. [92-96] The camera zooms in on the musicians' hands rapidly striking the drum heads; the sign reveals additional text \"WATER SLIDE POOL\" before a hand moves very close to the lens, partially blocking the view of the performance and nearby spectators."
+            },
+            {
+              "time_range": [
+                96,
+                110
+              ],
+              "text": "[96-104] The camera maintains a tight close-up on hands rapidly striking drum heads featuring rope tuning, while yellow conga drums are played by a musician in the background. To the left, a green post supports a yellow sign reading \"GIFT SHOP\" and \"WATER SLIDE POOL,\" with spectators' legs in blue and white shorts standing on the stone path nearby. [104-108] The angle widens slightly to reveal the drummer's white tank top and pants as hands continue to rhythmically strike the instrument skins, with the yellow congas positioned behind the foreground drums. [108-110] The camera pulls back fully to reveal two musicians with dreadlocks in white tank tops drumming; the foreground musician plays the rope-tuned drums while the background musician plays the yellow congas. Spectators in pink shirts and denim shorts stand behind them near a large red sign board on the right."
+            }
+          ],
+          "recent_thinks": [
+            "[110-112] Two musicians with dreadlocks in white tank tops continue drumming. The foreground musician plays a drum while the background musician plays yellow congas. Spectators stand near a red sign board in the background. A person wearing white garments appears on the far right edge.",
+            "[112-114] The scene shifts to show three people from behind moving away on the stone path. On the left, an individual wears a long white skirt. In the center, a person wears a white tank top with text and black shorts. On the right, someone wears white pants with a high slit. They appear to be linking arms or holding hands while moving.",
+            "[114-116] Three individuals stand on a stone path grid, viewed from behind. The person on the left wears a long white skirt, while the person on the right wears white pants with a high slit. Both outer individuals hold out the sides of their white garments, extending the fabric horizontally while linking arms with the central figure.",
+            "[116-118] Three individuals remain linked arm-in-arm on the stone grid path, facing away. The outer figures continue holding their white garments out horizontally. The central person stands between them in a white tank top with black text and black shorts. A spectator with a black bag stands left, and a child in blue is visible on the right."
+          ]
+        },
+        "queries": [
+          {
+            "question": "What gesture does the man with dreadlocks in the white sleeveless top make during the drumming performance?",
+            "answers": [
+              {
+                "text": "The provided evidence describes the man with dreadlocks in the white sleeveless top energetically striking the drum heads with both hands and turning his head in various directions during the performance. However, the available text segments do not contain any description of him raising his hand to make a thumbs-up gesture. The evidence focuses exclusively on his drumming actions and head movements rather than any specific hand signals like a thumbs-up.",
+                "time": 50
+              },
+              {
+                "text": "The man raises his right hand to give a thumbs-up gesture.",
+                "time": 36
+              },
+              {
+                "text": "The man raises his right hand to give a thumbs-up gesture.",
+                "time": 38
+              },
+              {
+                "text": "The man raises his right hand to give a thumbs-up gesture.",
+                "time": 40
+              }
+            ]
+          },
+          {
+            "question": "How has the activity of the person in the background wearing white changed from the first segment to the second segment? A. From walking away to playing drums B. From playing drums to walking away C. From playing drums to clapping hands D. From clapping hands to walking away",
+            "answers": [
+              {
+                "text": "B",
+                "time": 116
+              }
+            ]
+          }
+        ],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>Three individuals remain linked arm-in-arm facing away on the stone path, outer figures holding white garments horizontally. On the far left, a spectator in a patterned shirt and khaki shorts holding a black bag stands near the group. The central figure wears a white tank top with black text. A child in blue stands in the background right.</think><answer></answer>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_gKkk82LG8H0.mp4",
+      "video_id": "v_gKkk82LG8H0",
+      "chunk_idx": 59,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "recall_success",
+      "trajectory_id": "traj_0",
+      "card_id": "v_gKkk82LG8H0_C1_014",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "B",
+        "canonical_answer": "B",
+        "answer_form": "multiple_choice",
+        "family": "C1",
+        "availability": "recall_success",
+        "support_chunks": [
+          0,
+          1
+        ],
+        "gold_compress_chunks": []
+      },
+      "protocol_version": "v12",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "metadata_complete": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "support_chunks_have_evidence": {
+            "passed": true,
+            "reason": "pass"
           }
         },
         "difficulty": "easy",
@@ -111,7 +1217,7 @@
         "user_input": "",
         "recall_result": null
       },
-      "output": "<think>A man with dreadlocks in a white tank top actively strikes a drum in the foreground, his hands blurring with motion. Behind him, another individual hits yellow conga drums. In the background, a person wearing white pants walks further away along a stone pathway.</think><action>silent</action>",
+      "output": "<think>A man with dreadlocks in a white tank top actively strikes a drum in the foreground, his hands blurring with motion. Behind him, another individual hits yellow conga drums. In the background, a person wearing white pants walks further away along a stone pathway.</think><answer></answer>",
       "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_gKkk82LG8H0.mp4",
       "video_id": "v_gKkk82LG8H0",
       "chunk_idx": 0,
@@ -124,12 +1230,15 @@
       "metadata": {
         "gold_action": "silent",
         "gold_answer": "",
+        "canonical_answer": "",
         "answer_form": "",
         "family": "",
         "availability": "base",
-        "support_chunks": []
+        "support_chunks": [],
+        "gold_compress_chunks": []
       },
-      "base_role": "evidence_anchor",
+      "base_role": "compress_boundary",
+      "protocol_version": "v12",
       "verification": {
         "passed": true,
         "checks": {
@@ -182,6 +1291,435 @@
             "reason": "pass"
           },
           "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "metadata_complete": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "support_chunks_have_evidence": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 0,
+          "video_end": 6,
+          "frames": 6
+        },
+        "memory": {
+          "compressed_segments": [],
+          "recent_thinks": [
+            "[0-2] A man with dreadlocks in a white tank top actively strikes a drum in the foreground, his hands blurring with motion. Behind him, another individual hits yellow conga drums. In the background, a person wearing white pants walks further away along a stone pathway.",
+            "[2-4] The foreground drummer shifts from clapping hands to striking the drum head with both palms. Behind him, the second musician continues playing the yellow congas. In the background, the person in white walks further away on the stone path, while another individual's legs appear briefly on the right side."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>Legs wearing light shorts and dark shoes appear on the right edge. The foreground drummer tilts their head back slightly while striking the drum heads rapidly. The background drummer continues playing the yellow congas. The barefoot person in white pants walks further away on the stone path to the left.</think><answer></answer>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_gKkk82LG8H0.mp4",
+      "video_id": "v_gKkk82LG8H0",
+      "chunk_idx": 2,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "canonical_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": [],
+        "gold_compress_chunks": []
+      },
+      "base_role": "warmup",
+      "protocol_version": "v12",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "metadata_complete": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "support_chunks_have_evidence": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 72,
+          "video_end": 96,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                28
+              ],
+              "text": "[0-14] A man with long dreadlocks wearing a white tank top sits in the foreground, energetically striking a drum with his hands. Behind him, a second musician plays a set of yellow conga drums. To the left, a barefoot individual dressed in white pants over black leggings walks away along a stone pathway. Throughout the sequence, the foreground drummer varies his movements, clapping his hands, tilting his head back, and opening his mouth as if chanting or singing. At one point, legs wearing light shorts and dark shoes appear briefly on the right edge of the frame. The background musician maintains a consistent rhythm on the congas, occasionally looking upward while playing. The scene is brightly lit, highlighting the stone path and the musicians' white clothing. [14-20] A barefoot person wearing white garments over black leggings walks left along a stone path. In the foreground, a drummer with dreadlocks strikes a drum with both hands, occasionally glancing at the second musician behind him who plays yellow congas. [20-24] The barefoot individual moves further away to the left. The foreground drummer gazes upward while playing, and the background musician looks up, maintaining the rhythm on the congas. [24-28] A person in"
+            },
+            {
+              "time_range": [
+                28,
+                42
+              ],
+              "text": "[28-34] A barefoot individual in white garments walks away left. The foreground musician with dreadlocks strikes drums, tilting his head back then forward. Behind him, a second musician in white plays yellow congas. Two people in shorts stand on the far right.\n[34-40] The foreground drummer faces the camera, mouth open, then smiles and raises a thumbs-up with his right hand while striking the drum with his left. The background musician plays congas as the barefoot individual walks further away.\n[40-42] The foreground drummer lowers his hand, laughs, and resumes drumming. The background musician strikes the yellow congas while the barefoot individual continues walking away on the left path."
+            },
+            {
+              "time_range": [
+                42,
+                56
+              ],
+              "text": "[42-56] A foreground drummer with dreadlocks and a white tank top actively strikes drum heads with both hands, shifting his gaze from forward to right and tilting his head back with his mouth open. Behind him, a second musician with dreadlocks plays yellow congas rhythmically, facing left. To the left, a barefoot individual in white garments remains stationary on a stone path. On the far right, spectators' legs in shorts and sneakers are visible standing on the floor. The foreground drummer's hands blur from speed as he maintains the beat."
+            },
+            {
+              "time_range": [
+                56,
+                70
+              ],
+              "text": "[56-60] The foreground drummer with dreadlocks strikes the drum, head lowering then tilting back with mouth open, while the background musician plays yellow congas. A barefoot individual in white garments stands on the left stone path initially but disappears. A person in a red shirt and green shorts appears on the right. [60-64] The foreground drummer lowers his head rapidly, hair obscuring his face, then lifts it back. The background musician continues playing facing left. Spectators' legs in khaki shorts and blue sneakers stand on the right floor; the left path is clear. [64-70] The foreground drummer maintains rhythm with head tilted back. An individual in white garments becomes partially visible on the far left edge, standing on the stone path. Spectators' legs in shorts and sneakers remain visible on the right floor."
+            },
+            {
+              "time_range": [
+                70,
+                84
+              ],
+              "text": "[70-74] The foreground drummer with dreadlocks and a white tank top strikes a drum while gazing at the camera, mouth open. Behind him, a second musician plays yellow congas. To the left, a barefoot person in white pants stands on a stone path, while spectators' legs are visible on the right. [74-78] The drummer shifts his gaze left, then tilts his head back while continuing to strike the drum. The background musician maintains rhythm on the congas. [78-82] The drummer faces forward and forward-left, striking rhythmically. The second musician continues playing. The person in white pants remains on the left path. [82-84] The foreground drummer turns his head left while playing. The background musician plays the yellow congas. The barefoot individual in white pants stands on the stone path, and spectators' legs in shorts and sneakers are visible on the right floor."
+            }
+          ],
+          "recent_thinks": [
+            "[84-86] The foreground drummer with dreadlocks continues striking the drum, shifting his gaze slightly forward while maintaining an open mouth. Behind him, the second musician keeps playing the yellow congas. To the left, the barefoot individual in white pants remains standing on the stone path, and spectators' legs are still visible on the right.",
+            "[86-88] The foreground drummer continues striking the drum with head tilted back, while the background musician plays yellow congas. The scene becomes significantly overexposed, washing out details of the barefoot individual on the left and spectators on the right, leaving mostly bright white light surrounding the musicians.",
+            "[88-90] The lighting adjusts from severe overexposure, revealing a green post with a yellow \"GIFT SHOP\" sign on the left. A person wearing a pink shirt stands in the background near a doorway. The foreground drummer in a white tank top and the background musician playing yellow congas continue their performance. Spectators are visible in the distance.",
+            "[90-92] The view zooms in on the percussion instruments. A yellow sign reading \"GIFT SHOP\" is mounted on a green post to the left, near a standing person in a white shirt and blue shorts. The foreground musician's hands strike the drum heads rapidly, while the background musician continues playing the yellow congas.",
+            "[92-94] The camera remains zoomed in on the percussion instruments. The yellow sign on the green post reveals the text \"WATER SLIDE POOL\" below \"GIFT SHOP.\" The foreground musician's hands strike the drum heads rapidly, and the background musician plays the yellow congas while spectators stand nearby."
+          ]
+        },
+        "queries": [
+          {
+            "question": "How many people are actively playing drums with their hands in the scene with the yellow conga drum?",
+            "answers": [
+              {
+                "text": "2",
+                "time": 30
+              }
+            ]
+          }
+        ],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The camera remains close to the percussion instruments, showing hands striking the drum heads rapidly. A green post with a yellow sign reading \"GIFT SHOP\" and \"WATER SLIDE POOL\" is visible on the left. Spectators stand in the background near the entrance. In the final moments, a hand moves very close to the lens, partially obscuring the view.</think><answer></answer>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_gKkk82LG8H0.mp4",
+      "video_id": "v_gKkk82LG8H0",
+      "chunk_idx": 47,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "canonical_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": [],
+        "gold_compress_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "protocol_version": "v12",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "metadata_complete": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "support_chunks_have_evidence": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 90,
+          "video_end": 114,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                56
+              ],
+              "text": "[0-14] A man with long dreadlocks wearing a white tank top sits in the foreground, energetically striking a drum with his hands. Behind him, a second musician plays a set of yellow conga drums. To the left, a barefoot individual dressed in white pants over black leggings walks away along a stone pathway. Throughout the sequence, the foreground drummer varies his movements, clapping his hands, tilting his head back, and opening his mouth as if chanting or singing. At one point, legs wearing light shorts and dark shoes appear briefly on the right edge of the frame. The background musician maintains a consistent rhythm on the congas, occasionally looking upward while playing. The scene is brightly lit, highlighting the stone path and the musicians' white clothing. [14-20] A barefoot person wearing white garments over black leggings walks left along a stone path. In the foreground, a drummer with dreadlocks strikes a drum with both hands, occasionally glancing at the second musician behind him who plays yellow congas. [20-24] The barefoot individual moves further away to the left. The foreground drummer gazes upward while playing, and the background musician looks up, maintaining the rhythm on the congas. [24-28] A person in"
+            },
+            {
+              "time_range": [
+                56,
+                70
+              ],
+              "text": "[56-60] The foreground drummer with dreadlocks strikes the drum, head lowering then tilting back with mouth open, while the background musician plays yellow congas. A barefoot individual in white garments stands on the left stone path initially but disappears. A person in a red shirt and green shorts appears on the right. [60-64] The foreground drummer lowers his head rapidly, hair obscuring his face, then lifts it back. The background musician continues playing facing left. Spectators' legs in khaki shorts and blue sneakers stand on the right floor; the left path is clear. [64-70] The foreground drummer maintains rhythm with head tilted back. An individual in white garments becomes partially visible on the far left edge, standing on the stone path. Spectators' legs in shorts and sneakers remain visible on the right floor."
+            },
+            {
+              "time_range": [
+                70,
+                84
+              ],
+              "text": "[70-74] The foreground drummer with dreadlocks and a white tank top strikes a drum while gazing at the camera, mouth open. Behind him, a second musician plays yellow congas. To the left, a barefoot person in white pants stands on a stone path, while spectators' legs are visible on the right. [74-78] The drummer shifts his gaze left, then tilts his head back while continuing to strike the drum. The background musician maintains rhythm on the congas. [78-82] The drummer faces forward and forward-left, striking rhythmically. The second musician continues playing. The person in white pants remains on the left path. [82-84] The foreground drummer turns his head left while playing. The background musician plays the yellow congas. The barefoot individual in white pants stands on the stone path, and spectators' legs in shorts and sneakers are visible on the right floor."
+            },
+            {
+              "time_range": [
+                84,
+                96
+              ],
+              "text": "[84-88] A foreground drummer with dreadlocks and a white tank top strikes a drum with an open mouth while a background musician plays yellow congas; severe overexposure briefly washes out the scene, obscuring a barefoot individual in white pants on the left and spectators on the right. [88-92] As lighting adjusts, a green post with a yellow sign reading \"GIFT SHOP\" appears on the left near a standing person in a white shirt and blue shorts, while a person in pink stands in the background doorway. [92-96] The camera zooms in on the musicians' hands rapidly striking the drum heads; the sign reveals additional text \"WATER SLIDE POOL\" before a hand moves very close to the lens, partially blocking the view of the performance and nearby spectators."
+            },
+            {
+              "time_range": [
+                96,
+                110
+              ],
+              "text": "[96-104] The camera maintains a tight close-up on hands rapidly striking drum heads featuring rope tuning, while yellow conga drums are played by a musician in the background. To the left, a green post supports a yellow sign reading \"GIFT SHOP\" and \"WATER SLIDE POOL,\" with spectators' legs in blue and white shorts standing on the stone path nearby. [104-108] The angle widens slightly to reveal the drummer's white tank top and pants as hands continue to rhythmically strike the instrument skins, with the yellow congas positioned behind the foreground drums. [108-110] The camera pulls back fully to reveal two musicians with dreadlocks in white tank tops drumming; the foreground musician plays the rope-tuned drums while the background musician plays the yellow congas. Spectators in pink shirts and denim shorts stand behind them near a large red sign board on the right."
+            }
+          ],
+          "recent_thinks": [
+            "[110-112] Two musicians with dreadlocks in white tank tops continue drumming. The foreground musician plays a drum while the background musician plays yellow congas. Spectators stand near a red sign board in the background. A person wearing white garments appears on the far right edge."
+          ]
+        },
+        "queries": [
+          {
+            "question": "How many people are actively playing drums with their hands in the scene with the yellow conga drum?",
+            "answers": [
+              {
+                "text": "2",
+                "time": 30
+              }
+            ]
+          }
+        ],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The scene shifts to show three people from behind moving away on the stone path. On the left, an individual wears a long white skirt. In the center, a person wears a white tank top with text and black shorts. On the right, someone wears white pants with a high slit. They appear to be linking arms or holding hands while moving.</think><answer></answer>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_gKkk82LG8H0.mp4",
+      "video_id": "v_gKkk82LG8H0",
+      "chunk_idx": 56,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_1",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "canonical_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": [],
+        "gold_compress_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "protocol_version": "v12",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "metadata_complete": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "support_chunks_have_evidence": {
             "passed": true,
             "reason": "pass"
           }
@@ -206,7 +1744,7 @@
         "user_input": "",
         "recall_result": null
       },
-      "output": "<think>A man with dreadlocks in a white tank top actively strikes a drum in the foreground, his hands blurring with motion. Behind him, another individual hits yellow conga drums. In the background, a person wearing white pants walks further away along a stone pathway.</think><action>silent</action>",
+      "output": "<think>A man with dreadlocks in a white tank top actively strikes a drum in the foreground, his hands blurring with motion. Behind him, another individual hits yellow conga drums. In the background, a person wearing white pants walks further away along a stone pathway.</think><answer></answer>",
       "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_gKkk82LG8H0.mp4",
       "video_id": "v_gKkk82LG8H0",
       "chunk_idx": 0,
@@ -219,12 +1757,15 @@
       "metadata": {
         "gold_action": "silent",
         "gold_answer": "",
+        "canonical_answer": "",
         "answer_form": "",
         "family": "",
         "availability": "base",
-        "support_chunks": []
+        "support_chunks": [],
+        "gold_compress_chunks": []
       },
       "base_role": "evidence_anchor",
+      "protocol_version": "v12",
       "verification": {
         "passed": true,
         "checks": {
@@ -279,6 +1820,435 @@
           "recall_evidence_reachable": {
             "passed": true,
             "reason": "pass"
+          },
+          "metadata_complete": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "support_chunks_have_evidence": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 0,
+          "video_end": 6,
+          "frames": 6
+        },
+        "memory": {
+          "compressed_segments": [],
+          "recent_thinks": [
+            "[0-2] A man with dreadlocks in a white tank top actively strikes a drum in the foreground, his hands blurring with motion. Behind him, another individual hits yellow conga drums. In the background, a person wearing white pants walks further away along a stone pathway.",
+            "[2-4] The foreground drummer shifts from clapping hands to striking the drum head with both palms. Behind him, the second musician continues playing the yellow congas. In the background, the person in white walks further away on the stone path, while another individual's legs appear briefly on the right side."
+          ]
+        },
+        "queries": [],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>Legs wearing light shorts and dark shoes appear on the right edge. The foreground drummer tilts their head back slightly while striking the drum heads rapidly. The background drummer continues playing the yellow congas. The barefoot person in white pants walks further away on the stone path to the left.</think><answer></answer>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_gKkk82LG8H0.mp4",
+      "video_id": "v_gKkk82LG8H0",
+      "chunk_idx": 2,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_2",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "canonical_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": [],
+        "gold_compress_chunks": []
+      },
+      "base_role": "evidence_anchor",
+      "protocol_version": "v12",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "metadata_complete": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "support_chunks_have_evidence": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 72,
+          "video_end": 96,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                28
+              ],
+              "text": "[0-14] A man with long dreadlocks wearing a white tank top sits in the foreground, energetically striking a drum with his hands. Behind him, a second musician plays a set of yellow conga drums. To the left, a barefoot individual dressed in white pants over black leggings walks away along a stone pathway. Throughout the sequence, the foreground drummer varies his movements, clapping his hands, tilting his head back, and opening his mouth as if chanting or singing. At one point, legs wearing light shorts and dark shoes appear briefly on the right edge of the frame. The background musician maintains a consistent rhythm on the congas, occasionally looking upward while playing. The scene is brightly lit, highlighting the stone path and the musicians' white clothing. [14-20] A barefoot person wearing white garments over black leggings walks left along a stone path. In the foreground, a drummer with dreadlocks strikes a drum with both hands, occasionally glancing at the second musician behind him who plays yellow congas. [20-24] The barefoot individual moves further away to the left. The foreground drummer gazes upward while playing, and the background musician looks up, maintaining the rhythm on the congas. [24-28] A person in"
+            },
+            {
+              "time_range": [
+                28,
+                42
+              ],
+              "text": "[28-34] A barefoot individual in white garments walks away left. The foreground musician with dreadlocks strikes drums, tilting his head back then forward. Behind him, a second musician in white plays yellow congas. Two people in shorts stand on the far right.\n[34-40] The foreground drummer faces the camera, mouth open, then smiles and raises a thumbs-up with his right hand while striking the drum with his left. The background musician plays congas as the barefoot individual walks further away.\n[40-42] The foreground drummer lowers his hand, laughs, and resumes drumming. The background musician strikes the yellow congas while the barefoot individual continues walking away on the left path."
+            },
+            {
+              "time_range": [
+                42,
+                56
+              ],
+              "text": "[42-56] A foreground drummer with dreadlocks and a white tank top actively strikes drum heads with both hands, shifting his gaze from forward to right and tilting his head back with his mouth open. Behind him, a second musician with dreadlocks plays yellow congas rhythmically, facing left. To the left, a barefoot individual in white garments remains stationary on a stone path. On the far right, spectators' legs in shorts and sneakers are visible standing on the floor. The foreground drummer's hands blur from speed as he maintains the beat."
+            },
+            {
+              "time_range": [
+                56,
+                70
+              ],
+              "text": "[56-60] The foreground drummer with dreadlocks strikes the drum, head lowering then tilting back with mouth open, while the background musician plays yellow congas. A barefoot individual in white garments stands on the left stone path initially but disappears. A person in a red shirt and green shorts appears on the right. [60-64] The foreground drummer lowers his head rapidly, hair obscuring his face, then lifts it back. The background musician continues playing facing left. Spectators' legs in khaki shorts and blue sneakers stand on the right floor; the left path is clear. [64-70] The foreground drummer maintains rhythm with head tilted back. An individual in white garments becomes partially visible on the far left edge, standing on the stone path. Spectators' legs in shorts and sneakers remain visible on the right floor."
+            },
+            {
+              "time_range": [
+                70,
+                84
+              ],
+              "text": "[70-74] The foreground drummer with dreadlocks and a white tank top strikes a drum while gazing at the camera, mouth open. Behind him, a second musician plays yellow congas. To the left, a barefoot person in white pants stands on a stone path, while spectators' legs are visible on the right. [74-78] The drummer shifts his gaze left, then tilts his head back while continuing to strike the drum. The background musician maintains rhythm on the congas. [78-82] The drummer faces forward and forward-left, striking rhythmically. The second musician continues playing. The person in white pants remains on the left path. [82-84] The foreground drummer turns his head left while playing. The background musician plays the yellow congas. The barefoot individual in white pants stands on the stone path, and spectators' legs in shorts and sneakers are visible on the right floor."
+            }
+          ],
+          "recent_thinks": [
+            "[84-86] The foreground drummer with dreadlocks continues striking the drum, shifting his gaze slightly forward while maintaining an open mouth. Behind him, the second musician keeps playing the yellow congas. To the left, the barefoot individual in white pants remains standing on the stone path, and spectators' legs are still visible on the right.",
+            "[86-88] The foreground drummer continues striking the drum with head tilted back, while the background musician plays yellow congas. The scene becomes significantly overexposed, washing out details of the barefoot individual on the left and spectators on the right, leaving mostly bright white light surrounding the musicians.",
+            "[88-90] The lighting adjusts from severe overexposure, revealing a green post with a yellow \"GIFT SHOP\" sign on the left. A person wearing a pink shirt stands in the background near a doorway. The foreground drummer in a white tank top and the background musician playing yellow congas continue their performance. Spectators are visible in the distance.",
+            "[90-92] The view zooms in on the percussion instruments. A yellow sign reading \"GIFT SHOP\" is mounted on a green post to the left, near a standing person in a white shirt and blue shorts. The foreground musician's hands strike the drum heads rapidly, while the background musician continues playing the yellow congas.",
+            "[92-94] The camera remains zoomed in on the percussion instruments. The yellow sign on the green post reveals the text \"WATER SLIDE POOL\" below \"GIFT SHOP.\" The foreground musician's hands strike the drum heads rapidly, and the background musician plays the yellow congas while spectators stand nearby."
+          ]
+        },
+        "queries": [
+          {
+            "question": "What is the primary color of the large conga drum played by the musician in the center? A. Reddish-brown B. Light blue C. Yellow D. White",
+            "answers": [
+              {
+                "text": "C",
+                "time": 30
+              }
+            ]
+          }
+        ],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The camera remains close to the percussion instruments, showing hands striking the drum heads rapidly. A green post with a yellow sign reading \"GIFT SHOP\" and \"WATER SLIDE POOL\" is visible on the left. Spectators stand in the background near the entrance. In the final moments, a hand moves very close to the lens, partially obscuring the view.</think><answer></answer>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_gKkk82LG8H0.mp4",
+      "video_id": "v_gKkk82LG8H0",
+      "chunk_idx": 47,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_2",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "canonical_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": [],
+        "gold_compress_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "protocol_version": "v12",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "metadata_complete": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "support_chunks_have_evidence": {
+            "passed": true,
+            "reason": "pass"
+          }
+        },
+        "difficulty": "easy",
+        "fail_reasons": []
+      }
+    },
+    {
+      "input": {
+        "system": "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\nEach turn you receive: visual frames (recent 24s window) + text memory (compressed summaries + recent thinks + pending questions). Output exactly ONE action:\n\n1) <think>obs</think><action>silent</action>\n   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n2) <think>obs</think><action>response</action><response>answer</response>\n   Use when: the answer is currently visible — in frames, recent thinks, compressed summaries, or a recall_result just returned by the system.\n\n3) <think>obs</think><action>recall</action><query>{\"query\":\"keywords\",\"time_range\":\"start-end\"}</query>\n   Use when: the answer is NOT in any visible source but you believe it was observed earlier. The system will search past observations and return a <recall_result> in your next input. Write 3-5 discriminative keywords (entity names + attributes), no answer values.\n\n4) <think>obs</think><action>compress</action><summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n   Use when: system sends <compress_trigger>. Summarize the specified thinks. Retain ALL entity names, visual attributes, OCR, and state changes. If no range is specified, select the oldest thinks to compress.\n\nThink rules:\n- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n- No meta-reasoning, no sound/smell/emotion, no speculation.\n- Maintain consistent entity names from memory (e.g., chef_1, pot_1).",
+        "visual_window": {
+          "video_start": 90,
+          "video_end": 114,
+          "frames": 24
+        },
+        "memory": {
+          "compressed_segments": [
+            {
+              "time_range": [
+                0,
+                56
+              ],
+              "text": "[0-14] A man with long dreadlocks wearing a white tank top sits in the foreground, energetically striking a drum with his hands. Behind him, a second musician plays a set of yellow conga drums. To the left, a barefoot individual dressed in white pants over black leggings walks away along a stone pathway. Throughout the sequence, the foreground drummer varies his movements, clapping his hands, tilting his head back, and opening his mouth as if chanting or singing. At one point, legs wearing light shorts and dark shoes appear briefly on the right edge of the frame. The background musician maintains a consistent rhythm on the congas, occasionally looking upward while playing. The scene is brightly lit, highlighting the stone path and the musicians' white clothing. [14-20] A barefoot person wearing white garments over black leggings walks left along a stone path. In the foreground, a drummer with dreadlocks strikes a drum with both hands, occasionally glancing at the second musician behind him who plays yellow congas. [20-24] The barefoot individual moves further away to the left. The foreground drummer gazes upward while playing, and the background musician looks up, maintaining the rhythm on the congas. [24-28] A person in"
+            },
+            {
+              "time_range": [
+                56,
+                70
+              ],
+              "text": "[56-60] The foreground drummer with dreadlocks strikes the drum, head lowering then tilting back with mouth open, while the background musician plays yellow congas. A barefoot individual in white garments stands on the left stone path initially but disappears. A person in a red shirt and green shorts appears on the right. [60-64] The foreground drummer lowers his head rapidly, hair obscuring his face, then lifts it back. The background musician continues playing facing left. Spectators' legs in khaki shorts and blue sneakers stand on the right floor; the left path is clear. [64-70] The foreground drummer maintains rhythm with head tilted back. An individual in white garments becomes partially visible on the far left edge, standing on the stone path. Spectators' legs in shorts and sneakers remain visible on the right floor."
+            },
+            {
+              "time_range": [
+                70,
+                84
+              ],
+              "text": "[70-74] The foreground drummer with dreadlocks and a white tank top strikes a drum while gazing at the camera, mouth open. Behind him, a second musician plays yellow congas. To the left, a barefoot person in white pants stands on a stone path, while spectators' legs are visible on the right. [74-78] The drummer shifts his gaze left, then tilts his head back while continuing to strike the drum. The background musician maintains rhythm on the congas. [78-82] The drummer faces forward and forward-left, striking rhythmically. The second musician continues playing. The person in white pants remains on the left path. [82-84] The foreground drummer turns his head left while playing. The background musician plays the yellow congas. The barefoot individual in white pants stands on the stone path, and spectators' legs in shorts and sneakers are visible on the right floor."
+            },
+            {
+              "time_range": [
+                84,
+                96
+              ],
+              "text": "[84-88] A foreground drummer with dreadlocks and a white tank top strikes a drum with an open mouth while a background musician plays yellow congas; severe overexposure briefly washes out the scene, obscuring a barefoot individual in white pants on the left and spectators on the right. [88-92] As lighting adjusts, a green post with a yellow sign reading \"GIFT SHOP\" appears on the left near a standing person in a white shirt and blue shorts, while a person in pink stands in the background doorway. [92-96] The camera zooms in on the musicians' hands rapidly striking the drum heads; the sign reveals additional text \"WATER SLIDE POOL\" before a hand moves very close to the lens, partially blocking the view of the performance and nearby spectators."
+            },
+            {
+              "time_range": [
+                96,
+                110
+              ],
+              "text": "[96-104] The camera maintains a tight close-up on hands rapidly striking drum heads featuring rope tuning, while yellow conga drums are played by a musician in the background. To the left, a green post supports a yellow sign reading \"GIFT SHOP\" and \"WATER SLIDE POOL,\" with spectators' legs in blue and white shorts standing on the stone path nearby. [104-108] The angle widens slightly to reveal the drummer's white tank top and pants as hands continue to rhythmically strike the instrument skins, with the yellow congas positioned behind the foreground drums. [108-110] The camera pulls back fully to reveal two musicians with dreadlocks in white tank tops drumming; the foreground musician plays the rope-tuned drums while the background musician plays the yellow congas. Spectators in pink shirts and denim shorts stand behind them near a large red sign board on the right."
+            }
+          ],
+          "recent_thinks": [
+            "[110-112] Two musicians with dreadlocks in white tank tops continue drumming. The foreground musician plays a drum while the background musician plays yellow congas. Spectators stand near a red sign board in the background. A person wearing white garments appears on the far right edge."
+          ]
+        },
+        "queries": [
+          {
+            "question": "What is the primary color of the large conga drum played by the musician in the center? A. Reddish-brown B. Light blue C. Yellow D. White",
+            "answers": [
+              {
+                "text": "C",
+                "time": 30
+              }
+            ]
+          }
+        ],
+        "user_input": "",
+        "recall_result": null
+      },
+      "output": "<think>The scene shifts to show three people from behind moving away on the stone path. On the left, an individual wears a long white skirt. In the center, a person wears a white tank top with text and black shorts. On the right, someone wears white pants with a high slit. They appear to be linking arms or holding hands while moving.</think><answer></answer>",
+      "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/tarsier2_unzip/ActivityNet/videos/v_gKkk82LG8H0.mp4",
+      "video_id": "v_gKkk82LG8H0",
+      "chunk_idx": 56,
+      "sample_type": "silent",
+      "action": "silent",
+      "prompt_type": "SYSTEM_PROMPT",
+      "sequence_type": "base",
+      "trajectory_id": "traj_2",
+      "card_id": "",
+      "metadata": {
+        "gold_action": "silent",
+        "gold_answer": "",
+        "canonical_answer": "",
+        "answer_form": "",
+        "family": "",
+        "availability": "base",
+        "support_chunks": [],
+        "gold_compress_chunks": []
+      },
+      "base_role": "compress_boundary",
+      "protocol_version": "v12",
+      "verification": {
+        "passed": true,
+        "checks": {
+          "information_flow": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "action_minimality": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "grounding": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "format": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "think_token_length": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "compression_ratio": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_provenance": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_retention": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "summary_current_think_leak": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "question_answer_leakage": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "queries_state_temporal": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "base_sample_consistency": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "recall_evidence_reachable": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "metadata_complete": {
+            "passed": true,
+            "reason": "pass"
+          },
+          "support_chunks_have_evidence": {
+            "passed": true,
+            "reason": "pass"
           }
         },
         "difficulty": "easy",
@@ -288,6 +2258,6 @@
   ],
   "stats": {
     "video_id": "v_gKkk82LG8H0",
-    "count": 3
+    "count": 16
   }
 }

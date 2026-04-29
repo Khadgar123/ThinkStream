@@ -1,0 +1,93 @@
+{
+  "total": 53621,
+  "passed": 47289,
+  "failed": 6332,
+  "pass_rate": 0.8819119374871786,
+  "fail_reasons": {
+    "grounding": 1325,
+    "summary_retention": 2712,
+    "summary_provenance": 2102,
+    "compression_ratio": 1261,
+    "summary_current_think_leak": 109,
+    "recall_evidence_reachable": 5,
+    "think_token_length": 27
+  },
+  "action_distribution": {
+    "silent": 40145,
+    "response": 1512,
+    "compress": 5355,
+    "recall_query": 134,
+    "recall_response": 104,
+    "recall_silent": 39
+  },
+  "difficulty_distribution": {
+    "easy": 40962,
+    "medium": 6263,
+    "hard": 64
+  },
+  "trajectories_total": 868,
+  "trajectories": 868,
+  "trajectory_check_failures": 0,
+  "train_count": 3270,
+  "train_sft_count": 1635,
+  "train_rl_count": 1635,
+  "val_count": 535,
+  "test_count": 544,
+  "video_counts": {
+    "train": 218,
+    "train_sft": 109,
+    "train_rl": 109,
+    "val": 47,
+    "test": 47
+  },
+  "phase_counts": {
+    "1": 2017,
+    "2": 600,
+    "C1": 653,
+    "5": 3270
+  },
+  "split_by_video": true,
+  "global_family_distribution": {
+    "F1": 534,
+    "F2": 479,
+    "F4": 101,
+    "S1": 223,
+    "CR3": 62,
+    "F3": 197,
+    "F5": 63,
+    "R1": 77,
+    "E2": 121,
+    "CR5": 112,
+    "M1": 313,
+    "N1": 77,
+    "C1": 70,
+    "CR6": 56,
+    "F7": 94,
+    "CR7": 42,
+    "E1": 121,
+    "CR4": 41,
+    "P1": 48,
+    "F6": 34,
+    "CR1": 8
+  },
+  "global_sequence_type_distribution": {
+    "immediate_response": 1875,
+    "base": 1807,
+    "recall_success": 351,
+    "event_watch": 121,
+    "recall_fail_then_found": 98,
+    "multi_response": 428
+  },
+  "global_base_role_distribution": {
+    "compress_boundary": 858,
+    "evidence_anchor": 942,
+    "question_window": 1,
+    "warmup": 6
+  },
+  "per_video_sample_counts": {
+    "min": 15,
+    "max": 15,
+    "avg": 15.0,
+    "total_videos": 312
+  }
+}

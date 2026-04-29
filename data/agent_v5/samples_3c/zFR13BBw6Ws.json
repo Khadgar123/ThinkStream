@@ -1,0 +1,2182 @@
+[
+  {
+    "chunk_idx": 0,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A man in a maroon t-shirt stands at a kitchen counter, holding the handle of a black frying pan positioned over a gas stovetop. A plate of pasta sits on the wooden counter nearby, along with small bowls of ingredients. In the second frame, a reflective surface or glass overlay appears at the bottom, partially obscuring the stove and counter area while the man continues his cooking action.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 1,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the maroon shirt stops cooking, turns to face the camera directly, and gestures with both hands. A blue lower-third graphic appears at the bottom, displaying the name 'Adam Swanson', title 'Chef, Zucca', a circular logo, and a green 'San Remo' logo.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 2,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the maroon shirt stands facing the camera, bringing his hands together in front of his waist. The camera view widens slightly to the left, showing more hanging metal pans and bottles on the dark backsplash. The blue lower-third graphic displaying text and logos remains visible at the bottom of the frame.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 5,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The view cuts from a close-up of the red pasta package to a medium shot of the man in the maroon shirt holding the San Remo rigatoni bag with both hands. He stands behind the wooden counter where a plate of cooked pasta and small bowls of ingredients are arranged.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 6,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the maroon shirt sets the red pasta package on the counter. He clasps his hands together at his waist. Hanging metal pans and bottles appear on shelves to the left against a dark backsplash. A plate of cooked pasta sits on the wooden surface.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 7,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man in the maroon shirt looks down and gestures towards his hand before the camera cuts to a close-up of the wooden table. A small white bowl containing a creamy mixture sits behind a wedge of pale cheese on a saucer, with two metal spoons resting nearby on the wood surface.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [0, 14], \"text\": \"[0-2] A man in a maroon t-shirt stands at a kitchen counter holding a black frying pan over a gas stovetop, with a plate of pasta nearby. [2-8] He faces the camera and gestures as a blue lower-third graphic appears with the text 'Adam Swanson', 'Chef, Zucca', and a 'San Remo' logo. [8-10] The graphic disappears, and the camera cuts to a close-up of a red package labeled 'San Remo Large Rigatoni'. [10-14] The man holds the pasta package, then places it on the wooden counter beside the plate of cooked pasta and small ingredient bowls before clasping his hands.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='0-14'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "evidence_anchor",
+    "gold_caption": "The man is holding a black frying pan over the gas stovetop. | A plate of cooked pasta sits on the wooden counter. | The man is wearing a maroon t-shirt and beige shorts. | The kitchen features white cabinetry and a stainless steel refrigerator. | The man in the maroon t-shirt is gesturing with both hands while speaking. | The lower-third graphic identifies the man as 'Adam Swanson, Chef, Zucca'. | The 'San Remo' logo is visible on the right side of the blue banner. | A 'GBC' logo is visible on the left side of the blue banner. | The kitchen features a stainless steel refrigerator to the right of the man. | Pots and pans are hanging on a rack to the left of the man. | lower-third graphic overlay appears on screen | The man in the maroon t-shirt is gesturing with his hands in front of his chest.",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 8,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera cuts back to a medium shot of the man in the maroon t-shirt standing at the wooden counter. He looks down at a white plate of pasta, using his fingers to sprinkle or arrange garnish on top of the dish. The red pasta package rests on the counter to his left near the stove.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 9,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the maroon shirt picks up a piece of cooked rigatoni pasta from the white plate. He holds the single tube of pasta up towards the camera to display it. He then looks back down at the counter while holding the pasta piece in his left hand.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 11,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The view returns to a medium shot of the man in the maroon shirt standing at the wooden counter. He holds a piece of rigatoni in his left hand and uses a small spoon in his right hand to carefully stuff the white creamy filling into the pasta tube.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 12,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A close-up view shows hands holding a piece of yellow rigatoni pasta. The fingers carefully press a portion of white creamy filling into the open end of the pasta tube, pushing the mixture inside the hollow center to stuff the shell.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 13,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "zFR13BBw6Ws_C1_014",
+    "sequence_type": "immediate_response",
+    "action": "response",
+    "output": "<think>The scene cuts to a white plate on a wooden table containing several pieces of cooked rigatoni. One pasta tube on the left is stuffed with the white mixture. In the foreground, a small bowl with chopped green herbs is visible, slightly out of focus.</think><answer>B</answer>",
+    "queries": [],
+    "user_input": "How has the arrangement of items on the wooden countertop changed from the start to later in the video? A. It starts with butter and a bowl, then only has a plate of pasta B. It starts with only a plate of pasta, then includes butter and a bowl of dip C. It starts with a pasta package, then only has a frying pan D. It remains empty throughout the video",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 14,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "zFR13BBw6Ws_C1_014",
+    "sequence_type": "immediate_response",
+    "action": "silent",
+    "output": "<think>The camera cuts back to a medium shot of the man in the maroon shirt standing at the counter, gesturing with his hands. The white plate of pasta, ingredient bowls, cheese wedge, and red pasta package are arranged on the wooden surface in front of him.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "How has the arrangement of items on the wooden countertop changed from the start to later in the video? A. It starts with butter and a bowl, then only has a plate of pasta B. It starts with only a plate of pasta, then includes butter and a bowl of dip C. It starts with a pasta package, then only has a frying pan D. It remains empty throughout the video",
+        "ask_time": 26,
+        "answers": [
+          {
+            "text": "B",
+            "time": 26
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 15,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man in the maroon t-shirt stands behind the wooden counter, gesturing with both hands in front of his torso. The white plate containing stuffed rigatoni, small ingredient bowls, a wedge of cheese, and the red pasta package remain arranged on the surface before him.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [14, 30], \"text\": \"[14-16] The man in the maroon shirt gestures before the camera shows a wooden table with a small white bowl of creamy mixture, a wedge of pale cheese on a saucer, and two metal spoons. [16-18] He stands at the counter arranging garnish on a white plate of pasta near a red pasta package. [18-22] He picks up a cooked rigatoni tube, displays it, then a close-up shows hands scooping white filling near the cheese wedge. [22-26] The man stuffs the rigatoni with a spoon, followed by a close-up of fingers pressing the white mixture into the yellow pasta tube. [26-28] A white plate holds several rigatoni pieces, one visibly stuffed, with a small bowl of chopped green herbs in the foreground. [28-30] The man stands behind the counter, gesturing over the arranged ingredients and pasta dish.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "How has the arrangement of items on the wooden countertop changed from the start to later in the video? A. It starts with butter and a bowl, then only has a plate of pasta B. It starts with only a plate of pasta, then includes butter and a bowl of dip C. It starts with a pasta package, then only has a frying pan D. It remains empty throughout the video",
+        "ask_time": 26,
+        "answers": [
+          {
+            "text": "B",
+            "time": 26
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='14-30'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A man in a maroon shirt is standing in a kitchen and gesturing with his hands. | A plate of food, a bowl of white mixture, and a block of butter are arranged on a wooden counter. | The man is standing in front of a stainless steel refrigerator. | A frying pan is sitting on the stovetop to the right of the butter. | butter block and small bowl appear on counter | A man in a maroon shirt is arranging yellow pasta on a white plate. | A block of butter sits on a small saucer in the foreground. | A bowl of creamy dip is placed next to the butter. | Silver tongs are resting on the wooden table to the right. | The refrigerator is located behind the man. | The man places a piece of food onto the white plate. | The man is holding a small piece of food in his hand.",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 16,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man turns towards the built-in oven behind him, holding a dark cloth. The camera cuts to a close-up view inside the oven, revealing a white ceramic baking dish filled with food resting on a wire rack. The dish appears to contain the stuffed pasta.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "How has the arrangement of items on the wooden countertop changed from the start to later in the video? A. It starts with butter and a bowl, then only has a plate of pasta B. It starts with only a plate of pasta, then includes butter and a bowl of dip C. It starts with a pasta package, then only has a frying pan D. It remains empty throughout the video",
+        "ask_time": 26,
+        "answers": [
+          {
+            "text": "B",
+            "time": 26
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 17,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand protected by a pink checkered cloth reaches into the dark oven interior to grasp a white ceramic baking dish filled with food. The hand firmly grips the side of the dish and pulls it forward, sliding it off the metal wire rack to remove it from the oven.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "How has the arrangement of items on the wooden countertop changed from the start to later in the video? A. It starts with butter and a bowl, then only has a plate of pasta B. It starts with only a plate of pasta, then includes butter and a bowl of dip C. It starts with a pasta package, then only has a frying pan D. It remains empty throughout the video",
+        "ask_time": 26,
+        "answers": [
+          {
+            "text": "B",
+            "time": 26
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 21,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand adorned with a gold ring utilizes a metal spoon to transfer chopped red tomatoes and sauce from a black non-stick frying pan, carefully distributing the mixture over the stuffed rigatoni tubes resting inside a white ceramic baking dish on a wooden table.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "How has the arrangement of items on the wooden countertop changed from the start to later in the video? A. It starts with butter and a bowl, then only has a plate of pasta B. It starts with only a plate of pasta, then includes butter and a bowl of dip C. It starts with a pasta package, then only has a frying pan D. It remains empty throughout the video",
+        "ask_time": 26,
+        "answers": [
+          {
+            "text": "B",
+            "time": 26
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 22,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand spoons chunky red tomato sauce from a black pan onto stuffed rigatoni tubes in a white ceramic baking dish. The camera lingers on the dish, now covered in the red sauce, sitting on a wooden table near a small bowl of white filling.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "How has the arrangement of items on the wooden countertop changed from the start to later in the video? A. It starts with butter and a bowl, then only has a plate of pasta B. It starts with only a plate of pasta, then includes butter and a bowl of dip C. It starts with a pasta package, then only has a frying pan D. It remains empty throughout the video",
+        "ask_time": 26,
+        "answers": [
+          {
+            "text": "B",
+            "time": 26
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 23,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The camera presents a close-up of the white baking dish on the wooden surface, displaying the stuffed rigatoni tubes fully topped with the chunky red tomato sauce. The sauce covers the pasta pieces, and a small bowl of white filling is visible in the soft-focus background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [32, 46], \"text\": \"[32-38] A hand using a pink checkered cloth removes a white ceramic baking dish filled with stuffed pasta from an oven rack and places it on a wooden table. [38-46] A man in a maroon t-shirt holds a black frying pan and uses a spoon to scoop chunky red tomato sauce from it, pouring the mixture over the cooked pasta tubes in the white dish until they are covered.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "How has the arrangement of items on the wooden countertop changed from the start to later in the video? A. It starts with butter and a bowl, then only has a plate of pasta B. It starts with only a plate of pasta, then includes butter and a bowl of dip C. It starts with a pasta package, then only has a frying pan D. It remains empty throughout the video",
+        "ask_time": 26,
+        "answers": [
+          {
+            "text": "B",
+            "time": 26
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='32-46'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A hand holding a pink cloth pulls a white baking dish out of the oven. | The baking dish is resting on a metal wire rack inside the oven. | The dish contains brown food items. | baking dish removed from oven using pink cloth | A hand uses a pink cloth to grip a white baking dish. | The person is removing the dish from the oven. | The dish contains cooked food items. | The dish rests on a metal wire rack. | A white ceramic dish containing yellow rolled pasta sits on a wooden table. | A red food package is placed behind the white dish. | A dark object moves across the top left of the frame. | The man holds a black frying pan in his left hand.",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 24,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The view returns to a medium shot of the man in the maroon t-shirt standing behind the wooden counter. He gestures with his right hand near his waist while looking forward. On the counter before him sit the white baking dish with sauced pasta, the plate of stuffed rigatoni, and various small bowls of ingredients.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "How has the arrangement of items on the wooden countertop changed from the start to later in the video? A. It starts with butter and a bowl, then only has a plate of pasta B. It starts with only a plate of pasta, then includes butter and a bowl of dip C. It starts with a pasta package, then only has a frying pan D. It remains empty throughout the video",
+        "ask_time": 26,
+        "answers": [
+          {
+            "text": "B",
+            "time": 26
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 25,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the maroon shirt stands behind the wooden counter gesturing with his hands. A blue lower-third graphic overlay appears at the bottom of the screen featuring the text 'Perfect Pasta' and 'Large Rigatoni', flanked by a circular logo on the left and a green San Remo logo on the right.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "How has the arrangement of items on the wooden countertop changed from the start to later in the video? A. It starts with butter and a bowl, then only has a plate of pasta B. It starts with only a plate of pasta, then includes butter and a bowl of dip C. It starts with a pasta package, then only has a frying pan D. It remains empty throughout the video",
+        "ask_time": 26,
+        "answers": [
+          {
+            "text": "B",
+            "time": 26
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 28,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The video transitions via a cross-dissolve effect, fading out the man in the maroon shirt standing in the kitchen. An overhead shot of a wooden table fades in, revealing scattered ingredients like lemon wedges, parsley, and red peppers arranged around a central circular logo reading 'GC BC'.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "How has the arrangement of items on the wooden countertop changed from the start to later in the video? A. It starts with butter and a bowl, then only has a plate of pasta B. It starts with only a plate of pasta, then includes butter and a bowl of dip C. It starts with a pasta package, then only has a frying pan D. It remains empty throughout the video",
+        "ask_time": 26,
+        "answers": [
+          {
+            "text": "B",
+            "time": 26
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 29,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The video transitions to an overhead view of a wooden table scattered with ingredients like lemon wedges, parsley, and red peppers. A central circular logo containing 'GC BC' is displayed, with the text 'Good Chef' written to the left and 'Bad Chef' to the right in white script.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [30, 52], \"text\": \"[30-32] A man in a maroon t-shirt stands behind a wooden counter, gesturing with both hands over a white plate of stuffed rigatoni, small ingredient bowls, a cheese wedge, and a red pasta package. [46-48] A close-up reveals a white baking dish containing the stuffed rigatoni tubes topped with chunky red tomato sauce, with a bowl of white filling visible in the background. [48-50] The shot returns to the man gesturing near his waist, with the sauced baking dish, pasta plate, and ingredients arranged on the counter. [50-52] A blue lower-third graphic appears featuring the text \\\"Perfect Pasta\\\" and \\\"Large Rigatoni\\\" flanked by a circular logo and a green San Remo logo as the man continues to speak.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "How has the arrangement of items on the wooden countertop changed from the start to later in the video? A. It starts with butter and a bowl, then only has a plate of pasta B. It starts with only a plate of pasta, then includes butter and a bowl of dip C. It starts with a pasta package, then only has a frying pan D. It remains empty throughout the video",
+        "ask_time": 26,
+        "answers": [
+          {
+            "text": "B",
+            "time": 26
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='30-52'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The man in the maroon t-shirt is standing in a kitchen. | The man is holding a dark object in his left hand. | A plate of food sits on the wooden counter in front of the man. | A black frying pan is on the stovetop to the right. | The camera cuts from a wide shot of the man in the kitchen to a close-up of the food. | The man is standing behind a wooden counter with cooking ingredients. | The white dish contains rolled pasta covered in a chunky red sauce. | A black frying pan sits on the stove to the right of the counter. | A man in a maroon shirt stands behind a wooden counter. | The man gestures with his right hand while speaking. | A white dish containing rolled pasta with red sauce sits on the counter. | The camera cuts to a close-up of the pasta dish.",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 0,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A man in a maroon t-shirt stands at a kitchen counter, holding the handle of a black frying pan positioned over a gas stovetop. A plate of pasta sits on the wooden counter nearby, along with small bowls of ingredients. In the second frame, a reflective surface or glass overlay appears at the bottom, partially obscuring the stove and counter area while the man continues his cooking action.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 1,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the maroon shirt stops cooking, turns to face the camera directly, and gestures with both hands. A blue lower-third graphic appears at the bottom, displaying the name 'Adam Swanson', title 'Chef, Zucca', a circular logo, and a green 'San Remo' logo.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 2,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the maroon shirt stands facing the camera, bringing his hands together in front of his waist. The camera view widens slightly to the left, showing more hanging metal pans and bottles on the dark backsplash. The blue lower-third graphic displaying text and logos remains visible at the bottom of the frame.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 3,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the maroon shirt separates his clasped hands and gestures outward with open palms while facing forward. His mouth moves slightly. The blue lower-third graphic displaying text and logos remains static at the bottom of the screen throughout the sequence.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 4,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blue lower-third graphic disappears as the man gestures with his hands near his torso. The camera cuts to a close-up shot of a red package of San Remo Large Rigatoni pasta resting on a wooden surface, filling the frame with the product branding and clear plastic window showing the dry pasta tubes.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 5,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The view cuts from a close-up of the red pasta package to a medium shot of the man in the maroon shirt holding the San Remo rigatoni bag with both hands. He stands behind the wooden counter where a plate of cooked pasta and small bowls of ingredients are arranged.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 6,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the maroon shirt sets the red pasta package on the counter. He clasps his hands together at his waist. Hanging metal pans and bottles appear on shelves to the left against a dark backsplash. A plate of cooked pasta sits on the wooden surface.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 7,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man in the maroon shirt looks down and gestures towards his hand before the camera cuts to a close-up of the wooden table. A small white bowl containing a creamy mixture sits behind a wedge of pale cheese on a saucer, with two metal spoons resting nearby on the wood surface.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [0, 14], \"text\": \"[0-2] A man in a maroon t-shirt stands at a kitchen counter holding a black frying pan over a gas stovetop, with a plate of pasta nearby. [2-8] He faces the camera and gestures as a blue lower-third graphic appears with the text 'Adam Swanson', 'Chef, Zucca', and a 'San Remo' logo. [8-10] The graphic disappears, and the camera cuts to a close-up of a red package labeled 'San Remo Large Rigatoni'. [10-14] The man holds the pasta package, then places it on the wooden counter beside the plate of cooked pasta and small ingredient bowls before clasping his hands.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='0-14'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "evidence_anchor",
+    "gold_caption": "The man is holding a black frying pan over the gas stovetop. | A plate of cooked pasta sits on the wooden counter. | The man is wearing a maroon t-shirt and beige shorts. | The kitchen features white cabinetry and a stainless steel refrigerator. | The man in the maroon t-shirt is gesturing with both hands while speaking. | The lower-third graphic identifies the man as 'Adam Swanson, Chef, Zucca'. | The 'San Remo' logo is visible on the right side of the blue banner. | A 'GBC' logo is visible on the left side of the blue banner. | The kitchen features a stainless steel refrigerator to the right of the man. | Pots and pans are hanging on a rack to the left of the man. | lower-third graphic overlay appears on screen | The man in the maroon t-shirt is gesturing with his hands in front of his chest.",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 8,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera cuts back to a medium shot of the man in the maroon t-shirt standing at the wooden counter. He looks down at a white plate of pasta, using his fingers to sprinkle or arrange garnish on top of the dish. The red pasta package rests on the counter to his left near the stove.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 9,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the maroon shirt picks up a piece of cooked rigatoni pasta from the white plate. He holds the single tube of pasta up towards the camera to display it. He then looks back down at the counter while holding the pasta piece in his left hand.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 10,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera cuts to a close-up of hands holding a rigatoni tube. A small spoon scoops white creamy filling from a bowl. A wedge of pale cheese sits on a saucer in the foreground on the wooden table.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 13,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene cuts to a white plate on a wooden table containing several pieces of cooked rigatoni. One pasta tube on the left is stuffed with the white mixture. In the foreground, a small bowl with chopped green herbs is visible, slightly out of focus.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 14,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera cuts back to a medium shot of the man in the maroon shirt standing at the counter, gesturing with his hands. The white plate of pasta, ingredient bowls, cheese wedge, and red pasta package are arranged on the wooden surface in front of him.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 15,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man in the maroon t-shirt stands behind the wooden counter, gesturing with both hands in front of his torso. The white plate containing stuffed rigatoni, small ingredient bowls, a wedge of cheese, and the red pasta package remain arranged on the surface before him.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [14, 30], \"text\": \"[14-16] The man in the maroon shirt gestures before the camera shows a wooden table with a small white bowl of creamy mixture, a wedge of pale cheese on a saucer, and two metal spoons. [16-18] He stands at the counter arranging garnish on a white plate of pasta near a red pasta package. [18-22] He picks up a cooked rigatoni tube, displays it, then a close-up shows hands scooping white filling near the cheese wedge. [22-26] The man stuffs the rigatoni with a spoon, followed by a close-up of fingers pressing the white mixture into the yellow pasta tube. [26-28] A white plate holds several rigatoni pieces, one visibly stuffed, with a small bowl of chopped green herbs in the foreground. [28-30] The man stands behind the counter, gesturing over the arranged ingredients and pasta dish.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='14-30'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A man in a maroon shirt is standing in a kitchen and gesturing with his hands. | A plate of food, a bowl of white mixture, and a block of butter are arranged on a wooden counter. | The man is standing in front of a stainless steel refrigerator. | A frying pan is sitting on the stovetop to the right of the butter. | butter block and small bowl appear on counter | A man in a maroon shirt is arranging yellow pasta on a white plate. | A block of butter sits on a small saucer in the foreground. | A bowl of creamy dip is placed next to the butter. | Silver tongs are resting on the wooden table to the right. | The refrigerator is located behind the man. | The man places a piece of food onto the white plate. | The man is holding a small piece of food in his hand.",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 16,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man turns towards the built-in oven behind him, holding a dark cloth. The camera cuts to a close-up view inside the oven, revealing a white ceramic baking dish filled with food resting on a wire rack. The dish appears to contain the stuffed pasta.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 17,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand protected by a pink checkered cloth reaches into the dark oven interior to grasp a white ceramic baking dish filled with food. The hand firmly grips the side of the dish and pulls it forward, sliding it off the metal wire rack to remove it from the oven.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 20,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera cuts to a tight close-up showing a hand with a gold ring using a spoon to transfer chopped red tomatoes from the black non-stick frying pan into the white ceramic baking dish that holds the stuffed pasta tubes. The red sauce is being added to the dish.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 21,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand adorned with a gold ring utilizes a metal spoon to transfer chopped red tomatoes and sauce from a black non-stick frying pan, carefully distributing the mixture over the stuffed rigatoni tubes resting inside a white ceramic baking dish on a wooden table.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 22,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "zFR13BBw6Ws_S1_004",
+    "sequence_type": "immediate_response",
+    "action": "response",
+    "output": "<think>A hand spoons chunky red tomato sauce from a black pan onto stuffed rigatoni tubes in a white ceramic baking dish. The camera lingers on the dish, now covered in the red sauce, sitting on a wooden table near a small bowl of white filling.</think><answer>A man in a maroon t-shirt stands in a kitchen, gesturing near a wooden counter holding stuffed rigatoni, ingredient bowls, and cheese. He retrieves a white ceramic baking dish filled with cooked pasta from an oven using a pink cloth. Placing the dish on the counter, he uses a spoon to transfer chopped tomatoes and red sauce from a black frying pan over the stuffed pasta tubes.</answer>",
+    "queries": [],
+    "user_input": "What entities are present and what are they doing?",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 23,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "zFR13BBw6Ws_S1_004",
+    "sequence_type": "immediate_response",
+    "action": "silent",
+    "output": "<think>The camera presents a close-up of the white baking dish on the wooden surface, displaying the stuffed rigatoni tubes fully topped with the chunky red tomato sauce. The sauce covers the pasta pieces, and a small bowl of white filling is visible in the soft-focus background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What entities are present and what are they doing?",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "A man in a maroon t-shirt stands in a kitchen, gesturing near a wooden counter holding stuffed rigatoni, ingredient bowls, and cheese. He retrieves a white ceramic baking dish filled with cooked pasta from an oven using a pink cloth. Placing the dish on the counter, he uses a spoon to transfer chopped tomatoes and red sauce from a black frying pan over the stuffed pasta tubes.",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 24,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The view returns to a medium shot of the man in the maroon t-shirt standing behind the wooden counter. He gestures with his right hand near his waist while looking forward. On the counter before him sit the white baking dish with sauced pasta, the plate of stuffed rigatoni, and various small bowls of ingredients.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What entities are present and what are they doing?",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "A man in a maroon t-shirt stands in a kitchen, gesturing near a wooden counter holding stuffed rigatoni, ingredient bowls, and cheese. He retrieves a white ceramic baking dish filled with cooked pasta from an oven using a pink cloth. Placing the dish on the counter, he uses a spoon to transfer chopped tomatoes and red sauce from a black frying pan over the stuffed pasta tubes.",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 25,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the maroon shirt stands behind the wooden counter gesturing with his hands. A blue lower-third graphic overlay appears at the bottom of the screen featuring the text 'Perfect Pasta' and 'Large Rigatoni', flanked by a circular logo on the left and a green San Remo logo on the right.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What entities are present and what are they doing?",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "A man in a maroon t-shirt stands in a kitchen, gesturing near a wooden counter holding stuffed rigatoni, ingredient bowls, and cheese. He retrieves a white ceramic baking dish filled with cooked pasta from an oven using a pink cloth. Placing the dish on the counter, he uses a spoon to transfer chopped tomatoes and red sauce from a black frying pan over the stuffed pasta tubes.",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 26,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera cuts to a close-up of the white baking dish filled with stuffed rigatoni topped with red sauce. The blue lower-third graphic displaying 'Perfect Pasta' and 'Large Rigatoni' remains visible at the bottom of the screen, overlaying the food shot.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What entities are present and what are they doing?",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "A man in a maroon t-shirt stands in a kitchen, gesturing near a wooden counter holding stuffed rigatoni, ingredient bowls, and cheese. He retrieves a white ceramic baking dish filled with cooked pasta from an oven using a pink cloth. Placing the dish on the counter, he uses a spoon to transfer chopped tomatoes and red sauce from a black frying pan over the stuffed pasta tubes.",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 28,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The video transitions via a cross-dissolve effect, fading out the man in the maroon shirt standing in the kitchen. An overhead shot of a wooden table fades in, revealing scattered ingredients like lemon wedges, parsley, and red peppers arranged around a central circular logo reading 'GC BC'.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What entities are present and what are they doing?",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "A man in a maroon t-shirt stands in a kitchen, gesturing near a wooden counter holding stuffed rigatoni, ingredient bowls, and cheese. He retrieves a white ceramic baking dish filled with cooked pasta from an oven using a pink cloth. Placing the dish on the counter, he uses a spoon to transfer chopped tomatoes and red sauce from a black frying pan over the stuffed pasta tubes.",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 29,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The video transitions to an overhead view of a wooden table scattered with ingredients like lemon wedges, parsley, and red peppers. A central circular logo containing 'GC BC' is displayed, with the text 'Good Chef' written to the left and 'Bad Chef' to the right in white script.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [30, 52], \"text\": \"[30-32] A man in a maroon t-shirt stands behind a wooden counter, gesturing with both hands over a white plate of stuffed rigatoni, small ingredient bowls, a cheese wedge, and a red pasta package. [46-48] A close-up reveals a white baking dish containing the stuffed rigatoni tubes topped with chunky red tomato sauce, with a bowl of white filling visible in the background. [48-50] The shot returns to the man gesturing near his waist, with the sauced baking dish, pasta plate, and ingredients arranged on the counter. [50-52] A blue lower-third graphic appears featuring the text \\\"Perfect Pasta\\\" and \\\"Large Rigatoni\\\" flanked by a circular logo and a green San Remo logo as the man continues to speak.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What entities are present and what are they doing?",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "A man in a maroon t-shirt stands in a kitchen, gesturing near a wooden counter holding stuffed rigatoni, ingredient bowls, and cheese. He retrieves a white ceramic baking dish filled with cooked pasta from an oven using a pink cloth. Placing the dish on the counter, he uses a spoon to transfer chopped tomatoes and red sauce from a black frying pan over the stuffed pasta tubes.",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='30-52'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The man in the maroon t-shirt is standing in a kitchen. | The man is holding a dark object in his left hand. | A plate of food sits on the wooden counter in front of the man. | A black frying pan is on the stovetop to the right. | The camera cuts from a wide shot of the man in the kitchen to a close-up of the food. | The man is standing behind a wooden counter with cooking ingredients. | The white dish contains rolled pasta covered in a chunky red sauce. | A black frying pan sits on the stove to the right of the counter. | A man in a maroon shirt stands behind a wooden counter. | The man gestures with his right hand while speaking. | A white dish containing rolled pasta with red sauce sits on the counter. | The camera cuts to a close-up of the pasta dish.",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 0,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A man in a maroon t-shirt stands at a kitchen counter, holding the handle of a black frying pan positioned over a gas stovetop. A plate of pasta sits on the wooden counter nearby, along with small bowls of ingredients. In the second frame, a reflective surface or glass overlay appears at the bottom, partially obscuring the stove and counter area while the man continues his cooking action.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 1,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the maroon shirt stops cooking, turns to face the camera directly, and gestures with both hands. A blue lower-third graphic appears at the bottom, displaying the name 'Adam Swanson', title 'Chef, Zucca', a circular logo, and a green 'San Remo' logo.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 2,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the maroon shirt stands facing the camera, bringing his hands together in front of his waist. The camera view widens slightly to the left, showing more hanging metal pans and bottles on the dark backsplash. The blue lower-third graphic displaying text and logos remains visible at the bottom of the frame.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 3,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the maroon shirt separates his clasped hands and gestures outward with open palms while facing forward. His mouth moves slightly. The blue lower-third graphic displaying text and logos remains static at the bottom of the screen throughout the sequence.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 4,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blue lower-third graphic disappears as the man gestures with his hands near his torso. The camera cuts to a close-up shot of a red package of San Remo Large Rigatoni pasta resting on a wooden surface, filling the frame with the product branding and clear plastic window showing the dry pasta tubes.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 5,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The view cuts from a close-up of the red pasta package to a medium shot of the man in the maroon shirt holding the San Remo rigatoni bag with both hands. He stands behind the wooden counter where a plate of cooked pasta and small bowls of ingredients are arranged.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 6,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the maroon shirt sets the red pasta package on the counter. He clasps his hands together at his waist. Hanging metal pans and bottles appear on shelves to the left against a dark backsplash. A plate of cooked pasta sits on the wooden surface.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 7,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man in the maroon shirt looks down and gestures towards his hand before the camera cuts to a close-up of the wooden table. A small white bowl containing a creamy mixture sits behind a wedge of pale cheese on a saucer, with two metal spoons resting nearby on the wood surface.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [0, 14], \"text\": \"[0-2] A man in a maroon t-shirt stands at a kitchen counter holding a black frying pan over a gas stovetop, with a plate of pasta nearby. [2-8] He faces the camera and gestures as a blue lower-third graphic appears with the text 'Adam Swanson', 'Chef, Zucca', and a 'San Remo' logo. [8-10] The graphic disappears, and the camera cuts to a close-up of a red package labeled 'San Remo Large Rigatoni'. [10-14] The man holds the pasta package, then places it on the wooden counter beside the plate of cooked pasta and small ingredient bowls before clasping his hands.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='0-14'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The man is holding a black frying pan over the gas stovetop. | A plate of cooked pasta sits on the wooden counter. | The man is wearing a maroon t-shirt and beige shorts. | The kitchen features white cabinetry and a stainless steel refrigerator. | The man in the maroon t-shirt is gesturing with both hands while speaking. | The lower-third graphic identifies the man as 'Adam Swanson, Chef, Zucca'. | The 'San Remo' logo is visible on the right side of the blue banner. | A 'GBC' logo is visible on the left side of the blue banner. | The kitchen features a stainless steel refrigerator to the right of the man. | Pots and pans are hanging on a rack to the left of the man. | lower-third graphic overlay appears on screen | The man in the maroon t-shirt is gesturing with his hands in front of his chest.",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 8,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera cuts back to a medium shot of the man in the maroon t-shirt standing at the wooden counter. He looks down at a white plate of pasta, using his fingers to sprinkle or arrange garnish on top of the dish. The red pasta package rests on the counter to his left near the stove.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 9,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "zFR13BBw6Ws_F1_001",
+    "sequence_type": "immediate_response",
+    "action": "response",
+    "output": "<think>The man in the maroon shirt picks up a piece of cooked rigatoni pasta from the white plate. He holds the single tube of pasta up towards the camera to display it. He then looks back down at the counter while holding the pasta piece in his left hand.</think><answer>C</answer>",
+    "queries": [],
+    "user_input": "What role and restaurant are identified for Adam Swanson on the blue banner in the first segment? A. Perfect Pasta B. Large Rigatoni C. Chef, Zucca D. SAN REMO",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 10,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "zFR13BBw6Ws_F1_001",
+    "sequence_type": "immediate_response",
+    "action": "silent",
+    "output": "<think>The camera cuts to a close-up of hands holding a rigatoni tube. A small spoon scoops white creamy filling from a bowl. A wedge of pale cheese sits on a saucer in the foreground on the wooden table.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What role and restaurant are identified for Adam Swanson on the blue banner in the first segment? A. Perfect Pasta B. Large Rigatoni C. Chef, Zucca D. SAN REMO",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 11,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The view returns to a medium shot of the man in the maroon shirt standing at the wooden counter. He holds a piece of rigatoni in his left hand and uses a small spoon in his right hand to carefully stuff the white creamy filling into the pasta tube.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What role and restaurant are identified for Adam Swanson on the blue banner in the first segment? A. Perfect Pasta B. Large Rigatoni C. Chef, Zucca D. SAN REMO",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 12,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A close-up view shows hands holding a piece of yellow rigatoni pasta. The fingers carefully press a portion of white creamy filling into the open end of the pasta tube, pushing the mixture inside the hollow center to stuff the shell.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What role and restaurant are identified for Adam Swanson on the blue banner in the first segment? A. Perfect Pasta B. Large Rigatoni C. Chef, Zucca D. SAN REMO",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 13,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene cuts to a white plate on a wooden table containing several pieces of cooked rigatoni. One pasta tube on the left is stuffed with the white mixture. In the foreground, a small bowl with chopped green herbs is visible, slightly out of focus.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What role and restaurant are identified for Adam Swanson on the blue banner in the first segment? A. Perfect Pasta B. Large Rigatoni C. Chef, Zucca D. SAN REMO",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 14,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera cuts back to a medium shot of the man in the maroon shirt standing at the counter, gesturing with his hands. The white plate of pasta, ingredient bowls, cheese wedge, and red pasta package are arranged on the wooden surface in front of him.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What role and restaurant are identified for Adam Swanson on the blue banner in the first segment? A. Perfect Pasta B. Large Rigatoni C. Chef, Zucca D. SAN REMO",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 15,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man in the maroon t-shirt stands behind the wooden counter, gesturing with both hands in front of his torso. The white plate containing stuffed rigatoni, small ingredient bowls, a wedge of cheese, and the red pasta package remain arranged on the surface before him.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [14, 30], \"text\": \"[14-16] The man in the maroon shirt gestures before the camera shows a wooden table with a small white bowl of creamy mixture, a wedge of pale cheese on a saucer, and two metal spoons. [16-18] He stands at the counter arranging garnish on a white plate of pasta near a red pasta package. [18-22] He picks up a cooked rigatoni tube, displays it, then a close-up shows hands scooping white filling near the cheese wedge. [22-26] The man stuffs the rigatoni with a spoon, followed by a close-up of fingers pressing the white mixture into the yellow pasta tube. [26-28] A white plate holds several rigatoni pieces, one visibly stuffed, with a small bowl of chopped green herbs in the foreground. [28-30] The man stands behind the counter, gesturing over the arranged ingredients and pasta dish.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What role and restaurant are identified for Adam Swanson on the blue banner in the first segment? A. Perfect Pasta B. Large Rigatoni C. Chef, Zucca D. SAN REMO",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='14-30'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A man in a maroon shirt is standing in a kitchen and gesturing with his hands. | A plate of food, a bowl of white mixture, and a block of butter are arranged on a wooden counter. | The man is standing in front of a stainless steel refrigerator. | A frying pan is sitting on the stovetop to the right of the butter. | butter block and small bowl appear on counter | A man in a maroon shirt is arranging yellow pasta on a white plate. | A block of butter sits on a small saucer in the foreground. | A bowl of creamy dip is placed next to the butter. | Silver tongs are resting on the wooden table to the right. | The refrigerator is located behind the man. | The man places a piece of food onto the white plate. | The man is holding a small piece of food in his hand.",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 16,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man turns towards the built-in oven behind him, holding a dark cloth. The camera cuts to a close-up view inside the oven, revealing a white ceramic baking dish filled with food resting on a wire rack. The dish appears to contain the stuffed pasta.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What role and restaurant are identified for Adam Swanson on the blue banner in the first segment? A. Perfect Pasta B. Large Rigatoni C. Chef, Zucca D. SAN REMO",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 17,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand protected by a pink checkered cloth reaches into the dark oven interior to grasp a white ceramic baking dish filled with food. The hand firmly grips the side of the dish and pulls it forward, sliding it off the metal wire rack to remove it from the oven.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What role and restaurant are identified for Adam Swanson on the blue banner in the first segment? A. Perfect Pasta B. Large Rigatoni C. Chef, Zucca D. SAN REMO",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 21,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand adorned with a gold ring utilizes a metal spoon to transfer chopped red tomatoes and sauce from a black non-stick frying pan, carefully distributing the mixture over the stuffed rigatoni tubes resting inside a white ceramic baking dish on a wooden table.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What role and restaurant are identified for Adam Swanson on the blue banner in the first segment? A. Perfect Pasta B. Large Rigatoni C. Chef, Zucca D. SAN REMO",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 22,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand spoons chunky red tomato sauce from a black pan onto stuffed rigatoni tubes in a white ceramic baking dish. The camera lingers on the dish, now covered in the red sauce, sitting on a wooden table near a small bowl of white filling.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What role and restaurant are identified for Adam Swanson on the blue banner in the first segment? A. Perfect Pasta B. Large Rigatoni C. Chef, Zucca D. SAN REMO",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 23,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The camera presents a close-up of the white baking dish on the wooden surface, displaying the stuffed rigatoni tubes fully topped with the chunky red tomato sauce. The sauce covers the pasta pieces, and a small bowl of white filling is visible in the soft-focus background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [32, 46], \"text\": \"[32-38] A hand using a pink checkered cloth removes a white ceramic baking dish filled with stuffed pasta from an oven rack and places it on a wooden table. [38-46] A man in a maroon t-shirt holds a black frying pan and uses a spoon to scoop chunky red tomato sauce from it, pouring the mixture over the cooked pasta tubes in the white dish until they are covered.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What role and restaurant are identified for Adam Swanson on the blue banner in the first segment? A. Perfect Pasta B. Large Rigatoni C. Chef, Zucca D. SAN REMO",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='32-46'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A hand holding a pink cloth pulls a white baking dish out of the oven. | The baking dish is resting on a metal wire rack inside the oven. | The dish contains brown food items. | baking dish removed from oven using pink cloth | A hand uses a pink cloth to grip a white baking dish. | The person is removing the dish from the oven. | The dish contains cooked food items. | The dish rests on a metal wire rack. | A white ceramic dish containing yellow rolled pasta sits on a wooden table. | A red food package is placed behind the white dish. | A dark object moves across the top left of the frame. | The man holds a black frying pan in his left hand.",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 24,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The view returns to a medium shot of the man in the maroon t-shirt standing behind the wooden counter. He gestures with his right hand near his waist while looking forward. On the counter before him sit the white baking dish with sauced pasta, the plate of stuffed rigatoni, and various small bowls of ingredients.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What role and restaurant are identified for Adam Swanson on the blue banner in the first segment? A. Perfect Pasta B. Large Rigatoni C. Chef, Zucca D. SAN REMO",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 25,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the maroon shirt stands behind the wooden counter gesturing with his hands. A blue lower-third graphic overlay appears at the bottom of the screen featuring the text 'Perfect Pasta' and 'Large Rigatoni', flanked by a circular logo on the left and a green San Remo logo on the right.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What role and restaurant are identified for Adam Swanson on the blue banner in the first segment? A. Perfect Pasta B. Large Rigatoni C. Chef, Zucca D. SAN REMO",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 28,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The video transitions via a cross-dissolve effect, fading out the man in the maroon shirt standing in the kitchen. An overhead shot of a wooden table fades in, revealing scattered ingredients like lemon wedges, parsley, and red peppers arranged around a central circular logo reading 'GC BC'.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What role and restaurant are identified for Adam Swanson on the blue banner in the first segment? A. Perfect Pasta B. Large Rigatoni C. Chef, Zucca D. SAN REMO",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 29,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The video transitions to an overhead view of a wooden table scattered with ingredients like lemon wedges, parsley, and red peppers. A central circular logo containing 'GC BC' is displayed, with the text 'Good Chef' written to the left and 'Bad Chef' to the right in white script.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [30, 52], \"text\": \"[30-32] A man in a maroon t-shirt stands behind a wooden counter, gesturing with both hands over a white plate of stuffed rigatoni, small ingredient bowls, a cheese wedge, and a red pasta package. [46-48] A close-up reveals a white baking dish containing the stuffed rigatoni tubes topped with chunky red tomato sauce, with a bowl of white filling visible in the background. [48-50] The shot returns to the man gesturing near his waist, with the sauced baking dish, pasta plate, and ingredients arranged on the counter. [50-52] A blue lower-third graphic appears featuring the text \\\"Perfect Pasta\\\" and \\\"Large Rigatoni\\\" flanked by a circular logo and a green San Remo logo as the man continues to speak.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What role and restaurant are identified for Adam Swanson on the blue banner in the first segment? A. Perfect Pasta B. Large Rigatoni C. Chef, Zucca D. SAN REMO",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='30-52'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The man in the maroon t-shirt is standing in a kitchen. | The man is holding a dark object in his left hand. | A plate of food sits on the wooden counter in front of the man. | A black frying pan is on the stovetop to the right. | The camera cuts from a wide shot of the man in the kitchen to a close-up of the food. | The man is standing behind a wooden counter with cooking ingredients. | The white dish contains rolled pasta covered in a chunky red sauce. | A black frying pan sits on the stove to the right of the counter. | A man in a maroon shirt stands behind a wooden counter. | The man gestures with his right hand while speaking. | A white dish containing rolled pasta with red sauce sits on the counter. | The camera cuts to a close-up of the pasta dish.",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 0,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A man in a maroon t-shirt stands at a kitchen counter, holding the handle of a black frying pan positioned over a gas stovetop. A plate of pasta sits on the wooden counter nearby, along with small bowls of ingredients. In the second frame, a reflective surface or glass overlay appears at the bottom, partially obscuring the stove and counter area while the man continues his cooking action.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 1,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the maroon shirt stops cooking, turns to face the camera directly, and gestures with both hands. A blue lower-third graphic appears at the bottom, displaying the name 'Adam Swanson', title 'Chef, Zucca', a circular logo, and a green 'San Remo' logo.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 2,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the maroon shirt stands facing the camera, bringing his hands together in front of his waist. The camera view widens slightly to the left, showing more hanging metal pans and bottles on the dark backsplash. The blue lower-third graphic displaying text and logos remains visible at the bottom of the frame.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 3,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the maroon shirt separates his clasped hands and gestures outward with open palms while facing forward. His mouth moves slightly. The blue lower-third graphic displaying text and logos remains static at the bottom of the screen throughout the sequence.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 4,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blue lower-third graphic disappears as the man gestures with his hands near his torso. The camera cuts to a close-up shot of a red package of San Remo Large Rigatoni pasta resting on a wooden surface, filling the frame with the product branding and clear plastic window showing the dry pasta tubes.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 5,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The view cuts from a close-up of the red pasta package to a medium shot of the man in the maroon shirt holding the San Remo rigatoni bag with both hands. He stands behind the wooden counter where a plate of cooked pasta and small bowls of ingredients are arranged.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 6,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the maroon shirt sets the red pasta package on the counter. He clasps his hands together at his waist. Hanging metal pans and bottles appear on shelves to the left against a dark backsplash. A plate of cooked pasta sits on the wooden surface.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 7,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "zFR13BBw6Ws_F2_003",
+    "sequence_type": "immediate_response",
+    "action": "response",
+    "output": "<think>The man in the maroon shirt looks down and gestures towards his hand before the camera cuts to a close-up of the wooden table. A small white bowl containing a creamy mixture sits behind a wedge of pale cheese on a saucer, with two metal spoons resting nearby on the wood surface.</think><answer>C</answer>",
+    "queries": [],
+    "user_input": "What color is the t-shirt worn by the man in the kitchen? A. Blue B. Beige C. Maroon D. Yellow",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 8,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "zFR13BBw6Ws_F2_003",
+    "sequence_type": "immediate_response",
+    "action": "silent",
+    "output": "<think>The camera cuts back to a medium shot of the man in the maroon t-shirt standing at the wooden counter. He looks down at a white plate of pasta, using his fingers to sprinkle or arrange garnish on top of the dish. The red pasta package rests on the counter to his left near the stove.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the t-shirt worn by the man in the kitchen? A. Blue B. Beige C. Maroon D. Yellow",
+        "ask_time": 14,
+        "answers": [
+          {
+            "text": "C",
+            "time": 14
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 9,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the maroon shirt picks up a piece of cooked rigatoni pasta from the white plate. He holds the single tube of pasta up towards the camera to display it. He then looks back down at the counter while holding the pasta piece in his left hand.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the t-shirt worn by the man in the kitchen? A. Blue B. Beige C. Maroon D. Yellow",
+        "ask_time": 14,
+        "answers": [
+          {
+            "text": "C",
+            "time": 14
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 10,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera cuts to a close-up of hands holding a rigatoni tube. A small spoon scoops white creamy filling from a bowl. A wedge of pale cheese sits on a saucer in the foreground on the wooden table.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the t-shirt worn by the man in the kitchen? A. Blue B. Beige C. Maroon D. Yellow",
+        "ask_time": 14,
+        "answers": [
+          {
+            "text": "C",
+            "time": 14
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 11,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The view returns to a medium shot of the man in the maroon shirt standing at the wooden counter. He holds a piece of rigatoni in his left hand and uses a small spoon in his right hand to carefully stuff the white creamy filling into the pasta tube.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the t-shirt worn by the man in the kitchen? A. Blue B. Beige C. Maroon D. Yellow",
+        "ask_time": 14,
+        "answers": [
+          {
+            "text": "C",
+            "time": 14
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 13,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene cuts to a white plate on a wooden table containing several pieces of cooked rigatoni. One pasta tube on the left is stuffed with the white mixture. In the foreground, a small bowl with chopped green herbs is visible, slightly out of focus.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the t-shirt worn by the man in the kitchen? A. Blue B. Beige C. Maroon D. Yellow",
+        "ask_time": 14,
+        "answers": [
+          {
+            "text": "C",
+            "time": 14
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 14,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera cuts back to a medium shot of the man in the maroon shirt standing at the counter, gesturing with his hands. The white plate of pasta, ingredient bowls, cheese wedge, and red pasta package are arranged on the wooden surface in front of him.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the t-shirt worn by the man in the kitchen? A. Blue B. Beige C. Maroon D. Yellow",
+        "ask_time": 14,
+        "answers": [
+          {
+            "text": "C",
+            "time": 14
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 15,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The man in the maroon t-shirt stands behind the wooden counter, gesturing with both hands in front of his torso. The white plate containing stuffed rigatoni, small ingredient bowls, a wedge of cheese, and the red pasta package remain arranged on the surface before him.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [14, 30], \"text\": \"[14-16] The man in the maroon shirt gestures before the camera shows a wooden table with a small white bowl of creamy mixture, a wedge of pale cheese on a saucer, and two metal spoons. [16-18] He stands at the counter arranging garnish on a white plate of pasta near a red pasta package. [18-22] He picks up a cooked rigatoni tube, displays it, then a close-up shows hands scooping white filling near the cheese wedge. [22-26] The man stuffs the rigatoni with a spoon, followed by a close-up of fingers pressing the white mixture into the yellow pasta tube. [26-28] A white plate holds several rigatoni pieces, one visibly stuffed, with a small bowl of chopped green herbs in the foreground. [28-30] The man stands behind the counter, gesturing over the arranged ingredients and pasta dish.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the t-shirt worn by the man in the kitchen? A. Blue B. Beige C. Maroon D. Yellow",
+        "ask_time": 14,
+        "answers": [
+          {
+            "text": "C",
+            "time": 14
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='14-30'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A man in a maroon shirt is standing in a kitchen and gesturing with his hands. | A plate of food, a bowl of white mixture, and a block of butter are arranged on a wooden counter. | The man is standing in front of a stainless steel refrigerator. | A frying pan is sitting on the stovetop to the right of the butter. | butter block and small bowl appear on counter | A man in a maroon shirt is arranging yellow pasta on a white plate. | A block of butter sits on a small saucer in the foreground. | A bowl of creamy dip is placed next to the butter. | Silver tongs are resting on the wooden table to the right. | The refrigerator is located behind the man. | The man places a piece of food onto the white plate. | The man is holding a small piece of food in his hand.",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 16,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man turns towards the built-in oven behind him, holding a dark cloth. The camera cuts to a close-up view inside the oven, revealing a white ceramic baking dish filled with food resting on a wire rack. The dish appears to contain the stuffed pasta.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the t-shirt worn by the man in the kitchen? A. Blue B. Beige C. Maroon D. Yellow",
+        "ask_time": 14,
+        "answers": [
+          {
+            "text": "C",
+            "time": 14
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 17,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand protected by a pink checkered cloth reaches into the dark oven interior to grasp a white ceramic baking dish filled with food. The hand firmly grips the side of the dish and pulls it forward, sliding it off the metal wire rack to remove it from the oven.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the t-shirt worn by the man in the kitchen? A. Blue B. Beige C. Maroon D. Yellow",
+        "ask_time": 14,
+        "answers": [
+          {
+            "text": "C",
+            "time": 14
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 21,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand adorned with a gold ring utilizes a metal spoon to transfer chopped red tomatoes and sauce from a black non-stick frying pan, carefully distributing the mixture over the stuffed rigatoni tubes resting inside a white ceramic baking dish on a wooden table.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the t-shirt worn by the man in the kitchen? A. Blue B. Beige C. Maroon D. Yellow",
+        "ask_time": 14,
+        "answers": [
+          {
+            "text": "C",
+            "time": 14
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 22,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand spoons chunky red tomato sauce from a black pan onto stuffed rigatoni tubes in a white ceramic baking dish. The camera lingers on the dish, now covered in the red sauce, sitting on a wooden table near a small bowl of white filling.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the t-shirt worn by the man in the kitchen? A. Blue B. Beige C. Maroon D. Yellow",
+        "ask_time": 14,
+        "answers": [
+          {
+            "text": "C",
+            "time": 14
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 23,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The camera presents a close-up of the white baking dish on the wooden surface, displaying the stuffed rigatoni tubes fully topped with the chunky red tomato sauce. The sauce covers the pasta pieces, and a small bowl of white filling is visible in the soft-focus background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [32, 46], \"text\": \"[32-38] A hand using a pink checkered cloth removes a white ceramic baking dish filled with stuffed pasta from an oven rack and places it on a wooden table. [38-46] A man in a maroon t-shirt holds a black frying pan and uses a spoon to scoop chunky red tomato sauce from it, pouring the mixture over the cooked pasta tubes in the white dish until they are covered.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the t-shirt worn by the man in the kitchen? A. Blue B. Beige C. Maroon D. Yellow",
+        "ask_time": 14,
+        "answers": [
+          {
+            "text": "C",
+            "time": 14
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='32-46'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A hand holding a pink cloth pulls a white baking dish out of the oven. | The baking dish is resting on a metal wire rack inside the oven. | The dish contains brown food items. | baking dish removed from oven using pink cloth | A hand uses a pink cloth to grip a white baking dish. | The person is removing the dish from the oven. | The dish contains cooked food items. | The dish rests on a metal wire rack. | A white ceramic dish containing yellow rolled pasta sits on a wooden table. | A red food package is placed behind the white dish. | A dark object moves across the top left of the frame. | The man holds a black frying pan in his left hand.",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 24,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The view returns to a medium shot of the man in the maroon t-shirt standing behind the wooden counter. He gestures with his right hand near his waist while looking forward. On the counter before him sit the white baking dish with sauced pasta, the plate of stuffed rigatoni, and various small bowls of ingredients.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the t-shirt worn by the man in the kitchen? A. Blue B. Beige C. Maroon D. Yellow",
+        "ask_time": 14,
+        "answers": [
+          {
+            "text": "C",
+            "time": 14
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 25,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The man in the maroon shirt stands behind the wooden counter gesturing with his hands. A blue lower-third graphic overlay appears at the bottom of the screen featuring the text 'Perfect Pasta' and 'Large Rigatoni', flanked by a circular logo on the left and a green San Remo logo on the right.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the t-shirt worn by the man in the kitchen? A. Blue B. Beige C. Maroon D. Yellow",
+        "ask_time": 14,
+        "answers": [
+          {
+            "text": "C",
+            "time": 14
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 28,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The video transitions via a cross-dissolve effect, fading out the man in the maroon shirt standing in the kitchen. An overhead shot of a wooden table fades in, revealing scattered ingredients like lemon wedges, parsley, and red peppers arranged around a central circular logo reading 'GC BC'.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the t-shirt worn by the man in the kitchen? A. Blue B. Beige C. Maroon D. Yellow",
+        "ask_time": 14,
+        "answers": [
+          {
+            "text": "C",
+            "time": 14
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  },
+  {
+    "chunk_idx": 29,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_3",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The video transitions to an overhead view of a wooden table scattered with ingredients like lemon wedges, parsley, and red peppers. A central circular logo containing 'GC BC' is displayed, with the text 'Good Chef' written to the left and 'Bad Chef' to the right in white script.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [30, 52], \"text\": \"[30-32] A man in a maroon t-shirt stands behind a wooden counter, gesturing with both hands over a white plate of stuffed rigatoni, small ingredient bowls, a cheese wedge, and a red pasta package. [46-48] A close-up reveals a white baking dish containing the stuffed rigatoni tubes topped with chunky red tomato sauce, with a bowl of white filling visible in the background. [48-50] The shot returns to the man gesturing near his waist, with the sauced baking dish, pasta plate, and ingredients arranged on the counter. [50-52] A blue lower-third graphic appears featuring the text \\\"Perfect Pasta\\\" and \\\"Large Rigatoni\\\" flanked by a circular logo and a green San Remo logo as the man continues to speak.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the t-shirt worn by the man in the kitchen? A. Blue B. Beige C. Maroon D. Yellow",
+        "ask_time": 14,
+        "answers": [
+          {
+            "text": "C",
+            "time": 14
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='30-52'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The man in the maroon t-shirt is standing in a kitchen. | The man is holding a dark object in his left hand. | A plate of food sits on the wooden counter in front of the man. | A black frying pan is on the stovetop to the right. | The camera cuts from a wide shot of the man in the kitchen to a close-up of the food. | The man is standing behind a wooden counter with cooking ingredients. | The white dish contains rolled pasta covered in a chunky red sauce. | A black frying pan sits on the stove to the right of the counter. | A man in a maroon shirt stands behind a wooden counter. | The man gestures with his right hand while speaking. | A white dish containing rolled pasta with red sauce sits on the counter. | The camera cuts to a close-up of the pasta dish.",
+    "video_id": "zFR13BBw6Ws",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/how_to_step/zFR13BBw6Ws.mp4"
+  }
+]

@@ -1,0 +1,3273 @@
+[
+  {
+    "chunk_idx": 0,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A blonde woman in a bright pink jacket stands near a wooden pole, bending forward slightly at the waist. To her right, a person wearing a light grey coat becomes visible standing nearby. The background features dark, blurred stadium seating. The woman maintains her position near the pole while adjusting her posture.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 1,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde woman turns, now wearing a pink top with the number 10 on the back, and raises both hands to fix her hair. A man in a pink shirt and dark jacket stands to her left, while a man in a blue jacket with a lanyard becomes visible on the right. The figure in the grey coat stays in the foreground.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 2,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde woman is revealed wearing a pink crop top with bib number 140 and grey shorts on a green field. She continues holding both hands to her head to fix her hair. A man in a blue jacket stands behind her, and a person in a red jacket is visible in the lower right foreground.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "warmup",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 5,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde woman in the pink crop top lowers her hands from behind her head to rest on her shoulders. Her bib number 140 and name are clearly visible on her chest. A yellow flag marked with the number 90 stands to her right against the green field background.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 6,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera zooms in on the blonde woman in the pink top. She lowers her hands from her shoulders down her chest. The name KLISHINA is clearly legible on her bib number 140. She stands facing forward against the green field background with the yellow flag partially visible.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 7,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The blonde woman in the pink top stands facing forward, looking slightly to her left with her arms down. In the final frame, she raises her right hand slightly near her shoulder level. The yellow flag marked 90 remains visible in the blurred green background behind her.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [0, 14], \"text\": \"[0-2] A blonde woman in a bright pink jacket stands near a wooden pole, bending slightly at the waist, while a person in a light grey coat stands nearby to the right against dark, blurred stadium seating. [2-4] She turns, now wearing a pink top with bib number \\\"10\\\" on the back, raising both hands to fix her hair; a man in a pink shirt and dark jacket stands left, and a man in a blue jacket with a lanyard becomes visible right. [4-8] On a green field, the woman wears a pink crop top, bib \\\"140\\\", and grey shorts, keeping hands behind her head to adjust hair; the man in blue stands behind, and a person in a red jacket is visible near a yellow net in the foreground. [8-10] She turns slightly toward the camera, hands still raised behind her head, with the yellow net clearly visible behind her. [10-12] She lowers hands from behind her head to rest on her shoulders, revealing bib \\\"140\\\" and a yellow flag marked \\\"90\\\" to her right. [12-14] The camera zooms in as she lowers hands down her chest; the name \\\"KLISHINA\\\" is clearly legible on bib \\\"140\\\" as she stands facing forward against the green field.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='0-14'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "evidence_anchor",
+    "gold_caption": "A woman in a pink jacket stands in the center of the frame. | The woman is looking downwards. | A man in a grey jacket stands to the right of the woman. | A wooden pole is positioned vertically near the woman. | The woman in the pink sports bra raises her hands to adjust her hair. | The bib on the woman's chest displays the number 10. | A man in a blue jacket stands to the right of the central woman. | A person in a grey jacket stands in the foreground with their back to the camera. | woman begins adjusting hair with hands behind head | The woman in the center is standing with her hands placed on her head. | The woman is wearing a pink top with the number '140' printed on it. | A man in a blue jacket is standing to the right of the woman.",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 8,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde woman in the bright pink top lowers her right hand from touching her hair near her ear back down out of the frame. She stands facing slightly left against the green field background with a white line visible behind her shoulders. She looks slightly left after touching her hair.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 9,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde woman in the bright pink top stands facing forward with her arms mostly down by her sides. She looks slightly to her left with a focused expression. The camera zooms in closer on her upper body and face against the blurred green field background with a white line visible behind her shoulders.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 10,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde woman in the pink top with bib \"KLISHINA\" stands briefly before the camera cuts to a low-angle view of legs running on a red track. The runner wears white shoes and strides forward near a white lane line, showing rapid movement on the synthetic surface.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 11,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera captures a low-angle view of an athlete's legs running on a red track surface, wearing white shoes. The runner strides past a white lane line. In the background, a digital scoreboard displays bright orange LED numbers, partially reading '0.0' and '400', while a blurred figure in light clothing stands nearby on the track.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 12,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera pans up from the athlete's legs to show her torso wearing a pink crop top with bib \"KLISHINA\" and grey bottoms. She stands on the red track with orange scoreboard numbers visible below, raising both hands towards her neck and face while a blurred figure in white stands to the right.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 13,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde woman in the pink crop top with bib \"KLISHINA\" stands facing forward. She raises both hands to her ears and neck area, appearing to adjust her hair or equipment. The background reveals blurred spectators in stadium seating behind her as she maintains a focused gaze.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 14,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The blonde woman in the pink crop top lowers her hands from her head to her sides. She stands facing forward on the track with a focused gaze. A broadcast graphic with flags and text overlays the bottom left corner of the screen against the blurred stadium background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [16, 28], \"text\": \"[16-20] A blonde woman wearing a bright pink top stands against a green field background with a white line, lowering her right hand from touching her hair near her ear. She faces slightly left with a focused expression as the camera zooms in closer on her upper body. [20-24] The view cuts to a low-angle shot of an athlete's legs running on a red synthetic track, wearing white shoes and striding past a white lane line. In the background, a digital scoreboard displays bright orange LED numbers partially reading '0.0' and '400', while a blurred figure in light clothing stands nearby. [24-28] The camera pans up from the legs to the athlete's torso, revealing a pink crop top with the bib 'KLISHINA' and grey bottoms. She stands on the red track and raises both hands towards her neck and ears, appearing to adjust her hair or equipment, with blurred stadium seating visible behind her.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='16-28'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "evidence_anchor",
+    "gold_caption": "The woman raises her right hand to touch the side of her head. | The woman is wearing a pink top with a white logo. | A person is running on a green field. | The person is wearing a pink top with a white logo. | person starts running on track | An athlete is running on a red track. | The athlete's bib displays the name 'KLISHINA'. | The athlete is wearing white running shoes. | A person is walking on a red running track. | The scoreboard displays the text '0.0' and '400'. | The person is wearing white athletic shoes. | person walking on track instead of running",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 15,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "v_d7gTlJhEwrM_CR3_024",
+    "sequence_type": "immediate_response",
+    "action": "response",
+    "output": "<think>The blonde athlete in the pink crop top bends forward at the waist, resting her hands on her thighs while looking down toward the track. The broadcast graphic showing competitor names and flags persists in the lower left corner over the blurred background.</think><answer>C</answer>",
+    "queries": [],
+    "user_input": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 16,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "v_d7gTlJhEwrM_CR3_024",
+    "sequence_type": "immediate_response",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink crop top rises from a bent-forward position, lifting her torso upright and dropping her hands to her sides. She faces forward with a neutral expression as the broadcast graphic showing names and flags persists in the lower left corner over the blurred crowd.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 17,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink crop top stands upright, gazing slightly downward. The broadcast graphic with flags and names remains fixed in the lower left corner over the blurred stadium background. Her arms rest at her sides as she holds her position on the track.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 18,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink crop top tilts her head further downward, gazing at the track surface. She maintains an upright standing posture with arms resting at her sides. The broadcast graphic displaying flags and names persists in the lower left corner against the blurred stadium crowd background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 19,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink crop top remains standing still with her head bowed, gazing downward toward the track. Her arms hang relaxed at her sides. The broadcast graphic displaying flags and names stays fixed in the lower left corner against the blurred stadium crowd background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 20,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The blonde athlete in the pink crop top maintains her stance with head bowed downward, focusing on the track. Her arms remain relaxed at her sides. The broadcast graphic with flags and names persists in the lower left corner against the blurred stadium crowd background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [28, 40], \"text\": \"[28-32] A blonde woman in a pink crop top lowers her hands from her head to her sides, then bends forward at the waist, resting hands on thighs while looking down. A broadcast graphic with flags overlays the bottom left. [32-34] She rises from the bent position, lifting her torso upright and dropping hands to her sides. [34-40] She stands still facing forward but tilts her head downward to gaze at the track, arms relaxed at her sides. The broadcast graphic displaying \\\"KLISHINA\\\" persists in the lower left corner against the blurred stadium crowd.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='28-40'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "evidence_anchor",
+    "gold_caption": "A woman with short blonde hair stands in the center of the frame. | A digital scoreboard overlay appears on the left side of the screen. | The scoreboard displays the name 'KLISHINA' and the country code 'RUS'. | The gymnast bends forward at the waist. | The scoreboard displays the name 'Rebeca ANDRADE' with a score of 14.133. | The scoreboard displays the name 'Simone BILES' with a score of 14.000. | The scoreboard displays the name 'Alice D'AMATO' with a score of 13.733. | The background features a large digital timer with orange digits. | different athlete (gymnast in red leotard) appears, bending forward | The woman is standing still and looking downwards. | The scoreboard displays the name 'KLOCHINA' and the country code 'RUS'. | The scoreboard shows a list of athletes with their reaction times and scores.",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 21,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink crop top lifts her head from a downward gaze to look straight ahead, her expression focused. She maintains an upright stance with arms relaxed at her sides. The broadcast graphic with flags and names remains visible in the lower left corner against the blurred stadium background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 22,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink crop top holds her head up, looking straight ahead with a steady gaze. She stands motionless with arms by her sides. The on-screen graphic with flags and text remains visible in the bottom left corner over the blurred crowd.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 23,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde woman in the pink top remains standing still, facing forward with her gaze directed ahead. Her arms hang loosely by her sides. The broadcast overlay with flags and names stays fixed in the lower left corner against the out-of-focus stadium seating.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 24,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the bright pink crop top continues standing motionless, facing forward with a focused expression. Her arms remain relaxed at her sides. Her hair is pulled back tightly. The on-screen graphic displaying 'KLISHINA' and flags stays fixed in the bottom left corner over the out-of-focus stadium seating.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 25,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink crop top stands still, facing forward with a focused gaze and slightly parted lips. Her arms remain relaxed at her sides. The on-screen graphic displaying names and flags persists in the bottom left corner against the blurred stadium crowd background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 26,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The blonde athlete in the pink crop top stands motionless, facing forward with a steady gaze and slightly parted lips. Her arms hang relaxed at her sides. The broadcast graphic displaying names and flags remains fixed in the bottom left corner against the blurred stadium crowd background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [40, 52], \"text\": \"[40-42] The blonde athlete in a pink crop top stands with her head bowed downward, focusing on the track, arms relaxed at her sides. A broadcast graphic with flags and names is visible in the lower left against a blurred crowd. [42-44] She lifts her head to look straight ahead with a focused expression, maintaining an upright stance. [44-52] The athlete remains motionless, facing forward with a steady gaze and slightly parted lips. Her hair is pulled back tightly. The on-screen graphic displaying \\\"KLISHINA\\\" and flags stays fixed in the bottom left corner over the out-of-focus stadium seating.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='40-52'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The female athlete is looking downwards. | The scoreboard displays the name 'KLISHINA' and the country code 'RUS'. | The scoreboard lists results for '1. Klishina', '2. Reese', and '3. Vukovic'. | A woman with short blonde hair stands in the foreground. | The scoreboard displays the name 'KLISHINA' with a score of 6.93. | The scoreboard lists 'D. SPEARS' in first place with a score of 6.95. | The athlete stands still in the center of the frame. | The scoreboard displays results with the name 'KLISHINA' and the flag of Russia (RUS). | The athlete's bib displays the name 'KLISHINA' and the Mazda logo. | The athlete is looking downwards. | The athlete is wearing a pink top. | The bib on the athlete's chest displays the name 'KLISHINA'.",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 27,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink top maintains her stationary stance, facing forward with a focused expression. Her arms hang loosely by her sides. The on-screen graphic displaying competitor information remains visible in the lower left corner against the out-of-focus stadium seating.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 30,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink top and grey shorts continues sprinting down the red track, captured in a wide shot moving from left to right. She passes an official in black standing near the track edge while maintaining her stride. The camera follows her approach towards the jump area, showing the green infield and trackside equipment in the background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 31,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink top and grey shorts continues sprinting down the red runway from left to right. She passes a seated official wearing a light blue shirt near the green infield. Her arms pump rhythmically as she maintains speed, approaching the end of the approach track. The camera pans right to keep her centered in the frame.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 32,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The blonde athlete in the pink top and grey shorts continues sprinting down the red runway from left to right. She passes the seated official and approaches standing figures in the background. Her arms pump rhythmically as she maintains speed. The camera pans right to keep her centered in the frame.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [14, 64], \"text\": \"[14-16] The blonde woman in the pink top stands facing forward, looking slightly left with arms down, raising her right hand near her shoulder. A yellow flag marked 90 is visible in the blurred green background. [52-58] The blonde athlete in the pink crop top stands motionless, facing forward with a steady gaze, slightly parted lips, and relaxed arms. A broadcast graphic displaying names and flags remains fixed in the bottom left corner against the blurred stadium crowd. [58-60] She initiates her sprint, transitioning from a static stance to running down the red track. The camera cuts to a wide shot showing her mid-stride approaching the jump pit, and the close-up graphic vanishes. [60-64] The athlete in the pink top and grey shorts continues sprinting left to right. She passes an official in black standing near the track edge, then a seated official in a light blue shirt near the green infield. Her arms pump rhythmically as she maintains speed approaching the end of the approach track, with the camera panning right to keep her centered.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='14-64'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The woman stands still in the center of the frame. | The woman raises her right hand slightly in the second frame. | The yellow sign displays the number 90. | A woman in a pink athletic top stands in the center of the frame. | The bib on the woman's chest displays the name 'KLISHINA'. | The athlete is standing in the center of the frame. | The athlete is wearing a pink top. | The bib on the athlete's chest displays the name 'KLISHINA'. | A woman is running in an athletic setting. | The athlete is wearing a bib with the name 'KLISHINA' printed on it. | woman starts running | A female athlete is running on a red track.",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 33,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink top and grey shorts sprints onto the white takeoff board, propels herself into the air with arms swinging forward, and lands heels-first in the sand pit, kicking up sand as she collapses into a seated position while officials in blue jackets observe from the side.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 38,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene cuts to a close-up of the white takeoff board marked \"NORDIC SPORTS.\" A white athletic shoe plants on the board, then blurs significantly as the foot pushes off to launch the jump, showing the critical moment of takeoff.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 39,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The white takeoff board labeled \"NORDIC SPORTS\" is shown empty with visible sand marks. The camera cuts to a wide shot of the blonde athlete in a pink top and grey shorts sprinting down the red runway, moving from left to right across the green field background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 40,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The blonde athlete in a pink top and grey shorts sprints along the red track from left to right. She passes a white table covered with a cloth on the green infield, with standing figures visible in the background. The camera pans right to track her movement during the approach.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [64, 80], \"text\": \"[64-68] A blonde athlete in a pink top and grey shorts sprints down a red runway, passing seated and standing officials before launching off a white takeoff board into a sand pit, landing heels-first and collapsing into a seated position while officials in blue jackets watch. [68-72] She stabilizes in the sand, then rises to stand upright near a white distance board as officials remain seated on the grass. [72-76] A close-up side profile shows the athlete with a ponytail secured by a white scrunchie, wearing a pink sleeveless top against a green background, tilting her head slightly down with a neutral expression. [76-80] A replay shows a white shoe planting on the \\\"NORDIC SPORTS\\\" takeoff board and pushing off, followed by a shot of the empty board with sand marks and the athlete sprinting down the runway again.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='64-80'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A person in a pink and white uniform is running on a red track. | The runner is moving towards the right side of the frame. | A white table is positioned on the grass field to the left of the track. | An athlete lands in the sand pit, displacing sand. | The athlete is wearing a pink and white top. | An official in a striped shirt stands in the background observing. | Another official in a blue jacket sits to the left of the pit. | athlete lands in sand pit (jump completion) | An athlete in a pink top is landing in the sand pit. | The athlete is positioned near the white take-off board. | Several officials in blue jackets are sitting on the grass behind the sand pit. | An official in black is standing on the grass to the right.",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 41,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The athlete in the pink top and grey shorts sprints rightward on the red track, passing standing figures on the green infield. A seated official in a blue shirt becomes visible near the track edge as she approaches the white takeoff board. The camera pans right to follow her approach toward the sand pit.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 46,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The replay transitions to show the athlete landing in the sand pit, wearing a pink top and grey shorts. She sits in the brown sand with legs extended forward while officials in blue jackets observe from the grass near a white distance marker.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 47,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in a pink sleeveless top stands on the red track, facing right with her hair in a ponytail. Bright stadium lights illuminate the crowd in the dark background stands. She remains stationary, gazing towards the side. Her arms are relaxed at her sides.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 48,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A blonde athlete in a pink top stands on the red track facing right, with bright stadium lights and a crowd visible in the background stands. A broadcast graphic overlay displaying flags and text appears at the bottom of the screen while she remains stationary.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [80, 96], \"text\": \"[80-84] A blonde athlete wearing a pink top and grey shorts sprints rightward on a red track, passing a white table and standing figures on the green infield. A seated official in a blue shirt appears near the track edge as she approaches the white takeoff board. [84-88] She launches from the board, extending her body mid-air before landing heels-first in the brown sand pit. She settles into a seated position with legs extended while officials in blue jackets watch from the grass near a white distance marker. [88-94] A replay shows a close-up of the white takeoff board with \\\"NORDIC SPORTS\\\" text and sand marks, followed by the athlete's white shoes hovering over the board and rapid running motion. The replay ends with her landing in the sand. [94-96] The athlete stands stationary on the red track in a pink sleeveless top with a ponytail, gazing right under stadium lights with a crowd in the dark background.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='80-96'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A person is running on the red track. | The runner is moving from the right side of the frame towards the left. | A white table with equipment is situated on the grass next to the track. | A black speaker is placed on the grass to the right of the runner. | A female athlete is running on a red track. | The athlete is moving from the left side of the frame towards the right. | Several people are standing and sitting on the grass field next to the track. | A white table is set up on the grass in the background. | The female athlete lands in the sandpit, kicking up sand upon impact. | Three officials in blue jackets are seated around the perimeter of the sandpit. | The athlete is wearing a pink and white outfit. | athlete lands in sandpit",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 49,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in a pink top stands stationary on the track, facing forward with a neutral expression. A broadcast graphic at the bottom displays flags, names, and scores, with the text \"PORTUGAL\" visible in the final frame. Stadium lights and a crowd fill the background stands behind her.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 53,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink top stands on the track holding a light blue towel. She turns her head further to the right, presenting a profile view. The broadcast graphic with flags and text remains at the bottom of the screen against the stadium background with bright lights.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 54,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink top turns her back to the camera, displaying a white bib with the number \"140\". Her hair is pulled back in a ponytail. She holds a light blue towel in her hand. The background features bright stadium lights illuminating the stands filled with spectators.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 55,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The blonde athlete in the pink top stands with her back to the camera, displaying bib number 140. She raises her right hand to touch her face near her ear while holding a light blue towel in her left hand. The stadium lights illuminate the crowd in the background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [96, 110], \"text\": \"[96-100] A blonde female athlete wearing a pink top stands on a red track beneath bright stadium lights, with spectators filling the stands behind her. A broadcast graphic overlay appears at the bottom of the screen showing flags and scores, with the text \\\"PORTUGAL\\\" visible. She initially faces right, then turns to face forward with a neutral expression.\\n[100-106] The athlete remains stationary on the track, holding a light blue towel in her left hand. The on-screen graphic persists, eventually displaying a yellow box containing \\\"+ 1.2\\\" on the right side. She maintains her gaze slightly to the right throughout this period.\\n[106-110] She turns her head further to the right, presenting a profile view, before turning her back completely to the camera. This reveals a white bib with the number \\\"140\\\" attached to her back and her hair tied in a ponytail. She continues holding the towel as the clip concludes.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='96-110'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The digital scoreboard overlay displays race results with '1. USA 12.90', '2. JAM 12.95', and '3. USA 13.01'. | The woman in pink is standing on the red running track. | The stadium floodlights are illuminated above the crowd. | A female athlete in a pink top stands on the track. | The scoreboard displays results for the '100 Metres - Final'. | The name 'PORTILHO' is displayed on the scoreboard. | Spectators are visible in the stadium stands in the background. | A woman in a pink top stands on an athletic track. | A scoreboard overlay displays results for the 'WOMEN'S 400M HURDLES FINAL'. | The scoreboard lists 'PORTILLO' in the first position with a time of '53.70'. | The scoreboard lists 'MCPHERSON' in the second position with a time of '53.96'. | The scoreboard lists 'RUSSELL' in the third position with a time of '54.01'.",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 56,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The athlete lowers her right hand from her neck and turns her head to the left, presenting a profile view. The white bib with number 140 remains visible on the back of her pink top. She continues holding a light blue towel in her left hand while standing on the red track under stadium lights.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 57,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink top stands in profile facing left, holding a light blue towel. Her white bib with number 140 is visible on her back. Behind her, stadium seating filled with spectators and advertising boards reading 'Myresjöhus' are visible under the bright stadium lights.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 58,
+    "sample_type": "recall_query",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "v_d7gTlJhEwrM_R1_006",
+    "sequence_type": "recall_fail_then_found",
+    "action": "recall",
+    "output": "<think>The blonde athlete wearing a pink top stands in profile on the red track, holding a light blue towel. Head tilts slightly downward. Background shows stadium seating and advertising boards reading 'Myresjöhus' under bright lights. Visible details currently include blonde hair and a pink top on the standing person.</think><tool_call>\n{\"name\": \"recall\", \"arguments\": {\"query\": \"pink crop top broadcast graphic flags\", \"time_range\": \"26-32\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      },
+      {
+        "question": "Which of the previously seen people is back on screen? A. Female gymnast with blonde hair tied in a bun, wearing a red sleeveless leotard B. Person wearing a blue jacket C. Woman with short blonde hair, wearing a pink sleeveless athletic top with a white bib D. Person in a white long-sleeved shirt",
+        "ask_time": 116,
+        "answers": []
+      }
+    ],
+    "user_input": "Which of the previously seen people is back on screen? A. Female gymnast with blonde hair tied in a bun, wearing a red sleeveless leotard B. Person wearing a blue jacket C. Woman with short blonde hair, wearing a pink sleeveless athletic top with a white bib D. Person in a white long-sleeved shirt",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 58,
+    "sample_type": "recall_silent",
+    "prompt_type": "POST_RECALL_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "v_d7gTlJhEwrM_R1_006",
+    "sequence_type": "recall_fail_then_found",
+    "action": "silent",
+    "output": "<think>The recall source indicates a failure, meaning no matching video frames or evidence were retrieved. Consequently, there is no visual data available to identify which person has returned to the screen.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      },
+      {
+        "question": "Which of the previously seen people is back on screen? A. Female gymnast with blonde hair tied in a bun, wearing a red sleeveless leotard B. Person wearing a blue jacket C. Woman with short blonde hair, wearing a pink sleeveless athletic top with a white bib D. Person in a white long-sleeved shirt",
+        "ask_time": 116,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": {
+      "source": "failure",
+      "text_content": "No matching results found.",
+      "returned_chunks": []
+    },
+    "protocol_version": "v12",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 59,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "v_d7gTlJhEwrM_R1_006",
+    "sequence_type": "recall_fail_then_found",
+    "action": "silent",
+    "output": "<think>A blonde athlete in a pink sleeveless top stands in profile on the red track, holding a light blue towel. She lifts her head slightly from a downward position. Stadium seating filled with spectators and advertising boards appear under bright lights. Her hair is tied back in a ponytail. Visible clothing is a pink top.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      },
+      {
+        "question": "Which of the previously seen people is back on screen? A. Female gymnast with blonde hair tied in a bun, wearing a red sleeveless leotard B. Person wearing a blue jacket C. Woman with short blonde hair, wearing a pink sleeveless athletic top with a white bib D. Person in a white long-sleeved shirt",
+        "ask_time": 116,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 59,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "v_d7gTlJhEwrM_R1_006",
+    "sequence_type": "recall_fail_then_found",
+    "action": "response",
+    "output": "<think>The blonde athlete in the pink top stands in profile facing left on the red track, holding a light blue towel. She lifts her head slightly from a downward position. The background features stadium seating filled with spectators and advertising boards under bright lights. Her ponytail is visible. Blonde hair and a pink top are seen.</think><answer>C</answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      },
+      {
+        "question": "Which of the previously seen people is back on screen? A. Female gymnast with blonde hair tied in a bun, wearing a red sleeveless leotard B. Person wearing a blue jacket C. Woman with short blonde hair, wearing a pink sleeveless athletic top with a white bib D. Person in a white long-sleeved shirt",
+        "ask_time": 116,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 59,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "v_d7gTlJhEwrM_R1_006",
+    "sequence_type": "recall_fail_then_found",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink top stands in profile facing left on the red track, holding a light blue towel. She lifts her head slightly from a downward position. The background features stadium seating filled with spectators and advertising boards under bright lights. Her ponytail is visible.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What track and field event is the athlete competing in? A. Triple Jump B. High Jump C. Long Jump D. Pole Vault",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "C",
+            "time": 30
+          }
+        ]
+      },
+      {
+        "question": "Which of the previously seen people is back on screen? A. Female gymnast with blonde hair tied in a bun, wearing a red sleeveless leotard B. Person wearing a blue jacket C. Woman with short blonde hair, wearing a pink sleeveless athletic top with a white bib D. Person in a white long-sleeved shirt",
+        "ask_time": 116,
+        "answers": [
+          {
+            "text": "C",
+            "time": 118
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 0,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A blonde woman in a bright pink jacket stands near a wooden pole, bending forward slightly at the waist. To her right, a person wearing a light grey coat becomes visible standing nearby. The background features dark, blurred stadium seating. The woman maintains her position near the pole while adjusting her posture.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 1,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde woman turns, now wearing a pink top with the number 10 on the back, and raises both hands to fix her hair. A man in a pink shirt and dark jacket stands to her left, while a man in a blue jacket with a lanyard becomes visible on the right. The figure in the grey coat stays in the foreground.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 2,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde woman is revealed wearing a pink crop top with bib number 140 and grey shorts on a green field. She continues holding both hands to her head to fix her hair. A man in a blue jacket stands behind her, and a person in a red jacket is visible in the lower right foreground.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 3,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde woman in the pink top and bib 140 keeps her hands behind her head, adjusting her hair. The man in the blue jacket stands behind her. A person in a red jacket is visible in the foreground near a yellow net.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 4,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde woman in the pink crop top and grey bottoms turns slightly towards the camera while keeping both hands raised behind her head to adjust her hair. The man in the blue jacket is partially cropped out on the left edge. A yellow net is clearly visible behind her against the green field background.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 5,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde woman in the pink crop top lowers her hands from behind her head to rest on her shoulders. Her bib number 140 and name are clearly visible on her chest. A yellow flag marked with the number 90 stands to her right against the green field background.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 6,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera zooms in on the blonde woman in the pink top. She lowers her hands from her shoulders down her chest. The name KLISHINA is clearly legible on her bib number 140. She stands facing forward against the green field background with the yellow flag partially visible.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 7,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The blonde woman in the pink top stands facing forward, looking slightly to her left with her arms down. In the final frame, she raises her right hand slightly near her shoulder level. The yellow flag marked 90 remains visible in the blurred green background behind her.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [0, 14], \"text\": \"[0-2] A blonde woman in a bright pink jacket stands near a wooden pole, bending slightly at the waist, while a person in a light grey coat stands nearby to the right against dark, blurred stadium seating. [2-4] She turns, now wearing a pink top with bib number \\\"10\\\" on the back, raising both hands to fix her hair; a man in a pink shirt and dark jacket stands left, and a man in a blue jacket with a lanyard becomes visible right. [4-8] On a green field, the woman wears a pink crop top, bib \\\"140\\\", and grey shorts, keeping hands behind her head to adjust hair; the man in blue stands behind, and a person in a red jacket is visible near a yellow net in the foreground. [8-10] She turns slightly toward the camera, hands still raised behind her head, with the yellow net clearly visible behind her. [10-12] She lowers hands from behind her head to rest on her shoulders, revealing bib \\\"140\\\" and a yellow flag marked \\\"90\\\" to her right. [12-14] The camera zooms in as she lowers hands down her chest; the name \\\"KLISHINA\\\" is clearly legible on bib \\\"140\\\" as she stands facing forward against the green field.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='0-14'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A woman in a pink jacket stands in the center of the frame. | The woman is looking downwards. | A man in a grey jacket stands to the right of the woman. | A wooden pole is positioned vertically near the woman. | The woman in the pink sports bra raises her hands to adjust her hair. | The bib on the woman's chest displays the number 10. | A man in a blue jacket stands to the right of the central woman. | A person in a grey jacket stands in the foreground with their back to the camera. | woman begins adjusting hair with hands behind head | The woman in the center is standing with her hands placed on her head. | The woman is wearing a pink top with the number '140' printed on it. | A man in a blue jacket is standing to the right of the woman.",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 8,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde woman in the bright pink top lowers her right hand from touching her hair near her ear back down out of the frame. She stands facing slightly left against the green field background with a white line visible behind her shoulders. She looks slightly left after touching her hair.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 9,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "v_d7gTlJhEwrM_F1_001",
+    "sequence_type": "immediate_response",
+    "action": "response",
+    "output": "<think>The blonde woman in the bright pink top stands facing forward with her arms mostly down by her sides. She looks slightly to her left with a focused expression. The camera zooms in closer on her upper body and face against the blurred green field background with a white line visible behind her shoulders.</think><answer>C</answer>",
+    "queries": [],
+    "user_input": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 10,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "v_d7gTlJhEwrM_F1_001",
+    "sequence_type": "immediate_response",
+    "action": "silent",
+    "output": "<think>The blonde woman in the pink top with bib \"KLISHINA\" stands briefly before the camera cuts to a low-angle view of legs running on a red track. The runner wears white shoes and strides forward near a white lane line, showing rapid movement on the synthetic surface.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 11,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera captures a low-angle view of an athlete's legs running on a red track surface, wearing white shoes. The runner strides past a white lane line. In the background, a digital scoreboard displays bright orange LED numbers, partially reading '0.0' and '400', while a blurred figure in light clothing stands nearby on the track.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 12,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera pans up from the athlete's legs to show her torso wearing a pink crop top with bib \"KLISHINA\" and grey bottoms. She stands on the red track with orange scoreboard numbers visible below, raising both hands towards her neck and face while a blurred figure in white stands to the right.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 13,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde woman in the pink crop top with bib \"KLISHINA\" stands facing forward. She raises both hands to her ears and neck area, appearing to adjust her hair or equipment. The background reveals blurred spectators in stadium seating behind her as she maintains a focused gaze.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 14,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The blonde woman in the pink crop top lowers her hands from her head to her sides. She stands facing forward on the track with a focused gaze. A broadcast graphic with flags and text overlays the bottom left corner of the screen against the blurred stadium background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [16, 28], \"text\": \"[16-20] A blonde woman wearing a bright pink top stands against a green field background with a white line, lowering her right hand from touching her hair near her ear. She faces slightly left with a focused expression as the camera zooms in closer on her upper body. [20-24] The view cuts to a low-angle shot of an athlete's legs running on a red synthetic track, wearing white shoes and striding past a white lane line. In the background, a digital scoreboard displays bright orange LED numbers partially reading '0.0' and '400', while a blurred figure in light clothing stands nearby. [24-28] The camera pans up from the legs to the athlete's torso, revealing a pink crop top with the bib 'KLISHINA' and grey bottoms. She stands on the red track and raises both hands towards her neck and ears, appearing to adjust her hair or equipment, with blurred stadium seating visible behind her.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='16-28'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The woman raises her right hand to touch the side of her head. | The woman is wearing a pink top with a white logo. | A person is running on a green field. | The person is wearing a pink top with a white logo. | person starts running on track | An athlete is running on a red track. | The athlete's bib displays the name 'KLISHINA'. | The athlete is wearing white running shoes. | A person is walking on a red running track. | The scoreboard displays the text '0.0' and '400'. | The person is wearing white athletic shoes. | person walking on track instead of running",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 15,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink crop top bends forward at the waist, resting her hands on her thighs while looking down toward the track. The broadcast graphic showing competitor names and flags persists in the lower left corner over the blurred background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 18,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink crop top tilts her head further downward, gazing at the track surface. She maintains an upright standing posture with arms resting at her sides. The broadcast graphic displaying flags and names persists in the lower left corner against the blurred stadium crowd background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 19,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink crop top remains standing still with her head bowed, gazing downward toward the track. Her arms hang relaxed at her sides. The broadcast graphic displaying flags and names stays fixed in the lower left corner against the blurred stadium crowd background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 20,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The blonde athlete in the pink crop top maintains her stance with head bowed downward, focusing on the track. Her arms remain relaxed at her sides. The broadcast graphic with flags and names persists in the lower left corner against the blurred stadium crowd background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [28, 40], \"text\": \"[28-32] A blonde woman in a pink crop top lowers her hands from her head to her sides, then bends forward at the waist, resting hands on thighs while looking down. A broadcast graphic with flags overlays the bottom left. [32-34] She rises from the bent position, lifting her torso upright and dropping hands to her sides. [34-40] She stands still facing forward but tilts her head downward to gaze at the track, arms relaxed at her sides. The broadcast graphic displaying \\\"KLISHINA\\\" persists in the lower left corner against the blurred stadium crowd.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='28-40'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A woman with short blonde hair stands in the center of the frame. | A digital scoreboard overlay appears on the left side of the screen. | The scoreboard displays the name 'KLISHINA' and the country code 'RUS'. | The gymnast bends forward at the waist. | The scoreboard displays the name 'Rebeca ANDRADE' with a score of 14.133. | The scoreboard displays the name 'Simone BILES' with a score of 14.000. | The scoreboard displays the name 'Alice D'AMATO' with a score of 13.733. | The background features a large digital timer with orange digits. | different athlete (gymnast in red leotard) appears, bending forward | The woman is standing still and looking downwards. | The scoreboard displays the name 'KLOCHINA' and the country code 'RUS'. | The scoreboard shows a list of athletes with their reaction times and scores.",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 21,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink crop top lifts her head from a downward gaze to look straight ahead, her expression focused. She maintains an upright stance with arms relaxed at her sides. The broadcast graphic with flags and names remains visible in the lower left corner against the blurred stadium background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 24,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the bright pink crop top continues standing motionless, facing forward with a focused expression. Her arms remain relaxed at her sides. Her hair is pulled back tightly. The on-screen graphic displaying 'KLISHINA' and flags stays fixed in the bottom left corner over the out-of-focus stadium seating.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 25,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink crop top stands still, facing forward with a focused gaze and slightly parted lips. Her arms remain relaxed at her sides. The on-screen graphic displaying names and flags persists in the bottom left corner against the blurred stadium crowd background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 26,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The blonde athlete in the pink crop top stands motionless, facing forward with a steady gaze and slightly parted lips. Her arms hang relaxed at her sides. The broadcast graphic displaying names and flags remains fixed in the bottom left corner against the blurred stadium crowd background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [40, 52], \"text\": \"[40-42] The blonde athlete in a pink crop top stands with her head bowed downward, focusing on the track, arms relaxed at her sides. A broadcast graphic with flags and names is visible in the lower left against a blurred crowd. [42-44] She lifts her head to look straight ahead with a focused expression, maintaining an upright stance. [44-52] The athlete remains motionless, facing forward with a steady gaze and slightly parted lips. Her hair is pulled back tightly. The on-screen graphic displaying \\\"KLISHINA\\\" and flags stays fixed in the bottom left corner over the out-of-focus stadium seating.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='40-52'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The female athlete is looking downwards. | The scoreboard displays the name 'KLISHINA' and the country code 'RUS'. | The scoreboard lists results for '1. Klishina', '2. Reese', and '3. Vukovic'. | A woman with short blonde hair stands in the foreground. | The scoreboard displays the name 'KLISHINA' with a score of 6.93. | The scoreboard lists 'D. SPEARS' in first place with a score of 6.95. | The athlete stands still in the center of the frame. | The scoreboard displays results with the name 'KLISHINA' and the flag of Russia (RUS). | The athlete's bib displays the name 'KLISHINA' and the Mazda logo. | The athlete is looking downwards. | The athlete is wearing a pink top. | The bib on the athlete's chest displays the name 'KLISHINA'.",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 27,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink top maintains her stationary stance, facing forward with a focused expression. Her arms hang loosely by her sides. The on-screen graphic displaying competitor information remains visible in the lower left corner against the out-of-focus stadium seating.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 30,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink top and grey shorts continues sprinting down the red track, captured in a wide shot moving from left to right. She passes an official in black standing near the track edge while maintaining her stride. The camera follows her approach towards the jump area, showing the green infield and trackside equipment in the background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 31,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink top and grey shorts continues sprinting down the red runway from left to right. She passes a seated official wearing a light blue shirt near the green infield. Her arms pump rhythmically as she maintains speed, approaching the end of the approach track. The camera pans right to keep her centered in the frame.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 32,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The blonde athlete in the pink top and grey shorts continues sprinting down the red runway from left to right. She passes the seated official and approaches standing figures in the background. Her arms pump rhythmically as she maintains speed. The camera pans right to keep her centered in the frame.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [14, 64], \"text\": \"[14-16] The blonde woman in the pink top stands facing forward, looking slightly left with arms down, raising her right hand near her shoulder. A yellow flag marked 90 is visible in the blurred green background. [52-58] The blonde athlete in the pink crop top stands motionless, facing forward with a steady gaze, slightly parted lips, and relaxed arms. A broadcast graphic displaying names and flags remains fixed in the bottom left corner against the blurred stadium crowd. [58-60] She initiates her sprint, transitioning from a static stance to running down the red track. The camera cuts to a wide shot showing her mid-stride approaching the jump pit, and the close-up graphic vanishes. [60-64] The athlete in the pink top and grey shorts continues sprinting left to right. She passes an official in black standing near the track edge, then a seated official in a light blue shirt near the green infield. Her arms pump rhythmically as she maintains speed approaching the end of the approach track, with the camera panning right to keep her centered.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='14-64'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The woman stands still in the center of the frame. | The woman raises her right hand slightly in the second frame. | The yellow sign displays the number 90. | A woman in a pink athletic top stands in the center of the frame. | The bib on the woman's chest displays the name 'KLISHINA'. | The athlete is standing in the center of the frame. | The athlete is wearing a pink top. | The bib on the athlete's chest displays the name 'KLISHINA'. | A woman is running in an athletic setting. | The athlete is wearing a bib with the name 'KLISHINA' printed on it. | woman starts running | A female athlete is running on a red track.",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 33,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink top and grey shorts sprints onto the white takeoff board, propels herself into the air with arms swinging forward, and lands heels-first in the sand pit, kicking up sand as she collapses into a seated position while officials in blue jackets observe from the side.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 38,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene cuts to a close-up of the white takeoff board marked \"NORDIC SPORTS.\" A white athletic shoe plants on the board, then blurs significantly as the foot pushes off to launch the jump, showing the critical moment of takeoff.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 39,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The white takeoff board labeled \"NORDIC SPORTS\" is shown empty with visible sand marks. The camera cuts to a wide shot of the blonde athlete in a pink top and grey shorts sprinting down the red runway, moving from left to right across the green field background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 40,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The blonde athlete in a pink top and grey shorts sprints along the red track from left to right. She passes a white table covered with a cloth on the green infield, with standing figures visible in the background. The camera pans right to track her movement during the approach.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [64, 80], \"text\": \"[64-68] A blonde athlete in a pink top and grey shorts sprints down a red runway, passing seated and standing officials before launching off a white takeoff board into a sand pit, landing heels-first and collapsing into a seated position while officials in blue jackets watch. [68-72] She stabilizes in the sand, then rises to stand upright near a white distance board as officials remain seated on the grass. [72-76] A close-up side profile shows the athlete with a ponytail secured by a white scrunchie, wearing a pink sleeveless top against a green background, tilting her head slightly down with a neutral expression. [76-80] A replay shows a white shoe planting on the \\\"NORDIC SPORTS\\\" takeoff board and pushing off, followed by a shot of the empty board with sand marks and the athlete sprinting down the runway again.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='64-80'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A person in a pink and white uniform is running on a red track. | The runner is moving towards the right side of the frame. | A white table is positioned on the grass field to the left of the track. | An athlete lands in the sand pit, displacing sand. | The athlete is wearing a pink and white top. | An official in a striped shirt stands in the background observing. | Another official in a blue jacket sits to the left of the pit. | athlete lands in sand pit (jump completion) | An athlete in a pink top is landing in the sand pit. | The athlete is positioned near the white take-off board. | Several officials in blue jackets are sitting on the grass behind the sand pit. | An official in black is standing on the grass to the right.",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 41,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The athlete in the pink top and grey shorts sprints rightward on the red track, passing standing figures on the green infield. A seated official in a blue shirt becomes visible near the track edge as she approaches the white takeoff board. The camera pans right to follow her approach toward the sand pit.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 46,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The replay transitions to show the athlete landing in the sand pit, wearing a pink top and grey shorts. She sits in the brown sand with legs extended forward while officials in blue jackets observe from the grass near a white distance marker.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 47,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in a pink sleeveless top stands on the red track, facing right with her hair in a ponytail. Bright stadium lights illuminate the crowd in the dark background stands. She remains stationary, gazing towards the side. Her arms are relaxed at her sides.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 48,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A blonde athlete in a pink top stands on the red track facing right, with bright stadium lights and a crowd visible in the background stands. A broadcast graphic overlay displaying flags and text appears at the bottom of the screen while she remains stationary.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [80, 96], \"text\": \"[80-84] A blonde athlete wearing a pink top and grey shorts sprints rightward on a red track, passing a white table and standing figures on the green infield. A seated official in a blue shirt appears near the track edge as she approaches the white takeoff board. [84-88] She launches from the board, extending her body mid-air before landing heels-first in the brown sand pit. She settles into a seated position with legs extended while officials in blue jackets watch from the grass near a white distance marker. [88-94] A replay shows a close-up of the white takeoff board with \\\"NORDIC SPORTS\\\" text and sand marks, followed by the athlete's white shoes hovering over the board and rapid running motion. The replay ends with her landing in the sand. [94-96] The athlete stands stationary on the red track in a pink sleeveless top with a ponytail, gazing right under stadium lights with a crowd in the dark background.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='80-96'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A person is running on the red track. | The runner is moving from the right side of the frame towards the left. | A white table with equipment is situated on the grass next to the track. | A black speaker is placed on the grass to the right of the runner. | A female athlete is running on a red track. | The athlete is moving from the left side of the frame towards the right. | Several people are standing and sitting on the grass field next to the track. | A white table is set up on the grass in the background. | The female athlete lands in the sandpit, kicking up sand upon impact. | Three officials in blue jackets are seated around the perimeter of the sandpit. | The athlete is wearing a pink and white outfit. | athlete lands in sandpit",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 49,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in a pink top stands stationary on the track, facing forward with a neutral expression. A broadcast graphic at the bottom displays flags, names, and scores, with the text \"PORTUGAL\" visible in the final frame. Stadium lights and a crowd fill the background stands behind her.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 53,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink top stands on the track holding a light blue towel. She turns her head further to the right, presenting a profile view. The broadcast graphic with flags and text remains at the bottom of the screen against the stadium background with bright lights.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 54,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink top turns her back to the camera, displaying a white bib with the number \"140\". Her hair is pulled back in a ponytail. She holds a light blue towel in her hand. The background features bright stadium lights illuminating the stands filled with spectators.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 55,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The blonde athlete in the pink top stands with her back to the camera, displaying bib number 140. She raises her right hand to touch her face near her ear while holding a light blue towel in her left hand. The stadium lights illuminate the crowd in the background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [96, 110], \"text\": \"[96-100] A blonde female athlete wearing a pink top stands on a red track beneath bright stadium lights, with spectators filling the stands behind her. A broadcast graphic overlay appears at the bottom of the screen showing flags and scores, with the text \\\"PORTUGAL\\\" visible. She initially faces right, then turns to face forward with a neutral expression.\\n[100-106] The athlete remains stationary on the track, holding a light blue towel in her left hand. The on-screen graphic persists, eventually displaying a yellow box containing \\\"+ 1.2\\\" on the right side. She maintains her gaze slightly to the right throughout this period.\\n[106-110] She turns her head further to the right, presenting a profile view, before turning her back completely to the camera. This reveals a white bib with the number \\\"140\\\" attached to her back and her hair tied in a ponytail. She continues holding the towel as the clip concludes.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='96-110'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The digital scoreboard overlay displays race results with '1. USA 12.90', '2. JAM 12.95', and '3. USA 13.01'. | The woman in pink is standing on the red running track. | The stadium floodlights are illuminated above the crowd. | A female athlete in a pink top stands on the track. | The scoreboard displays results for the '100 Metres - Final'. | The name 'PORTILHO' is displayed on the scoreboard. | Spectators are visible in the stadium stands in the background. | A woman in a pink top stands on an athletic track. | A scoreboard overlay displays results for the 'WOMEN'S 400M HURDLES FINAL'. | The scoreboard lists 'PORTILLO' in the first position with a time of '53.70'. | The scoreboard lists 'MCPHERSON' in the second position with a time of '53.96'. | The scoreboard lists 'RUSSELL' in the third position with a time of '54.01'.",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 56,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The athlete lowers her right hand from her neck and turns her head to the left, presenting a profile view. The white bib with number 140 remains visible on the back of her pink top. She continues holding a light blue towel in her left hand while standing on the red track under stadium lights.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What number is printed on the white bib worn by the woman in the pink sports bra and grey athletic shorts? A. 10 B. 90 C. 140 D. 143",
+        "ask_time": 18,
+        "answers": [
+          {
+            "text": "C",
+            "time": 18
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 0,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A blonde woman in a bright pink jacket stands near a wooden pole, bending forward slightly at the waist. To her right, a person wearing a light grey coat becomes visible standing nearby. The background features dark, blurred stadium seating. The woman maintains her position near the pole while adjusting her posture.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 1,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde woman turns, now wearing a pink top with the number 10 on the back, and raises both hands to fix her hair. A man in a pink shirt and dark jacket stands to her left, while a man in a blue jacket with a lanyard becomes visible on the right. The figure in the grey coat stays in the foreground.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 2,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde woman is revealed wearing a pink crop top with bib number 140 and grey shorts on a green field. She continues holding both hands to her head to fix her hair. A man in a blue jacket stands behind her, and a person in a red jacket is visible in the lower right foreground.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 3,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde woman in the pink top and bib 140 keeps her hands behind her head, adjusting her hair. The man in the blue jacket stands behind her. A person in a red jacket is visible in the foreground near a yellow net.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 4,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde woman in the pink crop top and grey bottoms turns slightly towards the camera while keeping both hands raised behind her head to adjust her hair. The man in the blue jacket is partially cropped out on the left edge. A yellow net is clearly visible behind her against the green field background.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 5,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde woman in the pink crop top lowers her hands from behind her head to rest on her shoulders. Her bib number 140 and name are clearly visible on her chest. A yellow flag marked with the number 90 stands to her right against the green field background.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 6,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera zooms in on the blonde woman in the pink top. She lowers her hands from her shoulders down her chest. The name KLISHINA is clearly legible on her bib number 140. She stands facing forward against the green field background with the yellow flag partially visible.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 7,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The blonde woman in the pink top stands facing forward, looking slightly to her left with her arms down. In the final frame, she raises her right hand slightly near her shoulder level. The yellow flag marked 90 remains visible in the blurred green background behind her.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [0, 14], \"text\": \"[0-2] A blonde woman in a bright pink jacket stands near a wooden pole, bending slightly at the waist, while a person in a light grey coat stands nearby to the right against dark, blurred stadium seating. [2-4] She turns, now wearing a pink top with bib number \\\"10\\\" on the back, raising both hands to fix her hair; a man in a pink shirt and dark jacket stands left, and a man in a blue jacket with a lanyard becomes visible right. [4-8] On a green field, the woman wears a pink crop top, bib \\\"140\\\", and grey shorts, keeping hands behind her head to adjust hair; the man in blue stands behind, and a person in a red jacket is visible near a yellow net in the foreground. [8-10] She turns slightly toward the camera, hands still raised behind her head, with the yellow net clearly visible behind her. [10-12] She lowers hands from behind her head to rest on her shoulders, revealing bib \\\"140\\\" and a yellow flag marked \\\"90\\\" to her right. [12-14] The camera zooms in as she lowers hands down her chest; the name \\\"KLISHINA\\\" is clearly legible on bib \\\"140\\\" as she stands facing forward against the green field.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='0-14'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "evidence_anchor",
+    "gold_caption": "A woman in a pink jacket stands in the center of the frame. | The woman is looking downwards. | A man in a grey jacket stands to the right of the woman. | A wooden pole is positioned vertically near the woman. | The woman in the pink sports bra raises her hands to adjust her hair. | The bib on the woman's chest displays the number 10. | A man in a blue jacket stands to the right of the central woman. | A person in a grey jacket stands in the foreground with their back to the camera. | woman begins adjusting hair with hands behind head | The woman in the center is standing with her hands placed on her head. | The woman is wearing a pink top with the number '140' printed on it. | A man in a blue jacket is standing to the right of the woman.",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 8,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde woman in the bright pink top lowers her right hand from touching her hair near her ear back down out of the frame. She stands facing slightly left against the green field background with a white line visible behind her shoulders. She looks slightly left after touching her hair.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 9,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde woman in the bright pink top stands facing forward with her arms mostly down by her sides. She looks slightly to her left with a focused expression. The camera zooms in closer on her upper body and face against the blurred green field background with a white line visible behind her shoulders.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 10,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde woman in the pink top with bib \"KLISHINA\" stands briefly before the camera cuts to a low-angle view of legs running on a red track. The runner wears white shoes and strides forward near a white lane line, showing rapid movement on the synthetic surface.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 11,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera captures a low-angle view of an athlete's legs running on a red track surface, wearing white shoes. The runner strides past a white lane line. In the background, a digital scoreboard displays bright orange LED numbers, partially reading '0.0' and '400', while a blurred figure in light clothing stands nearby on the track.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 12,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The camera pans up from the athlete's legs to show her torso wearing a pink crop top with bib \"KLISHINA\" and grey bottoms. She stands on the red track with orange scoreboard numbers visible below, raising both hands towards her neck and face while a blurred figure in white stands to the right.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 13,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde woman in the pink crop top with bib \"KLISHINA\" stands facing forward. She raises both hands to her ears and neck area, appearing to adjust her hair or equipment. The background reveals blurred spectators in stadium seating behind her as she maintains a focused gaze.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 14,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The blonde woman in the pink crop top lowers her hands from her head to her sides. She stands facing forward on the track with a focused gaze. A broadcast graphic with flags and text overlays the bottom left corner of the screen against the blurred stadium background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [16, 28], \"text\": \"[16-20] A blonde woman wearing a bright pink top stands against a green field background with a white line, lowering her right hand from touching her hair near her ear. She faces slightly left with a focused expression as the camera zooms in closer on her upper body. [20-24] The view cuts to a low-angle shot of an athlete's legs running on a red synthetic track, wearing white shoes and striding past a white lane line. In the background, a digital scoreboard displays bright orange LED numbers partially reading '0.0' and '400', while a blurred figure in light clothing stands nearby. [24-28] The camera pans up from the legs to the athlete's torso, revealing a pink crop top with the bib 'KLISHINA' and grey bottoms. She stands on the red track and raises both hands towards her neck and ears, appearing to adjust her hair or equipment, with blurred stadium seating visible behind her.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='16-28'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The woman raises her right hand to touch the side of her head. | The woman is wearing a pink top with a white logo. | A person is running on a green field. | The person is wearing a pink top with a white logo. | person starts running on track | An athlete is running on a red track. | The athlete's bib displays the name 'KLISHINA'. | The athlete is wearing white running shoes. | A person is walking on a red running track. | The scoreboard displays the text '0.0' and '400'. | The person is wearing white athletic shoes. | person walking on track instead of running",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 15,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "v_d7gTlJhEwrM_F2_003",
+    "sequence_type": "immediate_response",
+    "action": "response",
+    "output": "<think>The blonde athlete in the pink crop top bends forward at the waist, resting her hands on her thighs while looking down toward the track. The broadcast graphic showing competitor names and flags persists in the lower left corner over the blurred background.</think><answer>B</answer>",
+    "queries": [],
+    "user_input": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 16,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "v_d7gTlJhEwrM_F2_003",
+    "sequence_type": "immediate_response",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink crop top rises from a bent-forward position, lifting her torso upright and dropping her hands to her sides. She faces forward with a neutral expression as the broadcast graphic showing names and flags persists in the lower left corner over the blurred crowd.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 17,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink crop top stands upright, gazing slightly downward. The broadcast graphic with flags and names remains fixed in the lower left corner over the blurred stadium background. Her arms rest at her sides as she holds her position on the track.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 18,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink crop top tilts her head further downward, gazing at the track surface. She maintains an upright standing posture with arms resting at her sides. The broadcast graphic displaying flags and names persists in the lower left corner against the blurred stadium crowd background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 19,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink crop top remains standing still with her head bowed, gazing downward toward the track. Her arms hang relaxed at her sides. The broadcast graphic displaying flags and names stays fixed in the lower left corner against the blurred stadium crowd background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 20,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The blonde athlete in the pink crop top maintains her stance with head bowed downward, focusing on the track. Her arms remain relaxed at her sides. The broadcast graphic with flags and names persists in the lower left corner against the blurred stadium crowd background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [28, 40], \"text\": \"[28-32] A blonde woman in a pink crop top lowers her hands from her head to her sides, then bends forward at the waist, resting hands on thighs while looking down. A broadcast graphic with flags overlays the bottom left. [32-34] She rises from the bent position, lifting her torso upright and dropping hands to her sides. [34-40] She stands still facing forward but tilts her head downward to gaze at the track, arms relaxed at her sides. The broadcast graphic displaying \\\"KLISHINA\\\" persists in the lower left corner against the blurred stadium crowd.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='28-40'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A woman with short blonde hair stands in the center of the frame. | A digital scoreboard overlay appears on the left side of the screen. | The scoreboard displays the name 'KLISHINA' and the country code 'RUS'. | The gymnast bends forward at the waist. | The scoreboard displays the name 'Rebeca ANDRADE' with a score of 14.133. | The scoreboard displays the name 'Simone BILES' with a score of 14.000. | The scoreboard displays the name 'Alice D'AMATO' with a score of 13.733. | The background features a large digital timer with orange digits. | different athlete (gymnast in red leotard) appears, bending forward | The woman is standing still and looking downwards. | The scoreboard displays the name 'KLOCHINA' and the country code 'RUS'. | The scoreboard shows a list of athletes with their reaction times and scores.",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 21,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink crop top lifts her head from a downward gaze to look straight ahead, her expression focused. She maintains an upright stance with arms relaxed at her sides. The broadcast graphic with flags and names remains visible in the lower left corner against the blurred stadium background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 24,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the bright pink crop top continues standing motionless, facing forward with a focused expression. Her arms remain relaxed at her sides. Her hair is pulled back tightly. The on-screen graphic displaying 'KLISHINA' and flags stays fixed in the bottom left corner over the out-of-focus stadium seating.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 25,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink crop top stands still, facing forward with a focused gaze and slightly parted lips. Her arms remain relaxed at her sides. The on-screen graphic displaying names and flags persists in the bottom left corner against the blurred stadium crowd background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 26,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The blonde athlete in the pink crop top stands motionless, facing forward with a steady gaze and slightly parted lips. Her arms hang relaxed at her sides. The broadcast graphic displaying names and flags remains fixed in the bottom left corner against the blurred stadium crowd background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [40, 52], \"text\": \"[40-42] The blonde athlete in a pink crop top stands with her head bowed downward, focusing on the track, arms relaxed at her sides. A broadcast graphic with flags and names is visible in the lower left against a blurred crowd. [42-44] She lifts her head to look straight ahead with a focused expression, maintaining an upright stance. [44-52] The athlete remains motionless, facing forward with a steady gaze and slightly parted lips. Her hair is pulled back tightly. The on-screen graphic displaying \\\"KLISHINA\\\" and flags stays fixed in the bottom left corner over the out-of-focus stadium seating.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='40-52'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The female athlete is looking downwards. | The scoreboard displays the name 'KLISHINA' and the country code 'RUS'. | The scoreboard lists results for '1. Klishina', '2. Reese', and '3. Vukovic'. | A woman with short blonde hair stands in the foreground. | The scoreboard displays the name 'KLISHINA' with a score of 6.93. | The scoreboard lists 'D. SPEARS' in first place with a score of 6.95. | The athlete stands still in the center of the frame. | The scoreboard displays results with the name 'KLISHINA' and the flag of Russia (RUS). | The athlete's bib displays the name 'KLISHINA' and the Mazda logo. | The athlete is looking downwards. | The athlete is wearing a pink top. | The bib on the athlete's chest displays the name 'KLISHINA'.",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 27,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink top maintains her stationary stance, facing forward with a focused expression. Her arms hang loosely by her sides. The on-screen graphic displaying competitor information remains visible in the lower left corner against the out-of-focus stadium seating.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 30,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink top and grey shorts continues sprinting down the red track, captured in a wide shot moving from left to right. She passes an official in black standing near the track edge while maintaining her stride. The camera follows her approach towards the jump area, showing the green infield and trackside equipment in the background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 31,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink top and grey shorts continues sprinting down the red runway from left to right. She passes a seated official wearing a light blue shirt near the green infield. Her arms pump rhythmically as she maintains speed, approaching the end of the approach track. The camera pans right to keep her centered in the frame.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 32,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The blonde athlete in the pink top and grey shorts continues sprinting down the red runway from left to right. She passes the seated official and approaches standing figures in the background. Her arms pump rhythmically as she maintains speed. The camera pans right to keep her centered in the frame.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [14, 64], \"text\": \"[14-16] The blonde woman in the pink top stands facing forward, looking slightly left with arms down, raising her right hand near her shoulder. A yellow flag marked 90 is visible in the blurred green background. [52-58] The blonde athlete in the pink crop top stands motionless, facing forward with a steady gaze, slightly parted lips, and relaxed arms. A broadcast graphic displaying names and flags remains fixed in the bottom left corner against the blurred stadium crowd. [58-60] She initiates her sprint, transitioning from a static stance to running down the red track. The camera cuts to a wide shot showing her mid-stride approaching the jump pit, and the close-up graphic vanishes. [60-64] The athlete in the pink top and grey shorts continues sprinting left to right. She passes an official in black standing near the track edge, then a seated official in a light blue shirt near the green infield. Her arms pump rhythmically as she maintains speed approaching the end of the approach track, with the camera panning right to keep her centered.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='14-64'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The woman stands still in the center of the frame. | The woman raises her right hand slightly in the second frame. | The yellow sign displays the number 90. | A woman in a pink athletic top stands in the center of the frame. | The bib on the woman's chest displays the name 'KLISHINA'. | The athlete is standing in the center of the frame. | The athlete is wearing a pink top. | The bib on the athlete's chest displays the name 'KLISHINA'. | A woman is running in an athletic setting. | The athlete is wearing a bib with the name 'KLISHINA' printed on it. | woman starts running | A female athlete is running on a red track.",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 33,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink top and grey shorts sprints onto the white takeoff board, propels herself into the air with arms swinging forward, and lands heels-first in the sand pit, kicking up sand as she collapses into a seated position while officials in blue jackets observe from the side.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 38,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene cuts to a close-up of the white takeoff board marked \"NORDIC SPORTS.\" A white athletic shoe plants on the board, then blurs significantly as the foot pushes off to launch the jump, showing the critical moment of takeoff.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 39,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The white takeoff board labeled \"NORDIC SPORTS\" is shown empty with visible sand marks. The camera cuts to a wide shot of the blonde athlete in a pink top and grey shorts sprinting down the red runway, moving from left to right across the green field background.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 40,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The blonde athlete in a pink top and grey shorts sprints along the red track from left to right. She passes a white table covered with a cloth on the green infield, with standing figures visible in the background. The camera pans right to track her movement during the approach.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [64, 80], \"text\": \"[64-68] A blonde athlete in a pink top and grey shorts sprints down a red runway, passing seated and standing officials before launching off a white takeoff board into a sand pit, landing heels-first and collapsing into a seated position while officials in blue jackets watch. [68-72] She stabilizes in the sand, then rises to stand upright near a white distance board as officials remain seated on the grass. [72-76] A close-up side profile shows the athlete with a ponytail secured by a white scrunchie, wearing a pink sleeveless top against a green background, tilting her head slightly down with a neutral expression. [76-80] A replay shows a white shoe planting on the \\\"NORDIC SPORTS\\\" takeoff board and pushing off, followed by a shot of the empty board with sand marks and the athlete sprinting down the runway again.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='64-80'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A person in a pink and white uniform is running on a red track. | The runner is moving towards the right side of the frame. | A white table is positioned on the grass field to the left of the track. | An athlete lands in the sand pit, displacing sand. | The athlete is wearing a pink and white top. | An official in a striped shirt stands in the background observing. | Another official in a blue jacket sits to the left of the pit. | athlete lands in sand pit (jump completion) | An athlete in a pink top is landing in the sand pit. | The athlete is positioned near the white take-off board. | Several officials in blue jackets are sitting on the grass behind the sand pit. | An official in black is standing on the grass to the right.",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 41,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The athlete in the pink top and grey shorts sprints rightward on the red track, passing standing figures on the green infield. A seated official in a blue shirt becomes visible near the track edge as she approaches the white takeoff board. The camera pans right to follow her approach toward the sand pit.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 46,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The replay transitions to show the athlete landing in the sand pit, wearing a pink top and grey shorts. She sits in the brown sand with legs extended forward while officials in blue jackets observe from the grass near a white distance marker.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 47,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in a pink sleeveless top stands on the red track, facing right with her hair in a ponytail. Bright stadium lights illuminate the crowd in the dark background stands. She remains stationary, gazing towards the side. Her arms are relaxed at her sides.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 48,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A blonde athlete in a pink top stands on the red track facing right, with bright stadium lights and a crowd visible in the background stands. A broadcast graphic overlay displaying flags and text appears at the bottom of the screen while she remains stationary.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [80, 96], \"text\": \"[80-84] A blonde athlete wearing a pink top and grey shorts sprints rightward on a red track, passing a white table and standing figures on the green infield. A seated official in a blue shirt appears near the track edge as she approaches the white takeoff board. [84-88] She launches from the board, extending her body mid-air before landing heels-first in the brown sand pit. She settles into a seated position with legs extended while officials in blue jackets watch from the grass near a white distance marker. [88-94] A replay shows a close-up of the white takeoff board with \\\"NORDIC SPORTS\\\" text and sand marks, followed by the athlete's white shoes hovering over the board and rapid running motion. The replay ends with her landing in the sand. [94-96] The athlete stands stationary on the red track in a pink sleeveless top with a ponytail, gazing right under stadium lights with a crowd in the dark background.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='80-96'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A person is running on the red track. | The runner is moving from the right side of the frame towards the left. | A white table with equipment is situated on the grass next to the track. | A black speaker is placed on the grass to the right of the runner. | A female athlete is running on a red track. | The athlete is moving from the left side of the frame towards the right. | Several people are standing and sitting on the grass field next to the track. | A white table is set up on the grass in the background. | The female athlete lands in the sandpit, kicking up sand upon impact. | Three officials in blue jackets are seated around the perimeter of the sandpit. | The athlete is wearing a pink and white outfit. | athlete lands in sandpit",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 49,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in a pink top stands stationary on the track, facing forward with a neutral expression. A broadcast graphic at the bottom displays flags, names, and scores, with the text \"PORTUGAL\" visible in the final frame. Stadium lights and a crowd fill the background stands behind her.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 53,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink top stands on the track holding a light blue towel. She turns her head further to the right, presenting a profile view. The broadcast graphic with flags and text remains at the bottom of the screen against the stadium background with bright lights.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 54,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The blonde athlete in the pink top turns her back to the camera, displaying a white bib with the number \"140\". Her hair is pulled back in a ponytail. She holds a light blue towel in her hand. The background features bright stadium lights illuminating the stands filled with spectators.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 55,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The blonde athlete in the pink top stands with her back to the camera, displaying bib number 140. She raises her right hand to touch her face near her ear while holding a light blue towel in her left hand. The stadium lights illuminate the crowd in the background.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [96, 110], \"text\": \"[96-100] A blonde female athlete wearing a pink top stands on a red track beneath bright stadium lights, with spectators filling the stands behind her. A broadcast graphic overlay appears at the bottom of the screen showing flags and scores, with the text \\\"PORTUGAL\\\" visible. She initially faces right, then turns to face forward with a neutral expression.\\n[100-106] The athlete remains stationary on the track, holding a light blue towel in her left hand. The on-screen graphic persists, eventually displaying a yellow box containing \\\"+ 1.2\\\" on the right side. She maintains her gaze slightly to the right throughout this period.\\n[106-110] She turns her head further to the right, presenting a profile view, before turning her back completely to the camera. This reveals a white bib with the number \\\"140\\\" attached to her back and her hair tied in a ponytail. She continues holding the towel as the clip concludes.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='96-110'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The digital scoreboard overlay displays race results with '1. USA 12.90', '2. JAM 12.95', and '3. USA 13.01'. | The woman in pink is standing on the red running track. | The stadium floodlights are illuminated above the crowd. | A female athlete in a pink top stands on the track. | The scoreboard displays results for the '100 Metres - Final'. | The name 'PORTILHO' is displayed on the scoreboard. | Spectators are visible in the stadium stands in the background. | A woman in a pink top stands on an athletic track. | A scoreboard overlay displays results for the 'WOMEN'S 400M HURDLES FINAL'. | The scoreboard lists 'PORTILLO' in the first position with a time of '53.70'. | The scoreboard lists 'MCPHERSON' in the second position with a time of '53.96'. | The scoreboard lists 'RUSSELL' in the third position with a time of '54.01'.",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  },
+  {
+    "chunk_idx": 56,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_2",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The athlete lowers her right hand from her neck and turns her head to the left, presenting a profile view. The white bib with number 140 remains visible on the back of her pink top. She continues holding a light blue towel in her left hand while standing on the red track under stadium lights.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What is the color of the athletic top worn by the blonde woman featured throughout the video? A. Blue B. Pink C. Grey D. Red",
+        "ask_time": 30,
+        "answers": [
+          {
+            "text": "B",
+            "time": 30
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "v_d7gTlJhEwrM",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/LLaVA-Video-178K/2_3_m_activitynetqa/ActivityNet-QA/activitynet/train/v_d7gTlJhEwrM.mp4"
+  }
+]

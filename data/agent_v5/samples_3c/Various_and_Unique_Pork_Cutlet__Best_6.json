@@ -1,0 +1,3339 @@
+[
+  {
+    "chunk_idx": 0,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand places a raw cut of meat with a white fat rim into a grey speckled frying pan where oil is heating. Two other seasoned pieces of meat are already sizzling in the pan. The hand positions the new piece next to the existing ones on the white portable stove set upon a wooden table.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 1,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand holds a fourth raw piece of meat with a white fat rim above the grey speckled frying pan. Three seasoned pieces already sizzle in the oil. The hand lowers the new piece into the top right area, filling the gap so four pieces now cook together in the pan on the white portable stove.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 2,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene transitions to a wooden cutting board displaying four raw meat cuts with white fat rims. A hand reaches from the top left, sprinkling white seasoning granules onto the meat pieces. The pink meat is arranged in a square pattern on the light brown board, appearing uncooked and fresh.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "warmup",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 4,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand completes sprinkling white granules over the raw meat cuts arranged on the wooden board. Subsequently, a black cylindrical grinder is held over the meat. The hand twists the device, grinding dark seasoning onto the pink surfaces of the four chops.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 5,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>After grinding black pepper onto the seasoned raw meat cuts, the grinder is removed. A hand reaches in and flips the bottom-left piece of meat over on the wooden board, exposing the unseasoned pink surface on the reverse side while the other three chops remain stationary.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 6,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand flips the remaining raw meat cuts on the light wooden board to expose their unseasoned pink surfaces. Once all four pieces are turned over to show the fresh side, the hand reaches in to sprinkle white salt granules onto the bottom-left chop.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 7,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A hand sprinkles white salt granules onto the raw meat cuts arranged on the wooden board. Subsequently, a black grinder is positioned over the top left piece, dispensing ground black pepper onto the pink surface which already has white seasoning.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [0, 12], \"text\": \"[0-4] A hand places a raw meat cut with a white fat rim into a grey speckled frying pan on a white portable stove, joining three other sizzling pieces in hot oil. The hand arranges the fourth chop in the top right area to fill the gap.\\n[4-10] The scene shifts to a wooden cutting board on a wooden table, displaying four raw meat cuts arranged in a square. A hand sprinkles white seasoning granules over the pink surfaces. Then, a black cylindrical grinder is used to grind dark seasoning onto the chops.\\n[10-12] Once seasoning is complete, the hand flips the bottom-left piece of meat over on the board, exposing the unseasoned side, while the other three pieces remain in place.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='0-12'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A hand places a raw meat cut into the frying pan. | Three raw meat cuts are sizzling in oil inside the pan. | The frying pan is positioned on top of a gas stove burner. | A hand is placing a raw pork chop into the frying pan. | Four pork chops are cooking in the pan. | The meat is seasoned with black pepper. | The pan is sitting on a white electric stove. | A hand is sprinkling seasoning onto the raw meat. | Four pork chops are arranged in a circular pattern inside the frying pan. | The meat is cooking in oil or butter inside the pan. | The frying pan is placed on top of a white stovetop burner. | A hand sprinkles seasoning onto the raw pork chops.",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 8,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Once the black grinder is removed after seasoning the top-left cut, two hands enter the frame over the wooden board. The left hand presses onto the bottom-left meat cut while the right hand touches the top-right piece, adjusting the position of the four seasoned raw chops on the surface.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 12,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula maneuvers a chunk of yellow butter within the grey speckled frying pan. The solid piece slides across the hot surface, melting further into the existing pool of shimmering oil that coats the bottom of the pan situated on the white portable stove burner.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 13,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula pushes a small, melting chunk of yellow butter across the surface of a grey speckled frying pan. The solid butter dissolves into a bubbling, shimmering pool of hot liquid fat that spreads across the bottom of the pan situated on the white portable stove burner.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 14,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A hand holds a raw meat cut with a white fat rim over the grey speckled frying pan containing melted butter. The hand positions the pink chop above the hot liquid fat, lowering it towards the surface of the pan on the white portable stove burner.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [12, 28], \"text\": \"Hands flip four raw meat cuts on a light wooden board to expose pink surfaces. White salt granules are sprinkled over the chops, followed by ground black pepper from a black grinder. Hands adjust the position of the seasoned meat. The scene cuts to a grey speckled frying pan on a white portable burner. A hand holds a small white bowl containing a yellow butter cube. A yellow spatula maneuvers chunks of yellow butter across the hot pan surface. The solid butter melts, spreading into a shimmering, bubbling pool of liquid fat.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='12-28'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The person's hands are touching the top right pork chop. | The person is sprinkling seasoning onto the pork chops. | Four pork chops are arranged on the cutting board. | The cutting board is placed on a wooden table. | A hand wearing a gold ring is touching the top right pork chop. | A black pepper grinder is being used to season the meat. | Four pork chops are arranged in a square formation on the cutting board. | The pork chops are visibly seasoned with white salt crystals and black pepper specks. | A person is pressing their hand down on the raw meat chops. | Four pieces of raw meat are arranged on a wooden cutting board. | The meat is seasoned with visible specks of black pepper. | The cutting board is placed on a wooden table.",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 15,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand lowers the seasoned raw meat cut into the grey speckled frying pan filled with hot melted butter. The pink chop with a white fat rim makes contact with the bubbling yellow liquid on the left side, settling into the pan as the hand releases it.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 16,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "Various_and_Unique_Pork_Cutlet__Best_6_E2_010",
+    "sequence_type": "event_watch",
+    "action": "silent",
+    "output": "<think>A hand lowers a second seasoned raw meat cut, pink with a white fat rim, into the grey speckled pan beside the sizzling piece in melted butter. The grey speckled frying pan surface currently displays only sizzling meat and butter; chopped white onions are not present within the cooking area yet.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": []
+      }
+    ],
+    "user_input": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 17,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand places a third seasoned raw meat cut into the grey speckled frying pan containing hot melted butter. The pink chop with a white fat rim is positioned on the right side, joining two other pieces already sizzling in the bubbling yellow fat on the white portable stove.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 18,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "Various_and_Unique_Pork_Cutlet__Best_6_E2_010",
+    "sequence_type": "event_watch",
+    "action": "silent",
+    "output": "<think>A hand places the final seasoned raw meat cut into the grey speckled frying pan. The pink chop with a white fat rim settles into the hot melted butter alongside the three other pieces, filling the pan as they sizzle on the white portable stove. The grey speckled pan holds meat and butter.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 19,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Yellow tongs enter the frame and flip the meat chops in the grey speckled pan. The previously raw pink surfaces are now golden-brown and seared. The butter continues to bubble vigorously around the cooking meat as the pieces are turned to cook the other side.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 20,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "Various_and_Unique_Pork_Cutlet__Best_6_E2_010",
+    "sequence_type": "event_watch",
+    "action": "silent",
+    "output": "<think>Yellow tongs flip four meat chops in the grey speckled pan, turning raw pink surfaces to reveal golden-brown seared undersides amidst vigorously bubbling butter. The portable stove sizzles as the pieces are manipulated. The pan contains searing meat chops and bubbling butter while yellow tongs adjust their positions inside the vessel.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 21,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Yellow tongs turn the last raw-sided chop in the pan to show its browned underside. All four meat cuts now exhibit golden-brown seared surfaces as they fry in the bubbling butter within the grey speckled skillet on the white burner.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 22,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>Three of the four golden-brown meat chops are removed from the grey speckled frying pan, leaving only one piece cooking in the top left. The remaining hot fat bubbles vigorously around the single chop, revealing browned residue on the pan's surface where the other pieces were previously frying.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [28, 44], \"text\": \"A hand holds a raw meat cut with a white fat rim over a grey speckled frying pan containing melted butter. The hand positions the pink chop above the hot liquid fat, lowering it towards the surface of the pan on the white portable stove burner. Subsequently, a second seasoned raw meat cut is placed next to the first, followed by a third seasoned piece on the right side. Finally, the hand places the last seasoned raw chop into the pan, filling the grey skillet as the four pieces sizzle in the bubbling yellow fat. Yellow tongs enter the frame and flip the meat chops in the grey speckled pan. The previously raw pink surfaces are turned to reveal golden-brown and seared undersides. The hot butter continues to bubble vigorously around the cooking meat as the yellow tongs manipulate the pieces. The tongs flip the remaining chops individually, ensuring all four display their browned sides while sizzling on the portable stove. Finally, the tongs turn the last raw-sided chop, leaving all four meat cuts exhibiting golden-brown seared surfaces as they fry.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": []
+      }
+    ],
+    "user_input": "<compress_trigger range='28-44'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "evidence_anchor",
+    "gold_caption": "A yellow spatula is stirring melted butter in a grey speckled frying pan. | A hand is holding a raw pork chop above the pan. | The butter is bubbling in the pan. | butter fully melted, began placing raw pork chops into pan for cooking | A hand is lowering a seasoned raw pork chop into a frying pan. | The pork chop is being placed into melted butter or oil. | The frying pan is sitting on a white portable stove. | A hand is placing a raw pork chop into a frying pan. | One pork chop is already sizzling in the oil. | The pork chops are seasoned with black pepper. | The frying pan is sitting on a white portable stove. | A hand places a raw pork chop into the frying pan.",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 23,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Yellow tongs grasp the final golden-brown meat chop remaining in the top left of the grey speckled pan. The tongs lift the cooked piece out, leaving the skillet empty except for bubbling, browned fat. Hands holding a small glass bowl filled with chopped white onions appear above the pan.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 24,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "Various_and_Unique_Pork_Cutlet__Best_6_E2_010",
+    "sequence_type": "event_watch",
+    "action": "response",
+    "output": "<think>Hands hold a small clear glass bowl with diced white onions over a grey speckled frying pan. Onions pour into the center, landing in hot browned fat residue. A pile of chopped white onions sits in the skillet middle. Diced white onions currently transfer from clear bowl to pan center.</think><answer>Yes</answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 26,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand uses a yellow spatula to stir the central pile of diced white onions and minced garlic within the grey speckled frying pan. The utensil mixes the ingredients into the hot browned fat, spreading them across the bottom surface as they begin to cook on the white portable stove burner.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 27,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula stirs the diced white onions and minced garlic, spreading the mixture across the bottom of the grey speckled pan. The ingredients mix thoroughly with the browned fat residue, coating the pan surface as they begin to cook on the white portable stove.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 28,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula stirs the diced onions and garlic mixture in the grey speckled pan. The ingredients continue to cook, turning a deeper golden-brown color as they are moved around the hot surface. The mixture spreads across the bottom of the pan.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 29,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula continues mixing the diced onions and garlic in the grey pan. The mixture browns further as it is stirred across the bottom surface, coating the pan with the caramelizing vegetables and residual oil on the white burner.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 30,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A yellow spatula continues to stir the diced onion and garlic mixture within the grey speckled frying pan. The ingredients are pushed across the bottom surface, appearing increasingly golden-brown and caramelized as they cook in the bubbling residual fat on the white portable stove.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [44, 60], \"text\": \"[44-48] Three golden-brown meat chops are removed from the grey speckled frying pan, leaving one piece cooking in the top left before yellow tongs lift the final chop out, leaving only bubbling browned fat.\\n[48-52] Hands pour diced white onions from a clear glass bowl into the center of the hot pan, followed by minced yellow-white garlic chunks poured from a small white bowl onto the onions.\\n[52-60] A yellow spatula stirs the central pile of onions and garlic, mixing them into the browned oil. The ingredients spread across the pan bottom, cooking and turning a deeper golden-brown color as they caramelize on the white stove burner.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": []
+      }
+    ],
+    "user_input": "<compress_trigger range='44-60'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "Two meat cutlets are frying in the pan. | The oil is bubbling around the meat. | The pan is sitting on a white stove. | Yellow tongs lift a slice of cooked meat out of the frying pan. | The pan contains bubbling brown oil and cooking residue. | A hand holds a glass bowl of chopped white onions above the pan. | The frying pan sits on a white electric stove. | cooked meat removed from pan, prepared for sauce base | A person is pouring chopped white onions from a glass bowl into a frying pan. | The frying pan contains a brown liquid sauce. | The pan is sitting on a white portable stove. | onions added to pan - sauce base preparation began",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 31,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula stirs the browning onion and garlic mixture in the grey speckled pan. The diced ingredients are moved across the pan's surface, becoming darker and more golden-brown as they continue to cook in the hot oil on the white portable stove.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 36,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The yellow spatula actively stirs the white mushroom slices, folding them into the dark golden-brown onion mixture within the grey speckled pan. The mushrooms are distributed across the pan's surface, becoming coated in the oil and caramelized bits on the white stove.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 37,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula continues mixing the sliced white mushrooms with the caramelized onion base in the grey speckled pan. The mushrooms are tossed and turned, becoming increasingly coated in the browned oil and bits on the white stove surface.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": []
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 38,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A yellow spatula continues stirring sliced white mushrooms mixed with caramelized onions in a grey speckled pan. The ingredients are tossed across the hot surface, ensuring the mushrooms are coated in the browned onion base and oil on the white portable stove.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [60, 76], \"text\": \"[60-68] A yellow spatula stirs a diced onion and garlic mixture within a grey speckled frying pan on a white portable stove. The ingredients are pushed across the bottom, appearing increasingly golden-brown and caramelized as they cook in bubbling residual fat. [68-70] Hands hold a clear glass bowl containing sliced white mushrooms over the pan. The mushrooms are poured onto the caramelized onion and garlic mixture, sitting on top of the brown base. [70-76] The yellow spatula actively stirs the sliced white mushrooms into the brown caramelized onion mixture. The mushrooms are pushed around the hot surface, folding into the dark golden-brown onion mixture and becoming coated in the oil and caramelized bits.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": []
+      }
+    ],
+    "user_input": "<compress_trigger range='60-76'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A yellow spatula is stirring a mixture of chopped onions and sauce inside a grey frying pan. | The frying pan is sitting on top of a white portable cooktop. | The food mixture appears to be sautéing or caramelizing. | Hands are pouring sliced mushrooms from a glass bowl into a frying pan. | The pan contains sautéed onions. | The frying pan is placed on a white electric stove. | mushrooms added to sautéed onions | A yellow spatula is stirring sliced white mushrooms in a frying pan. | The mushrooms are being mixed with a brown sautéed onion base. | The frying pan is sitting on a white portable stove. | A yellow spatula is stirring sliced mushrooms in a pan. | The mushrooms are being mixed with sautéed onions.",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 39,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "Various_and_Unique_Pork_Cutlet__Best_6_F3_003",
+    "sequence_type": "immediate_response",
+    "action": "response",
+    "output": "<think>The yellow spatula continues to mix the sliced white mushrooms with the dark golden-brown caramelized onion mixture in the grey speckled frying pan. The ingredients are tossed around the hot surface, ensuring even cooking and coating in the residual oil on the white portable stove.</think><answer>4</answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      }
+    ],
+    "user_input": "How many raw meat chops are visible in the frying pan?",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 40,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "Various_and_Unique_Pork_Cutlet__Best_6_F3_003",
+    "sequence_type": "immediate_response",
+    "action": "silent",
+    "output": "<think>A yellow spatula continues stirring sliced white mushrooms mixed with dark golden-brown caramelized onions in a grey speckled frying pan. The ingredients are tossed across the hot surface on a white portable stove, ensuring even cooking and coating in the residual oil.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 41,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula stirs the mixture of sliced white mushrooms and caramelized onions in the grey speckled frying pan. The ingredients are tossed across the hot surface on the white portable stove, ensuring the mushrooms are evenly coated in the browned onion base and residual oil while cooking.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 42,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula continues mixing sliced white mushrooms with caramelized onions in the grey speckled pan. The ingredients are tossed around the hot surface on the white portable stove, ensuring the mushrooms are evenly coated in the browned onion base and residual oil while cooking.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 43,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand pours fine white powder from a small white bowl onto the center of the sautéed mushroom and onion mixture in the grey pan. The powder accumulates in a white mound atop the browned ingredients, contrasting with the darker mixture below.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 44,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula stirs the white powder into the mushroom and onion mixture within the grey speckled pan. The utensil folds the dry ingredient into the browned base, breaking up the central mound and distributing it among the sautéed vegetables on the white stove.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 45,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula continues to mix the white powder into the sautéed mushroom and onion mixture inside the grey speckled pan. The utensil pushes the ingredients around the hot surface, ensuring the powder coats the vegetables and blends with the caramelized base on the portable stove. The white powder becomes less distinct as it integrates with the browned ingredients.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 46,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The yellow spatula completes mixing the white powder into the mushroom base. A hand then appears holding a clear glass bowl, pouring a reddish-orange liquid into the center of the grey speckled pan. The liquid streams onto the coated mushroom and onion mixture on the white stove.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [76, 92], \"text\": \"[76-86] A yellow spatula stirs sliced white mushrooms mixed with caramelized onions in a grey speckled pan on a white portable stove, tossing ingredients across the hot surface for even cooking. [86-88] A hand pours fine white powder from a small white bowl onto the center of the sautéed mixture, creating a white mound. [88-92] The yellow spatula mixes the white powder into the mushroom and onion mixture, folding the dry ingredient into the base until it integrates and coats the vegetables.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='76-92'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A yellow spatula is stirring sliced mushrooms and onions in a grey frying pan. | The frying pan is sitting on a white portable stove. | The mushrooms are sliced into quarters or halves. | The onions appear caramelized and brown. | A yellow spatula is stirring sliced mushrooms and diced onions in a frying pan. | The frying pan is sitting on top of a white electric stove burner. | The mushrooms and onions are browning as they cook. | A yellow spatula is stirring sliced mushrooms and onions inside a grey frying pan. | The frying pan is resting on a white electric stove. | The food mixture appears to be sautéing. | A yellow spatula is stirring sliced mushrooms and onions inside a grey frying pan. | The frying pan is sitting on top of a white electric stove.",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 47,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A clear glass bowl is tilted by a hand, pouring a steady stream of reddish-orange liquid into the grey speckled frying pan. The liquid cascades over the sautéed mushroom and onion mixture, pooling at the bottom and beginning to submerge the ingredients as the volume increases within the pan on the white stove.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 51,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula stirs the reddish-orange broth containing sliced mushrooms and onions inside the grey speckled pan. The liquid simmers around the ingredients as the utensil agitates the mixture on the white portable stove, blending the sauce components thoroughly while the dish continues to cook.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 52,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula continuously stirs a simmering reddish-brown liquid containing sliced mushrooms and onions within a grey speckled frying pan. The utensil moves through the broth, mixing the solid ingredients as the sauce bubbles gently on the white portable stove surface. The pan remains stationary.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 53,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A yellow spatula stirs the simmering reddish-brown liquid filled with sliced mushrooms and onions inside the grey speckled frying pan. The sauce bubbles gently around the ingredients on the white portable stove as the utensil mixes the contents, maintaining the blend of the liquid and solid components.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [92, 106], \"text\": \"[92-98] A hand tilts a clear glass bowl, pouring a steady stream of reddish-orange liquid into the grey speckled frying pan. The liquid cascades over the sautéed mushroom and onion mixture, pooling at the bottom and rising to submerge the ingredients on the white stove. [98-106] A yellow spatula enters the pan filled with the reddish-orange broth and mushrooms. The utensil stirs the liquid mixture, agitating the mushrooms and onions within the broth on the white portable stove. The stirring action blends the liquid with the sautéed ingredients as the sauce bubbles gently.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='92-106'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A grey speckled frying pan is sitting on a white electric stove. | The pan contains a mixture of cooked mushrooms and browned minced food. | An orange-red liquid is being poured from above into the center of the pan. | liquid sauce poured into pan - curry/sauce formation | A hand pours an orange liquid from a glass measuring cup into a frying pan. | The liquid mixes with the browned meat and mushrooms in the pan. | The frying pan is placed on top of a white portable stove. | The stove is resting on a wooden table. | A clear glass measuring cup is pouring a reddish-brown liquid into the frying pan. | The frying pan sits on top of a white portable electric stove. | The stew inside the pan contains visible sliced mushrooms and minced meat. | A yellow spatula is stirring a mixture of sauce, mushrooms, and meat inside a frying pan.",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 54,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula continues to stir the simmering reddish-brown liquid filled with sliced mushrooms and onions inside the grey speckled frying pan. The sauce bubbles gently as the utensil agitates the mixture, moving the solid ingredients through the hot liquid on the white portable stove surface, maintaining a consistent texture.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 58,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula stirs the simmering reddish-brown sauce containing sliced mushrooms and onions within the grey speckled pan. The utensil moves through the liquid, agitating the ingredients on the white portable stove as small bubbles rise to the surface of the hot mixture.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 59,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The yellow spatula continues mixing the reddish-brown broth and mushroom mixture in the grey pan, sweeping through the liquid to push sliced mushrooms around the center. The sauce simmers consistently with small bubbles rising to the surface as the utensil agitates the hot contents on the white burner.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 60,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A yellow spatula stirs the simmering reddish-brown sauce containing sliced mushrooms and onions within the grey speckled pan. The utensil moves through the liquid on the white portable stove, agitating the ingredients and keeping them suspended in the hot broth as small bubbles rise to the surface of the mixture.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [106, 120], \"text\": \"Throughout the interval, a yellow spatula stirs a simmering reddish-brown liquid containing sliced mushrooms and onions within a grey speckled frying pan on a white portable stove. The sauce bubbles gently as the utensil sweeps through the mixture, agitating the contents and pushing the solid ingredients around the center. This continuous motion keeps the mushrooms and onions suspended and evenly distributed within the hot broth. Small bubbles rise consistently to the surface, indicating a steady simmer, while the spatula maintains the blend of liquid and solid components for a uniform texture.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='106-120'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A yellow spatula is stirring a brownish-orange liquid with sliced mushrooms inside a grey speckled frying pan. | The frying pan is sitting on top of a white portable electric stove. | The stove is placed on a light brown wooden surface. | A yellow spatula is stirring a mushroom sauce in a frying pan. | The frying pan is sitting on a white electric burner. | The sauce contains visible slices of mushrooms. | A yellow spatula is stirring a mushroom sauce in a frying pan. | The frying pan is placed on a white electric stove. | The sauce contains visible sliced mushrooms. | A yellow spatula is stirring a mushroom curry mixture in a frying pan. | The frying pan is sitting on a white portable stove. | The curry sauce is bubbling slightly, indicating it is being heated.",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 61,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula continues stirring the simmering reddish-brown sauce containing sliced mushrooms within the grey speckled frying pan. The utensil moves through the bubbling liquid on the white portable stove, agitating the ingredients to keep them suspended and evenly distributed in the hot broth.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 65,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The metal spoon holding pink granular seasoning vanishes from the frame after dispensing its load, leaving distinct piles of the pink powder floating on the surface of the simmering reddish-brown mushroom sauce inside the grey speckled frying pan on the white portable stove.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 66,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand holds a black cylindrical grinder over the pan, dispensing ground black pepper onto the sauce surface where piles of pink seasoning remain visible. The reddish-brown liquid containing mushrooms continues to simmer gently in the grey speckled frying pan on the white portable stove.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 67,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A hand holding a yellow spatula stirs the reddish-brown mushroom sauce in the grey speckled pan. The sauce features visible black pepper specks on the surface. The spatula mixes the seasoning into the simmering liquid, agitating the sliced mushrooms and onions within the broth on the white portable stove.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [120, 134], \"text\": \"[120-128] A yellow spatula stirs a simmering reddish-brown sauce containing sliced mushrooms and onions within a grey speckled pan on a white portable stove. A hand grips the black handle to stabilize the pan while the utensil agitates the ingredients in the hot broth. [128-132] The spatula is removed, and a hand holding a metal spoon with pink granular seasoning sprinkles the contents into the bubbling mixture, leaving distinct piles floating on the surface. [132-134] A hand uses a black cylindrical grinder to dispense ground black pepper onto the sauce, adding to the visible pink seasoning as the liquid continues to simmer.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='120-134'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A yellow spatula is stirring a mushroom sauce in a frying pan. | The sauce is simmering on a white cooktop. | Sliced mushrooms are visible within the orange sauce. | A yellow spatula is stirring a thick orange sauce filled with cashews. | The sauce is simmering inside a grey speckled frying pan. | The frying pan is placed on top of a white portable stove. | A yellow spatula is stirring the mushroom sauce in the pan. | The sauce is simmering inside the grey speckled frying pan. | The frying pan is placed on top of a white electric stove. | A yellow spatula is stirring a mushroom sauce inside a grey frying pan. | The frying pan is sitting on a white portable electric stove. | A hand is holding the black handle of the frying pan on the right side.",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 68,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The yellow spatula continues stirring the reddish-brown sauce with sliced mushrooms inside the grey speckled pan. The utensil blends the black pepper and pink salt into the simmering liquid on the white portable stove, agitating the mixture as small bubbles rise to the surface consistently.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 70,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula stirs the reddish-brown sauce with sliced mushrooms in the grey speckled pan. A hand grips the black handle on the right to stabilize the pan on the white portable stove. The utensil agitates the simmering liquid, mixing the ingredients as small bubbles rise consistently to the surface.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 71,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The yellow spatula stops stirring and is removed from the grey speckled frying pan. The reddish-brown sauce with sliced mushrooms continues to simmer on the white portable stove. The liquid bubbles gently around the ingredients, now left undisturbed without the utensil in the pan as the sauce cooks.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 72,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "Various_and_Unique_Pork_Cutlet__Best_6_CR5_014",
+    "sequence_type": "multi_response",
+    "action": "response",
+    "output": "<think>A hand holding yellow tongs places a browned, cooked meat cutlet into the left side of the simmering reddish-brown mushroom sauce inside the grey speckled frying pan. The meat settles into the liquid, resting partially submerged in the sauce on the white portable stove.</think><answer>The seared meat cutlet is lowered into the mushroom sauce using yellow tongs.</answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      },
+      {
+        "question": "The mushroom sauce is being stirred in the pan — what happens to the seared meat that was cooked earlier?",
+        "ask_time": 156,
+        "answers": [
+          {
+            "text": "After the mushroom sauce simmers in the pan, the previously seared meat is reintroduced to the dish. A hand holding yellow tongs carefully lowers a browned meat cutlet into the top right area of the pan, joining three other pieces already submerged in the reddish-brown sauce. Once all four cutlets are resting in the simmering liquid, a clear glass lid is placed over the pan to trap heat and steam, allowing the meat to continue cooking within the sauce.",
+            "time": 156
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 73,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "Various_and_Unique_Pork_Cutlet__Best_6_CR5_014",
+    "sequence_type": "multi_response",
+    "action": "response",
+    "output": "<think>A hand utilizes yellow-tipped tongs to lower a second seared meat cutlet into the bubbling reddish-brown mushroom sauce. The browned protein is positioned beside the initial piece already simmering in the grey speckled pan on the white portable burner. The sauce continues to bubble around the added meat.</think><answer>The seared meat cutlet is lowered into the mushroom sauce using yellow tongs.</answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      },
+      {
+        "question": "The mushroom sauce is being stirred in the pan — what happens to the seared meat that was cooked earlier?",
+        "ask_time": 156,
+        "answers": [
+          {
+            "text": "After the mushroom sauce simmers in the pan, the previously seared meat is reintroduced to the dish. A hand holding yellow tongs carefully lowers a browned meat cutlet into the top right area of the pan, joining three other pieces already submerged in the reddish-brown sauce. Once all four cutlets are resting in the simmering liquid, a clear glass lid is placed over the pan to trap heat and steam, allowing the meat to continue cooking within the sauce.",
+            "time": 156
+          },
+          {
+            "text": "The seared meat cutlet is lowered into the mushroom sauce using yellow tongs.",
+            "time": 144
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 74,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "Various_and_Unique_Pork_Cutlet__Best_6_CR5_014",
+    "sequence_type": "multi_response",
+    "action": "response",
+    "output": "<think>A hand holding yellow tongs lowers a seared meat cutlet into the top right area of the grey speckled pan. The browned protein joins three other pieces already submerged in the simmering reddish-brown mushroom sauce on the white portable burner.</think><answer>The seared meat cutlet is lowered into the mushroom sauce using yellow tongs.</answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      },
+      {
+        "question": "The mushroom sauce is being stirred in the pan — what happens to the seared meat that was cooked earlier?",
+        "ask_time": 156,
+        "answers": [
+          {
+            "text": "After the mushroom sauce simmers in the pan, the previously seared meat is reintroduced to the dish. A hand holding yellow tongs carefully lowers a browned meat cutlet into the top right area of the pan, joining three other pieces already submerged in the reddish-brown sauce. Once all four cutlets are resting in the simmering liquid, a clear glass lid is placed over the pan to trap heat and steam, allowing the meat to continue cooking within the sauce.",
+            "time": 156
+          },
+          {
+            "text": "The seared meat cutlet is lowered into the mushroom sauce using yellow tongs.",
+            "time": 144
+          },
+          {
+            "text": "The seared meat cutlet is lowered into the mushroom sauce using yellow tongs.",
+            "time": 146
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 76,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand wearing a gold ring grasps the black knob of the clear glass lid covering the grey speckled frying pan. The lid is lifted upwards and tilted back, revealing the four browned meat cutlets simmering in the thick, reddish-brown mushroom sauce inside the pan on the white portable stove.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      },
+      {
+        "question": "The mushroom sauce is being stirred in the pan — what happens to the seared meat that was cooked earlier?",
+        "ask_time": 156,
+        "answers": [
+          {
+            "text": "After the mushroom sauce simmers in the pan, the previously seared meat is reintroduced to the dish. A hand holding yellow tongs carefully lowers a browned meat cutlet into the top right area of the pan, joining three other pieces already submerged in the reddish-brown sauce. Once all four cutlets are resting in the simmering liquid, a clear glass lid is placed over the pan to trap heat and steam, allowing the meat to continue cooking within the sauce.",
+            "time": 156
+          },
+          {
+            "text": "The seared meat cutlet is lowered into the mushroom sauce using yellow tongs.",
+            "time": 144
+          },
+          {
+            "text": "The seared meat cutlet is lowered into the mushroom sauce using yellow tongs.",
+            "time": 146
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 77,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand lifts the clear glass lid off the grey speckled pan, revealing four browned meat cutlets simmering in sauce. Immediately after, a hand holding yellow-tipped tongs reaches into the pan to grasp and adjust the seared cutlet positioned in the bottom right corner.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      },
+      {
+        "question": "The mushroom sauce is being stirred in the pan — what happens to the seared meat that was cooked earlier?",
+        "ask_time": 156,
+        "answers": [
+          {
+            "text": "After the mushroom sauce simmers in the pan, the previously seared meat is reintroduced to the dish. A hand holding yellow tongs carefully lowers a browned meat cutlet into the top right area of the pan, joining three other pieces already submerged in the reddish-brown sauce. Once all four cutlets are resting in the simmering liquid, a clear glass lid is placed over the pan to trap heat and steam, allowing the meat to continue cooking within the sauce.",
+            "time": 156
+          },
+          {
+            "text": "The seared meat cutlet is lowered into the mushroom sauce using yellow tongs.",
+            "time": 144
+          },
+          {
+            "text": "The seared meat cutlet is lowered into the mushroom sauce using yellow tongs.",
+            "time": 146
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 78,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "Various_and_Unique_Pork_Cutlet__Best_6_CR5_014",
+    "sequence_type": "multi_response",
+    "action": "response",
+    "output": "<think>A hand uses yellow tongs to lift a browned meat cutlet from the simmering sauce in the grey pan. The cooked piece is transferred away from the stove and placed onto the center of a white square plate resting on the wooden table surface.</think><answer>After the mushroom sauce simmers in the pan, the previously seared meat is reintroduced to the dish. A hand holding yellow tongs carefully lowers a browned meat cutlet into the top right area of the pan, joining three other pieces already submerged in the reddish-brown sauce. Once all four cutlets are resting in the simmering liquid, a clear glass lid is placed over the pan to trap heat and steam, allowing the meat to continue cooking within the sauce.</answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "The mushroom sauce is being stirred in the pan — what happens to the seared meat that was cooked earlier?",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 79,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A browned meat cutlet rests centrally on a white square plate. A metal spoon holding yellowish-brown sauce with mushroom slices hovers above the protein. The spoon tilts forward, pouring the thick gravy over the cutlet, coating the top surface with the savory liquid and solid ingredients.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 80,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A metal spoon continues to pour a thick, yellowish-brown sauce with mushroom slices over a browned meat cutlet on a white square plate. The gravy accumulates on the protein's surface, coating it with liquid and solid ingredients as the spoon tilts to release more contents onto the dish.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 81,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A metal spoon completes pouring the thick, mushroom-flecked sauce over the browned meat cutlet centered on a white square plate. The gravy fully coats the top of the protein and pools around the base. The utensil is lifted out of the frame, leaving the finished dish displayed on the wooden table.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 82,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A hand wearing a gold ring sprinkles chopped green herbs over the sauced meat cutlet on the white plate. The green pieces fall onto the brown gravy and protein, scattering across the surface of the dish resting on the wooden table.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [148, 164], \"text\": \"[148-150] A hand uses yellow tongs to lower a seared meat cutlet into a grey speckled pan containing three others simmering in reddish-brown mushroom sauce. [150-152] A clear glass lid featuring a central black knob covers the cookware to trap heat. [152-156] A hand wearing a gold ring lifts the lid, revealing the simmering cutlets, before yellow-tipped tongs grasp a piece. [156-158] The tongs transfer the browned cutlet to the center of a white square plate. [158-164] A metal spoon pours the thick, yellowish-brown sauce with mushroom slices over the protein, coating the top surface and pooling around the base on the wooden table.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='148-164'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "Yellow tongs are lowering a seared meat cutlet into the frying pan. | Three other meat cutlets are already simmering in the yellow sauce. | The frying pan is sitting on top of the white electric cooktop. | A hand lifts the glass lid off the frying pan. | The meat patties are simmering in a yellow sauce containing white beans. | The pan is sitting on a white electric stove. | glass lid lifted - checking simmering meat | A hand is lifting the glass lid off the frying pan. | The meat cutlets are simmering in a bubbling yellow sauce. | The frying pan is sitting on a white portable stove. | A hand is using yellow-tipped tongs to adjust a piece of meat in a pan. | Four pieces of browned meat are simmering in a sauce with white beans.",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 83,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_0",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Two hands utilize silver cutlery to slice the cooked meat cutlet resting on the white square plate. The left hand maneuvers a knife while the right hand steadies the protein with a fork, cutting through the sauced and herb-garnished surface to reveal the interior.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "Has the addition of chopped white onions to the grey speckled frying pan begun yet?",
+        "ask_time": 32,
+        "answers": [
+          {
+            "text": "Yes",
+            "time": 48
+          }
+        ]
+      },
+      {
+        "question": "How many raw meat chops are visible in the frying pan?",
+        "ask_time": 78,
+        "answers": [
+          {
+            "text": "4",
+            "time": 78
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 0,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand places a raw cut of meat with a white fat rim into a grey speckled frying pan where oil is heating. Two other seasoned pieces of meat are already sizzling in the pan. The hand positions the new piece next to the existing ones on the white portable stove set upon a wooden table.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 1,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand holds a fourth raw piece of meat with a white fat rim above the grey speckled frying pan. Three seasoned pieces already sizzle in the oil. The hand lowers the new piece into the top right area, filling the gap so four pieces now cook together in the pan on the white portable stove.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 2,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The scene transitions to a wooden cutting board displaying four raw meat cuts with white fat rims. A hand reaches from the top left, sprinkling white seasoning granules onto the meat pieces. The pink meat is arranged in a square pattern on the light brown board, appearing uncooked and fresh.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 3,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>On the wooden cutting board, the hand continues to sprinkle white seasoning granules over the four raw meat cuts. The hand moves to different pieces, distributing the white specks across the pink surfaces of the chops. Specifically, the seasoning is applied to the bottom right and top left sections, ensuring the raw meat with white fat rims is coated.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 4,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand completes sprinkling white granules over the raw meat cuts arranged on the wooden board. Subsequently, a black cylindrical grinder is held over the meat. The hand twists the device, grinding dark seasoning onto the pink surfaces of the four chops.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 5,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>After grinding black pepper onto the seasoned raw meat cuts, the grinder is removed. A hand reaches in and flips the bottom-left piece of meat over on the wooden board, exposing the unseasoned pink surface on the reverse side while the other three chops remain stationary.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 6,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand flips the remaining raw meat cuts on the light wooden board to expose their unseasoned pink surfaces. Once all four pieces are turned over to show the fresh side, the hand reaches in to sprinkle white salt granules onto the bottom-left chop.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 7,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A hand sprinkles white salt granules onto the raw meat cuts arranged on the wooden board. Subsequently, a black grinder is positioned over the top left piece, dispensing ground black pepper onto the pink surface which already has white seasoning.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [0, 12], \"text\": \"[0-4] A hand places a raw meat cut with a white fat rim into a grey speckled frying pan on a white portable stove, joining three other sizzling pieces in hot oil. The hand arranges the fourth chop in the top right area to fill the gap.\\n[4-10] The scene shifts to a wooden cutting board on a wooden table, displaying four raw meat cuts arranged in a square. A hand sprinkles white seasoning granules over the pink surfaces. Then, a black cylindrical grinder is used to grind dark seasoning onto the chops.\\n[10-12] Once seasoning is complete, the hand flips the bottom-left piece of meat over on the board, exposing the unseasoned side, while the other three pieces remain in place.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='0-12'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "evidence_anchor",
+    "gold_caption": "A hand places a raw meat cut into the frying pan. | Three raw meat cuts are sizzling in oil inside the pan. | The frying pan is positioned on top of a gas stove burner. | A hand is placing a raw pork chop into the frying pan. | Four pork chops are cooking in the pan. | The meat is seasoned with black pepper. | The pan is sitting on a white electric stove. | A hand is sprinkling seasoning onto the raw meat. | Four pork chops are arranged in a circular pattern inside the frying pan. | The meat is cooking in oil or butter inside the pan. | The frying pan is placed on top of a white stovetop burner. | A hand sprinkles seasoning onto the raw pork chops.",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 8,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Once the black grinder is removed after seasoning the top-left cut, two hands enter the frame over the wooden board. The left hand presses onto the bottom-left meat cut while the right hand touches the top-right piece, adjusting the position of the four seasoned raw chops on the surface.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 9,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Hands hold the wooden board containing four seasoned raw meat cuts. The scene cuts to a grey speckled frying pan on a white stove. A hand holds a small white bowl with a yellow cube of butter while another hand uses a spoon inside the bowl.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 10,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula pushes pieces of yellow butter around inside the grey speckled frying pan on the stove. The butter begins to melt, spreading a thin layer of oil across the pan's surface as the spatula moves the solid chunks. The pan is positioned on a white portable burner.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 11,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula maneuvers chunks of yellow butter within the grey speckled frying pan. As the solid pieces slide across the hot surface, they melt into a shimmering layer of oil. The pan remains positioned on the white portable stove burner.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "evidence_anchor",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 12,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula maneuvers a chunk of yellow butter within the grey speckled frying pan. The solid piece slides across the hot surface, melting further into the existing pool of shimmering oil that coats the bottom of the pan situated on the white portable stove burner.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 13,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula pushes a small, melting chunk of yellow butter across the surface of a grey speckled frying pan. The solid butter dissolves into a bubbling, shimmering pool of hot liquid fat that spreads across the bottom of the pan situated on the white portable stove burner.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 14,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A hand holds a raw meat cut with a white fat rim over the grey speckled frying pan containing melted butter. The hand positions the pink chop above the hot liquid fat, lowering it towards the surface of the pan on the white portable stove burner.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [12, 28], \"text\": \"Hands flip four raw meat cuts on a light wooden board to expose pink surfaces. White salt granules are sprinkled over the chops, followed by ground black pepper from a black grinder. Hands adjust the position of the seasoned meat. The scene cuts to a grey speckled frying pan on a white portable burner. A hand holds a small white bowl containing a yellow butter cube. A yellow spatula maneuvers chunks of yellow butter across the hot pan surface. The solid butter melts, spreading into a shimmering, bubbling pool of liquid fat.\"}}\n</tool_call>",
+    "queries": [],
+    "user_input": "<compress_trigger range='12-28'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "The person's hands are touching the top right pork chop. | The person is sprinkling seasoning onto the pork chops. | Four pork chops are arranged on the cutting board. | The cutting board is placed on a wooden table. | A hand wearing a gold ring is touching the top right pork chop. | A black pepper grinder is being used to season the meat. | Four pork chops are arranged in a square formation on the cutting board. | The pork chops are visibly seasoned with white salt crystals and black pepper specks. | A person is pressing their hand down on the raw meat chops. | Four pieces of raw meat are arranged on a wooden cutting board. | The meat is seasoned with visible specks of black pepper. | The cutting board is placed on a wooden table.",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 15,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand lowers the seasoned raw meat cut into the grey speckled frying pan filled with hot melted butter. The pink chop with a white fat rim makes contact with the bubbling yellow liquid on the left side, settling into the pan as the hand releases it.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 20,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Yellow tongs flip the remaining meat chops in the grey speckled pan, turning raw pink surfaces to reveal golden-brown, seared undersides. The butter bubbles vigorously around the cooking meat as the tongs manipulate the pieces, ensuring all four chops display their browned sides while sizzling on the portable stove.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 21,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Yellow tongs turn the last raw-sided chop in the pan to show its browned underside. All four meat cuts now exhibit golden-brown seared surfaces as they fry in the bubbling butter within the grey speckled skillet on the white burner.</think><answer></answer>",
+    "queries": [],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 22,
+    "sample_type": "response",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "Various_and_Unique_Pork_Cutlet__Best_6_F2_001",
+    "sequence_type": "immediate_response",
+    "action": "response",
+    "output": "<think>Three of the four golden-brown meat chops are removed from the grey speckled frying pan, leaving only one piece cooking in the top left. The remaining hot fat bubbles vigorously around the single chop, revealing browned residue on the pan's surface where the other pieces were previously frying.</think><answer>B</answer>",
+    "queries": [],
+    "user_input": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 23,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "Various_and_Unique_Pork_Cutlet__Best_6_F2_001",
+    "sequence_type": "immediate_response",
+    "action": "silent",
+    "output": "<think>Yellow tongs grasp the final golden-brown meat chop remaining in the top left of the grey speckled pan. The tongs lift the cooked piece out, leaving the skillet empty except for bubbling, browned fat. Hands holding a small glass bowl filled with chopped white onions appear above the pan.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 24,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Hands hold a small clear glass bowl filled with diced white onions over the grey speckled frying pan. The onions are poured directly into the center of the pan, landing in the hot, browned fat residue. A pile of chopped white onions now sits in the middle of the skillet.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 25,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Hands hold a small white bowl and pour minced yellow-white garlic chunks onto the central pile of diced white onions resting in the hot, browned oil within the grey speckled frying pan on the white stove.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 26,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand uses a yellow spatula to stir the central pile of diced white onions and minced garlic within the grey speckled frying pan. The utensil mixes the ingredients into the hot browned fat, spreading them across the bottom surface as they begin to cook on the white portable stove burner.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "question_window",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 28,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula stirs the diced onions and garlic mixture in the grey speckled pan. The ingredients continue to cook, turning a deeper golden-brown color as they are moved around the hot surface. The mixture spreads across the bottom of the pan.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 29,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula continues mixing the diced onions and garlic in the grey pan. The mixture browns further as it is stirred across the bottom surface, coating the pan with the caramelizing vegetables and residual oil on the white burner.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 30,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A yellow spatula continues to stir the diced onion and garlic mixture within the grey speckled frying pan. The ingredients are pushed across the bottom surface, appearing increasingly golden-brown and caramelized as they cook in the bubbling residual fat on the white portable stove.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [44, 60], \"text\": \"[44-48] Three golden-brown meat chops are removed from the grey speckled frying pan, leaving one piece cooking in the top left before yellow tongs lift the final chop out, leaving only bubbling browned fat.\\n[48-52] Hands pour diced white onions from a clear glass bowl into the center of the hot pan, followed by minced yellow-white garlic chunks poured from a small white bowl onto the onions.\\n[52-60] A yellow spatula stirs the central pile of onions and garlic, mixing them into the browned oil. The ingredients spread across the pan bottom, cooking and turning a deeper golden-brown color as they caramelize on the white stove burner.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='44-60'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "Two meat cutlets are frying in the pan. | The oil is bubbling around the meat. | The pan is sitting on a white stove. | Yellow tongs lift a slice of cooked meat out of the frying pan. | The pan contains bubbling brown oil and cooking residue. | A hand holds a glass bowl of chopped white onions above the pan. | The frying pan sits on a white electric stove. | cooked meat removed from pan, prepared for sauce base | A person is pouring chopped white onions from a glass bowl into a frying pan. | The frying pan contains a brown liquid sauce. | The pan is sitting on a white portable stove. | onions added to pan - sauce base preparation began",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 31,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula stirs the browning onion and garlic mixture in the grey speckled pan. The diced ingredients are moved across the pan's surface, becoming darker and more golden-brown as they continue to cook in the hot oil on the white portable stove.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 36,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The yellow spatula actively stirs the white mushroom slices, folding them into the dark golden-brown onion mixture within the grey speckled pan. The mushrooms are distributed across the pan's surface, becoming coated in the oil and caramelized bits on the white stove.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 37,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula continues mixing the sliced white mushrooms with the caramelized onion base in the grey speckled pan. The mushrooms are tossed and turned, becoming increasingly coated in the browned oil and bits on the white stove surface.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 38,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A yellow spatula continues stirring sliced white mushrooms mixed with caramelized onions in a grey speckled pan. The ingredients are tossed across the hot surface, ensuring the mushrooms are coated in the browned onion base and oil on the white portable stove.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [60, 76], \"text\": \"[60-68] A yellow spatula stirs a diced onion and garlic mixture within a grey speckled frying pan on a white portable stove. The ingredients are pushed across the bottom, appearing increasingly golden-brown and caramelized as they cook in bubbling residual fat. [68-70] Hands hold a clear glass bowl containing sliced white mushrooms over the pan. The mushrooms are poured onto the caramelized onion and garlic mixture, sitting on top of the brown base. [70-76] The yellow spatula actively stirs the sliced white mushrooms into the brown caramelized onion mixture. The mushrooms are pushed around the hot surface, folding into the dark golden-brown onion mixture and becoming coated in the oil and caramelized bits.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='60-76'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A yellow spatula is stirring a mixture of chopped onions and sauce inside a grey frying pan. | The frying pan is sitting on top of a white portable cooktop. | The food mixture appears to be sautéing or caramelizing. | Hands are pouring sliced mushrooms from a glass bowl into a frying pan. | The pan contains sautéed onions. | The frying pan is placed on a white electric stove. | mushrooms added to sautéed onions | A yellow spatula is stirring sliced white mushrooms in a frying pan. | The mushrooms are being mixed with a brown sautéed onion base. | The frying pan is sitting on a white portable stove. | A yellow spatula is stirring sliced mushrooms in a pan. | The mushrooms are being mixed with sautéed onions.",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 39,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The yellow spatula continues to mix the sliced white mushrooms with the dark golden-brown caramelized onion mixture in the grey speckled frying pan. The ingredients are tossed around the hot surface, ensuring even cooking and coating in the residual oil on the white portable stove.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 44,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula stirs the white powder into the mushroom and onion mixture within the grey speckled pan. The utensil folds the dry ingredient into the browned base, breaking up the central mound and distributing it among the sautéed vegetables on the white stove.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 45,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula continues to mix the white powder into the sautéed mushroom and onion mixture inside the grey speckled pan. The utensil pushes the ingredients around the hot surface, ensuring the powder coats the vegetables and blends with the caramelized base on the portable stove. The white powder becomes less distinct as it integrates with the browned ingredients.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 46,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>The yellow spatula completes mixing the white powder into the mushroom base. A hand then appears holding a clear glass bowl, pouring a reddish-orange liquid into the center of the grey speckled pan. The liquid streams onto the coated mushroom and onion mixture on the white stove.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [76, 92], \"text\": \"[76-86] A yellow spatula stirs sliced white mushrooms mixed with caramelized onions in a grey speckled pan on a white portable stove, tossing ingredients across the hot surface for even cooking. [86-88] A hand pours fine white powder from a small white bowl onto the center of the sautéed mixture, creating a white mound. [88-92] The yellow spatula mixes the white powder into the mushroom and onion mixture, folding the dry ingredient into the base until it integrates and coats the vegetables.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='76-92'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A yellow spatula is stirring sliced mushrooms and onions in a grey frying pan. | The frying pan is sitting on a white portable stove. | The mushrooms are sliced into quarters or halves. | The onions appear caramelized and brown. | A yellow spatula is stirring sliced mushrooms and diced onions in a frying pan. | The frying pan is sitting on top of a white electric stove burner. | The mushrooms and onions are browning as they cook. | A yellow spatula is stirring sliced mushrooms and onions inside a grey frying pan. | The frying pan is resting on a white electric stove. | The food mixture appears to be sautéing. | A yellow spatula is stirring sliced mushrooms and onions inside a grey frying pan. | The frying pan is sitting on top of a white electric stove.",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 47,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A clear glass bowl is tilted by a hand, pouring a steady stream of reddish-orange liquid into the grey speckled frying pan. The liquid cascades over the sautéed mushroom and onion mixture, pooling at the bottom and beginning to submerge the ingredients as the volume increases within the pan on the white stove.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 51,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula stirs the reddish-orange broth containing sliced mushrooms and onions inside the grey speckled pan. The liquid simmers around the ingredients as the utensil agitates the mixture on the white portable stove, blending the sauce components thoroughly while the dish continues to cook.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 52,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula continuously stirs a simmering reddish-brown liquid containing sliced mushrooms and onions within a grey speckled frying pan. The utensil moves through the broth, mixing the solid ingredients as the sauce bubbles gently on the white portable stove surface. The pan remains stationary.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 53,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A yellow spatula stirs the simmering reddish-brown liquid filled with sliced mushrooms and onions inside the grey speckled frying pan. The sauce bubbles gently around the ingredients on the white portable stove as the utensil mixes the contents, maintaining the blend of the liquid and solid components.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [92, 106], \"text\": \"[92-98] A hand tilts a clear glass bowl, pouring a steady stream of reddish-orange liquid into the grey speckled frying pan. The liquid cascades over the sautéed mushroom and onion mixture, pooling at the bottom and rising to submerge the ingredients on the white stove. [98-106] A yellow spatula enters the pan filled with the reddish-orange broth and mushrooms. The utensil stirs the liquid mixture, agitating the mushrooms and onions within the broth on the white portable stove. The stirring action blends the liquid with the sautéed ingredients as the sauce bubbles gently.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='92-106'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A grey speckled frying pan is sitting on a white electric stove. | The pan contains a mixture of cooked mushrooms and browned minced food. | An orange-red liquid is being poured from above into the center of the pan. | liquid sauce poured into pan - curry/sauce formation | A hand pours an orange liquid from a glass measuring cup into a frying pan. | The liquid mixes with the browned meat and mushrooms in the pan. | The frying pan is placed on top of a white portable stove. | The stove is resting on a wooden table. | A clear glass measuring cup is pouring a reddish-brown liquid into the frying pan. | The frying pan sits on top of a white portable electric stove. | The stew inside the pan contains visible sliced mushrooms and minced meat. | A yellow spatula is stirring a mixture of sauce, mushrooms, and meat inside a frying pan.",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 54,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula continues to stir the simmering reddish-brown liquid filled with sliced mushrooms and onions inside the grey speckled frying pan. The sauce bubbles gently as the utensil agitates the mixture, moving the solid ingredients through the hot liquid on the white portable stove surface, maintaining a consistent texture.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 58,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula stirs the simmering reddish-brown sauce containing sliced mushrooms and onions within the grey speckled pan. The utensil moves through the liquid, agitating the ingredients on the white portable stove as small bubbles rise to the surface of the hot mixture.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 59,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The yellow spatula continues mixing the reddish-brown broth and mushroom mixture in the grey pan, sweeping through the liquid to push sliced mushrooms around the center. The sauce simmers consistently with small bubbles rising to the surface as the utensil agitates the hot contents on the white burner.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 60,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A yellow spatula stirs the simmering reddish-brown sauce containing sliced mushrooms and onions within the grey speckled pan. The utensil moves through the liquid on the white portable stove, agitating the ingredients and keeping them suspended in the hot broth as small bubbles rise to the surface of the mixture.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [106, 120], \"text\": \"Throughout the interval, a yellow spatula stirs a simmering reddish-brown liquid containing sliced mushrooms and onions within a grey speckled frying pan on a white portable stove. The sauce bubbles gently as the utensil sweeps through the mixture, agitating the contents and pushing the solid ingredients around the center. This continuous motion keeps the mushrooms and onions suspended and evenly distributed within the hot broth. Small bubbles rise consistently to the surface, indicating a steady simmer, while the spatula maintains the blend of liquid and solid components for a uniform texture.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='106-120'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A yellow spatula is stirring a brownish-orange liquid with sliced mushrooms inside a grey speckled frying pan. | The frying pan is sitting on top of a white portable electric stove. | The stove is placed on a light brown wooden surface. | A yellow spatula is stirring a mushroom sauce in a frying pan. | The frying pan is sitting on a white electric burner. | The sauce contains visible slices of mushrooms. | A yellow spatula is stirring a mushroom sauce in a frying pan. | The frying pan is placed on a white electric stove. | The sauce contains visible sliced mushrooms. | A yellow spatula is stirring a mushroom curry mixture in a frying pan. | The frying pan is sitting on a white portable stove. | The curry sauce is bubbling slightly, indicating it is being heated.",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 61,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A yellow spatula continues stirring the simmering reddish-brown sauce containing sliced mushrooms within the grey speckled frying pan. The utensil moves through the bubbling liquid on the white portable stove, agitating the ingredients to keep them suspended and evenly distributed in the hot broth.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 65,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The metal spoon holding pink granular seasoning vanishes from the frame after dispensing its load, leaving distinct piles of the pink powder floating on the surface of the simmering reddish-brown mushroom sauce inside the grey speckled frying pan on the white portable stove.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 66,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand holds a black cylindrical grinder over the pan, dispensing ground black pepper onto the sauce surface where piles of pink seasoning remain visible. The reddish-brown liquid containing mushrooms continues to simmer gently in the grey speckled frying pan on the white portable stove.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 67,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A hand holding a yellow spatula stirs the reddish-brown mushroom sauce in the grey speckled pan. The sauce features visible black pepper specks on the surface. The spatula mixes the seasoning into the simmering liquid, agitating the sliced mushrooms and onions within the broth on the white portable stove.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [120, 134], \"text\": \"[120-128] A yellow spatula stirs a simmering reddish-brown sauce containing sliced mushrooms and onions within a grey speckled pan on a white portable stove. A hand grips the black handle to stabilize the pan while the utensil agitates the ingredients in the hot broth. [128-132] The spatula is removed, and a hand holding a metal spoon with pink granular seasoning sprinkles the contents into the bubbling mixture, leaving distinct piles floating on the surface. [132-134] A hand uses a black cylindrical grinder to dispense ground black pepper onto the sauce, adding to the visible pink seasoning as the liquid continues to simmer.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='120-134'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A yellow spatula is stirring a mushroom sauce in a frying pan. | The sauce is simmering on a white cooktop. | Sliced mushrooms are visible within the orange sauce. | A yellow spatula is stirring a thick orange sauce filled with cashews. | The sauce is simmering inside a grey speckled frying pan. | The frying pan is placed on top of a white portable stove. | A yellow spatula is stirring the mushroom sauce in the pan. | The sauce is simmering inside the grey speckled frying pan. | The frying pan is placed on top of a white electric stove. | A yellow spatula is stirring a mushroom sauce inside a grey frying pan. | The frying pan is sitting on a white portable electric stove. | A hand is holding the black handle of the frying pan on the right side.",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 68,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>The yellow spatula continues stirring the reddish-brown sauce with sliced mushrooms inside the grey speckled pan. The utensil blends the black pepper and pink salt into the simmering liquid on the white portable stove, agitating the mixture as small bubbles rise to the surface consistently.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 72,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand holding yellow tongs places a browned, cooked meat cutlet into the left side of the simmering reddish-brown mushroom sauce inside the grey speckled frying pan. The meat settles into the liquid, resting partially submerged in the sauce on the white portable stove.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 73,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A hand utilizes yellow-tipped tongs to lower a second seared meat cutlet into the bubbling reddish-brown mushroom sauce. The browned protein is positioned beside the initial piece already simmering in the grey speckled pan on the white portable burner. The sauce continues to bubble around the added meat.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 74,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A hand holding yellow tongs lowers a seared meat cutlet into the top right area of the grey speckled pan. The browned protein joins three other pieces already submerged in the simmering reddish-brown mushroom sauce on the white portable burner.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [134, 148], \"text\": \"[134-142] A hand utilizes a yellow spatula to stir a simmering reddish-brown sauce filled with sliced mushrooms and onions inside a grey speckled frying pan. The mixture, visible with black pepper specks, is agitated on a white portable stove to blend seasonings while a hand holds the black handle. [142-144] The utensil is removed, leaving the sauce to bubble gently. [144-148] A hand uses yellow-tipped tongs to introduce cooked meat into the pan. First, a browned cutlet is placed on the left side, followed by a second seared cutlet positioned next to it, both partially submerging into the hot mushroom sauce.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='134-148'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "A hand is stirring a thick, orange-brown curry with an orange spatula. | The curry contains visible chunks of mushrooms and spices. | The frying pan is sitting on a white portable electric stove. | The spatula scrapes the bottom of the pan as it moves. | A yellow spatula is stirring the orange curry mixture inside the pan. | The frying pan is sitting on top of the white electric stove. | Cashew nuts are visible within the simmering sauce. | A yellow spatula is stirring a thick yellow-orange curry inside a grey speckled pan. | The pan is sitting on a white portable electric stove. | Visible cashew nuts are mixed into the curry. | A yellow spatula is stirring the yellow-orange curry inside the grey speckled pan. | The curry contains visible chunks of solid ingredients.",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 75,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Four seared meat cutlets rest in the simmering reddish-brown mushroom sauce inside the grey speckled pan. A clear glass lid featuring a central black knob is lowered over the cookware, completely covering the meat and sauce to trap heat and steam within the vessel on the white portable stove.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 80,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A metal spoon continues to pour a thick, yellowish-brown sauce with mushroom slices over a browned meat cutlet on a white square plate. The gravy accumulates on the protein's surface, coating it with liquid and solid ingredients as the spoon tilts to release more contents onto the dish.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 81,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>A metal spoon completes pouring the thick, mushroom-flecked sauce over the browned meat cutlet centered on a white square plate. The gravy fully coats the top of the protein and pools around the base. The utensil is lifted out of the frame, leaving the finished dish displayed on the wooden table.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 82,
+    "sample_type": "compress",
+    "prompt_type": "COMPRESS_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "compress",
+    "output": "<think>A hand wearing a gold ring sprinkles chopped green herbs over the sauced meat cutlet on the white plate. The green pieces fall onto the brown gravy and protein, scattering across the surface of the dish resting on the wooden table.</think><tool_call>\n{\"name\": \"compress\", \"arguments\": {\"time_range\": [148, 164], \"text\": \"[148-150] A hand uses yellow tongs to lower a seared meat cutlet into a grey speckled pan containing three others simmering in reddish-brown mushroom sauce. [150-152] A clear glass lid featuring a central black knob covers the cookware to trap heat. [152-156] A hand wearing a gold ring lifts the lid, revealing the simmering cutlets, before yellow-tipped tongs grasp a piece. [156-158] The tongs transfer the browned cutlet to the center of a white square plate. [158-164] A metal spoon pours the thick, yellowish-brown sauce with mushroom slices over the protein, coating the top surface and pooling around the base on the wooden table.\"}}\n</tool_call>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "<compress_trigger range='148-164'/>",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "v12_inter_chunk": true,
+    "base_role": "compress_boundary",
+    "gold_caption": "Yellow tongs are lowering a seared meat cutlet into the frying pan. | Three other meat cutlets are already simmering in the yellow sauce. | The frying pan is sitting on top of the white electric cooktop. | A hand lifts the glass lid off the frying pan. | The meat patties are simmering in a yellow sauce containing white beans. | The pan is sitting on a white electric stove. | glass lid lifted - checking simmering meat | A hand is lifting the glass lid off the frying pan. | The meat cutlets are simmering in a bubbling yellow sauce. | The frying pan is sitting on a white portable stove. | A hand is using yellow-tipped tongs to adjust a piece of meat in a pan. | Four pieces of browned meat are simmering in a sauce with white beans.",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  },
+  {
+    "chunk_idx": 83,
+    "sample_type": "silent",
+    "prompt_type": "SYSTEM_PROMPT",
+    "trajectory_id": "traj_1",
+    "card_id": "",
+    "sequence_type": "base",
+    "action": "silent",
+    "output": "<think>Two hands utilize silver cutlery to slice the cooked meat cutlet resting on the white square plate. The left hand maneuvers a knife while the right hand steadies the protein with a fork, cutting through the sauced and herb-garnished surface to reveal the interior.</think><answer></answer>",
+    "queries": [
+      {
+        "question": "What color is the ring worn on the person's finger throughout the video? A. Black B. Gold C. White D. Grey",
+        "ask_time": 44,
+        "answers": [
+          {
+            "text": "B",
+            "time": 44
+          }
+        ]
+      }
+    ],
+    "user_input": "",
+    "recall_result": null,
+    "protocol_version": "v12",
+    "base_role": "compress_boundary",
+    "video_id": "Various_and_Unique_Pork_Cutlet__Best_6",
+    "video_path": "/home/tione/notebook/gaozhenkun/hzh/data/datasets/Koala_raw/Various_and_Unique_Pork_Cutlet__Best_6.mp4"
+  }
+]
