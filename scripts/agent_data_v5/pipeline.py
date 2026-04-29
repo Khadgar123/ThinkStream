@@ -978,27 +978,47 @@ async def run_pipeline(
     # --- Final output ---
     FINAL_DIR.mkdir(parents=True, exist_ok=True)
 
-    # Split by video for train/val/test (80/10/10).
-    # Train videos are further split into SFT-train + RL-train (~80/20)
-    # so the RL stage has a held-out prompt pool the SFT model never saw,
-    # avoiding reward hacking via memorization on answer-grounded rewards.
-    # `train.jsonl` keeps the union for backward-compat / single-stage
-    # baselines; `train_sft.jsonl` and `train_rl.jsonl` are the disjoint
-    # pieces.
+    # v12.0 SPLIT OVERHAUL — split-aware density + RL parity.
+    # v11.5 was 80/10/10 train/val/test with 80/20 SFT/RL inside train.
+    # With v12 density caps (~15 samples/video, was 32), v11.5 split would
+    # leave RL with 746 samples ≈ 93 GRPO groups @ group_size=8 — too few
+    # for stable trajectory-level credit assignment.
+    #
+    # v12.0:
+    #   70/15/15 train/val/test  (more held-out for stable eval)
+    #   Within train: 50/50 SFT/RL  (RL needs as much volume as SFT)
+    #   val/test: thin to BENCHMARK density (~1 traj/video, ≤3 Q)
+    #             so eval distribution matches OVO-Bench / StreamingBench
+    #             rather than train-time density (avoids train→eval shift).
+    #
+    # Projected v12 final corpus on 311-video batch1 (avg 15 samples/video):
+    #   SFT  train: 109 videos × 15 = ~1635 samples (vs v11.5 9900: 6× smaller)
+    #   RL   train: 109 videos × 15 = ~1635 samples  (~204 GRPO groups @ G=8)
+    #   val:  47 videos × ~5 thinned = ~235 samples (1 traj × 3 Q each)
+    #   test: 47 videos × ~5 thinned = ~235 samples
+    #
+    # If batch1 SFT corpus < 2000 ends up too small, options:
+    #   (a) generate batch2 (more videos, NOT denser per-video)
+    #   (b) bump MAX_SAMPLES_PER_VIDEO 15 → 20 (mild density relaxation)
+    #   (c) keep MAX_TRAJECTORIES_PER_VIDEO=5 but ease MAX_QUESTIONS=3→4
     video_ids = list(set(s.get("video_id", "") for s in passed_samples))
-    video_ids = [v for v in video_ids if v]  # remove empty
+    video_ids = [v for v in video_ids if v]
     random.seed(seed)
     random.shuffle(video_ids)
     n = len(video_ids)
-    train_vids = set(video_ids[:int(n * 0.8)])
-    val_vids = set(video_ids[int(n * 0.8):int(n * 0.9)])
-    test_vids = set(video_ids[int(n * 0.9):])
+    train_end = int(n * 0.70)
+    val_end = int(n * 0.85)
+    train_vids = set(video_ids[:train_end])
+    val_vids = set(video_ids[train_end:val_end])
+    test_vids = set(video_ids[val_end:])
 
-    # Sub-split train into SFT and RL (deterministic on video_ids order
-    # already shuffled by `seed`). RL fraction is 20% of train videos.
-    train_vid_list = video_ids[:int(n * 0.8)]
-    sft_train_vids = set(train_vid_list[:int(len(train_vid_list) * 0.8)])
-    rl_train_vids = set(train_vid_list[int(len(train_vid_list) * 0.8):])
+    # Sub-split train 50/50 into SFT and RL (was 80/20). v12 needs RL parity
+    # because GRPO trajectory-level credit assignment needs ≥150 unique
+    # prompt groups. With G=8 rollouts, that's 1200+ samples minimum.
+    train_vid_list = video_ids[:train_end]
+    sft_split = int(len(train_vid_list) * 0.50)
+    sft_train_vids = set(train_vid_list[:sft_split])
+    rl_train_vids = set(train_vid_list[sft_split:])
     assert sft_train_vids.isdisjoint(rl_train_vids), \
         "SFT and RL train video sets must be disjoint"
 
@@ -1007,6 +1027,39 @@ async def run_pipeline(
     test_samples = [s for s in passed_samples if s.get("video_id") in test_vids]
     train_sft_samples = [s for s in train_samples if s.get("video_id") in sft_train_vids]
     train_rl_samples = [s for s in train_samples if s.get("video_id") in rl_train_vids]
+
+    # v12.0 EVAL DENSITY THINNING — keep val/test at benchmark density (~1
+    # q/min) so eval is a fair proxy for OVO-Bench / StreamingBench scores.
+    # Thin to FIRST trajectory only per video (ascending trajectory_id).
+    # This drops ~50-60% of val/test samples but keeps ALL silent/observation
+    # context needed to evaluate timing.
+    def _thin_to_first_trajectory(samples: list) -> list:
+        from collections import defaultdict
+        by_vid = defaultdict(list)
+        for s in samples:
+            by_vid[s.get("video_id", "")].append(s)
+        kept = []
+        for vid, vsamps in by_vid.items():
+            traj_ids = sorted({s.get("trajectory_id", "0") for s in vsamps})
+            if not traj_ids:
+                kept.extend(vsamps)
+                continue
+            first_traj = traj_ids[0]
+            # Keep samples from first trajectory + ALL silent samples without
+            # a trajectory_id (base silents preserve the silent-decision
+            # eval signal).
+            for s in vsamps:
+                tid = s.get("trajectory_id", "")
+                if not tid or tid == first_traj or s.get("sequence_type") == "base":
+                    kept.append(s)
+        return kept
+
+    val_samples = _thin_to_first_trajectory(val_samples)
+    test_samples = _thin_to_first_trajectory(test_samples)
+    logger.info(
+        f"  eval-density thinned: val={len(val_samples)}, test={len(test_samples)} "
+        f"(1 traj/video + base silents)"
+    )
 
     splits_to_save = [
         ("train", train_samples),                # full union (backward compat)
