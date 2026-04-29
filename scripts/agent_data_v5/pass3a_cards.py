@@ -38,69 +38,52 @@ FAMILY_TARGETS = {
     # v11.5: targets calibrated against OVOBench task frequencies (1640 samples,
     # 12 tasks). Goal: STRICT SUPERSET of every OVO (task, form) combination
     # while keeping per-video volume small enough to avoid overfitting on the
-    # 312-video batch1.
+    # 312-video batch1. Total ≈25 cards/video × 312 = ~7,800 cards.
     #
-    # v12.0 REBALANCE — empirical pipeline audit (commit f9fe245+) showed
-    # final/train_sft.jsonl response distribution:
-    #   descriptive 49% / binary 32% / short_exact 10% / number 9% / MC 0%
-    # This is OPPOSITE to the design intent. Two compounding causes:
-    #   (a) F7 multi-probe binary generates ~6 binary placements per card,
-    #       crowding out other forms in pass3d_select.
-    #   (b) v9.3 fast-path landed AFTER batch1 was generated, so MC labels
-    #       drifted to descriptive form ("A. eggplant" → render misclassifies
-    #       as descriptive because >3 chars).
-    # The deep fix is in pass3c (regen MC labels with strict normalization).
-    # This file's role is to bias the CARD MIX toward MC so even partial
-    # downstream losses keep MC ≥ 5% of training samples.
+    # v12.0 ROLLBACK (after 16-benchmark density survey): the v12 bump 25→36
+    # was based on a misdiagnosed "MC missing" symptom. Real cause is that
+    # ThinkStream pass3b density was 12 q/min (vs benchmark median 1 q/min)
+    # — the bug is in pass3b filtering, not pass3a card volume. With pass3b
+    # tightened to ~1.2 q/min (min_chunk_gap=15, max_per_traj=3, traj
+    # divisor=30), v11.5's 25-card pool gives plenty of selection material.
+    # See docs/v12.0_protocol_migration_design.md §5.2 (research-backed
+    # density targets) and pass3b_placement.py:plan_trajectories.
     #
     # OVO ratios (sorted): EPM 18.1% / HLD 11.3% / OJR 11.2% / STU 10.9% /
     # OCR 9.1% / ASI 9.0% / ATR 7.1% / ACR 6.6% / FPD 6.2% / REC 5.0% /
     # CRR 2.9% / SSR 2.6%. Targets below mirror these proportions with each
     # task served by ≥1 family that emits the right form.
     #
-    # OCR (9.1%) → 2 cards (F1: short_exact)
+    # OCR (9.1%) → 2 cards
     "F1": 2,
-    # ATR (7.1%) → 3 cards (v12.0: F2 MC bumped 1→2 + S1 descriptive)
-    "F2": 2, "S1": 1,
-    # OJR (11.2%) → 4 cards (v12.0: CR4 MC bumped 1→2 for OJR composition)
-    "F3": 1, "R1": 1, "CR4": 2,
-    # STU (10.9%) → 2 cards (F4 MC, kept at 2)
+    # ATR (7.1%) → 2 cards (F2 attribute-MC + S1 descriptive scene)
+    "F2": 1, "S1": 1,
+    # OJR (11.2%) → 3 cards (F3 number + R1 re-id + CR4 compositional)
+    "F3": 1, "R1": 1, "CR4": 1,
+    # STU (10.9%) → 2 cards
     "F4": 2,
-    # ACR (6.6%) → 3 cards (v12.0: E1 MC bumped 1→2 + M1 descriptive)
-    "E1": 2, "M1": 1,
-    # EPM (18.1%) → 5 cards (v12.0: C1 MC bumped 1→2, CR1 MC bumped 1→2;
-    #              E2 stays at 2 — has binary multi-probe + MC mix)
-    "E2": 2, "C1": 2, "CR1": 2,
-    # CRR (2.9%) → 1 card (CR5 descriptive — kept low, it's already
-    #              over-represented after teacher drift)
+    # ACR (6.6%) → 2 cards (E1 short MC + M1 full-video summary)
+    "E1": 1, "M1": 1,
+    # EPM (18.1%) → 4 cards (E2 event-watch with binary+MC mix +
+    #              C1 comparison + CR1 causal-why)
+    "E2": 2, "C1": 1, "CR1": 1,
+    # CRR (2.9%) → 2 cards (CR1 above shares; CR5 forces descriptive form)
     "CR5": 1,
-    # ASI (9.0%) → 3 cards (v12.0: CR2 MC bumped 1→2 for ASI ordering)
-    "P1": 1, "CR2": 2,
-    # SSR (2.6%) → 1 card (F7 binary multi-probe — generates 6+ placements
-    #              per card already; DO NOT bump above 1, it crowds out MC)
+    # ASI (9.0%) → 2 cards (P1 procedure + CR2 ordering)
+    "P1": 1, "CR2": 1,
+    # SSR (2.6%) → 1 card (F7 step-progress binary multi-probe)
     "F7": 1,
-    # REC (5.0%) → 1 card (F5 number — strict-form, keep at 1)
+    # REC (5.0%) → 1 card (F5 repetition counting, open number)
     "F5": 1,
-    # FPD (6.2%) → 2 cards (v12.0: F6 MC bumped 1→2 — FPD-style "what next"
-    #              is high-value MC for OVO eval)
-    "F6": 2,
-    # HLD (11.3%) → 2 cards (N1 MC with "Unable to answer" option,
-    #              multi-tier ask placement gives 6 placements/card)
+    # FPD (6.2%) → 1 card (F6 future prediction)
+    "F6": 1,
+    # HLD (11.3%) → 2 cards (N1 — multi-tier ask placement gives 6 placements)
     "N1": 2,
-    # CR3/CR6/CR7 — bumped 1→2 each. These reasoning families are MC and
-    # produce ~1 placement per card; raising them is the cheapest way to
-    # add MC volume that targets OVO REC/CRR/SSR/EPM tail tasks.
-    "CR3": 2, "CR6": 2, "CR7": 2,
+    # CR3/CR6/CR7 — kept at 1 each so teacher attempts; eligibility on batch1
+    # is sparse and these may yield zero on many videos (acceptable).
+    "CR3": 1, "CR6": 1, "CR7": 1,
 }
-# v12.0 totals: 35 cards/video × 312 videos ≈ 10,920 corpus pre-verify.
-# Target form mix at CARD level after rebalance:
-#   MC: 24 cards (69%)   ← was 60%, bumped via 11 family bumps
-#   binary: 1 card from F7 + ~half of E2 ≈ 2 (6%)
-#   number: 2 cards (F3+F5) (6%)
-#   short_exact: 3 cards (F1+R1) (9%)
-#   descriptive: 3 cards (S1+M1+CR5) (9%)
-# F7 binary multi-probe still generates 6+ placements/card → final binary
-# placement ratio will be higher than card ratio (~25%); still acceptable.
+# Total = 25 cards/video × 312 videos = 7,800 corpus pre-verify.
 
 # Families that MUST be attempted on every video, even when classify_chunks
 # returns zero chunks for them. v9.1 audit found F5=4 cards across 312 videos

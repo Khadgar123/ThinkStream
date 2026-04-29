@@ -107,17 +107,16 @@ MAX_CANDIDATES_PER_VIDEO = {
 }
 
 # Per-video FINAL sample cap (applied after render).
-# v11.5: 50 → 30 for batch1 (312 videos). With FAMILY_TARGETS now ≈25 cards/video
-# and 3 placements/card max, capping at 30 forces submodular selection to keep
-# the most diverse 30 — prevents same-video near-duplicates from dominating
-# loss on a small batch and reduces overfit risk.
-MAX_SAMPLES_PER_VIDEO = 30
-# Hard caps for trajectory planning
-# v11.5: 15 → 10. Small batch1 needs fewer trajectories per video so corpus-
-# level diversity (across the 312 videos) wins over within-video repetition.
-MAX_TRAJECTORIES_PER_VIDEO = 10
-MAX_QUESTIONS_PER_TRAJECTORY = 6    # beyond this queries_state gets too long
-MAX_ACTIVE_QUERIES = 2              # max unanswered questions at any time
+# v12.0 DENSITY OVERHAUL — research-backed tightening to match streaming
+# benchmark targets (OVO 0.6 q/min, StreamingBench 1.0 q/min, MMDuet2 RL
+# converges at 3.3 q/video). v11.5 was producing ~12 q/min, ~30 samples/video
+# on 2.6-min videos — 12× over the streaming benchmark median, creating an
+# "always-respond" prior that hurts silent-decision learning AND inflates
+# train→eval distribution shift. New caps target ~1.2 q/min.
+MAX_SAMPLES_PER_VIDEO = 15           # was 30 — halve per-video corpus contribution
+MAX_TRAJECTORIES_PER_VIDEO = 5       # was 10 — match VideoLLM-online (3 conv/video)
+MAX_QUESTIONS_PER_TRAJECTORY = 3     # was 6 — match VideoLLM-online (3 q/conv)
+MAX_ACTIVE_QUERIES = 2               # unchanged — realistic user behavior
 
 # Backward compat aliases (deprecated — use token-based constants above)
 OBSERVATION_TOKENS = THINK_TOKENS  # deprecated alias

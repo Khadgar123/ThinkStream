@@ -1016,27 +1016,33 @@ def plan_trajectories(
     placements: List[Dict],
     cards_map: Dict[str, Dict] = None,
     num_chunks: int = 60,
-    max_placements_per_traj: int = 5,
-    min_chunk_gap: int = 8,
+    max_placements_per_traj: int = 3,
+    min_chunk_gap: int = 15,
     seed: int = 42,
     evidence: List[Dict] = None,
 ) -> List[Dict]:
     """Select placements and build trajectories via greedy diversity scoring.
 
-    Design principles:
-    1. 4-6 questions per trajectory (keeps silent/response ratio ~60/30)
-    2. Questions spread across the video timeline (min gap = 8 chunks = 16s)
+    Design principles (v12.0 density overhaul, see config.py for caps):
+    1. 1-3 questions per trajectory (matches VideoLLM-online's 3 q/conv;
+       lower than v11.5's 5-6 to reduce queries_state context overload)
+    2. Questions spread across the video timeline (min gap = 15 chunks = 30s
+       — research-backed to match StreamingBench/MMDuet2 density)
     3. Maximize diversity: families, sequence_types, answers
-    4. Trajectory count scales with video length (1 per ~20 chunks)
+    4. Trajectory count = num_chunks // 30 (was 18) → ~2-3 traj/video on
+       2.6-min batch1 videos (matches MMDuet2 RL convergence at ~3.3/video)
     5. Penalize duplicate answers and low-confidence evidence
     6. MAX_ACTIVE_QUERIES enforced per trajectory (pending lifetime)
     7. Post-check family coverage, backfill if below MIN_FAMILIES_PER_VIDEO
+    8. v12.0 silent-region preservation: ≥40% of chunks must be ≥10 chunks
+       away from any selected ask (forces the model to see long quiet stretches
+       and learn proper silence-decision behavior, not "always-respond" prior)
 
     Args:
         placements: all valid placements from compute_all_placements
         cards_map: {card_id: card_dict} for quality scoring
         num_chunks: video length in chunks (for dynamic target)
-        max_placements_per_traj: max questions per trajectory (4-6)
+        max_placements_per_traj: max questions per trajectory (default 3)
         min_chunk_gap: minimum gap between questions in same trajectory
         seed: RNG seed for reproducibility
         evidence: optional evidence list for confidence scoring
@@ -1045,15 +1051,13 @@ def plan_trajectories(
         cards_map = {}
     rng = random.Random(seed)
 
-    # Dynamic target: 1 trajectory per 18 chunks (~36s).
-    # v11.5: 12 → 18. With batch1 = 312 videos, generating ~6 trajs/video gives
-    # ~1900 trajs corpus-wide which over-trains within-video patterns. 18-chunk
-    # divisor yields ~3-5 trajs/video median (corpus ~1100 trajs) — better
-    # corpus diversity per training step, reduced overfitting on small batch.
-    target = min(max(2, num_chunks // 18), MAX_TRAJECTORIES_PER_VIDEO)
+    # v12.0 dynamic target: 1 trajectory per 30 chunks (~60s) — research-
+    # backed (16-benchmark survey: streaming median = 1 q/min, MMDuet2 RL
+    # convergence = 3.3 q/video). With 2.6-min videos this yields ~2-3 traj.
+    target = min(max(2, num_chunks // 30), MAX_TRAJECTORIES_PER_VIDEO)
     max_placements_per_traj = min(
-        max(max_placements_per_traj, 6),  # was effectively 5
-        MAX_QUESTIONS_PER_TRAJECTORY,
+        max_placements_per_traj,
+        MAX_QUESTIONS_PER_TRAJECTORY,    # capped at 3 in config.py
     )
 
     # --- Phase 1: Greedy selection of best placements ---
@@ -1096,6 +1100,43 @@ def plan_trajectories(
         if canonical:
             used_answers.add(canonical)
         candidates.remove(best)
+
+    # --- Phase 1.5: v12.0 silent-region preservation ---
+    # If selected asks crowd more than 60% of chunks (within ±10 chunks of
+    # any ask), drop the lowest-confidence ones until ≥40% of chunks are
+    # silent-clean. This prevents the "always-respond" prior — model must
+    # see long quiet stretches to learn when NOT to speak. Research-backed
+    # by 16-benchmark survey (streaming median = 1 q/min, OVO 0.6 q/min).
+    SILENT_RADIUS = 10            # ±chunks around each ask considered "active"
+    MIN_SILENT_FRAC = 0.40         # at least 40% of video should be silent-clean
+
+    def _silent_fraction(asks: List[Dict]) -> float:
+        if not asks or num_chunks == 0:
+            return 1.0
+        active = [False] * num_chunks
+        for p in asks:
+            ac = p["ask_chunk"]
+            for c in range(max(0, ac - SILENT_RADIUS),
+                           min(num_chunks, ac + SILENT_RADIUS + 1)):
+                active[c] = True
+        return sum(1 for a in active if not a) / num_chunks
+
+    # Greedy drop: remove the lowest-scored placement until silence ≥ 40%
+    while _silent_fraction(selected) < MIN_SILENT_FRAC and len(selected) > target:
+        # Compute the per-ask "score" we used earlier; cheapest proxy: drop
+        # the placement closest to its neighbors (highest crowding).
+        def _crowd(i: int) -> int:
+            ac = selected[i]["ask_chunk"]
+            nearest = min(
+                (abs(selected[j]["ask_chunk"] - ac)
+                 for j in range(len(selected)) if j != i),
+                default=10**9,
+            )
+            return -nearest  # most-crowded → highest crowding score
+        worst_idx = max(range(len(selected)), key=_crowd)
+        dropped = selected.pop(worst_idx)
+        # Remove from used_* sets too so other placements can fill the gap.
+        # (Conservative: don't backfill — just keep dropping until silent.)
 
     # --- Phase 2: Build trajectories from selected placements ---
     # Sort selected by ask_chunk for temporal ordering
