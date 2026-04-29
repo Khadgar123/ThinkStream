@@ -329,6 +329,7 @@ def streaming_predict_mcq_vllm(
     repetition_penalty: float = 1.1,
     debug: bool = False,
     debug_dir: Optional[str] = None,
+    protocol_version: str = "v11",
 ):
     """Chunk-lockstep streaming MCQ eval via vLLM batched generate.
 
@@ -344,6 +345,14 @@ def streaming_predict_mcq_vllm(
     log = setup_eval_logging(
         os.path.join(debug_dir, "streaming_eval_vllm.log"), rank=0
     )
+
+    # v12.0: hand TOOLS_SCHEMA to chat_template when protocol_version='v12'
+    # so <tools>...</tools> renders in system prompt and the model can emit
+    # <tool_call>{...}</tool_call>. v11 path keeps tools=None (legacy).
+    tools_for_template = None
+    if protocol_version == "v12":
+        from thinkstream.data.agent_protocol import TOOLS_SCHEMA
+        tools_for_template = TOOLS_SCHEMA
     dbg = DebugLogger(
         os.path.join(debug_dir, "streaming_debug_vllm.jsonl"),
         enabled=debug, rank=0,
@@ -403,7 +412,7 @@ def streaming_predict_mcq_vllm(
         # Phase B: build vLLM inputs
         try:
             vllm_inputs = [
-                prepare_vllm_input(m, processor) for _, m in active_pairs
+                prepare_vllm_input(m, processor, tools=tools_for_template) for _, m in active_pairs
             ]
         except Exception as e:
             log.error(f"vLLM input prep failed at chunk {chunk_idx}: {e}", exc_info=True)
@@ -654,6 +663,7 @@ def streaming_vllm_rollout(
     frames_root: Optional[str] = None,
     video_root: Optional[str] = None,
     compress_budget: Optional[int] = None,
+    protocol_version: str = "v11",
 ) -> List[Dict]:
     """vLLM-batched RL rollout matching grpo.py:617-803 output contract.
 
@@ -749,8 +759,17 @@ def streaming_vllm_rollout(
             continue
 
         # Phase B: vLLM input + batch generate
+        # v12.0: pass tools=TOOLS_SCHEMA to chat_template (so <tools> block
+        # renders + model can emit <tool_call>). v11 keeps tools=None.
+        _rollout_tools = None
+        if protocol_version == "v12":
+            from thinkstream.data.agent_protocol import TOOLS_SCHEMA
+            _rollout_tools = TOOLS_SCHEMA
         try:
-            vllm_inputs = [prepare_vllm_input(m, processor) for m in messages_list]
+            vllm_inputs = [
+                prepare_vllm_input(m, processor, tools=_rollout_tools)
+                for m in messages_list
+            ]
         except Exception as e:
             for r in live_active:
                 r.error = f"prep_input:{e}"

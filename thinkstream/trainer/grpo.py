@@ -940,6 +940,161 @@ from thinkstream.trainer.v12_rewards import (
 # ===========================================================================
 
 
+def _calc_rewards_v12(
+    rollout_data: List[Dict[str, Any]],
+    *,
+    group_size: int,
+    tokenizer: Any,
+    time_reward_window: int,
+    time_reward_slack: float,
+) -> Tuple[torch.Tensor, Dict[str, torch.Tensor], torch.Tensor]:
+    """v12.0 reward computation — 5 components per V12_REWARD_DICT_KEYS.
+
+    Mirrors v11's calc_rewards interface so the trainer can dispatch on
+    protocol_version. Returns (rewards [B], rewards_dict {key: [B]},
+    rewards_masks [B, n_rewards]) with column order matching
+    V12_REWARD_DICT_KEYS.
+
+    KEY DIFFERENCES from v11 calc_rewards:
+      - Parses <answer>/<tool_call> instead of <action>/<response>
+        (v12 protocol — see thinkstream.data.agent_protocol)
+      - Outcome uses compute_outcome_reward_v12 (anti-hack length cap +
+        answer_form-aware strict matching when 'binary'/'multiple_choice'/
+        'number'/'short_exact')
+      - Timing uses compute_timing_reward_v12 bucketed scheme
+        (-1 early hallucination / +1 on-time / +0.5 late_partial / -0.5
+        missed) — first such reward in any released streaming-video work
+      - Spam is ADDITIVE (negative weight × positive score), NOT
+        multiplicative (DeepEyesV2 pattern bug fix)
+      - Compress turns score summary quality (range_iou + text_match)
+        instead of binary triggered/not — system-triggered means timing
+        is not a model decision
+
+    Multi-level GRPO advantage aggregation happens downstream in
+    aggregate_v12_advantages, not here.
+    """
+    from thinkstream.data.agent_protocol import parse_agent_output_v12
+
+    weights = V12_DEFAULT_REWARD_WEIGHTS
+    keys = list(V12_REWARD_DICT_KEYS)
+    all_rewards = {k: [] for k in keys}
+    all_masks = {k: [] for k in keys}
+
+    for sample_data in rollout_data:
+        raw_sample = sample_data["raw_sample"]
+        chunk_results: List[Dict[str, Any]] = sample_data["chunk_results"]
+        metadata = raw_sample.get("metadata", {})
+        gt_answer = metadata.get("gold_answer", "")
+        answer_form = metadata.get("answer_form", "")
+        gold_action = (
+            metadata.get("gold_action")
+            or raw_sample.get("action")
+            or ""
+        )
+        gold_compress_chunks = metadata.get("gold_compress_chunks", [])
+        gold_summary_text = metadata.get("gold_summary_text", "")
+        gt_chunk_idx = raw_sample.get("chunk_idx")
+
+        for g in range(group_size):
+            # Reconstruct each chunk's text + collect tool/answer info
+            chunk_texts: List[str] = []
+            answer_chunk = None
+            n_recall = 0
+            n_compress = 0
+            final_answer = None
+            compress_summary_text = None
+            compress_summary_range = None
+
+            for cr in chunk_results:
+                gen_tokens = cr.get("generated_tokens", [])
+                if g >= len(gen_tokens):
+                    continue
+                tokens = gen_tokens[g]
+                if hasattr(tokens, "tolist"):
+                    tokens = tokens.tolist()
+                text = tokenizer.decode(tokens, skip_special_tokens=False)
+                chunk_texts.append(text)
+
+                parsed = parse_agent_output_v12(text)
+                if parsed["kind"] == "answer" and parsed["answer_text"]:
+                    if answer_chunk is None:
+                        answer_chunk = cr["chunk_idx"]
+                        final_answer = parsed["answer_text"]
+                elif parsed["kind"] == "recall":
+                    n_recall += 1
+                elif parsed["kind"] == "compress":
+                    n_compress += 1
+                    args = (parsed.get("tool_call") or {}).get("arguments") or {}
+                    compress_summary_text = args.get("text")
+                    compress_summary_range = args.get("time_range")
+
+            # ── outcome ──
+            outcome = _compute_outcome_reward_v12(
+                final_answer, gt_answer, answer_form=answer_form,
+            )
+            all_rewards["outcome"].append(outcome)
+            # Mask outcome=0 when sample has no gt (e.g., pure silent)
+            all_masks["outcome"].append(1.0 if gt_answer else 0.0)
+
+            # ── timing ──
+            timing = _compute_timing_reward_v12(
+                answer_chunk=answer_chunk,
+                visible_start_chunk=gt_chunk_idx,
+                visible_end_chunk=(
+                    (gt_chunk_idx + time_reward_window)
+                    if gt_chunk_idx is not None else None
+                ),
+            )
+            all_rewards["timing"].append(timing)
+            all_masks["timing"].append(1.0 if gt_chunk_idx is not None else 0.0)
+
+            # ── format ──
+            fmt = _compute_format_reward_v12(chunk_texts)
+            all_rewards["format"].append(fmt)
+            all_masks["format"].append(1.0)
+
+            # ── spam ──
+            spam = _compute_spam_score_v12(
+                n_recall_calls=n_recall, n_compress_calls=n_compress,
+            )
+            all_rewards["spam"].append(spam)
+            all_masks["spam"].append(1.0)
+
+            # ── compress_quality ──
+            cq = _compute_compress_quality_v12(
+                summary_text=compress_summary_text,
+                summary_range=compress_summary_range,
+                gold_summary_text=gold_summary_text,
+                gold_range=(
+                    [min(gold_compress_chunks), max(gold_compress_chunks)]
+                    if gold_compress_chunks else None
+                ),
+            )
+            all_rewards["compress_quality"].append(cq)
+            # Apply compress_quality only when chunk has compress action
+            all_masks["compress_quality"].append(
+                1.0 if compress_summary_text is not None else 0.0
+            )
+
+    # Stack to tensors
+    rewards_dict = {
+        k: torch.tensor(all_rewards[k], dtype=torch.float)
+        for k in keys
+    }
+    masks_dict = {
+        k: torch.tensor(all_masks[k], dtype=torch.float)
+        for k in keys
+    }
+
+    # Weighted sum (logging-only; downstream multi-level aggregation
+    # uses raw + masks)
+    rewards = torch.zeros_like(rewards_dict[keys[0]])
+    for k in keys:
+        rewards = rewards + weights.get(k, 0.0) * rewards_dict[k] * masks_dict[k]
+
+    rewards_masks = torch.stack([masks_dict[k] for k in keys], dim=1)
+    return rewards, rewards_dict, rewards_masks
+
 
 def _compute_silent_quality_reward(
     predicted_actions: List[str],
@@ -1051,6 +1206,29 @@ def calc_rewards(
       rewards_masks: [B, num_rewards] applicability mask (1=apply, 0=skip).
                      Column order matches REWARD_DICT_KEYS.
     """
+    # v12.0 dispatch — when ANY rollout sample carries protocol_version=v12,
+    # route to the v12 5-component reward path. Mixing v11+v12 in the same
+    # batch is unsupported (the reward dict keys differ).
+    _is_v12 = False
+    if rollout_data:
+        first_sample = rollout_data[0].get("raw_sample") or {}
+        first_meta = first_sample.get("metadata") or {}
+        _is_v12 = (
+            first_sample.get("protocol_version") == "v12"
+            or first_meta.get("protocol_version") == "v12"
+        )
+    if _is_v12:
+        rewards, rewards_dict_v12, rewards_masks_v12 = _calc_rewards_v12(
+            rollout_data,
+            group_size=group_size,
+            tokenizer=tokenizer,
+            time_reward_window=time_reward_window,
+            time_reward_slack=time_reward_slack,
+        )
+        return ctx.set(rewards, rewards_dict_v12).set(
+            rewards_masks, rewards_masks_v12
+        )
+
     weights = DEFAULT_REWARD_WEIGHTS
     all_rewards = {k: [] for k in REWARD_DICT_KEYS}
     all_masks = {k: [] for k in REWARD_DICT_KEYS}
