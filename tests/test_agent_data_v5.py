@@ -13,7 +13,7 @@ import pytest
 from copy import deepcopy
 
 from scripts.agent_data_v5.pass2_rollout import MemoryState
-from scripts.agent_data_v5.pass4 import (
+from scripts.agent_data_v5.pass3e_verify import (
     verify_format,
     verify_grounding,
     verify_action_minimality,
@@ -557,7 +557,7 @@ class TestKeywordOverlapImproved:
 
 class TestCompressedSourceTexts:
     def test_selected_range_only(self):
-        from scripts.agent_data_v5.pass4 import _compressed_source_texts
+        from scripts.agent_data_v5.pass3e_verify import _compressed_source_texts
         sample = {
             "sample_type": "compress",
             "input": {
@@ -580,7 +580,7 @@ class TestCompressedSourceTexts:
         assert "knife" in texts[1]
 
     def test_fallback_when_no_range(self):
-        from scripts.agent_data_v5.pass4 import _compressed_source_texts
+        from scripts.agent_data_v5.pass3e_verify import _compressed_source_texts
         sample = {
             "sample_type": "compress",
             "input": {

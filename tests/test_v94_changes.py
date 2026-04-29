@@ -29,7 +29,7 @@ from scripts.agent_data_v5.pass3a_cards import (
 from scripts.agent_data_v5.pass3b_placement import compute_all_placements
 from scripts.agent_data_v5.pass3c_samples import _normalize_exact_form_answer
 from scripts.agent_data_v5.pass3d_select import FAMILY_TO_OVO, OVO_TASK_QUOTA
-from scripts.agent_data_v5.pass4 import verify_information_flow
+from scripts.agent_data_v5.pass3e_verify import verify_information_flow
 
 
 # ---------------------------------------------------------------------------
@@ -544,7 +544,7 @@ def test_ovo_quota_increased_for_reasoning():
 # ---------------------------------------------------------------------------
 
 
-from scripts.agent_data_v5.pass4 import verify_grounding
+from scripts.agent_data_v5.pass3e_verify import verify_grounding
 
 
 def _ground_sample(think_text: str, sample_type: str = "silent",

@@ -819,31 +819,44 @@ async def run_pipeline(
     logger.info(f"Rendered {len(rendered_samples)} samples from {len(raw_by_vid)} videos")
 
     # =================================================================
-    # PASS 4: Verify + Filter (on RENDERED samples with full metadata)
+    # PASS 3-E: Verify + TAG (no drops — preserves trajectory continuity)
+    #
+    # v12.5 (2026-04-29): renamed from "PASS 4 Verify+Filter". The old
+    # filter step dropped failures (~12% of samples), creating gaps in
+    # the chunk timeline that downstream RL rollout couldn't replay.
+    # New step tags every sample with verification.passed/.fail_reasons
+    # but keeps all samples in the trajectory. Filtering decisions move
+    # to consumer side (e.g. SFT trainer can weight by pass/fail).
     # =================================================================
-    from .pass4 import filter_samples, save_verified
+    from .pass3e_verify import tag_samples, save_verified
 
     logger.info("=" * 60)
-    logger.info("PASS 4: Verify + Filter (on rendered samples)")
+    logger.info("PASS 3-E: Verify + Tag (rendered samples — no drops)")
     logger.info("=" * 60)
 
     # v9.5: pass evidence_map so verify_support_chunks_have_evidence fires
-    passed_samples, stats = filter_samples(
+    tagged_samples, stats = tag_samples(
         rendered_samples, evidence_map=evidence_map,
     )
-    logger.info(f"Verification: {stats['passed']}/{stats['total']} passed ({stats['pass_rate']:.1%})")
+    logger.info(f"Verification: {stats['passed']}/{stats['total']} passed ({stats['pass_rate']:.1%}) — "
+                f"all {stats['total']} retained as tagged samples")
     logger.info(f"Fail reasons: {stats['fail_reasons']}")
     logger.info(f"Action dist: {stats['action_distribution']}")
     logger.info(f"Difficulty dist: {stats['difficulty_distribution']}")
     logger.info(f"Trajectory check failures: {stats['trajectory_check_failures']}/{stats['trajectories']}")
 
-    # Save verified samples per video
+    # Save ALL tagged samples per video (not just passed)
     verified_by_vid = {}
-    for s in passed_samples:
+    for s in tagged_samples:
         vid = s.get("video_id", "unknown")
         verified_by_vid.setdefault(vid, []).append(s)
     for vid, vid_samples in verified_by_vid.items():
         save_verified(vid, vid_samples, {"video_id": vid, "count": len(vid_samples)})
+
+    # Carry forward as `passed_samples` for naming compat with old caps/split
+    # logic below (the variable name is misleading post-v12.5 but keeping it
+    # avoids touching ~250 lines of downstream code).
+    passed_samples = tagged_samples
 
     # =================================================================
     # POST-FILTER: Enforce caps + distribution audit
