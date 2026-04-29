@@ -87,6 +87,19 @@ def train(attn_implementation="flash_attention_2"):
     )
     model_args, data_args, training_args = parser.parse_args_into_dataclasses()
 
+    # Mirror DataArguments fields onto training_args so trainer.compute_loss
+    # / _get_train_sampler can access them via self.args. HfArgumentParser
+    # routes flags by name to whichever dataclass declares them; trainer
+    # historically read class_balanced_sampler / focal_alpha_action via
+    # getattr(self.args, ...). v12.0 makes the propagation explicit.
+    for _f in (
+        "class_balanced_sampler", "class_balance_smoothing",
+        "unique_think_weight", "focal_alpha_action", "focal_gamma",
+        "alpha_softening", "protocol_version",
+    ):
+        if hasattr(data_args, _f):
+            setattr(training_args, _f, getattr(data_args, _f))
+
     local_rank = training_args.local_rank
     os.makedirs(training_args.output_dir, exist_ok=True)
 
@@ -140,7 +153,18 @@ def train(attn_implementation="flash_attention_2"):
     # single-token tags (legacy mode). Then smart_init runs to seed the
     # new tokens from natural-word embeddings (mitigates but doesn't
     # eliminate the cold-start risk).
-    if model_args.add_agent_special_tokens:
+    if data_args.protocol_version == "v12":
+        if model_args.add_agent_special_tokens:
+            rank0_print(
+                "[v12.0] add_agent_special_tokens=True is IGNORED under "
+                "protocol_version=v12. v12 uses official Qwen tool protocol "
+                "(<tool_call>{json}</tool_call>, <answer>...</answer>); "
+                "<think> is already in Qwen3-VL vocab and tokenizes as a "
+                "multi-token sequence in Qwen2.5-VL — both safe."
+            )
+        else:
+            rank0_print("[v12.0] no special tokens added (official Qwen tool protocol)")
+    elif model_args.add_agent_special_tokens:
         rank0_print("[v11.4 legacy] register_special_tokens enabled — "
                     "adding agent tags to vocab + smart_init seeding")
         register_special_tokens(processor, data_args.model_type)

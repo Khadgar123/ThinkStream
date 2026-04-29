@@ -78,8 +78,13 @@ class WeightedSFTTrainer(Trainer):
 
         # v11.5: lazy-init focal+alpha state from dataset class distribution
         # (called here because _get_train_sampler runs once at training start
-        # and has access to the train_dataset).
-        if (getattr(self.args, "focal_alpha_action", False)
+        # and has access to the train_dataset). Skipped in v12: protocol has
+        # no action keyword position to apply focal+α onto.
+        _protocol_v12 = (
+            getattr(self.args, "protocol_version", "v11") == "v12"
+        )
+        if (not _protocol_v12
+                and getattr(self.args, "focal_alpha_action", False)
                 and not hasattr(self, "_focal_alpha")
                 and ds is not None):
             self._init_focal_alpha(ds)
@@ -225,7 +230,16 @@ class WeightedSFTTrainer(Trainer):
             #   - alpha (sqrt-inv-freq) lifts rare-class signal proportionally
             # Only touches the decision token; content tokens (think/response/
             # summary) are untouched so generation quality training is preserved.
-            if (self.model.training
+            #
+            # v12.0: skip entirely. v12 protocol has no action keyword position
+            # (no softmax over {silent, response, recall, compress}); compress
+            # is system-triggered + recall is a tool call inside free text.
+            # Vanilla CE is the design (DeepEyesV2 multiturn_sft_dataset.py:170).
+            _protocol_v12 = (
+                getattr(self.args, "protocol_version", "v11") == "v12"
+            )
+            if (not _protocol_v12
+                    and self.model.training
                     and getattr(self.args, "focal_alpha_action", False)
                     and eval_meta is not None
                     and sample_meta is not None

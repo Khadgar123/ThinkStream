@@ -148,6 +148,33 @@ class DataArguments:
         },
     )
 
+    # v12.0: protocol version selector. "v11" = legacy <action>X</action>
+    # softmax-action design (with all the SPAN_WEIGHTS/ACTION_WEIGHTS/focal+α
+    # rebalance machinery). "v12" = official Qwen tool-call protocol with
+    # vanilla CE + chat_template tools=TOOLS_SCHEMA. See
+    # docs/v12.0_protocol_migration_design.md.
+    #
+    # When v12:
+    #   - system prompt switches to SYSTEM_PROMPT_V12 (concise, lets
+    #     chat_template render <tools> block from tools= param)
+    #   - SFT loss = vanilla CE on assistant tokens only (DeepEyesV2 mask
+    #     pattern: multiturn_sft_dataset.py:170)
+    #   - SPAN_WEIGHTS / ACTION_WEIGHTS / focal_alpha_action are IGNORED
+    #     even if their flags are set, to prevent silent inconsistency
+    #   - eval/action_acc_* per-class metrics are deprecated; new metrics
+    #     are free-gen tool/answer rates measured by separate eval scripts
+    protocol_version: str = field(
+        default="v11",
+        metadata={
+            "help": "Agent protocol: 'v11' (legacy <action>X</action> + 5-class "
+            "softmax) or 'v12' (official Qwen <tool_call>+<answer> + vanilla CE). "
+            "Must match the protocol used to generate training data via "
+            "THINKSTREAM_PROTOCOL env var in pass3c. v12 disables SPAN_WEIGHTS, "
+            "ACTION_WEIGHTS, and focal_alpha_action — only class_balanced_sampler "
+            "is preserved (sample-level dataset rebalance is safe under either)."
+        },
+    )
+
     # v11.5: StreamMind-style focal+alpha on action keyword positions.
     # Attacks the "collapse to silent" failure mode that span_weight + class-
     # balanced sampler alone cannot fix: silent samples reach p=0.99 quickly
