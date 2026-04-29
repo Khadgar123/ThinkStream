@@ -749,7 +749,7 @@ def _make_sample(
             )
             final_user_input = user_input or ""
 
-    return {
+    sample = {
         "chunk_idx": chunk_idx,
         "sample_type": sample_type,
         "prompt_type": prompt_type,
@@ -763,6 +763,96 @@ def _make_sample(
         "recall_result": recall_result,
         "protocol_version": PROTOCOL_VERSION,
     }
+    # v12: mark compress samples as inter-chunk turns (no visual_window in
+    # user content). Compression fires BETWEEN visual timesteps, doesn't
+    # consume a chunk's visual decision — see docs/v12.0_protocol_migration_design.md
+    # §1 (architectural reframe). data_processor.build_per_timestep_messages_v12
+    # checks this flag and omits the visual_window section.
+    if PROTOCOL_VERSION == "v12" and action == "compress":
+        sample["v12_inter_chunk"] = True
+    return sample
+
+
+# ---------------------------------------------------------------------------
+# v12.0 multi-turn merge: pair (recall_query, recall_response/recall_silent)
+# samples at the same (trajectory, card, chunk_idx) into a single sample
+# whose assistant emits TWO turns separated by a tool turn. This models
+# the agentic pattern where one chunk's decision can include a tool cycle
+# (think → tool_call → tool_response → think → answer) — same pattern as
+# DeepEyes v1 (visual_toolbox_v2.py) but transposed to streaming video.
+# ---------------------------------------------------------------------------
+
+
+def _merge_recall_pairs_v12(samples: List[Dict]) -> List[Dict]:
+    """Merge (recall_query, recall_response|recall_silent) pairs for v12.
+
+    Both samples are emitted at the same chunk_idx by generate_trajectory_samples
+    (e.g., recall_success seq at line 898/904 in this file). v12 collapses them
+    into a single multi-turn sample so the model trains on the full
+    think→recall→result→think→answer cycle as one cohesive unit.
+
+    No-op when PROTOCOL_VERSION != 'v12'. Non-recall samples pass through
+    unchanged. Returns samples in original chunk_idx order.
+    """
+    if PROTOCOL_VERSION != "v12":
+        return samples
+
+    from collections import defaultdict
+    by_key: Dict = defaultdict(list)
+    other: List[Dict] = []
+    for s in samples:
+        st = s.get("sample_type")
+        if st in ("recall_query", "recall_response", "recall_silent"):
+            key = (
+                s.get("trajectory_id"),
+                s.get("card_id"),
+                s.get("chunk_idx"),
+            )
+            by_key[key].append(s)
+        else:
+            other.append(s)
+
+    merged_recall: List[Dict] = []
+    for key, pair in by_key.items():
+        rq = next((s for s in pair if s["sample_type"] == "recall_query"), None)
+        rr = next((s for s in pair
+                   if s["sample_type"] in ("recall_response", "recall_silent")), None)
+
+        if rq and rr:
+            # Build merged sample. Base fields come from rq (chunk visual context),
+            # the second turn output and recall_result come from rr.
+            merged = dict(rq)
+            merged["sample_type"] = "recall"   # unified type
+            merged["v12_assistant_turn_1"] = rq["output"]    # tool_call
+            merged["v12_assistant_turn_2"] = rr["output"]    # answer (possibly empty)
+            merged["recall_result"] = rr.get("recall_result")
+            merged["v12_post_recall_was_silent"] = (
+                rr.get("sample_type") == "recall_silent"
+            )
+            # Drop legacy single-output to avoid confusion with multi-turn
+            merged.pop("output", None)
+            merged_recall.append(merged)
+        elif rq:
+            # Lonely recall_query (no matching response sample). Should not
+            # normally happen; keep as-is so trainer doesn't lose data.
+            logger.warning(
+                f"recall_query at {key} has no matching response/silent — "
+                f"keeping as single-turn sample"
+            )
+            merged_recall.append(rq)
+        else:
+            # Lonely recall_response — promote to plain response/silent.
+            assert rr is not None
+            rr_copy = dict(rr)
+            rr_copy["sample_type"] = (
+                "response" if rr["sample_type"] == "recall_response" else "silent"
+            )
+            merged_recall.append(rr_copy)
+
+    # Restore chunk-ordered output. (Stable sort by chunk_idx.)
+    combined = other + merged_recall
+    combined.sort(key=lambda s: (s.get("chunk_idx", 0), s.get("sample_type", "")))
+    return combined
 
 
 # ---------------------------------------------------------------------------
@@ -1355,6 +1445,10 @@ def generate_base_samples(
         # Attach base_role for training loss weighting
         sample["base_role"] = base_role
         samples.append(sample)
+
+    # v12.0: collapse (recall_query, recall_response|recall_silent) pairs
+    # into single multi-turn samples. No-op in v11 mode.
+    samples = _merge_recall_pairs_v12(samples)
 
     return samples
 

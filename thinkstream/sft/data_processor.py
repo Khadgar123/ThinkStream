@@ -568,77 +568,100 @@ def build_per_timestep_messages(sample: Dict, base_path: Path) -> List[Dict]:
 def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]:
     """v12.0: Build messages for the official Qwen tool-call protocol.
 
-    Differences from v11 (build_per_timestep_messages):
-    1. System prompt = SYSTEM_PROMPT_V12 (concise; chat_template renders
-       <tools> block separately from tools= parameter at apply time).
-    2. recall_result stays inline in user content (matches DeepEyesV2 RL env
-       behavior — see deepeyesv2.py:162; not promoted to tool role to avoid
-       the "tool message without preceding assistant tool_call" chat-template
-       edge case in single-step samples).
-    3. Assistant content is the v12 string format from pass3c
-       (build_assistant_content_v12 produced output): <think>...</think>
-       followed by <tool_call>{json}</tool_call> or <answer>...</answer>.
-    4. compress samples: <compress_trigger range='a-b'/> already injected
-       into sample["input"]["user_input"] by pass3c at v12 protocol mode.
+    Three sample shapes handled (controlled by pass3c-emitted fields):
 
-    Tools schema is NOT embedded in messages — it's passed alongside via
-    the tools= parameter to apply_chat_template at preprocessing time
-    (see _apply_chat_template_v12 below).
+    A. Single-turn (silent / response / lonely recall):
+       sample["output"] = single assistant string. Messages = [system, user, assistant].
+
+    B. Multi-turn recall (sample_type=='recall' with v12_assistant_turn_1/2):
+       Two assistant turns sandwiching a tool turn. Messages =
+         [system, user (chunk visual+memory+query),
+          assistant (tool_call recall),
+          tool (recall_result),
+          assistant (final answer)]
+       This implements the within-one-chunk agentic cycle (think→recall→
+       result→think→answer) per docs/v12.0_protocol_migration_design.md §1.
+
+    C. Inter-chunk compress (v12_inter_chunk=True):
+       NO visual_window in user content (compression fires between visual
+       timesteps). Messages = [system, user (memory + compress_trigger),
+       assistant (tool_call compress)]. Reuses the same architecture but
+       without the chunk's frames / recalled_frames sections.
+
+    Differences from v11 (build_per_timestep_messages):
+    - SYSTEM_PROMPT_V12 (concise; <tools> block rendered by chat_template
+      via tools= parameter at apply time).
+    - recall_result moved from user-inline text to a dedicated 'tool' role
+      message in shape B (matches Qwen3-VL chat_template tool branch which
+      nests <tool_response> inside the <|im_start|>user wrapper).
     """
     from thinkstream.data.agent_protocol import SYSTEM_PROMPT_V12
 
     inp = sample["input"]
     chunk_idx = sample["chunk_idx"]
     chunk_sec = 2.0  # AGENT_CHUNK_SEC
+    inter_chunk = bool(sample.get("v12_inter_chunk", False))
+    is_recall_multiturn = (
+        sample.get("sample_type") == "recall"
+        and "v12_assistant_turn_1" in sample
+    )
 
     messages = [
         {"role": "system", "content": [{"type": "text", "text": SYSTEM_PROMPT_V12}]}
     ]
 
-    # User content — same construction as v11, recall_result still inline.
-    user_content = []
-
-    vw = inp["visual_window"]
-    current_start = chunk_idx * chunk_sec
-    current_end = current_start + chunk_sec
-    vw_header = json.dumps({
-        "start": vw["video_start"],
-        "end": vw["video_end"],
-        "frames": vw["frames"],
-        "current_time": [current_start, current_end],
-    })
-    user_content.append({
-        "type": "text",
-        "text": f"<visual_window>{vw_header}</visual_window>",
-    })
-
     video_path = sample.get("video_path", "")
     if video_path and not Path(video_path).is_absolute():
         video_path = str(base_path / video_path)
-
     require_pre = bool(sample.get("_require_pre_extracted_frames", True))
-    if "frame_paths" in vw:
-        paths = [str(base_path / p) if not Path(p).is_absolute() else p
-                 for p in vw["frame_paths"]]
-        user_content.append({"type": "video", "video": paths})
-    elif "frame_indices" in vw and video_path:
-        if require_pre:
-            raise ValueError(
-                f"Sample {sample.get('sample_id', '?')}: visual_window has no "
-                f"frame_paths. Pre-extract frames or set "
-                f"--require_pre_extracted_frames False."
-            )
-        user_content.append({
-            "type": "video", "video": video_path,
-            "video_start": vw["video_start"], "video_end": vw["video_end"],
-        })
-    else:
-        raise ValueError(
-            f"Sample {sample.get('sample_id', '?')}: visual_window has neither "
-            f"frame_paths nor frame_indices."
-        )
 
-    if "recalled_frames" in inp:
+    # ── User content ───────────────────────────────────────────────────
+    user_content = []
+
+    if not inter_chunk:
+        # Visual window only present for visual timesteps (NOT inter-chunk
+        # compress turns, where compression is a system event between two
+        # visual chunks and consumes no new frames).
+        vw = inp["visual_window"]
+        current_start = chunk_idx * chunk_sec
+        current_end = current_start + chunk_sec
+        vw_header = json.dumps({
+            "start": vw["video_start"],
+            "end": vw["video_end"],
+            "frames": vw["frames"],
+            "current_time": [current_start, current_end],
+        })
+        user_content.append({
+            "type": "text",
+            "text": f"<visual_window>{vw_header}</visual_window>",
+        })
+
+        if "frame_paths" in vw:
+            paths = [str(base_path / p) if not Path(p).is_absolute() else p
+                     for p in vw["frame_paths"]]
+            user_content.append({"type": "video", "video": paths})
+        elif "frame_indices" in vw and video_path:
+            if require_pre:
+                raise ValueError(
+                    f"Sample {sample.get('sample_id', '?')}: visual_window has no "
+                    f"frame_paths. Pre-extract frames or set "
+                    f"--require_pre_extracted_frames False."
+                )
+            user_content.append({
+                "type": "video", "video": video_path,
+                "video_start": vw["video_start"], "video_end": vw["video_end"],
+            })
+        else:
+            raise ValueError(
+                f"Sample {sample.get('sample_id', '?')}: visual_window has neither "
+                f"frame_paths nor frame_indices."
+            )
+
+    # Recalled frames stay in the FIRST user message ONLY for non-multi-turn
+    # recall samples (legacy single-turn recall_response). For multi-turn
+    # recall (shape B), recalled_frames are part of the tool turn payload
+    # and rendered there, not in the prompt before the model emits anything.
+    if "recalled_frames" in inp and not is_recall_multiturn and not inter_chunk:
         rf = inp["recalled_frames"]
         rf_header = json.dumps({
             "time_range": rf["time_range"],
@@ -663,17 +686,20 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
     memory_text = _format_memory_block(inp["memory"])
     user_content.append({
         "type": "text",
-        "text": f"\n<memory>\n{memory_text}\n</memory>",
+        "text": f"\n<memory>\n{memory_text}\n</memory>" if not inter_chunk
+        else f"<memory>\n{memory_text}\n</memory>",
     })
 
     queries = inp.get("queries", [])
-    if queries:
+    if queries and not inter_chunk:
         from thinkstream.data.agent_protocol import format_queries_block
         queries_text = format_queries_block(queries)
         if queries_text:
             user_content.append({"type": "text", "text": f"\n{queries_text}"})
 
-    if inp.get("recall_result"):
+    # Legacy (non-multi-turn) recall_result fallback. Multi-turn recall
+    # samples render recall_result via the tool role below.
+    if inp.get("recall_result") and not is_recall_multiturn and not inter_chunk:
         rr = inp["recall_result"]
         rr_json = json.dumps({
             "source": rr.get("source", ""),
@@ -686,23 +712,70 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
         })
 
     if inp.get("user_input"):
-        # In v12, compress samples have <compress_trigger range='a-b'/>
-        # already prepended by pass3c. We render it as plain text inside
-        # user_input — chat_template treats it as opaque content; the model
-        # learns the trigger→tool_call binding from SFT data co-occurrence.
+        # compress_trigger pre-injected by pass3c v12 (sample.input.user_input
+        # contains "<compress_trigger range='a-b'/>" prefix).
         user_content.append({
             "type": "text",
-            "text": f"\n<user_input>{inp['user_input']}</user_input>",
+            "text": (f"\n<user_input>{inp['user_input']}</user_input>"
+                     if not inter_chunk else f"\n{inp['user_input']}"),
         })
 
     messages.append({"role": "user", "content": user_content})
 
-    # Assistant output — the v12 format string from pass3c
-    # (build_assistant_content_v12 already wrapped think + tool_call/answer).
-    messages.append({
-        "role": "assistant",
-        "content": [{"type": "text", "text": sample["output"]}],
-    })
+    # ── Assistant turn(s) ──────────────────────────────────────────────
+    if is_recall_multiturn:
+        # Shape B: 2 assistant turns sandwiching a tool turn.
+        messages.append({
+            "role": "assistant",
+            "content": [{"type": "text", "text": sample["v12_assistant_turn_1"]}],
+        })
+
+        # Tool turn — recall_result wrapped in <tool_response> tags. The
+        # Qwen3-VL chat_template renders this nested under <|im_start|>user
+        # but loss-masked at training time (assistant span only contributes).
+        rr = sample.get("recall_result") or {}
+        rr_json = json.dumps({
+            "source": rr.get("source", ""),
+            "time": rr.get("time", ""),
+            "text": rr.get("text_content", rr.get("text", "")),
+        }, ensure_ascii=False)
+        tool_payload = [{"type": "text", "text": rr_json}]
+
+        # If the recall returned historical frames, attach them inside the
+        # tool turn payload — model sees them as part of the tool response.
+        rf = inp.get("recalled_frames")
+        if rf:
+            rf_header = json.dumps({
+                "time_range": rf["time_range"],
+                "source": rf.get("source", "historical_frames"),
+                "n_frames": rf["n_frames"],
+            })
+            tool_payload.append({
+                "type": "text",
+                "text": f"\n<recalled_frames>{rf_header}</recalled_frames>",
+            })
+            if "frame_paths" in rf:
+                paths = [str(base_path / p) if not Path(p).is_absolute() else p
+                         for p in rf["frame_paths"]]
+                tool_payload.append({"type": "video", "video": paths})
+            elif video_path and not require_pre:
+                tool_payload.append({
+                    "type": "video", "video": video_path,
+                    "video_start": rf["time_range"][0],
+                    "video_end": rf["time_range"][1],
+                })
+        messages.append({"role": "tool", "content": tool_payload})
+
+        messages.append({
+            "role": "assistant",
+            "content": [{"type": "text", "text": sample["v12_assistant_turn_2"]}],
+        })
+    else:
+        # Shape A or C: single assistant turn.
+        messages.append({
+            "role": "assistant",
+            "content": [{"type": "text", "text": sample["output"]}],
+        })
 
     return messages
 
@@ -1168,19 +1241,29 @@ def preprocess_per_timestep(
                 pos = ans_end
         pos += 1
 
-    # Per-timestep design: exactly one assistant turn per sample.
-    # Multiple turns (or zero) means data corruption — fail loudly so we
-    # don't silently train on the wrong span.
-    if len(assistant_spans) != 1:
+    # v11: exactly one assistant turn per sample.
+    # v12: allow 1 (silent/response/compress) or 2 (multi-turn recall) turns.
+    # Either way, every assistant turn contributes loss=1 (per DeepEyesV2
+    # multiturn_sft_dataset.py:170 pattern: gen-prompt prefix masked,
+    # message body trained).
+    expected = (
+        {1, 2} if protocol_version == "v12" else {1}
+    )
+    if len(assistant_spans) not in expected:
         sid = sample.get("sample_id") or sample.get("trajectory_id") or "?"
         raise ValueError(
-            f"Sample {sid}: expected exactly 1 assistant turn, "
-            f"found {len(assistant_spans)}. Per-timestep samples must have "
-            f"a single assistant output."
+            f"Sample {sid}: expected {sorted(expected)} assistant turn(s), "
+            f"found {len(assistant_spans)}. v11 = 1 turn always; v12 = 1 turn "
+            f"for silent/response/compress and 2 turns for recall multi-turn."
         )
+
+    # Unmask all assistant turns (each can have its own [start, end] range).
+    for ans_start, ans_end in assistant_spans:
+        labels[0, ans_start: ans_end + 2] = input_ids[0, ans_start: ans_end + 2]
+    # Use the FIRST span's bounds for downstream weight construction —
+    # token_loss_weight in v12 is uniform 1.0 anyway, and v11 has only
+    # one span so this is unchanged.
     ans_start, ans_end = assistant_spans[0]
-    # Unmask assistant tokens (include <|im_end|> + newline)
-    labels[0, ans_start: ans_end + 2] = input_ids[0, ans_start: ans_end + 2]
 
     full_result["labels"] = labels
     full_result["input_ids"] = input_ids

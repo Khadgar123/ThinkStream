@@ -252,6 +252,136 @@ def test_freegen_gate_classifier():
     print("✓ freegen gate classifier")
 
 
+def test_v12_recall_multiturn_merge():
+    """Merge function pairs (recall_query, recall_response) at same chunk into
+    one multi-turn sample with v12_assistant_turn_1/2 fields."""
+    import importlib
+    os.environ["THINKSTREAM_PROTOCOL"] = "v12"
+    for mod_name in list(sys.modules):
+        if mod_name.startswith("scripts.agent_data_v5"):
+            del sys.modules[mod_name]
+    pass3c = importlib.import_module("scripts.agent_data_v5.pass3c_samples")
+    assert pass3c.PROTOCOL_VERSION == "v12"
+
+    # Mock samples — 1 unrelated silent + a (recall_query, recall_response) pair
+    # at same chunk + a lonely compress.
+    samples = [
+        {
+            "chunk_idx": 3, "sample_type": "silent", "trajectory_id": "t1",
+            "card_id": "", "output": "<think>x</think><answer></answer>",
+            "queries": [], "user_input": "", "recall_result": None,
+            "protocol_version": "v12",
+        },
+        {
+            "chunk_idx": 5, "sample_type": "recall_query", "trajectory_id": "t1",
+            "card_id": "c1",
+            "output": '<think>need history</think><tool_call>\n{"name":"recall","arguments":{"query":"q","time_range":"1-5"}}\n</tool_call>',
+            "queries": [], "user_input": "what color", "recall_result": None,
+            "protocol_version": "v12",
+        },
+        {
+            "chunk_idx": 5, "sample_type": "recall_response", "trajectory_id": "t1",
+            "card_id": "c1",
+            "output": "<think>found</think><answer>red</answer>",
+            "queries": [], "user_input": "",
+            "recall_result": {"source": "historical_frames", "time": "1-5", "text_content": "red apron"},
+            "protocol_version": "v12",
+        },
+        {
+            "chunk_idx": 8, "sample_type": "compress", "trajectory_id": "t1",
+            "card_id": "", "output": '<think>full</think><tool_call>\n{"name":"compress","arguments":{"time_range":[4,12],"text":"s"}}\n</tool_call>',
+            "queries": [], "user_input": "<compress_trigger range='4-12'/>",
+            "recall_result": None, "v12_inter_chunk": True,
+            "protocol_version": "v12",
+        },
+    ]
+
+    merged = pass3c._merge_recall_pairs_v12(samples)
+
+    # Expected: 1 silent (chunk 3) + 1 merged recall (chunk 5) + 1 compress (chunk 8)
+    assert len(merged) == 3, f"Got {len(merged)} samples: {[s.get('sample_type') for s in merged]}"
+    types = sorted([s["sample_type"] for s in merged])
+    assert types == ["compress", "recall", "silent"]
+
+    recall = next(s for s in merged if s["sample_type"] == "recall")
+    assert "v12_assistant_turn_1" in recall
+    assert "v12_assistant_turn_2" in recall
+    assert "tool_call" in recall["v12_assistant_turn_1"]
+    assert "<answer>red</answer>" in recall["v12_assistant_turn_2"]
+    assert recall["recall_result"]["text_content"] == "red apron"
+    assert recall["v12_post_recall_was_silent"] is False
+    # Original 'output' field should be removed to prevent ambiguity
+    assert "output" not in recall
+
+    print("✓ v12 recall multi-turn merge")
+
+
+def test_v12_recall_silent_merge():
+    """recall_silent merges into recall sample with empty answer."""
+    import importlib
+    os.environ["THINKSTREAM_PROTOCOL"] = "v12"
+    for mod_name in list(sys.modules):
+        if mod_name.startswith("scripts.agent_data_v5"):
+            del sys.modules[mod_name]
+    pass3c = importlib.import_module("scripts.agent_data_v5.pass3c_samples")
+
+    samples = [
+        {
+            "chunk_idx": 5, "sample_type": "recall_query", "trajectory_id": "t1",
+            "card_id": "c1", "output": "<think>x</think><tool_call>...</tool_call>",
+            "queries": [], "user_input": "", "recall_result": None,
+            "protocol_version": "v12",
+        },
+        {
+            "chunk_idx": 5, "sample_type": "recall_silent", "trajectory_id": "t1",
+            "card_id": "c1", "output": "<think>not found</think><answer></answer>",
+            "queries": [], "user_input": "",
+            "recall_result": {"source": "failure", "text_content": "no results"},
+            "protocol_version": "v12",
+        },
+    ]
+    merged = pass3c._merge_recall_pairs_v12(samples)
+    assert len(merged) == 1
+    r = merged[0]
+    assert r["sample_type"] == "recall"
+    assert r["v12_post_recall_was_silent"] is True
+    assert "<answer></answer>" in r["v12_assistant_turn_2"]
+
+    print("✓ v12 recall_silent merge")
+
+
+def test_v12_compress_inter_chunk_flag():
+    """v12 compress samples carry v12_inter_chunk=True flag."""
+    import importlib
+    os.environ["THINKSTREAM_PROTOCOL"] = "v12"
+    for mod_name in list(sys.modules):
+        if mod_name.startswith("scripts.agent_data_v5"):
+            del sys.modules[mod_name]
+    pass3c = importlib.import_module("scripts.agent_data_v5.pass3c_samples")
+
+    s = pass3c._make_sample(
+        chunk_idx=8, prompt_type="ASK_PROMPT", action="compress",
+        think="full", queries=[],
+        snapshot={"_compress_event": {
+            "summary": {"time_range": [4, 12], "text": "summary"}
+        }},
+        trajectory_id="t1", card_id="c1", sequence_type="compress",
+    )
+    assert s.get("v12_inter_chunk") is True, (
+        "compress sample should be flagged as inter-chunk in v12"
+    )
+
+    # Non-compress samples should NOT have the flag.
+    s2 = pass3c._make_sample(
+        chunk_idx=5, prompt_type="ASK_PROMPT", action="silent",
+        think="x", queries=[], trajectory_id="t1", card_id="c1",
+        sequence_type="base",
+    )
+    assert s2.get("v12_inter_chunk") is None or s2.get("v12_inter_chunk") is False
+
+    print("✓ v12 compress inter_chunk flag")
+
+
 def test_freegen_gate_aggregation():
     """End-to-end gate: synthetic samples + classifications → metrics + verdict."""
     sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts" / "eval"))
@@ -302,5 +432,8 @@ if __name__ == "__main__":
     test_pass3c_v12_emission()
     test_pass3c_v11_unchanged()
     test_freegen_gate_classifier()
+    test_v12_recall_multiturn_merge()
+    test_v12_recall_silent_merge()
+    test_v12_compress_inter_chunk_flag()
     test_freegen_gate_aggregation()
     print("\n✅ all v12.0 smoke tests passed")
