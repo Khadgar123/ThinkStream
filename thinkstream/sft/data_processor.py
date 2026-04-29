@@ -413,165 +413,6 @@ def _format_memory_block(memory: Dict) -> str:
     return _shared_format_memory(memory)
 
 
-def build_per_timestep_messages(sample: Dict, base_path: Path) -> List[Dict]:
-    """Convert pipeline JSON sample to Qwen chat messages.
-
-    Ordering (sft_engineering.md v3.0 §2.1, must not violate):
-    <visual_window> + frames → <recalled_frames> + frames → <memory>
-    → <recall_result> → <user_input>
-
-    NOTE: This function handles pipeline-specific concerns (frame_paths vs
-    video_path resolution, base_path joining) that the shared agent_protocol
-    doesn't need to know about. The TEXT format (tags, JSON structure) is
-    delegated to agent_protocol to guarantee train/inference identity.
-    """
-    inp = sample["input"]
-    chunk_idx = sample["chunk_idx"]
-    chunk_sec = 2.0  # AGENT_CHUNK_SEC
-
-    # ── System prompt ──
-    # Qwen3VL processor requires all message content to be list-of-dicts format
-    messages = [{"role": "system", "content": [{"type": "text", "text": inp["system"]}]}]
-
-    # ── User content (视频在前、文本在后，匹配 agent_protocol.build_user_content) ──
-    user_content = []
-
-    # ── Zone B: Visual window + video frames ──
-    vw = inp["visual_window"]
-    current_start = chunk_idx * chunk_sec
-    current_end = current_start + chunk_sec
-    vw_header = json.dumps({
-        "start": vw["video_start"],
-        "end": vw["video_end"],
-        "frames": vw["frames"],
-        "current_time": [current_start, current_end],
-    })
-    user_content.append({
-        "type": "text",
-        "text": f"<visual_window>{vw_header}</visual_window>",
-    })
-
-    video_path = sample.get("video_path", "")
-    if video_path and not Path(video_path).is_absolute():
-        video_path = str(base_path / video_path)
-
-    require_pre = bool(sample.get("_require_pre_extracted_frames", True))
-    if "frame_paths" in vw:
-        paths = [str(base_path / p) if not Path(p).is_absolute() else p
-                 for p in vw["frame_paths"]]
-        user_content.append({"type": "video", "video": paths})
-    elif "frame_indices" in vw and video_path:
-        if require_pre:
-            raise ValueError(
-                f"Sample {sample.get('sample_id', '?')}: visual_window has no "
-                f"frame_paths (only frame_indices). Pre-extract frames or set "
-                f"--require_pre_extracted_frames False (NOT recommended for "
-                f"real training: online decoding is ~50× slower)."
-            )
-        logging.warning(
-            f"Sample {sample.get('sample_id', '?')}: no frame_paths, "
-            f"using video_start/end fallback (slow online decode)"
-        )
-        user_content.append({
-            "type": "video",
-            "video": video_path,
-            "video_start": vw["video_start"],
-            "video_end": vw["video_end"],
-        })
-    else:
-        raise ValueError(
-            f"Sample {sample.get('sample_id', '?')}: visual_window has neither "
-            f"frame_paths nor frame_indices. Cannot load video frames."
-        )
-
-    # ── Zone B continued: Recalled frames (recall_response only) ──
-    if "recalled_frames" in inp:
-        rf = inp["recalled_frames"]
-        rf_header = json.dumps({
-            "time_range": rf["time_range"],
-            "source": rf.get("source", "historical_frames"),
-            "n_frames": rf["n_frames"],
-        })
-        user_content.append({
-            "type": "text",
-            "text": f"\n<recalled_frames>{rf_header}</recalled_frames>",
-        })
-        if "frame_paths" in rf:
-            paths = [str(base_path / p) if not Path(p).is_absolute() else p
-                     for p in rf["frame_paths"]]
-            user_content.append({"type": "video", "video": paths})
-        elif video_path:
-            if require_pre:
-                raise ValueError(
-                    f"Sample {sample.get('sample_id', '?')}: recalled_frames "
-                    f"has no frame_paths. Pre-extract recall frames or disable "
-                    f"--require_pre_extracted_frames."
-                )
-            logging.warning(
-                f"Sample {sample.get('sample_id', '?')}: recalled_frames missing "
-                f"frame_paths, using time range fallback (slow online decode)"
-            )
-            user_content.append({
-                "type": "video",
-                "video": video_path,
-                "video_start": rf["time_range"][0],
-                "video_end": rf["time_range"][1],
-            })
-        else:
-            raise ValueError(
-                f"Sample {sample.get('sample_id', '?')}: recalled_frames has "
-                f"neither frame_paths nor video_path."
-            )
-
-    # ── Zone C: Memory block ──
-    memory_text = _format_memory_block(inp["memory"])
-    user_content.append({
-        "type": "text",
-        "text": f"\n<memory>\n{memory_text}\n</memory>",
-    })
-
-    # ── Zone Q: Queries (past Q&A context, independent of memory) ──
-    queries = inp.get("queries", [])
-    if queries:
-        from thinkstream.data.agent_protocol import format_queries_block
-        queries_text = format_queries_block(queries)
-        if queries_text:
-            user_content.append({
-                "type": "text",
-                "text": f"\n{queries_text}",
-            })
-
-    # ── Zone C continued: Recall result (recall_response only) ──
-    if inp.get("recall_result"):
-        rr = inp["recall_result"]
-        rr_json = json.dumps({
-            "source": rr.get("source", ""),
-            "time": rr.get("time", ""),
-            "text": rr.get("text_content", rr.get("text", "")),
-        }, ensure_ascii=False)
-        user_content.append({
-            "type": "text",
-            "text": f"\n<recall_result>{rr_json}</recall_result>",
-        })
-
-    # ── Zone D: User input ──
-    if inp.get("user_input"):
-        user_content.append({
-            "type": "text",
-            "text": f"\n<user_input>{inp['user_input']}</user_input>",
-        })
-
-    messages.append({"role": "user", "content": user_content})
-
-    # ── Assistant output (training target) ──
-    messages.append({
-        "role": "assistant",
-        "content": [{"type": "text", "text": sample["output"]}],
-    })
-
-    return messages
-
-
 def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]:
     """v12.0: Build messages for the official Qwen tool-call protocol.
 
@@ -1179,9 +1020,7 @@ def _extract_eval_positions(
     return meta
 
 
-def preprocess_per_timestep(
-    sample: Dict, processor, protocol_version: str = "v11"
-) -> Dict:
+def preprocess_per_timestep(sample: Dict, processor) -> Dict:
     """Tokenize a per-timestep sample and mask labels.
 
     Only the assistant turn (output) contributes to loss.
@@ -1189,11 +1028,11 @@ def preprocess_per_timestep(
 
     Accepts two formats:
     - Messages format (pipeline v5): sample["messages"] used directly
-    - Legacy format: sample["input"]/["output"] built via build_per_timestep_messages()
+    - Legacy format: sample["input"]/["output"] built via
+      build_per_timestep_messages_v12.
 
-    protocol_version controls which message builder + chat_template tools
-    are used. v12 mode passes tools=TOOLS_SCHEMA to apply_chat_template so
-    the system prompt auto-renders the <tools> block per Qwen2.5-VL spec.
+    Always passes ``tools=TOOLS_SCHEMA`` to apply_chat_template so the
+    system prompt auto-renders the ``<tools>`` block per Qwen2.5-VL spec.
     """
     base_path = Path(sample.get("data_path", "."))
 
@@ -1201,20 +1040,12 @@ def preprocess_per_timestep(
         # Pipeline v5: messages already constructed, resolve paths and use directly
         messages = _resolve_video_paths(sample["messages"], base_path)
     else:
-        # Legacy: build messages from input/output structure
-        if protocol_version == "v12":
-            messages = build_per_timestep_messages_v12(sample, base_path)
-        else:
-            messages = build_per_timestep_messages(sample, base_path)
+        messages = build_per_timestep_messages_v12(sample, base_path)
 
-    # Tokenize with vision processing.
-    # v12 mode: pass tools=TOOLS_SCHEMA so chat_template auto-renders the
-    # <tools>...</tools> JSON block in the system prompt — matches the
-    # DeepEyesV2 SFT pattern (multiturn_sft_dataset.py:151-157).
-    template_kwargs = dict(tokenize=True, return_dict=True, return_tensors="pt")
-    if protocol_version == "v12":
-        from thinkstream.data.agent_protocol import TOOLS_SCHEMA
-        template_kwargs["tools"] = TOOLS_SCHEMA
+    from thinkstream.data.agent_protocol import TOOLS_SCHEMA
+    template_kwargs = dict(
+        tokenize=True, return_dict=True, return_tensors="pt", tools=TOOLS_SCHEMA,
+    )
 
     full_result = processor.apply_chat_template(messages, **template_kwargs)
 
@@ -1248,83 +1079,50 @@ def preprocess_per_timestep(
                 pos = ans_end
         pos += 1
 
-    # v11: exactly one assistant turn per sample.
-    # v12: allow 1 (silent/response/compress) or 2 (multi-turn recall) turns.
-    # Either way, every assistant turn contributes loss=1 (per DeepEyesV2
-    # multiturn_sft_dataset.py:170 pattern: gen-prompt prefix masked,
-    # message body trained).
-    expected = (
-        {1, 2} if protocol_version == "v12" else {1}
-    )
-    if len(assistant_spans) not in expected:
+    # v12 allows 1 (silent/response/compress) or 2 (multi-turn recall)
+    # assistant turns per sample. Every assistant turn contributes loss=1
+    # (DeepEyesV2 multiturn_sft_dataset.py:170 pattern: gen-prompt prefix
+    # masked, message body trained).
+    if len(assistant_spans) not in {1, 2}:
         sid = sample.get("sample_id") or sample.get("trajectory_id") or "?"
         raise ValueError(
-            f"Sample {sid}: expected {sorted(expected)} assistant turn(s), "
-            f"found {len(assistant_spans)}. v11 = 1 turn always; v12 = 1 turn "
-            f"for silent/response/compress and 2 turns for recall multi-turn."
+            f"Sample {sid}: expected 1 or 2 assistant turn(s), "
+            f"found {len(assistant_spans)}. 1 turn for "
+            f"silent/response/compress; 2 turns for recall multi-turn."
         )
 
     # Unmask all assistant turns (each can have its own [start, end] range).
     for ans_start, ans_end in assistant_spans:
         labels[0, ans_start: ans_end + 2] = input_ids[0, ans_start: ans_end + 2]
-    # Use the FIRST span's bounds for downstream weight construction —
-    # token_loss_weight in v12 is uniform 1.0 anyway, and v11 has only
-    # one span so this is unchanged.
+    # Use the FIRST span's bounds for downstream eval_meta — uniform
+    # weight=1.0 across the assistant span.
     ans_start, ans_end = assistant_spans[0]
 
     full_result["labels"] = labels
     full_result["input_ids"] = input_ids
 
-    if protocol_version == "v12":
-        # v12: vanilla CE per DeepEyesV2 multiturn_sft_dataset.py:170 —
-        # uniform weight 1.0 across the assistant span. No SPAN_WEIGHTS,
-        # no ACTION_WEIGHTS, no focal+α. Imbalance handled by sampler.
-        # token_loss_weight kept as a tensor of 1s so trainer.compute_loss
-        # can treat it uniformly without a separate v12 code path.
-        full_result["token_loss_weight"] = torch.ones(
-            (1, L), dtype=torch.float
-        )
-        # Per-sample weight: 1.0 in v12. sample-type-aware weighting is
-        # delegated entirely to ClassBalancedDistributedSampler.
-        full_result["sample_weight"] = 1.0
-        # eval_meta in v12: only the assistant-span boundary is meaningful;
-        # action_keyword_positions are deprecated (no action vocab). We keep
-        # the field for trainer-side compatibility (empty positions →
-        # _accumulate_train_metrics short-circuits).
-        full_result["eval_meta"] = {
-            "pre_action_position": None,
-            "action_open_token_id": None,
-            "action_keyword_positions": [],
-            "post_action_position": None,
-            "summary_span_positions": [],
-            "query_span_positions": [],
-            "response_span_positions": [],
-            "sample_type": sample.get("sample_type", "?"),
-            "ans_start": ans_start,
-            "ans_end": ans_end,
-        }
-        return full_result
-
-    # ── v11 legacy path below ───────────────────────────────────────────
-    # Per-token loss weight: <think> low, <action> high, <response>/<query>/<summary> medium.
-    # See SPAN_WEIGHTS docstring and trainer.py:compute_loss for usage.
-    span_ids = _resolve_span_token_ids(processor.tokenizer)
-    full_result["token_loss_weight"] = _build_token_loss_weight(
-        input_ids_flat, ans_start, ans_end, span_ids, L,
-    )
-
-    # Per-sample loss weight (context-aware, not just sample_type)
-    full_result["sample_weight"] = _get_sample_weight(sample)
-
-    # Eval-time accuracy probes: positions of action keyword token(s) +
-    # the post-action transition token. Used by trainer.evaluate() to
-    # compute eval/action_accuracy and eval/silent_eos_rate without
-    # running generation. Inference time = teacher-forced argmax match.
-    full_result["eval_meta"] = _extract_eval_positions(
-        input_ids_flat, ans_start, ans_end, span_ids, L,
-        sample_type=sample.get("sample_type", "?"),
-    )
-
+    # Vanilla CE per DeepEyesV2 multiturn_sft_dataset.py:170 — uniform
+    # weight 1.0 across the assistant span. Imbalance handled by sampler.
+    full_result["token_loss_weight"] = torch.ones((1, L), dtype=torch.float)
+    # Per-sample weight: 1.0. Sample-type-aware weighting is delegated
+    # entirely to ClassBalancedDistributedSampler.
+    full_result["sample_weight"] = 1.0
+    # eval_meta: only the assistant-span boundary is meaningful; action
+    # keyword positions are not used (no <action> vocab in v12). We keep
+    # the field for trainer-side compatibility — empty positions cause
+    # _accumulate_train_metrics to short-circuit.
+    full_result["eval_meta"] = {
+        "pre_action_position": None,
+        "action_open_token_id": None,
+        "action_keyword_positions": [],
+        "post_action_position": None,
+        "summary_span_positions": [],
+        "query_span_positions": [],
+        "response_span_positions": [],
+        "sample_type": sample.get("sample_type", "?"),
+        "ans_start": ans_start,
+        "ans_end": ans_end,
+    }
     return full_result
 
 
@@ -1460,14 +1258,6 @@ class PerTimestepDataset(Dataset):
         self.processor = processor
         self.merge_size = getattr(processor.image_processor, "merge_size", 2)
         self.samples = all_samples
-        # v12.0: protocol selector — propagated to preprocess_per_timestep
-        self.protocol_version = getattr(data_args, "protocol_version", "v11")
-        if self.protocol_version not in ("v11", "v12"):
-            raise ValueError(
-                f"protocol_version must be 'v11' or 'v12', "
-                f"got {self.protocol_version!r}"
-            )
-        rank0_print(f"PerTimestepDataset protocol_version={self.protocol_version}")
 
     def __len__(self):
         return len(self.samples)
@@ -1503,11 +1293,9 @@ class PerTimestepDataset(Dataset):
     def _get_item(self, i) -> Dict[str, torch.Tensor]:
         sample = self.samples[i]
 
-        # Tokenize + vision + label mask. protocol_version drives chat_template
-        # tools= injection and disables v11 SPAN_WEIGHTS / focal+α machinery.
-        data_dict = preprocess_per_timestep(
-            sample, self.processor, protocol_version=self.protocol_version,
-        )
+        # Tokenize + vision + label mask. apply_chat_template always uses
+        # tools=TOOLS_SCHEMA (the v12 protocol).
+        data_dict = preprocess_per_timestep(sample, self.processor)
 
         seq_len = data_dict["input_ids"][0].size(0)
 

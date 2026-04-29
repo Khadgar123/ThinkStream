@@ -999,22 +999,9 @@ async def run_pipeline(
         s["sample_id"] = f"{s.get('video_id', 'unk')}_{s.get('action', 'unk')}_{i}"
         s["phase"] = assign_phase(s)
 
-    # =================================================================
-    # PASS 3-D: IFD scoring + submodular selection (v9)
-    # Optional: enabled when --select_target > 0 (else no-op).
-    # =================================================================
-    select_target = int(os.environ.get("PASS3D_TARGET", "0"))
-    if select_target > 0 and len(sft_samples) > select_target:
-        from .pass3d_select import select_samples as _pass3d_select
-        backend = os.environ.get("PASS3D_BACKEND", "heuristic")
-        logger.info("=" * 60)
-        logger.info(f"PASS 3-D: IFD + submodular selection "
-                    f"(target={select_target}, backend={backend})")
-        logger.info("=" * 60)
-        sft_samples = _pass3d_select(sft_samples, target_count=select_target, backend=backend)
-        logger.info(f"Pass 3-D: {len(sft_samples)} samples kept after selection")
-
-    # Use rendered samples for final output
+    # PASS 3-D (IFD + submodular selection) was deleted — never ran in
+    # production (PASS3D_TARGET=0 default). pass4 trajectory emission keeps
+    # all samples instead. Recover from git history if needed.
     passed_samples = sft_samples
 
     # --- Final output ---

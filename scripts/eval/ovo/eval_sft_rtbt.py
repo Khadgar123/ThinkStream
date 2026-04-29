@@ -29,7 +29,7 @@ from transformers import AutoProcessor, AutoTokenizer
 from thinkstream.data.agent_protocol import (
     AGENT_CHUNK_SEC,
     FRAMES_PER_CHUNK,
-    SYSTEM_PROMPT,
+    SYSTEM_PROMPT_V12,
     VISUAL_WINDOW_CHUNKS,
     build_user_content,
 )
@@ -235,7 +235,7 @@ def main():
             frame_paths=frame_paths,
         )
         messages = [
-            {"role": "system", "content": [{"type": "text", "text": SYSTEM_PROMPT}]},
+            {"role": "system", "content": [{"type": "text", "text": SYSTEM_PROMPT_V12}]},
             {"role": "user", "content": user_content},
         ]
 

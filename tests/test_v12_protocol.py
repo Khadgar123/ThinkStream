@@ -118,15 +118,10 @@ def test_tools_schema_shape():
 
 
 def test_pass3c_v12_emission():
-    """End-to-end: pass3c v12 mode emits correct sample.output for each
+    """End-to-end: pass3c emits correct v12 sample.output for each
     sample_type, with compress_trigger injected into user_input on
     compress samples."""
-    os.environ["THINKSTREAM_PROTOCOL"] = "v12"
-    # Re-import to pick up env var. Done at module level via PROTOCOL_VERSION.
-    if "scripts.agent_data_v5.pass3c_samples" in sys.modules:
-        del sys.modules["scripts.agent_data_v5.pass3c_samples"]
     from scripts.agent_data_v5 import pass3c_samples
-    assert pass3c_samples.PROTOCOL_VERSION == "v12"
 
     _make_sample = pass3c_samples._make_sample
 
@@ -138,7 +133,6 @@ def test_pass3c_v12_emission():
     )
     assert s["sample_type"] == "silent"
     assert s["output"] == "<think>frame shows kitchen</think><answer></answer>"
-    assert s["protocol_version"] == "v12"
 
     # response
     s = _make_sample(
@@ -187,36 +181,6 @@ def test_pass3c_v12_emission():
     print("✓ pass3c v12 emission")
 
 
-def test_pass3c_v11_unchanged():
-    """v11 mode (default) must remain byte-identical to pre-v12.0 output
-    for compress samples — same <action>compress</action><summary>{...}.
-    """
-    import importlib
-    os.environ["THINKSTREAM_PROTOCOL"] = "v11"
-    # Drop both the module and its parent package cache so the re-import
-    # re-evaluates module-level PROTOCOL_VERSION = os.environ[...].
-    for mod_name in list(sys.modules):
-        if mod_name.startswith("scripts.agent_data_v5"):
-            del sys.modules[mod_name]
-    pass3c_samples = importlib.import_module("scripts.agent_data_v5.pass3c_samples")
-    assert pass3c_samples.PROTOCOL_VERSION == "v11"
-
-    s = pass3c_samples._make_sample(
-        chunk_idx=8, prompt_type="ASK_PROMPT", action="compress",
-        think="mem full", queries=[],
-        snapshot={"_compress_event": {
-            "summary": {"time_range": [4, 12], "text": "chef cooks"}
-        }},
-        trajectory_id="t1", card_id="c1", sequence_type="compress",
-    )
-    assert "<action>compress</action>" in s["output"]
-    assert "<summary>" in s["output"]
-    assert "<compress_trigger" not in (s["user_input"] or "")
-    assert s["protocol_version"] == "v11"
-
-    print("✓ pass3c v11 backward compat")
-
-
 def test_freegen_gate_classifier():
     """v12 gate's classify_emission categorizes outputs correctly."""
     sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts" / "eval"))
@@ -255,13 +219,7 @@ def test_freegen_gate_classifier():
 def test_v12_recall_multiturn_merge():
     """Merge function pairs (recall_query, recall_response) at same chunk into
     one multi-turn sample with v12_assistant_turn_1/2 fields."""
-    import importlib
-    os.environ["THINKSTREAM_PROTOCOL"] = "v12"
-    for mod_name in list(sys.modules):
-        if mod_name.startswith("scripts.agent_data_v5"):
-            del sys.modules[mod_name]
-    pass3c = importlib.import_module("scripts.agent_data_v5.pass3c_samples")
-    assert pass3c.PROTOCOL_VERSION == "v12"
+    from scripts.agent_data_v5 import pass3c_samples as pass3c
 
     # Mock samples — 1 unrelated silent + a (recall_query, recall_response) pair
     # at same chunk + a lonely compress.
@@ -270,14 +228,12 @@ def test_v12_recall_multiturn_merge():
             "chunk_idx": 3, "sample_type": "silent", "trajectory_id": "t1",
             "card_id": "", "output": "<think>x</think><answer></answer>",
             "queries": [], "user_input": "", "recall_result": None,
-            "protocol_version": "v12",
         },
         {
             "chunk_idx": 5, "sample_type": "recall_query", "trajectory_id": "t1",
             "card_id": "c1",
             "output": '<think>need history</think><tool_call>\n{"name":"recall","arguments":{"query":"q","time_range":"1-5"}}\n</tool_call>',
             "queries": [], "user_input": "what color", "recall_result": None,
-            "protocol_version": "v12",
         },
         {
             "chunk_idx": 5, "sample_type": "recall_response", "trajectory_id": "t1",
@@ -285,14 +241,12 @@ def test_v12_recall_multiturn_merge():
             "output": "<think>found</think><answer>red</answer>",
             "queries": [], "user_input": "",
             "recall_result": {"source": "historical_frames", "time": "1-5", "text_content": "red apron"},
-            "protocol_version": "v12",
         },
         {
             "chunk_idx": 8, "sample_type": "compress", "trajectory_id": "t1",
             "card_id": "", "output": '<think>full</think><tool_call>\n{"name":"compress","arguments":{"time_range":[4,12],"text":"s"}}\n</tool_call>',
             "queries": [], "user_input": "<compress_trigger range='4-12'/>",
             "recall_result": None, "v12_inter_chunk": True,
-            "protocol_version": "v12",
         },
     ]
 
@@ -318,26 +272,19 @@ def test_v12_recall_multiturn_merge():
 
 def test_v12_recall_silent_merge():
     """recall_silent merges into recall sample with empty answer."""
-    import importlib
-    os.environ["THINKSTREAM_PROTOCOL"] = "v12"
-    for mod_name in list(sys.modules):
-        if mod_name.startswith("scripts.agent_data_v5"):
-            del sys.modules[mod_name]
-    pass3c = importlib.import_module("scripts.agent_data_v5.pass3c_samples")
+    from scripts.agent_data_v5 import pass3c_samples as pass3c
 
     samples = [
         {
             "chunk_idx": 5, "sample_type": "recall_query", "trajectory_id": "t1",
             "card_id": "c1", "output": "<think>x</think><tool_call>...</tool_call>",
             "queries": [], "user_input": "", "recall_result": None,
-            "protocol_version": "v12",
         },
         {
             "chunk_idx": 5, "sample_type": "recall_silent", "trajectory_id": "t1",
             "card_id": "c1", "output": "<think>not found</think><answer></answer>",
             "queries": [], "user_input": "",
             "recall_result": {"source": "failure", "text_content": "no results"},
-            "protocol_version": "v12",
         },
     ]
     merged = pass3c._merge_recall_pairs_v12(samples)
@@ -352,12 +299,7 @@ def test_v12_recall_silent_merge():
 
 def test_v12_compress_inter_chunk_flag():
     """v12 compress samples carry v12_inter_chunk=True flag."""
-    import importlib
-    os.environ["THINKSTREAM_PROTOCOL"] = "v12"
-    for mod_name in list(sys.modules):
-        if mod_name.startswith("scripts.agent_data_v5"):
-            del sys.modules[mod_name]
-    pass3c = importlib.import_module("scripts.agent_data_v5.pass3c_samples")
+    from scripts.agent_data_v5 import pass3c_samples as pass3c
 
     s = pass3c._make_sample(
         chunk_idx=8, prompt_type="ASK_PROMPT", action="compress",
@@ -625,19 +567,10 @@ def test_pass4_v12_action_minimality():
 
 
 def test_pass4_v11_backward_compat():
-    """v11 samples (no protocol_version field) still go through legacy validation."""
-    from scripts.agent_data_v5.pass3e_verify import verify_format
-
-    v11_resp = {
-        "sample_type": "response",
-        # NO protocol_version field — legacy default
-        "output": "<think>chef is adding salt slowly to the pot at the stove</think><action>response</action><response>red</response>",
-    }
-    ok, reason = verify_format(v11_resp)
-    # v11 verify_format requires <action>, this passes
-    assert ok, f"v11 response rejected: {reason}"
-
-    print("✓ pass4 v11 backward compat")
+    """v11 backward-compat path was removed when the codebase consolidated
+    on v12. Kept as a skipped placeholder for traceability."""
+    import pytest
+    pytest.skip("v11 protocol removed; pass3e_verify now exercises v12 only.")
 
 
 def test_freegen_gate_aggregation():
@@ -688,7 +621,6 @@ if __name__ == "__main__":
     test_compress_trigger()
     test_tools_schema_shape()
     test_pass3c_v12_emission()
-    test_pass3c_v11_unchanged()
     test_freegen_gate_classifier()
     test_v12_recall_multiturn_merge()
     test_v12_recall_silent_merge()
@@ -699,6 +631,5 @@ if __name__ == "__main__":
     test_pass4_v12_recall_evidence_reachable()
     test_pass4_v12_metadata_complete()
     test_pass4_v12_action_minimality()
-    test_pass4_v11_backward_compat()
     test_freegen_gate_aggregation()
     print("\n✅ all v12.0 smoke tests passed")

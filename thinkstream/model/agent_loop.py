@@ -20,13 +20,56 @@ from typing import Callable, Dict, List, Optional
 from thinkstream.data.agent_protocol import (
     AGENT_CHUNK_SEC,
     FRAMES_PER_CHUNK,
-    SYSTEM_PROMPT,
     SYSTEM_PROMPT_V12,
     VISUAL_WINDOW_CHUNKS,
     build_user_content,
     format_memory_block,
-    parse_agent_output,
+    parse_agent_output_v12,
 )
+
+
+def _parse_agent_output(output_text: str) -> Dict:
+    """Parse v12 model output into the legacy {action, payload, think} shape.
+
+    The agent loop logic keys on ``parsed["action"]`` (silent/response/recall/
+    compress) and ``parsed["payload"]`` for back-compat with the surrounding
+    orchestration code. We adapt the v12 parser (which emits ``kind`` +
+    ``answer_text`` / ``tool_call``) into that shape here.
+    """
+    v12 = parse_agent_output_v12(output_text)
+    out: Dict = {
+        "raw": v12.get("raw", output_text),
+        "think": v12.get("think", ""),
+        "action": "",
+        "payload": {},
+    }
+    kind = v12.get("kind", "unknown")
+    if kind == "answer":
+        text = v12.get("answer_text") or ""
+        if text:
+            out["action"] = "response"
+            out["payload"]["response"] = text
+        else:
+            out["action"] = "silent"
+    elif kind == "recall":
+        out["action"] = "recall"
+        tc = v12.get("tool_call") or {}
+        args = tc.get("arguments") or {}
+        out["payload"]["query"] = {
+            "query": args.get("query", ""),
+            "time_range": args.get("time_range", ""),
+        }
+    elif kind == "compress":
+        out["action"] = "compress"
+        tc = v12.get("tool_call") or {}
+        args = tc.get("arguments") or {}
+        out["payload"]["summary"] = {
+            "time_range": args.get("time_range", []),
+            "text": args.get("text", ""),
+        }
+    if v12.get("format_error"):
+        out["format_error"] = v12["format_error"]
+    return out
 
 logger = logging.getLogger(__name__)
 
@@ -223,8 +266,10 @@ class MemoryState:
         return getattr(self, "_queries", [])
 
 
-# format_memory_block, build_user_content, parse_agent_output are imported
-# from thinkstream.data.agent_protocol (single source of truth).
+# format_memory_block, build_user_content are imported from
+# thinkstream.data.agent_protocol (single source of truth). The v12 parser
+# is wrapped by the local `_parse_agent_output` adapter above so the
+# surrounding orchestration code keeps using the {action, payload} shape.
 
 
 def build_single_step_messages(
@@ -239,17 +284,13 @@ def build_single_step_messages(
     min_pixels: int = 100352,
     max_pixels: int = 150528,
     frame_paths: Optional[List[str]] = None,
-    protocol_version: str = "v11",
 ) -> List[Dict]:
     """Build single-step chat messages matching training format.
 
     Delegates text formatting to shared agent_protocol.build_user_content.
-
-    `protocol_version` selects the system prompt:
-      - "v11" (default, legacy): SYSTEM_PROMPT — describes <action>/<response>
-      - "v12": SYSTEM_PROMPT_V12 — concise; <tools> block is rendered by the
-              chat_template via tools= at apply time. Caller must also pass
-              tools=TOOLS_SCHEMA when invoking processor.apply_chat_template.
+    Uses ``SYSTEM_PROMPT_V12`` (the only protocol). The ``<tools>`` block is
+    rendered by the chat_template — callers must pass ``tools=TOOLS_SCHEMA``
+    when invoking ``processor.apply_chat_template``.
     """
     memory_text = format_memory_block(snapshot)
     user_content = build_user_content(
@@ -265,9 +306,8 @@ def build_single_step_messages(
         frame_paths=frame_paths,
     )
 
-    sys_text = SYSTEM_PROMPT_V12 if protocol_version == "v12" else SYSTEM_PROMPT
     return [
-        {"role": "system", "content": [{"type": "text", "text": sys_text}]},
+        {"role": "system", "content": [{"type": "text", "text": SYSTEM_PROMPT_V12}]},
         {"role": "user", "content": user_content},
     ]
 
@@ -508,7 +548,6 @@ class StreamingAgentLoop:
         compress_mode: str = "system",
         frames_root: Optional[str] = None,
         video_root: Optional[str] = None,
-        protocol_version: str = "v11",
     ):
         """
         Args:
@@ -564,7 +603,6 @@ class StreamingAgentLoop:
         self.compress_mode = compress_mode
         self.frames_root = frames_root
         self.video_root = video_root
-        self.protocol_version = protocol_version
         self.memory = MemoryState(tokenizer=tokenizer)
 
     def _get_frame_paths(self, video_path: str, chunk_idx: int) -> Optional[List[str]]:
@@ -727,7 +765,6 @@ class StreamingAgentLoop:
             min_pixels=self.min_pixels,
             max_pixels=self.max_pixels,
             frame_paths=frame_paths,
-            protocol_version=self.protocol_version,
         )
 
         # 5. Generate
@@ -739,7 +776,7 @@ class StreamingAgentLoop:
         )
 
         # 6. Parse output
-        parsed = parse_agent_output(output_text)
+        parsed = _parse_agent_output(output_text)
 
         if os.environ.get("AGENT_DEBUG"):
             print(f"[AGENT_DEBUG] chunk={chunk_idx} user_input={user_input!r}")
@@ -834,7 +871,6 @@ class StreamingAgentLoop:
                     min_pixels=self.min_pixels,
                     max_pixels=self.max_pixels,
                     frame_paths=frame_paths,
-                    protocol_version=self.protocol_version,
                 )
 
                 # Second generate (allow_recall=False to prevent infinite loop)
@@ -847,7 +883,7 @@ class StreamingAgentLoop:
                     **recall_gen_kwargs,
                 )
 
-                recall_parsed = parse_agent_output(recall_output_text)
+                recall_parsed = _parse_agent_output(recall_output_text)
                 # recall_response has NO think (observation was already
                 # emitted in sample1 for this same chunk_idx).
 

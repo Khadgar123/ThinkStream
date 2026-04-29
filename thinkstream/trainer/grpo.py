@@ -56,7 +56,6 @@ from thinkstream.model.inference import (
     think_budget_sample,
 )
 from thinkstream.data.stream_data_processor import (
-    SYSTEM_PROMPT,
     QWEN_TEMPLATE_WO_SYSTEM,
     _make_abs_paths,
     build_video_meta,
@@ -66,6 +65,7 @@ from thinkstream.data.stream_data_processor import (
     compute_position_ids,
     make_raw_data_module,
 )
+from thinkstream.data.agent_protocol import SYSTEM_PROMPT_V12
 from thinkstream.model.patch import build_video_block_mask
 from thinkstream.model import MODEL_CLS, get_text_config, DEFAULT_VIDEO_FLEX_WINDOW_SIZE
 
@@ -98,280 +98,13 @@ def _grpo_audit_writers():
     _GRPO_SAMPLE_WRITER = AuditWriter(audit_dir / "grpo_sample.jsonl")
     return _GRPO_STEP_WRITER, _GRPO_SAMPLE_WRITER
 
-# ---------------------------------------------------------------------------
-# Reward helper functions (Unchanged from original grpo.py)
-# ---------------------------------------------------------------------------
-
-_CHUNK_FORMAT_RE = re.compile(
-    r"^<think>.*?</think>(?:<response>.*|<silent>)<\|im_end\|>$",
-    re.DOTALL,
-)
-
-# 4-action agent format regex (per-timestep)
-_CHUNK_FORMAT_RE_AGENT = re.compile(
-    r"^<think>.*?</think>"
-    r"<action>(?:silent|response|recall|compress)</action>"
-    r"(?:<response>.*?</response>"
-    r"|<query>\{.*?\}</query>"
-    r"|<summary>\{.*?\}</summary>)?"
-    r"<\|im_end\|>$",
-    re.DOTALL,
-)
-
-_ACTION_RE = re.compile(r"<action>(silent|response|recall|compress)</action>")
-
-_RESPONSE_RE_AGENT = re.compile(
-    r"<action>response</action><response>(.*?)</response>", re.DOTALL
-)
-
-_SUMMARY_RE = re.compile(
-    r"<action>compress</action><summary>(.*?)</summary>", re.DOTALL
-)
-
-
-def _check_chunk_format(text: str, agent_mode: bool = False) -> bool:
-    """Return *True* if a single chunk's generated text matches the format."""
-    regex = _CHUNK_FORMAT_RE_AGENT if agent_mode else _CHUNK_FORMAT_RE
-    return regex.match(text.strip()) is not None
-
-
-def _extract_action(text: str) -> str:
-    """Extract action type from a generated chunk. Returns 'silent'/'response'/'recall'/'compress'/'unknown'."""
-    m = _ACTION_RE.search(text)
-    return m.group(1) if m else "unknown"
-
-
-def _compute_response_reward(
-    model_answer: Optional[str],
-    gt_answer: str,
-    predicted_actions: List[str],
-    answer_form: str = "",
-) -> float:
-    """Primary reward: did the model eventually produce a correct response?
-
-    Unlike the old _compute_action_reward, this does NOT penalize the
-    specific action path (recall vs direct response). The model is free
-    to choose any path as long as the final answer is correct.
-
-    Scoring:
-      correct response: 1.0
-      incorrect response: 0.1 (tried but wrong)
-      no response (all silent): 0.0
-      response when should be silent: -0.2 (over-response penalty)
-    """
-    has_response = "response" in predicted_actions
-
-    if not gt_answer:
-        # No gold answer → this is a silent-only sample
-        return -0.2 if has_response else 1.0
-
-    if not has_response:
-        return 0.0  # should have responded but didn't
-
-    if not model_answer:
-        return 0.1  # responded but couldn't extract answer
-
-    # Compare answer
-    gt_clean = _extract_literal_answer(gt_answer)
-    if gt_clean and model_answer == gt_clean:
-        return 1.0
-    # Fuzzy match for descriptive answers
-    if answer_form == "descriptive":
-        # Keyword overlap as partial credit
-        gt_words = set(gt_answer.lower().split())
-        ans_words = set(model_answer.lower().split())
-        overlap = len(gt_words & ans_words) / max(len(gt_words), 1)
-        return min(1.0, overlap * 1.5)  # scale up, cap at 1.0
-    return 0.1  # wrong answer
-
-
-def _compute_recall_hit_rate(
-    returned_chunks_per_chunk: List[List[int]],
-    support_chunks: List[int],
-    *,
-    recall_fired: bool = False,
-) -> Optional[float]:
-    """Recall@K hit-rate over the rollout.
-
-    Returns |∪returned ∩ support| / |support| ∈ [0, 1] when the rollout
-    actually recalled and got results AND support is known.
-
-    v11.4 bug fix: previously returned None when `union` was empty,
-    silently masking out the most informative failure case ("model
-    fired recall but the retriever returned nothing"). That made the
-    column mask=0 for the worst-query case and the policy never
-    learned to write better queries. Now:
-      - support unknown:                    None (genuine "no signal")
-      - recall_fired AND union empty:       -0.2 (explicit penalty —
-                                             "your query retrieved
-                                             nothing useful")
-      - !recall_fired AND union empty:      None (sample didn't recall;
-                                             nothing to score)
-      - non-empty union:                    standard hit-rate
-
-    Union across all recall events in the rollout — the agent can call
-    recall multiple times and we credit any match.
-    """
-    if not support_chunks:
-        return None
-    union = set()
-    for chunks in returned_chunks_per_chunk:
-        if chunks:
-            union.update(int(c) for c in chunks)
-    if not union:
-        # v11.4: distinguish "didn't try" (None / mask off) from
-        # "tried and failed" (explicit penalty so advantage learns).
-        return -0.2 if recall_fired else None
-    gold = set(int(c) for c in support_chunks)
-    return len(union & gold) / len(gold)
-
-
-def _compute_recall_quality_reward(
-    predicted_actions: List[str],
-    chunk_texts: List[str],
-    gt_answer: str,
-    model_answer: Optional[str],
-) -> float:
-    """Query format quality (JSON well-formed + no answer leakage).
-
-    Final ∈ [-0.3, 1.0]:
-      recall fired → outcome × query_quality
-        outcome = 1.0 if response correct, else 0.5
-        query_quality = 1.0 (default), -0.3 if no `query`, -0.5 if leak,
-                        0.2 if JSON failed
-      no recall + correct response: 0.8
-      no recall + wrong response  : 0.0
-      silent-only sample + recall : -0.3   (unnecessary)
-      silent-only sample no recall: 1.0
-
-    Hit-rate and range-tightness are now separate reward columns
-    (`recall_hit_rate`, `range_tightness`) so per-reward group-norm can
-    normalise each independently.
-    """
-    used_recall = "recall" in predicted_actions
-    if not gt_answer:
-        return -0.3 if used_recall else 1.0
-    if not used_recall:
-        gt_clean = _extract_literal_answer(gt_answer) if gt_answer else None
-        if gt_clean and model_answer == gt_clean:
-            return 0.8
-        return 0.0
-
-    query_quality = 0.5  # default when no <query> tag found at all
-    for text in chunk_texts:
-        query_match = re.search(r'<query>(.*?)</query>', text, re.DOTALL)
-        if query_match:
-            try:
-                q = json.loads(query_match.group(1))
-                has_query = bool(q.get("query", ""))
-                query_text = q.get("query", "").lower()
-                answer_in_query = gt_answer.lower() in query_text if gt_answer else False
-                query_quality = 1.0
-                if not has_query:
-                    query_quality -= 0.3
-                if answer_in_query:
-                    query_quality -= 0.5
-            except (json.JSONDecodeError, ValueError):
-                query_quality = 0.2  # bad JSON
-
-    gt_clean = _extract_literal_answer(gt_answer) if gt_answer else None
-    answer_correct = (model_answer == gt_clean) if gt_clean and model_answer else False
-    return query_quality if answer_correct else query_quality * 0.5
-
-
-def _parse_query_time_range(chunk_texts: List[str]):
-    """Extract the LAST <query>...</query>'s time_range from rollout texts.
-
-    Returns (t_start, t_end) tuple or None when no query / no time_range /
-    malformed. Only the last query is used because earlier ones may belong
-    to prior recall events whose results were discarded.
-    """
-    last = None
-    for text in chunk_texts:
-        for m in re.finditer(r'<query>(.*?)</query>', text, re.DOTALL):
-            try:
-                q = json.loads(m.group(1))
-            except (json.JSONDecodeError, ValueError):
-                continue
-            tr = q.get("time_range")
-            if not tr:
-                continue
-            if isinstance(tr, str) and "-" in tr:
-                try:
-                    a, b = tr.split("-", 1)
-                    last = (float(a), float(b))
-                except (ValueError, AttributeError):
-                    continue
-            elif isinstance(tr, (list, tuple)) and len(tr) == 2:
-                try:
-                    last = (float(tr[0]), float(tr[1]))
-                except (TypeError, ValueError):
-                    continue
-    return last
-
-
-def _compute_range_tightness_reward(
-    chunk_texts: List[str],
-    support_chunks: Optional[List[int]],
-    video_duration: float,
-    chunk_sec: float = 2.0,
-) -> Optional[float]:
-    """Reward narrow + accurate time_range.
-
-    Only fires when (a) the rollout's last <query> had a time_range, (b)
-    we know support_chunks, and (c) the range covers ≥1 support chunk
-    (no point rewarding "tight" if it missed). Otherwise returns None
-    (mask=0 in the GDPO column).
-
-    score = (1 - range_width / video_duration) × coverage
-    where coverage = |support ∩ range| / |support|.
-
-    A range covering all of support but spanning the whole video gets
-    score ≈ 0; a range exactly matching support gets close to 1.
-    """
-    if not support_chunks or video_duration <= 0:
-        return None
-    tr = _parse_query_time_range(chunk_texts)
-    if tr is None:
-        return None
-    t0, t1 = (min(tr), max(tr))
-    range_width = max(0.0, t1 - t0)
-    if range_width <= 0:
-        return None
-    # support coverage by the range
-    support_set = set(int(c) for c in support_chunks)
-    covered = sum(
-        1 for c in support_set
-        if (c * chunk_sec + chunk_sec) > t0 and (c * chunk_sec) < t1
-    )
-    coverage = covered / max(len(support_set), 1)
-    if coverage <= 0:
-        # v11.4 bug fix: previously returned None and the column was
-        # masked out — but coverage=0 is the WORST failure case (model
-        # asked for a window that doesn't contain any gold chunk) and
-        # is precisely what RL should learn to avoid. Returning a
-        # negative score makes the failure visible to advantage.
-        return -0.2
-    tightness = max(0.0, 1.0 - range_width / video_duration)
-    return tightness * coverage
-
-
-def _compute_format_reward(chunk_texts: List[str], agent_mode: bool = False) -> float:
-    """Return format reward in [0, 1]: proportion of chunks that match format."""
-    if not chunk_texts:
-        return 0.0
-    correct_count = sum(1 for t in chunk_texts if _check_chunk_format(t, agent_mode))
-    return correct_count / len(chunk_texts)
-
-
 def _collect_think_lengths(
     chunk_results: List[Dict[str, Any]], gen_idx: int, tokenizer: Any
 ) -> List[int]:
     """Collect token lengths of <think>...</think> spans for one (chunk_results, gen_idx).
     One length per chunk that contains a think block.
 
-    Retained for diagnostics/audit only — no longer feeds a reward in v11
-    (think_len reward removed: redundant with format check, hard to tune).
+    Diagnostics/audit only — does not feed any reward.
     """
     lengths: List[int] = []
     for cr in chunk_results:
@@ -390,113 +123,8 @@ def _collect_think_lengths(
     return lengths
 
 
-def _extract_literal_answer(text: str) -> Optional[str]:
-    text = text.strip()
-    if re.fullmatch(r"[A-E]", text):
-        return text
-    if re.fullmatch(r"\([A-E]\)", text):
-        return text[1]
-    if re.fullmatch(r"[A-E]\.", text):
-        return text[0]
-    if text.lower() in {"yes", "no"}:
-        return text.lower()
-    if re.fullmatch(r"[0-9]", text):
-        return text
-    return None
-
-
-_RESPONSE_RE = re.compile(r"<response>(.*?)(?:<\|im_end\|>|$)", re.DOTALL)
-
-
-def _scan_responses_for_answer(
-    chunk_results: List[Dict[str, Any]], gen_idx: int, tokenizer: Any
-) -> Tuple[Optional[str], Optional[int], int, Optional[int]]:
-    """Walk all chunks for one rollout, return both first and last response info.
-
-    v11.4: tuple extended with `last_response_chunk_idx`. Streaming agents
-    often emit response then refine in later chunks; the legacy "first
-    response only" timing reward penalized this self-correction. The
-    caller now uses `last_response_chunk_idx` for timing (the model's
-    final committed response) while `first_answer` still gates
-    correctness (so a model that keeps spamming responses can't hide a
-    wrong-then-right pattern).
-
-    Returns: (first_answer, first_response_chunk_idx, response_count,
-              last_response_chunk_idx)
-    """
-    first_response_chunk_idx: Optional[int] = None
-    first_answer: Optional[str] = None
-    last_response_chunk_idx: Optional[int] = None
-    response_count = 0
-    for cr in chunk_results:
-        gen_tokens_list = cr.get("generated_tokens", [])
-        if gen_idx >= len(gen_tokens_list):
-            continue
-        gen_tokens = gen_tokens_list[gen_idx]
-        if isinstance(gen_tokens, torch.Tensor):
-            gen_tokens = gen_tokens.tolist()
-        text = tokenizer.decode(gen_tokens, skip_special_tokens=False)
-        for m in _RESPONSE_RE.finditer(text):
-            response_count += 1
-            answer = _extract_literal_answer(m.group(1))
-            if answer is not None:
-                if first_answer is None:
-                    first_answer = answer
-                    if first_response_chunk_idx is None:
-                        first_response_chunk_idx = cr["chunk_idx"]
-                # last_response_chunk_idx tracks the latest chunk that
-                # produced ANY parseable response (refinement-aware).
-                last_response_chunk_idx = cr["chunk_idx"]
-    return (first_answer, first_response_chunk_idx,
-            response_count, last_response_chunk_idx)
-
-
-def _compute_time_reward(
-    response_chunk_idx: Optional[int],
-    gt_chunk_idx: int,
-    window: int,
-    slack_window: int = 0,
-) -> float:
-    if response_chunk_idx is None:
-        return 0.0
-    diff = abs(response_chunk_idx - gt_chunk_idx)
-    if diff <= slack_window:
-        return 1.0
-    if diff <= slack_window + window:
-        return 1.0 - (diff - slack_window) / window
-    return 0.0
-
-
-# NOTE (v9.4 cleanup): the formerly-defined `_compute_correctness_reward`
-# (literal-only, returns 0.0 for descriptive) was DEAD CODE — `calc_rewards`
-# at L900 calls `_compute_response_reward` instead, which already handles
-# descriptive via fuzzy keyword overlap (lines 179-184). The dead helper
-# was removed to prevent future drift; if a literal-only correctness signal
-# is needed, call `_extract_literal_answer` directly at the call site.
-
-
-def _compute_num_response_reward(
-    num_responses: int, step_window: int = 3, max_responses: int = 10
-) -> float:
-    """
-    Compute a discrete, step-wise reward for the number of responses.
-    Exactly 1 response yields 1.0.
-    Multiple responses decay in intervals of `step_window`, reaching 0.0
-    when exceeding `max_responses`.
-    """
-    if num_responses == 1:
-        return 1.0
-    if num_responses <= 0 or num_responses > max_responses:
-        return 0.0
-    step_window = max(1, step_window)
-    step_idx = int((num_responses - 2) // step_window) + 1
-    max_steps = int((max_responses - 2) // step_window) + 1
-    reward = 1.0 - (float(step_idx) / float(max_steps + 1))
-    return max(0.0, reward)
-
-
 # ---------------------------------------------------------------------------
-# New Nodes for GRPO adapted for DeepSlyme
+# Nodes for GRPO adapted for DeepSlyme
 # ---------------------------------------------------------------------------
 
 
@@ -848,15 +476,6 @@ def rollout(
             if user_question:
                 _question_at_chunk[int(ask_chunk)] = user_question
 
-        # v12.0 protocol switch — propagate sample's protocol_version into
-        # the rollout loop so build_single_step_messages picks the right
-        # SYSTEM_PROMPT (v12 → SYSTEM_PROMPT_V12 + tools= via chat_template).
-        _proto = (
-            raw_sample.get("protocol_version")
-            or metadata.get("protocol_version")
-            or "v11"
-        )
-
         # Run G independent rollouts
         per_gen_results: List[List[Dict]] = []
         for g in range(group_size):
@@ -868,7 +487,6 @@ def rollout(
                 min_pixels=rollout_min_pixels,
                 max_pixels=rollout_max_pixels,
                 max_new_tokens=rollout_max_new_tokens,
-                protocol_version=_proto,
             )
 
             chunk_results_g: List[Dict[str, Any]] = []
@@ -967,8 +585,6 @@ def rollout(
 # ``gdpo_advantage.py`` so unit tests can import them without dragging in
 # transformers / deepspeed / slyme. We re-export here for backward compat.
 from thinkstream.trainer.gdpo_advantage import (
-    REWARD_DICT_KEYS,
-    DEFAULT_REWARD_WEIGHTS,
     V12_REWARD_DICT_KEYS,
     V12_DEFAULT_REWARD_WEIGHTS,
     V12_ADVANTAGE_MIX_ALPHA,
@@ -1381,80 +997,6 @@ def _calc_rewards_v12_trajectory(
     return rewards, rewards_dict, rewards_masks
 
 
-def _compute_silent_quality_reward(
-    predicted_actions: List[str],
-    gt_answer: str,
-    model_answer: Optional[str],
-    answer_form: str = "",
-) -> float:
-    """Explicit silent supervision (Dispider double-signal).
-
-    Always counted (NOT gated on correctness) so that the model gets a
-    direct signal preventing two failure modes:
-      1. Silent collapse — model learns to always silent for safety.
-      2. Over-response — model spams response on every chunk.
-
-    Scoring (v9.1, scaled to match SFT silent loss weights):
-      should-be-silent + silent      → +0.3 (correct silence — comparable to SFT 1.0×)
-      should-be-silent + response    → -0.6 (premature/hallucinated response)
-      should-respond + silent        → -0.6 (missed event)
-      should-respond + response      →  0.0 (correctness reward handles quality)
-      HLD-negative (canonical=No) + correct "No" response → +0.5 (refusal bonus)
-      HLD-negative + silent          → -0.6 (missed refusal)
-
-    Why the magnitudes: at weight=0.20 the swing is ±0.12 — same order as the
-    response-correctness weight ×0.5 (0.25), so silent_quality can no longer be
-    drowned out by other reward components. Below this scale RL drifts away
-    from the SFT silent prior.
-    """
-    has_response = "response" in predicted_actions
-    is_silent_only = not has_response and "compress" not in predicted_actions
-    is_negative = (gt_answer or "").strip().lower() == "no" and answer_form == "binary"
-
-    if is_negative:
-        # HLD: model SHOULD respond "No" (not stay silent)
-        if has_response and model_answer == "no":
-            return 0.5
-        if not has_response:
-            return -0.6  # silent on HLD = missed refusal
-        return 0.0
-
-    if not gt_answer:
-        # Silent-only sample: reward correct silence, penalize over-response
-        return 0.3 if is_silent_only else -0.6
-
-    # gt_answer present: model should respond
-    if is_silent_only:
-        return -0.6  # missed: should have responded
-    return 0.0       # responded — correctness reward handles quality
-
-
-def _compute_overflow_penalty(
-    chunk_results: List[Dict[str, Any]], gen_idx: int
-) -> float:
-    """Sparse compress-timing reward (Memex(RL) 2603.04257 soft-trigger pattern).
-
-    Returns -1.0 if any post-step memory_token_count exceeds the agent's
-    own compress_budget; 0.0 otherwise. The agent learns "compress before
-    overflow" purely from this penalty — no positive reward for "compressed
-    at the right time" (SUMER 2511.21726 evidence: search > compress).
-
-    Both fields are populated by ``StreamingAgentLoop.step()``; if missing
-    (e.g., legacy chunk_results) the function returns 0.0 (no signal, not
-    an error).
-    """
-    for cr in chunk_results:
-        sizes = cr.get("memory_token_count", [])
-        budgets = cr.get("compress_budget", [])
-        if gen_idx >= len(sizes) or gen_idx >= len(budgets):
-            continue
-        budget = budgets[gen_idx]
-        size = sizes[gen_idx]
-        if budget > 0 and size > budget:
-            return -1.0
-    return 0.0
-
-
 @node
 def calc_rewards(
     ctx: Context,
@@ -1472,341 +1014,39 @@ def calc_rewards(
 ) -> Context:
     """Compute per-trajectory rewards + per-reward applicability masks.
 
-    v11 design (NVIDIA GDPO + Memex(RL) + ReMemR1 hybrid):
-      - 6 reward components, each producing a scalar in [-1, 1] per
-        (sample, generation) trajectory.
-      - For sparse rewards (timing only fires if any rollout responded;
-        recall_quality only if any rollout recalled), an applicability
-        mask is emitted alongside. Downstream ``compute_gdpo_advantages``
-        masks those rows to NaN before per-reward group-norm so masked
-        rollouts contribute 0 to that reward's advantage.
-      - No hard gates. Hard gates create bimodal advantage distributions
-        that batch-whiten cannot recover from (see plan rationale).
+    v12 design (5 components: outcome, timing, format, spam, silent_quality).
 
-    Outputs:
-      rewards:       [B] = [N_samples * G] weighted sum of raw rewards
-                          (logging-only; the GDPO node recomputes from
-                           rewards_dict + rewards_masks).
-      rewards_dict:  {key: [B]} per-component raw rewards.
-      rewards_masks: [B, num_rewards] applicability mask (1=apply, 0=skip).
-                     Column order matches REWARD_DICT_KEYS.
+    Sub-dispatch: if the sample carries ``questions`` (multi-card trajectory
+    format from pass4 ``*_trajectories.jsonl``), use the trajectory-level
+    reward function. Otherwise use the single-question path (flat
+    ``*_full.jsonl`` / ``*_train_sft.jsonl``).
     """
-    # v12.0 dispatch — when ANY rollout sample carries protocol_version=v12,
-    # route to the v12 reward path. Mixing v11+v12 in the same batch is
-    # unsupported (the reward dict keys differ).
-    #
-    # v12.4 sub-dispatch: if the sample additionally carries `questions`
-    # (multi-card trajectory format from pass4 *_trajectories.jsonl), use
-    # the trajectory-level reward function. Otherwise fall through to the
-    # single-question path (legacy *_full.jsonl flat samples or
-    # *_train_sft.jsonl).
-    _is_v12 = False
     _is_traj = False
     if rollout_data:
         first_sample = rollout_data[0].get("raw_sample") or {}
-        first_meta = first_sample.get("metadata") or {}
-        _is_v12 = (
-            first_sample.get("protocol_version") == "v12"
-            or first_meta.get("protocol_version") == "v12"
-        )
-        # Trajectory format detection: presence of `questions` list and
-        # `gold_action_per_chunk` map (both populated by pass4).
         _is_traj = (
             isinstance(first_sample.get("questions"), list)
             and isinstance(first_sample.get("gold_action_per_chunk"), dict)
         )
-    if _is_v12 and _is_traj:
-        rewards, rewards_dict_v12, rewards_masks_v12 = _calc_rewards_v12_trajectory(
+    if _is_traj:
+        rewards_, rewards_dict_v12, rewards_masks_v12 = _calc_rewards_v12_trajectory(
             rollout_data,
             group_size=group_size,
             tokenizer=tokenizer,
         )
-        return ctx.set(rewards, rewards_dict_v12).set(
-            rewards_masks, rewards_masks_v12
-        )
-    if _is_v12:
-        rewards, rewards_dict_v12, rewards_masks_v12 = _calc_rewards_v12(
+    else:
+        rewards_, rewards_dict_v12, rewards_masks_v12 = _calc_rewards_v12(
             rollout_data,
             group_size=group_size,
             tokenizer=tokenizer,
             time_reward_window=time_reward_window,
             time_reward_slack=time_reward_slack,
         )
-        return ctx.set(rewards, rewards_dict_v12).set(
-            rewards_masks, rewards_masks_v12
-        )
-
-    weights = DEFAULT_REWARD_WEIGHTS
-    all_rewards = {k: [] for k in REWARD_DICT_KEYS}
-    all_masks = {k: [] for k in REWARD_DICT_KEYS}
-
-    for sample_data in rollout_data:
-        raw_sample = sample_data["raw_sample"]
-        chunk_results: List[Dict[str, Any]] = sample_data["chunk_results"]
-
-        # Extract ground truth from raw sample (new format: metadata)
-        metadata = raw_sample.get("metadata", {})
-        gt_answer = metadata.get("gold_answer", "")
-        answer_form = metadata.get("answer_form", "")
-        support_chunks = list(metadata.get("support_chunks") or [])
-
-        # Timing: use chunk_idx from sample
-        gt_chunk_idx = raw_sample.get("chunk_idx")
-        time_per_chunk = 2.0
-
-        # Legacy format fallback
-        if not gt_answer and "conversations" in raw_sample:
-            conversations = raw_sample["conversations"]
-            gt_msg = conversations[1] if len(conversations) > 1 else {}
-            gt_answer = gt_msg.get("content", "")
-            gt_timestamp = float(gt_msg.get("timestamp", 0.0))
-            if chunk_results:
-                time_per_chunk = chunk_results[0]["window_end"] - chunk_results[0]["window_start"]
-                video_start = chunk_results[0]["window_start"]
-                gt_chunk_idx = int((gt_timestamp - video_start) / time_per_chunk) if time_per_chunk > 0 else None
-
-        # Sanity: if the sample's gold_action expects a response but no
-        # gt_answer is available, correctness/timing/recall_quality masks
-        # will be 0 → the trajectory contributes nothing to those signals.
-        # Warn loudly so half-supervised samples don't silently pass.
-        gold_action = metadata.get("gold_action") or raw_sample.get("action") or ""
-        if not gt_answer and gold_action in (
-            "response", "recall_query", "recall_response"
-        ):
-            sid = (
-                raw_sample.get("sample_id")
-                or raw_sample.get("trajectory_id")
-                or raw_sample.get("video_id")
-                or "?"
-            )
-            logger.warning(
-                "[grpo.calc_rewards] sample=%s gold_action=%s but gt_answer is "
-                "empty (metadata.gold_answer + conversations[1] both missing). "
-                "Correctness/timing/recall_quality will be masked-out for this "
-                "sample. Re-run Pass4 with the metadata_complete check enabled.",
-                sid, gold_action,
-            )
-
-        gt_present = bool(gt_answer)
-
-        for g in range(group_size):
-            chunk_texts: List[str] = []
-            for cr in chunk_results:
-                tokens = cr["generated_tokens"][g]
-                chunk_texts.append(tokenizer.decode(tokens, skip_special_tokens=False))
-
-            predicted_actions = [_extract_action(t) for t in chunk_texts]
-            (model_answer, first_resp_chunk_idx, _resp_count,
-             last_resp_chunk_idx) = _scan_responses_for_answer(
-                chunk_results, g, tokenizer
-            )
-            did_respond = "response" in predicted_actions
-            did_recall = "recall" in predicted_actions
-
-            # ─── R_format (dense, always applies) ───
-            fmt_r = _compute_format_reward(chunk_texts, agent_mode=True)
-
-            # ─── R_correctness (dense, applies only if gold_answer present) ───
-            corr_r = _compute_response_reward(
-                model_answer, gt_answer, predicted_actions, answer_form
-            )
-
-            # ─── R_timing (sparse, applies only if rollout responded AND gt available) ───
-            # v11.4 bug fix: use last_resp_chunk_idx (model's final commitment)
-            # rather than first_resp_chunk_idx. Streaming agents that respond
-            # then refine were being penalized for self-correction.
-            if gt_chunk_idx is not None and gt_present:
-                slack_window_chunks = (
-                    int(time_reward_slack / time_per_chunk)
-                    if time_per_chunk > 0
-                    else 0
-                )
-                time_r = _compute_time_reward(
-                    last_resp_chunk_idx, gt_chunk_idx,
-                    time_reward_window, slack_window_chunks,
-                )
-            else:
-                # Silent-only sample: no timing signal
-                time_r = 0.0
-
-            # ─── R_recall_quality / R_recall_hit_rate / R_range_tightness ───
-            # Three separate sparse signals — all gated on did_recall.
-            # Per-chunk retriever output for this gen — empty list when
-            # the chunk's action wasn't recall.
-            returned_per_chunk = [
-                cr.get("recall_returned_chunks", [[]] * group_size)[g]
-                if isinstance(cr.get("recall_returned_chunks"), list)
-                else []
-                for cr in chunk_results
-            ]
-            recall_r = _compute_recall_quality_reward(
-                predicted_actions, chunk_texts, gt_answer, model_answer
-            )
-            # v11.4: pass recall_fired so a fired-but-empty recall returns
-            # an explicit -0.2 instead of None (which mask=0 hid before).
-            hit_rate_r = _compute_recall_hit_rate(
-                returned_per_chunk, support_chunks, recall_fired=did_recall,
-            )
-            # Estimate video_duration from the last chunk window we saw.
-            video_duration = (chunk_results[-1].get("window_end", 0.0)
-                              if chunk_results else 0.0)
-            range_tight_r = _compute_range_tightness_reward(
-                chunk_texts, support_chunks, video_duration,
-            )
-
-            # ─── R_silent_quality (dense, always applies — streaming-specific) ───
-            silent_r = _compute_silent_quality_reward(
-                predicted_actions, gt_answer, model_answer, answer_form
-            )
-
-            # ─── R_overflow_pen (dense, always applies — Memex soft-trigger pattern) ───
-            overflow_r = _compute_overflow_penalty(chunk_results, g)
-
-            all_rewards["format"].append(fmt_r)
-            all_rewards["correctness"].append(corr_r)
-            all_rewards["timing"].append(time_r)
-            all_rewards["silent_quality"].append(silent_r)
-            all_rewards["recall_quality"].append(recall_r)
-            all_rewards["recall_hit_rate"].append(
-                hit_rate_r if hit_rate_r is not None else 0.0
-            )
-            all_rewards["range_tightness"].append(
-                range_tight_r if range_tight_r is not None else 0.0
-            )
-            all_rewards["overflow_pen"].append(overflow_r)
-
-            # Per-reward applicability masks (downstream GDPO node masks NaN)
-            all_masks["format"].append(1.0)
-            all_masks["correctness"].append(1.0 if gt_present else 0.0)
-            all_masks["timing"].append(
-                1.0 if (did_respond and gt_present and gt_chunk_idx is not None) else 0.0
-            )
-            all_masks["silent_quality"].append(1.0)
-            all_masks["recall_quality"].append(1.0 if did_recall else 0.0)
-            all_masks["recall_hit_rate"].append(
-                1.0 if (did_recall and hit_rate_r is not None) else 0.0
-            )
-            all_masks["range_tightness"].append(
-                1.0 if (did_recall and range_tight_r is not None) else 0.0
-            )
-            all_masks["overflow_pen"].append(1.0)
-
-    # Logging-only weighted sum (real advantage is computed in
-    # compute_gdpo_advantages from rewards_dict + rewards_masks).
-    n = len(all_rewards["format"])
-    totals: List[float] = []
-    for i in range(n):
-        s = 0.0
-        for k in REWARD_DICT_KEYS:
-            if all_masks[k][i] > 0:
-                s += weights[k] * all_rewards[k][i]
-        totals.append(s)
-
-    total_tensor = torch.tensor(totals, dtype=torch.float32)
-    rewards_dict_val = {
-        k: torch.tensor(all_rewards[k], dtype=torch.float32) for k in REWARD_DICT_KEYS
-    }
-    # rewards_masks columns ordered to match REWARD_DICT_KEYS
-    masks_tensor = torch.tensor(
-        [[all_masks[k][i] for k in REWARD_DICT_KEYS] for i in range(n)],
-        dtype=torch.float32,
-    )
-
-    # ── Audit log: per-step aggregate + per-(sample, generation) breakdown ──
-    try:
-        _emit_grpo_audit(
-            rollout_data, all_rewards, all_masks, totals, group_size, tokenizer,
-        )
-    except Exception as e:
-        logger.debug("grpo audit log skipped: %s", e)
-
     return ctx.update({
-        rewards: total_tensor,
-        rewards_dict: rewards_dict_val,
-        rewards_masks: masks_tensor,
+        rewards: rewards_,
+        rewards_dict: rewards_dict_v12,
+        rewards_masks: rewards_masks_v12,
     })
-
-
-def _emit_grpo_audit(
-    rollout_data, all_rewards, all_masks, totals, group_size, tokenizer,
-) -> None:
-    """Write one grpo_step record + one grpo_sample record per (sample, gen)."""
-    global _GRPO_STEP_COUNTER
-    step_w, sample_w = _grpo_audit_writers()
-    if step_w is None and sample_w is None:
-        return
-
-    _GRPO_STEP_COUNTER += 1
-    n = len(totals)
-
-    if step_w is not None and n > 0:
-        def _stats(key):
-            xs = all_rewards[key]
-            return {
-                "mean": float(sum(xs) / len(xs)),
-                "min": float(min(xs)),
-                "max": float(max(xs)),
-            }
-        record = {
-            "step": _GRPO_STEP_COUNTER,
-            "n": n,
-            "total": {
-                "mean": float(sum(totals) / n),
-                "min": float(min(totals)),
-                "max": float(max(totals)),
-            },
-        }
-        for k in REWARD_DICT_KEYS:
-            record[k] = _stats(k)
-            record[f"mask_{k}_rate"] = float(sum(all_masks[k]) / n)
-        step_w.write(record)
-
-    if sample_w is not None:
-        # Reconstruct (sample, generation) pairing — rewards are flattened in the
-        # same order as the calc_rewards loop, group_size per sample.
-        i = 0
-        for sample_data in rollout_data:
-            raw = sample_data["raw_sample"]
-            chunk_results = sample_data.get("chunk_results", [])
-            metadata = raw.get("metadata", {})
-            sid = (
-                raw.get("sample_id")
-                or raw.get("trajectory_id")
-                or raw.get("video_id")
-                or "?"
-            )
-            for g in range(group_size):
-                if i >= n:
-                    break
-                # Re-decode model output for this generation (truncate to keep log small)
-                try:
-                    chunks = []
-                    for cr in chunk_results:
-                        toks = cr["generated_tokens"][g]
-                        chunks.append(tokenizer.decode(toks, skip_special_tokens=False))
-                    actions = [_extract_action(t) for t in chunks]
-                    full_out = "".join(chunks)
-                    if len(full_out) > 600:
-                        full_out = full_out[:600] + "...<truncated>"
-                except Exception:
-                    actions, full_out = [], ""
-
-                sample_w.write({
-                    "step": _GRPO_STEP_COUNTER,
-                    "sample_id": sid,
-                    "video_id": raw.get("video_id"),
-                    "chunk_idx": raw.get("chunk_idx"),
-                    "generation": g,
-                    "gold_action": metadata.get("gold_action"),
-                    "gold_answer": (metadata.get("gold_answer") or "")[:200],
-                    "answer_form": metadata.get("answer_form"),
-                    "predicted_actions": actions,
-                    "model_output": full_out,
-                    "rewards": {k: all_rewards[k][i] for k in REWARD_DICT_KEYS},
-                    "masks": {k: all_masks[k][i] for k in REWARD_DICT_KEYS},
-                    "total": totals[i],
-                })
-                i += 1
 
 
 # ---------------------------------------------------------------------------
@@ -1927,21 +1167,9 @@ def _build_rollout_messages(
     total_start = chunk_results[0]["window_start"]
     total_end = chunk_results[-1]["window_end"]
 
-    # v12.0 protocol switch — when sample carries protocol_version=v12,
-    # use SYSTEM_PROMPT_V12 (concise; <tools> rendered by chat_template).
-    # v11 and unset default to legacy SYSTEM_PROMPT (<action>/<response>).
-    _meta = raw_sample.get("metadata") or {}
-    _proto = (
-        raw_sample.get("protocol_version")
-        or _meta.get("protocol_version")
-        or "v11"
-    )
-    if _proto == "v12":
-        from thinkstream.data.agent_protocol import SYSTEM_PROMPT_V12
-        _sys_text = SYSTEM_PROMPT_V12
-    else:
-        _sys_text = SYSTEM_PROMPT
-    messages: List[Dict[str, Any]] = [{"role": "system", "content": _sys_text}]
+    messages: List[Dict[str, Any]] = [
+        {"role": "system", "content": SYSTEM_PROMPT_V12}
+    ]
 
     for cr_idx, cr in enumerate(chunk_results):
         w_start, w_end = cr["window_start"], cr["window_end"]

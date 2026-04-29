@@ -36,12 +36,13 @@ sys.path.insert(0, str(_EVAL_DIR))
 from thinkstream.data.agent_protocol import (
     AGENT_CHUNK_SEC,
     FRAMES_PER_CHUNK,
+    TOOLS_SCHEMA,
     VISUAL_WINDOW_CHUNKS,
-    parse_agent_output,
 )
 from thinkstream.model.agent_loop import (
     COMPRESS_RANGE_MIN,
     MemoryState,
+    _parse_agent_output,
     build_single_step_messages,
     select_compress_range_by_tokens,
 )
@@ -74,9 +75,6 @@ class _SampleRunner:
     # so caller can skip user_question on the same step.
     _last_trigger: bool = False
     chunks_generated: int = 0
-    # v12 protocol: switches build_single_step_messages to SYSTEM_PROMPT_V12
-    # and the caller's prepare_vllm_input to pass tools=TOOLS_SCHEMA.
-    protocol_version: str = "v11"
 
 
 def _resolve_frame_paths(
@@ -183,7 +181,6 @@ def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:
         min_pixels=runner.min_pixels,
         max_pixels=runner.max_pixels,
         frame_paths=frame_paths,
-        protocol_version=runner.protocol_version,
     )
 
 
@@ -193,7 +190,7 @@ def _apply_step_output(runner: _SampleRunner, output_text: str) -> None:
     Eval mode → recall path is dead (allow_recall=False at sampler level
     AND we ignore <action>recall</action> if it slips through).
     """
-    parsed = parse_agent_output(output_text)
+    parsed = _parse_agent_output(output_text)
     chunk_idx = runner.current_chunk
 
     if parsed.get("think"):
@@ -255,7 +252,6 @@ def _build_runners(
     frames_root: Optional[str],
     video_root: Optional[str],
     tokenizer=None,
-    protocol_version: str = "v11",
 ) -> List[_SampleRunner]:
     runners: List[_SampleRunner] = []
     for i in range(len(dataset)):
@@ -294,7 +290,6 @@ def _build_runners(
                 video_root=video_root,
                 min_pixels=min_pixels,
                 max_pixels=max_pixels,
-                protocol_version=protocol_version,
             ))
         except Exception as e:
             runners.append(_SampleRunner(
@@ -312,7 +307,6 @@ def _build_runners(
                 max_pixels=max_pixels,
                 done=True,
                 error=str(e),
-                protocol_version=protocol_version,
             ))
     return runners
 
@@ -336,14 +330,13 @@ def streaming_predict_mcq_vllm(
     repetition_penalty: float = 1.1,
     debug: bool = False,
     debug_dir: Optional[str] = None,
-    protocol_version: str = "v11",
 ):
     """Chunk-lockstep streaming MCQ eval via vLLM batched generate.
 
     All samples advance one chunk per orchestration round. At each round
     every live sample contributes one prompt to a single llm.generate()
     call, then each parses its own output and advances state. Samples
-    that emit <action>response</action> are removed from the live set.
+    that emit a final <answer> are removed from the live set.
 
     Returns: (predictions, datums) — sorted by original dataset index.
     """
@@ -353,13 +346,9 @@ def streaming_predict_mcq_vllm(
         os.path.join(debug_dir, "streaming_eval_vllm.log"), rank=0
     )
 
-    # v12.0: hand TOOLS_SCHEMA to chat_template when protocol_version='v12'
-    # so <tools>...</tools> renders in system prompt and the model can emit
-    # <tool_call>{...}</tool_call>. v11 path keeps tools=None (legacy).
-    tools_for_template = None
-    if protocol_version == "v12":
-        from thinkstream.data.agent_protocol import TOOLS_SCHEMA
-        tools_for_template = TOOLS_SCHEMA
+    # Always pass TOOLS_SCHEMA so <tools>...</tools> renders in the system
+    # prompt and the model can emit <tool_call>{...}</tool_call>.
+    tools_for_template = TOOLS_SCHEMA
     dbg = DebugLogger(
         os.path.join(debug_dir, "streaming_debug_vllm.jsonl"),
         enabled=debug, rank=0,
@@ -370,7 +359,6 @@ def streaming_predict_mcq_vllm(
         dataset, options, question_prefix, question_postfix,
         frames_per_chunk, max_chunks, min_pixels, max_pixels,
         frames_root, video_root, tokenizer=tokenizer,
-        protocol_version=protocol_version,
     )
 
     log.info(
@@ -607,7 +595,7 @@ def _apply_rollout_output(
          window_start, window_end.
     """
     chunk_idx = runner.current_chunk
-    parsed = parse_agent_output(output_text)
+    parsed = _parse_agent_output(output_text)
 
     if parsed.get("think"):
         runner.memory.add_think(chunk_idx, parsed["think"])
@@ -671,7 +659,6 @@ def streaming_vllm_rollout(
     frames_root: Optional[str] = None,
     video_root: Optional[str] = None,
     compress_budget: Optional[int] = None,
-    protocol_version: str = "v11",
 ) -> List[Dict]:
     """vLLM-batched RL rollout matching grpo.py:617-803 output contract.
 
@@ -766,16 +753,12 @@ def streaming_vllm_rollout(
         if not live_active:
             continue
 
-        # Phase B: vLLM input + batch generate
-        # v12.0: pass tools=TOOLS_SCHEMA to chat_template (so <tools> block
-        # renders + model can emit <tool_call>). v11 keeps tools=None.
-        _rollout_tools = None
-        if protocol_version == "v12":
-            from thinkstream.data.agent_protocol import TOOLS_SCHEMA
-            _rollout_tools = TOOLS_SCHEMA
+        # Phase B: vLLM input + batch generate.
+        # Always pass tools=TOOLS_SCHEMA so the <tools> block renders and
+        # the model can emit <tool_call>.
         try:
             vllm_inputs = [
-                prepare_vllm_input(m, processor, tools=_rollout_tools)
+                prepare_vllm_input(m, processor, tools=TOOLS_SCHEMA)
                 for m in messages_list
             ]
         except Exception as e:

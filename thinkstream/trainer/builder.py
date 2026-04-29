@@ -78,8 +78,8 @@ from thinkstream.trainer.grpo import (
     init_grpo_refs,
     init_grpo_dataset,
     timer,
-    REWARD_DICT_KEYS,
 )
+from thinkstream.trainer.gdpo_advantage import V12_V12_REWARD_DICT_KEYS
 from thinkstream.trainer.scope import grpo_scope
 
 
@@ -263,17 +263,17 @@ def build_grpo_train() -> Node:
                                 "learning_rate": "latest",
                                 # Per-reward raw means
                                 **{
-                                    f"reward_{k}_mean": "mean" for k in REWARD_DICT_KEYS
+                                    f"reward_{k}_mean": "mean" for k in V12_REWARD_DICT_KEYS
                                 },
                                 # GDPO per-reward advantage diagnostics
                                 **{
-                                    f"adv_{k}_mean": "mean" for k in REWARD_DICT_KEYS
+                                    f"adv_{k}_mean": "mean" for k in V12_REWARD_DICT_KEYS
                                 },
                                 **{
-                                    f"adv_{k}_std": "mean" for k in REWARD_DICT_KEYS
+                                    f"adv_{k}_std": "mean" for k in V12_REWARD_DICT_KEYS
                                 },
                                 **{
-                                    f"mask_{k}_rate": "mean" for k in REWARD_DICT_KEYS
+                                    f"mask_{k}_rate": "mean" for k in V12_REWARD_DICT_KEYS
                                 },
                                 "adv_total_mean": "mean",
                                 "adv_total_var": "mean",

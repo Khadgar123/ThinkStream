@@ -11,7 +11,6 @@ from eval_common import (
     setup_distributed,
     cleanup_distributed,
     load_model_and_processor,
-    mcq_predict_streaming,
     mcq_predict_agent_loop,
     build_results,
     save_results,
@@ -89,46 +88,24 @@ if __name__ == "__main__":
         "E",
     ]
 
-    if args.use_agent_loop:
-        # StreamingAgentLoop path — exercises the same per-timestep format
-        # the model was SFT'd on (system <compress_trigger range="X-Y"/>
-        # injection, recall orchestration). Required for agent_v5-trained
-        # models; without this they would be evaluated under a different
-        # input distribution than they were trained on.
-        from eval_common import MCQDataset
-        dataset = MCQDataset(benchmark_path)
-        predictions, datums, process_index = mcq_predict_agent_loop(
-            model,
-            processor,
-            dataset,
-            args.model_type,
-            max_new_tokens=args.max_new_tokens,
-            min_pixels=args.min_pixels,
-            max_pixels=args.max_pixels,
-            compress_mode=args.compress_mode,
-            rank=rank,
-            world_size=world_size,
-            protocol_version=args.protocol_version,
-        )
-    else:
-        predictions, datums, process_index = mcq_predict_streaming(
-            model=model,
-            processor=processor,
-            benchmark_path=benchmark_path,
-            options=options,
-            frames_per_chunk=args.frames_per_chunk,
-            max_new_tokens=args.max_new_tokens,
-            remaining_seconds=args.remaining_seconds,
-            think_budget=args.think_budget,
-            rank=rank,
-            world_size=world_size,
-            model_type=args.model_type,
-            min_pixels=args.min_pixels,
-            max_pixels=args.max_pixels,
-            slack_time=args.slack_time,
-            agent_model=args.agent_model,
-            protocol_version=args.protocol_version,
-        )
+    # StreamingAgentLoop path — exercises the same per-timestep format
+    # the model was SFT'd on (system <compress_trigger range="X-Y"/>
+    # injection, recall orchestration). The legacy mcq_predict_streaming
+    # path was v11-only and has been removed.
+    from eval_common import MCQDataset
+    dataset = MCQDataset(benchmark_path)
+    predictions, datums, process_index = mcq_predict_agent_loop(
+        model,
+        processor,
+        dataset,
+        args.model_type,
+        max_new_tokens=args.max_new_tokens,
+        min_pixels=args.min_pixels,
+        max_pixels=args.max_pixels,
+        compress_mode=args.compress_mode,
+        rank=rank,
+        world_size=world_size,
+    )
 
     if process_index == 0:
         results = build_results(datums, predictions, options)

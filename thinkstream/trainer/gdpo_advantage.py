@@ -17,44 +17,6 @@ from typing import Dict, List
 import torch
 
 
-# Reward keys (must match the column order of rewards_masks emitted by
-# calc_rewards in grpo.py).
-#
-# v11.3: split recall signal into three independent columns so per-reward
-# group-norm can normalise each separately. The previous mixed
-# `recall_quality = outcome × (0.5×query_quality + 0.5×hit_rate)` collapsed
-# two signals with different variance profiles into one column, which
-# under-weighted the smaller-magnitude one after normalisation.
-#
-#   recall_quality   — JSON well-formed + no answer leakage (always applicable
-#                      when recall fired)
-#   recall_hit_rate  — |returned ∩ support| / |support| (only when both sides
-#                      known; sparse)
-#   range_tightness  — encourages a narrow + accurate time_range (sparse;
-#                      only when recall used time_range AND hit_rate≥thresh)
-REWARD_DICT_KEYS: tuple = (
-    "format", "correctness", "timing", "silent_quality",
-    "recall_quality", "recall_hit_rate", "range_tightness", "overflow_pen",
-)
-
-# Per-reward weights AFTER per-reward group-norm (so weights control relative
-# pull, not magnitude). recall_quality + recall_hit_rate + range_tightness
-# sum to 0.15 — slightly bumped from the old 0.10 for `recall_quality` because
-# the three sub-signals together represent a more important objective post-v9.4.2
-# (multimodal recall + dual schema). The 0.05 came out of a balanced pull from
-# format / timing / silent_quality — see plan in fuzzy-plotting-valiant.md.
-DEFAULT_REWARD_WEIGHTS: Dict[str, float] = {
-    "correctness":     0.30,   # primary outcome
-    "silent_quality":  0.18,   # was 0.20
-    "timing":          0.18,   # was 0.20
-    "recall_quality":  0.05,   # query JSON format + leakage
-    "recall_hit_rate": 0.07,   # |returned ∩ support| / |support|
-    "range_tightness": 0.03,   # narrow + accurate time_range
-    "format":          0.09,   # was 0.10
-    "overflow_pen":    0.10,   # sparse compress-timing (Memex pattern)
-}
-
-
 # ===========================================================================
 # v12.0 reward design — agentic reframing + timing-bucket reward.
 # ===========================================================================
@@ -113,7 +75,6 @@ DEFAULT_REWARD_WEIGHTS: Dict[str, float] = {
 #      analog); these are NOT chunk-level credit assignment, they're
 #      additional outcome dimensions ("when to talk", not just "what to say")
 #
-# v11 RL still uses the v11 keys (REWARD_DICT_KEYS, see top of this file).
 V12_REWARD_DICT_KEYS: tuple = (
     "outcome",          # 0/1 per-question correctness; dominant signal
     "timing",           # bucketed timing reward (-1 early / +1 on / +0.5 late / -0.5 missed)
@@ -192,18 +153,18 @@ def aggregate_gdpo(
     Args:
         rewards_per_func: {key: [B]} per-component raw rewards.
         rewards_masks: [B, num_rewards] applicability mask, columns
-            ordered by ``keys`` (defaults to ``REWARD_DICT_KEYS``).
+            ordered by ``keys`` (defaults to ``V12_REWARD_DICT_KEYS``).
         group_size: G — rollouts per sample.
-        weights: per-reward weights dict; defaults to ``DEFAULT_REWARD_WEIGHTS``.
-        keys: column ordering; defaults to ``REWARD_DICT_KEYS``.
+        weights: per-reward weights dict; defaults to ``V12_DEFAULT_REWARD_WEIGHTS``.
+        keys: column ordering; defaults to ``V12_REWARD_DICT_KEYS``.
 
     Returns:
         Tuple of:
         - advantages: [B] post-batch-whiten advantage scalars
         - diag: dict of per-reward and total diagnostic stats for logging
     """
-    keys = list(keys or REWARD_DICT_KEYS)
-    weights = weights or DEFAULT_REWARD_WEIGHTS
+    keys = list(keys or V12_REWARD_DICT_KEYS)
+    weights = weights or V12_DEFAULT_REWARD_WEIGHTS
 
     rewards_cols = torch.stack(
         [rewards_per_func[k].float() for k in keys], dim=1
@@ -286,8 +247,8 @@ def aggregate_grpo(
 
     Args / Returns: same shape as aggregate_gdpo.
     """
-    keys = list(keys or REWARD_DICT_KEYS)
-    weights = weights or DEFAULT_REWARD_WEIGHTS
+    keys = list(keys or V12_REWARD_DICT_KEYS)
+    weights = weights or V12_DEFAULT_REWARD_WEIGHTS
 
     rewards_cols = torch.stack(
         [rewards_per_func[k].float() for k in keys], dim=1

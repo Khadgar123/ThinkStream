@@ -2,11 +2,21 @@
 
 Validates message construction, label masking, and sample weight
 without requiring GPU or real video files.
+
+DEPRECATED: targets the v11 ``build_per_timestep_messages`` builder which
+was removed when the codebase consolidated on the v12 protocol. The v12
+builder has its own coverage in tests/test_v12_protocol.py.
 """
 
 import json
 import pytest
 from pathlib import Path
+
+pytestmark = pytest.mark.skip(
+    reason="References the v11 build_per_timestep_messages / ACTION_WEIGHTS "
+           "helpers, which were removed when the codebase consolidated on "
+           "v12. See tests/test_v12_protocol.py for the v12 equivalent."
+)
 
 # ---------------------------------------------------------------------------
 # Test fixtures: mock pipeline samples

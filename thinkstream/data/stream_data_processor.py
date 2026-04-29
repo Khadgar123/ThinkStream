@@ -434,51 +434,6 @@ def _get_duration(path: str) -> float:
     return VideoDecoder(path).metadata.duration_seconds
 
 
-SYSTEM_PROMPT = (
-    "You are a helpful assistant. "
-    "You will see a continuous stream of video chunks. "
-    "Based on the user's query and the video content, first output your internal reasoning enclosed in <think>...</think> tags. "
-    "Then, if you determine that a response is needed at this moment, output <response> followed by the content. "
-    "If no response is needed, output <silent>. "
-    "Your generated thoughts and responses should be continuous and fluent across the video chunks."
-)
-
-# --- 3-action agent protocol system prompts ---
-
-AGENT_SYSTEM_PROMPT = (
-    "你是流视频问答 agent。你会持续接收视频片段流。\n\n"
-    "每次 assistant turn 必须严格输出以下三种形式之一：\n"
-    "1) <think>...</think><action>silent</action>\n"
-    "2) <think>...</think><action>response</action><response>...</response>\n"
-    "3) <think>...</think><action>recall</action>"
-    '<query>{"query":"...","time_bias":"...","target":"...","topk":3}</query>\n\n'
-    "规则：\n"
-    "- 每个 turn 只允许一个 action。\n"
-    "- think 只写当前新增判断，不复述整段视频。\n"
-    "- 若当前 recent window 证据已足够，直接 response，不要 recall。\n"
-    "- 若问题依赖已离开 recent window 的历史内容，优先 recall。\n"
-    "- recall query 必须短、可检索、非完整问句、避免代词和泛词。\n"
-    "- 收到 <recall_result> 后，只能再输出 silent 或 response。\n"
-    "- 若当前 chunk 不该说话，输出 silent。"
-)
-
-AGENT_SYSTEM_PROMPT_EN = (
-    "You are a streaming video QA agent receiving a continuous stream of video chunks.\n\n"
-    "Each assistant turn must output exactly one of these three forms:\n"
-    "1) <think>...</think><action>silent</action>\n"
-    "2) <think>...</think><action>response</action><response>...</response>\n"
-    "3) <think>...</think><action>recall</action>"
-    '<query>{"query":"...","time_bias":"...","target":"...","topk":3}</query>\n\n'
-    "Rules:\n"
-    "- Only one action per turn.\n"
-    "- Think only about new observations in the current chunk. Do not restate the whole video.\n"
-    "- If the recent window has enough evidence, respond directly without recall.\n"
-    "- If the answer depends on content that has left the recent window, use recall.\n"
-    "- Recall queries must be short, searchable keywords — not full questions, no pronouns.\n"
-    "- After receiving <recall_result>, only output silent or response.\n"
-    "- If no speech is needed for the current chunk, output silent."
-)
-
 # Chat template without system prompt (for subsequent streaming chunks)
 QWEN_TEMPLATE_WO_SYSTEM = (
     "\n{% set image_count = namespace(value=0) %}"
@@ -505,147 +460,6 @@ QWEN_TEMPLATE_WO_SYSTEM = (
     "{% endfor %}"
     "{% if add_generation_prompt %}<|im_start|>assistant\n{% endif %}"
 )
-
-
-def _build_messages(
-    item: Dict[str, Any], base_path: Path, remaining_video_chunks: int = 3
-) -> Dict[str, Any]:
-    video_path = item.get("video_path")
-    if not video_path:
-        raise ValueError("video_path is required")
-
-    abs_video_path = str(_make_abs_paths(base_path, video_path))
-    video_duration = _get_duration(abs_video_path)
-    video_chunk_size = float(math.ceil(video_duration / DEFAULT_MAX_CHUNKS))
-
-    user_queue = sorted(
-        [
-            (float(c.get("timestamp", 0.0)), c.get("content", ""))
-            for c in item.get("conversations", [])
-            if c.get("role") == "user"
-        ],
-        key=lambda x: x[0],
-    )
-
-    assistant_queue = sorted(
-        [
-            (float(c.get("timestamp", 0.0)), c.get("content", ""))
-            for c in item.get("conversations", [])
-            if c.get("role") == "assistant"
-        ],
-        key=lambda x: x[0],
-    )
-
-    # [新增] 读取并排序 thoughts 队列
-    thoughts_queue = sorted(
-        [
-            (float(t.get("timestamp", 0.0)), t.get("think", ""))
-            for t in item.get("thoughts", [])
-        ],
-        key=lambda x: x[0],
-    )
-
-    max_video_chunks = int(video_duration // video_chunk_size)
-
-    # [修改点 1] 保持原逻辑：只根据 assistant 的最后一条消息来决定视频切分长度
-    last_assist_ts = assistant_queue[-1][0] if assistant_queue else 0.0
-    last_assist_chunk_idx = int(np.floor(last_assist_ts / video_chunk_size))
-    target_stop_idx = min(
-        last_assist_chunk_idx + remaining_video_chunks, max_video_chunks - 1
-    )
-
-    # [修改点 2] 插入 System Prompt 到 messages 开头
-    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
-
-    video_chunks_count = 0
-
-    for chunk_idx in range(target_stop_idx + 1):
-        window_start = chunk_idx * video_chunk_size
-        window_end = (chunk_idx + 1) * video_chunk_size
-        is_last_chunk = chunk_idx == max_video_chunks - 1
-
-        # --- User Content 构建 ---
-        user_content = []
-        user_content.append(
-            {
-                "type": "video",
-                "video": abs_video_path,
-                "video_start": window_start,
-                "video_end": window_end,
-            }
-        )
-
-        video_chunks_count += 1
-
-        while user_queue and user_queue[0][0] < window_end:
-            ts, text = user_queue[0]
-            if ts >= window_start:
-                user_queue.pop(0)
-                user_content.append({"type": "text", "text": "\n" + text})
-            else:
-                user_queue.pop(0)  # 丢弃过期
-
-        messages.append({"role": "user", "content": user_content})
-
-        # --- Assistant Content 构建 (Thoughts + Response) ---
-
-        # 1. 处理 Thoughts (与 assistant 逻辑一致)
-        current_thought_segments = []
-        while thoughts_queue:
-            ts, content = thoughts_queue[0]
-
-            if not is_last_chunk and ts >= window_end:
-                break
-
-            if ts >= window_start:
-                thoughts_queue.pop(0)
-                current_thought_segments.append(content)
-            else:
-                thoughts_queue.pop(0)  # 丢弃过期
-
-        # 2. 处理 Response
-        current_text_segments = []
-        while assistant_queue:
-            ts, content = assistant_queue[0]
-
-            if not is_last_chunk and ts >= window_end:
-                break
-
-            if ts >= window_start:
-                assistant_queue.pop(0)
-                current_text_segments.append(content)
-            else:
-                assistant_queue.pop(0)
-
-        # [修改点 3] 拼接逻辑：<think>...</think> + <response>/<silent>
-
-        # 即使没有思考内容，也要输出空的 <think></think>
-        thought_part = "<think>" + " ".join(current_thought_segments) + "</think>"
-
-        if current_text_segments:
-            response_part = "<response>" + " ".join(current_text_segments)
-        else:
-            response_part = "<silent>"
-
-        final_content = thought_part + response_part
-
-        assistant_content = [{"type": "text", "text": final_content}]
-        messages.append({"role": "assistant", "content": assistant_content})
-
-    total_covered_duration = min(video_chunks_count * video_chunk_size, video_duration)
-
-    video_meta = build_video_meta(
-        abs_path=abs_video_path,
-        total_start=0.0,
-        total_end=total_covered_duration,
-        num_chunks=video_chunks_count,
-    )
-
-    return {
-        "messages": messages,
-        "video_meta": video_meta,
-        "video_chunk_size": video_chunk_size,
-    }
 
 
 # ---------------------------------------------------------------------------
@@ -826,8 +640,8 @@ def process_messages_to_model_inputs(
     Common function: takes pre-built chat messages + video metadata, loads video
     frames, tokenises, and returns model-forward-ready tensors.
 
-    This is used by both SFT (``preprocess_qwen_visual``) and GRPO (after
-    rollout, to build training inputs from generated completions).
+    This is used by both SFT (``preprocess_qwen_visual_agent``) and GRPO
+    (after rollout, to build training inputs from generated completions).
 
     Video pixel limits are read from the processor's ``video_processor``
     configuration.  Both ``LazySupervisedDataset`` (SFT) and
@@ -1011,37 +825,6 @@ def compute_position_ids(
         second_per_grid_ts=second_per_grid_ts,
     )
     return position_ids
-
-
-def preprocess_qwen_visual(sources, processor, model_type: str) -> Dict:
-    if len(sources) != 1:
-        raise ValueError(f"Expected 1 source, got {len(sources)}")
-    source = sources[0]
-    base_path = Path(source.get("data_path", ""))
-
-    build_result = _build_messages(source, base_path)
-    messages = build_result["messages"]
-    video_meta = build_result["video_meta"]
-    video_chunk_size = build_result["video_chunk_size"]
-
-    # Use common function for video loading + tokenisation
-    full_result = process_messages_to_model_inputs(
-        messages=messages,
-        video_meta=video_meta,
-        video_chunk_size=video_chunk_size,
-        processor=processor,
-        model_type=model_type,
-        add_generation_prompt=False,
-    )
-
-    # SFT-specific: create labels (only train on assistant turns)
-    input_ids = full_result["input_ids"]
-    labels = torch.full_like(input_ids, IGNORE_INDEX)
-    for start, end in find_assistant_spans(input_ids[0].tolist(), processor.tokenizer):
-        labels[0, start:end] = input_ids[0, start:end]
-
-    full_result["labels"] = labels
-    return full_result
 
 
 def preprocess_qwen_visual_agent(sources, processor, model_type: str) -> Dict:
@@ -1330,12 +1113,8 @@ class LazySupervisedDataset(Dataset):
             raise
 
     def _get_item(self, sources) -> Dict[str, torch.Tensor]:
-        # Route to agent preprocessor if 3-action protocol data
-        preprocess_fn = preprocess_qwen_visual
-        if sources and sources[0].get("protocol_version") == "3action":
-            preprocess_fn = preprocess_qwen_visual_agent
-
-        data_dict = preprocess_fn(
+        # Always use the agent preprocessor (v12 is the only protocol).
+        data_dict = preprocess_qwen_visual_agent(
             sources,
             self.processor,
             model_type=self.model_type,

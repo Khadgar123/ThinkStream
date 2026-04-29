@@ -21,15 +21,18 @@ if str(ROOT) not in sys.path:
 
 import pytest
 
-from scripts.agent_data_v5 import pass3a_cards, pass3b_placement, pass3c_samples, pass3d_select, cache_version
+from scripts.agent_data_v5 import pass3a_cards, pass3b_placement, pass3c_samples, cache_version
 from scripts.agent_data_v5.pass3a_cards import (
     FAMILY_TARGETS, RETENTION_CLASS, FAMILY_FORCE_ATTEMPT,
     FAMILY_PROMPTS, NEGATIVE_FAMILIES, classify_chunks,
 )
 from scripts.agent_data_v5.pass3b_placement import compute_all_placements
 from scripts.agent_data_v5.pass3c_samples import _normalize_exact_form_answer
-from scripts.agent_data_v5.pass3d_select import FAMILY_TO_OVO, OVO_TASK_QUOTA
 from scripts.agent_data_v5.pass3e_verify import verify_information_flow
+
+# pass3d_select was removed in the data-pipeline cleanup; tests that
+# referenced FAMILY_TO_OVO / OVO_TASK_QUOTA from it are skipped via
+# pytest.importorskip below at their entry points.
 
 
 # ---------------------------------------------------------------------------
@@ -44,8 +47,6 @@ def test_all_dicts_have_same_family_keys():
         f"RETENTION_CLASS mismatch: {set(RETENTION_CLASS.keys()) ^ targets}"
     assert set(FAMILY_PROMPTS.keys()) == targets, \
         f"FAMILY_PROMPTS mismatch: {set(FAMILY_PROMPTS.keys()) ^ targets}"
-    assert set(FAMILY_TO_OVO.keys()) == targets, \
-        f"FAMILY_TO_OVO mismatch: {set(FAMILY_TO_OVO.keys()) ^ targets}"
 
 
 def test_force_attempt_subset_of_targets():
@@ -56,16 +57,13 @@ def test_negative_families_subset_of_targets():
     assert NEGATIVE_FAMILIES.issubset(FAMILY_TARGETS.keys())
 
 
+@pytest.mark.skip(
+    reason="pass3d_select.FAMILY_TO_OVO / OVO_TASK_QUOTA were removed when "
+           "pass3d was deleted. The OVO-coverage invariant is now enforced "
+           "by pass3a_cards directly."
+)
 def test_family_to_ovo_covers_all_ovo_tasks():
-    """Every OVO task in OVO_TASK_QUOTA must be served by at least one family."""
-    served = set()
-    for tasks in FAMILY_TO_OVO.values():
-        if isinstance(tasks, str):
-            served.add(tasks)
-        else:
-            served.update(tasks)
-    missing = set(OVO_TASK_QUOTA.keys()) - served
-    assert not missing, f"OVO tasks with no family: {missing}"
+    pass
 
 
 def test_v94_families_present():
@@ -530,13 +528,11 @@ def test_force_attempt_includes_reasoning_families():
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.skip(
+    reason="OVO_TASK_QUOTA lived in pass3d_select which has been removed."
+)
 def test_ovo_quota_increased_for_reasoning():
-    """v9.4 increased CRR/EPM/ASI/SSR/HLD quotas."""
-    assert OVO_TASK_QUOTA["HLD"] >= 500
-    assert OVO_TASK_QUOTA["CRR"] >= 400
-    assert OVO_TASK_QUOTA["EPM"] >= 380
-    assert OVO_TASK_QUOTA["ASI"] >= 380
-    assert OVO_TASK_QUOTA["SSR"] >= 380
+    pass
 
 
 # ---------------------------------------------------------------------------

@@ -27,7 +27,6 @@ from thinkstream.model.inference import (
     streaming_video_chat,
 )
 from thinkstream.data.stream_data_processor import (
-    SYSTEM_PROMPT,
     QWEN_TEMPLATE_WO_SYSTEM,
     FRAMES_PER_CHUNK,
     DEFAULT_MAX_CHUNKS,
@@ -277,19 +276,6 @@ def add_common_args(parser):
         ),
     )
     parser.add_argument(
-        "--protocol_version",
-        default="v11",
-        choices=["v11", "v12"],
-        help=(
-            "Agent protocol version. v11 uses <action>/<response>/<query>; "
-            "v12 uses Qwen3-VL official tool protocol (<answer>/<tool_call>) "
-            "with SYSTEM_PROMPT_V12 + tools=TOOLS_SCHEMA. Passing v12 with "
-            "the legacy mcq_predict_streaming path raises ValueError "
-            "immediately — use --use_agent_loop or streaming_predict_mcq_vllm "
-            "for v12 instead."
-        ),
-    )
-    parser.add_argument(
         "--compress_mode",
         default="system",
         choices=["system", "self"],
@@ -321,286 +307,6 @@ def preprocess_logits_for_metrics(logits, labels, strict_option_ids):
     ).argmax(dim=-1)
 
 
-@torch.inference_mode()
-def mcq_predict_streaming(
-    model,
-    processor,
-    benchmark_path: str,
-    options: list[str],
-    question_prefix: str = "",
-    question_postfix: str = "\nPlease select the correct answer.",
-    max_len: int = 24576,
-    frames_per_chunk: int = FRAMES_PER_CHUNK,
-    max_new_tokens: int = MAX_NEW_TOKENS,
-    remaining_seconds: int = DEFAULT_MAX_CHUNKS,
-    think_budget: int = 20,
-    rank: int = 0,
-    world_size: int = 1,
-    *,
-    model_type: str,
-    slack_time: float = 3.0,
-    min_pixels: int = MIN_PIXELS,
-    max_pixels: int = MAX_PIXELS,
-    agent_model: bool = False,
-    protocol_version: str = "v11",
-):
-    """
-    Generic streaming MCQ prediction (v11 PROTOCOL ONLY).
-
-    .. deprecated::
-        This function uses token-restricted sampling hard-coded for v11
-        agent tokens (<action>, <response>, <query>, silent/response/recall
-        word IDs). Those tokens DO NOT EXIST in v12 protocol — invoking
-        this with a v12 model will mask logits to invalid tokens and
-        produce garbage output.
-
-        For v12 models, use ONE of:
-          - mcq_predict_agent_loop (this module) — StreamingAgentLoop path,
-            already protocol_version-aware as of commit ace561b.
-          - thinkstream.eval.streaming_vllm.streaming_predict_mcq_vllm —
-            vLLM batched, prefix-cached, natural sampling + parse_agent_output_v12.
-
-        Passing protocol_version='v12' to this function raises ValueError
-        immediately so the misuse fails fast instead of silently corrupting
-        eval scores.
-
-    The JSONL file at *benchmark_path* must contain one JSON object per line
-    with at least: ``video``, ``question``, ``video_start``, ``video_end``.
-    If an ``options`` key is present its values are appended to the question.
-    """
-    if protocol_version != "v11":
-        raise ValueError(
-            f"mcq_predict_streaming is v11-only (uses restricted sampling on "
-            f"<action>/<response>/<query> tokens that don't exist in {protocol_version}). "
-            f"For v12 models use mcq_predict_agent_loop or "
-            f"thinkstream.eval.streaming_vllm.streaming_predict_mcq_vllm instead."
-        )
-
-    # The sampler picks the top-1 token among restricted_token_ids via argmax
-    # over logits, so the relative ranking is all that matters — the exact
-    # token variant (with / without prefix space) does not affect results.
-    strict_option_ids = [
-        processor.tokenizer(opt, add_special_tokens=False).input_ids[-1]
-        for opt in options
-    ]
-
-    think_end_token_id = processor.tokenizer.convert_tokens_to_ids("</think>")
-    silent_token_id = processor.tokenizer.convert_tokens_to_ids("<silent>")
-    response_token_id = processor.tokenizer.convert_tokens_to_ids("<response>")
-    eos_token_id = processor.tokenizer.convert_tokens_to_ids("<|im_end|>")
-
-    if agent_model:
-        from thinkstream.model.inference import think_budget_sample_agent
-        from thinkstream.data.stream_data_processor import AGENT_SYSTEM_PROMPT_EN
-
-        # Resolve agent-specific token IDs
-        action_start_id = processor.tokenizer.convert_tokens_to_ids("<action>")
-        action_end_id = processor.tokenizer.convert_tokens_to_ids("</action>")
-        response_end_id = processor.tokenizer.convert_tokens_to_ids("</response>")
-        query_start_id = processor.tokenizer.convert_tokens_to_ids("<query>")
-        query_end_id = processor.tokenizer.convert_tokens_to_ids("</query>")
-        # Action word token IDs (first subword of each)
-        silent_word_ids = processor.tokenizer("silent", add_special_tokens=False).input_ids
-        response_word_ids = processor.tokenizer("response", add_special_tokens=False).input_ids
-        recall_word_ids = processor.tokenizer("recall", add_special_tokens=False).input_ids
-
-        sample_fn = think_budget_sample_agent
-        eval_system_prompt = AGENT_SYSTEM_PROMPT_EN
-        sample_kwargs = {
-            "think_end_token_id": think_end_token_id,
-            "max_think_tokens": think_budget,
-            "eos_token_id": eos_token_id,
-            "action_start_token_id": action_start_id,
-            "action_end_token_id": action_end_id,
-            "response_start_token_id": response_token_id,
-            "response_end_token_id": response_end_id,
-            "query_start_token_id": query_start_id,
-            "query_end_token_id": query_end_id,
-            "restricted_token_ids": strict_option_ids,
-            "allow_recall": False,  # No recall during eval
-            "silent_first_token_id": silent_word_ids[0],
-            "response_first_token_id": response_word_ids[0],
-            "recall_first_token_id": recall_word_ids[0],
-            "silent_token_ids": silent_word_ids,
-            "response_word_token_ids": response_word_ids,
-            "recall_token_ids": recall_word_ids,
-        }
-        # For agent answer extraction: <response> token appears after </action>
-        agent_response_start_id = response_token_id
-    else:
-        sample_fn = think_budget_sample_restricted
-        eval_system_prompt = SYSTEM_PROMPT
-        _base_sample_kwargs = {
-            "think_end_token_id": think_end_token_id,
-            "max_think_tokens": think_budget,
-            "eos_token_id": eos_token_id,
-            "silent_token_id": silent_token_id,
-            "response_token_id": response_token_id,
-        }
-        sample_kwargs = {**_base_sample_kwargs, "restricted_token_ids": strict_option_ids}
-
-    dataset = MCQDataset(
-        benchmark_path,
-        processor=processor,
-        model_type=model_type,
-        frames_per_chunk=frames_per_chunk,
-        max_chunks=remaining_seconds,
-        min_pixels=min_pixels,
-        max_pixels=max_pixels,
-        slack_time=slack_time,
-    )
-
-    if world_size > 1:
-        sampler = NoPadDistributedSampler(dataset, num_replicas=world_size, rank=rank)
-    else:
-        sampler = None
-    dataloader = DataLoader(
-        dataset,
-        batch_size=1,
-        sampler=sampler,
-        collate_fn=lambda batch: batch[0],
-        num_workers=4,
-        prefetch_factor=2,
-        persistent_workers=True,
-    )
-
-    video_token_id = processor.tokenizer.convert_tokens_to_ids(["<|video_pad|>"])[0]
-    video_flex_window_size = getattr(
-        model.config, "video_flex_window_size", DEFAULT_VIDEO_FLEX_WINDOW_SIZE
-    )
-    text_cfg = get_text_config(model.config)
-    engine = StreamingWindowInferenceEngine(
-        model,
-        batch_size=1,
-        max_len=max_len,
-        num_hidden_layers=text_cfg.num_hidden_layers,
-        num_key_value_heads=text_cfg.num_key_value_heads,
-        head_dim=text_cfg.hidden_size // text_cfg.num_attention_heads,
-        vocab_size=text_cfg.vocab_size,
-        pad_token_id=model.generation_config.pad_token_id,
-        eos_token_ids=model.generation_config.eos_token_id,
-        video_token_id=video_token_id,
-        video_flex_window_size=video_flex_window_size,
-    )
-
-    predictions = []
-    datums = []
-    local_indices = []
-
-    for idx, datum, preloaded in tqdm.tqdm(
-        dataloader, desc="Processing samples", disable=(rank != 0)
-    ):
-        try:
-            video_path = os.path.join(dataset.data_dir, datum["video"])
-
-            # Determine query timestamp
-            if preloaded is not None and "original_video_end" in preloaded:
-                query_ts = preloaded["original_video_end"]
-                # Use extended video_end from preloaded
-                run_video_end = preloaded["video_end"]
-            else:
-                # Fallback if no preloading or no slack applied (shouldn't happen if slack_time > 0)
-                # But if slack_time=0, we just use datum video_end or None
-                base_end = datum.get("video_end")
-                if base_end is not None:
-                    query_ts = base_end
-                    run_video_end = (
-                        base_end + slack_time if slack_time > 0 else base_end
-                    )
-                else:
-                    # Critical failure to determine timing
-                    raise ValueError(
-                        f"Sample {idx}: Cannot determine video_end/query time."
-                    )
-
-            if "options" in datum and datum["options"]:
-                query = (
-                    question_prefix
-                    + datum["question"]
-                    + "\n"
-                    + "\n".join(datum["options"])
-                    + question_postfix
-                )
-            else:
-                query = datum["question"]
-
-            for result in streaming_video_chat(
-                engine=engine,
-                processor=processor,
-                video_path=video_path,
-                queries=[{"content": query, "timestamp": query_ts}],
-                video_start=datum.get("video_start", 0.0),
-                video_end=run_video_end,
-                frames_per_chunk=frames_per_chunk,
-                max_chunks=remaining_seconds,
-                min_pixels=min_pixels,
-                max_pixels=max_pixels,
-                max_new_tokens=max_new_tokens,
-                system_prompt=eval_system_prompt,
-                chat_template_wo_system=QWEN_TEMPLATE_WO_SYSTEM,
-                sample=sample_fn,
-                sample_kwargs=sample_kwargs,
-                model_type=model_type,
-                preloaded_video=preloaded,
-                slack_time=slack_time,
-                break_on_answer=True,
-            ):
-                if result["is_answer"]:
-                    gen_tokens = result["generated_tokens"][0]
-                    # We expect: ... <think>...</think><response> ANSWER <|im_end|>
-                    try:
-                        # Find position of <response>
-                        resp_pos = (
-                            (gen_tokens == response_token_id)
-                            .nonzero(as_tuple=True)[0][0]
-                            .item()
-                        )
-                        # Answer is the next token
-                        ans_token = gen_tokens[resp_pos + 1].item()
-                        predicted_idx = strict_option_ids.index(ans_token)
-                    except (IndexError, ValueError):
-                        # Fallback search if strict structure failed (shouldn't with restricted sampling)
-                        print(
-                            f"Warning: could not parse answer from {processor.decode(gen_tokens)}"
-                        )
-                        predicted_idx = random.randint(0, len(options) - 1)
-
-                    print(
-                        f"[Answer] {processor.decode(gen_tokens)} -> {options[predicted_idx]}"
-                    )
-                    predictions.append(predicted_idx)
-                    datums.append({**datum, "success": True})
-                    local_indices.append(idx)
-
-        except Exception as e:
-            print(f"Error processing sample {idx}: {e}")
-            import traceback
-
-            traceback.print_exc()
-            predictions.append(random.randint(0, len(options) - 1))
-            datums.append({**datum, "success": False})
-            local_indices.append(idx)
-        finally:
-            gc.collect()
-            torch.cuda.empty_cache()
-
-    if world_size > 1:
-        local_data = list(zip(local_indices, predictions, datums))
-        gathered_data = [None] * world_size
-        dist.all_gather_object(gathered_data, local_data)
-
-        if rank == 0:
-            all_data = []
-            for proc_data in gathered_data:
-                all_data.extend(proc_data)
-            all_data.sort(key=lambda x: x[0])
-            return np.array([d[1] for d in all_data]), [d[2] for d in all_data], 0
-        else:
-            return np.array(predictions), datums, rank
-    else:
-        return np.array(predictions), datums, 0
-
-
 # ─── Agent Loop Eval (v3.0: single-step format, matching training) ───────────
 
 
@@ -619,21 +325,17 @@ def mcq_predict_agent_loop(
     compress_mode: str = "system",
     rank: int = 0,
     world_size: int = 1,
-    protocol_version: str = "v11",
 ):
-    """MCQ prediction using StreamingAgentLoop (v3.0 single-step format).
+    """MCQ prediction using StreamingAgentLoop (single-step format).
 
-    This ensures eval uses EXACTLY the same input format as SFT training:
+    Ensures eval uses EXACTLY the same input format as SFT training:
     video-first layout, <memory> tags, <visual_window> tags, etc.
-
-    Falls back to mcq_predict_streaming if agent_loop dependencies unavailable.
     """
     from thinkstream.model.agent_loop import (
         StreamingAgentLoop,
         make_generate_fn,
         AGENT_CHUNK_SEC,
     )
-    from thinkstream.data.agent_protocol import parse_agent_output
 
     tokenizer = processor.tokenizer
     generate_fn = make_generate_fn(model, processor, model_type=model_type)
@@ -671,7 +373,6 @@ def mcq_predict_agent_loop(
             max_pixels=max_pixels,
             max_new_tokens=max_new_tokens,
             compress_mode=compress_mode,
-            protocol_version=protocol_version,
         )
 
         answer_text = ""

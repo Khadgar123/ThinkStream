@@ -322,48 +322,10 @@ PASS_CONFIG = {
 # Each prompt teaches ONE type of decision. No mixed behavior.
 # ---------------------------------------------------------------------------
 
-# Prompt 1: Main loop — observe video, decide silent/response/recall
-SYSTEM_PROMPT = (
-    "You are a streaming video agent. You observe video chunks and maintain memory.\n\n"
-    "Each turn, output exactly ONE of:\n"
-    "1) <think>...</think><action>silent</action>\n"
-    "2) <think>...</think><action>response</action><response>...</response>\n"
-    "3) <think>...</think><action>recall</action>"
-    '<query>{"query":"...","time_range":"..."}</query>\n\n'
-    "Rules:\n"
-    "- think: 40-60 tokens, describe ONLY what is newly visible in the current chunk. "
-    "No meta-reasoning, no sound/smell/emotion.\n"
-    "- response: answer based on currently visible information only.\n"
-    "- recall: only when answer is NOT in visual window, NOT in text memory, "
-    "NOT in compressed summaries.\n"
-    "- If a query exists in <queries>, respond when you see new relevant information."
-)
-
-# Prompt 2: Post-recall — evaluate recall result, decide silent/response
-SYSTEM_PROMPT_POST_RECALL = (
-    "You are a streaming video agent. You just received recall results.\n\n"
-    "Output exactly ONE of:\n"
-    "1) <think>...</think><action>silent</action>  (recall result not useful)\n"
-    "2) <think>...</think><action>response</action><response>...</response>  (answer the question)\n\n"
-    "Rules:\n"
-    "- think: 20-40 tokens, analyze whether the recall result answers the question.\n"
-    "- response: answer based on the recall result. If insufficient, say so.\n"
-    "- silent: recall result is irrelevant or empty, cannot answer."
-)
-
-# Prompt 3: Compress — triggered by system between timesteps, only output summary
-SYSTEM_PROMPT_COMPRESS = (
-    "You are a streaming video agent. The system has triggered memory compression.\n\n"
-    "Below are recent observations that need to be compressed into a summary.\n"
-    "{compress_context}\n\n"
-    "Output a JSON summary:\n"
-    '{{"time_range": [start_sec, end_sec], "text": "compressed summary"}}\n\n'
-    "Rules:\n"
-    "- Keep all entities with their appearance descriptions\n"
-    "- Keep ALL OCR content verbatim\n"
-    "- Keep state changes as before→after\n"
-    "- Target length: {target_length} tokens"
-)
+# NOTE: legacy v11 SYSTEM_PROMPT / SYSTEM_PROMPT_POST_RECALL /
+# SYSTEM_PROMPT_COMPRESS were removed when the codebase consolidated on
+# the v12 Qwen tool protocol. See thinkstream/data/agent_protocol.py:
+# SYSTEM_PROMPT_V12 + TOOLS_SCHEMA for the current single source of truth.
 
 # Special tokens required by SFT init_processor (see sft_engineering.md §6.2)
 # Approach B: exact-match tags, attributes as JSON inside tags.

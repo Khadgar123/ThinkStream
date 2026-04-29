@@ -6,7 +6,7 @@ Produces: Complete SFT samples with input + output fields
 
 This is the bridge between data construction (Pass 3) and SFT training.
 Each sample gets a full `input` structure that matches what
-`data_processor.py:build_per_timestep_messages` expects.
+`data_processor.py:build_per_timestep_messages_v12` expects.
 
 Called after Pass 4 verify, before writing final JSONL.
 """
@@ -18,13 +18,7 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Dict, List, Optional
 
-# v11.3: extract per-chunk response from sample.output. For multi-probe
-# families (F7/CR5/F5 multi_response), pass3c bakes per-chunk answers
-# into <response>...</response> via progressive_answers (pass3c_samples.py:
-# 892-899). card.canonical_answer holds only the final-state answer, so
-# using it as metadata.gold_answer would mismatch every pre-event chunk.
-_RESPONSE_RE = re.compile(r'<response>(.*?)</response>', re.DOTALL)
-# v12.0: agentic protocol uses <answer> instead of <response>.
+# v12 agentic protocol uses <answer> as the terminal tag.
 _ANSWER_RE = re.compile(r'<answer>(.*?)</answer>', re.DOTALL)
 
 from .config import (
@@ -32,42 +26,20 @@ from .config import (
     VISUAL_WINDOW_CHUNKS,
     FRAMES_PER_CHUNK,
 )
+from thinkstream.data.agent_protocol import SYSTEM_PROMPT_V12
 
 logger = logging.getLogger(__name__)
 
-# System prompt — canonical copy in agent_protocol.py
-# Import to guarantee train/inference identity
-try:
-    from thinkstream.data.agent_protocol import SYSTEM_PROMPT
-except ImportError:
-    SYSTEM_PROMPT = "You are a streaming video agent..."
-
-# Post-recall prompt (2-action: silent / response)
-POST_RECALL_SYSTEM_PROMPT = (
-    "The system retrieved past observations based on your recall query. "
-    "Review the recall_result and decide:\n\n"
-    "1) <think>analysis</think><action>response</action><response>answer</response>\n"
-    "   If the result contains enough evidence to answer.\n\n"
-    "2) <think>analysis</think><action>silent</action>\n"
-    "   If the result is insufficient or irrelevant.\n\n"
-    "Think: analyze whether the recall result answers the question (20-40 tokens)."
-)
-
-# Compress prompt
-COMPRESS_SYSTEM_PROMPT = (
-    "System: memory token budget exceeded. Compress the specified thinks into a summary.\n\n"
-    "Output: <summary>{\"time_range\":[s,e],\"text\":\"...\"}</summary>\n\n"
-    "Rules: retain ALL entity names, visual attributes, OCR text, numbers, and state changes."
-)
-
 
 def _get_system_prompt(prompt_type: str) -> str:
-    """Select system prompt by sample's prompt_type."""
-    if prompt_type == "POST_RECALL_PROMPT":
-        return POST_RECALL_SYSTEM_PROMPT
-    elif prompt_type == "COMPRESS_PROMPT":
-        return COMPRESS_SYSTEM_PROMPT
-    return SYSTEM_PROMPT
+    """Return the v12 system prompt regardless of sample prompt_type.
+
+    The post-recall and compress turns share the same system prompt under
+    the v12 protocol; the protocol behaviour is differentiated by the
+    user-side ``<compress_trigger/>`` injection and the ``<tools>`` schema
+    rendered by ``processor.apply_chat_template``.
+    """
+    return SYSTEM_PROMPT_V12
 
 
 def _build_visual_window(
@@ -229,29 +201,18 @@ def render_sample(
     if rf is not None:
         inp["recalled_frames"] = rf
 
-    # For compress samples, add compress_trigger to user_input AND
-    # remember the gold compressed-chunks set so RL/eval can score the
-    # model's <summary> time_range against teacher's choice.
-    #
-    # v12.0: pass3c v12 already injected the trigger into sample.user_input
-    # (see pass3c_samples._make_sample v12 branch — it uses chunk indices
-    # `<compress_trigger range='4-12'/>` consistent with the assistant tool_call
-    # arguments.time_range). DO NOT overwrite it with a seconds-based v11
-    # trigger here, that would create a chunk_idx vs seconds drift between
-    # user prompt and gold tool_call. Just record gold_compress_chunks.
-    is_v12 = sample.get("protocol_version") == "v12"
+    # For compress samples, remember the gold compressed-chunks set so
+    # RL/eval can score the model's <summary> time_range against the
+    # teacher's choice. pass3c already injected the chunk-index
+    # ``<compress_trigger range='a-b'/>`` into sample.user_input (matching
+    # the assistant tool_call arguments.time_range), so we must NOT
+    # overwrite it here.
     gold_compress_chunks: List[int] = []
     if sample.get("action") == "compress":
         for event in rollout.get("compression_events", []):
             if event.get("trigger_chunk") == chunk_idx:
                 cr = event.get("compressed_thinks_chunks", [])
                 if cr:
-                    if not is_v12:
-                        # v11 path — overwrite user_input with seconds trigger
-                        time_start = min(cr) * AGENT_CHUNK_SEC
-                        time_end = (max(cr) + 1) * AGENT_CHUNK_SEC
-                        inp["user_input"] = f'<compress_trigger range="{time_start}-{time_end}"/>'
-                    # v12: trust pass3c's injected chunk-index trigger
                     gold_compress_chunks = sorted(int(c) for c in cr)
                 break
 
@@ -284,17 +245,11 @@ def render_sample(
     # sample.output instead, fall back to canonical_answer when no
     # <response> tag (silent / recall_query / compress samples).
     canonical = card.get("canonical_answer", "")
-    # v12: output may live in v12_assistant_turn_2 (multi-turn recall) and
-    # uses <answer>...</answer> instead of <response>. Try v12 layout first,
-    # fall back to v11 <response>.
-    if is_v12:
-        # Multi-turn recall: turn 2 has the final answer; non-recall: output
-        v12_text = (sample.get("v12_assistant_turn_2")
-                    or sample.get("output", "") or "")
-        m = _ANSWER_RE.search(v12_text)
-    else:
-        output_text = sample.get("output", "") or ""
-        m = _RESPONSE_RE.search(output_text)
+    # v12: output may live in v12_assistant_turn_2 (multi-turn recall);
+    # otherwise it's in sample.output. Both use <answer>...</answer>.
+    v12_text = (sample.get("v12_assistant_turn_2")
+                or sample.get("output", "") or "")
+    m = _ANSWER_RE.search(v12_text)
     per_chunk_answer = m.group(1).strip() if m else ""
     gold_answer = per_chunk_answer or canonical
 
@@ -340,9 +295,7 @@ def render_sample(
     if "base_role" in sample:
         rendered["base_role"] = sample["base_role"]
 
-    # Propagate v12 protocol fields so pass4 can dispatch correctly
-    if "protocol_version" in sample:
-        rendered["protocol_version"] = sample["protocol_version"]
+    # Propagate v12-specific multi-turn fields so pass4 can render them.
     for v12_key in ("v12_assistant_turn_1", "v12_assistant_turn_2", "v12_inter_chunk"):
         if v12_key in sample:
             rendered[v12_key] = sample[v12_key]

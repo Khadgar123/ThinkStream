@@ -22,34 +22,6 @@ AGENT_CHUNK_SEC = 2
 VISUAL_WINDOW_CHUNKS = 12
 FRAMES_PER_CHUNK = 2
 
-SYSTEM_PROMPT = (
-    "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\n"
-    "Each turn you receive: visual frames (recent 24s window) + text memory "
-    "(compressed summaries + recent thinks + pending questions). "
-    "Output exactly ONE action:\n\n"
-    "1) <think>obs</think><action>silent</action>\n"
-    "   Use when: no question to answer, or pending question whose answer is not yet visible.\n\n"
-    "2) <think>obs</think><action>response</action><response>answer</response>\n"
-    "   Use when: the answer is currently visible — in frames, recent thinks, "
-    "compressed summaries, or a recall_result just returned by the system.\n\n"
-    "3) <think>obs</think><action>recall</action>"
-    '<query>{"query":"keywords","time_range":"start-end"}</query>\n'
-    "   Use when: the answer is NOT in any visible source but you believe it was "
-    "observed earlier. The system will search past observations and return a "
-    "<recall_result> in your next input. Write 3-5 discriminative keywords "
-    "(entity names + attributes), no answer values.\n\n"
-    "4) <think>obs</think><action>compress</action>"
-    '<summary>{"time_range":[s,e],"text":"..."}</summary>\n'
-    "   Use when: system sends <compress_trigger>. Summarize the specified thinks. "
-    "Retain ALL entity names, visual attributes, OCR, and state changes. "
-    "If no range is specified, select the oldest thinks to compress.\n\n"
-    "Think rules:\n"
-    "- 40-60 tokens, describe ONLY what is newly visible in the current chunk.\n"
-    "- No meta-reasoning, no sound/smell/emotion, no speculation.\n"
-    "- Maintain consistent entity names from memory (e.g., chef_1, pot_1)."
-)
-
-
 # ---------------------------------------------------------------------------
 # Memory Formatting
 # ---------------------------------------------------------------------------
@@ -327,50 +299,6 @@ def build_user_content(
 # ---------------------------------------------------------------------------
 # Output Parsing
 # ---------------------------------------------------------------------------
-
-
-def parse_agent_output(output_text: str) -> Dict:
-    """Parse model output into structured components.
-
-    All action types follow: <think>...</think><action>X</action>[payload]
-    """
-    result = {"raw": output_text, "think": "", "action": "", "payload": {}}
-
-    think_match = re.search(r'<think>(.*?)</think>', output_text, re.DOTALL)
-    if think_match:
-        result["think"] = think_match.group(1).strip()
-
-    action_match = re.search(r'<action>(.*?)</action>', output_text, re.DOTALL)
-    if action_match:
-        result["action"] = action_match.group(1).strip()
-
-    if result["action"] == "response":
-        resp_match = re.search(r'<response>(.*?)</response>', output_text, re.DOTALL)
-        if resp_match:
-            result["payload"]["response"] = resp_match.group(1).strip()
-
-    elif result["action"] == "recall":
-        query_match = re.search(r'<query>(.*?)</query>', output_text, re.DOTALL)
-        if query_match:
-            try:
-                result["payload"]["query"] = json.loads(query_match.group(1))
-            except (json.JSONDecodeError, ValueError):
-                result["payload"]["query_raw"] = query_match.group(1).strip()
-
-    elif result["action"] == "compress":
-        summary_match = re.search(r'<summary>(.*?)</summary>', output_text, re.DOTALL)
-        if summary_match:
-            try:
-                result["payload"]["summary"] = json.loads(summary_match.group(1))
-            except (json.JSONDecodeError, ValueError):
-                result["payload"]["summary_raw"] = summary_match.group(1).strip()
-
-    return result
-
-
-# ===========================================================================
-# v12.0 — Official Qwen tool protocol (agentic reframing)
-# ===========================================================================
 # Architecture:
 #   answer (terminal)   = <answer>text</answer> or <answer></answer> (silent)
 #   tool (recall)       = <tool_call>{"name":"recall","arguments":{...}}</tool_call>
@@ -378,7 +306,6 @@ def parse_agent_output(output_text: str) -> Dict:
 #                             into user role; assistant emits compress tool_call
 # Tools registered via system <tools> block (auto-rendered by chat_template
 # when tools=tools is passed to apply_chat_template).
-# Coexists with v11 above; selection via stream_data_processor flag.
 
 SYSTEM_PROMPT_V12 = (
     "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\n"
