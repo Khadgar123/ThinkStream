@@ -13,6 +13,14 @@ from typing import Optional
 
 @dataclass
 class ModelArguments:
+    # v12.0: Qwen3-VL is REQUIRED when protocol_version=v12. Qwen2.5-VL's
+    # bundled chat_template has NO tools support — passing tools= is a
+    # silent no-op (verified against Qwen/Qwen2.5-VL-7B-Instruct
+    # chat_template.json). Qwen3-VL renders the full Hermes <tools>...
+    # <tool_call>...<tool_response> protocol. See verification report in
+    # docs/v12.0_protocol_migration_design.md §11.
+    # Default kept as Qwen2.5-VL for v11 backward compat. v12 users must
+    # explicitly pass --model_name_or_path Qwen/Qwen3-VL-8B-Instruct.
     model_name_or_path: Optional[str] = field(default="Qwen/Qwen2.5-VL-3B-Instruct")
     tune_mm_llm: bool = field(default=True)
     tune_mm_mlp: bool = field(default=True)

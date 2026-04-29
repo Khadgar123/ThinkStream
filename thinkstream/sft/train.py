@@ -153,6 +153,21 @@ def train(attn_implementation="flash_attention_2"):
     # single-token tags (legacy mode). Then smart_init runs to seed the
     # new tokens from natural-word embeddings (mitigates but doesn't
     # eliminate the cold-start risk).
+    # v12.0: hard guard against Qwen2.5-VL — its bundled chat_template
+    # silently drops tools= (no <tools> block, no <tool_call>, no tool role
+    # rendering). Training under v12 protocol on 2.5-VL would produce
+    # divergent train/inference formats. Verified against
+    # Qwen/Qwen2.5-VL-{3,7,72}B-Instruct chat_template.json.
+    if data_args.protocol_version == "v12" and data_args.model_type != "qwen3vl":
+        raise RuntimeError(
+            f"protocol_version=v12 REQUIRES Qwen3-VL (model_type=qwen3vl); "
+            f"got model_type={data_args.model_type!r}. Qwen2.5-VL's chat "
+            f"template has no tools support — see "
+            f"docs/v12.0_protocol_migration_design.md §11. "
+            f"Either pass --model_name_or_path Qwen/Qwen3-VL-8B-Instruct "
+            f"or use --protocol_version v11."
+        )
+
     if data_args.protocol_version == "v12":
         if model_args.add_agent_special_tokens:
             rank0_print(
