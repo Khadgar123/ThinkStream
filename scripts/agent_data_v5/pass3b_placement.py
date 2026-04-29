@@ -23,13 +23,36 @@ from typing import Dict, List, Optional, Set, Tuple
 
 from .config import (
     AGENT_CHUNK_SEC,
+    COMPRESS_REMOVE_TOKENS,
+    COMPRESS_TOKEN_THRESHOLD,
     MAX_ACTIVE_QUERIES,
     MAX_QUESTIONS_PER_TRAJECTORY,
     MAX_TRAJECTORIES_PER_VIDEO,
+    OBSERVATION_AVG_TOKENS,
     PASS_CONFIG,
     PLACEMENTS_DIR,
     VISUAL_WINDOW_CHUNKS,
 )
+
+
+# v12.5: derived chunk-positions for tier 2/3 placement.
+# - First compress fires when accumulated thinks reach COMPRESS_TOKEN_THRESHOLD.
+# - Each compress evicts COMPRESS_REMOVE_TOKENS-worth of oldest thinks.
+# - Subsequent compresses fire every (COMPRESS_REMOVE_TOKENS / avg_think_tokens)
+#   chunks thereafter.
+FIRST_COMPRESS_CHUNK = COMPRESS_TOKEN_THRESHOLD // OBSERVATION_AVG_TOKENS  # ~53
+EVICT_THINKS_PER_COMPRESS = COMPRESS_REMOVE_TOKENS // OBSERVATION_AVG_TOKENS  # ~25
+
+
+def chunk_when_compressed(support_end: int) -> int:
+    """Approximate the chunk-index at which support_end gets evicted into a summary.
+
+    First eviction batch (at FIRST_COMPRESS_CHUNK) removes thinks 0..EVICT-1.
+    Second batch (at FIRST_COMPRESS_CHUNK + EVICT) removes thinks EVICT..2*EVICT-1.
+    For support_end s, it gets evicted at FIRST + EVICT * (s // EVICT).
+    """
+    batch = support_end // max(EVICT_THINKS_PER_COMPRESS, 1)
+    return FIRST_COMPRESS_CHUNK + EVICT_THINKS_PER_COMPRESS * batch
 from .pass3a_cards import FAMILY_TARGETS, RETENTION_CLASS, extract_keywords, extract_card_keywords
 
 logger = logging.getLogger(__name__)
@@ -595,13 +618,21 @@ async def compute_all_placements(
 ) -> List[Dict]:
     """Compute all valid placements for all cards.
 
-    v9.3 — DIFFICULTY TIERS for transient cards:
-      Tier 1 (easy_in_visual):   ask ∈ [support_end+1, support_end+11]
-                                 — answer in recent_thinks, model copies from window
-      Tier 2 (medium_in_compressed): ask ∈ [support_end+14, support_end+28]
-                                 — answer just past visual window, in compressed memory
-      Tier 3 (hard_history_only): ask near end of video (support_end+30..num-2)
-                                 — long-distance, requires recall (50% recall_fail_then_found)
+    v9.3 / v12.5 — DIFFICULTY TIERS for transient cards (chunk-aware):
+      Tier 1 (easy_in_visual):   ask ∈ [support_end+1, support_end+VW-1]
+                                 — answer in visual window (~16s)
+      Tier 2 (medium_in_compressed): ask ∈ [evict(support_end)+5, +EVICT+5]
+                                 — past visual window AND past the specific
+                                   compress event that evicts support_end into a
+                                   summary segment (= chunk_when_compressed(s)).
+                                   Under 1s/chunk + 4000-tok budget, evict point
+                                   is ~chunk 53 + 25*(s//25). For early support
+                                   (s<25) ask is at ~58. For mid support (s=30)
+                                   ask is at ~84. (was wrongly fixed at +28s
+                                   under earlier v12.5 attempt — bug fixed.)
+      Tier 3 (hard_history_only): ask >= evict(s) + 1 more compress later
+                                 — ≥2 compress events have happened, requires
+                                   recall (50% recall_fail_then_found).
 
     For each transient card with sufficient runway, we sample one ask per tier
     (when feasible). This forces a 1:1:1 difficulty mix instead of batch1's
@@ -661,7 +692,8 @@ async def compute_all_placements(
             ask_easy = min(support_end + 2, num_chunks - 1)
             if ask_easy > support_end:
                 tier_asks.append((ask_easy, "easy_in_visual"))
-            ask_med = min(support_end + VISUAL_WINDOW_CHUNKS + 4, num_chunks - 2)
+            # v12.5 (1s/chunk): +4 → +14 to keep ~30s past support (2s old: +4×2=8s, was wrong)
+            ask_med = min(support_end + VISUAL_WINDOW_CHUNKS + 14, num_chunks - 2)
             if ask_med > ask_easy:
                 tier_asks.append((ask_med, "medium_in_compressed"))
             ask_hard = num_chunks - 2
@@ -682,12 +714,19 @@ async def compute_all_placements(
         # of recalling the order. Force ask past visual window so all 3
         # events are out of visual (in summaries / compressed segments).
         if family == "CR2":
-            comp_lo = support_end + VISUAL_WINDOW_CHUNKS + 2  # +14
-            comp_hi = min(support_end + VISUAL_WINDOW_CHUNKS + 16, num_chunks - 2)
+            # v12.5: tier_2 ask must be (a) past visual window AND (b) past the
+            # compress event that evicts support_end into a summary. Under 1s/chunk
+            # + 4000-tok budget, support_end=8 gets evicted at chunk ~53; support_end
+            # =30 at chunk ~78. Use chunk_when_compressed() to compute correctly.
+            evict_at = chunk_when_compressed(support_end)
+            comp_lo = max(support_end + VISUAL_WINDOW_CHUNKS + 1, evict_at + 5)
+            comp_hi = min(num_chunks - 2, comp_lo + EVICT_THINKS_PER_COMPRESS)
             if comp_hi > comp_lo:
                 ask_med = comp_lo + (comp_hi - comp_lo) // 2
                 candidates_needing_llm.append((card, ask_med, "medium_in_compressed"))
-            hist_lo = support_end + VISUAL_WINDOW_CHUNKS + 18  # +30
+            # tier_3 ask must be far past tier_2 (≥1 more compress event since)
+            hist_lo = max(support_end + VISUAL_WINDOW_CHUNKS + 1,
+                          evict_at + EVICT_THINKS_PER_COMPRESS + 5)
             if num_chunks - 2 >= hist_lo and num_chunks - 2 >= num_chunks * 2 // 3:
                 ask_hard = num_chunks - 2
                 if rng.random() < 0.5:
@@ -704,12 +743,15 @@ async def compute_all_placements(
         # Same logic as CR2: support chunks may be only 4-6 apart, so a tier-1
         # ask sees both → trivial. Force tier 2/3.
         if family == "CR4":
-            comp_lo = support_end + VISUAL_WINDOW_CHUNKS + 2
-            comp_hi = min(support_end + VISUAL_WINDOW_CHUNKS + 16, num_chunks - 2)
+            # v12.5: same compression-aware tier 2/3 placement as CR2 above.
+            evict_at = chunk_when_compressed(support_end)
+            comp_lo = max(support_end + VISUAL_WINDOW_CHUNKS + 1, evict_at + 5)
+            comp_hi = min(num_chunks - 2, comp_lo + EVICT_THINKS_PER_COMPRESS)
             if comp_hi > comp_lo:
                 ask_med = comp_lo + (comp_hi - comp_lo) // 2
                 candidates_needing_llm.append((card, ask_med, "medium_in_compressed"))
-            hist_lo = support_end + VISUAL_WINDOW_CHUNKS + 18
+            hist_lo = max(support_end + VISUAL_WINDOW_CHUNKS + 1,
+                          evict_at + EVICT_THINKS_PER_COMPRESS + 5)
             if num_chunks - 2 >= hist_lo and num_chunks - 2 >= num_chunks * 2 // 3:
                 ask_hard = num_chunks - 2
                 if rng.random() < 0.5:
@@ -769,27 +811,24 @@ async def compute_all_placements(
                             p["difficulty_tier"] = "easy_in_visual"
                             immediate_placements.append(p)
 
-            # ─── Tier 2: medium_in_compressed (just past visual window) ───
-            # 14..28 chunks past support_end ≈ 28..56 s. By this distance
-            # the supporting chunks have rolled out of the visual window
-            # and (with COMPRESS_TOKEN_THRESHOLD~480) typically been
-            # compressed into a summary segment. Model must read summary,
-            # not visual frames.
-            comp_lo = support_end + VISUAL_WINDOW_CHUNKS + 2     # +14
-            comp_hi = min(support_end + VISUAL_WINDOW_CHUNKS + 16,
-                          num_chunks - 2)                         # +28 cap
+            # ─── Tier 2: medium_in_compressed (past visual + past compress) ───
+            # v12.5: ask must be past BOTH (a) the visual window relative to
+            # support, AND (b) the compress event that evicts support_end into
+            # a summary segment. Under 1s/chunk, eviction lags visual exit.
+            evict_at = chunk_when_compressed(support_end)
+            comp_lo = max(support_end + VISUAL_WINDOW_CHUNKS + 1, evict_at + 5)
+            comp_hi = min(num_chunks - 2, comp_lo + EVICT_THINKS_PER_COMPRESS)
             if comp_hi > comp_lo:
                 ask_med = comp_lo + (comp_hi - comp_lo) // 2
                 # Always LLM-checked: outcome is immediate_response (if
                 # answerable from compressed) or recall_success.
                 candidates_needing_llm.append((card, ask_med, "medium_in_compressed"))
 
-            # ─── Tier 3: hard_history_only (very far past, requires recall) ───
-            # Place near end of video AND at least 30 chunks past support.
+            # ─── Tier 3: hard_history_only (≥2 compress events past support) ───
             # 50% become recall_fail_then_found (mixed mechanism), 50% go
             # through LLM check (recall_success or in_compressed).
-            hist_min_gap = VISUAL_WINDOW_CHUNKS + 18   # 30 chunks = 60s
-            hist_lo = support_end + hist_min_gap
+            hist_lo = max(support_end + VISUAL_WINDOW_CHUNKS + 1,
+                          evict_at + EVICT_THINKS_PER_COMPRESS + 5)
             hist_hi = num_chunks - 2
             # Only emit tier-3 if there's actually room (video long enough,
             # support not already near end).
@@ -804,10 +843,12 @@ async def compute_all_placements(
                 else:
                     candidates_needing_llm.append((card, ask_hard, "hard_history_only"))
 
-        # E2 event_watch: pure math (ask before support starts)
+        # E2 event_watch: pure math (ask before support starts).
+        # v12.5 (1s/chunk): runway 5→10 chunks (10s); ask 8→16 chunks before
+        # (16s lead-time so model has watched some context first).
         if card.get("family") == "E2":
-            if support_start >= 5:
-                ask_ew = max(2, support_start - 8)
+            if support_start >= 10:
+                ask_ew = max(4, support_start - 16)
                 p = compute_placement(card, ask_ew,
                                        "event_watch", rollout, evidence)
                 if p:
@@ -1017,7 +1058,7 @@ def plan_trajectories(
     cards_map: Dict[str, Dict] = None,
     num_chunks: int = 60,
     max_placements_per_traj: int = 3,
-    min_chunk_gap: int = 10,
+    min_chunk_gap: int = 16,
     seed: int = 42,
     evidence: List[Dict] = None,
 ) -> List[Dict]:
@@ -1028,11 +1069,10 @@ def plan_trajectories(
        lower than v11.5's 5-6 to reduce queries_state context overload)
     2. Questions spread across the video timeline.
        v12.0: min_chunk_gap=15 (30s) matched StreamingBench/MMDuet2.
-       v12.5 (2026-04-29): min_chunk_gap=10 (20s) — silent-rate audit
-       showed base silents between question events dominate the silent
-       count. Tightening question gap from 15→10 lets more questions
-       share trajectory span, reducing per-question silent context
-       and lowering effective silent rate toward the 66-70% target.
+       v12.5 (2026-04-29): min_chunk_gap=10 → 16 (1s/chunk semantics).
+       Old 10 was 20s under 2s/chunk; new 16 is 16s under 1s/chunk —
+       slightly tighter to keep absolute question gap similar to v12.5
+       iter 1 while accommodating finer chunk granularity.
     3. Maximize diversity: families, sequence_types, answers
     4. Trajectory count = num_chunks // 30 (was 18) → ~2-3 traj/video on
        2.6-min batch1 videos (matches MMDuet2 RL convergence at ~3.3/video)
@@ -1056,22 +1096,24 @@ def plan_trajectories(
         cards_map = {}
     rng = random.Random(seed)
 
-    # v12.0 dynamic target: 1 trajectory per 30 chunks (~60s) — research-
-    # backed (16-benchmark survey: streaming median = 1 q/min, MMDuet2 RL
+    # v12.0 dynamic target: 1 trajectory per 60s — research-backed
+    # (16-benchmark survey: streaming median = 1 q/min, MMDuet2 RL
     # convergence = 3.3 q/video). With 2.6-min videos this yields ~2-3 traj.
     # v12.5 (2026-04-30): RANDOMIZED target trajectory count + per-traj
     # question count to prevent the model from learning "after N placements
     # = end of video" heuristics (user audit: "分布要有变化，不能是固定的").
+    # v12.5 (2026-04-29) chunk semantics: 1s/chunk → divisors doubled
+    # (50→100, 15→30) so per-second behavior stays equivalent.
     #
     # Range per video length (rng-seeded for reproducibility):
-    #   30 chunks  → target ∈ [2, 3]
-    #   60 chunks  → target ∈ [2, 4]
-    #   73 chunks  → target ∈ [2, 4]   ← median
-    #   100 chunks → target ∈ [3, 5]
-    #   150+ chunks → target ∈ [3, 5]  (capped at MAX_TRAJECTORIES=5)
-    target_min = max(2, num_chunks // 50)
+    #    60s ( 60 chunks)  → target ∈ [2, 3]
+    #   120s (120 chunks)  → target ∈ [2, 4]
+    #   146s (146 chunks)  → target ∈ [2, 4]   ← batch1 median
+    #   200s (200 chunks)  → target ∈ [2, 5]
+    #   300s+ (≥300 chunks) → target ∈ [3, 5]  (capped at MAX_TRAJECTORIES=5)
+    target_min = max(2, num_chunks // 100)
     target_max = min(MAX_TRAJECTORIES_PER_VIDEO,
-                     max(target_min + 1, num_chunks // 15))
+                     max(target_min + 1, num_chunks // 30))
     target = rng.randint(target_min, target_max)
 
     # Per-trajectory question count also randomized in [2, MAX_PER_TRAJ]
@@ -1158,7 +1200,10 @@ def plan_trajectories(
     #   RADIUS 10 → 3:    ±3 chunks (6s) around ask is "active"
     # Allows up to 14-16 placements/video on 73-chunk videos, hitting
     # silent rate ~65-70% per pass3c chunk_role allocation.
-    SILENT_RADIUS = 3              # ±chunks around each ask considered "active"
+    # v12.5 (2026-04-29) chunk semantics: 1s/chunk, so RADIUS=6 → ±6s.
+    # MIN_SILENT_FRAC stays 0.05 (effectively disabled — silent rate is
+    # controlled by question density and PN1 placements, not radius).
+    SILENT_RADIUS = 6              # ±chunks around each ask considered "active" (~6s)
     MIN_SILENT_FRAC = 0.05         # at least 5% of video should be silent-clean
 
     def _silent_fraction(asks: List[Dict]) -> float:

@@ -1232,18 +1232,21 @@ def _enrich_compress_with_gold_caption(
 # Base Sample Generation (selective, not every chunk)
 # ---------------------------------------------------------------------------
 
-WARMUP_CHUNKS = 3               # first N chunks for cold-start training
-QUESTION_WINDOW_BEFORE = 2      # chunks before each key_chunk
-QUESTION_WINDOW_AFTER = 3       # chunks after each key_chunk
-COMPRESS_WINDOW = 1             # chunks around each compression event
+# v12.5 (2026-04-29) — chunk semantics changed 2s/chunk → 1s/chunk
+# (config.AGENT_CHUNK_SEC). Doubling these constants preserves the
+# semantic span (in seconds) of each window. Old: WARMUP_CHUNKS=3 → 6s.
+# New: 6 → 6s. Same applies to QUESTION/COMPRESS/EVIDENCE windows.
+WARMUP_CHUNKS = 6               # first N chunks for cold-start training (~6s)
+QUESTION_WINDOW_BEFORE = 4      # chunks before each key_chunk (~4s)
+QUESTION_WINDOW_AFTER = 6       # chunks after each key_chunk (~6s)
+COMPRESS_WINDOW = 2             # chunks around each compression event (~2s)
 # REVERTED (2026-04-29): I had changed this to 10 to lower silent rate,
 # but patrol samples teach the model "stay silent during long-silent
-# stretches" — cutting density 50% would weaken that signal and cause
-# the model to emit spurious responses on long-silent test scenarios.
-# Keep at 5 (every 10s in long silent stretches). The lever for silent
-# rate is PN1 narration density + question density, not patrol cuts.
-LONG_SILENT_SAMPLE_INTERVAL = 5  # sample every Nth chunk in long silent stretches
-EVIDENCE_WINDOW = 2             # chunks around support_chunks (recall evidence)
+# stretches" — cutting density 50% would weaken that signal.
+# v12.5: doubled (5 → 10) for new 1s/chunk to preserve 10s semantic
+# interval (same as before in seconds).
+LONG_SILENT_SAMPLE_INTERVAL = 10 # sample every Nth chunk in long silent stretches (~10s)
+EVIDENCE_WINDOW = 4             # chunks around support_chunks (~4s)
 
 
 def _select_base_chunks(

@@ -96,11 +96,12 @@ FAMILY_TARGETS = {
     # observations at novel-event chunks. answer_form=descriptive,
     # 20-30 token answers.
     #
-    # Target=22 (up from 15 in iteration 1) to hit user silent-rate
-    # target 65-70%. PN1 BYPASSES pass3b greedy (Option A in commit
-    # earlier), so all candidates with passing pass4 verification get
-    # placed. PN1 candidate cap in classify_chunks raised to 25.
-    "PN1": 22,
+    # Target=44 (up from 22) — v12.5 1s/chunk doubles chunks per video,
+    # so per-video novelty events also ~double. Holds per-second density
+    # constant at the rate that hit silent target 65-70% in iter 2.
+    # PN1 BYPASSES pass3b greedy (Option A), so all candidates with passing
+    # pass4 verification get placed. PN1 candidate cap raised 25 → 50.
+    "PN1": 44,
 }
 # Total = 50 cards/video × 312 videos = 15,600 corpus pre-verify.
 # Expected post-verify ~88% pass: 13,728 cards. After pass3b density cap
@@ -498,9 +499,9 @@ Procedure to construct one card:
 1. Find a chunk T_effect where a state_change or notable outcome occurs
    (e.g. "pan starts smoking", "dough rises", "mixture darkens", "person
    slips", "light turns red").
-2. Look BACKWARD up to ~10 chunks for an action / event that plausibly
-   caused it (e.g. "oil heated for 2 min", "yeast added", "heat increased",
-   "floor wet", "switch flipped").
+2. Look BACKWARD up to ~20 chunks (~20s under 1s/chunk) for an action /
+   event that plausibly caused it (e.g. "oil heated for 2 min", "yeast
+   added", "heat increased", "floor wet", "switch flipped").
 3. Verify both cause and effect are visible in the evidence above.
 
 Question format: "Why <effect>?" or "What caused <effect>?"
@@ -534,7 +535,8 @@ distinguishable events occurred, AFTER all 3 have been observed.
 
 Procedure:
 1. Pick THREE events from DIFFERENT chunks that are well-separated in time
-   (≥5 chunks apart between consecutive events). Each event must be
+   (≥10 chunks apart between consecutive events under 1s/chunk = ≥10s).
+   Each event must be
    uniquely describable (different verb / different object / different
    entity) so the 3 cannot be confused with each other.
 2. Phrase each event as a short clause ("cracked egg", "poured batter",
@@ -1131,8 +1133,10 @@ def classify_chunks(evidence: List[Dict]) -> Dict[str, List[int]]:
     effect_chunks = [cap["chunk_idx"] for cap in evidence if cap.get("state_changes")]
     if effect_chunks:
         cr1_set = set()
+        # v12.5 (1s/chunk): preceding window 8 → 16 chunks (preserves ~16s
+        # cause-search horizon previously implied at 2s/chunk × 8 chunks).
         for ec in effect_chunks[:3]:
-            for c in range(max(0, ec - 8), ec + 1):
+            for c in range(max(0, ec - 16), ec + 1):
                 cr1_set.add(c)
         # Intersect with chunks that actually exist in evidence
         existing = {cap["chunk_idx"] for cap in evidence}
@@ -1234,10 +1238,10 @@ def classify_chunks(evidence: List[Dict]) -> Dict[str, List[int]]:
                 is_novel = True
         if is_novel:
             pn1_picks.append(idx)
-        # v12.5 (iter 2): cap raised 15 → 25 to hit silent-rate target
-        # 65-70%. With PN1 bypass + more candidates, more novelty chunks
-        # become response samples, lowering silent ratio.
-        if len(pn1_picks) >= 25:
+        # v12.5 (1s/chunk): cap 25 → 50. Doubling chunk count per video
+        # doubles candidate novelty events; cap scales accordingly to
+        # keep per-second PN1 density unchanged from iter 2.
+        if len(pn1_picks) >= 50:
             break
     fc["PN1"] = pn1_picks
 

@@ -1,40 +1,41 @@
-"""Eval-time context profiles — 16k (safe / SFT-aligned) vs 32k (extended).
+"""Eval-time context profiles — 16k (default / SFT-aligned) vs 32k (extended).
 
 The two profiles differ ONLY in eval-side caps that don't affect model
 distribution: model_max_length, queries-history cap, recall text cap,
 max_new_tokens. They do NOT change SFT-baked constants
-(VISUAL_WINDOW_CHUNKS=12, RECENT_THINKS_TOKEN_BUDGET=600,
-COMPRESS_TOKEN_THRESHOLD=480, MAX_COMPRESSED_SEGMENTS=5,
-merged-segment cap=200) — those would require pass2 re-rollout + SFT
+(VISUAL_WINDOW_CHUNKS=16, RECENT_THINKS_TOKEN_BUDGET=4000,
+COMPRESS_TOKEN_THRESHOLD=3200, MAX_COMPRESSED_SEGMENTS=5,
+merged-segment cap=280) — those would require pass2 re-rollout + SFT
 retrain.
+
+v12.5 (2026-04-29) — chunk semantics changed 2s → 1s/chunk; visual window
+expanded 12 → 16 chunks (32 frames @ 2fps); recent_thinks budget 600 → 4000
+to keep text-memory horizon (~57s) above visual horizon (16s). All numbers
+below updated for the new defaults.
 
 Per-profile token-budget breakdown (worst-case at the most-loaded chunk):
 
     Component         | 16k profile  | 32k profile  | Notes
     ------------------|--------------|--------------|----------------------------
-    system prompt     |   ~350       |   ~350       | fixed
-    visual frames     | ~4700 (24fr) | ~4700 (24fr) | 24 frames × ~196 tok @ SFT
-                      |              |              | pixels (100352-150528). Same
-                      |              |              | both profiles — visual is
+    system+tools      |   ~400       |   ~400       | V12 protocol + tool schema
+    visual frames     | ~2048 (32fr) | ~2048 (32fr) | 16 chunks × 128 tok/chunk
+                      |              |              | (= 32 frames @ ~64 tok ea).
                       |              |              | SFT-baked.
-    compressed segs   | 5×200=1000   | 5×200=1000   | MAX_SEGMENTS=5, 200 tok cap;
-                      |              |              | both SFT-baked.
-    recent_thinks     |  ~580 peak   |  ~580 peak   | Compress fires at 480 tok;
+    compressed segs   | 5×280=1400   | 5×280=1400   | MAX_SEGMENTS=5, SUMMARY cap
+                      |              |              | 280; both SFT-baked.
+    recent_thinks     | ~3500 peak   | ~3500 peak   | Compress fires at 3200 tok;
                       |              |              | peak after a 100-tok think
                       |              |              | before next-step compress.
                       |              |              | SFT-baked.
     queries           |  8 × ~50=400 | 24 × ~50=1200| EVAL-SIDE: capped in
-                      |              |              | format_queries_block. Pending
-                      |              |              | queries always kept;
-                      |              |              | answered trimmed to fit cap.
-    recall_result     |  ~200        |  ~750        | EVAL-SIDE: char cap 800/3000
-                      |              |              | → ~200/750 tok.
-    user_input        |   ~50        |   ~50        | one question per ask
-    assistant output  |  128         |  256         | EVAL-SIDE max_new_tokens.
+                      |              |              | format_queries_block.
+    recall_result     |  ~400        |  ~750        | EVAL-SIDE: char cap.
+    user_input        |   ~50        |   ~50        |
+    assistant output  |  256         |  512         | EVAL-SIDE max_new_tokens.
     ------------------|--------------|--------------|----------------------------
-    SUBTOTAL          | ~7,408       | ~8,886       |
+    SUBTOTAL          | ~8,454       | ~9,860       |
     model_max_length  | 16,384       | 32,768       |
-    HEADROOM          | ~8,976       | ~23,882      |
+    HEADROOM          | ~7,930       | ~22,908      |
 
 Compression behaviour (BOTH profiles, since the trigger is SFT-baked):
 
@@ -83,21 +84,22 @@ EVAL_PROFILES: Dict[str, Dict] = {
     "16k": {
         # Tokenizer / model
         "model_max_length": 16384,
-        "max_new_tokens_default": 128,
+        # v12.5: 128 → 256 (longer answers possible under 4000-tok memory)
+        "max_new_tokens_default": 256,
         # agent_protocol caps (aligned to SFT distribution upper bounds)
         "queries_history_cap": 8,
         "recall_text_max_chars": 1600,
         # For the comparison report
-        "subtotal_tokens_estimate": 7408,
-        "headroom_tokens_estimate": 8976,
+        "subtotal_tokens_estimate": 8454,
+        "headroom_tokens_estimate": 7930,
     },
     "32k": {
         "model_max_length": 32768,
-        "max_new_tokens_default": 256,
+        "max_new_tokens_default": 512,
         "queries_history_cap": 24,
         "recall_text_max_chars": 3000,
-        "subtotal_tokens_estimate": 8886,
-        "headroom_tokens_estimate": 23882,
+        "subtotal_tokens_estimate": 9860,
+        "headroom_tokens_estimate": 22908,
     },
 }
 

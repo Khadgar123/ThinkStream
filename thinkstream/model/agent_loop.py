@@ -73,14 +73,17 @@ def _parse_agent_output(output_text: str) -> Dict:
 
 logger = logging.getLogger(__name__)
 
-# Token-based compression trigger (matches data construction config.py)
-RECENT_THINKS_TOKEN_BUDGET = 600
+# Token-based compression trigger (matches data construction config.py).
+# v12.5 (2026-04-29): 1s/chunk + 16K context → text-memory budget grows 4×
+# so it exceeds visual horizon. See scripts/agent_data_v5/config.py docstring
+# above RECENT_THINKS_TOKEN_BUDGET for the full 16K allocation breakdown.
+RECENT_THINKS_TOKEN_BUDGET = 4000
 COMPRESS_TRIGGER_RATIO = 0.8
-COMPRESS_TOKEN_THRESHOLD = int(RECENT_THINKS_TOKEN_BUDGET * COMPRESS_TRIGGER_RATIO)  # 480
-COMPRESS_RANGE_MIN = 4
-COMPRESS_RANGE_MAX = 12             # v11.3: was 8, raised to handle short-think edge cases
-COMPRESS_REMOVE_TOKENS = 350        # v11.3: target tokens to evict per compression
-SUMMARY_TOKENS_MAX = 280            # v11.3: 180 → 280 (matches config.py)
+COMPRESS_TOKEN_THRESHOLD = int(RECENT_THINKS_TOKEN_BUDGET * COMPRESS_TRIGGER_RATIO)  # 3200
+COMPRESS_RANGE_MIN = 8              # ~8s of older thinks under 1s/chunk
+COMPRESS_RANGE_MAX = 24             # ~24s, sized for 4000-token budget
+COMPRESS_REMOVE_TOKENS = 1500       # ~40% budget eviction per compress
+SUMMARY_TOKENS_MAX = 280            # matches config.py
 
 
 def select_compress_range_by_tokens(

@@ -35,28 +35,66 @@ ALL_DIRS = [
 # 2. Video & chunk parameters
 # ---------------------------------------------------------------------------
 
-AGENT_CHUNK_SEC = 2          # 每个 chunk 2 秒
-FPS = 1                      # 1fps
+# v12.5 (2026-04-29): 2s/chunk → 1s/chunk (effective FPS 1 → 2 with 2 frames/chunk).
+# Rationale: the user noted text-memory < visual-memory inconsistency under
+# the old config (compress at 8 thinks ≈ 16s vs visual window 12 chunks × 2s
+# = 24s). Halving chunk-sec gives finer temporal labels, doubles per-chunk
+# rate of decisions, and lets us bring text-memory horizon back above visual.
+# Chunk-based windows downstream (pass3b/pass3c) doubled accordingly so that
+# semantic spans (in seconds) are preserved or slightly extended.
+AGENT_CHUNK_SEC = 1          # 每个 chunk 1 秒
+FPS = 2                      # 2fps (FRAMES_PER_CHUNK / AGENT_CHUNK_SEC)
 FRAMES_PER_CHUNK = 2         # 每 chunk 2 帧
-VISUAL_WINDOW_CHUNKS = 12    # 视觉窗口 = 最近 12 chunks (24s)
-VISUAL_WINDOW_FRAMES = VISUAL_WINDOW_CHUNKS * FRAMES_PER_CHUNK  # 24 帧
+# v12.5: 12 → 16 chunks. New chunk semantics: 16 chunks × 1s = 16s of visual
+# context (32 frames). Other streaming systems for reference: LiveCC ~240s @
+# 2fps, VideoLLM-online ~unbounded @ 2fps, MMDuet token-budgeted, Streamo
+# 1fps. We're still conservative for the 6-min batch1 footprint, but text
+# memory now comfortably exceeds visual (see RECENT_THINKS_TOKEN_BUDGET).
+VISUAL_WINDOW_CHUNKS = 16    # 视觉窗口 = 最近 16 chunks (16s @ 2fps = 32 帧)
+VISUAL_WINDOW_FRAMES = VISUAL_WINDOW_CHUNKS * FRAMES_PER_CHUNK  # 32 帧
 
 # ---------------------------------------------------------------------------
 # 3. Think & memory parameters
 # ---------------------------------------------------------------------------
 
-# Think length: relaxed to match teacher's natural distribution (p50≈83 tok).
-# Used for budget estimation (avg) and as a soft target. Pass 4 verification
-# applies its own additional margin (see verify_think_token_length).
-THINK_TOKENS = (40, 100)            # student think 长度范围 (relaxed from (40,60))
-THINK_TOKEN_AVG = 70                # think 平均 token 数（用于估算）
+# v12.5 (2026-04-29): 1s/chunk semantics → each think describes only 1s of
+# motion (was 2s), so target tighter range. OBSERVATION_PROMPT updated to
+# "target 40-80, never exceed 100" (was "50-90, never exceed 120").
+# Pass 4 verification applies its own additional margin.
+THINK_TOKENS = (40, 80)             # matches new prompt "target 40-80"
+THINK_TOKEN_AVG = 60                # was 70; new prompt midpoint
+# Pass4 verifier widens THINK_TOKENS by ±15/+30 → effective accept 25-110.
 
-# Token-based compression trigger with hysteresis
-RECENT_THINKS_TOKEN_BUDGET = 600    # recent_thinks 总 token 预算
+# Token-based compression trigger with hysteresis.
+#
+# v12.5 (2026-04-29) — 600 → 4000 token budget. Rationale: 16K context
+# allocation under 1s/chunk + tool protocol:
+#   system + tools schema  ≈   400
+#   visual_window (32 fr)  ≈  2048   (16 chunks × 128 tok)
+#   recall vision (4 fr)   ≈   256
+#   compressed segments    ≈  1400   (5 × 280)
+#   past queries           ≈   300
+#   recall result text     ≈   500
+#   output budget          ≈  1000   (think + tool call)
+#   ─────────────────────────────────
+#   subtotal               ≈  5904
+#   recent_thinks budget   ≈  4000   (≈ 57 thinks @ 70 tok ≈ 57s memory)
+#   ─────────────────────────────────
+#   total inference window ≈  9904   (well under 16K, leaves headroom)
+#
+# 8K profile: same allocation but recent_thinks_budget = 1500 (~21 thinks
+# ≈ 21s) — still > visual window 16s, preserving the memory>visual
+# invariant. Eval profiles select between the two.
+#
+# Ratio invariant: text-memory horizon (60s+) MUST exceed visual horizon
+# (16s) so the model has compressed history reaching back farther than
+# raw frames. Old config violated this (600 tok ≈ 8 thinks ≈ 16s text
+# vs 24s visual).
+RECENT_THINKS_TOKEN_BUDGET = 4000   # recent_thinks 总 token 预算 (16K profile)
 COMPRESS_TRIGGER_RATIO = 0.8        # 达到预算 80% 时系统触发压缩
-COMPRESS_TOKEN_THRESHOLD = int(RECENT_THINKS_TOKEN_BUDGET * COMPRESS_TRIGGER_RATIO)  # = 480
+COMPRESS_TOKEN_THRESHOLD = int(RECENT_THINKS_TOKEN_BUDGET * COMPRESS_TRIGGER_RATIO)  # = 3200
 COMPRESS_HYSTERESIS_RATIO = 0.55    # 压缩后应降回 55% 以下，否则窗口太短
-COMPRESS_HYSTERESIS_THRESHOLD = int(RECENT_THINKS_TOKEN_BUDGET * COMPRESS_HYSTERESIS_RATIO)  # = 330
+COMPRESS_HYSTERESIS_THRESHOLD = int(RECENT_THINKS_TOKEN_BUDGET * COMPRESS_HYSTERESIS_RATIO)  # = 2200
 
 # Student model tokenizer (用于精确计算 token 数)
 # 造数据时加载一次，全局复用
@@ -74,15 +112,17 @@ def get_tokenizer():
             _tokenizer = "unavailable"
     return _tokenizer if _tokenizer != "unavailable" else None
 
-COMPRESS_RANGE_MIN = 4              # 每次最少压缩 4 条（保证 summary 值得做）
-COMPRESS_RANGE_MAX = 12             # 每次最多压缩 12 条（v11.3: 8 → 12，配合 token-driven 选择）
-# v11.3: token-budget-driven range selection. When trigger fires, pick the
-# smallest N >= MIN such that the cumulative token count of the oldest N
-# thinks reaches this target. Aligns inference (agent_loop / streaming_vllm)
-# with pass2's range scoring, which was already implicitly token-driven via
-# COMPRESS_HYSTERESIS_THRESHOLD. 350 ≈ 80% gap (480→330) so post-compress
-# memory is comfortably below the trigger again.
-COMPRESS_REMOVE_TOKENS = 350
+# v12.5 (2026-04-29): compress range scaled with chunk-sec halving + budget
+# 4× growth. Old MIN/MAX = 4/12 thinks (= 8s/24s under 2s/chunk). New 8/24
+# matches the same 8-24s span under 1s/chunk AND removes enough tokens to
+# bring memory below hysteresis (4000 → 2200 = ≥1800 tok eviction = ≥26
+# thinks worst case; we cap at MAX=24 thinks ≈ 1680 tok ≈ 42% of budget).
+COMPRESS_RANGE_MIN = 8              # 每次最少压缩 8 条 (≥8s of older thinks)
+COMPRESS_RANGE_MAX = 24             # 每次最多压缩 24 条 (≤24s)
+# v12.5: target ~40% budget eviction per compress, gap from trigger (3200) to
+# hysteresis (2200) = 1000 tok minimum, so 1500 leaves the system comfortably
+# below trigger on the next think. Old: 350 (under 600 budget = 58%).
+COMPRESS_REMOVE_TOKENS = 1500
 SUMMARY_TOKENS_MIN = 100            # summary 最短
 # v11.3: 180 → 280. The 180 cap was being hit by 33% of pass2 summaries —
 # they're correctly merging 8-12 chunks but the cap forced truncation. 280
@@ -131,13 +171,18 @@ COMPRESS_RANGE = COMPRESS_RANGE_MAX  # deprecated alias
 # 4. Token budgets (草算，需用 tokenizer 实测)
 # ---------------------------------------------------------------------------
 
-SYSTEM_PROMPT_TOKENS = 150
-COMPRESSED_SEG_TOKENS = 150        # 每段压缩 ~150 tok
-OBSERVATION_AVG_TOKENS = 50
+# v12.5: V12 protocol system prompt + tool schema is closer to 400 tokens
+# (was ~150 under v11 plain-text protocol). Treat 400 as the reservation.
+SYSTEM_PROMPT_TOKENS = 400
+COMPRESSED_SEG_TOKENS = 280        # matches SUMMARY_TOKENS_MAX (was 150 stale)
+OBSERVATION_AVG_TOKENS = 60        # matches THINK_TOKEN_AVG
 VISUAL_TOKENS_PER_CHUNK = 128      # at min_pixels=100352
-VISUAL_WINDOW_TOKENS = VISUAL_WINDOW_CHUNKS * VISUAL_TOKENS_PER_CHUNK  # ~1536
+VISUAL_WINDOW_TOKENS = VISUAL_WINDOW_CHUNKS * VISUAL_TOKENS_PER_CHUNK  # 16×128 = 2048
 RECALL_VISION_TOKENS = 256         # 4 帧 recalled
-MAX_SAMPLE_TOKENS = 4096           # 单样本上限 (远在 16K 内)
+# v12.5: 4096 → 16384. Single-sample cap raised to match new 16K context
+# budget (system+visual+memory+output = ~10K nominal, 16K accommodates
+# bursts in compressed-segment count or recall density).
+MAX_SAMPLE_TOKENS = 16384
 
 # ---------------------------------------------------------------------------
 # 4b. 397B context / OOM guards
@@ -153,14 +198,16 @@ VLLM_PREFILL_BATCH_TOKEN_BUDGET = 32_000_000  # KV usage ~2.6% at 64 conc → 10
 # Thinking tokens estimated at ~2K per request (varies).
 PASS_CONTEXT_ESTIMATES = {
     "pass1a": {"input": 1_500, "output": 5_000, "thinking": 0},  # 2 frames per chunk
-    "pass1b": {"input": 3_000, "output": 5_000, "thinking": 0},  # text-only, full video summary
+    # v12.5: thinking=0 (was implicit thinking budget under thinking=True).
+    # output budget tightened: 32K cap, but typical body is 4-6K tokens.
+    "pass1b": {"input": 3_000, "output": 6_000, "thinking": 0},  # text-only, full video summary
     "pass2_rollout":  {"input": 10_000, "output": 5_000, "thinking": 0},
-    # Pass3/4: now include video frames (~2-4 frames per request).
-    # max_tokens=16384 bounds thinking time.
-    "pass3a": {"input": 700, "output": 400, "thinking": 16_000},  # pure text, max_tokens=16384
-    "pass3a_verify": {"input": 800, "output": 200, "thinking": 16_000},  # card verify, thinking enabled
-    "pass3b_visibility": {"input": 600, "output": 100, "thinking": 16_000},  # visibility check, thinking enabled
-    "pass3c": {"input": 2_000, "output": 5_000, "thinking": 5_000},  # response/query gen, thinking=True
+    # v12.5: all passes now thinking=False. Estimates drop the thinking
+    # column (was 16K-buffer reservations under thinking=True).
+    "pass3a": {"input": 700, "output": 1_500, "thinking": 0},          # text-only card gen
+    "pass3a_verify": {"input": 800, "output": 600, "thinking": 0},     # card verify (yes/no)
+    "pass3b_visibility": {"input": 600, "output": 300, "thinking": 0}, # visibility check
+    "pass3c": {"input": 2_000, "output": 2_000, "thinking": 0},        # response/query gen
 }
 
 
@@ -236,16 +283,29 @@ PASS_CONFIG = {
         "concurrent": 1024,
     },
     "pass1b": {
-        "max_tokens": 60000,  # text-only, needs headroom for thinking explosion
+        # v12.5 (2026-04-29): max_tokens 60000 → 32000, thinking True → False
+        # per user audit "在 pass3 全流程中 enable_think=false; pass1b max_token
+        # 32k". pass1b is video-level enrichment (entity-ID hints +
+        # state_changes). Empirical batch1 outputs are 2-6K tokens; 32K
+        # leaves 5x headroom without paying for unused 28K reasoning budget.
+        # Disabling thinking aligns with the rest of the pipeline (pass1a/3a/
+        # 3c all non-thinking) and cuts wall-time ~3x at same quality.
+        "max_tokens": 32000,
         "temperature": 0.3,
-        "thinking": True,
-        "concurrent": 64,     # video-level, longest single request — keep low
+        "thinking": False,
+        "concurrent": 128,    # 2x of old (64): smaller per-request budget
     },
     "pass2_rollout": {
+        # v12.5 (2026-04-29): thinking True → False per user audit "整个pipeline
+        # enable_think=false". Pass2 generates per-chunk observations and
+        # summary compress payloads against an explicit OBSERVATION_PROMPT /
+        # COMPRESS_PROMPT — both are template-driven with hard rules
+        # (length, "what's NEW only", structured summary JSON), no CoT
+        # required. Removing thinking matches pass3 family + cuts wall-time.
         "max_tokens_observation": 16384,
         "max_tokens_compress": 16384,
         "temperature": 0.3,
-        "thinking": True,
+        "thinking": False,
         "concurrent_videos": 256,
     },
     "pass3a": {
@@ -372,7 +432,7 @@ SPECIAL_TOKENS_PER_TIMESTEP = [
 # 8. Teacher prompts (397B, hidden from student)
 # ---------------------------------------------------------------------------
 
-EVIDENCE_GRAPH_PROMPT = """You are annotating a 2-second video clip (t={start}-{end}s).
+EVIDENCE_GRAPH_PROMPT = """You are annotating a 1-second video clip (t={start}-{end}s, 2 frames).
 
 Based on the frames above, output a STRICT JSON object:
 {{
@@ -445,8 +505,8 @@ Recent thinks:
 
 Visual window: t={window_start}-{window_end}s (frames above).
 
-Describe what is NEW or CHANGED in the latest 2 seconds (t={start}-{end}s).
-Be concise but complete (target 50-90 tokens, never exceed 120).
+Describe what is NEW or CHANGED in the latest 1 second (t={start}-{end}s).
+Be concise but complete (target 40-80 tokens, never exceed 100).
 
 Rules:
 - Only observable visual facts

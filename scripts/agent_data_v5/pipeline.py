@@ -406,13 +406,15 @@ async def run_pipeline(
     logger.info(f"Pipeline starting with {len(videos)} videos")
 
     # --- Extract frames ---
+    # v12.5 (2026-04-29): fps=2 + FRAMES_PER_CHUNK=2 → 1s/chunk (was fps=1 → 2s/chunk).
+    from scripts.agent_data_v5.config import FPS, FRAMES_PER_CHUNK
     frames_dir = DATA_ROOT / "frames"
     video_frames = {}
     for v in videos:
         v_frames_dir = frames_dir / v["video_id"]
-        frames = extract_frames(v["video_path"], v_frames_dir, fps=1)
+        frames = extract_frames(v["video_path"], v_frames_dir, fps=FPS)
         video_frames[v["video_id"]] = frames
-        num_chunks = len(frames) // 2  # 2 frames per chunk (1fps, 2s chunks)
+        num_chunks = len(frames) // FRAMES_PER_CHUNK
         v["num_chunks"] = num_chunks
 
     logger.info(f"Frame extraction complete. {sum(len(f) for f in video_frames.values())} total frames.")

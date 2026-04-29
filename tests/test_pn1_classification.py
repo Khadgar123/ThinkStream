@@ -107,19 +107,19 @@ def test_pn1_picks_first_ocr_appearances():
 
 
 def test_pn1_candidate_cap():
-    """v12.5 iter 2: classify_chunks caps PN1 at 25 candidates (was 15).
-    Higher cap + PN1 bypass pass3b scoring lets ~22 PN1 placements survive
-    per video, hitting silent-rate target 65-70%."""
-    # Build 30 chunks each with unique entity
-    evidence = [_ev(i, entities=(f"ent_{i}",)) for i in range(30)]
+    """v12.5 (1s/chunk): classify_chunks caps PN1 at 50 candidates.
+    Doubled from 25 because chunk count per video doubles under
+    1s/chunk semantics; per-second density stays the same."""
+    # Build 60 chunks each with unique entity
+    evidence = [_ev(i, entities=(f"ent_{i}",)) for i in range(60)]
     fc = classify_chunks(evidence)
     pn1 = fc.get("PN1", [])
-    assert len(pn1) <= 25, f"PN1 candidate cap exceeded: {len(pn1)}"
-    assert len(pn1) >= 20, (
-        f"v12.5 iter 2 candidate cap should be ≥20 to allow target=22; "
+    assert len(pn1) <= 50, f"PN1 candidate cap exceeded: {len(pn1)}"
+    assert len(pn1) >= 40, (
+        f"v12.5 (1s/chunk) candidate cap should be ≥40 to allow target=44; "
         f"got {len(pn1)}"
     )
-    print(f"  PASS PN1 candidate cap: {len(pn1)} ≤ 25")
+    print(f"  PASS PN1 candidate cap: {len(pn1)} ≤ 50")
 
 
 def test_pn1_static_video_returns_few():
@@ -133,14 +133,14 @@ def test_pn1_static_video_returns_few():
 
 
 def test_total_cards_per_video_increased():
-    """v12.5 iter 2: total target ≥55 cards/video. PN1=22 + QA bumps
-    drive non-silent placements. With PN1 bypass + 88% verify rate,
-    expect ~26 placements/video (4 QA + 22 PN1)."""
+    """v12.5 (1s/chunk): total target ≥70 cards/video. PN1=44 (doubled
+    for 1s/chunk semantics) + QA placements give ~50 placements/video
+    after verify+greedy (10-12 QA + 38-44 PN1)."""
     total = sum(FAMILY_TARGETS.values())
-    assert total >= 55, (
-        f"v12.5 iter 2 should bump cards/video to ≥55, got {total}"
+    assert total >= 70, (
+        f"v12.5 (1s/chunk) should bump cards/video to ≥70, got {total}"
     )
-    assert total <= 80, (
+    assert total <= 100, (
         f"too many cards/video ({total}) — over-generation wastes LLM cost"
     )
     print(f"  PASS cards/video target: {total}")
