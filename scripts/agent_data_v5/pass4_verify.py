@@ -124,8 +124,29 @@ def _is_base_sample(sample: Dict) -> bool:
 # ---------------------------------------------------------------------------
 
 
+def _is_v12_sample(sample: Dict) -> bool:
+    """v12 samples either carry protocol_version=='v12' or have multi-turn fields."""
+    return (
+        sample.get("protocol_version") == "v12"
+        or "v12_assistant_turn_1" in sample
+        or sample.get("v12_inter_chunk") is True
+    )
+
+
+def _v12_combined_assistant_text(sample: Dict) -> str:
+    """Get the full assistant text for v12 samples (handles multi-turn)."""
+    if "v12_assistant_turn_1" in sample:
+        # Multi-turn recall sample: concat both assistant turns
+        return (sample.get("v12_assistant_turn_1", "") + "\n"
+                + sample.get("v12_assistant_turn_2", ""))
+    return sample.get("output", "")
+
+
 def verify_information_flow(sample: Dict) -> Tuple[bool, str]:
     """Check 1: No future information leakage."""
+    if _is_v12_sample(sample):
+        return _verify_information_flow_v12(sample)
+
     metadata = sample.get("metadata", {})
     output = sample.get("output", "")
     sample_type = sample.get("sample_type", "")
@@ -191,6 +212,225 @@ def verify_information_flow(sample: Dict) -> Tuple[bool, str]:
                 if not any(m in resp for m in uncertain):
                     return False, "confident_response_after_failed_recall"
 
+    return True, "pass"
+
+
+# ===========================================================================
+# v12.0 — protocol-aware verification
+#
+# v12 samples use Qwen tool protocol (<tool_call>{json}</tool_call> +
+# <answer>...</answer>) instead of v11's <action>X</action> structure.
+# pass4's legacy verify_format / verify_information_flow / etc. all check
+# v11-specific tags and would reject every v12 sample (or silently let bad
+# format slip through). The functions below are v12-equivalents called from
+# the protocol-aware dispatchers.
+# ===========================================================================
+
+
+def _verify_information_flow_v12(sample: Dict) -> Tuple[bool, str]:
+    """v12 information-flow check: validate <answer>/<tool_call> content.
+
+    Mirrors the v11 strict-format intent (binary/MC/number drift = OVO miss)
+    but reads from v12's <answer> terminal instead of <response>.
+    """
+    metadata = sample.get("metadata", {})
+    output = _v12_combined_assistant_text(sample)
+    sample_type = sample.get("sample_type", "")
+
+    if _is_base_sample(sample):
+        return True, "pass"
+
+    # Query doesn't contain answer (re-uses metadata flag from pass3c)
+    if metadata.get("leakage_checks", {}).get("query_contains_answer"):
+        return False, "query_contains_answer_value"
+
+    # Locate the FINAL answer — for multi-turn recall it's in turn 2
+    answer_match = re.search(r"<answer>(.*?)</answer>", output, re.DOTALL)
+    if answer_match is not None:
+        resp_text = answer_match.group(1).strip()
+        # silent samples = empty answer (intended). Validate non-silent only.
+        if sample_type in ("response", "recall_response"):
+            if not resp_text:
+                return False, "empty_response"
+            answer_form = metadata.get("answer_form", "")
+            family = metadata.get("family", "")
+            short_forms = ("binary", "multiple_choice", "number", "short_exact")
+            if answer_form not in short_forms and family != "N1":
+                if len(resp_text) < 3:
+                    return False, "response_too_short"
+            if answer_form == "multiple_choice":
+                if not re.fullmatch(r"[A-D]", resp_text):
+                    return False, f"mc_response_not_single_letter: '{resp_text[:30]}'"
+                gold = (metadata.get("gold_answer", "") or "").strip().upper()
+                if gold and resp_text != gold:
+                    return False, f"mc_response_mismatch: got '{resp_text}' want '{gold}'"
+            elif answer_form == "binary":
+                if resp_text not in ("Yes", "No"):
+                    return False, f"binary_response_not_yes_no: '{resp_text[:30]}'"
+            elif answer_form == "number":
+                if not re.fullmatch(r"\d+", resp_text):
+                    return False, f"number_response_not_digits: '{resp_text[:30]}'"
+
+    # Recall-failure uncertainty check — operates on the SECOND turn's answer
+    # for multi-turn recall samples (turn 1 is the tool_call itself).
+    if sample_type in ("recall_response", "recall") and "v12_assistant_turn_2" in sample:
+        recall_result = sample.get("recall_result") or \
+                        sample.get("input", {}).get("recall_result", {}) or {}
+        noise_level = recall_result.get("noise_level", recall_result.get("source", "oracle"))
+        if noise_level in ("distractor", "failure"):
+            t2 = sample.get("v12_assistant_turn_2", "")
+            ans = re.search(r"<answer>(.*?)</answer>", t2, re.DOTALL)
+            if ans:
+                resp = ans.group(1).lower()
+                uncertain_kws = [
+                    "cannot", "could not", "not sure", "unable",
+                    "uncertain", "don't see", "not enough", "unclear",
+                    "not confirm", "insufficient",
+                ]
+                if not any(kw in resp for kw in uncertain_kws):
+                    return False, "confident_response_after_failed_recall"
+
+    return True, "pass"
+
+
+def _verify_format_v12(sample: Dict) -> Tuple[bool, str]:
+    """v12 format check: <think>/<answer>/<tool_call> well-formedness.
+
+    v12 grammar (from agent_protocol.parse_agent_output_v12):
+      <think>...</think>  (always)
+      then EXACTLY ONE of:
+        <answer>...</answer>
+        <tool_call>{name, arguments}</tool_call>
+    Multi-turn recall: turn 1 = <tool_call>{name=recall}</tool_call>,
+                       turn 2 = <answer>...</answer>
+    """
+    sample_type = sample.get("sample_type", "")
+    is_multiturn = "v12_assistant_turn_1" in sample
+    is_inter_chunk = sample.get("v12_inter_chunk") is True
+
+    # Collect each assistant turn's text for separate validation.
+    turns: List[str] = []
+    if is_multiturn:
+        turns.append(sample.get("v12_assistant_turn_1", ""))
+        turns.append(sample.get("v12_assistant_turn_2", ""))
+    else:
+        turns.append(sample.get("output", ""))
+
+    for i, out in enumerate(turns):
+        # think tags required (length-checked downstream)
+        if "<think>" not in out or "</think>" not in out:
+            if not (_is_base_sample(sample) and not is_multiturn
+                    and sample.get("action") == "compress"):
+                return False, f"v12_missing_think_tags (turn {i})"
+
+        has_answer = "<answer>" in out and "</answer>" in out
+        has_tool_call = "<tool_call>" in out and "</tool_call>" in out
+
+        if has_answer and has_tool_call:
+            return False, f"v12_both_terminals (turn {i})"
+        if not has_answer and not has_tool_call:
+            return False, f"v12_no_terminal (turn {i})"
+
+        # Tool-call JSON well-formedness
+        if has_tool_call:
+            tc_match = re.search(r"<tool_call>(.*?)</tool_call>", out, re.DOTALL)
+            if tc_match:
+                try:
+                    tc_obj = json.loads(tc_match.group(1).strip())
+                except (json.JSONDecodeError, ValueError):
+                    return False, f"v12_tool_call_invalid_json (turn {i})"
+                if "name" not in tc_obj or "arguments" not in tc_obj:
+                    return False, f"v12_tool_call_missing_fields (turn {i})"
+                name = tc_obj.get("name")
+                if name not in ("recall", "compress"):
+                    return False, f"v12_unknown_tool_name: {name!r}"
+                args = tc_obj.get("arguments") or {}
+                if name == "recall":
+                    if "query" not in args or "time_range" not in args:
+                        return False, "v12_recall_args_missing_fields"
+                elif name == "compress":
+                    if "time_range" not in args or "text" not in args:
+                        return False, "v12_compress_args_missing_fields"
+                    if not args.get("text"):
+                        return False, "v12_compress_empty_summary"
+
+    # Sample-type ↔ terminal-kind consistency
+    final_text = turns[-1]
+    final_has_answer = "<answer>" in final_text
+    final_has_tool = "<tool_call>" in final_text
+    if sample_type == "silent":
+        if not final_has_answer:
+            return False, "v12_silent_must_emit_answer"
+        m = re.search(r"<answer>(.*?)</answer>", final_text, re.DOTALL)
+        if m and m.group(1).strip():
+            return False, "v12_silent_answer_must_be_empty"
+    elif sample_type == "response":
+        if not final_has_answer:
+            return False, "v12_response_must_emit_answer"
+    elif sample_type == "compress":
+        # compress samples: ONLY a tool_call (no answer)
+        if not final_has_tool:
+            return False, "v12_compress_must_emit_tool_call"
+        if final_has_answer:
+            return False, "v12_compress_should_not_emit_answer"
+        if not is_inter_chunk:
+            # v12 compress should be inter-chunk (no visual_window)
+            return False, "v12_compress_missing_inter_chunk_flag"
+    elif sample_type == "recall":
+        # multi-turn merged: turn1=tool_call(recall), turn2=answer
+        if not is_multiturn:
+            return False, "v12_recall_not_multiturn"
+        if "<tool_call>" not in turns[0]:
+            return False, "v12_recall_turn1_missing_tool_call"
+        if "<answer>" not in turns[1]:
+            return False, "v12_recall_turn2_missing_answer"
+
+    return True, "pass"
+
+
+def _v12_extract_summary_text(sample: Dict) -> str:
+    """Extract compress summary text from v12 <tool_call> JSON. Empty if missing."""
+    if sample.get("sample_type") != "compress":
+        return ""
+    output = _v12_combined_assistant_text(sample)
+    tc_match = re.search(r"<tool_call>(.*?)</tool_call>", output, re.DOTALL)
+    if not tc_match:
+        return ""
+    try:
+        tc = json.loads(tc_match.group(1).strip())
+    except (json.JSONDecodeError, ValueError):
+        return ""
+    return (tc.get("arguments") or {}).get("text", "") or ""
+
+
+def _verify_compression_ratio_v12(sample: Dict) -> Tuple[bool, str]:
+    """v12 compression: read summary text from <tool_call> args.text."""
+    if sample.get("sample_type") != "compress":
+        return True, "pass"
+
+    output = _v12_combined_assistant_text(sample)
+    tc_match = re.search(r"<tool_call>(.*?)</tool_call>", output, re.DOTALL)
+    if not tc_match:
+        return True, "pass"  # missing tool_call already caught by format check
+    try:
+        tc_obj = json.loads(tc_match.group(1).strip())
+    except (json.JSONDecodeError, ValueError):
+        return True, "pass"  # invalid json caught by format check
+    summary_text = (tc_obj.get("arguments") or {}).get("text", "")
+    if not summary_text:
+        return False, "empty_compression_summary"
+
+    source_texts = _compressed_source_texts(sample)
+    if not source_texts:
+        return True, "pass"
+
+    input_tokens = _count_tokens(" ".join(source_texts))
+    summary_tokens = _count_tokens(summary_text)
+    if summary_tokens == 0:
+        return False, "empty_compression_summary"
+    ratio = input_tokens / summary_tokens
+    if ratio < COMPRESSION_RATIO_MIN:
+        return False, f"compression_ratio_too_low ({ratio:.1f} < {COMPRESSION_RATIO_MIN})"
     return True, "pass"
 
 
@@ -285,6 +525,9 @@ def verify_grounding(sample: Dict) -> Tuple[bool, str]:
 
 def verify_format(sample: Dict) -> Tuple[bool, str]:
     """Check 4: Output format and tag consistency."""
+    if _is_v12_sample(sample):
+        return _verify_format_v12(sample)
+
     output = sample.get("output", "")
     sample_type = sample.get("sample_type", "")
 
@@ -379,6 +622,9 @@ def verify_think_token_length(sample: Dict) -> Tuple[bool, str]:
 
 def verify_compression_ratio(sample: Dict) -> Tuple[bool, str]:
     """Check 6: Compression summary achieves minimum ratio."""
+    if _is_v12_sample(sample):
+        return _verify_compression_ratio_v12(sample)
+
     if sample.get("sample_type") != "compress":
         return True, "pass"
 
@@ -421,15 +667,17 @@ def verify_summary_provenance(sample: Dict) -> Tuple[bool, str]:
     if sample.get("sample_type") != "compress":
         return True, "pass"
 
-    output = sample.get("output", "")
-    summary_match = re.search(r'<summary>(.*?)</summary>', output, re.DOTALL)
-    if not summary_match:
-        return True, "pass"
-
-    try:
-        summary_text = json.loads(summary_match.group(1)).get("text", "")
-    except (json.JSONDecodeError, ValueError):
-        return True, "pass"
+    if _is_v12_sample(sample):
+        summary_text = _v12_extract_summary_text(sample)
+    else:
+        output = sample.get("output", "")
+        summary_match = re.search(r'<summary>(.*?)</summary>', output, re.DOTALL)
+        if not summary_match:
+            return True, "pass"
+        try:
+            summary_text = json.loads(summary_match.group(1)).get("text", "")
+        except (json.JSONDecodeError, ValueError):
+            return True, "pass"
 
     if not summary_text:
         return True, "pass"
@@ -492,15 +740,17 @@ def verify_summary_retention(sample: Dict) -> Tuple[bool, str]:
     if sample.get("sample_type") != "compress":
         return True, "pass"
 
-    output = sample.get("output", "")
-    summary_match = re.search(r'<summary>(.*?)</summary>', output, re.DOTALL)
-    if not summary_match:
-        return True, "pass"
-
-    try:
-        summary_text = json.loads(summary_match.group(1)).get("text", "")
-    except (json.JSONDecodeError, ValueError):
-        return True, "pass"
+    if _is_v12_sample(sample):
+        summary_text = _v12_extract_summary_text(sample)
+    else:
+        output = sample.get("output", "")
+        summary_match = re.search(r'<summary>(.*?)</summary>', output, re.DOTALL)
+        if not summary_match:
+            return True, "pass"
+        try:
+            summary_text = json.loads(summary_match.group(1)).get("text", "")
+        except (json.JSONDecodeError, ValueError):
+            return True, "pass"
 
     source_texts = _compressed_source_texts(sample)
     if not source_texts or not summary_text:
@@ -542,17 +792,24 @@ def verify_summary_no_current_think_leak(sample: Dict) -> Tuple[bool, str]:
     if sample.get("sample_type") != "compress":
         return True, "pass"
 
-    output = sample.get("output", "")
-    think_match = re.search(r'<think>(.*?)</think>', output, re.DOTALL)
-    summary_match = re.search(r'<summary>(.*?)</summary>', output, re.DOTALL)
-    if not think_match or not summary_match:
-        return True, "pass"
-
-    think_text = think_match.group(1).strip()
-    try:
-        summary_text = json.loads(summary_match.group(1)).get("text", "")
-    except (json.JSONDecodeError, ValueError):
-        return True, "pass"
+    if _is_v12_sample(sample):
+        output = _v12_combined_assistant_text(sample)
+        think_match = re.search(r'<think>(.*?)</think>', output, re.DOTALL)
+        summary_text = _v12_extract_summary_text(sample)
+        if not think_match or not summary_text:
+            return True, "pass"
+        think_text = think_match.group(1).strip()
+    else:
+        output = sample.get("output", "")
+        think_match = re.search(r'<think>(.*?)</think>', output, re.DOTALL)
+        summary_match = re.search(r'<summary>(.*?)</summary>', output, re.DOTALL)
+        if not think_match or not summary_match:
+            return True, "pass"
+        think_text = think_match.group(1).strip()
+        try:
+            summary_text = json.loads(summary_match.group(1)).get("text", "")
+        except (json.JSONDecodeError, ValueError):
+            return True, "pass"
 
     if not think_text or not summary_text:
         return True, "pass"

@@ -382,6 +382,144 @@ def test_v12_compress_inter_chunk_flag():
     print("✓ v12 compress inter_chunk flag")
 
 
+def test_pass4_v12_format_acceptance():
+    """pass4 verify_format must ACCEPT well-formed v12 samples (silent /
+    response / multi-turn recall / inter-chunk compress) and REJECT
+    legacy v11 <action> samples that arrive marked as v12."""
+    from scripts.agent_data_v5.pass4_verify import verify_format
+
+    # silent — empty <answer></answer>
+    silent = {
+        "sample_type": "silent",
+        "protocol_version": "v12",
+        "output": "<think>frame shows kitchen with chef</think><answer></answer>",
+    }
+    ok, reason = verify_format(silent)
+    assert ok, f"silent rejected: {reason}"
+
+    # response — non-empty <answer>
+    resp = {
+        "sample_type": "response",
+        "protocol_version": "v12",
+        "output": "<think>user asked color of chef apron, it is red</think><answer>red</answer>",
+    }
+    ok, reason = verify_format(resp)
+    assert ok, f"response rejected: {reason}"
+
+    # multi-turn recall
+    recall = {
+        "sample_type": "recall",
+        "protocol_version": "v12",
+        "v12_assistant_turn_1": '<think>need history about color of apron worn earlier</think><tool_call>\n{"name":"recall","arguments":{"query":"red apron","time_range":"10-30"}}\n</tool_call>',
+        "v12_assistant_turn_2": "<think>found red apron worn by chef earlier</think><answer>red</answer>",
+    }
+    ok, reason = verify_format(recall)
+    assert ok, f"recall multi-turn rejected: {reason}"
+
+    # inter-chunk compress
+    compress = {
+        "sample_type": "compress",
+        "protocol_version": "v12",
+        "v12_inter_chunk": True,
+        "output": '<think>memory full, summarize chunks 4 to 12 of cooking</think><tool_call>\n{"name":"compress","arguments":{"time_range":[4,12],"text":"chef adds salt and pepper to pan"}}\n</tool_call>',
+    }
+    ok, reason = verify_format(compress)
+    assert ok, f"compress rejected: {reason}"
+
+    # bad: silent with non-empty answer
+    bad_silent = {
+        "sample_type": "silent",
+        "protocol_version": "v12",
+        "output": "<think>nothing new in scene yet</think><answer>red</answer>",
+    }
+    ok, reason = verify_format(bad_silent)
+    assert not ok and "v12_silent_answer_must_be_empty" in reason
+
+    # bad: compress without inter-chunk flag
+    bad_compress = {
+        "sample_type": "compress",
+        "protocol_version": "v12",
+        # no v12_inter_chunk flag
+        "output": '<think>x is happening here</think><tool_call>\n{"name":"compress","arguments":{"time_range":[4,12],"text":"summary content"}}\n</tool_call>',
+    }
+    ok, reason = verify_format(bad_compress)
+    assert not ok and "v12_compress_missing_inter_chunk_flag" in reason
+
+    # bad: tool_call invalid JSON
+    bad_json = {
+        "sample_type": "recall",
+        "protocol_version": "v12",
+        "v12_assistant_turn_1": "<think>need history</think><tool_call>not json</tool_call>",
+        "v12_assistant_turn_2": "<think>x</think><answer>red</answer>",
+    }
+    ok, reason = verify_format(bad_json)
+    assert not ok and "invalid_json" in reason
+
+    print("✓ pass4 verify_format v12 acceptance/rejection")
+
+
+def test_pass4_v12_information_flow():
+    """v12 information_flow validates yes/no/MC/number response strict format."""
+    from scripts.agent_data_v5.pass4_verify import verify_information_flow
+
+    # binary form — must be exactly Yes/No
+    good_binary = {
+        "sample_type": "response",
+        "protocol_version": "v12",
+        "output": "<think>asks if van is in scene, I see white van clearly</think><answer>Yes</answer>",
+        "metadata": {"answer_form": "binary"},
+    }
+    ok, reason = verify_information_flow(good_binary)
+    assert ok, f"good binary rejected: {reason}"
+
+    bad_binary = {
+        "sample_type": "response",
+        "protocol_version": "v12",
+        "output": "<think>asks if van is in scene currently visible</think><answer>yes definitely</answer>",
+        "metadata": {"answer_form": "binary"},
+    }
+    ok, reason = verify_information_flow(bad_binary)
+    assert not ok and "binary_response_not_yes_no" in reason
+
+    # number form
+    bad_number = {
+        "sample_type": "response",
+        "protocol_version": "v12",
+        "output": "<think>counted three apples carefully now</think><answer>three</answer>",
+        "metadata": {"answer_form": "number"},
+    }
+    ok, reason = verify_information_flow(bad_number)
+    assert not ok and "number_response_not_digits" in reason
+
+    # silent samples should not trip empty-response check
+    silent = {
+        "sample_type": "silent",
+        "protocol_version": "v12",
+        "output": "<think>nothing new visible in current chunk</think><answer></answer>",
+        "metadata": {},
+    }
+    ok, reason = verify_information_flow(silent)
+    assert ok, f"silent rejected: {reason}"
+
+    print("✓ pass4 verify_information_flow v12")
+
+
+def test_pass4_v11_backward_compat():
+    """v11 samples (no protocol_version field) still go through legacy validation."""
+    from scripts.agent_data_v5.pass4_verify import verify_format
+
+    v11_resp = {
+        "sample_type": "response",
+        # NO protocol_version field — legacy default
+        "output": "<think>chef is adding salt slowly to the pot at the stove</think><action>response</action><response>red</response>",
+    }
+    ok, reason = verify_format(v11_resp)
+    # v11 verify_format requires <action>, this passes
+    assert ok, f"v11 response rejected: {reason}"
+
+    print("✓ pass4 v11 backward compat")
+
+
 def test_freegen_gate_aggregation():
     """End-to-end gate: synthetic samples + classifications → metrics + verdict."""
     sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts" / "eval"))
@@ -435,5 +573,8 @@ if __name__ == "__main__":
     test_v12_recall_multiturn_merge()
     test_v12_recall_silent_merge()
     test_v12_compress_inter_chunk_flag()
+    test_pass4_v12_format_acceptance()
+    test_pass4_v12_information_flow()
+    test_pass4_v11_backward_compat()
     test_freegen_gate_aggregation()
     print("\n✅ all v12.0 smoke tests passed")
