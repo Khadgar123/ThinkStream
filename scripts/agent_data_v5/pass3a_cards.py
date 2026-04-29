@@ -1149,7 +1149,7 @@ def _parse_cards_response(raw: Optional[str], family: str, video_id: str) -> Lis
     # Strip common thinking prefixes so the JSON parser sees the array first.
     for prefix in ("Thinking Process:", "thinking process:", "思考过程："):
         if prefix in raw:
-            raw = raw[raw.find(prefix):].strip()
+            raw = raw[raw.find(prefix) + len(prefix):].strip()
 
     # Try parse as JSON array
     try:
@@ -1169,20 +1169,26 @@ def _parse_cards_response(raw: Optional[str], family: str, video_id: str) -> Lis
                 return result
         except (json.JSONDecodeError, ValueError):
             pass
-        # Fallback: find all array-like substrings and pick the longest valid one
-        # NOTE: must use `[\s\S]` character class (any-char incl. newlines).
-        # Typo `\s\S` (no inner brackets) means "whitespace + literal S"
-        # and matches nothing — silent failure mode that can drop ALL
-        # cards on responses where the inline parser fails.
-        candidates = re.findall(r'\[[\s\S]*?\]', raw)
+        # Fallback: use bracket counting to find valid JSON arrays.
+        # Non-greedy regex `\[.*?\]` breaks on nested arrays (e.g.
+        # `[{"options": ["a"]}]`), so we explicitly track depth.
         best = []
-        for cand in candidates:
-            try:
-                parsed = json.loads(cand)
-                if isinstance(parsed, list) and len(parsed) > len(best):
-                    best = parsed
-            except (json.JSONDecodeError, ValueError):
-                continue
+        for m in re.finditer(r'\[', raw):
+            start = m.start()
+            depth = 1
+            for j in range(start + 1, len(raw)):
+                if raw[j] == '[':
+                    depth += 1
+                elif raw[j] == ']':
+                    depth -= 1
+                    if depth == 0:
+                        try:
+                            parsed = json.loads(raw[start:j + 1])
+                            if isinstance(parsed, list) and len(parsed) > len(best):
+                                best = parsed
+                        except (json.JSONDecodeError, ValueError):
+                            pass
+                        break
         if best:
             return best
 
