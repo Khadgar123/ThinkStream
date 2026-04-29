@@ -106,18 +106,20 @@ def test_pn1_picks_first_ocr_appearances():
     print(f"  PASS PN1 OCR-first picks: {pn1}")
 
 
-def test_pn1_caps_at_8_candidates():
-    """classify_chunks caps PN1 at 8 candidates per video at the picker
-    level. FAMILY_TARGETS["PN1"]=20 means OVERSAMPLING — teacher attempts
-    20 cards from 8 candidates (re-asking with diverse perspectives), and
-    pass4 verify + pass3b placement throttle to ~10 PN1 cards/video.
-    """
-    # Build 20 chunks each with a unique entity → all are first-appearance
-    evidence = [_ev(i, entities=(f"ent_{i}",)) for i in range(20)]
+def test_pn1_candidate_cap():
+    """v12.5: classify_chunks caps PN1 at 15 candidates per video (was 8).
+    Higher cap matches FAMILY_TARGETS["PN1"]=20 oversampling so more
+    novelty chunks become PN1 response samples → lower silent rate."""
+    # Build 25 chunks each with a unique entity → all are first-appearance
+    evidence = [_ev(i, entities=(f"ent_{i}",)) for i in range(25)]
     fc = classify_chunks(evidence)
     pn1 = fc.get("PN1", [])
-    assert len(pn1) <= 8, f"PN1 candidate cap exceeded: {len(pn1)}"
-    print(f"  PASS PN1 candidate cap: {len(pn1)} ≤ 8")
+    assert len(pn1) <= 15, f"PN1 candidate cap exceeded: {len(pn1)}"
+    assert len(pn1) >= 10, (
+        f"v12.5 candidate cap should be ≥10 to allow target=20 oversampling; "
+        f"got {len(pn1)}"
+    )
+    print(f"  PASS PN1 candidate cap: {len(pn1)} ≤ 15")
 
 
 def test_pn1_static_video_returns_few():
@@ -150,7 +152,7 @@ def main():
         test_pn1_picks_state_change_chunks,
         test_pn1_picks_first_entity_appearances,
         test_pn1_picks_first_ocr_appearances,
-        test_pn1_caps_at_8_candidates,
+        test_pn1_candidate_cap,
         test_pn1_static_video_returns_few,
         test_total_cards_per_video_increased,
     ]

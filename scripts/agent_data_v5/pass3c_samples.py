@@ -1236,7 +1236,12 @@ WARMUP_CHUNKS = 3               # first N chunks for cold-start training
 QUESTION_WINDOW_BEFORE = 2      # chunks before each key_chunk
 QUESTION_WINDOW_AFTER = 3       # chunks after each key_chunk
 COMPRESS_WINDOW = 1             # chunks around each compression event
-LONG_SILENT_SAMPLE_INTERVAL = 5  # sample every Nth chunk in long silent stretches
+# v12.5 (2026-04-29): patrol density 5 → 10 to lower base silent fill
+# rate. Targets silent:response = 3:1 per user audit. Patrol samples
+# fill long-silent stretches between events; halving density cuts
+# ~30% of total silent samples without affecting evidence/question/
+# compress training signals (those still emit at full density).
+LONG_SILENT_SAMPLE_INTERVAL = 10  # sample every Nth chunk in long silent stretches
 EVIDENCE_WINDOW = 2             # chunks around support_chunks (recall evidence)
 
 

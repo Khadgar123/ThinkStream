@@ -1241,7 +1241,10 @@ def classify_chunks(evidence: List[Dict]) -> Dict[str, List[int]]:
                 is_novel = True
         if is_novel:
             pn1_picks.append(idx)
-        if len(pn1_picks) >= 8:
+        # v12.5: cap raised 8 → 15 to give FAMILY_TARGETS["PN1"]=20
+        # enough candidates. With higher cap, more novelty chunks become
+        # PN1 cards, lowering effective silent rate toward 3:1 target.
+        if len(pn1_picks) >= 15:
             break
     fc["PN1"] = pn1_picks
 
