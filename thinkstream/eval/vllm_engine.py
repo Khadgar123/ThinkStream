@@ -19,7 +19,19 @@ def init_vllm_engine(
     seed: int = 3407,
     dtype: str = "bfloat16",
     enforce_eager: bool = False,
+    enable_prefix_caching: bool = True,
 ):
+    """Init vLLM engine for ThinkStream eval / rollout.
+
+    enable_prefix_caching=True is critical for streaming video — each chunk's
+    prompt shares the system+visual_window prefix with previous chunks, so
+    block-level KV cache reuse gives 3-10× speedup. DeepEyesV2 verl recipe
+    sets this by default (vllm_rollout_spmd.py:167).
+
+    Set enable_prefix_caching=False only when:
+      - Debugging non-determinism in cached vs uncached path
+      - On vLLM versions where prefix cache + multi_modal_data interact buggy
+    """
     from vllm import LLM
     import torch
 
@@ -38,6 +50,7 @@ def init_vllm_engine(
         seed=seed,
         dtype=dtype,
         enforce_eager=enforce_eager,
+        enable_prefix_caching=enable_prefix_caching,
     )
 
 
@@ -63,16 +76,24 @@ def make_sampling_params(
     )
 
 
-def prepare_vllm_input(messages: List[Dict], processor) -> Dict[str, Any]:
+def prepare_vllm_input(
+    messages: List[Dict], processor, *, tools: List[Dict] = None,
+) -> Dict[str, Any]:
     """Convert HF chat messages to a vLLM request dict.
 
     Returns: {"prompt": str, "multi_modal_data": {...}, "mm_processor_kwargs": {...}}
+
+    tools: optional v12 tool schema (TOOLS_SCHEMA). When provided, the
+    chat template renders <tools>...</tools> in the system prompt so the
+    model can emit <tool_call>{...}</tool_call>. Required for v12 protocol;
+    leave None for v11 (legacy <action> format).
     """
     from qwen_vl_utils import process_vision_info
 
-    text = processor.apply_chat_template(
-        messages, tokenize=False, add_generation_prompt=True
-    )
+    template_kwargs = dict(tokenize=False, add_generation_prompt=True)
+    if tools is not None:
+        template_kwargs["tools"] = tools
+    text = processor.apply_chat_template(messages, **template_kwargs)
 
     image_inputs, video_inputs, video_kwargs = process_vision_info(
         messages,
