@@ -821,7 +821,7 @@ async def run_pipeline(
     # =================================================================
     # PASS 4: Verify + Filter (on RENDERED samples with full metadata)
     # =================================================================
-    from .pass4_verify import filter_samples, save_verified
+    from .pass4 import filter_samples, save_verified
 
     logger.info("=" * 60)
     logger.info("PASS 4: Verify + Filter (on rendered samples)")

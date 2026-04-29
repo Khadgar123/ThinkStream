@@ -386,7 +386,7 @@ def test_pass4_v12_format_acceptance():
     """pass4 verify_format must ACCEPT well-formed v12 samples (silent /
     response / multi-turn recall / inter-chunk compress) and REJECT
     legacy v11 <action> samples that arrive marked as v12."""
-    from scripts.agent_data_v5.pass4_verify import verify_format
+    from scripts.agent_data_v5.pass4 import verify_format
 
     # silent — empty <answer></answer>
     silent = {
@@ -460,7 +460,7 @@ def test_pass4_v12_format_acceptance():
 
 def test_pass4_v12_information_flow():
     """v12 information_flow validates yes/no/MC/number response strict format."""
-    from scripts.agent_data_v5.pass4_verify import verify_information_flow
+    from scripts.agent_data_v5.pass4 import verify_information_flow
 
     # binary form — must be exactly Yes/No
     good_binary = {
@@ -506,7 +506,7 @@ def test_pass4_v12_information_flow():
 
 def test_pass4_v12_grounding_multiturn():
     """verify_grounding must read both turns of v12 multi-turn recall samples."""
-    from scripts.agent_data_v5.pass4_verify import verify_grounding
+    from scripts.agent_data_v5.pass4 import verify_grounding
 
     # Multi-turn recall sample — output popped, turns in v12_assistant_turn_*
     multi_recall = {
@@ -533,7 +533,7 @@ def test_pass4_v12_grounding_multiturn():
 
 def test_pass4_v12_recall_evidence_reachable():
     """verify_recall_evidence_reachable must trigger on v12 sample_type='recall'."""
-    from scripts.agent_data_v5.pass4_verify import verify_recall_evidence_reachable
+    from scripts.agent_data_v5.pass4 import verify_recall_evidence_reachable
 
     # v12 recall with evidence in future → should fail
     bad = {
@@ -562,7 +562,7 @@ def test_pass4_v12_recall_evidence_reachable():
 
 def test_pass4_v12_metadata_complete():
     """verify_metadata_complete must trigger on v12 sample_type='recall'."""
-    from scripts.agent_data_v5.pass4_verify import verify_metadata_complete
+    from scripts.agent_data_v5.pass4 import verify_metadata_complete
 
     # v12 recall without gold_answer → should fail
     bad = {
@@ -589,7 +589,7 @@ def test_pass4_v12_metadata_complete():
 
 def test_pass4_v12_action_minimality():
     """verify_action_minimality must trigger on v12 sample_type='recall'."""
-    from scripts.agent_data_v5.pass4_verify import verify_action_minimality
+    from scripts.agent_data_v5.pass4 import verify_action_minimality
 
     # v12 recall in non-recall sequence → should fail
     bad = {
@@ -626,7 +626,7 @@ def test_pass4_v12_action_minimality():
 
 def test_pass4_v11_backward_compat():
     """v11 samples (no protocol_version field) still go through legacy validation."""
-    from scripts.agent_data_v5.pass4_verify import verify_format
+    from scripts.agent_data_v5.pass4 import verify_format
 
     v11_resp = {
         "sample_type": "response",

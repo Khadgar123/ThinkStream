@@ -1138,11 +1138,51 @@ def classify_chunks(evidence: List[Dict]) -> Dict[str, List[int]]:
 # ---------------------------------------------------------------------------
 
 
+_EV_PROMPT_MAX_CHUNKS = 10
+
+
 def _format_evidence_for_prompt(evidence: List[Dict], chunk_indices: List[int]) -> str:
-    """Format selected chunks' evidence into a compact prompt string."""
+    """Format selected chunks' evidence into a compact prompt string.
+
+    Token budget: cap at _EV_PROMPT_MAX_CHUNKS chunks per call. When more
+    chunks are passed, sample them via EVEN STRIDE across the input list
+    instead of taking just the first N.
+
+    BUG FIX (2026-04-29): the prior `chunk_indices[:10]` truncation caused
+    a severe position bias — 62.9% of pass3a card support_chunks fell in
+    the first 20% of videos, and family-level mean position dropped to
+    0.03-0.07 (i.e., first 3-7% of video). Long videos (≤196 chunks
+    observed) had their middle/end evidence permanently invisible to the
+    teacher LLM. Even-stride sampling preserves token budget while spanning
+    the full chunk_indices range. Position distribution audit after fix is
+    in tests/test_pass3a_sampling.py.
+    """
+    # Caller may pass duplicates (e.g., overlapping support±2 windows).
+    # Always dedup while preserving order before stride sampling.
+    _seen: set = set()
+    chunk_indices = [x for x in chunk_indices if not (x in _seen or _seen.add(x))]
+
+    if len(chunk_indices) <= _EV_PROMPT_MAX_CHUNKS:
+        sampled = list(chunk_indices)
+    else:
+        # Even-stride: cover the FULL range of chunk_indices, picking
+        # _EV_PROMPT_MAX_CHUNKS positions. We do NOT re-sort — the caller's
+        # ordering (typically chronological by chunk_idx) is preserved.
+        n = len(chunk_indices)
+        # Pick indices 0, n/k, 2n/k, ..., (k-1)n/k where k = max chunks.
+        # This guarantees first AND last are covered and intermediate are
+        # spread evenly.
+        sampled = [
+            chunk_indices[i * (n - 1) // (_EV_PROMPT_MAX_CHUNKS - 1)]
+            for i in range(_EV_PROMPT_MAX_CHUNKS)
+        ]
+        # Re-dedup — collisions can happen at high-density stride boundaries.
+        _seen2: set = set()
+        sampled = [x for x in sampled if not (x in _seen2 or _seen2.add(x))]
+
     ev_by_idx = {cap["chunk_idx"]: cap for cap in evidence}
     lines = []
-    for idx in chunk_indices[:10]:  # limit to 10 chunks per call
+    for idx in sampled:
         cap = ev_by_idx.get(idx)
         if not cap:
             continue
