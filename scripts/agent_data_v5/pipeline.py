@@ -93,6 +93,16 @@ def select_videos(
     seed: int = 42,
     catalog_csv: str = None,
 ) -> List[Dict]:
+    # v12.1 batch2: when THINKSTREAM_BATCH=batch2, extend the duration
+    # ceiling to capture longer procedural / multi-event content (gives
+    # more CR2/F5/F6 generation material). Also pick videos that aren't
+    # already in the registry to keep batch2 disjoint from batch1.
+    if os.environ.get("THINKSTREAM_BATCH", "").lower() == "batch2":
+        max_duration = max(max_duration, 600)
+        logger.info(
+            f"BATCH2: extending max_duration {max_duration}s to capture "
+            f"longer multi-event content for CR2/F5/F6 yield."
+        )
     """Select videos for data construction.
 
     Duration mix strategy (not just "longer is better"):
