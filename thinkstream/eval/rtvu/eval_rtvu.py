@@ -117,6 +117,7 @@ if __name__ == "__main__":
             max_pixels=args.max_pixels,
             rank=rank,
             world_size=world_size,
+            protocol_version=args.protocol_version,
         )
     else:
         predictions, datums, process_index = mcq_predict_streaming(
@@ -135,6 +136,7 @@ if __name__ == "__main__":
             max_pixels=args.max_pixels,
             slack_time=args.slack_time,
             agent_model=args.agent_model,
+            protocol_version=args.protocol_version,
         )
 
     if process_index == 0:

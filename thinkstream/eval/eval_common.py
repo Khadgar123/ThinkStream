@@ -277,6 +277,19 @@ def add_common_args(parser):
         ),
     )
     parser.add_argument(
+        "--protocol_version",
+        default="v11",
+        choices=["v11", "v12"],
+        help=(
+            "Agent protocol version. v11 uses <action>/<response>/<query>; "
+            "v12 uses Qwen3-VL official tool protocol (<answer>/<tool_call>) "
+            "with SYSTEM_PROMPT_V12 + tools=TOOLS_SCHEMA. Passing v12 with "
+            "the legacy mcq_predict_streaming path raises ValueError "
+            "immediately — use --use_agent_loop or streaming_predict_mcq_vllm "
+            "for v12 instead."
+        ),
+    )
+    parser.add_argument(
         "--compress_mode",
         default="system",
         choices=["system", "self"],
@@ -329,14 +342,40 @@ def mcq_predict_streaming(
     min_pixels: int = MIN_PIXELS,
     max_pixels: int = MAX_PIXELS,
     agent_model: bool = False,
+    protocol_version: str = "v11",
 ):
     """
-    Generic streaming MCQ prediction.
+    Generic streaming MCQ prediction (v11 PROTOCOL ONLY).
+
+    .. deprecated::
+        This function uses token-restricted sampling hard-coded for v11
+        agent tokens (<action>, <response>, <query>, silent/response/recall
+        word IDs). Those tokens DO NOT EXIST in v12 protocol — invoking
+        this with a v12 model will mask logits to invalid tokens and
+        produce garbage output.
+
+        For v12 models, use ONE of:
+          - mcq_predict_agent_loop (this module) — StreamingAgentLoop path,
+            already protocol_version-aware as of commit ace561b.
+          - thinkstream.eval.streaming_vllm.streaming_predict_mcq_vllm —
+            vLLM batched, prefix-cached, natural sampling + parse_agent_output_v12.
+
+        Passing protocol_version='v12' to this function raises ValueError
+        immediately so the misuse fails fast instead of silently corrupting
+        eval scores.
 
     The JSONL file at *benchmark_path* must contain one JSON object per line
     with at least: ``video``, ``question``, ``video_start``, ``video_end``.
     If an ``options`` key is present its values are appended to the question.
     """
+    if protocol_version != "v11":
+        raise ValueError(
+            f"mcq_predict_streaming is v11-only (uses restricted sampling on "
+            f"<action>/<response>/<query> tokens that don't exist in {protocol_version}). "
+            f"For v12 models use mcq_predict_agent_loop or "
+            f"thinkstream.eval.streaming_vllm.streaming_predict_mcq_vllm instead."
+        )
+
     # The sampler picks the top-1 token among restricted_token_ids via argmax
     # over logits, so the relative ranking is all that matters — the exact
     # token variant (with / without prefix space) does not affect results.
