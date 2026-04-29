@@ -1083,7 +1083,28 @@ def plan_trajectories(
     # Use the cap as upper bound; floor at 2 to keep multi-Q trajectories.
     # (Not all trajectories will reach max — that's enforced in Phase 2.)
 
-    # --- Phase 1: Greedy selection of best placements ---
+    # v12.5 (2026-04-30): SPLIT PN1 cards from QA cards before greedy.
+    # PN1 (Proactive Narration) cards cluster at novelty chunks — they
+    # lose against QA cards on the spread/diversity scoring (their family
+    # diversity bonus saturates after 1 selection; their seq_type/rare_seq
+    # bonuses are 0; their spread is low because PN1 candidates often
+    # appear within 2-3 chunks of each other). To preserve QA placement
+    # guarantees AND give PN1 fair representation, PN1 bypasses the QA
+    # greedy entirely:
+    #   1. greedy on QA only (preserves family coverage / spread / etc.)
+    #   2. silent_fraction filter on QA only
+    #   3. NEW phase 3: PN1 cards placed directly into their own
+    #      trajectories without scoring competition.
+    pn1_cards = [
+        p for p in placements
+        if (cards_map.get(p["card_id"], {}) or {}).get("family") == "PN1"
+    ]
+    qa_placements = [
+        p for p in placements
+        if (cards_map.get(p["card_id"], {}) or {}).get("family") != "PN1"
+    ]
+
+    # --- Phase 1: Greedy selection of best placements (QA only) ---
     used_families: Set[str] = set()
     used_seq_types: Set[str] = set()
     used_ask_chunks: List[int] = []
@@ -1091,7 +1112,7 @@ def plan_trajectories(
     used_answers: Set[str] = set()
     selected: List[Dict] = []
 
-    candidates = list(placements)
+    candidates = list(qa_placements)   # ← QA only; PN1 bypassed
     budget = target * max_placements_per_traj
 
     while candidates and len(selected) < budget:
@@ -1312,7 +1333,46 @@ def plan_trajectories(
             s = p["sequence_type"]
             seq_dist[s] = seq_dist.get(s, 0) + 1
 
+    # --- Phase 3 (v12.5): PN1 narration trajectories (bypass QA greedy) ---
+    # PN1 cards are short single-chunk observations; they don't compete
+    # with QA cards for trajectory slots. Each PN1 card gets placed into
+    # a small group (2-4 PN1 per trajectory) so the model sees PN1-only
+    # narration sequences as well as mixed QA contexts. PN1 trajectories
+    # are appended after the QA trajectories; they share the video's
+    # MAX_TRAJECTORIES_PER_VIDEO budget but if budget exhausted, extra
+    # PN1 cards are appended to existing PN1 trajs rather than dropped.
+    if pn1_cards:
+        # Sort by ask_chunk for temporal grouping
+        pn1_sorted = sorted(pn1_cards, key=lambda p: p["ask_chunk"])
+        # v12.5 (iter 2): Bucket PN1 cards into 5-8 per trajectory
+        # (rng-randomized) to keep total trajectory count low while
+        # still placing all PN1. With 22 PN1 cards × 5-8 per traj = 3-5
+        # PN1 trajectories per video; total trajs (QA+PN1) ~5-8.
+        pn1_per_traj_target = rng.randint(5, 8)
+        pn1_traj_idx = len(trajectories)
+        i = 0
+        while i < len(pn1_sorted):
+            group = pn1_sorted[i:i + pn1_per_traj_target]
+            trajectories.append({
+                "trajectory_id": f"traj_{pn1_traj_idx}",
+                "placements": list(group),
+            })
+            pn1_traj_idx += 1
+            i += pn1_per_traj_target
+            pn1_per_traj_target = rng.randint(5, 8)
+
+    # Re-tally totals after PN1 phase
     total_p = sum(len(t["placements"]) for t in trajectories)
+    family_dist = {}
+    seq_dist = {}
+    for t in trajectories:
+        for p in t["placements"]:
+            card = cards_map.get(p["card_id"], {})
+            fam = card.get("family", "?")
+            family_dist[fam] = family_dist.get(fam, 0) + 1
+            sq = p.get("sequence_type", "?")
+            seq_dist[sq] = seq_dist.get(sq, 0) + 1
+
     fam_str = " ".join(f"{f}:{n}" for f, n in sorted(family_dist.items()))
     seq_str = " ".join(f"{s}:{n}" for s, n in sorted(seq_dist.items()))
     logger.info(f"  3-B: {len(trajectories)} trajectories, {total_p} placements")

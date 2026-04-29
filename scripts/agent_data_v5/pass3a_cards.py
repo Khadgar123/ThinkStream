@@ -96,16 +96,11 @@ FAMILY_TARGETS = {
     # observations at novel-event chunks. answer_form=descriptive,
     # 20-30 token answers.
     #
-    # Target=15 matches classify_chunks candidate cap (15) — no
-    # oversampling waste. Each candidate gets exactly one card request.
-    # After pass4 verify (~88%) and pass3b placement, ~10-12 PN1 cards
-    # survive per video. With existing question density (5-10 q/video
-    # at min_chunk_gap=10) and PN1 (~12), total response decisions per
-    # video ≈ 15-20, raising decision-space response density from 3% to
-    # ~12-15% (silent:response from 27:1 to ~6:1). Reaching 3:1 requires
-    # protocol-level shift to dense narration (LiveCC), which is a
-    # bigger change deferred to follow-up.
-    "PN1": 15,
+    # Target=22 (up from 15 in iteration 1) to hit user silent-rate
+    # target 65-70%. PN1 BYPASSES pass3b greedy (Option A in commit
+    # earlier), so all candidates with passing pass4 verification get
+    # placed. PN1 candidate cap in classify_chunks raised to 25.
+    "PN1": 22,
 }
 # Total = 50 cards/video × 312 videos = 15,600 corpus pre-verify.
 # Expected post-verify ~88% pass: 13,728 cards. After pass3b density cap
@@ -1239,10 +1234,10 @@ def classify_chunks(evidence: List[Dict]) -> Dict[str, List[int]]:
                 is_novel = True
         if is_novel:
             pn1_picks.append(idx)
-        # v12.5: cap raised 8 → 15 to give FAMILY_TARGETS["PN1"]=20
-        # enough candidates. With higher cap, more novelty chunks become
-        # PN1 cards, lowering effective silent rate toward 3:1 target.
-        if len(pn1_picks) >= 15:
+        # v12.5 (iter 2): cap raised 15 → 25 to hit silent-rate target
+        # 65-70%. With PN1 bypass + more candidates, more novelty chunks
+        # become response samples, lowering silent ratio.
+        if len(pn1_picks) >= 25:
             break
     fc["PN1"] = pn1_picks
 
