@@ -366,3 +366,249 @@ def parse_agent_output(output_text: str) -> Dict:
                 result["payload"]["summary_raw"] = summary_match.group(1).strip()
 
     return result
+
+
+# ===========================================================================
+# v12.0 — Official Qwen tool protocol (agentic reframing)
+# ===========================================================================
+# Architecture:
+#   answer (terminal)   = <answer>text</answer> or <answer></answer> (silent)
+#   tool (recall)       = <tool_call>{"name":"recall","arguments":{...}}</tool_call>
+#   system event (compress) = system injects <compress_trigger range="a-b"/>
+#                             into user role; assistant emits compress tool_call
+# Tools registered via system <tools> block (auto-rendered by chat_template
+# when tools=tools is passed to apply_chat_template).
+# Coexists with v11 above; selection via stream_data_processor flag.
+
+SYSTEM_PROMPT_V12 = (
+    "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\n"
+    "Each turn you receive: visual frames (recent 24s window) + memory state. "
+    "You may either (a) call a tool, (b) emit a final answer, or (c) emit an empty "
+    "answer if no response is warranted.\n\n"
+    "Tools:\n"
+    "- recall: search past observations by keywords + time range. Use when the answer is "
+    "NOT in any visible source but you believe it was observed earlier.\n"
+    "- compress: summarize a chunk range. Called ONLY when the system injects "
+    "<compress_trigger range='start-end'/> into your input. Retain entity names, "
+    "visual attributes, OCR, state changes.\n\n"
+    "Output format (every turn must follow this exactly):\n"
+    "  <think>40-60 tokens describing only what is newly visible</think>\n"
+    "  Then ONE of:\n"
+    "    <tool_call>{\"name\":\"recall\",\"arguments\":{...}}</tool_call>\n"
+    "    <tool_call>{\"name\":\"compress\",\"arguments\":{...}}</tool_call>\n"
+    "    <answer>response text</answer>\n"
+    "    <answer></answer>   (silent — no question to answer right now)\n\n"
+    "Think rules: describe ONLY what is newly visible in the current chunk. "
+    "No meta-reasoning, no sound/smell/emotion, no speculation. "
+    "Maintain consistent entity names from memory."
+)
+
+
+# Tool JSON schemas — passed as `tools=TOOLS_SCHEMA` to apply_chat_template.
+# Format follows OpenAI function-calling spec, recognized by Qwen2.5-VL's
+# chat template which auto-renders <tools>...</tools> in the system prompt.
+TOOLS_SCHEMA = [
+    {
+        "type": "function",
+        "function": {
+            "name": "recall",
+            "description": (
+                "Search past video observations by keywords and time range. "
+                "Returns matched historical thinks. Use when the answer is "
+                "not in any visible source but was observed earlier."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": (
+                            "3-5 discriminative keywords (entity names + attributes). "
+                            "No answer values. Example: 'red apron chef pot'."
+                        ),
+                    },
+                    "time_range": {
+                        "type": "string",
+                        "description": (
+                            "Time range in seconds, format 'start-end'. "
+                            "Example: '20-60'. Constrains search to this window."
+                        ),
+                    },
+                },
+                "required": ["query", "time_range"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "compress",
+            "description": (
+                "Summarize a chunk range when the system signals memory pressure "
+                "via <compress_trigger range='start-end'/>. Output a concise "
+                "summary retaining all entities, attributes, and state changes."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "time_range": {
+                        "type": "array",
+                        "items": {"type": "integer"},
+                        "minItems": 2,
+                        "maxItems": 2,
+                        "description": (
+                            "[start_sec, end_sec] of the range being summarized. "
+                            "Should match the system's compress_trigger range."
+                        ),
+                    },
+                    "text": {
+                        "type": "string",
+                        "description": (
+                            "The summary text. Retain entity names, visual "
+                            "attributes, OCR text, and state changes."
+                        ),
+                    },
+                },
+                "required": ["time_range", "text"],
+            },
+        },
+    },
+]
+
+
+def build_assistant_content_v12(
+    *,
+    think: str,
+    kind: str,                    # "answer" | "recall" | "compress"
+    answer_text: str = "",        # for kind="answer" (empty → silent)
+    recall_query: Optional[Dict] = None,
+    compress_summary: Optional[Dict] = None,
+) -> str:
+    """Build assistant message content in v12.0 format.
+
+    Returns a single string with <think>...</think> followed by exactly one
+    of: <tool_call>{...}</tool_call> | <answer>...</answer>.
+
+    Args:
+        think: think content (40-60 tokens recommended).
+        kind: which terminal to emit.
+        answer_text: text inside <answer>...</answer> (empty for silent).
+        recall_query: dict with "query" + "time_range" keys.
+        compress_summary: dict with "time_range" (list) + "text" keys.
+    """
+    parts = [f"<think>{think}</think>"]
+
+    if kind == "answer":
+        # Empty string → <answer></answer> = silent.
+        parts.append(f"<answer>{answer_text}</answer>")
+    elif kind == "recall":
+        if not recall_query:
+            raise ValueError("kind='recall' requires recall_query dict")
+        tool_call = {
+            "name": "recall",
+            "arguments": {
+                "query": recall_query.get("query", ""),
+                "time_range": recall_query.get("time_range", ""),
+            },
+        }
+        parts.append(
+            f'<tool_call>\n{json.dumps(tool_call, ensure_ascii=False)}\n</tool_call>'
+        )
+    elif kind == "compress":
+        if not compress_summary:
+            raise ValueError("kind='compress' requires compress_summary dict")
+        tool_call = {
+            "name": "compress",
+            "arguments": {
+                "time_range": compress_summary.get("time_range", []),
+                "text": compress_summary.get("text", ""),
+            },
+        }
+        parts.append(
+            f'<tool_call>\n{json.dumps(tool_call, ensure_ascii=False)}\n</tool_call>'
+        )
+    else:
+        raise ValueError(f"Unknown kind: {kind!r}. Expected answer|recall|compress.")
+
+    return "".join(parts)
+
+
+def parse_agent_output_v12(output_text: str) -> Dict:
+    """Parse v12.0 agent output (think + tool_call|answer).
+
+    Returns:
+        {
+            "raw": str,
+            "think": str,
+            "kind": "answer" | "recall" | "compress" | "unknown",
+            "answer_text": str | None,         # set when kind=answer
+            "tool_call": dict | None,          # parsed JSON when kind=recall|compress
+            "format_error": str | None,        # set when parsing fails
+        }
+    """
+    result = {
+        "raw": output_text,
+        "think": "",
+        "kind": "unknown",
+        "answer_text": None,
+        "tool_call": None,
+        "format_error": None,
+    }
+
+    think_match = re.search(r'<think>(.*?)</think>', output_text, re.DOTALL)
+    if think_match:
+        result["think"] = think_match.group(1).strip()
+
+    answer_match = re.search(r'<answer>(.*?)</answer>', output_text, re.DOTALL)
+    tool_match = re.search(r'<tool_call>(.*?)</tool_call>', output_text, re.DOTALL)
+
+    # Both present → format error (must be one or the other, not both)
+    if answer_match and tool_match:
+        result["format_error"] = "both <answer> and <tool_call> present"
+        return result
+
+    if answer_match:
+        result["kind"] = "answer"
+        result["answer_text"] = answer_match.group(1).strip()
+        return result
+
+    if tool_match:
+        try:
+            tool_obj = json.loads(tool_match.group(1).strip())
+        except (json.JSONDecodeError, ValueError) as e:
+            result["format_error"] = f"tool_call JSON parse error: {e}"
+            return result
+
+        name = tool_obj.get("name", "")
+        if name == "recall":
+            result["kind"] = "recall"
+        elif name == "compress":
+            result["kind"] = "compress"
+        else:
+            result["format_error"] = f"unknown tool name: {name!r}"
+            return result
+        result["tool_call"] = tool_obj
+        return result
+
+    result["format_error"] = "neither <answer> nor <tool_call> emitted"
+    return result
+
+
+def has_compress_trigger(user_text: str) -> bool:
+    """Check if a user message contains a system-injected <compress_trigger/>.
+
+    Used by training/eval to verify trigger→tool_call binding, and by the
+    rollout controller to know whether the assistant must emit compress.
+    """
+    return bool(re.search(r'<compress_trigger\b', user_text or ""))
+
+
+def extract_compress_trigger_range(user_text: str) -> Optional[List[int]]:
+    """Extract [start, end] from <compress_trigger range='a-b'/>. Returns None if absent."""
+    m = re.search(
+        r"<compress_trigger\s+range\s*=\s*['\"]?(\d+)\s*-\s*(\d+)['\"]?\s*/?>",
+        user_text or "",
+    )
+    if not m:
+        return None
+    return [int(m.group(1)), int(m.group(2))]

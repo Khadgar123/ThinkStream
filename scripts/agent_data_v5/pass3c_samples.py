@@ -7,11 +7,17 @@ Maintains queries_state as it evolves (questions enter, answers accumulate).
 397B calls: generate response text and recall queries.
 
 Output: fork_samples/{video_id}.json
+
+Protocol versions (env var PROTOCOL_VERSION):
+  v11 (default): legacy <action>X</action> tag format
+  v12: official Qwen tool protocol (<tool_call>{json}</tool_call> + <answer>)
+       — see thinkstream/data/agent_protocol.py:SYSTEM_PROMPT_V12
 """
 
 import asyncio
 import json
 import logging
+import os
 import random
 import re
 from copy import deepcopy
@@ -26,6 +32,15 @@ from .config import (
 )
 
 logger = logging.getLogger(__name__)
+
+# v12.0: select output protocol via env var. Default v11 to avoid disrupting
+# existing pipelines until v12.0 SFT is validated end-to-end.
+PROTOCOL_VERSION = os.environ.get("THINKSTREAM_PROTOCOL", "v11").lower()
+if PROTOCOL_VERSION not in ("v11", "v12"):
+    raise ValueError(
+        f"THINKSTREAM_PROTOCOL must be 'v11' or 'v12', got {PROTOCOL_VERSION!r}"
+    )
+logger.info(f"pass3c PROTOCOL_VERSION={PROTOCOL_VERSION}")
 
 
 # ---------------------------------------------------------------------------
@@ -625,22 +640,15 @@ def _make_sample(
     trajectory_id: str = "", card_id: str = "",
     sequence_type: str = "",
 ) -> Dict:
-    """Build one SFT training sample."""
-    # Build output string
-    output_parts = [f"<think>{think}</think>"]
-    output_parts.append(f"<action>{action}</action>")
-    if action == "response" and response:
-        output_parts.append(f"<response>{response}</response>")
-    elif action == "recall" and query:
-        output_parts.append(f'<query>{json.dumps(query, ensure_ascii=False)}</query>')
-    elif action == "compress" and snapshot:
-        # Compress action must include <summary> tag from rollout compression event
-        compress_event = snapshot.get("_compress_event")
-        if compress_event:
-            summary = compress_event.get("summary", {})
-            output_parts.append(f'<summary>{json.dumps(summary, ensure_ascii=False)}</summary>')
+    """Build one SFT training sample.
 
-    # Derive sample_type for phase assignment and verification
+    Output format depends on PROTOCOL_VERSION (set via env THINKSTREAM_PROTOCOL):
+    - v11 (legacy): <think>...</think><action>X</action>[payload]
+    - v12 (agentic): <think>...</think><tool_call>{...}</tool_call> | <answer>...</answer>
+                     compress samples additionally inject <compress_trigger range='a-b'/>
+                     into user_input (system event, not a model action choice).
+    """
+    # Derive sample_type — same in both protocols, used for sampling/audit
     if prompt_type == "POST_RECALL_PROMPT":
         sample_type = "recall_response" if action == "response" else "recall_silent"
     elif action == "recall":
@@ -652,6 +660,95 @@ def _make_sample(
     else:
         sample_type = "silent"
 
+    # Extract compress event summary upfront (used by both v11 and v12)
+    compress_summary = None
+    if action == "compress" and snapshot:
+        compress_event = snapshot.get("_compress_event")
+        if compress_event:
+            compress_summary = compress_event.get("summary", {})
+
+    # ── Build assistant output text (protocol-specific) ─────────────────
+    if PROTOCOL_VERSION == "v11":
+        output_parts = [f"<think>{think}</think>", f"<action>{action}</action>"]
+        if action == "response" and response:
+            output_parts.append(f"<response>{response}</response>")
+        elif action == "recall" and query:
+            output_parts.append(f'<query>{json.dumps(query, ensure_ascii=False)}</query>')
+        elif action == "compress" and compress_summary:
+            output_parts.append(f'<summary>{json.dumps(compress_summary, ensure_ascii=False)}</summary>')
+        output_text = "".join(output_parts)
+        final_user_input = user_input or ""
+    else:  # v12
+        # Map (action, sample_type) → v12 emission kind
+        # silent              → <answer></answer> (empty answer = silent)
+        # response            → <answer>text</answer>
+        # recall_query        → <tool_call>{recall...}</tool_call>
+        # recall_response     → <answer>text</answer> (after recall result returns)
+        # recall_silent       → <answer></answer>
+        # compress            → <tool_call>{compress...}</tool_call>
+        #                       AND inject <compress_trigger range='a-b'/> into user_input
+        from thinkstream.data.agent_protocol import build_assistant_content_v12
+
+        if action == "response":
+            output_text = build_assistant_content_v12(
+                think=think, kind="answer", answer_text=response or "",
+            )
+            final_user_input = user_input or ""
+        elif action == "recall":
+            # Map legacy query dict {"query":..., "time_range":...} into v12 schema
+            recall_args = {
+                "query": query.get("query", "") if query else "",
+                "time_range": query.get("time_range", "") if query else "",
+            }
+            output_text = build_assistant_content_v12(
+                think=think, kind="recall", recall_query=recall_args,
+            )
+            final_user_input = user_input or ""
+        elif action == "compress":
+            if compress_summary:
+                tr = compress_summary.get("time_range", [])
+                # Normalize to list of 2 ints
+                if isinstance(tr, str):
+                    m = re.match(r"\s*(\d+)\s*-\s*(\d+)", tr)
+                    tr = [int(m.group(1)), int(m.group(2))] if m else []
+                summary_arg = {
+                    "time_range": list(tr) if tr else [],
+                    "text": compress_summary.get("text", ""),
+                }
+                output_text = build_assistant_content_v12(
+                    think=think, kind="compress", compress_summary=summary_arg,
+                )
+                # System event: inject <compress_trigger> into user_input.
+                # The trigger range matches the gold summary range so SFT learns
+                # the trigger→tool_call binding tightly.
+                if tr and len(tr) == 2:
+                    trigger_tag = f"<compress_trigger range='{int(tr[0])}-{int(tr[1])}'/>"
+                else:
+                    trigger_tag = "<compress_trigger/>"
+                final_user_input = (
+                    trigger_tag + (("\n" + user_input) if user_input else "")
+                )
+            else:
+                # Defensive: compress sample lacking _compress_event — emit empty
+                # tool_call placeholder so downstream parser doesn't crash, but
+                # log it.
+                logger.warning(
+                    f"compress sample chunk={chunk_idx} traj={trajectory_id} "
+                    f"missing _compress_event"
+                )
+                output_text = build_assistant_content_v12(
+                    think=think, kind="compress",
+                    compress_summary={"time_range": [], "text": ""},
+                )
+                final_user_input = "<compress_trigger/>" + (
+                    ("\n" + user_input) if user_input else ""
+                )
+        else:  # silent / recall_silent
+            output_text = build_assistant_content_v12(
+                think=think, kind="answer", answer_text="",
+            )
+            final_user_input = user_input or ""
+
     return {
         "chunk_idx": chunk_idx,
         "sample_type": sample_type,
@@ -660,10 +757,11 @@ def _make_sample(
         "card_id": card_id,
         "sequence_type": sequence_type,
         "action": action,
-        "output": "".join(output_parts),
+        "output": output_text,
         "queries": deepcopy(queries),
-        "user_input": user_input or "",
+        "user_input": final_user_input,
         "recall_result": recall_result,
+        "protocol_version": PROTOCOL_VERSION,
     }
 
 
