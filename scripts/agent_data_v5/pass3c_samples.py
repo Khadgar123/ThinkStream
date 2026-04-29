@@ -1236,12 +1236,13 @@ WARMUP_CHUNKS = 3               # first N chunks for cold-start training
 QUESTION_WINDOW_BEFORE = 2      # chunks before each key_chunk
 QUESTION_WINDOW_AFTER = 3       # chunks after each key_chunk
 COMPRESS_WINDOW = 1             # chunks around each compression event
-# v12.5 (2026-04-29): patrol density 5 → 10 to lower base silent fill
-# rate. Targets silent:response = 3:1 per user audit. Patrol samples
-# fill long-silent stretches between events; halving density cuts
-# ~30% of total silent samples without affecting evidence/question/
-# compress training signals (those still emit at full density).
-LONG_SILENT_SAMPLE_INTERVAL = 10  # sample every Nth chunk in long silent stretches
+# REVERTED (2026-04-29): I had changed this to 10 to lower silent rate,
+# but patrol samples teach the model "stay silent during long-silent
+# stretches" — cutting density 50% would weaken that signal and cause
+# the model to emit spurious responses on long-silent test scenarios.
+# Keep at 5 (every 10s in long silent stretches). The lever for silent
+# rate is PN1 narration density + question density, not patrol cuts.
+LONG_SILENT_SAMPLE_INTERVAL = 5  # sample every Nth chunk in long silent stretches
 EVIDENCE_WINDOW = 2             # chunks around support_chunks (recall evidence)
 
 

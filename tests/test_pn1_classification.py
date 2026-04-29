@@ -133,14 +133,15 @@ def test_pn1_static_video_returns_few():
 
 
 def test_total_cards_per_video_increased():
-    """v12.5 bump: total target should be ≥50 cards/video.
-    Was 26 in v12.4 → 56 in v12.5 (PN1=20, FAMILY_TARGETS bumped).
-    pass3b density caps and pass4 verify will throttle to ~30 placements."""
+    """v12.5: total target should be ≥45 cards/video (was 26 in v12.4).
+    PN1=15 matches candidate cap (no oversampling waste); FAMILY_TARGETS
+    bumped to lower silent rate. pass3b density caps + pass4 verify will
+    throttle to ~25 placements per video."""
     total = sum(FAMILY_TARGETS.values())
-    assert total >= 50, (
-        f"v12.5 should bump cards/video to ≥50 to lower silent ratio, got {total}"
+    assert total >= 45, (
+        f"v12.5 should bump cards/video to ≥45, got {total}"
     )
-    assert total <= 80, (
+    assert total <= 70, (
         f"too many cards/video ({total}) — over-generation wastes LLM cost"
     )
     print(f"  PASS cards/video target: {total}")
