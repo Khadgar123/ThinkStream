@@ -60,7 +60,13 @@ ROLLOUT_TEMP=${ROLLOUT_TEMP:-1.0}
 LR=${LR:-5e-7}
 EPOCHS=${EPOCHS:-2}
 BETA=${BETA:-1e-3}
-DATASET=${DATASET:-stream_agent_rl}
+# v12.5 default: stream_agent_rl_traj (300 trajectories / 15,294 samples).
+# Detected by grpo.calc_rewards via raw_sample.questions field → routes to
+# _calc_rewards_v12_trajectory (multi-question per-ask scoring + per-chunk
+# silent_quality). Override with DATASET=stream_agent_rl for legacy
+# single-question flat format (1,635 samples, post-MAX_SAMPLES_PER_VIDEO=15
+# cap that v12.5 retired).
+DATASET=${DATASET:-stream_agent_rl_traj}
 # slyme/deepslyme has no save_total_limit Ref registered — older runs had
 # unbounded ckpts. Default save_steps=200 gives ~3 ckpts over the 624-step
 # run on train_rl.jsonl (≈ 48GB on disk). Lower SAVE_STEPS for finer-grained

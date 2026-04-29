@@ -785,30 +785,68 @@ def rollout(
         video_path = raw_sample.get("video_path", "")
         abs_video_path = str(_make_abs_paths(Path(data_path), video_path))
 
+        # v12.4 trajectory format detection (from pass4 *_trajectories.jsonl).
+        # When the row carries `questions` (one entry per card) and
+        # `gold_action_per_chunk` (placement plan), it's a multi-question
+        # trajectory rollout — extract a representative ask_chunk for
+        # rollout-length budgeting and inject each question at its own
+        # ask_chunk during the loop.step() calls.
+        _is_traj_sample = (
+            isinstance(raw_sample.get("questions"), list)
+            and isinstance(raw_sample.get("gold_action_per_chunk"), dict)
+        )
+
         # Extract task info
         metadata = raw_sample.get("metadata", {})
-        ask_chunk = raw_sample.get("chunk_idx", rollout_max_chunks - 1)
 
-        # Extract user question (new format: input.user_input; legacy: messages/conversations)
-        user_question = None
-        if "input" in raw_sample and raw_sample["input"].get("user_input"):
-            user_question = raw_sample["input"]["user_input"]
-        elif "messages" in raw_sample:
-            for msg in raw_sample["messages"]:
-                if msg.get("role") == "user":
-                    content = msg.get("content", "")
-                    if isinstance(content, list):
-                        for item in content:
-                            if isinstance(item, dict) and item.get("type") == "text":
-                                text = item.get("text", "")
-                                if "<user_input>" in text:
-                                    m = re.search(r'<user_input>(.*?)</user_input>', text)
-                                    if m:
-                                        user_question = m.group(1)
-        elif "conversations" in raw_sample:
-            user_convs = [c for c in raw_sample["conversations"] if c.get("role") == "user"]
-            if user_convs:
-                user_question = user_convs[0].get("content", "")
+        if _is_traj_sample:
+            # Build a chunk → user_question map from each card's first ask_chunk.
+            # Multi-response cards (F7/M1, ~8.9% of questions) repeat the same
+            # question at each of their ask_chunks — we honor that by emitting
+            # the same string at every chunk in the card's ask_chunks list.
+            _question_at_chunk: Dict[int, str] = {}
+            _all_ask_chunks: List[int] = []
+            for q in raw_sample["questions"]:
+                q_text = q.get("question") or q.get("gold_answer", "")
+                # Note: pass3a stores the question in raw_sample.input.user_input
+                # for SFT, but for trajectory rows we synthesize from the card.
+                # Real ingestion via streaming_vllm uses metadata so this
+                # placeholder is fine for token-counting / message construction.
+                for ac in q.get("ask_chunks") or []:
+                    _question_at_chunk[int(ac)] = q_text
+                    _all_ask_chunks.append(int(ac))
+            ask_chunk = max(_all_ask_chunks) if _all_ask_chunks else (
+                rollout_max_chunks - 1
+            )
+            # No single user_question for trajectory rollouts; per-chunk.
+            user_question = None
+        else:
+            ask_chunk = raw_sample.get("chunk_idx", rollout_max_chunks - 1)
+            _question_at_chunk = {}
+
+            # Extract user question (new format: input.user_input;
+            # legacy: messages/conversations)
+            user_question = None
+            if "input" in raw_sample and raw_sample["input"].get("user_input"):
+                user_question = raw_sample["input"]["user_input"]
+            elif "messages" in raw_sample:
+                for msg in raw_sample["messages"]:
+                    if msg.get("role") == "user":
+                        content = msg.get("content", "")
+                        if isinstance(content, list):
+                            for item in content:
+                                if isinstance(item, dict) and item.get("type") == "text":
+                                    text = item.get("text", "")
+                                    if "<user_input>" in text:
+                                        m = re.search(r'<user_input>(.*?)</user_input>', text)
+                                        if m:
+                                            user_question = m.group(1)
+            elif "conversations" in raw_sample:
+                user_convs = [c for c in raw_sample["conversations"] if c.get("role") == "user"]
+                if user_convs:
+                    user_question = user_convs[0].get("content", "")
+            if user_question:
+                _question_at_chunk[int(ask_chunk)] = user_question
 
         # v12.0 protocol switch — propagate sample's protocol_version into
         # the rollout loop so build_single_step_messages picks the right
@@ -834,9 +872,14 @@ def rollout(
             )
 
             chunk_results_g: List[Dict[str, Any]] = []
-            num_chunks = min(ask_chunk + 5, rollout_max_chunks)  # run a few past ask
+            num_chunks = min(ask_chunk + 5, rollout_max_chunks)  # run past last ask
             for chunk_idx in range(num_chunks):
-                q = user_question if chunk_idx == ask_chunk else None
+                # v12.4 trajectory: question may fire at any chunk that's in
+                # _question_at_chunk (one card → ≥1 ask_chunks). Single-question
+                # path falls through with question only at the lone ask_chunk.
+                q = _question_at_chunk.get(chunk_idx)
+                if q is None and not _is_traj_sample and chunk_idx == ask_chunk:
+                    q = user_question
                 result = loop.step(
                     chunk_idx=chunk_idx,
                     video_path=abs_video_path,
@@ -865,8 +908,13 @@ def rollout(
                     "window_start": chunk_idx * 2,
                     "window_end": (chunk_idx + 1) * 2,
                 })
-                # Early stop if model responded
-                if result.get("action") == "response" and chunk_idx >= ask_chunk:
+                # Early stop if model responded — but NOT for trajectory
+                # rollouts where multiple questions are asked at different
+                # ask_chunks (we must keep rolling so later questions get
+                # their own answer chunk).
+                if (result.get("action") == "response"
+                        and chunk_idx >= ask_chunk
+                        and not _is_traj_sample):
                     break
             per_gen_results.append(chunk_results_g)
 

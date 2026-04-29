@@ -304,6 +304,12 @@ def rank0_print(*args):
 
 
 def read_jsonl(path):
+    """Read .jsonl. v12.5: also reads .jsonl.gz transparently (the v12.4
+    trajectory files are gzipped on disk to fit GitHub's 100MB limit)."""
+    if path.endswith(".gz"):
+        import gzip
+        with gzip.open(path, "rt", encoding="utf-8") as f:
+            return [json.loads(line) for line in f]
     with open(path, "r") as f:
         return [json.loads(line) for line in f]
 

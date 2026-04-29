@@ -65,11 +65,19 @@ case $PHASE in
         # v11.2: in-loop eval on stream_agent_val (1,550-sample held-out
         # video-disjoint pool). Subsampled to EVAL_N (default 300) so
         # one eval pass takes ~2 min on 8×GPU instead of ~10 min.
+        # v12.5 default: stream_agent_sft_full (18,229 samples, 11.2x
+        # recovery vs legacy stream_agent_sft=1,635 post-cap). The flat
+        # file is the unpacked form of train_sft_trajectories.jsonl
+        # produced by `python -m scripts.agent_data_v5.pass4`.
+        # Override with DATASETS=stream_agent_sft for the v11.1 baseline.
         llm=${LLM:-/home/tione/notebook/gaozhenkun/model/Qwen3-VL-8B-Instruct}
-        datasets=stream_agent_sft
-        eval_datasets=stream_agent_val
-        lr=2e-5; epochs=4
-        run_name="agent-sft"
+        datasets=${DATASETS:-stream_agent_sft_full}
+        eval_datasets=${EVAL_DATASETS:-stream_agent_val}
+        # v12.5: corpus 11.2x larger; reduce default epochs proportionally
+        # so total steps stay in the v11.1 ballpark (was 4×154=616; now
+        # 2×285=570 with effective_bsz=64). Override with EPOCHS=N.
+        lr=${LR:-2e-5}; epochs=${EPOCHS:-2}
+        run_name="agent-sft-v12.5"
         # Save aligned to eval cadence so every eval has a corresponding
         # ckpt to roll back to. load_best_model_at_end keeps the lowest
         # eval_loss ckpt even if it falls outside the rolling window.
