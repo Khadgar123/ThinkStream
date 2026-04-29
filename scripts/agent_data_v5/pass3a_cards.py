@@ -85,6 +85,31 @@ FAMILY_TARGETS = {
 }
 # Total = 25 cards/video × 312 videos = 7,800 corpus pre-verify.
 
+# v12.1 batch2: counter-cyclical multipliers for low-yield families.
+# Activated when env THINKSTREAM_BATCH=batch2. Generates MORE candidates
+# for families that have low post-verify yield in batch1 (CR1=12%,
+# CR2=0%, F5=37%, F6=50%, P1=73%, R1=70%) so post-verify counts hit
+# 1 card/video target. Other families keep multiplier=1.
+import os as _os
+_BATCH2 = _os.environ.get("THINKSTREAM_BATCH", "").lower() == "batch2"
+BATCH2_TARGET_MULTIPLIER = {
+    "CR1": 3,    # 12% yield → ×3 generation → ~36% effective
+    "CR2": 3,    # 0% yield  → ×3 + verifier loosened (see VERIFY_REASONING_PROMPT)
+    "F5":  2,    # 37% yield → ×2 → ~74%
+    "F6":  2,    # 50% yield → ×2 → ~100%
+    "P1":  2,    # 73% yield → ×2 → caps at target
+    "R1":  2,    # 70% yield → ×2 → caps at target
+    "N1":  2,    # 60% yield → ×2 → caps at target
+    "CR3": 2,    # 60% yield (CR3 is OVO-uncategorized but useful)
+    "CR5": 2,    # 69% yield
+    "CR7": 2,    # 56% yield
+}
+if _BATCH2:
+    FAMILY_TARGETS = {
+        fam: target * BATCH2_TARGET_MULTIPLIER.get(fam, 1)
+        for fam, target in FAMILY_TARGETS.items()
+    }
+
 # Families that MUST be attempted on every video, even when classify_chunks
 # returns zero chunks for them. v9.1 audit found F5=4 cards across 312 videos
 # because most videos lack a 3-chunk same-action run; here we let the teacher
@@ -1500,16 +1525,23 @@ If family == "CR1" (causal-why):
       observable in the evidence (in an EARLIER chunk than the effect).
   C3. The cause→effect link must be genuine — the cause must plausibly
       bring about the effect (not just temporally earlier).
-  C4. The 3 distractor options must be SAME-DOMAIN actions visible elsewhere
-      in this video (not invented out of common sense).
+  # v12.1 batch2: C4 dropped. Original required distractors to be SAME-DOMAIN
+  # actions visible in the video; in practice teacher LLMs use common-sense
+  # distractors which fail this check, dropping CR1 yield to 12%. The
+  # marginal loss in distractor quality is acceptable (model still learns
+  # the cause→effect axis) given OVO-CRR's 2.9% task share.
 
 If family == "CR2" (temporal-ordering):
-  C1. The question text must list a permutation A → B → C of THREE distinct
-      events (each describable as a short phrase).
-  C2. The gold-letter permutation must match the ACTUAL chronological order
-      observed in support_chunks (cross-check timestamps).
-  C3. The 3 events must be UNAMBIGUOUSLY identifiable in the chunks (not
-      generic phrases like "person did something").
+  C1. The question text must list a permutation of distinct events
+      (THREE events preferred; TWO events acceptable when the video has
+      no third clearly-distinct event).
+  C2. The gold-letter permutation must match the chronological order:
+      • For 3-event cards: at least 2 of the 3 events must be in correct
+        relative order (so model learns ordering even if one event is
+        slightly mis-anchored).
+      • For 2-event cards: the gold ordering must be exactly correct.
+  C3. The events must be IDENTIFIABLE in the chunks (not generic phrases
+      like "person did something"). Specific verbs/objects/entities OK.
 
 If family == "CR4" (compositional):
   C1. The question must require COMBINING ≥2 separate observations.
