@@ -28,11 +28,20 @@ TRAJ_FILES = [
 
 
 def _load_trajectories(fname):
+    """Load `fname` (jsonl) — fall back to `fname.gz` if uncompressed
+    missing. The committed-to-git form is gzipped because the
+    uncompressed train_sft / train_rl / sft_full files exceed GitHub's
+    100MB per-file hard limit. Returns None if neither file exists."""
     fp = DATA_FINAL / fname
-    if not fp.exists():
-        return None
-    with fp.open() as f:
-        return [json.loads(l) for l in f if l.strip()]
+    if fp.exists():
+        with fp.open() as f:
+            return [json.loads(l) for l in f if l.strip()]
+    gz = DATA_FINAL / (fname + ".gz")
+    if gz.exists():
+        import gzip
+        with gzip.open(gz, "rt", encoding="utf-8") as f:
+            return [json.loads(l) for l in f if l.strip()]
+    return None
 
 
 def test_chunk_idx_ordered():
