@@ -24,6 +24,8 @@ from typing import Dict, List, Optional
 # 892-899). card.canonical_answer holds only the final-state answer, so
 # using it as metadata.gold_answer would mismatch every pre-event chunk.
 _RESPONSE_RE = re.compile(r'<response>(.*?)</response>', re.DOTALL)
+# v12.0: agentic protocol uses <answer> instead of <response>.
+_ANSWER_RE = re.compile(r'<answer>(.*?)</answer>', re.DOTALL)
 
 from .config import (
     AGENT_CHUNK_SEC,
@@ -230,15 +232,26 @@ def render_sample(
     # For compress samples, add compress_trigger to user_input AND
     # remember the gold compressed-chunks set so RL/eval can score the
     # model's <summary> time_range against teacher's choice.
+    #
+    # v12.0: pass3c v12 already injected the trigger into sample.user_input
+    # (see pass3c_samples._make_sample v12 branch — it uses chunk indices
+    # `<compress_trigger range='4-12'/>` consistent with the assistant tool_call
+    # arguments.time_range). DO NOT overwrite it with a seconds-based v11
+    # trigger here, that would create a chunk_idx vs seconds drift between
+    # user prompt and gold tool_call. Just record gold_compress_chunks.
+    is_v12 = sample.get("protocol_version") == "v12"
     gold_compress_chunks: List[int] = []
     if sample.get("action") == "compress":
         for event in rollout.get("compression_events", []):
             if event.get("trigger_chunk") == chunk_idx:
                 cr = event.get("compressed_thinks_chunks", [])
                 if cr:
-                    time_start = min(cr) * AGENT_CHUNK_SEC
-                    time_end = (max(cr) + 1) * AGENT_CHUNK_SEC
-                    inp["user_input"] = f'<compress_trigger range="{time_start}-{time_end}"/>'
+                    if not is_v12:
+                        # v11 path — overwrite user_input with seconds trigger
+                        time_start = min(cr) * AGENT_CHUNK_SEC
+                        time_end = (max(cr) + 1) * AGENT_CHUNK_SEC
+                        inp["user_input"] = f'<compress_trigger range="{time_start}-{time_end}"/>'
+                    # v12: trust pass3c's injected chunk-index trigger
                     gold_compress_chunks = sorted(int(c) for c in cr)
                 break
 
@@ -271,8 +284,17 @@ def render_sample(
     # sample.output instead, fall back to canonical_answer when no
     # <response> tag (silent / recall_query / compress samples).
     canonical = card.get("canonical_answer", "")
-    output_text = sample.get("output", "") or ""
-    m = _RESPONSE_RE.search(output_text)
+    # v12: output may live in v12_assistant_turn_2 (multi-turn recall) and
+    # uses <answer>...</answer> instead of <response>. Try v12 layout first,
+    # fall back to v11 <response>.
+    if is_v12:
+        # Multi-turn recall: turn 2 has the final answer; non-recall: output
+        v12_text = (sample.get("v12_assistant_turn_2")
+                    or sample.get("output", "") or "")
+        m = _ANSWER_RE.search(v12_text)
+    else:
+        output_text = sample.get("output", "") or ""
+        m = _RESPONSE_RE.search(output_text)
     per_chunk_answer = m.group(1).strip() if m else ""
     gold_answer = per_chunk_answer or canonical
 

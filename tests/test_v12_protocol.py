@@ -504,6 +504,126 @@ def test_pass4_v12_information_flow():
     print("✓ pass4 verify_information_flow v12")
 
 
+def test_pass4_v12_grounding_multiturn():
+    """verify_grounding must read both turns of v12 multi-turn recall samples."""
+    from scripts.agent_data_v5.pass4_verify import verify_grounding
+
+    # Multi-turn recall sample — output popped, turns in v12_assistant_turn_*
+    multi_recall = {
+        "sample_type": "recall",
+        "protocol_version": "v12",
+        "v12_assistant_turn_1": "<think>need history about chef apron color</think><tool_call>{}</tool_call>",
+        "v12_assistant_turn_2": "<think>found red apron in earlier scene</think><answer>red</answer>",
+    }
+    ok, reason = verify_grounding(multi_recall)
+    assert ok, f"v12 multi-turn recall grounding rejected: {reason}"
+
+    # Multi-turn with non-visual phrase in turn 2 should be caught
+    bad_multi = {
+        "sample_type": "recall",
+        "protocol_version": "v12",
+        "v12_assistant_turn_1": "<think>need history about chef apron color</think><tool_call>{}</tool_call>",
+        "v12_assistant_turn_2": "<think>chef tastes the dish smells aromatic</think><answer>red</answer>",
+    }
+    ok, reason = verify_grounding(bad_multi)
+    assert not ok and ("smell" in reason or "aroma" in reason)
+
+    print("✓ pass4 verify_grounding v12 multi-turn")
+
+
+def test_pass4_v12_recall_evidence_reachable():
+    """verify_recall_evidence_reachable must trigger on v12 sample_type='recall'."""
+    from scripts.agent_data_v5.pass4_verify import verify_recall_evidence_reachable
+
+    # v12 recall with evidence in future → should fail
+    bad = {
+        "sample_type": "recall",
+        "protocol_version": "v12",
+        "card_id": "c1",
+        "chunk_idx": 5,
+        "metadata": {"support_chunks": [10]},  # future evidence
+    }
+    ok, reason = verify_recall_evidence_reachable(bad)
+    assert not ok and "future" in reason
+
+    # v12 recall with valid past evidence → pass
+    good = {
+        "sample_type": "recall",
+        "protocol_version": "v12",
+        "card_id": "c1",
+        "chunk_idx": 5,
+        "metadata": {"support_chunks": [2, 3]},
+    }
+    ok, reason = verify_recall_evidence_reachable(good)
+    assert ok, reason
+
+    print("✓ pass4 verify_recall_evidence_reachable v12 sample_type=recall")
+
+
+def test_pass4_v12_metadata_complete():
+    """verify_metadata_complete must trigger on v12 sample_type='recall'."""
+    from scripts.agent_data_v5.pass4_verify import verify_metadata_complete
+
+    # v12 recall without gold_answer → should fail
+    bad = {
+        "sample_type": "recall",
+        "protocol_version": "v12",
+        "card_id": "c1",
+        "metadata": {"gold_answer": ""},
+    }
+    ok, reason = verify_metadata_complete(bad)
+    assert not ok and "gold_answer empty" in reason
+
+    # v12 recall with gold_answer → pass
+    good = {
+        "sample_type": "recall",
+        "protocol_version": "v12",
+        "card_id": "c1",
+        "metadata": {"gold_answer": "red"},
+    }
+    ok, reason = verify_metadata_complete(good)
+    assert ok, reason
+
+    print("✓ pass4 verify_metadata_complete v12 sample_type=recall")
+
+
+def test_pass4_v12_action_minimality():
+    """verify_action_minimality must trigger on v12 sample_type='recall'."""
+    from scripts.agent_data_v5.pass4_verify import verify_action_minimality
+
+    # v12 recall in non-recall sequence → should fail
+    bad = {
+        "sample_type": "recall",
+        "protocol_version": "v12",
+        "sequence_type": "immediate_response",  # NOT a recall seq
+        "metadata": {},
+    }
+    ok, reason = verify_action_minimality(bad)
+    assert not ok and "non_recall_sequence" in reason
+
+    # v12 recall in valid sequence → pass
+    good = {
+        "sample_type": "recall",
+        "protocol_version": "v12",
+        "sequence_type": "recall_success",
+        "metadata": {"visibility": {}},
+    }
+    ok, reason = verify_action_minimality(good)
+    assert ok, reason
+
+    # v12 recall with answer-already-visible visibility flag → fail
+    bad_vis = {
+        "sample_type": "recall",
+        "protocol_version": "v12",
+        "sequence_type": "recall_success",
+        "metadata": {"visibility": {"answer_in_recent_obs": True}},
+    }
+    ok, reason = verify_action_minimality(bad_vis)
+    assert not ok and "recall_unnecessary_answer_in_observations" in reason
+
+    print("✓ pass4 verify_action_minimality v12 sample_type=recall")
+
+
 def test_pass4_v11_backward_compat():
     """v11 samples (no protocol_version field) still go through legacy validation."""
     from scripts.agent_data_v5.pass4_verify import verify_format
@@ -575,6 +695,10 @@ if __name__ == "__main__":
     test_v12_compress_inter_chunk_flag()
     test_pass4_v12_format_acceptance()
     test_pass4_v12_information_flow()
+    test_pass4_v12_grounding_multiturn()
+    test_pass4_v12_recall_evidence_reachable()
+    test_pass4_v12_metadata_complete()
+    test_pass4_v12_action_minimality()
     test_pass4_v11_backward_compat()
     test_freegen_gate_aggregation()
     print("\n✅ all v12.0 smoke tests passed")

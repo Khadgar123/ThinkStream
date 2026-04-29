@@ -445,7 +445,10 @@ def verify_action_minimality(sample: Dict) -> Tuple[bool, str]:
 
     # For recall_query: check that the sample actually needs recall
     # (availability was in_history_only, verified by sequence_type)
-    if sample_type == "recall_query":
+    # v12 collapses recall_query+recall_response into sample_type='recall'
+    # via _merge_recall_pairs_v12. Treat both labels equivalently for the
+    # action-minimality / visibility checks.
+    if sample_type in ("recall_query", "recall"):
         if seq_type not in ("recall_success", "recall_fail_then_found"):
             return False, f"recall_query_in_non_recall_sequence: {seq_type}"
 
@@ -456,7 +459,7 @@ def verify_action_minimality(sample: Dict) -> Tuple[bool, str]:
 
     # Legacy metadata-based checks (backward compat)
     metadata = sample.get("metadata", {})
-    if sample_type == "recall_query":
+    if sample_type in ("recall_query", "recall"):
         visibility = metadata.get("visibility", {})
         if visibility.get("answer_in_recent_obs"):
             return False, "recall_unnecessary_answer_in_observations"
@@ -469,8 +472,16 @@ def verify_action_minimality(sample: Dict) -> Tuple[bool, str]:
 
 
 def verify_grounding(sample: Dict) -> Tuple[bool, str]:
-    """Check 3: Think is grounded in visual facts."""
-    output = sample.get("output", "")
+    """Check 3: Think is grounded in visual facts.
+
+    v12: multi-turn recall samples have `output` popped — read from
+    _v12_combined_assistant_text which concatenates both turn texts so
+    we check think tags from BOTH the recall turn and the answer turn.
+    """
+    if _is_v12_sample(sample):
+        output = _v12_combined_assistant_text(sample)
+    else:
+        output = sample.get("output", "")
     sample_type = sample.get("sample_type", "")
 
     # recall_response has no think — check response instead
@@ -480,13 +491,15 @@ def verify_grounding(sample: Dict) -> Tuple[bool, str]:
             return True, "pass"
         check_text = resp_match.group(1).lower()
     else:
-        obs_match = re.search(r'<think>(.*?)</think>', output, re.DOTALL)
-        if not obs_match:
-            # Base compress samples may have empty think
+        # v12 multi-turn samples may have multiple <think> blocks (one per
+        # assistant turn). Concatenate ALL think contents for blacklist scan
+        # so a non-visual phrase in either turn is caught.
+        all_thinks = re.findall(r'<think>(.*?)</think>', output, re.DOTALL)
+        if not all_thinks:
             if _is_base_sample(sample) and sample.get("action") == "compress":
                 return True, "pass"
             return False, "no_think_tag"
-        check_text = obs_match.group(1).lower()
+        check_text = "\n".join(t for t in all_thinks).lower()
 
     # v9.4 — narrowed blacklist (was 33 phrases, dropped to ~17). Removed:
     #   "i think" / "i notice" / "i can see" — first-person observational
@@ -1020,7 +1033,8 @@ def verify_recall_evidence_reachable(sample: Dict, rollout: Dict = None) -> Tupl
 
     Recall is only valid if the answer was observed in a past chunk.
     """
-    if sample.get("sample_type") != "recall_query":
+    # v12 merges recall_query → sample_type=='recall'; treat equivalently.
+    if sample.get("sample_type") not in ("recall_query", "recall"):
         return True, "pass"
 
     card_id = sample.get("card_id", "")
@@ -1053,7 +1067,8 @@ def verify_metadata_complete(sample: Dict) -> Tuple[bool, str]:
     are exempt.
     """
     sample_type = sample.get("sample_type", "")
-    if sample_type not in ("response", "recall_query", "recall_response"):
+    # v12 merges recall_query+recall_response into sample_type='recall'
+    if sample_type not in ("response", "recall_query", "recall_response", "recall"):
         return True, "pass"
 
     metadata = sample.get("metadata", {})
@@ -1101,7 +1116,7 @@ def label_difficulty(sample: Dict) -> str:
         return "medium"
     elif sample_type == "compress":
         return "medium"
-    elif sample_type in ("recall_query", "recall_response", "recall_silent"):
+    elif sample_type in ("recall_query", "recall_response", "recall_silent", "recall"):
         if seq_type == "recall_fail_then_found":
             return "hard"
         return "medium"
