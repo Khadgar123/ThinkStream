@@ -188,6 +188,96 @@ def compute_compress_quality_v12(
 
 
 # ===========================================================================
+# v12.2 — recall_quality + silent_quality (closes the two reward gaps)
+# ===========================================================================
+
+
+def compute_recall_quality_v12(
+    recall_returned_chunks: List[List[int]],   # per-chunk retriever output (one inner list per recall call)
+    support_chunks: List[int],                  # gold evidence chunks (from pass3a metadata)
+    *,
+    recall_fired: bool,
+    query_text: Optional[str] = None,
+    gold_answer: Optional[str] = None,
+) -> float:
+    """v12 recall quality — chunk-level hit-rate with explicit failure penalty.
+
+    Industry survey (Apr 2026): ReMemR1 uses word-level F1 (HotpotQA);
+    MemAgent / DeepEyesV2 / ReTool use only end-task correctness. ThinkStream
+    is the first to use directly-annotated `support_chunks` (per-card gold
+    evidence positions) as recall ground truth.
+
+    Returns ∈ [-0.5, 1.0]:
+      support_chunks empty / unknown:   0.0   (caller mask=0)
+      !recall_fired:                    0.0   (caller mask=0; sample didn't recall)
+      recall_fired AND returned empty: -0.5   (queried but retrieved nothing)
+      recall_fired AND query leaks gold answer: -0.3  (anti-cheat)
+      recall_fired AND non-empty union:  hit_rate ∈ [0, 1]
+        where hit_rate = |returned ∩ support| / |support|
+
+    The query-leak check guards against the model writing the gold answer
+    INSIDE its query (which would game the retriever's BM25 score).
+    """
+    if not recall_fired:
+        return 0.0
+    if not support_chunks:
+        return 0.0
+    union: set = set()
+    for chunks in recall_returned_chunks:
+        if chunks:
+            union.update(int(c) for c in chunks)
+    if not union:
+        # v11.4 lesson: "fired but retrieved nothing" is the most informative
+        # failure case; mask=0 would silently drop it. Explicit penalty so
+        # advantage learns to write better queries.
+        return -0.5
+    if query_text and gold_answer:
+        if str(gold_answer).strip().lower() in query_text.strip().lower():
+            return -0.3
+    gold = set(int(c) for c in support_chunks)
+    return len(union & gold) / len(gold)
+
+
+def compute_silent_quality_v12(
+    final_answer: Optional[str],
+    gold_action: str,
+    gold_answer: str,
+) -> float:
+    """v12 silent-quality — closes the two error modes Q3 audit exposed:
+
+    Without this reward, the v12 reward stack lets:
+      (a) silent-when-should-respond → only -0.15 (timing × 0.3)
+      (b) hallucinate-response-when-should-be-silent → 0.0 (outcome+timing
+          masked out when gold_answer empty)
+
+    Score ∈ {-0.6, -0.3, 0.0, +0.3}:
+      gold_action=silent (gold_answer empty):
+        → +0.3 if final_answer is empty/None  (correct silence)
+        → -0.6 if final_answer non-empty       (HALLUCINATION)
+      gold_action ∈ {response, recall_response} AND gold_answer present:
+        → -0.6 if final_answer empty/None      (MISSED — should have answered)
+        →  0.0 otherwise (correctness handled by outcome reward)
+      otherwise: 0.0  (compress / recall_query — these have their own rewards)
+
+    Magnitudes match v11's silent_quality (-0.6 worst case) so the swing
+    is comparable to the response-correctness reward at weight 0.20.
+    """
+    has_answer = bool(final_answer and final_answer.strip())
+    ga_clean = (gold_action or "").strip().lower()
+    gold_present = bool(gold_answer and str(gold_answer).strip())
+
+    if ga_clean == "silent" or (ga_clean in ("", "none") and not gold_present):
+        # Should be silent
+        return 0.3 if not has_answer else -0.6
+    if ga_clean in ("response", "recall_response") and gold_present:
+        # Should respond
+        return -0.6 if not has_answer else 0.0
+    # compress / recall_query / other — silent_quality is neutral; specific
+    # rewards (compress_quality, recall_quality) handle these cases.
+    return 0.0
+
+
+# ===========================================================================
 # Multi-level GRPO advantage aggregation (ReMemR1 ICLR'26 pattern)
 # ===========================================================================
 
@@ -222,7 +312,14 @@ def aggregate_v12_advantages(
     else:
         outcome_adv = _per_video_outcome_grpo(outcome, chunk_to_video_uid)
 
-    state_components = ["timing", "format", "spam", "compress_quality"]
+    state_components = [
+        "timing", "format", "spam", "compress_quality",
+        # v12.2 — chunk-level recall hit_rate (mask=0 when no recall fired
+        # or no support_chunks gold available).
+        "recall_quality",
+        # v12.2 — silent/response error correction (mask=1 always).
+        "silent_quality",
+    ]
     state_sum = torch.zeros_like(outcome_adv)
     for k in state_components:
         if k not in rewards_per_func:

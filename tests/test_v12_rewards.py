@@ -253,6 +253,116 @@ def test_v12_reward_keys_match():
     print("✓ v12 reward keys + weights consistency")
 
 
+def test_recall_quality_v12():
+    """v12.2 recall_quality: chunk-level hit_rate vs support_chunks gold."""
+    from thinkstream.trainer.v12_rewards import compute_recall_quality_v12 as f
+
+    # Sample didn't fire recall → 0.0 (caller masks)
+    assert f([], [1, 2, 3], recall_fired=False) == 0.0
+
+    # Fired but no support_chunks → 0.0 (caller masks)
+    assert f([[5, 6]], [], recall_fired=True) == 0.0
+
+    # Fired but retriever returned nothing → -0.5 explicit penalty
+    assert f([], [1, 2, 3], recall_fired=True) == -0.5
+    assert f([[]], [1, 2, 3], recall_fired=True) == -0.5
+
+    # Perfect hit: returned ⊇ support → 1.0
+    assert f([[1, 2, 3]], [1, 2, 3], recall_fired=True) == 1.0
+
+    # Partial: 2/3 of support hit → ~0.667
+    r = f([[1, 2, 99]], [1, 2, 3], recall_fired=True)
+    assert abs(r - 2/3) < 1e-6, r
+
+    # Multi-call union: 2 separate recalls together cover all support
+    assert f([[1], [2, 3]], [1, 2, 3], recall_fired=True) == 1.0
+
+    # Query leaks gold answer → -0.3 (anti-cheat)
+    r = f(
+        [[1, 2, 3]], [1, 2, 3],
+        recall_fired=True,
+        query_text="find the chef in red apron",
+        gold_answer="red apron",
+    )
+    assert r == -0.3, f"expected -0.3 leak penalty, got {r}"
+
+    # Query unrelated to gold answer → normal hit_rate
+    r = f(
+        [[1, 2, 3]], [1, 2, 3],
+        recall_fired=True,
+        query_text="when did the chef start",
+        gold_answer="red apron",
+    )
+    assert r == 1.0
+
+    print("✓ recall_quality_v12")
+
+
+def test_silent_quality_v12():
+    """v12.2 silent_quality: closes silent/response error modes."""
+    from thinkstream.trainer.v12_rewards import compute_silent_quality_v12 as f
+
+    # Should be silent + WAS silent → +0.3
+    assert f(None, "silent", "") == 0.3
+    assert f("", "silent", "") == 0.3
+    assert f("   ", "silent", "") == 0.3  # whitespace-only counts as silent
+
+    # Should be silent + HALLUCINATED → -0.6
+    assert f("red apron", "silent", "") == -0.6
+    assert f("red", "silent", "") == -0.6
+
+    # Should respond + WAS silent → -0.6 (missed)
+    assert f(None, "response", "red apron") == -0.6
+    assert f("", "response", "red apron") == -0.6
+    # Same for recall_response
+    assert f(None, "recall_response", "yes") == -0.6
+
+    # Should respond + DID respond → 0.0 (correctness handled by outcome)
+    assert f("red apron", "response", "red apron") == 0.0
+    assert f("blue apron", "response", "red apron") == 0.0  # wrong but answered
+
+    # Compress / recall_query → neutral (other rewards handle these)
+    assert f(None, "compress", "") == 0.0
+    assert f(None, "recall_query", "") == 0.0
+
+    # Empty/unknown gold_action with no gold_answer → treat as silent
+    assert f(None, "", "") == 0.3
+    assert f("hallucinated", "", "") == -0.6
+
+    print("✓ silent_quality_v12")
+
+
+def test_silent_quality_v12_complements_outcome():
+    """Verify silent_quality fills the reward gap that outcome alone misses.
+
+    Scenario the audit identified: gold_action='silent', gold_answer='',
+    model emits a hallucinated response. With ONLY outcome+timing rewards,
+    this scores 0 (both masked). With silent_quality added, it scores -0.6.
+    """
+    from thinkstream.trainer.v12_rewards import (
+        compute_silent_quality_v12 as f_silent,
+        compute_outcome_reward_v12 as f_outcome,
+    )
+
+    # Hallucinate-when-should-be-silent
+    outcome = f_outcome("hallucinated answer", "", answer_form="literal")
+    silent = f_silent("hallucinated answer", "silent", "")
+    # Pre-v12.2: outcome=0 (no gold) → 0 total reward (BUG)
+    assert outcome == 0.0
+    # Post-v12.2: silent_quality=-0.6 → caller now penalizes correctly
+    assert silent == -0.6
+
+    # Silent-when-should-respond
+    outcome2 = f_outcome(None, "red apron", answer_form="literal")
+    silent2 = f_silent(None, "response", "red apron")
+    # Pre-v12.2: outcome=0 (no answer to score), timing=-0.5×0.3=-0.15 only
+    assert outcome2 == 0.0
+    # Post-v12.2: silent_quality=-0.6 strengthens the signal
+    assert silent2 == -0.6
+
+    print("✓ silent_quality_v12 closes outcome gap")
+
+
 if __name__ == "__main__":
     test_v12_reward_keys_match()
     test_outcome_v12()
@@ -260,5 +370,8 @@ if __name__ == "__main__":
     test_format_v12()
     test_spam_v12()
     test_compress_quality_v12()
+    test_recall_quality_v12()
+    test_silent_quality_v12()
+    test_silent_quality_v12_complements_outcome()
     test_v12_advantage_aggregation()
     print("\n✅ all v12.0 reward smoke tests passed")

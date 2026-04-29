@@ -939,6 +939,8 @@ from thinkstream.trainer.v12_rewards import (
     compute_format_reward_v12 as _compute_format_reward_v12,
     compute_spam_score_v12 as _compute_spam_score_v12,
     compute_compress_quality_v12 as _compute_compress_quality_v12,
+    compute_recall_quality_v12 as _compute_recall_quality_v12,
+    compute_silent_quality_v12 as _compute_silent_quality_v12,
     aggregate_v12_advantages as _aggregate_v12_advantages,
 )
 
@@ -1020,6 +1022,10 @@ def _calc_rewards_v12(
         gold_compress_chunks = metadata.get("gold_compress_chunks", [])
         gold_summary_text = metadata.get("gold_summary_text", "")
         gt_chunk_idx = raw_sample.get("chunk_idx")
+        # v12.2 — for recall_quality, we need the per-card support_chunks
+        # (gold evidence positions, annotated by pass3a) and the retriever's
+        # per-chunk returned_chunks for this rollout.
+        support_chunks = list(metadata.get("support_chunks") or [])
 
         for g in range(group_size):
             # Reconstruct each chunk's text + collect tool/answer info
@@ -1030,6 +1036,9 @@ def _calc_rewards_v12(
             final_answer = None
             compress_summary_text = None
             compress_summary_range = None
+            # v12.2 recall_quality bookkeeping
+            recall_returned_per_call: List[List[int]] = []
+            recall_query_text: Optional[str] = None
 
             for cr in chunk_results:
                 gen_tokens = cr.get("generated_tokens", [])
@@ -1048,6 +1057,16 @@ def _calc_rewards_v12(
                         final_answer = parsed["answer_text"]
                 elif parsed["kind"] == "recall":
                     n_recall += 1
+                    # v12.2: capture query text and retriever output for this
+                    # recall event (mirrors v11 grpo.py:1329-1334 logic)
+                    args = (parsed.get("tool_call") or {}).get("arguments") or {}
+                    if recall_query_text is None:
+                        recall_query_text = args.get("query") or ""
+                    returned_lists = cr.get("recall_returned_chunks") or []
+                    if isinstance(returned_lists, list) and g < len(returned_lists):
+                        rl = returned_lists[g]
+                        if isinstance(rl, list):
+                            recall_returned_per_call.append([int(c) for c in rl])
                 elif parsed["kind"] == "compress":
                     n_compress += 1
                     args = (parsed.get("tool_call") or {}).get("arguments") or {}
@@ -1101,6 +1120,38 @@ def _calc_rewards_v12(
             all_masks["compress_quality"].append(
                 1.0 if compress_summary_text is not None else 0.0
             )
+
+            # ── recall_quality (v12.2) ──
+            # Mask=0 when (a) sample didn't recall, or (b) no support_chunks
+            # gold available (e.g., HLD/CR6/CR7 families). Otherwise the
+            # function returns either a hit_rate ∈ [0,1] or one of the
+            # explicit penalties (-0.5 empty retrieval, -0.3 query leak).
+            recall_q = _compute_recall_quality_v12(
+                recall_returned_chunks=recall_returned_per_call,
+                support_chunks=support_chunks,
+                recall_fired=(n_recall > 0),
+                query_text=recall_query_text,
+                gold_answer=gt_answer,
+            )
+            all_rewards["recall_quality"].append(recall_q)
+            all_masks["recall_quality"].append(
+                1.0 if (n_recall > 0 and support_chunks) else 0.0
+            )
+
+            # ── silent_quality (v12.2) ──
+            # Closes the two error modes Q3 audit exposed:
+            #   silent-when-should-respond  → -0.6
+            #   hallucinate-when-should-be-silent → -0.6
+            # Always applied (mask=1) — every chunk has a silent/respond
+            # decision; the function returns 0.0 for compress/recall_query
+            # cases where this signal doesn't apply.
+            silent_q = _compute_silent_quality_v12(
+                final_answer=final_answer,
+                gold_action=gold_action,
+                gold_answer=gt_answer,
+            )
+            all_rewards["silent_quality"].append(silent_q)
+            all_masks["silent_quality"].append(1.0)
 
     # Stack to tensors
     rewards_dict = {

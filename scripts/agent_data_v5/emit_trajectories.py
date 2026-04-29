@@ -27,6 +27,8 @@ OUTPUT FILES (data/agent_v5/final/):
   train_rl_trajectories.jsonl     — RL-side trajectories (109 videos)
   val_trajectories.jsonl          — val-side trajectories (47 videos)
   test_trajectories.jsonl         — test-side trajectories (47 videos)
+  train_sft_full.jsonl            — SFT-side FLAT single-step (~18,229 rows,
+                                    11.2x recovery vs train_sft.jsonl=1,635 cap)
   trajectories_manifest.json      — per-split stats + video lists
 
 EACH ROW (jsonl):
@@ -287,14 +289,33 @@ def emit_all(data_dir: Path) -> Dict:
             split_name, video_ids, verified_dir, out_path,
         )
 
+    # Also emit FLAT single-step file for SFT trainer (which iterates per-row).
+    # Source: same trajectory file we just emitted, flattened by extracting
+    # each row's `samples` list. This guarantees SFT and trajectory views are
+    # bit-identical sample sets.
+    flat_stats = _emit_flat_sft(
+        traj_path=final_dir / "train_sft_trajectories.jsonl",
+        out_path=final_dir / "train_sft_full.jsonl",
+    )
+    all_stats["train_sft_full"] = flat_stats
+
+    # Totals exclude train_sft_full because it duplicates train_sft samples
+    # (just unpacked from trajectory rows). Counting once is correct.
+    _traj_only = {k: v for k, v in all_stats.items() if k != "train_sft_full"}
     manifest = {
         "generated_by": "emit_trajectories.py",
         "source_verified_dir": str(verified_dir),
         "splits": all_stats,
         "totals": {
-            "videos": sum(s["videos_with_data"] for s in all_stats.values()),
-            "trajectories": sum(s["trajectories"] for s in all_stats.values()),
-            "samples": sum(s["samples"] for s in all_stats.values()),
+            "videos": sum(
+                s.get("videos_with_data", 0) for s in _traj_only.values()
+            ),
+            "trajectories": sum(
+                s.get("trajectories", 0) for s in _traj_only.values()
+            ),
+            "samples": sum(
+                s.get("samples", 0) for s in _traj_only.values()
+            ),
         },
     }
     manifest_path = final_dir / "trajectories_manifest.json"
@@ -302,6 +323,48 @@ def emit_all(data_dir: Path) -> Dict:
         json.dump(manifest, f, indent=2, ensure_ascii=False)
     logger.info(f"Manifest: {manifest_path}")
     return manifest
+
+
+def _emit_flat_sft(traj_path: Path, out_path: Path) -> Dict:
+    """Flatten train_sft_trajectories.jsonl into per-step rows for SFT trainer.
+
+    SFT trainer (thinkstream/sft/data_processor.py) iterates one sample per
+    row. Trajectory format groups N samples per row, which the trainer
+    cannot consume directly. This helper unpacks the `samples` list from
+    each trajectory row, preserving all per-sample fields.
+
+    Output rows are byte-identical to what pass3c emitted, post-pass4
+    filter. Strictly more samples than train_sft.jsonl (which is post-cap).
+    """
+    if not traj_path.exists():
+        logger.warning(
+            f"  {traj_path.name} missing — skip flat SFT emit"
+        )
+        return {"split": "train_sft_full", "samples": 0, "skipped": True}
+
+    n_rows = 0
+    n_samples = 0
+    with traj_path.open() as in_f, out_path.open("w") as out_f:
+        for line in in_f:
+            line = line.strip()
+            if not line:
+                continue
+            traj = json.loads(line)
+            n_rows += 1
+            for s in traj.get("samples", []):
+                out_f.write(json.dumps(s, ensure_ascii=False) + "\n")
+                n_samples += 1
+
+    logger.info(
+        f"  [train_sft_full] {n_rows} trajectories → {n_samples} flat samples "
+        f"→ {out_path.name}"
+    )
+    return {
+        "split": "train_sft_full",
+        "trajectories_unpacked": n_rows,
+        "samples": n_samples,
+        "output_path": str(out_path),
+    }
 
 
 def main(argv: Optional[List[str]] = None) -> None:

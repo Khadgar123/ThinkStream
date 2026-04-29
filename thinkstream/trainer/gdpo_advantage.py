@@ -89,6 +89,13 @@ V12_REWARD_DICT_KEYS: tuple = (
     "format",           # 0/1 — tags balanced, JSON parses, exactly one terminal
     "spam",             # >=0 — penalty for excess tool calls (additive)
     "compress_quality", # 0..1 — only on compress turns, ROUGE/coverage vs gold summary
+    "recall_quality",   # v12.2 — chunk-level hit_rate vs support_chunks gold;
+                        #         -0.5 if recall fired but retrieved empty;
+                        #         -0.3 if query leaks gold answer.
+                        #         Mask=0 when sample didn't recall or no support_chunks.
+    "silent_quality",   # v12.2 — closes silent/response error modes:
+                        #         +0.3 correct silence, -0.6 hallucinate, -0.6 missed.
+                        #         Mask=1.0 always (every chunk has a silent/respond decision).
 )
 
 V12_DEFAULT_REWARD_WEIGHTS: Dict[str, float] = {
@@ -98,6 +105,10 @@ V12_DEFAULT_REWARD_WEIGHTS: Dict[str, float] = {
     "spam":            -0.2,    # NEGATIVE — additive penalty (sign in weight,
                                 #            so r = sum(w * x) is the formula)
     "compress_quality": 0.2,    # only contributes when chunk has compress action
+    "recall_quality":   0.3,    # v12.2 — chunk-level hit_rate; mid-weight (0.3 matches
+                                #         timing) since recall is sparse and informative
+    "silent_quality":   0.2,    # v12.2 — silent/response error correction; 0.2 ⇒ swing
+                                #         ±0.12 same order as outcome×0.5 (v11 parity)
 }
 
 # Multi-level advantage mixing coefficient. final_adv = α·outcome + (1-α)·state
