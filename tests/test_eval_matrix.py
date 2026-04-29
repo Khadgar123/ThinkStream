@@ -903,6 +903,7 @@ def test_recall_time_range_uses_support_chunks():
     assert fn({}, snap2) == "0-2"
 
 
+@pytest.mark.skip(reason="v11 helper removed in v12.5 cleanup")
 def test_recall_hit_rate_helper_correctness():
     """_compute_recall_hit_rate returns |union ∩ gold|/|gold|, None when
     either input is empty/missing."""
@@ -971,6 +972,7 @@ def test_reward_keys_split_recall_signal():
         assert f'"{k}":' in weights_block, f"weights missing {k}"
 
 
+@pytest.mark.skip(reason="v11 helper removed in v12.5 cleanup")
 def test_recall_quality_reward_no_longer_mixes_hit_rate():
     """After v11.3 split, _compute_recall_quality_reward must NOT mix
     hit_rate (that lives in its own column now)."""
@@ -984,6 +986,7 @@ def test_recall_quality_reward_no_longer_mixes_hit_rate():
     assert "def _parse_query_time_range(" in src
 
 
+@pytest.mark.skip(reason="v11 helper removed in v12.5 cleanup")
 def test_range_tightness_reward_correctness():
     """_compute_range_tightness_reward = (1 - range_width/duration) × coverage,
     None when no query has time_range / no support / no coverage."""

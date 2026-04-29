@@ -17,8 +17,8 @@ import unittest
 import torch
 
 from thinkstream.trainer.gdpo_advantage import (
-    DEFAULT_REWARD_WEIGHTS,
-    REWARD_DICT_KEYS,
+    V12_DEFAULT_REWARD_WEIGHTS as DEFAULT_REWARD_WEIGHTS,
+    V12_REWARD_DICT_KEYS as REWARD_DICT_KEYS,
     aggregate_gdpo,
     per_reward_group_norm,
 )
@@ -98,6 +98,7 @@ class TestGdpoFullAggregation(unittest.TestCase):
         self.assertAlmostEqual(adv.mean().item(), 0.0, places=4)
         self.assertAlmostEqual(adv.var().item(), 1.0, delta=0.1)
 
+    @unittest.skip("recall_quality dropped from V12_REWARD_DICT_KEYS in v12.3")
     def test_sparse_recall_quality_only_fires_for_recalled_rollouts(self):
         # G=4, N=2.  Only rollouts 0 and 5 "did_recall".
         G, N = 4, 2
@@ -129,6 +130,7 @@ class TestGdpoFullAggregation(unittest.TestCase):
         # also alone, also 0. So actually neither dominates strongly via recall.
         # We just check finiteness here, which is the key invariant.
 
+    @unittest.skip("recall_quality dropped from V12_REWARD_DICT_KEYS in v12.3")
     def test_all_masked_for_one_reward_kills_only_that_signal(self):
         # If recall_quality has mask=0 for every row, that column contributes
         # 0 across the board — the other rewards still drive advantage.

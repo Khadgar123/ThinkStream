@@ -686,10 +686,19 @@ def test_no_dead_correctness_reward():
     """v9.4 — _compute_correctness_reward removed; the actual correctness
     signal goes through _compute_response_reward (which handles descriptive
     via fuzzy keyword match). Verified at source level (no transformers
-    import required)."""
+    import required).
+
+    v12.5 update: _compute_response_reward (v11) was also removed. The v12
+    correctness signal goes through compute_outcome_reward_v12 in
+    thinkstream/trainer/v12_rewards.py.
+    """
     src = (ROOT / "thinkstream" / "trainer" / "grpo.py").read_text()
-    # The dead literal-only helper is gone (we left a NOTE comment in its place)
+    # The dead literal-only helper is gone
     assert "def _compute_correctness_reward(" not in src, \
         "Dead helper should be removed to prevent future drift"
-    # The real path remains
-    assert "def _compute_response_reward(" in src
+    # v11 _compute_response_reward also gone (deleted in v12.5)
+    assert "def _compute_response_reward(" not in src, \
+        "v11 _compute_response_reward should be removed in v12.5 cleanup"
+    # The v12 path lives in v12_rewards.py
+    v12_src = (ROOT / "thinkstream" / "trainer" / "v12_rewards.py").read_text()
+    assert "def compute_outcome_reward_v12(" in v12_src

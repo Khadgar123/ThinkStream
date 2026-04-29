@@ -269,10 +269,10 @@ def add_common_args(parser):
         help=(
             "Drive eval through StreamingAgentLoop (per-timestep, system "
             "compress_trigger injection, recall orchestration) — matches "
-            "the SFT/RL training format byte-for-byte. Recommended for "
-            "models trained on agent_v5 data. Without this flag eval falls "
-            "back to mcq_predict_streaming (token-budget sampler, no "
-            "compress/recall protocol)."
+            "the SFT/RL training format byte-for-byte. Required for v12 "
+            "models. Kept as opt-in for legacy reasons; the eval entry "
+            "scripts (eval_ovo / eval_rtvu) ignore this flag and always "
+            "go through mcq_predict_agent_loop after the v12.5 cleanup."
         ),
     )
     parser.add_argument(

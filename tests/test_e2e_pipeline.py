@@ -9,21 +9,27 @@ Kept for reference. All tests are skipped.
 import pytest
 
 pytestmark = pytest.mark.skip(
-    reason="References deleted pass3_tasks/pass4_forks modules. "
+    reason="References deleted pass3_tasks/pass4_forks modules + v11 "
+           "SYSTEM_PROMPT / parse_agent_output (removed in v12.5). "
            "See test_pass3_e2e.py for current e2e tests."
 )
-from scripts.agent_data_v5.config import (
-    AGENT_CHUNK_SEC,
-    VISUAL_WINDOW_CHUNKS,
-    COMPRESS_TOKEN_THRESHOLD,
-    COMPRESS_RANGE_MIN,
-    SYSTEM_PROMPT,
-)
-from thinkstream.data.agent_protocol import (
-    format_memory_block,
-    build_user_content,
-    parse_agent_output,
-)
+# v12.5: imports gated so the module loads even when v11 names are gone
+# (they were deleted but the module body still mentions them under skip).
+try:
+    from scripts.agent_data_v5.config import (
+        AGENT_CHUNK_SEC,
+        VISUAL_WINDOW_CHUNKS,
+        COMPRESS_TOKEN_THRESHOLD,
+        COMPRESS_RANGE_MIN,
+    )
+    from thinkstream.data.agent_protocol import (
+        format_memory_block,
+        build_user_content,
+    )
+    SYSTEM_PROMPT = ""        # v11 string deleted; placeholder for legacy refs
+    parse_agent_output = None  # v11 fn deleted; placeholder
+except ImportError:
+    pass
 
 
 # ---------------------------------------------------------------------------

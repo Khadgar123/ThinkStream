@@ -33,7 +33,7 @@ from transformers import AutoProcessor, AutoTokenizer
 
 from thinkstream.sft.argument import DataArguments
 from thinkstream.sft.data_processor import (
-    build_per_timestep_messages,
+    build_per_timestep_messages_v12 as build_per_timestep_messages,
     register_special_tokens,
     update_processor_pixels,
 )
