@@ -115,7 +115,11 @@ MAX_CANDIDATES_PER_VIDEO = {
 # train→eval distribution shift. New caps target ~1.2 q/min.
 MAX_SAMPLES_PER_VIDEO = 15           # was 30 — halve per-video corpus contribution
 MAX_TRAJECTORIES_PER_VIDEO = 5       # was 10 — match VideoLLM-online (3 conv/video)
-MAX_QUESTIONS_PER_TRAJECTORY = 3     # was 6 — match VideoLLM-online (3 q/conv)
+# v12.5 (2026-04-30): 3 → 5 to lower silent ratio from ~85% toward
+# 65-70%. Each extra question/traj converts 1 chunk from base silent →
+# response. With 5 q/traj × 2 traj/video + ~10 PN1 = ~20 questions/video,
+# silent rate ≈ (47-20)/47 = 57% on median video.
+MAX_QUESTIONS_PER_TRAJECTORY = 5     # was 3 — denser within-traj for v12.5
 MAX_ACTIVE_QUERIES = 2               # unchanged — realistic user behavior
 
 # Backward compat aliases (deprecated — use token-based constants above)

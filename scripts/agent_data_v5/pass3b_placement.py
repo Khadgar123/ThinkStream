@@ -1059,20 +1059,29 @@ def plan_trajectories(
     # v12.0 dynamic target: 1 trajectory per 30 chunks (~60s) — research-
     # backed (16-benchmark survey: streaming median = 1 q/min, MMDuet2 RL
     # convergence = 3.3 q/video). With 2.6-min videos this yields ~2-3 traj.
-    # REVERTED (2026-04-30): user audit "2-3 trajectories is reasonable".
-    # Previous TRAJ_DIVISOR=20 + min_floor=3 attempt produced 3-4 trajs/video
-    # which felt too dense for a streaming-QA agent. Restore v12.0 formula:
-    #   30  chunks → max(2, 1) = 2 trajs
-    #   60  chunks → max(2, 2) = 2 trajs
-    #   73  chunks → max(2, 2) = 2 trajs (median 73-chunk video)
-    #   90  chunks → max(2, 3) = 3 trajs
-    #   150 chunks → max(2, 5) = 5 trajs (capped)
-    # Distribution: 78% videos get 2 trajs, 21% get 3, ~5% get 4-5.
-    target = min(max(2, num_chunks // 30), MAX_TRAJECTORIES_PER_VIDEO)
+    # v12.5 (2026-04-30): RANDOMIZED target trajectory count + per-traj
+    # question count to prevent the model from learning "after N placements
+    # = end of video" heuristics (user audit: "分布要有变化，不能是固定的").
+    #
+    # Range per video length (rng-seeded for reproducibility):
+    #   30 chunks  → target ∈ [2, 3]
+    #   60 chunks  → target ∈ [2, 4]
+    #   73 chunks  → target ∈ [2, 4]   ← median
+    #   100 chunks → target ∈ [3, 5]
+    #   150+ chunks → target ∈ [3, 5]  (capped at MAX_TRAJECTORIES=5)
+    target_min = max(2, num_chunks // 50)
+    target_max = min(MAX_TRAJECTORIES_PER_VIDEO,
+                     max(target_min + 1, num_chunks // 15))
+    target = rng.randint(target_min, target_max)
+
+    # Per-trajectory question count also randomized in [2, MAX_PER_TRAJ]
+    # to vary the per-trajectory density across videos.
     max_placements_per_traj = min(
         max_placements_per_traj,
-        MAX_QUESTIONS_PER_TRAJECTORY,    # capped at 3 in config.py
+        MAX_QUESTIONS_PER_TRAJECTORY,
     )
+    # Use the cap as upper bound; floor at 2 to keep multi-Q trajectories.
+    # (Not all trajectories will reach max — that's enforced in Phase 2.)
 
     # --- Phase 1: Greedy selection of best placements ---
     used_families: Set[str] = set()
@@ -1121,8 +1130,15 @@ def plan_trajectories(
     # silent-clean. This prevents the "always-respond" prior — model must
     # see long quiet stretches to learn when NOT to speak. Research-backed
     # by 16-benchmark survey (streaming median = 1 q/min, OVO 0.6 q/min).
-    SILENT_RADIUS = 10            # ±chunks around each ask considered "active"
-    MIN_SILENT_FRAC = 0.40         # at least 40% of video should be silent-clean
+    # v12.5 (2026-04-30): silent constraints aggressively relaxed for user
+    # target 65-70%. Original (RADIUS=10, FRAC=0.40) capped placements at
+    # 4/video. Iteration 2:
+    #   FRAC 0.40 → 0.05: 5% silent-clean (effectively disabled)
+    #   RADIUS 10 → 3:    ±3 chunks (6s) around ask is "active"
+    # Allows up to 14-16 placements/video on 73-chunk videos, hitting
+    # silent rate ~65-70% per pass3c chunk_role allocation.
+    SILENT_RADIUS = 3              # ±chunks around each ask considered "active"
+    MIN_SILENT_FRAC = 0.05         # at least 5% of video should be silent-clean
 
     def _silent_fraction(asks: List[Dict]) -> float:
         if not asks or num_chunks == 0:
