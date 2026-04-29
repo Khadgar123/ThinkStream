@@ -1170,7 +1170,7 @@ def _parse_cards_response(raw: Optional[str], family: str, video_id: str) -> Lis
         except (json.JSONDecodeError, ValueError):
             pass
         # Fallback: find all array-like substrings and pick the longest valid one
-        candidates = re.findall(r'\[\s\S]*?\]', raw)
+        candidates = re.findall(r'\[[\s\S]*?\]', raw)
         best = []
         for cand in candidates:
             try:
