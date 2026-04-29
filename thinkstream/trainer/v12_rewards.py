@@ -59,7 +59,16 @@ def compute_outcome_reward_v12(
     ga = (gold_answer or "").strip()
     if not ga:
         return 0.0
-    if answer_form in ("literal", "yes_no", "numeric", "entity"):
+    # Strict-match forms: pass3a uses binary/multiple_choice/number/short_exact;
+    # we also accept the legacy aliases yes_no/numeric/entity/literal that some
+    # external eval datasets use. Drift here = false positives in RL outcome.
+    strict_forms = (
+        "binary", "yes_no",        # Yes/No
+        "multiple_choice", "mc",   # single letter A-D
+        "number", "numeric",       # digits
+        "short_exact", "entity", "literal",  # exact entity name
+    )
+    if answer_form in strict_forms:
         return 1.0 if fa.lower() == ga.lower() else 0.0
     if judge_fn is not None:
         return float(judge_fn(fa, ga))
