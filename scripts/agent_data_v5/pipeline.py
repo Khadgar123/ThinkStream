@@ -587,11 +587,20 @@ async def run_pipeline(
         logger.info("PASS 3-A: Task Card Generation")
         logger.info("=" * 60)
 
-        # client_3a's internal semaphore caps both card generation AND verify.
-        semaphore_3a = client_3a.semaphore
+        # Two-level concurrency for 3-A:
+        #   - video_semaphore_3a limits how many videos enter at once
+        #   - client_3a.semaphore (inside _call_one) limits actual API calls.
+        # DO NOT reuse client_3a.semaphore here: generate_cards uses
+        # asyncio.gather to fire per-family tasks, each of which acquires
+        # client_3a.semaphore. If the outer video task already holds the same
+        # semaphore, all family tasks deadlock (resource exhaustion — every
+        # permit is held by a video task waiting on its own children).
+        VIDEO_CONCURRENCY_3A = 8
+        video_semaphore_3a = asyncio.Semaphore(VIDEO_CONCURRENCY_3A)
 
         uncached_3a = [v for v in videos if not load_cards(v["video_id"]) and v["video_id"] in evidence_map]
         tracker_3a = ProgressTracker("pass3a", len(uncached_3a), AUDIT_DIR)
+        logger.info(f"PASS 3-A: {len(uncached_3a)} uncached videos, video_concurrency={VIDEO_CONCURRENCY_3A}, family_concurrency={client_3a.max_concurrent}")
 
         async def process_video_3a(video):
             vid = video["video_id"]
@@ -600,7 +609,7 @@ async def run_pipeline(
                 return vid, cached
             if vid not in evidence_map:
                 return vid, []
-            async with semaphore_3a:
+            async with video_semaphore_3a:
                 cards = await generate_cards(vid, evidence_map[vid], client_3a)
                 # Verify each card independently (still bound by client_3a cap).
                 cards = await verify_cards(vid, cards, evidence_map[vid], client_3a)

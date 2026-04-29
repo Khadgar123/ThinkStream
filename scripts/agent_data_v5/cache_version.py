@@ -49,18 +49,17 @@ STAGE_VERSIONS: Dict[str, str] = {
                     #       samples). Previous v9.4 had the inverse design
                     #       (gt = real visible option), which would teach the
                     #       wrong refusal direction at HLD eval.
-    "3b": "v9.4",   # v9.3: 3-tier difficulty for transient (easy_in_visual
-                    #       / medium_in_compressed / hard_history_only) +
-                    #       N1 multi-tier asks; difficulty_tier on placement.
-                    # v9.4: CR2/CR4 force tier 2/3 (no in_visual ask).
-    "3c": "v9.2",   # v9.3 (renamed v9.2 in 3c numbering): _normalize_exact_form_answer
-                    #       fast path — binary/MC/number response = canonical_answer
-                    #       directly (no LLM call).
-    "4":  "v9.4",   # v9.3: MC short-response whitelist + strict format match
-                    #       on response (single letter = canonical for MC,
-                    #       Yes/No for binary, digits for number).
-                    # v9.4: no schema change vs 3a/3b — bumped to keep
-                    #       version markers monotonic across the v9.4 family.
+    "3b": "v12.0",  # v12.0: bumped jointly with 3c/4 so the entire pass3
+                    #       chain rebuilds under new code. pass3b_placement had
+                    #       material changes in this commit (new visibility
+                    #       checks, trajectory planning tweaks).
+    "3c": "v12.0",  # v12.0: THINKSTREAM_PROTOCOL=v12 output format — tool_call +
+                    #       answer tags instead of action/response. Bumped to
+                    #       invalidate all v11-format cached samples.
+    "4":  "v12.0", # v12.0: protocol-aware verification supporting v12
+                    #       <tool_call>/<answer> format. v11-specific checks
+                    #       (action/response tags) replaced with v12-equivalents.
+                    #       Bumped jointly with 3c to force full rebuild.
 }
 
 STAGE_DIRS: Dict[str, Path] = {

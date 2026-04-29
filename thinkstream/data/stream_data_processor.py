@@ -15,7 +15,7 @@ from qwen_vl_utils import process_vision_info
 import transformers
 from torchcodec.decoders import VideoDecoder
 
-from . import data_list
+from thinkstream.sft.data_list import data_list
 from .rope2d import ROPE_INDEX_FN
 
 

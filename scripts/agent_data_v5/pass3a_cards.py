@@ -1145,6 +1145,11 @@ def _parse_cards_response(raw: Optional[str], family: str, video_id: str) -> Lis
     if not raw:
         return []
     raw = re.sub(r'<think>.*?</think>', '', raw, flags=re.DOTALL).strip()
+    # vLLM without reasoning-parser returns thinking text with JSON at the end
+    # Strip common thinking prefixes so the JSON parser sees the array first.
+    for prefix in ("Thinking Process:", "thinking process:", "思考过程："):
+        if prefix in raw:
+            raw = raw[raw.find(prefix):].strip()
 
     # Try parse as JSON array
     try:
@@ -1154,7 +1159,7 @@ def _parse_cards_response(raw: Optional[str], family: str, video_id: str) -> Lis
     except (json.JSONDecodeError, ValueError):
         pass
 
-    # Extract array
+    # Extract array — try greedy last-] match first, then fallback to all candidates
     start = raw.find("[")
     end = raw.rfind("]")
     if start >= 0 and end > start:
@@ -1164,6 +1169,18 @@ def _parse_cards_response(raw: Optional[str], family: str, video_id: str) -> Lis
                 return result
         except (json.JSONDecodeError, ValueError):
             pass
+        # Fallback: find all array-like substrings and pick the longest valid one
+        candidates = re.findall(r'\[\s\S]*?\]', raw)
+        best = []
+        for cand in candidates:
+            try:
+                parsed = json.loads(cand)
+                if isinstance(parsed, list) and len(parsed) > len(best):
+                    best = parsed
+            except (json.JSONDecodeError, ValueError):
+                continue
+        if best:
+            return best
 
     logger.warning(f"  [{video_id}] 3-A {family}: failed to parse cards")
     return []
@@ -1190,11 +1207,13 @@ async def _generate_family_cards(
 
     prompt = prompt_template.format(n=target_n, evidence=ev_text)
 
+    _pass3a_cfg = PASS_CONFIG.get("pass3a", {})
     raw = await client._call_one(
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=PASS_CONFIG.get("pass3a", {}).get("max_tokens", 16384),
+        max_tokens=_pass3a_cfg.get("max_tokens", 16384),
         temperature=0.7,
         request_id=f"{video_id}_3a_{family}",
+        enable_thinking=_pass3a_cfg.get("thinking", True),
     )
 
     cards = _parse_cards_response(raw, family, video_id)

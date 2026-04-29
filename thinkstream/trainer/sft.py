@@ -311,37 +311,31 @@ def init_processor(
     processor: Ref[Any],
 ) -> Context:
     lmm_processor = AutoProcessor.from_pretrained(model_name_or_path)
-    if model_type == "qwen3vl":
-        lmm_processor.tokenizer.add_tokens(["<silent>", "<response>"])
-    else:
+
+    # v11.4+ Qwen3VL is trained with add_agent_special_tokens=False (industry
+    # convention). Agent tags (<action>, <silent>, etc.) are plain text and
+    # tokenized as multi-token BPE sequences by the base tokenizer.
+    # Adding them as special tokens here would:
+    #   1. Change tokenizer behaviour vs SFT (distribution shift)
+    #   2. Require resize_token_embeddings, which fails under DeepSpeed ZeRO-3
+    #      because partitioned parameters report incorrect shapes.
+    # Skip the special-token path for qwen3vl; keep it for legacy model types.
+    if model_type != "qwen3vl":
         lmm_processor.tokenizer.add_tokens(
             ["<silent>", "<response>", "<think>", "</think>"]
         )
-    # Agent protocol tokens (4-action format with recall + compress)
-    # NOTE: </response> is needed because the model must generate it to
-    # close <response>answer text</response>.
-    lmm_processor.tokenizer.add_tokens(
-        ["<action>", "</action>", "<query>", "</query>",
-         "</response>",
-         "<recall_result>", "</recall_result>",
-         # Compression tokens (per-timestep memory format)
-         "<compressed>", "</compressed>",
-         "<pending>", "</pending>",
-         "<compress_trigger>", "</compress_trigger>",
-         "<summary>", "</summary>"]
-    )
-
-    # Resize model embeddings to match the expanded tokenizer.
-    # Without this, new token IDs cause IndexError in the embedding layer.
-    num_new = len(lmm_processor.tokenizer) - model.config.vocab_size
-    if num_new > 0:
-        model.resize_token_embeddings(len(lmm_processor.tokenizer))
-        logger.warning(
-            "Resized model embeddings: %d → %d (+%d new tokens)",
-            model.config.vocab_size - num_new,
-            len(lmm_processor.tokenizer),
-            num_new,
+        lmm_processor.tokenizer.add_tokens(
+            ["<action>", "</action>", "<query>", "</query>",
+             "</response>",
+             "<recall_result>", "</recall_result>",
+             "<compressed>", "</compressed>",
+             "<pending>", "</pending>",
+             "<compress_trigger>", "</compress_trigger>",
+             "<summary>", "</summary>"]
         )
+        num_new = len(lmm_processor.tokenizer) - model.config.vocab_size
+        if num_new > 0:
+            model.resize_token_embeddings(len(lmm_processor.tokenizer))
 
     return ctx.set(processor, lmm_processor)
 

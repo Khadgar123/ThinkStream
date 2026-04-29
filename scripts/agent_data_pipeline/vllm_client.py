@@ -164,7 +164,11 @@ class VLLMClient:
         resp = await client.post("/chat/completions", json=body)
         resp.raise_for_status()
         data = resp.json()
-        content = data["choices"][0]["message"]["content"]
+        msg = data["choices"][0]["message"]
+        content = msg.get("content") or ""
+        # vLLM without --reasoning-parser puts thinking in "reasoning" and leaves content null
+        if not content:
+            content = msg.get("reasoning", "")
         usage = data.get("usage") or {}
         return content, usage.get("prompt_tokens", 0), usage.get("completion_tokens", 0)
 
@@ -231,7 +235,11 @@ class VLLMClient:
                         temperature=temperature,
                     )
                     response = await client.chat.completions.create(**create_kwargs)
-                    result = response.choices[0].message.content
+                    msg = response.choices[0].message
+                    result = getattr(msg, "content", None) or ""
+                    # Fallback when vLLM reasoning-parser is absent
+                    if not result:
+                        result = getattr(msg, "reasoning", "") or ""
                     usage = response.usage
                     self.stats.completed += 1
                     if usage:

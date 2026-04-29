@@ -784,27 +784,28 @@ class StreamingAgentLoop:
                     }
                     # Build recalled frame_paths by resolving per-chunk frames
                     # under the same frames_root logic.
-                    vp = Path(video_path)
-                    if self.video_root:
-                        try:
-                            rel = vp.relative_to(Path(self.video_root))
-                            stem = rel.with_suffix("")
-                            frame_dir = Path(self.frames_root) / stem
-                        except ValueError:
+                    if self.frames_root:
+                        vp = Path(video_path)
+                        if self.video_root:
+                            try:
+                                rel = vp.relative_to(Path(self.video_root))
+                                stem = rel.with_suffix("")
+                                frame_dir = Path(self.frames_root) / stem
+                            except ValueError:
+                                frame_dir = Path(self.frames_root) / vp.with_suffix("")
+                        else:
                             frame_dir = Path(self.frames_root) / vp.with_suffix("")
-                    else:
-                        frame_dir = Path(self.frames_root) / vp.with_suffix("")
-                    rf_paths = []
-                    if frame_dir.exists():
-                        for rc in returned_chunks:
-                            rc_start = rc * AGENT_CHUNK_SEC + 1
-                            rc_end = (rc + 1) * AGENT_CHUNK_SEC
-                            for fnum in range(rc_start, rc_end + 1):
-                                fp = frame_dir / f"frame_{fnum:06d}.jpg"
-                                if fp.exists():
-                                    rf_paths.append(str(fp))
-                    if rf_paths:
-                        recalled_frames["frame_paths"] = rf_paths
+                        rf_paths = []
+                        if frame_dir.exists():
+                            for rc in returned_chunks:
+                                rc_start = rc * AGENT_CHUNK_SEC + 1
+                                rc_end = (rc + 1) * AGENT_CHUNK_SEC
+                                for fnum in range(rc_start, rc_end + 1):
+                                    fp = frame_dir / f"frame_{fnum:06d}.jpg"
+                                    if fp.exists():
+                                        rf_paths.append(str(fp))
+                        if rf_paths:
+                            recalled_frames["frame_paths"] = rf_paths
 
                 # Build recall_response input. The pending question is
                 # already expressed via the <queries> block (entry with

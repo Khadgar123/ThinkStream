@@ -558,7 +558,10 @@ def load_grpo_models(
         dtype=dtype,
     )
     gen_model.config.vision_config._attn_implementation = vision_attn_implementation
-    gen_model.config.text_config._attn_implementation = "flash_attention_2_infer"
+    # flash_attention_2_infer requires attn_cache_seqlens which Qwen3-VL forward
+    # does not pass in standard transformers generate. Fall back to regular
+    # flash_attention_2 for CPU-based generation model used in GRPO rollout.
+    gen_model.config.text_config._attn_implementation = "flash_attention_2"
     gen_model.eval()
     gen_model.requires_grad_(False)
     gen_model.to("cpu")
