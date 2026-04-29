@@ -691,7 +691,7 @@ async def run_pipeline(
     # PASS 3-C: Trajectory Sample Generation
     # =================================================================
     if 3 not in skip_pass:
-        from .pass3c_samples import generate_trajectory_samples, save_samples
+        from .pass3c_samples import generate_trajectory_samples, save_samples, load_samples
 
         logger.info("=" * 60)
         logger.info("PASS 3-C: Trajectory Sample Generation")
@@ -708,6 +708,16 @@ async def run_pipeline(
             vid = video["video_id"]
             if vid not in trajectories_map or vid not in rollout_map or vid not in evidence_map:
                 return vid, []
+
+            # Use cached samples when available (avoids regenerating on re-runs)
+            cached = load_samples(vid)
+            if cached:
+                for s in cached:
+                    s.setdefault("video_id", vid)
+                    s.setdefault("video_path", video.get("video_path", ""))
+                await tracker_3c.record(success=len(cached) > 0, video_id=vid, n_samples=len(cached))
+                return vid, cached
+
             traj_data = trajectories_map[vid]
             trajectories = traj_data.get("trajectories", [])
             if not trajectories:
