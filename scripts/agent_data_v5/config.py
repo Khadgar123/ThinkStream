@@ -249,20 +249,24 @@ PASS_CONFIG = {
         "concurrent_videos": 256,
     },
     "pass3a": {
+        # v12.5 (2026-04-30): thinking True → False per user audit "在pass3
+        # 全流程中 enable_think=false". Card generation works on structured
+        # FAMILY_PROMPTS with explicit constraints; CoT was a marginal
+        # quality lift, not a correctness floor. 16K max_tokens kept as
+        # context budget (no truncation risk on dense evidence).
         "max_tokens": 16384,
         "temperature": 0.7,
-        "thinking": True,
+        "thinking": False,
         "concurrent": 256,    # pure text; client_3a also serves verify
     },
     "pass3c": {
-        # Keep thinking + 16K — 3C outputs ARE the SFT labels (response,
-        # fork_think, recall_query, recall_think). Quality determines what
-        # the student learns. Throughput problems are addressed by lowering
-        # concurrency (less GPU oversubscription) + extending client timeout,
-        # not by crippling teacher reasoning.
+        # v12.5 (2026-04-30): thinking True → False per user audit. Generation
+        # tasks (response / recall_query / recall_think / fork_think) are
+        # template-driven; CoT marginally improved quality but added latency
+        # without floor-shifting correctness. 16K context preserved.
         "max_tokens": 16384,
         "temperature": 0.3,
-        "thinking": True,
+        "thinking": False,
         "concurrent": 256,    # at 1024 each req waits ~55min (orphan-cascade);
                               # at 256 each gets ~14min, no timeouts.
     },
@@ -313,7 +317,12 @@ PASS_CONFIG = {
     "pass3c_fork_think": {
         "max_tokens": 16384,
         "temperature": 0.3,
-        "thinking": True,      # KEEP — answer-leakage avoidance needs CoT
+        # v12.5 (2026-04-30): thinking True → False per user audit "在pass3
+        # 全流程中 enable_think=false". The "answer-leakage avoidance" was
+        # the historical reason to keep CoT; FAMILY_PROMPTS already include
+        # explicit anti-leakage rules in the system prompt, so deterministic
+        # generation should suffice. 16K context preserved.
+        "thinking": False,
     },
 }
 
