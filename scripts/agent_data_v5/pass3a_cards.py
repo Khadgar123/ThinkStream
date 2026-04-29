@@ -94,14 +94,25 @@ FAMILY_TARGETS = {
     "CR3": 1, "CR6": 1, "CR7": 1,
     # PN1 (Proactive Narration) — NEW v12.5 family. LiveCC-style short
     # observations at novel-event chunks. answer_form=descriptive,
-    # 20-30 token answers. 5 cards/video at high-novelty chunks.
+    # 20-30 token answers. 20 cards/video at high-novelty chunks.
     # OVO mapping: ATR/M1-adjacent (descriptive observation).
-    "PN1": 5,
+    #
+    # Target=20 calibrated against silent-rate audit (2026-04-29): with
+    # PN1=5 the projected silent rate stays ~80% because base silents
+    # in generate_base_samples dominate the trajectory. PN1=20 converts
+    # more novelty chunks (state_changes / first-appearance entities)
+    # from base silent into PN1 response, lowering effective silent
+    # toward the 66-70% target without modifying pass3c base emission.
+    # classify_chunks PN1 picker caps at 8 candidates so target=20
+    # means oversampling — pass4 verify drops some, pass3b density caps
+    # filter further. Net effect: ~10-15 PN1 cards survive per video.
+    "PN1": 20,
 }
-# Total = 41 cards/video × 312 videos = 12,792 corpus pre-verify.
-# Expected post-verify ~88% pass: 11,257 cards. After pass3b density cap
-# (max_per_traj=3, max_traj=5 → 15 questions/video max), ~12,000 placements
-# and proportionally more response samples → silent raw drops 85% → ~70%.
+# Total = 56 cards/video × 312 videos = 17,472 corpus pre-verify.
+# Expected post-verify ~88% pass: 15,375 cards. After pass3b density cap
+# (max_per_traj=3, max_traj=5 → 15 questions/video max for non-PN1) plus
+# all surviving PN1 placed in their own traj (proactive narrations don't
+# count toward QA cap), we expect ~25-30 cards placed per video.
 
 # v12.1 batch2: counter-cyclical multipliers for low-yield families.
 # Activated when env THINKSTREAM_BATCH=batch2. Generates MORE candidates

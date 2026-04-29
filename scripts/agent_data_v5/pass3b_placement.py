@@ -1017,7 +1017,7 @@ def plan_trajectories(
     cards_map: Dict[str, Dict] = None,
     num_chunks: int = 60,
     max_placements_per_traj: int = 3,
-    min_chunk_gap: int = 15,
+    min_chunk_gap: int = 10,
     seed: int = 42,
     evidence: List[Dict] = None,
 ) -> List[Dict]:
@@ -1026,8 +1026,13 @@ def plan_trajectories(
     Design principles (v12.0 density overhaul, see config.py for caps):
     1. 1-3 questions per trajectory (matches VideoLLM-online's 3 q/conv;
        lower than v11.5's 5-6 to reduce queries_state context overload)
-    2. Questions spread across the video timeline (min gap = 15 chunks = 30s
-       — research-backed to match StreamingBench/MMDuet2 density)
+    2. Questions spread across the video timeline.
+       v12.0: min_chunk_gap=15 (30s) matched StreamingBench/MMDuet2.
+       v12.5 (2026-04-29): min_chunk_gap=10 (20s) — silent-rate audit
+       showed base silents between question events dominate the silent
+       count. Tightening question gap from 15→10 lets more questions
+       share trajectory span, reducing per-question silent context
+       and lowering effective silent rate toward the 66-70% target.
     3. Maximize diversity: families, sequence_types, answers
     4. Trajectory count = num_chunks // 30 (was 18) → ~2-3 traj/video on
        2.6-min batch1 videos (matches MMDuet2 RL convergence at ~3.3/video)

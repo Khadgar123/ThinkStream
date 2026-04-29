@@ -35,11 +35,11 @@ def _ev(idx, *, entities=(), ocr=(), state_changes=()):
 
 
 def test_pn1_registered_in_family_targets():
-    """PN1 must be in FAMILY_TARGETS with target=5 + in FORCE_ATTEMPT
-    + RETENTION_CLASS."""
+    """PN1 must be in FAMILY_TARGETS + in FORCE_ATTEMPT + RETENTION_CLASS.
+    Target ≥5 (must be densest non-trivial density to lower silent rate)."""
     assert "PN1" in FAMILY_TARGETS, "PN1 missing from FAMILY_TARGETS"
-    assert FAMILY_TARGETS["PN1"] == 5, (
-        f"PN1 target should be 5 (LiveCC-style density), got {FAMILY_TARGETS['PN1']}"
+    assert FAMILY_TARGETS["PN1"] >= 5, (
+        f"PN1 target should be ≥5, got {FAMILY_TARGETS['PN1']}"
     )
     assert "PN1" in FAMILY_FORCE_ATTEMPT, "PN1 should be in FORCE_ATTEMPT"
     assert "PN1" in RETENTION_CLASS, "PN1 missing from RETENTION_CLASS"
@@ -107,7 +107,11 @@ def test_pn1_picks_first_ocr_appearances():
 
 
 def test_pn1_caps_at_8_candidates():
-    """classify_chunks caps PN1 at 8 candidates (FAMILY_TARGETS keeps 5)."""
+    """classify_chunks caps PN1 at 8 candidates per video at the picker
+    level. FAMILY_TARGETS["PN1"]=20 means OVERSAMPLING — teacher attempts
+    20 cards from 8 candidates (re-asking with diverse perspectives), and
+    pass4 verify + pass3b placement throttle to ~10 PN1 cards/video.
+    """
     # Build 20 chunks each with a unique entity → all are first-appearance
     evidence = [_ev(i, entities=(f"ent_{i}",)) for i in range(20)]
     fc = classify_chunks(evidence)
@@ -127,13 +131,15 @@ def test_pn1_static_video_returns_few():
 
 
 def test_total_cards_per_video_increased():
-    """v12.5 bump: total target should be ≥40 cards/video (was 26 in v12.4)."""
+    """v12.5 bump: total target should be ≥50 cards/video.
+    Was 26 in v12.4 → 56 in v12.5 (PN1=20, FAMILY_TARGETS bumped).
+    pass3b density caps and pass4 verify will throttle to ~30 placements."""
     total = sum(FAMILY_TARGETS.values())
-    assert total >= 40, (
-        f"v12.5 should bump cards/video to ≥40 to lower silent ratio, got {total}"
+    assert total >= 50, (
+        f"v12.5 should bump cards/video to ≥50 to lower silent ratio, got {total}"
     )
-    assert total <= 50, (
-        f"too many cards/video ({total}) — pass3b density caps will throttle"
+    assert total <= 80, (
+        f"too many cards/video ({total}) — over-generation wastes LLM cost"
     )
     print(f"  PASS cards/video target: {total}")
 
