@@ -573,6 +573,101 @@ class WeightedSFTTrainer(Trainer):
                         self._eval_acc["v12_argmax_match"][stype] += matched
                         self._eval_acc["v12_argmax_match"]["_all"] += matched
 
+                    # v12.1 BEHAVIORAL METRICS — decode argmax tokens →
+                    # parse v12 protocol → emit kind/format counters per
+                    # sample_type. Lets us see at SFT time:
+                    #   "did silent samples emit empty <answer>?"
+                    #   "did compress samples emit a compress tool_call?"
+                    #   "did the model recall when expected to recall?"
+                    # answers free-gen gate's questions WITHOUT vLLM
+                    # rollout (only single forward pass already done).
+                    self._accumulate_v12_behavioral(
+                        preds, input_ids, b, s, e, stype,
+                    )
+
+    def _accumulate_v12_behavioral(
+        self, preds, input_ids, b: int, s: int, e: int, stype: str,
+    ) -> None:
+        """v12.1 per-sample behavioral counters from teacher-forced argmax."""
+        # Lazy-init on first call so __init__ doesn't change.
+        if "v12_kind_match" not in self._eval_acc:
+            for k in (
+                "v12_kind_match", "v12_kind_total",
+                "v12_format_valid", "v12_format_total",
+                "v12_observed_recall", "v12_observed_compress",
+                "v12_observed_answer",  "v12_observed_unknown",
+                "v12_silent_empty_match", "v12_answer_nonempty",
+            ):
+                self._eval_acc[k] = defaultdict(int)
+
+        try:
+            tokenizer = (
+                getattr(self, "processing_class", None)
+                or getattr(self, "tokenizer", None)
+            )
+            if tokenizer is None or not hasattr(tokenizer, "decode"):
+                return
+            argmax_ids = preds[b, s - 1: e - 1].tolist()
+            decoded = tokenizer.decode(argmax_ids, skip_special_tokens=False)
+        except Exception:
+            return
+
+        from thinkstream.data.agent_protocol import parse_agent_output_v12
+        parsed = parse_agent_output_v12(decoded)
+        observed_kind = parsed.get("kind", "unknown")
+        format_valid = parsed.get("format_error") is None
+
+        self._eval_acc["v12_format_total"][stype] += 1
+        self._eval_acc["v12_format_total"]["_all"] += 1
+        if format_valid:
+            self._eval_acc["v12_format_valid"][stype] += 1
+            self._eval_acc["v12_format_valid"]["_all"] += 1
+
+        if stype == "silent":
+            expected_kind = "answer_empty"
+        elif stype in ("response", "recall_response"):
+            expected_kind = "answer_nonempty"
+        elif stype in ("recall_query", "recall"):
+            expected_kind = "recall"
+        elif stype in ("compress", "compress_inter"):
+            expected_kind = "compress"
+        else:
+            expected_kind = "unknown"
+
+        observed_bucket = {
+            "answer": "v12_observed_answer",
+            "recall": "v12_observed_recall",
+            "compress": "v12_observed_compress",
+            "unknown": "v12_observed_unknown",
+        }.get(observed_kind, "v12_observed_unknown")
+        self._eval_acc[observed_bucket][stype] += 1
+        self._eval_acc[observed_bucket]["_all"] += 1
+
+        self._eval_acc["v12_kind_total"][stype] += 1
+        self._eval_acc["v12_kind_total"]["_all"] += 1
+        kind_match = False
+        if expected_kind == "answer_empty":
+            kind_match = (
+                observed_kind == "answer"
+                and (parsed.get("answer_text") or "") == ""
+            )
+            if observed_kind == "answer" and (parsed.get("answer_text") or "") == "":
+                self._eval_acc["v12_silent_empty_match"][stype] += 1
+                self._eval_acc["v12_silent_empty_match"]["_all"] += 1
+        elif expected_kind == "answer_nonempty":
+            kind_match = (
+                observed_kind == "answer"
+                and bool(parsed.get("answer_text"))
+            )
+            if observed_kind == "answer" and parsed.get("answer_text"):
+                self._eval_acc["v12_answer_nonempty"][stype] += 1
+                self._eval_acc["v12_answer_nonempty"]["_all"] += 1
+        elif expected_kind in ("recall", "compress"):
+            kind_match = (observed_kind == expected_kind)
+        if kind_match:
+            self._eval_acc["v12_kind_match"][stype] += 1
+            self._eval_acc["v12_kind_match"]["_all"] += 1
+
     def _all_reduce_eval_acc(self) -> None:
         """Sum per-rank counters across DDP world. No-op if not distributed."""
         if not (dist.is_available() and dist.is_initialized()):
@@ -597,6 +692,12 @@ class WeightedSFTTrainer(Trainer):
             "response_match", "response_total", "format_match", "format_total",
             # v12.0
             "v12_argmax_match", "v12_argmax_total",
+            # v12.1 behavioral metrics
+            "v12_kind_match", "v12_kind_total",
+            "v12_format_valid", "v12_format_total",
+            "v12_observed_recall", "v12_observed_compress",
+            "v12_observed_answer", "v12_observed_unknown",
+            "v12_silent_empty_match", "v12_answer_nonempty",
         ]
         buf = torch.zeros(len(bands) * n, dtype=torch.long, device=device)
         for bi, band in enumerate(bands):
@@ -687,10 +788,7 @@ class WeightedSFTTrainer(Trainer):
             out[f"eval/format_compliance_{stype}"] = (
                 self._eval_acc["format_match"].get(stype, 0) / tot
             )
-        # v12.0: holistic assistant-span argmax accuracy. Emitted alongside
-        # v11 metrics so the trainer log doesn't go silent in v12 mode (where
-        # all the per-position v11 metrics are 0). Per-class breakdown by
-        # sample_type (silent / response / recall / compress).
+        # v12.0: holistic assistant-span argmax accuracy.
         v12_tot = self._eval_acc["v12_argmax_total"].get("_all", 0)
         if v12_tot > 0:
             out["eval/v12_assistant_argmax_acc"] = (
@@ -702,6 +800,63 @@ class WeightedSFTTrainer(Trainer):
             out[f"eval/v12_assistant_argmax_acc_{stype}"] = (
                 self._eval_acc["v12_argmax_match"].get(stype, 0) / tot
             )
+
+        # v12.1 BEHAVIORAL METRICS (parsed from teacher-forced argmax)
+        # — answers user-actionable questions about model behavior:
+        #   "Does silent emit empty <answer>?"  → v12_silent_empty_rate_silent
+        #   "Does compress emit compress tool_call?" → v12_compress_emit_rate_compress
+        #   "Does recall emit recall tool_call?"   → v12_recall_emit_rate_recall_query
+        #   "Does response emit non-empty <answer>?" → v12_answer_emit_rate_response
+        #   "Is the parsed format valid?"           → v12_format_valid_<stype>
+        #   "Did the model pick the right kind?"    → v12_kind_match_<stype>
+        kind_tot = self._eval_acc.get("v12_kind_total", {}).get("_all", 0)
+        if kind_tot > 0:
+            out["eval/v12_kind_match"] = (
+                self._eval_acc["v12_kind_match"].get("_all", 0) / kind_tot
+            )
+            out["eval/v12_format_valid"] = (
+                self._eval_acc["v12_format_valid"].get("_all", 0) / kind_tot
+            )
+            # Confusion: how often does the model emit each kind regardless
+            # of expectation. Helps catch silent collapse / over-recall etc.
+            for obs_band, name in [
+                ("v12_observed_answer", "answer_emit_rate"),
+                ("v12_observed_recall", "recall_emit_rate"),
+                ("v12_observed_compress", "compress_emit_rate"),
+            ]:
+                out[f"eval/v12_{name}"] = (
+                    self._eval_acc.get(obs_band, {}).get("_all", 0) / kind_tot
+                )
+
+        # Per sample_type breakdown
+        for stype, tot in self._eval_acc.get("v12_kind_total", {}).items():
+            if stype == "_all" or tot == 0:
+                continue
+            out[f"eval/v12_kind_match_{stype}"] = (
+                self._eval_acc["v12_kind_match"].get(stype, 0) / tot
+            )
+            out[f"eval/v12_format_valid_{stype}"] = (
+                self._eval_acc["v12_format_valid"].get(stype, 0) / tot
+            )
+            # Per-stype: emit rate of each observed kind. Reading guide:
+            #   stype=silent + v12_answer_emit_rate_silent → should be ~1
+            #   stype=silent + v12_recall_emit_rate_silent → should be ~0
+            #     (if >0 the model wrongly recalls during silent chunks)
+            for obs_band, name in [
+                ("v12_observed_answer", "answer_emit_rate"),
+                ("v12_observed_recall", "recall_emit_rate"),
+                ("v12_observed_compress", "compress_emit_rate"),
+            ]:
+                out[f"eval/v12_{name}_{stype}"] = (
+                    self._eval_acc.get(obs_band, {}).get(stype, 0) / tot
+                )
+            # Silent samples: also surface "did the answer come out empty?"
+            if stype == "silent":
+                out[f"eval/v12_silent_empty_rate"] = (
+                    self._eval_acc.get("v12_silent_empty_match", {}).get(stype, 0)
+                    / tot
+                )
+
         return out
 
     def evaluate(self, *args, **kwargs):
