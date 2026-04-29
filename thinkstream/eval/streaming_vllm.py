@@ -74,6 +74,9 @@ class _SampleRunner:
     # so caller can skip user_question on the same step.
     _last_trigger: bool = False
     chunks_generated: int = 0
+    # v12 protocol: switches build_single_step_messages to SYSTEM_PROMPT_V12
+    # and the caller's prepare_vllm_input to pass tools=TOOLS_SCHEMA.
+    protocol_version: str = "v11"
 
 
 def _resolve_frame_paths(
@@ -180,6 +183,7 @@ def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:
         min_pixels=runner.min_pixels,
         max_pixels=runner.max_pixels,
         frame_paths=frame_paths,
+        protocol_version=runner.protocol_version,
     )
 
 
@@ -251,6 +255,7 @@ def _build_runners(
     frames_root: Optional[str],
     video_root: Optional[str],
     tokenizer=None,
+    protocol_version: str = "v11",
 ) -> List[_SampleRunner]:
     runners: List[_SampleRunner] = []
     for i in range(len(dataset)):
@@ -289,6 +294,7 @@ def _build_runners(
                 video_root=video_root,
                 min_pixels=min_pixels,
                 max_pixels=max_pixels,
+                protocol_version=protocol_version,
             ))
         except Exception as e:
             runners.append(_SampleRunner(
@@ -306,6 +312,7 @@ def _build_runners(
                 max_pixels=max_pixels,
                 done=True,
                 error=str(e),
+                protocol_version=protocol_version,
             ))
     return runners
 
@@ -363,6 +370,7 @@ def streaming_predict_mcq_vllm(
         dataset, options, question_prefix, question_postfix,
         frames_per_chunk, max_chunks, min_pixels, max_pixels,
         frames_root, video_root, tokenizer=tokenizer,
+        protocol_version=protocol_version,
     )
 
     log.info(

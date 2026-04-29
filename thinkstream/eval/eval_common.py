@@ -580,6 +580,7 @@ def mcq_predict_agent_loop(
     compress_mode: str = "system",
     rank: int = 0,
     world_size: int = 1,
+    protocol_version: str = "v11",
 ):
     """MCQ prediction using StreamingAgentLoop (v3.0 single-step format).
 
@@ -631,6 +632,7 @@ def mcq_predict_agent_loop(
             max_pixels=max_pixels,
             max_new_tokens=max_new_tokens,
             compress_mode=compress_mode,
+            protocol_version=protocol_version,
         )
 
         answer_text = ""

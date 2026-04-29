@@ -810,6 +810,15 @@ def rollout(
             if user_convs:
                 user_question = user_convs[0].get("content", "")
 
+        # v12.0 protocol switch — propagate sample's protocol_version into
+        # the rollout loop so build_single_step_messages picks the right
+        # SYSTEM_PROMPT (v12 → SYSTEM_PROMPT_V12 + tools= via chat_template).
+        _proto = (
+            raw_sample.get("protocol_version")
+            or metadata.get("protocol_version")
+            or "v11"
+        )
+
         # Run G independent rollouts
         per_gen_results: List[List[Dict]] = []
         for g in range(group_size):
@@ -821,6 +830,7 @@ def rollout(
                 min_pixels=rollout_min_pixels,
                 max_pixels=rollout_max_pixels,
                 max_new_tokens=rollout_max_new_tokens,
+                protocol_version=_proto,
             )
 
             chunk_results_g: List[Dict[str, Any]] = []
@@ -1636,7 +1646,21 @@ def _build_rollout_messages(
     total_start = chunk_results[0]["window_start"]
     total_end = chunk_results[-1]["window_end"]
 
-    messages: List[Dict[str, Any]] = [{"role": "system", "content": SYSTEM_PROMPT}]
+    # v12.0 protocol switch — when sample carries protocol_version=v12,
+    # use SYSTEM_PROMPT_V12 (concise; <tools> rendered by chat_template).
+    # v11 and unset default to legacy SYSTEM_PROMPT (<action>/<response>).
+    _meta = raw_sample.get("metadata") or {}
+    _proto = (
+        raw_sample.get("protocol_version")
+        or _meta.get("protocol_version")
+        or "v11"
+    )
+    if _proto == "v12":
+        from thinkstream.data.agent_protocol import SYSTEM_PROMPT_V12
+        _sys_text = SYSTEM_PROMPT_V12
+    else:
+        _sys_text = SYSTEM_PROMPT
+    messages: List[Dict[str, Any]] = [{"role": "system", "content": _sys_text}]
 
     for cr_idx, cr in enumerate(chunk_results):
         w_start, w_end = cr["window_start"], cr["window_end"]

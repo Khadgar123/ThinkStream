@@ -21,6 +21,7 @@ from thinkstream.data.agent_protocol import (
     AGENT_CHUNK_SEC,
     FRAMES_PER_CHUNK,
     SYSTEM_PROMPT,
+    SYSTEM_PROMPT_V12,
     VISUAL_WINDOW_CHUNKS,
     build_user_content,
     format_memory_block,
@@ -238,10 +239,17 @@ def build_single_step_messages(
     min_pixels: int = 100352,
     max_pixels: int = 150528,
     frame_paths: Optional[List[str]] = None,
+    protocol_version: str = "v11",
 ) -> List[Dict]:
     """Build single-step chat messages matching training format.
 
     Delegates text formatting to shared agent_protocol.build_user_content.
+
+    `protocol_version` selects the system prompt:
+      - "v11" (default, legacy): SYSTEM_PROMPT — describes <action>/<response>
+      - "v12": SYSTEM_PROMPT_V12 — concise; <tools> block is rendered by the
+              chat_template via tools= at apply time. Caller must also pass
+              tools=TOOLS_SCHEMA when invoking processor.apply_chat_template.
     """
     memory_text = format_memory_block(snapshot)
     user_content = build_user_content(
@@ -257,8 +265,9 @@ def build_single_step_messages(
         frame_paths=frame_paths,
     )
 
+    sys_text = SYSTEM_PROMPT_V12 if protocol_version == "v12" else SYSTEM_PROMPT
     return [
-        {"role": "system", "content": [{"type": "text", "text": SYSTEM_PROMPT}]},
+        {"role": "system", "content": [{"type": "text", "text": sys_text}]},
         {"role": "user", "content": user_content},
     ]
 
@@ -499,6 +508,7 @@ class StreamingAgentLoop:
         compress_mode: str = "system",
         frames_root: Optional[str] = None,
         video_root: Optional[str] = None,
+        protocol_version: str = "v11",
     ):
         """
         Args:
@@ -554,6 +564,7 @@ class StreamingAgentLoop:
         self.compress_mode = compress_mode
         self.frames_root = frames_root
         self.video_root = video_root
+        self.protocol_version = protocol_version
         self.memory = MemoryState(tokenizer=tokenizer)
 
     def _get_frame_paths(self, video_path: str, chunk_idx: int) -> Optional[List[str]]:
@@ -716,6 +727,7 @@ class StreamingAgentLoop:
             min_pixels=self.min_pixels,
             max_pixels=self.max_pixels,
             frame_paths=frame_paths,
+            protocol_version=self.protocol_version,
         )
 
         # 5. Generate
@@ -822,6 +834,7 @@ class StreamingAgentLoop:
                     min_pixels=self.min_pixels,
                     max_pixels=self.max_pixels,
                     frame_paths=frame_paths,
+                    protocol_version=self.protocol_version,
                 )
 
                 # Second generate (allow_recall=False to prevent infinite loop)
