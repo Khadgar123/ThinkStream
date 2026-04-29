@@ -447,6 +447,14 @@ class WeightedSFTTrainer(Trainer):
             # this measures "did you decide to start <action>".
             "format_match":  defaultdict(int),
             "format_total":  defaultdict(int),
+            # v12.0: simpler holistic argmax over the entire assistant span
+            # (ans_start..ans_end). v11's per-position structural metrics
+            # don't apply because v12 has no <action> keyword nor fixed
+            # <summary>/<query>/<response> spans (everything goes inside
+            # <tool_call> JSON or <answer>). Per-class breakdown still
+            # works since sample_type is propagated.
+            "v12_argmax_match":  defaultdict(int),
+            "v12_argmax_total":  defaultdict(int),
         }
 
     @staticmethod
@@ -538,6 +546,33 @@ class WeightedSFTTrainer(Trainer):
                         self._eval_acc["format_match"][stype] += 1
                         self._eval_acc["format_match"]["_all"] += 1
 
+                # v12.0: holistic teacher-forced argmax over the FULL
+                # assistant span. Replaces v11's per-position structural
+                # metrics (action_keyword / summary / query / response /
+                # format_compliance) which all return 0 in v12 because
+                # data_processor sets those positions to []. This single
+                # signal answers: "given the gold prefix, how often does
+                # the model's argmax match the gold next token across
+                # every assistant token?". Free-gen gate is the primary
+                # behavioural eval (scripts/eval/v12_freegen_gate.py).
+                ans_start = meta.get("ans_start")
+                ans_end = meta.get("ans_end")
+                if ans_start is not None and ans_end is not None:
+                    s = max(1, int(ans_start))   # logits[p-1] predicts pos p
+                    e = min(L, int(ans_end) + 1)
+                    matched = 0
+                    total = 0
+                    for p in range(s, e):
+                        gold = int(input_ids[b, p].item())
+                        if preds[b, p - 1].item() == gold:
+                            matched += 1
+                        total += 1
+                    if total > 0:
+                        self._eval_acc["v12_argmax_total"][stype] += total
+                        self._eval_acc["v12_argmax_total"]["_all"] += total
+                        self._eval_acc["v12_argmax_match"][stype] += matched
+                        self._eval_acc["v12_argmax_match"]["_all"] += matched
+
     def _all_reduce_eval_acc(self) -> None:
         """Sum per-rank counters across DDP world. No-op if not distributed."""
         if not (dist.is_available() and dist.is_initialized()):
@@ -560,6 +595,8 @@ class WeightedSFTTrainer(Trainer):
             "summary_match", "summary_total", "query_match", "query_total",
             # v11.4
             "response_match", "response_total", "format_match", "format_total",
+            # v12.0
+            "v12_argmax_match", "v12_argmax_total",
         ]
         buf = torch.zeros(len(bands) * n, dtype=torch.long, device=device)
         for bi, band in enumerate(bands):
@@ -649,6 +686,21 @@ class WeightedSFTTrainer(Trainer):
                 continue
             out[f"eval/format_compliance_{stype}"] = (
                 self._eval_acc["format_match"].get(stype, 0) / tot
+            )
+        # v12.0: holistic assistant-span argmax accuracy. Emitted alongside
+        # v11 metrics so the trainer log doesn't go silent in v12 mode (where
+        # all the per-position v11 metrics are 0). Per-class breakdown by
+        # sample_type (silent / response / recall / compress).
+        v12_tot = self._eval_acc["v12_argmax_total"].get("_all", 0)
+        if v12_tot > 0:
+            out["eval/v12_assistant_argmax_acc"] = (
+                self._eval_acc["v12_argmax_match"].get("_all", 0) / v12_tot
+            )
+        for stype, tot in self._eval_acc["v12_argmax_total"].items():
+            if stype == "_all" or tot == 0:
+                continue
+            out[f"eval/v12_assistant_argmax_acc_{stype}"] = (
+                self._eval_acc["v12_argmax_match"].get(stype, 0) / tot
             )
         return out
 
