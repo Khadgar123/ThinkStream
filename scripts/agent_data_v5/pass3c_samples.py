@@ -1202,6 +1202,17 @@ async def generate_trajectory_samples(
     # Done here (post-render) so we don't have to thread evidence into helpers.
     _enrich_compress_with_gold_caption(all_samples, rollout, evidence)
 
+    # v12.5 BUG FIX (2026-04-29): merge (recall_query, recall_response|silent)
+    # pairs into multi-turn samples HERE — at the trajectory's full sample
+    # list. The OLD merge call site (inside generate_base_samples, line ~1451)
+    # ran on base samples only, which never contain recall pairs → 0 multi-turn
+    # samples were produced despite the v12 protocol claiming to support them.
+    # Audit confirmed: 144 recall pairs ALL share chunk_idx (same trajectory,
+    # same card) and would have merged correctly; they just never reached the
+    # merge function. After fix, sample_type "recall_query" / "recall_response"
+    # / "recall_silent" collapse into "recall" with v12_assistant_turn_1/2.
+    all_samples = _merge_recall_pairs_v12(all_samples)
+
     return all_samples
 
 
@@ -1446,10 +1457,9 @@ def generate_base_samples(
         sample["base_role"] = base_role
         samples.append(sample)
 
-    # v12.0: collapse (recall_query, recall_response|recall_silent) pairs
-    # into single multi-turn samples. No-op in v11 mode.
-    samples = _merge_recall_pairs_v12(samples)
-
+    # v12.5 — merge moved to generate_trajectory_samples (after combining
+    # base + trajectory samples) where the recall pairs actually live.
+    # Calling it here was a no-op since base_samples never contain recall.
     return samples
 
 

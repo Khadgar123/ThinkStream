@@ -24,11 +24,15 @@
 #   NPROC               - GPUs per node (8)
 #   GROUP_SIZE          - GRPO group size G (4)
 #   MICRO_BATCH         - per-device micro batch (4)
-#   ROLLOUT_MAX_CHUNKS  - max chunks per rollout (30 = 60s window).
-#                         Was 20; bumped so videos hit the compress
-#                         token threshold (~10 chunks) and produce
-#                         overflow_pen / silent_quality signal at
-#                         training time. Lower if compute-bound.
+#   ROLLOUT_MAX_CHUNKS  - max chunks per rollout (default 100 for
+#                         v12.5 trajectory rollouts; was 30 for legacy
+#                         single-question). Audit on RL trajectories:
+#                           p10/p50/p90 max(ask_chunks) = 9/20/87, max=187
+#                         At cap=30 → 41% truncation (later questions
+#                         never get answered → spurious 0 outcome).
+#                         Cap=100 covers ~95% of RL trajectories.
+#                         Lower to 30 if compute-bound and using
+#                         legacy stream_agent_rl single-question dataset.
 #   ROLLOUT_MAX_NEW_TOK - max new tokens per chunk generation (128)
 #   ROLLOUT_TEMP        - rollout temperature (1.0)
 #   LR                  - learning rate (5e-7)
@@ -54,7 +58,7 @@ LLM=${LLM:?'LLM= required (path to SFT checkpoint, e.g. output/agent-sft)'}
 NPROC=${NPROC:-8}
 GROUP_SIZE=${GROUP_SIZE:-4}
 MICRO_BATCH=${MICRO_BATCH:-4}
-ROLLOUT_MAX_CHUNKS=${ROLLOUT_MAX_CHUNKS:-30}
+ROLLOUT_MAX_CHUNKS=${ROLLOUT_MAX_CHUNKS:-100}
 ROLLOUT_MAX_NEW_TOK=${ROLLOUT_MAX_NEW_TOK:-128}
 ROLLOUT_TEMP=${ROLLOUT_TEMP:-1.0}
 LR=${LR:-5e-7}
