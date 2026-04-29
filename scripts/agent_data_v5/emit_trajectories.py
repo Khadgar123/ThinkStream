@@ -132,10 +132,25 @@ def _build_trajectory_record(
 ) -> Dict:
     """Bundle one trajectory's samples into a single row.
 
-    Sorts samples by chunk_idx, then by sample_type so that within-chunk
-    multi-turn (e.g., recall_query before recall_response) keeps order.
-    Lifts trajectory-level metadata from the first sample (all samples in
-    a trajectory share the same card_id / family / gold_answer).
+    v12.4 enrichment (per user feedback 2026-04-29):
+    - Extract `questions`: list of {card_id, family, gold_answer,
+      ask_chunk, ...} for EVERY distinct card in the trajectory
+      (was: single trajectory.metadata from first sample, missing others).
+    - Extract `gold_action_per_chunk`: map chunk_idx → gold sample_type
+      from the placement plan (the per-chunk authoritative ground truth
+      for silent vs response decisions, regardless of which card "owns"
+      that chunk).
+
+    Sample sort:
+      Primary: chunk_idx ascending
+      Secondary: within-chunk multi-turn order (query → response → ...)
+
+    Why this matters for RL trajectory-level reward:
+      The OLD shape (single metadata) only let the reward function score
+      ONE question per trajectory. Real trajectories have up to 3 cards
+      (max_per_traj=3 in pass3b). Multi-question scoring needs the full
+      `questions` list. Per-chunk silent_quality scoring needs the
+      `gold_action_per_chunk` map.
     """
     sorted_samples = sorted(
         samples,
@@ -159,7 +174,61 @@ def _build_trajectory_record(
         }
 
     first = sorted_samples[0]
-    meta = first.get("metadata") or {}
+
+    # ── v12.4: extract ALL questions (one per distinct card_id) ──
+    # A trajectory typically has multiple cards (max_per_traj=3 in pass3b).
+    # Each card carries its own gold_answer, family, support_chunks. Group
+    # by card_id and pick the response/recall_response sample's chunk_idx
+    # as the canonical ask_chunk for that question.
+    questions: List[Dict] = []
+    seen_cards: set = set()
+    for s in sorted_samples:
+        cid = s.get("card_id", "")
+        if not cid or cid in seen_cards:
+            continue
+        seen_cards.add(cid)
+        meta = s.get("metadata") or {}
+        if not meta.get("gold_answer"):
+            # Base/silent samples without a real question — skip.
+            continue
+        # Find this card's response/recall_response chunk(s).
+        ask_chunks = sorted({
+            int(x.get("chunk_idx", 0))
+            for x in sorted_samples
+            if x.get("card_id") == cid
+            and x.get("sample_type") in ("response", "recall_response")
+        })
+        questions.append({
+            "card_id": cid,
+            "family": meta.get("family", ""),
+            "gold_answer": meta.get("gold_answer", ""),
+            "canonical_answer": meta.get("canonical_answer", ""),
+            "answer_form": meta.get("answer_form", ""),
+            "availability": meta.get("availability", ""),
+            "support_chunks": list(meta.get("support_chunks") or []),
+            "gold_compress_chunks": list(meta.get("gold_compress_chunks") or []),
+            # ask_chunks: list because some cards have multi_response
+            # (e.g., F7 step-progress probes). Most are length-1.
+            "ask_chunks": ask_chunks,
+        })
+
+    # ── v12.4: per-chunk gold_action map ──
+    # The placement plan says "at chunk K, gold action is X" — silent /
+    # response / recall / compress. This is the authoritative per-chunk
+    # supervision for silent_quality reward, independent of which card
+    # owns that chunk. Multiple samples on one chunk pick the most
+    # informative non-silent action (response > recall > compress > silent).
+    action_priority = {
+        "response": 0, "recall_response": 1, "recall_query": 2,
+        "compress": 3, "recall_silent": 4, "silent": 5,
+    }
+    gold_action_per_chunk: Dict[int, str] = {}
+    for s in sorted_samples:
+        ci = int(s.get("chunk_idx", 0))
+        st = s.get("sample_type", "silent")
+        prev = gold_action_per_chunk.get(ci)
+        if prev is None or action_priority.get(st, 99) < action_priority.get(prev, 99):
+            gold_action_per_chunk[ci] = st
 
     # Stats
     chunks = [int(s.get("chunk_idx", 0)) for s in sorted_samples]
@@ -167,25 +236,39 @@ def _build_trajectory_record(
     for s in sorted_samples:
         actions[s.get("sample_type", "?")] += 1
 
+    # Legacy metadata from first non-base sample for backward compat.
+    legacy_first_card = next(
+        (s for s in sorted_samples if (s.get("metadata") or {}).get("gold_answer")),
+        first,
+    )
+    lf_meta = legacy_first_card.get("metadata") or {}
+
     return {
         "video_id": video_id,
         "trajectory_id": trajectory_id,
         "video_path": first.get("video_path", ""),
-        "card_id": first.get("card_id", ""),
+        "card_id": legacy_first_card.get("card_id", ""),     # legacy
         "protocol_version": first.get("protocol_version", "v12"),
+        # Legacy metadata (first card only) — kept for backward compat
+        # with consumers that pre-date v12.4 multi-question schema.
         "metadata": {
-            "family": meta.get("family", ""),
-            "gold_action": meta.get("gold_action", ""),
-            "gold_answer": meta.get("gold_answer", ""),
-            "canonical_answer": meta.get("canonical_answer", ""),
-            "answer_form": meta.get("answer_form", ""),
-            "availability": meta.get("availability", ""),
-            "support_chunks": meta.get("support_chunks", []),
-            "gold_compress_chunks": meta.get("gold_compress_chunks", []),
+            "family": lf_meta.get("family", ""),
+            "gold_action": lf_meta.get("gold_action", ""),
+            "gold_answer": lf_meta.get("gold_answer", ""),
+            "canonical_answer": lf_meta.get("canonical_answer", ""),
+            "answer_form": lf_meta.get("answer_form", ""),
+            "availability": lf_meta.get("availability", ""),
+            "support_chunks": lf_meta.get("support_chunks", []),
+            "gold_compress_chunks": lf_meta.get("gold_compress_chunks", []),
         },
+        # v12.4 — multi-question per trajectory.
+        "questions": questions,
+        # v12.4 — per-chunk gold_action map (str keys for JSON-friendly).
+        "gold_action_per_chunk": {str(k): v for k, v in gold_action_per_chunk.items()},
         "samples": sorted_samples,
         "stats": {
             "n_samples": len(sorted_samples),
+            "n_questions": len(questions),
             "chunk_idx_min": min(chunks),
             "chunk_idx_max": max(chunks),
             "n_chunks_covered": len(set(chunks)),

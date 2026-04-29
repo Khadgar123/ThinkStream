@@ -238,6 +238,189 @@ def compute_recall_quality_v12(
     return len(union & gold) / len(gold)
 
 
+def compute_trajectory_outcome_v12(
+    rollout_chunk_outputs: List[Dict],     # [{chunk_idx, kind, answer_text, ...}, ...]
+    trajectory_questions: List[Dict],       # from emit_trajectories `questions` field
+    *,
+    answer_window_chunks: int = 5,
+    answer_form_judge=None,
+) -> Dict[str, float]:
+    """v12.4 — multi-question trajectory outcome scoring.
+
+    Replaces single-question outcome (which only credits the first non-empty
+    answer in the rollout). For trajectories with multiple cards (max 3 in
+    pass3b plan), each question gets independently scored, then averaged.
+
+    Why this matters:
+      A trajectory with 3 cards (F5 at chunk 6, M1 at chunk 28, F1 at chunk 41)
+      produces 3 chances to answer. Single-question reward only scores the
+      first; multi-question averages all 3, giving the policy denser feedback
+      and rewarding the trajectory-level memory state that supports later
+      questions (e.g., the M1 question at chunk 28 needs memory of chunk
+      0-10 events that no longer fit visible_window).
+
+    Args:
+      rollout_chunk_outputs: list of parsed model outputs per chunk, ordered
+        by chunk_idx. Each dict has at minimum:
+          {"chunk_idx": int, "kind": "answer"|"recall"|"compress"|"unknown",
+           "answer_text": Optional[str]}
+      trajectory_questions: list from emit_trajectories `questions` field,
+        each with {card_id, gold_answer, ask_chunks, answer_form, ...}
+      answer_window_chunks: how many chunks AFTER ask_chunk count as
+        on-time response (matches timing_reward visibility window).
+      answer_form_judge: optional callable(model_answer, gold_answer,
+        answer_form) → float ∈ [0,1]. If None, uses compute_outcome_reward_v12
+        (literal/strict-form rule matcher + fuzzy fallback).
+
+    Returns:
+      {
+        "outcome":         mean per-question correctness ∈ [0, 1]
+        "n_questions":     # of questions in trajectory
+        "n_answered":      # of questions where model emitted any answer
+        "n_correct":       # of questions answered correctly
+        "per_q_outcomes":  list of per-question float scores (for diagnostics)
+      }
+
+    Empty trajectory (zero questions): returns outcome=0, n_*=0.
+    """
+    if not trajectory_questions:
+        return {
+            "outcome": 0.0, "n_questions": 0, "n_answered": 0,
+            "n_correct": 0, "per_q_outcomes": [],
+        }
+
+    # Index rollout outputs by chunk_idx for fast lookup
+    by_chunk: Dict[int, Dict] = {}
+    for out in rollout_chunk_outputs:
+        ci = int(out.get("chunk_idx", -1))
+        if ci >= 0:
+            by_chunk[ci] = out
+
+    per_q_outcomes: List[float] = []
+    n_answered = 0
+    n_correct = 0
+
+    for q in trajectory_questions:
+        ask_chunks = q.get("ask_chunks") or []
+        if not ask_chunks:
+            # No canonical ask_chunk — treat as unanswerable, score 0.
+            per_q_outcomes.append(0.0)
+            continue
+        # Window: first ask_chunk to ask_chunk + answer_window
+        ask_start = min(ask_chunks)
+        ask_end = max(ask_chunks) + answer_window_chunks
+
+        # Find the FIRST non-empty answer in the window
+        model_answer = None
+        for ci in range(ask_start, ask_end + 1):
+            out = by_chunk.get(ci)
+            if out is None:
+                continue
+            if out.get("kind") == "answer" and out.get("answer_text"):
+                model_answer = out["answer_text"]
+                break
+
+        if model_answer is None:
+            per_q_outcomes.append(0.0)
+            continue
+        n_answered += 1
+
+        # Score this question's answer
+        if answer_form_judge is not None:
+            score = float(answer_form_judge(
+                model_answer, q.get("gold_answer", ""),
+                q.get("answer_form", ""),
+            ))
+        else:
+            score = compute_outcome_reward_v12(
+                model_answer, q.get("gold_answer", ""),
+                answer_form=q.get("answer_form", ""),
+            )
+        per_q_outcomes.append(score)
+        if score >= 1.0:
+            n_correct += 1
+
+    mean_outcome = sum(per_q_outcomes) / len(per_q_outcomes)
+    return {
+        "outcome": mean_outcome,
+        "n_questions": len(trajectory_questions),
+        "n_answered": n_answered,
+        "n_correct": n_correct,
+        "per_q_outcomes": per_q_outcomes,
+    }
+
+
+def compute_per_chunk_silent_quality_v12(
+    rollout_chunk_outputs: List[Dict],     # parsed model output per chunk
+    gold_action_per_chunk: Dict,            # str(chunk_idx) → gold sample_type
+) -> Dict[str, float]:
+    """v12.4 — per-chunk silent_quality, averaged over the trajectory.
+
+    Replaces single-point silent_quality (which only scores the trajectory's
+    final answer behavior). Now we score EACH chunk's silent/respond decision
+    against the placement plan's gold action map.
+
+    For each chunk in the rollout:
+      gold says "silent" / model emits empty answer  → +0.3 (correct silence)
+      gold says "silent" / model emits answer        → -0.6 (HALLUCINATION)
+      gold says "response"/"recall_response" / model emits answer → 0.0
+        (correctness handled by trajectory_outcome reward)
+      gold says "response"/"recall_response" / model is silent     → -0.6 (MISSED)
+      gold says "compress"/"recall_query" — neutral (other rewards apply)
+
+    Returns:
+      {
+        "silent_quality":   mean score over scored chunks ∈ [-0.6, +0.3]
+        "n_chunks_scored":  # chunks with non-neutral gold action
+        "n_correct_silent": # correct silence cases
+        "n_hallucinate":    # gold-silent but model-talked cases
+        "n_missed":         # gold-response but model-silent cases
+      }
+    """
+    n_correct = 0
+    n_hallucinate = 0
+    n_missed = 0
+    score_sum = 0.0
+    n_scored = 0
+
+    by_chunk = {int(o.get("chunk_idx", -1)): o for o in rollout_chunk_outputs}
+
+    for ci_str, gold_action in gold_action_per_chunk.items():
+        ci = int(ci_str)
+        out = by_chunk.get(ci)
+        if out is None:
+            continue
+        kind = out.get("kind", "unknown")
+        ans = out.get("answer_text") or ""
+        has_answer = (kind == "answer") and bool(ans.strip())
+
+        if gold_action == "silent" or gold_action == "recall_silent":
+            n_scored += 1
+            if not has_answer:
+                score_sum += 0.3
+                n_correct += 1
+            else:
+                score_sum += -0.6
+                n_hallucinate += 1
+        elif gold_action in ("response", "recall_response"):
+            n_scored += 1
+            if has_answer:
+                score_sum += 0.0  # correctness reward handles this
+            else:
+                score_sum += -0.6
+                n_missed += 1
+        # else compress / recall_query — neutral, skip
+
+    mean_score = score_sum / n_scored if n_scored > 0 else 0.0
+    return {
+        "silent_quality": mean_score,
+        "n_chunks_scored": n_scored,
+        "n_correct_silent": n_correct,
+        "n_hallucinate": n_hallucinate,
+        "n_missed": n_missed,
+    }
+
+
 def compute_silent_quality_v12(
     final_answer: Optional[str],
     gold_action: str,

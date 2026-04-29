@@ -66,30 +66,39 @@ def test_no_empty_trajectory():
         print(f"  PASS {fname}: no empty trajectories")
 
 
-def test_metadata_consistency():
-    """Trajectory metadata must match the metadata of all its samples
-    (all samples in one trajectory share card_id / family / gold_answer)."""
+def test_metadata_consistency_v124():
+    """Each sample's metadata must match SOME question in the trajectory's
+    questions list (v12.4: multi-card trajectories — different chunks may
+    own different cards, so per-sample metadata varies; but every real
+    card sample must correspond to one of the questions)."""
     for fname in TRAJ_FILES:
         rows = _load_trajectories(fname)
         if rows is None:
             continue
-        mismatched = 0
+        unmatched = 0
         for row in rows:
-            traj_meta = row["metadata"]
+            qs_by_card = {q["card_id"]: q for q in row.get("questions", [])}
             for s in row["samples"]:
+                cid = s.get("card_id", "")
                 s_meta = s.get("metadata") or {}
-                if not s_meta:
+                # Skip base/silent samples without a gold_answer
+                if not s_meta.get("gold_answer") or not cid:
                     continue
-                # Must agree on family + gold_answer if both present
-                for key in ("family", "gold_answer"):
-                    tv = traj_meta.get(key, "")
-                    sv = s_meta.get(key, "")
-                    if tv and sv and tv != sv:
-                        mismatched += 1
-        assert mismatched == 0, (
-            f"{fname}: {mismatched} sample-vs-trajectory metadata mismatches"
+                q = qs_by_card.get(cid)
+                if q is None:
+                    unmatched += 1
+                    continue
+                # Sample.metadata must agree with its question
+                if s_meta.get("family") and q.get("family") and (
+                    s_meta["family"] != q["family"]
+                ):
+                    unmatched += 1
+        assert unmatched == 0, (
+            f"{fname}: {unmatched} samples have card_id not in trajectory.questions "
+            f"or family mismatch with their card"
         )
-        print(f"  PASS {fname}: metadata consistent ({len(rows)} trajectories)")
+        print(f"  PASS {fname}: per-sample metadata consistent with questions list "
+              f"({len(rows)} trajectories)")
 
 
 def test_splits_disjoint_at_video_level():
@@ -152,14 +161,80 @@ def test_sample_count_matches_pipeline_stats():
     print(f"  PASS total samples = {total} (pipeline_stats.passed = {target})")
 
 
+def test_questions_field_present_v124():
+    """v12.4 — every trajectory must have a `questions` list (may be empty
+    for base-only trajectories) and `gold_action_per_chunk` dict."""
+    seen_multi_q = 0
+    seen_per_chunk_map = 0
+    for fname in TRAJ_FILES:
+        rows = _load_trajectories(fname)
+        if rows is None:
+            continue
+        for row in rows:
+            assert "questions" in row, (
+                f"{fname} traj={row.get('trajectory_id')}: missing v12.4 'questions' field"
+            )
+            assert "gold_action_per_chunk" in row, (
+                f"{fname} traj={row.get('trajectory_id')}: missing v12.4 'gold_action_per_chunk'"
+            )
+            # Each question must have card_id + gold_answer + ask_chunks
+            for q in row["questions"]:
+                assert "card_id" in q
+                assert "gold_answer" in q
+                assert "ask_chunks" in q
+                assert isinstance(q["ask_chunks"], list)
+            if len(row["questions"]) >= 2:
+                seen_multi_q += 1
+            if row["gold_action_per_chunk"]:
+                seen_per_chunk_map += 1
+    assert seen_multi_q > 0, (
+        "expected at least some trajectories with ≥2 questions"
+    )
+    assert seen_per_chunk_map > 0, (
+        "expected gold_action_per_chunk to be populated"
+    )
+    print(f"  PASS v12.4 questions+gold_action_per_chunk "
+          f"(multi_q={seen_multi_q}, with_per_chunk_map={seen_per_chunk_map})")
+
+
+def test_gold_action_consistent_with_samples():
+    """gold_action_per_chunk must reflect the highest-priority sample_type
+    on each chunk (response > recall_response > recall_query > compress > silent)."""
+    priority = {
+        "response": 0, "recall_response": 1, "recall_query": 2,
+        "compress": 3, "recall_silent": 4, "silent": 5,
+    }
+    for fname in TRAJ_FILES:
+        rows = _load_trajectories(fname)
+        if rows is None:
+            continue
+        for row in rows:
+            map_ = row.get("gold_action_per_chunk") or {}
+            # Build expected map from samples
+            expected = {}
+            for s in row["samples"]:
+                ci = str(s.get("chunk_idx", 0))
+                st = s.get("sample_type", "silent")
+                if ci not in expected or priority.get(st, 99) < priority.get(expected[ci], 99):
+                    expected[ci] = st
+            for ci, st in expected.items():
+                assert map_.get(ci) == st, (
+                    f"{fname} traj={row['trajectory_id']} chunk={ci}: "
+                    f"map says {map_.get(ci)} but samples imply {st}"
+                )
+        print(f"  PASS {fname}: gold_action_per_chunk matches sample priorities")
+
+
 def main():
     tests = [
         test_chunk_idx_ordered,
         test_no_empty_trajectory,
-        test_metadata_consistency,
+        test_metadata_consistency_v124,
         test_splits_disjoint_at_video_level,
         test_protocol_version_consistent,
         test_sample_count_matches_pipeline_stats,
+        test_questions_field_present_v124,
+        test_gold_action_consistent_with_samples,
     ]
     failures = []
     for t in tests:

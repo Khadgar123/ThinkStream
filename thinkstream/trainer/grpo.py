@@ -942,6 +942,9 @@ from thinkstream.trainer.v12_rewards import (
     compute_recall_quality_v12 as _compute_recall_quality_v12,
     compute_silent_quality_v12 as _compute_silent_quality_v12,
     aggregate_v12_advantages as _aggregate_v12_advantages,
+    # v12.4 — multi-question trajectory + per-chunk silent_quality
+    compute_trajectory_outcome_v12 as _compute_trajectory_outcome_v12,
+    compute_per_chunk_silent_quality_v12 as _compute_per_chunk_silent_quality_v12,
 )
 
 # v12.2 chunk-level rollout (MemAgent recurrent pattern + ReMemR1 mixed
@@ -1154,6 +1157,162 @@ def _calc_rewards_v12(
     for k in keys:
         rewards = rewards + weights.get(k, 0.0) * rewards_dict[k] * masks_dict[k]
 
+    rewards_masks = torch.stack([masks_dict[k] for k in keys], dim=1)
+    return rewards, rewards_dict, rewards_masks
+
+
+def _calc_rewards_v12_trajectory(
+    rollout_data: List[Dict[str, Any]],
+    *,
+    group_size: int,
+    tokenizer: Any,
+    answer_window_chunks: int = 5,
+) -> Tuple[torch.Tensor, Dict[str, torch.Tensor], torch.Tensor]:
+    """v12.4 — trajectory-level reward computation (multi-question + per-chunk).
+
+    Replaces single-question `_calc_rewards_v12` for callers that have
+    rolled out a TRAJECTORY (multiple cards, max_per_traj=3 from pass3b).
+
+    Differences from v12.3 _calc_rewards_v12:
+      1. **outcome**: averages per-question correctness over ALL cards in
+         the trajectory (was: scored ONLY first non-empty answer).
+      2. **silent_quality**: scores EACH chunk's silent/respond decision
+         against gold_action_per_chunk (was: scored only trajectory-end).
+      3. **timing**: averaged over per-question timing scores.
+      4. **format / spam**: unchanged (already trajectory-level).
+      5. **recall_quality / compress_quality**: still dropped (v12.3 design).
+
+    Input shape:
+      rollout_data: list of dicts with:
+        {
+          "raw_sample": {
+            "video_id": str,
+            "trajectory_id": str,
+            "questions": [{card_id, gold_answer, ask_chunks, ...}, ...],
+            "gold_action_per_chunk": {str(chunk_idx): sample_type, ...},
+            ...
+          },
+          "chunk_results": [{"chunk_idx": int, "generated_tokens": [G][...], ...}, ...]
+        }
+
+    Output: same shape as `_calc_rewards_v12` —
+      (rewards [B], rewards_dict {key: [B]}, rewards_masks [B, num_keys])
+      where B = N_trajectories × group_size.
+    """
+    from thinkstream.data.agent_protocol import parse_agent_output_v12
+
+    weights = V12_DEFAULT_REWARD_WEIGHTS
+    keys = list(V12_REWARD_DICT_KEYS)
+    all_rewards = {k: [] for k in keys}
+    all_masks = {k: [] for k in keys}
+
+    for sample_data in rollout_data:
+        raw_sample = sample_data["raw_sample"]
+        chunk_results: List[Dict[str, Any]] = sample_data["chunk_results"]
+        questions = list(raw_sample.get("questions") or [])
+        gold_action_per_chunk = dict(raw_sample.get("gold_action_per_chunk") or {})
+
+        for g in range(group_size):
+            # Parse each chunk's output for this rollout group index g.
+            chunk_outputs: List[Dict[str, Any]] = []
+            chunk_texts: List[str] = []
+            n_recall = 0
+            n_compress = 0
+            for cr in chunk_results:
+                gen_tokens = cr.get("generated_tokens", [])
+                if g >= len(gen_tokens):
+                    continue
+                tokens = gen_tokens[g]
+                if hasattr(tokens, "tolist"):
+                    tokens = tokens.tolist()
+                text = tokenizer.decode(tokens, skip_special_tokens=False)
+                chunk_texts.append(text)
+                parsed = parse_agent_output_v12(text)
+                chunk_outputs.append({
+                    "chunk_idx": cr.get("chunk_idx"),
+                    "kind": parsed.get("kind", "unknown"),
+                    "answer_text": parsed.get("answer_text"),
+                    "tool_call": parsed.get("tool_call"),
+                })
+                if parsed.get("kind") == "recall":
+                    n_recall += 1
+                elif parsed.get("kind") == "compress":
+                    n_compress += 1
+
+            # ── outcome (multi-question) ──
+            outcome_res = _compute_trajectory_outcome_v12(
+                rollout_chunk_outputs=chunk_outputs,
+                trajectory_questions=questions,
+                answer_window_chunks=answer_window_chunks,
+            )
+            all_rewards["outcome"].append(outcome_res["outcome"])
+            # Mask=0 if trajectory has no questions (base-only)
+            all_masks["outcome"].append(1.0 if questions else 0.0)
+
+            # ── timing (averaged over questions) ──
+            per_q_timings = []
+            for q, q_score in zip(questions, outcome_res.get("per_q_outcomes", [])):
+                ask_chunks = q.get("ask_chunks") or []
+                if not ask_chunks:
+                    continue
+                # Find model's answer chunk for this question
+                model_chunk = None
+                ask_start = min(ask_chunks)
+                ask_end = max(ask_chunks) + answer_window_chunks
+                for out in chunk_outputs:
+                    ci = out.get("chunk_idx")
+                    if ci is None:
+                        continue
+                    if (ci is not None and ask_start <= ci <= ask_end
+                            and out.get("kind") == "answer"
+                            and out.get("answer_text")):
+                        model_chunk = ci
+                        break
+                t = _compute_timing_reward_v12(
+                    answer_chunk=model_chunk,
+                    visible_start_chunk=ask_start,
+                    visible_end_chunk=ask_end,
+                )
+                per_q_timings.append(t)
+            timing_avg = (
+                sum(per_q_timings) / len(per_q_timings)
+                if per_q_timings else 0.0
+            )
+            all_rewards["timing"].append(timing_avg)
+            all_masks["timing"].append(1.0 if per_q_timings else 0.0)
+
+            # ── format ──
+            fmt = _compute_format_reward_v12(chunk_texts)
+            all_rewards["format"].append(fmt)
+            all_masks["format"].append(1.0)
+
+            # ── spam ──
+            spam = _compute_spam_score_v12(
+                n_recall_calls=n_recall, n_compress_calls=n_compress,
+            )
+            all_rewards["spam"].append(spam)
+            all_masks["spam"].append(1.0)
+
+            # ── silent_quality (per-chunk averaged) ──
+            silent_res = _compute_per_chunk_silent_quality_v12(
+                rollout_chunk_outputs=chunk_outputs,
+                gold_action_per_chunk=gold_action_per_chunk,
+            )
+            all_rewards["silent_quality"].append(silent_res["silent_quality"])
+            # Mask=0 if no chunks had non-neutral gold_action (no information)
+            all_masks["silent_quality"].append(
+                1.0 if silent_res["n_chunks_scored"] > 0 else 0.0
+            )
+
+    rewards_dict = {
+        k: torch.tensor(all_rewards[k], dtype=torch.float) for k in keys
+    }
+    masks_dict = {
+        k: torch.tensor(all_masks[k], dtype=torch.float) for k in keys
+    }
+    rewards = torch.zeros_like(rewards_dict[keys[0]])
+    for k in keys:
+        rewards = rewards + weights.get(k, 0.0) * rewards_dict[k] * masks_dict[k]
     rewards_masks = torch.stack([masks_dict[k] for k in keys], dim=1)
     return rewards, rewards_dict, rewards_masks
 

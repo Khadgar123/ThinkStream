@@ -332,6 +332,106 @@ def test_silent_quality_v12():
     print("✓ silent_quality_v12")
 
 
+def test_trajectory_outcome_v124_single_question():
+    """v12.4 trajectory outcome with single question — equivalent to v12.3
+    single-question outcome semantics."""
+    from thinkstream.trainer.v12_rewards import compute_trajectory_outcome_v12 as f
+
+    rollout = [
+        {"chunk_idx": 0, "kind": "answer", "answer_text": ""},
+        {"chunk_idx": 1, "kind": "answer", "answer_text": ""},
+        {"chunk_idx": 5, "kind": "answer", "answer_text": "red apron"},
+    ]
+    questions = [{
+        "card_id": "c1", "gold_answer": "red apron",
+        "answer_form": "literal", "ask_chunks": [5],
+    }]
+    res = f(rollout, questions)
+    assert res["outcome"] == 1.0, res
+    assert res["n_questions"] == 1
+    assert res["n_answered"] == 1
+    assert res["n_correct"] == 1
+    print("✓ trajectory_outcome_v124 single-question correct")
+
+
+def test_trajectory_outcome_v124_multi_question_mixed():
+    """v12.4 trajectory with 3 questions — answered correctly, wrong, missed."""
+    from thinkstream.trainer.v12_rewards import compute_trajectory_outcome_v12 as f
+
+    rollout = [
+        {"chunk_idx": 0, "kind": "answer", "answer_text": ""},
+        {"chunk_idx": 5, "kind": "answer", "answer_text": "red apron"},   # correct (Q1)
+        {"chunk_idx": 12, "kind": "answer", "answer_text": "blue"},        # wrong (Q2)
+        # Q3 ask=28 — model stays silent in entire window 28..33
+        {"chunk_idx": 28, "kind": "answer", "answer_text": ""},
+        {"chunk_idx": 30, "kind": "answer", "answer_text": ""},
+    ]
+    questions = [
+        {"card_id": "Q1", "gold_answer": "red apron",
+         "answer_form": "literal", "ask_chunks": [5]},
+        {"card_id": "Q2", "gold_answer": "yes",
+         "answer_form": "binary", "ask_chunks": [12]},
+        {"card_id": "Q3", "gold_answer": "3",
+         "answer_form": "number", "ask_chunks": [28]},
+    ]
+    res = f(rollout, questions)
+    # outcome = (1 + 0 + 0) / 3 = 0.333
+    assert abs(res["outcome"] - 1/3) < 1e-6, res
+    assert res["n_questions"] == 3
+    assert res["n_answered"] == 2     # Q1 and Q2 answered (Q3 silent)
+    assert res["n_correct"] == 1
+    assert res["per_q_outcomes"] == [1.0, 0.0, 0.0]
+    print(f"✓ trajectory_outcome_v124 multi-question (1 correct of 3) = {res['outcome']:.3f}")
+
+
+def test_trajectory_outcome_v124_empty_questions():
+    """Trajectory with zero questions (base-only) → outcome=0, no crash."""
+    from thinkstream.trainer.v12_rewards import compute_trajectory_outcome_v12 as f
+    res = f([{"chunk_idx": 0, "kind": "answer", "answer_text": ""}], [])
+    assert res["outcome"] == 0.0
+    assert res["n_questions"] == 0
+    print("✓ trajectory_outcome_v124 empty-questions")
+
+
+def test_per_chunk_silent_quality_v124():
+    """v12.4 per-chunk silent_quality from gold_action_per_chunk map."""
+    from thinkstream.trainer.v12_rewards import compute_per_chunk_silent_quality_v12 as f
+
+    rollout = [
+        {"chunk_idx": 0, "kind": "answer", "answer_text": ""},        # gold=silent ✓ +0.3
+        {"chunk_idx": 1, "kind": "answer", "answer_text": "talky"},   # gold=silent ✗ -0.6
+        {"chunk_idx": 5, "kind": "answer", "answer_text": "red"},     # gold=response ✓ 0.0
+        {"chunk_idx": 6, "kind": "answer", "answer_text": ""},        # gold=response ✗ -0.6
+        {"chunk_idx": 9, "kind": "compress", "answer_text": None},    # gold=compress neutral
+    ]
+    gold_map = {
+        "0": "silent", "1": "silent", "5": "response",
+        "6": "response", "9": "compress",
+    }
+    res = f(rollout, gold_map)
+    # 4 scored chunks; sum = +0.3 - 0.6 + 0 - 0.6 = -0.9; mean = -0.225
+    assert res["n_chunks_scored"] == 4, res
+    assert abs(res["silent_quality"] - (-0.225)) < 1e-6, res
+    assert res["n_correct_silent"] == 1
+    assert res["n_hallucinate"] == 1
+    assert res["n_missed"] == 1
+    print(f"✓ per_chunk_silent_quality_v124 = {res['silent_quality']:.3f}")
+
+
+def test_per_chunk_silent_quality_perfect_silence():
+    """All-silent rollout where gold matches → mean = +0.3."""
+    from thinkstream.trainer.v12_rewards import compute_per_chunk_silent_quality_v12 as f
+
+    rollout = [
+        {"chunk_idx": i, "kind": "answer", "answer_text": ""} for i in range(5)
+    ]
+    gold_map = {str(i): "silent" for i in range(5)}
+    res = f(rollout, gold_map)
+    assert res["silent_quality"] == 0.3
+    assert res["n_correct_silent"] == 5
+    print(f"✓ per_chunk_silent_quality_v124 perfect = {res['silent_quality']}")
+
+
 def test_silent_quality_v12_complements_outcome():
     """Verify silent_quality fills the reward gap that outcome alone misses.
 
@@ -372,6 +472,11 @@ if __name__ == "__main__":
     test_compress_quality_v12()
     test_recall_quality_v12()
     test_silent_quality_v12()
+    test_trajectory_outcome_v124_single_question()
+    test_trajectory_outcome_v124_multi_question_mixed()
+    test_trajectory_outcome_v124_empty_questions()
+    test_per_chunk_silent_quality_v124()
+    test_per_chunk_silent_quality_perfect_silence()
     test_silent_quality_v12_complements_outcome()
     test_v12_advantage_aggregation()
     print("\n✅ all v12.0 reward smoke tests passed")
