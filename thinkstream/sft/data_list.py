@@ -27,7 +27,22 @@ _AGENT_DATA_DIR = Path(
 
 
 def _agent_path(filename: str) -> str:
-    return str(_AGENT_DATA_DIR / filename)
+    """Resolve a final/-relative filename to a full path.
+
+    v12.5 (2026-04-29): falls back to .gz when the uncompressed file
+    is missing — the new pass4 trajectory files (~145MB raw) are
+    committed as .gz to fit GitHub's 100MB limit. read_jsonl in
+    data_processor.py reads .gz transparently.
+    """
+    p = _AGENT_DATA_DIR / filename
+    if p.exists():
+        return str(p)
+    gz = _AGENT_DATA_DIR / (filename + ".gz")
+    if gz.exists():
+        return str(gz)
+    # Caller will hit FileNotFoundError on attempt — that's the correct
+    # behavior so config typos surface clearly.
+    return str(p)
 
 
 DATASET_REGISTRY = {
@@ -95,6 +110,37 @@ DATASET_REGISTRY = {
     # in upstream's eval-monitoring commit.
     "stream_agent_test": {
         "annotation_path": _agent_path("test.jsonl"),
+        "data_path": "./",
+    },
+
+    # ─── v12.4/v12.5 trajectory + flat datasets ──────────────────────
+    # New canonical inputs, produced by `python -m
+    # scripts.agent_data_v5.pass4`. The OLD per-step files above remain
+    # for backward compat (1,635 each, post-MAX_SAMPLES_PER_VIDEO=15
+    # density cap). New datasets preserve all 47,289 verified samples
+    # from pass3e (no post-cap drop), organized by trajectory.
+    #
+    # SFT trainer ingests `*_full.jsonl` directly — flat per-step rows,
+    # 18,229 samples (11.2x recovery vs `train_sft.jsonl`).
+    "stream_agent_sft_full": {
+        "annotation_path": _agent_path("train_sft_full.jsonl"),
+        "data_path": "./",
+    },
+
+    # RL trainer + streaming benchmark eval ingest `*_trajectories.jsonl`
+    # — one row per trajectory, with `questions`, `gold_action_per_chunk`,
+    # full `samples` list. Consumed by `_calc_rewards_v12_trajectory` for
+    # multi-question per-ask scoring.
+    "stream_agent_rl_traj": {
+        "annotation_path": _agent_path("train_rl_trajectories.jsonl"),
+        "data_path": "./",
+    },
+    "stream_agent_val_traj": {
+        "annotation_path": _agent_path("val_trajectories.jsonl"),
+        "data_path": "./",
+    },
+    "stream_agent_test_traj": {
+        "annotation_path": _agent_path("test_trajectories.jsonl"),
         "data_path": "./",
     },
 }

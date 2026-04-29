@@ -194,6 +194,13 @@ def rank0_print(*args):
 
 
 def read_jsonl(path: str) -> list:
+    """Read .jsonl. v12.5 (2026-04-29): also reads .jsonl.gz transparently
+    (gz form is committed-to-git for files >100MB GitHub limit, and pass4
+    output for trajectory files is gzipped on the cluster path)."""
+    if path.endswith(".gz"):
+        import gzip
+        with gzip.open(path, "rt", encoding="utf-8") as f:
+            return [json.loads(line) for line in f]
     with open(path, "r") as f:
         return [json.loads(line) for line in f]
 

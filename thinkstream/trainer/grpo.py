@@ -1444,15 +1444,37 @@ def calc_rewards(
                      Column order matches REWARD_DICT_KEYS.
     """
     # v12.0 dispatch — when ANY rollout sample carries protocol_version=v12,
-    # route to the v12 5-component reward path. Mixing v11+v12 in the same
-    # batch is unsupported (the reward dict keys differ).
+    # route to the v12 reward path. Mixing v11+v12 in the same batch is
+    # unsupported (the reward dict keys differ).
+    #
+    # v12.4 sub-dispatch: if the sample additionally carries `questions`
+    # (multi-card trajectory format from pass4 *_trajectories.jsonl), use
+    # the trajectory-level reward function. Otherwise fall through to the
+    # single-question path (legacy *_full.jsonl flat samples or
+    # *_train_sft.jsonl).
     _is_v12 = False
+    _is_traj = False
     if rollout_data:
         first_sample = rollout_data[0].get("raw_sample") or {}
         first_meta = first_sample.get("metadata") or {}
         _is_v12 = (
             first_sample.get("protocol_version") == "v12"
             or first_meta.get("protocol_version") == "v12"
+        )
+        # Trajectory format detection: presence of `questions` list and
+        # `gold_action_per_chunk` map (both populated by pass4).
+        _is_traj = (
+            isinstance(first_sample.get("questions"), list)
+            and isinstance(first_sample.get("gold_action_per_chunk"), dict)
+        )
+    if _is_v12 and _is_traj:
+        rewards, rewards_dict_v12, rewards_masks_v12 = _calc_rewards_v12_trajectory(
+            rollout_data,
+            group_size=group_size,
+            tokenizer=tokenizer,
+        )
+        return ctx.set(rewards, rewards_dict_v12).set(
+            rewards_masks, rewards_masks_v12
         )
     if _is_v12:
         rewards, rewards_dict_v12, rewards_masks_v12 = _calc_rewards_v12(
