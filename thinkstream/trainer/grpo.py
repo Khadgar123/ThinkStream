@@ -1105,40 +1105,25 @@ def _calc_rewards_v12(
             all_rewards["spam"].append(spam)
             all_masks["spam"].append(1.0)
 
-            # ── compress_quality ──
-            cq = _compute_compress_quality_v12(
-                summary_text=compress_summary_text,
-                summary_range=compress_summary_range,
-                gold_summary_text=gold_summary_text,
-                gold_range=(
-                    [min(gold_compress_chunks), max(gold_compress_chunks)]
-                    if gold_compress_chunks else None
-                ),
-            )
-            all_rewards["compress_quality"].append(cq)
-            # Apply compress_quality only when chunk has compress action
-            all_masks["compress_quality"].append(
-                1.0 if compress_summary_text is not None else 0.0
-            )
+            # ── compress_quality / recall_quality DROPPED in v12.3 ──
+            # DeepEyesV2 (arXiv:2511.05271) and 2026 NeurIPS/ICLR consensus:
+            # tool-specific quality rewards add complexity without matching
+            # the generalization gain that pure outcome + GRPO group-norm
+            # delivers. support_chunks-based hit_rate also dies on families
+            # that lack annotation (CR3/CR6/CR7). The functions remain in
+            # v12_rewards.py for legacy callers; we just don't aggregate
+            # them. Tool credit flows naturally via outcome propagation.
+            #
+            # We still capture compress / recall metadata above for telemetry.
+            _ = compress_summary_text       # silence linter — future telemetry
+            _ = compress_summary_range      # silence linter — future telemetry
+            _ = recall_returned_per_call    # silence linter — future telemetry
+            _ = recall_query_text           # silence linter — future telemetry
+            _ = support_chunks              # silence linter — future telemetry
+            _ = gold_summary_text           # silence linter — future telemetry
+            _ = gold_compress_chunks        # silence linter — future telemetry
 
-            # ── recall_quality (v12.2) ──
-            # Mask=0 when (a) sample didn't recall, or (b) no support_chunks
-            # gold available (e.g., HLD/CR6/CR7 families). Otherwise the
-            # function returns either a hit_rate ∈ [0,1] or one of the
-            # explicit penalties (-0.5 empty retrieval, -0.3 query leak).
-            recall_q = _compute_recall_quality_v12(
-                recall_returned_chunks=recall_returned_per_call,
-                support_chunks=support_chunks,
-                recall_fired=(n_recall > 0),
-                query_text=recall_query_text,
-                gold_answer=gt_answer,
-            )
-            all_rewards["recall_quality"].append(recall_q)
-            all_masks["recall_quality"].append(
-                1.0 if (n_recall > 0 and support_chunks) else 0.0
-            )
-
-            # ── silent_quality (v12.2) ──
+            # ── silent_quality (v12.2 — kept; streaming-specific) ──
             # Closes the two error modes Q3 audit exposed:
             #   silent-when-should-respond  → -0.6
             #   hallucinate-when-should-be-silent → -0.6

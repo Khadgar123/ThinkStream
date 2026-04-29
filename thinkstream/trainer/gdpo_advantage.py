@@ -83,32 +83,52 @@ DEFAULT_REWARD_WEIGHTS: Dict[str, float] = {
 # DeepEyesV2's `(1 - search_penalty) * acc` shape under-penalises when
 # acc=0 (spam free) and over-penalises when acc=1 (already getting full
 # reward). Linear additive `−spam_w * spam_score` decouples cleanly.
+# v12.3 (Apr 2026) — REWARD STACK SIMPLIFICATION
+#
+# Audit driven by user pushback (chunk-level support_chunks gold loses
+# generalization; many families e.g. CR3/CR6/CR7 have no support_chunks,
+# their reward signal would die under mask=0). Industry verification:
+#
+#   DeepEyesV2 (arXiv:2511.05271, Nov 2025) — final reward = 0.8·acc + 0.2·format.
+#     Tool-specific reward variables EXIST in code but are NOT used in the
+#     final score (verl/utils/reward_score/deepeyesv2.py:193). Paper quote:
+#     "relies only on two simple rewards, accuracy and format, without
+#     complex reward engineering" — explicit retreat from the original
+#     DeepEyes complex conditional tool reward.
+#   ReTool, MemAgent — outcome only.
+#   ReMemR1 — counterfactual delta (recall_with - recall_without word-overlap),
+#     NOT chunk-level gold annotations.
+#   NeurIPS 2025 / ICLR 2026 (TIPS, Multi-Turn Reasoning) — turn-level reward
+#     IS the trend, but DERIVED from outcome via advantage propagation, NOT
+#     from gold tool targets.
+#
+# Result: drop recall_quality + compress_quality from the production reward
+# stack. Their functions remain in v12_rewards.py for legacy callers, but
+# V12_REWARD_DICT_KEYS / V12_DEFAULT_REWARD_WEIGHTS no longer reference them.
+# Tool-decision credit assignment now flows via:
+#   1. outcome reward → GRPO group-norm propagates advantage to all chunks
+#      (rollouts whose recall/compress decisions led to correct answer get
+#       above-mean advantage; others get below-mean → policy learns)
+#   2. silent_quality + timing — streaming-specific signals (no industry
+#      analog); these are NOT chunk-level credit assignment, they're
+#      additional outcome dimensions ("when to talk", not just "what to say")
+#
+# v11 RL still uses the v11 keys (REWARD_DICT_KEYS, see top of this file).
 V12_REWARD_DICT_KEYS: tuple = (
-    "outcome",          # 0/1 final answer correctness (LLM-judge or rule)
+    "outcome",          # 0/1 per-question correctness; dominant signal
     "timing",           # bucketed timing reward (-1 early / +1 on / +0.5 late / -0.5 missed)
     "format",           # 0/1 — tags balanced, JSON parses, exactly one terminal
     "spam",             # >=0 — penalty for excess tool calls (additive)
-    "compress_quality", # 0..1 — only on compress turns, ROUGE/coverage vs gold summary
-    "recall_quality",   # v12.2 — chunk-level hit_rate vs support_chunks gold;
-                        #         -0.5 if recall fired but retrieved empty;
-                        #         -0.3 if query leaks gold answer.
-                        #         Mask=0 when sample didn't recall or no support_chunks.
-    "silent_quality",   # v12.2 — closes silent/response error modes:
-                        #         +0.3 correct silence, -0.6 hallucinate, -0.6 missed.
-                        #         Mask=1.0 always (every chunk has a silent/respond decision).
+    "silent_quality",   # streaming-specific: +0.3 correct silence, -0.6 hallucinate, -0.6 missed
 )
 
 V12_DEFAULT_REWARD_WEIGHTS: Dict[str, float] = {
-    "outcome":          1.0,    # primary signal
-    "timing":           0.3,    # explicit time penalty/bonus
-    "format":           0.1,    # weak — let outcome carry it
-    "spam":            -0.2,    # NEGATIVE — additive penalty (sign in weight,
-                                #            so r = sum(w * x) is the formula)
-    "compress_quality": 0.2,    # only contributes when chunk has compress action
-    "recall_quality":   0.3,    # v12.2 — chunk-level hit_rate; mid-weight (0.3 matches
-                                #         timing) since recall is sparse and informative
-    "silent_quality":   0.2,    # v12.2 — silent/response error correction; 0.2 ⇒ swing
-                                #         ±0.12 same order as outcome×0.5 (v11 parity)
+    "outcome":          1.0,    # primary signal — DeepEyesV2 0.8 ↑ to 1.0 (drop format weight)
+    "timing":           0.3,    # streaming bonus/penalty
+    "format":           0.1,    # weak — gate-like; per DeepEyesV2 0.2 but lower since
+                                # silent_quality + timing already shape the streaming policy
+    "spam":            -0.2,    # NEGATIVE — over-budget tool penalty (additive)
+    "silent_quality":   0.2,    # streaming-specific decision quality (no industry analog)
 }
 
 # Multi-level advantage mixing coefficient. final_adv = α·outcome + (1-α)·state

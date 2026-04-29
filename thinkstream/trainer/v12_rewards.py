@@ -312,13 +312,14 @@ def aggregate_v12_advantages(
     else:
         outcome_adv = _per_video_outcome_grpo(outcome, chunk_to_video_uid)
 
+    # v12.3 — minimal reward stack matching DeepEyesV2 (arXiv:2511.05271)
+    # philosophy: outcome dominant; tool-specific quality rewards dropped
+    # so support_chunks-poor families (CR3/CR6/CR7) aren't masked-out.
+    # compress_quality / recall_quality functions remain in this module for
+    # legacy callers but are not aggregated into state advantage anymore.
     state_components = [
-        "timing", "format", "spam", "compress_quality",
-        # v12.2 — chunk-level recall hit_rate (mask=0 when no recall fired
-        # or no support_chunks gold available).
-        "recall_quality",
-        # v12.2 — silent/response error correction (mask=1 always).
-        "silent_quality",
+        "timing", "format", "spam",
+        "silent_quality",   # streaming-specific decision quality
     ]
     state_sum = torch.zeros_like(outcome_adv)
     for k in state_components:
