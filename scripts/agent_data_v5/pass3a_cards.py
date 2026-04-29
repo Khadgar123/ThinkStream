@@ -54,36 +54,54 @@ FAMILY_TARGETS = {
     # CRR 2.9% / SSR 2.6%. Targets below mirror these proportions with each
     # task served by ≥1 family that emits the right form.
     #
-    # OCR (9.1%) → 2 cards
-    "F1": 2,
-    # ATR (7.1%) → 2 cards (F2 attribute-MC + S1 descriptive scene)
-    "F2": 1, "S1": 1,
-    # OJR (11.2%) → 3 cards (F3 number + R1 re-id + CR4 compositional)
-    "F3": 1, "R1": 1, "CR4": 1,
-    # STU (10.9%) → 2 cards
-    "F4": 2,
-    # ACR (6.6%) → 2 cards (E1 short MC + M1 full-video summary)
-    "E1": 1, "M1": 1,
-    # EPM (18.1%) → 4 cards (E2 event-watch with binary+MC mix +
+    # v12.5 (2026-04-29) — bump 26 → 41 cards/video to lower training-time
+    # silent ratio. Industry survey of streaming-video systems showed our
+    # 85% silent (effective 34% post-sampler) is on the high end of the
+    # QA-streaming range; raising question density brings raw silent toward
+    # ~70% and effective toward ~25-30%, closer to event-driven systems
+    # like MMDuet. Per-family bumps are weighted toward (a) high-OVO-share
+    # tasks already saturating well in batch1 (F1/F4/E2/N1/M1) and (b)
+    # reasoning families that yielded too few in batch1 (CR1/CR2/CR4/CR5).
+    # Plus a new PN1 family (Proactive Narration) — see FAMILY_PROMPTS
+    # for spec; LiveCC-style short observations at novel-event chunks.
+    #
+    # OCR (9.1%) → 3 cards (F1)
+    "F1": 3,
+    # ATR (7.1%) → 4 cards (F2 attribute-MC + S1 descriptive scene)
+    "F2": 2, "S1": 2,
+    # OJR (11.2%) → 4 cards (F3 number + R1 re-id + CR4 compositional)
+    "F3": 1, "R1": 1, "CR4": 2,
+    # STU (10.9%) → 3 cards
+    "F4": 3,
+    # ACR (6.6%) → 3 cards (E1 short MC + M1 full-video summary)
+    "E1": 1, "M1": 2,
+    # EPM (18.1%) → 5 cards (E2 event-watch with binary+MC mix +
     #              C1 comparison + CR1 causal-why)
-    "E2": 2, "C1": 1, "CR1": 1,
+    "E2": 3, "C1": 1, "CR1": 1,
     # CRR (2.9%) → 2 cards (CR1 above shares; CR5 forces descriptive form)
-    "CR5": 1,
-    # ASI (9.0%) → 2 cards (P1 procedure + CR2 ordering)
-    "P1": 1, "CR2": 1,
+    "CR5": 2,
+    # ASI (9.0%) → 3 cards (P1 procedure + CR2 ordering)
+    "P1": 2, "CR2": 1,
     # SSR (2.6%) → 1 card (F7 step-progress binary multi-probe)
     "F7": 1,
-    # REC (5.0%) → 1 card (F5 repetition counting, open number)
+    # REC (5.0%) → 1 card (F5 repetition counting)
     "F5": 1,
     # FPD (6.2%) → 1 card (F6 future prediction)
     "F6": 1,
     # HLD (11.3%) → 2 cards (N1 — multi-tier ask placement gives 6 placements)
     "N1": 2,
-    # CR3/CR6/CR7 — kept at 1 each so teacher attempts; eligibility on batch1
-    # is sparse and these may yield zero on many videos (acceptable).
+    # CR3/CR6/CR7 — kept at 1 each
     "CR3": 1, "CR6": 1, "CR7": 1,
+    # PN1 (Proactive Narration) — NEW v12.5 family. LiveCC-style short
+    # observations at novel-event chunks. answer_form=descriptive,
+    # 20-30 token answers. 5 cards/video at high-novelty chunks.
+    # OVO mapping: ATR/M1-adjacent (descriptive observation).
+    "PN1": 5,
 }
-# Total = 25 cards/video × 312 videos = 7,800 corpus pre-verify.
+# Total = 41 cards/video × 312 videos = 12,792 corpus pre-verify.
+# Expected post-verify ~88% pass: 11,257 cards. After pass3b density cap
+# (max_per_traj=3, max_traj=5 → 15 questions/video max), ~12,000 placements
+# and proportionally more response samples → silent raw drops 85% → ~70%.
 
 # v12.1 batch2: counter-cyclical multipliers for low-yield families.
 # Activated when env THINKSTREAM_BATCH=batch2. Generates MORE candidates
@@ -126,6 +144,11 @@ FAMILY_FORCE_ATTEMPT = {
     # to FORCE_ATTEMPT so every video gets exactly 1 M1 card (covers OVO ACR
     # 6.6% bucket together with E1).
     "M1",
+    # v12.5: PN1 (Proactive Narration) — picks high-novelty chunks from
+    # state_changes / new visible_entities; classify_chunks always emits
+    # candidates, but FORCE_ATTEMPT ensures the family is tried even when
+    # signals are sparse (very static videos).
+    "PN1",
 }
 
 # Retention class derived from family (not from 397B).
@@ -148,6 +171,10 @@ RETENTION_CLASS = {
     "CR2": "high",    # all 3 ordered events must be retained
     "CR3": "medium",  # goal is gist-level, survives compression
     "CR4": "high",    # both/all observations must be retained
+    # PN1 (Proactive Narration) — short observation grounded in single
+    # chunk. retention="low" because it's a moment-in-time snapshot;
+    # compress can drop the corresponding think without info loss.
+    "PN1": "low",
 }
 
 # Families that need the "absence" verification path: standard verify checks
@@ -762,6 +789,52 @@ If the video has no such ask→clue structure, output `[]`.
 
 {evidence}
 """ + _OUTPUT_SCHEMA,
+
+    # ── PN1 (Proactive Narration) — v12.5 NEW family ─────────────────────
+    # LiveCC-style short observations at novel-event chunks. Designed to
+    # raise non-silent training density without distorting QA-style
+    # semantics: each card asks the model to briefly describe what's
+    # currently happening, with a 20-30 token answer.
+    #
+    # Why a separate family: (a) M1 is full-video summary (long, late-asked),
+    # PN1 is per-chunk short observation (early/mid asked); (b) explicit
+    # answer_form="descriptive" + length cap forces short factual narration,
+    # not free-form essay; (c) higher target (5/video) drives effective
+    # response density up from ~3% raw to ~10% raw — proportionally lowers
+    # silent dominance after the class-balanced sampler takes over.
+    "PN1": """Based on the following video chunks, generate {n} PROACTIVE
+NARRATION cards. Each card asks the model to briefly describe what is
+currently happening in the scene at a specific chunk where novel content
+appears (state change, new entity, or distinctive action).
+
+Card structure:
+- question: "Briefly describe what is happening at this moment."
+            (or a similar prompt — vary slightly across the {n} cards)
+- canonical_answer: 20-30 tokens of factual visual description.
+                    Include entity attributes (color, material, state) and
+                    the action being performed. NO speculation, NO
+                    sound/smell, NO emotion words.
+- answer_form: "descriptive"
+- visibility_type: "transient"  (the moment-in-time observation)
+- support_chunks: SINGLE chunk where the observation is grounded
+                  (use the chunk_idx from evidence).
+- difficulty_tier: "easy_in_visual"
+
+Each card targets ONE distinct chunk from the evidence (no two cards
+sharing the same support_chunks).
+
+CRITICAL constraints (enforced by verifier):
+- canonical_answer length: 20-30 tokens (verifier rejects outside this range)
+- canonical_answer MUST contain at least 2 visible_entities terms
+  literally (no synonyms — BM25-style matching for grounding)
+- NO meta-language: avoid "the camera", "the video", "the frame"
+- NO future tense or speculation: only what is observable RIGHT NOW
+
+If fewer than {n} chunks have novel-event signals, output a shorter list
+(empty list `[]` is acceptable for very static videos).
+
+{evidence}
+""" + _OUTPUT_SCHEMA,
 }
 
 
@@ -1125,6 +1198,41 @@ def classify_chunks(evidence: List[Dict]) -> Dict[str, List[int]]:
             break
     if len(cr4_picks) >= 2:
         fc["CR4"] = cr4_picks
+
+    # ------------------------------------------------------------------
+    # PN1: proactive narration — pick chunks with high novelty signals.
+    # Novelty = state_change | new visible_entity (not seen in any
+    # earlier chunk) | OCR text first-appearance. Each candidate gets
+    # ONE PN1 card asking "describe what's happening at this chunk".
+    # Up to 8 candidates; FAMILY_TARGETS["PN1"] of them are kept.
+    # ------------------------------------------------------------------
+    seen_entity_ids: set = set()
+    seen_ocr_texts: set = set()
+    pn1_picks: List[int] = []
+    for cap in evidence:
+        idx = cap["chunk_idx"]
+        is_novel = False
+        # State change at this chunk = strong novelty signal
+        if cap.get("state_changes"):
+            is_novel = True
+        # First appearance of an entity ID
+        for e in cap.get("visible_entities", []):
+            eid = e.get("id", "")
+            if eid and eid != "unknown" and eid not in seen_entity_ids:
+                seen_entity_ids.add(eid)
+                is_novel = True
+        # First appearance of OCR text
+        for ocr in cap.get("ocr", []) or []:
+            txt = ocr if isinstance(ocr, str) else ocr.get("text", "")
+            txt = (txt or "").strip().lower()
+            if txt and len(txt) > 2 and txt not in seen_ocr_texts:
+                seen_ocr_texts.add(txt)
+                is_novel = True
+        if is_novel:
+            pn1_picks.append(idx)
+        if len(pn1_picks) >= 8:
+            break
+    fc["PN1"] = pn1_picks
 
     # Deduplicate
     for f in fc:
