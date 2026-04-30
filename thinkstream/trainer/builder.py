@@ -79,7 +79,7 @@ from thinkstream.trainer.grpo import (
     init_grpo_dataset,
     timer,
 )
-from thinkstream.trainer.gdpo_advantage import V12_V12_REWARD_DICT_KEYS
+from thinkstream.trainer.gdpo_advantage import V12_REWARD_DICT_KEYS
 from thinkstream.trainer.scope import grpo_scope
 
 

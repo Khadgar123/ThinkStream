@@ -320,10 +320,17 @@ def extract_frames(video_path: str, output_dir: Path, fps: int = 1) -> List[str]
     output_dir.mkdir(parents=True, exist_ok=True)
     pattern = str(output_dir / "frame_%06d.jpg")
 
-    # Check if already extracted
+    # Check if already extracted at the requested fps.
+    # Without fps validation, stale frames (e.g. 1fps cached on server)
+    # would be silently reused even when config demands 2fps,
+    # causing half the chunks to be lost (pass1 "serious bug").
+    fps_marker = output_dir / ".fps"
     existing = sorted(output_dir.glob("frame_*.jpg"))
-    if existing:
+    if existing and fps_marker.exists() and fps_marker.read_text().strip() == str(fps):
         return [str(p) for p in existing]
+    # Stale fps or no marker → purge and re-extract.
+    for f in output_dir.glob("frame_*.jpg"):
+        f.unlink()
 
     cmd = [
         "ffmpeg", "-i", video_path,
@@ -339,6 +346,7 @@ def extract_frames(video_path: str, output_dir: Path, fps: int = 1) -> List[str]
         return []
 
     frames = sorted(output_dir.glob("frame_*.jpg"))
+    fps_marker.write_text(str(fps))
     return [str(p) for p in frames]
 
 
@@ -420,167 +428,66 @@ async def run_pipeline(
     logger.info(f"Frame extraction complete. {sum(len(f) for f in video_frames.values())} total frames.")
 
     # =================================================================
-    # PASS 1: Teacher Evidence Graph
+    # PASS 1 + 2: Streaming pipeline (1a → 1b → 2 per video, videos overlap)
     # =================================================================
-    # =================================================================
-    # PASS 1-A: Independent Chunk Annotation
-    # =================================================================
-    if 1 not in skip_pass:
+    # When both pass 1 and 2 are needed, run them concurrently at video
+    # granularity — a video enters pass2 as soon as its pass1b finishes,
+    # without waiting for the whole batch to complete pass1.
+    # This doubles effective wall-time concurrency from 128/256 to 1024.
+    # -----------------------------------------------------------------
+    run_1 = 1 not in skip_pass
+    run_2 = 2 not in skip_pass
+
+    if run_1:
         from .pass1a_evidence import load_1a, run_pass1a, save_1a
+        from .pass1b_enrich import load_1b, run_pass1b, save_1b
 
         logger.info("=" * 60)
         logger.info("PASS 1-A: Independent Chunk Annotation")
         logger.info("=" * 60)
 
-        # Client_1a's internal semaphore (_call_one) is the single concurrency cap.
-        # Do NOT pass an outer semaphore to run_pass1a — annotate_chunk would nest
-        # acquire the same semaphore and halve effective concurrency / deadlock.
         uncached_1a = [v for v in videos if not load_1a(v["video_id"])]
         tracker_1a = ProgressTracker("pass1a", len(uncached_1a), AUDIT_DIR)
-
-        # Limit concurrent videos to avoid connection exhaustion.
-        # Each video creates num_chunks tasks; too many videos starting at once
-        # overwhelms the httpx connection pool and causes CLOSE_WAIT deadlocks.
         VIDEO_CONCURRENCY_1A = 8
         video_semaphore_1a = asyncio.Semaphore(VIDEO_CONCURRENCY_1A)
         logger.info(f"PASS 1-A: {len(uncached_1a)} uncached videos, video_concurrency={VIDEO_CONCURRENCY_1A}, chunk_concurrency={client_1a.max_concurrent}")
-
-        async def process_video_1a(video):
-            vid = video["video_id"]
-            cached = load_1a(vid)
-            if cached:
-                return vid, cached
-            async with video_semaphore_1a:
-                captions = await run_pass1a(
-                    video_id=vid,
-                    frame_paths=video_frames.get(vid, []),
-                    num_chunks=video["num_chunks"],
-                    client=client_1a,
-                )
-            save_1a(vid, captions)
-            n_ok = sum(1 for c in captions if c.get("parse_success"))
-            await tracker_1a.record(success=n_ok > 0, video_id=vid, chunks=len(captions), parsed=n_ok)
-            return vid, captions
-
-        results = await asyncio.gather(*[process_video_1a(v) for v in videos])
-        evidence_1a_map = {vid: caps for vid, caps in results}
-        tracker_1a.summary()
-        from .cache_version import write_stage_version
-        write_stage_version("1a")
-    else:
-        from .pass1a_evidence import load_1a
-        evidence_1a_map = {}
-        for v in videos:
-            cached = load_1a(v["video_id"])
-            if cached:
-                evidence_1a_map[v["video_id"]] = cached
-
-    # =================================================================
-    # PASS 1-B: Entity Alignment + State Change Detection
-    # =================================================================
-    if 1 not in skip_pass:
-        from .pass1b_enrich import load_1b, run_pass1b, save_1b
 
         logger.info("=" * 60)
         logger.info("PASS 1-B: Entity Alignment + State Changes")
         logger.info("=" * 60)
 
-        # Client_1b's internal semaphore is the single cap.
         VIDEO_CONCURRENCY_1B = 8
         video_semaphore_1b = asyncio.Semaphore(VIDEO_CONCURRENCY_1B)
-        uncached_1b = [v for v in videos if not load_1b(v["video_id"]) and v["video_id"] in evidence_1a_map]
-        tracker_1b = ProgressTracker("pass1b", len(uncached_1b), AUDIT_DIR)
-        logger.info(f"PASS 1-B: {len(uncached_1b)} uncached videos, video_concurrency={VIDEO_CONCURRENCY_1B}, chunk_concurrency={client_1b.max_concurrent}")
-
-        async def process_video_1b(video):
-            vid = video["video_id"]
-            cached = load_1b(vid)
-            if cached:
-                return vid, cached
-            if vid not in evidence_1a_map:
-                return vid, None
-            async with video_semaphore_1b:
-                enriched = await run_pass1b(
-                    evidence=evidence_1a_map[vid],
-                    client=client_1b,
-                    video_id=vid,
-                )
-            save_1b(vid, enriched)
-            n_sc = sum(1 for c in enriched if c.get("state_changes"))
-            await tracker_1b.record(success=True, video_id=vid, state_changes=n_sc)
-            return vid, enriched
-
-        results = await asyncio.gather(*[process_video_1b(v) for v in videos])
-        evidence_map = {vid: ev for vid, ev in results if ev is not None}
-        tracker_1b.summary()
-        from .cache_version import write_stage_version
-        write_stage_version("1b")
+        tracker_1b = ProgressTracker("pass1b", len(videos), AUDIT_DIR)
+        logger.info(f"PASS 1-B: video_concurrency={VIDEO_CONCURRENCY_1B}, chunk_concurrency={client_1b.max_concurrent}")
     else:
+        from .pass1a_evidence import load_1a
         from .pass1b_enrich import load_1b
+        evidence_1a_map = {}
         evidence_map = {}
         for v in videos:
+            cached = load_1a(v["video_id"])
+            if cached:
+                evidence_1a_map[v["video_id"]] = cached
             cached = load_1b(v["video_id"])
             if cached:
                 evidence_map[v["video_id"]] = cached
 
-    # =================================================================
-    # PASS 2: Question-blind Streaming Rollout
-    # =================================================================
-    if 2 not in skip_pass:
+    if run_2:
         from .pass2_rollout import load_rollout, run_pass2_single_video, save_rollout
 
         logger.info("=" * 60)
         logger.info("PASS 2: Question-blind Streaming Rollout")
         logger.info("=" * 60)
 
-        # Use client_2's internal semaphore as the single cap.
-        semaphore = client_2.semaphore
         logger.info(f"PASS 2 safe concurrency={client_2.max_concurrent}")
 
         uncached_p2 = [v for v in videos if not load_rollout(v["video_id"])]
         tracker_p2 = ProgressTracker("pass2", len(uncached_p2), AUDIT_DIR)
-        # Per-chunk debug log: tail -f to see each chunk's think + memory state
         pass2_chunk_log = AUDIT_DIR / "pass2_chunks.jsonl"
         AUDIT_DIR.mkdir(parents=True, exist_ok=True)
         pass2_chunk_log.write_text("")  # truncate on new run
         logger.info(f"PASS 2: per-chunk debug → tail -f {pass2_chunk_log}")
-
-        async def process_video_pass2(video):
-            vid = video["video_id"]
-            cached = load_rollout(vid)
-            if cached:
-                return vid, cached
-
-            async with semaphore:
-                rollout = await run_pass2_single_video(
-                    video_id=vid,
-                    frame_paths=video_frames.get(vid, []),
-                    num_chunks=video["num_chunks"],
-                    client=client_2,
-                    evidence=evidence_map.get(vid),
-                    chunk_log_path=pass2_chunk_log,
-                )
-                save_rollout(vid, rollout)
-                await tracker_p2.record(
-                    success=True, video_id=vid,
-                    thinks=len(rollout["thinks"]),
-                    compressions=len(rollout["compression_events"]),
-                )
-                return vid, rollout
-
-        results = await asyncio.gather(*[process_video_pass2(v) for v in videos])
-        rollout_map = {vid: roll for vid, roll in results}
-        tracker_p2.summary()
-        from .cache_version import write_stage_version
-        write_stage_version("2")
-
-        # --- Compression statistics ---
-        from .pass2_rollout import compute_compression_stats
-        comp_stats = compute_compression_stats(rollout_map)
-        AUDIT_DIR.mkdir(parents=True, exist_ok=True)
-        with open(AUDIT_DIR / "compression_stats.json", "w") as f:
-            json.dump(comp_stats, f, indent=2, ensure_ascii=False)
-        logger.info(f"Compression stats saved to {AUDIT_DIR / 'compression_stats.json'}")
     else:
         from .pass2_rollout import load_rollout
         rollout_map = {}
@@ -588,6 +495,95 @@ async def run_pipeline(
             cached = load_rollout(v["video_id"])
             if cached:
                 rollout_map[v["video_id"]] = cached
+
+    if run_1 or run_2:
+        async def process_video_pipeline(video):
+            vid = video["video_id"]
+            caps = None
+            ev = None
+            roll = None
+
+            # --- Pass 1a ---
+            if run_1:
+                cached = load_1a(vid)
+                if cached:
+                    caps = cached
+                else:
+                    async with video_semaphore_1a:
+                        caps = await run_pass1a(
+                            video_id=vid,
+                            frame_paths=video_frames.get(vid, []),
+                            num_chunks=video["num_chunks"],
+                            client=client_1a,
+                        )
+                    save_1a(vid, caps)
+                    n_ok = sum(1 for c in caps if c.get("parse_success"))
+                    await tracker_1a.record(success=n_ok > 0, video_id=vid, chunks=len(caps), parsed=n_ok)
+
+            # --- Pass 1b ---
+            if run_1 and caps:
+                cached = load_1b(vid)
+                if cached:
+                    ev = cached
+                else:
+                    async with video_semaphore_1b:
+                        ev = await run_pass1b(
+                            evidence=caps,
+                            client=client_1b,
+                            video_id=vid,
+                        )
+                    save_1b(vid, ev)
+                    n_sc = sum(1 for c in ev if c.get("state_changes"))
+                    await tracker_1b.record(success=True, video_id=vid, state_changes=n_sc)
+
+            # --- Pass 2 ---
+            if run_2:
+                cached = load_rollout(vid)
+                if cached:
+                    roll = cached
+                else:
+                    rollout = await run_pass2_single_video(
+                        video_id=vid,
+                        frame_paths=video_frames.get(vid, []),
+                        num_chunks=video["num_chunks"],
+                        client=client_2,
+                        evidence=ev,
+                        chunk_log_path=pass2_chunk_log,
+                    )
+                    save_rollout(vid, rollout)
+                    await tracker_p2.record(
+                        success=True, video_id=vid,
+                        thinks=len(rollout["thinks"]),
+                        compressions=len(rollout["compression_events"]),
+                    )
+                    roll = rollout
+
+            return vid, caps, ev, roll
+
+        results = await asyncio.gather(*[process_video_pipeline(v) for v in videos])
+
+        if run_1:
+            evidence_1a_map = {vid: caps for vid, caps, ev, roll in results}
+            evidence_map = {vid: ev for vid, caps, ev, roll in results if ev is not None}
+            tracker_1a.summary()
+            tracker_1b.summary()
+            from .cache_version import write_stage_version
+            write_stage_version("1a")
+            write_stage_version("1b")
+
+        if run_2:
+            rollout_map = {vid: roll for vid, caps, ev, roll in results if roll is not None}
+            tracker_p2.summary()
+            from .cache_version import write_stage_version
+            write_stage_version("2")
+
+            # --- Compression statistics ---
+            from .pass2_rollout import compute_compression_stats
+            comp_stats = compute_compression_stats(rollout_map)
+            AUDIT_DIR.mkdir(parents=True, exist_ok=True)
+            with open(AUDIT_DIR / "compression_stats.json", "w") as f:
+                json.dump(comp_stats, f, indent=2, ensure_ascii=False)
+            logger.info(f"Compression stats saved to {AUDIT_DIR / 'compression_stats.json'}")
 
     # =================================================================
     # PASS 3-A: Task Card Generation + Verification

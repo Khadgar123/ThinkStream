@@ -98,7 +98,7 @@ COMPRESS_HYSTERESIS_THRESHOLD = int(RECENT_THINKS_TOKEN_BUDGET * COMPRESS_HYSTER
 
 # Student model tokenizer (用于精确计算 token 数)
 # 造数据时加载一次，全局复用
-STUDENT_MODEL = "Qwen/Qwen3-VL-8B"  # 学生模型
+STUDENT_MODEL = "/home/tione/notebook/gaozhenkun/model/Qwen3-VL-8B-Instruct"  # 本地 tokenizer 路径
 _tokenizer = None
 
 def get_tokenizer():
@@ -254,7 +254,7 @@ PROACTIVE_RECALL_RATE = 0.05        # ~5% of chunks trigger proactive recall
 # 6. 397B vLLM configuration
 # ---------------------------------------------------------------------------
 
-VLLM_MODEL = "Qwen/Qwen3.5-397B-A17B-FP8"
+VLLM_MODEL = "/home/tione/notebook/gaozhenkun/model/Qwen3.5-397B-A17B-FP8"
 VLLM_MAX_MODEL_LEN = 65536
 
 PASS_CONFIG = {
@@ -290,10 +290,11 @@ PASS_CONFIG = {
         # leaves 5x headroom without paying for unused 28K reasoning budget.
         # Disabling thinking aligns with the rest of the pipeline (pass1a/3a/
         # 3c all non-thinking) and cuts wall-time ~3x at same quality.
+        # concurrent=1024: unified cap with pass1a/2 for max throughput.
         "max_tokens": 32000,
         "temperature": 0.3,
         "thinking": False,
-        "concurrent": 128,    # 2x of old (64): smaller per-request budget
+        "concurrent": 1024,
     },
     "pass2_rollout": {
         # v12.5 (2026-04-29): thinking True → False per user audit "整个pipeline
@@ -306,7 +307,7 @@ PASS_CONFIG = {
         "max_tokens_compress": 16384,
         "temperature": 0.3,
         "thinking": False,
-        "concurrent_videos": 256,
+        "concurrent_videos": 1024,
     },
     "pass3a": {
         # v12.5 (2026-04-30): thinking True → False per user audit "在pass3

@@ -484,6 +484,17 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
             "text": f"<visual_window>{vw_header}</visual_window>",
         })
 
+        # v12.5 fallback: pass4 flat files may omit frame_paths — infer from
+        # video_id + frames count using the pre-extracted frame directory.
+        if "frame_paths" not in vw and "frames" in vw:
+            vid = sample.get("video_id", "")
+            if vid:
+                frame_dir = f"data/agent_v5/frames/{vid}"
+                vw["frame_paths"] = [
+                    f"{frame_dir}/frame_{i+1:06d}.jpg"
+                    for i in range(vw["frames"])
+                ]
+
         if "frame_paths" in vw:
             paths = [str(base_path / p) if not Path(p).is_absolute() else p
                      for p in vw["frame_paths"]]
@@ -1614,15 +1625,6 @@ def make_per_timestep_data_module(processor, data_args) -> Dict:
         )
 
     collator = PerTimestepDataCollator(processor.tokenizer)
-
-    # Build eval dataset if requested
-    eval_dataset = None
-    eval_names = getattr(data_args, "eval_dataset_use", "")
-    if eval_names:
-        from dataclasses import replace
-        eval_args = replace(data_args, dataset_use=eval_names)
-        eval_dataset = PerTimestepDataset(processor, eval_args)
-        rank0_print(f"Eval samples: {len(eval_dataset)}")
 
     return {
         "train_dataset": train_dataset,

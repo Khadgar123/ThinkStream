@@ -169,6 +169,17 @@ class DataArguments:
         },
     )
 
+    # v12.0: protocol version selector. Removed from explicit UI in v12.5
+    # because all production data is now v12, but kept as a hidden flag so
+    # ablation runs on archived v11 data still work without code changes.
+    protocol_version: str = field(
+        default="v12",
+        metadata={
+            "help": "Agent protocol: 'v11' (legacy <action>X</action>) or "
+            "'v12' (official Qwen <tool_call>+<answer>). Default v12."
+        },
+    )
+
     # v11.5: StreamMind-style focal+alpha on action keyword positions.
     # Attacks the "collapse to silent" failure mode that span_weight + class-
     # balanced sampler alone cannot fix: silent samples reach p=0.99 quickly

@@ -92,7 +92,11 @@ case $PHASE in
             --save_total_limit ${SAVE_LIMIT:-5} \
             --load_best_model_at_end True \
             --metric_for_best_model eval_loss \
-            --greater_is_better False"
+            --greater_is_better False \
+            --protocol_version v12"
+        if [ -n "${RESUME_FROM_CHECKPOINT:-}" ]; then
+            extra_args="${extra_args} --resume_from_checkpoint ${RESUME_FROM_CHECKPOINT}"
+        fi
         ;;
     mixed)
         # Backward-compat: full union (train.jsonl). Use this only if
