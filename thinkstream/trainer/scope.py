@@ -1,3 +1,5 @@
+from typing import Optional
+
 import torch
 from slyme.utils.pytree import P
 from slyme.context import Ref
@@ -242,6 +244,15 @@ def grpo_scope():
                 "args.train.time_reward_slack", metadata={ARG: Arg(default=3.0)}
             ),
             "rollout_last_sync_step": Ref[int]("state.grpo.rollout_last_sync_step"),
+            "use_vllm_rollout": Ref[bool](
+                "args.train.use_vllm_rollout", metadata={ARG: Arg(default=False)}
+            ),
+            "vllm_rollout_frames_root": Ref[Optional[str]](
+                "args.train.vllm_rollout_frames_root", metadata={ARG: Arg(default=None)}
+            ),
+            "vllm_rollout_video_root": Ref[Optional[str]](
+                "args.train.vllm_rollout_video_root", metadata={ARG: Arg(default=None)}
+            ),
         }
     )
     return new_scope
