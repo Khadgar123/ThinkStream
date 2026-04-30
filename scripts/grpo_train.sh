@@ -85,8 +85,19 @@ VLLM_ROLLOUT_VIDEO_ROOT=${VLLM_ROLLOUT_VIDEO_ROOT:-/home/tione/notebook/gaozhenk
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
-DEEPSPEED="${SCRIPT_DIR}/zero3.json"
 ENTRY="${PROJECT_DIR}/thinkstream/train.py"
+
+# v12.11 P2.1 (2026-05-01): pick deepspeed config based on offload flags.
+# zero3_offload.json adds CPU offload for params + optimizer state, matching
+# MemAgent's run_memory_14B.sh pattern (param_offload=True / optimizer_offload=
+# True). Trades GPU memory for CPU bandwidth — useful on tight 2-GPU debug
+# or for larger model variants. Default 8 H20 production: not needed.
+if [ "${PARAM_OFFLOAD:-false}" = "true" ] || [ "${OPTIMIZER_OFFLOAD:-false}" = "true" ]; then
+    DEEPSPEED="${SCRIPT_DIR}/zero3_offload.json"
+    echo "Using deepspeed config: zero3_offload.json (CPU offload enabled)"
+else
+    DEEPSPEED="${SCRIPT_DIR}/zero3.json"
+fi
 
 # v12.6: honor THINKSTREAM_OUTPUT_DIR / THINKSTREAM_AUDIT_DIR if exported by
 # upstream caller (e.g. scripts/ablation_runner.py); else default to per-run
@@ -134,6 +145,8 @@ export THINKSTREAM_OUTPUT_DIR="${OUTPUT_DIR}"
 #   ADVANTAGE_MODE        = gdpo (default per-reward grp-norm)  | grpo | remem
 #   USE_STATE_ADVANTAGE   = 0                                   | 1  (ReMemR1 α-blend)
 #   STATE_ADV_ALPHA       = 0.7                                 | 0.0..1.0
+#   STATE_REWARD_MODE     = format_only                         | format_action
+#                                                              | remem_full | with_silent_q
 #   USE_DYNAMIC_BSZ       = 0                                   | 1  (token-len bin-pack)
 #   DYNAMIC_BSZ_MAX_TOKEN = 16384                               | 8K..64K
 #
@@ -154,6 +167,7 @@ export THINKSTREAM_LOSS_BATCH_MODE="${THINKSTREAM_LOSS_BATCH_MODE:-trajectory}"
 export THINKSTREAM_ADVANTAGE_MODE="${THINKSTREAM_ADVANTAGE_MODE:-gdpo}"
 export THINKSTREAM_USE_STATE_ADVANTAGE="${THINKSTREAM_USE_STATE_ADVANTAGE:-0}"
 export THINKSTREAM_STATE_ADV_ALPHA="${THINKSTREAM_STATE_ADV_ALPHA:-0.7}"
+export THINKSTREAM_STATE_REWARD_MODE="${THINKSTREAM_STATE_REWARD_MODE:-format_only}"
 export THINKSTREAM_USE_DYNAMIC_BSZ="${THINKSTREAM_USE_DYNAMIC_BSZ:-0}"
 export THINKSTREAM_DYNAMIC_BSZ_MAX_TOKEN="${THINKSTREAM_DYNAMIC_BSZ_MAX_TOKEN:-16384}"
 
@@ -169,10 +183,12 @@ echo "  LOSS_BATCH_MODE:       ${THINKSTREAM_LOSS_BATCH_MODE}"
 echo "  ADVANTAGE_MODE:        ${THINKSTREAM_ADVANTAGE_MODE}"
 echo "  USE_STATE_ADVANTAGE:   ${THINKSTREAM_USE_STATE_ADVANTAGE}"
 echo "  STATE_ADV_ALPHA:       ${THINKSTREAM_STATE_ADV_ALPHA}"
+echo "  STATE_REWARD_MODE:     ${THINKSTREAM_STATE_REWARD_MODE}"
 echo "  USE_DYNAMIC_BSZ:       ${THINKSTREAM_USE_DYNAMIC_BSZ}"
 echo "  DYNAMIC_BSZ_MAX_TOKEN: ${THINKSTREAM_DYNAMIC_BSZ_MAX_TOKEN}"
-echo "  PARAM_OFFLOAD:         ${PARAM_OFFLOAD}"
-echo "  OPTIMIZER_OFFLOAD:     ${OPTIMIZER_OFFLOAD}"
+echo "  PARAM_OFFLOAD:         ${PARAM_OFFLOAD:-false}"
+echo "  OPTIMIZER_OFFLOAD:     ${OPTIMIZER_OFFLOAD:-false}"
+echo "  DEEPSPEED:             ${DEEPSPEED}"
 echo "====================================="
 
 TOKENIZERS_PARALLELISM=false \

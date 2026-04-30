@@ -63,6 +63,28 @@ ADVANTAGE_MODE = os.environ.get("THINKSTREAM_ADVANTAGE_MODE", "gdpo").lower()
 if ADVANTAGE_MODE not in ("gdpo", "grpo", "remem"):
     ADVANTAGE_MODE = "gdpo"
 
+# v12.11 P1.1 full: state reward computation mode (used when ADVANTAGE_MODE=remem
+# AND USE_STATE_ADVANTAGE=1). Four levels of completeness:
+#
+#   "format_only"   (default, cheapest): per-chunk format reward only.
+#                                         Tag well-formedness 0/1 — no teacher
+#                                         lookup, parses generated text.
+#   "format_action": + per-chunk teacher-action match (silent/response/recall/
+#                    compress agreement). Requires gold_action_per_chunk in
+#                    raw_sample (already provided by trajectory data).
+#   "remem_full"   : full ReMemR1 metric_utils.py port — adds word-level
+#                    recall increment for memory-update / recall steps.
+#                    Requires ground_truth tokens (raw_sample.gold_answer).
+#   "with_silent_q": format_action + per-chunk silent_quality (our
+#                    streaming-specific signal — hallucinate/miss penalty).
+STATE_REWARD_MODE = os.environ.get(
+    "THINKSTREAM_STATE_REWARD_MODE", "format_only"
+).lower()
+if STATE_REWARD_MODE not in (
+    "format_only", "format_action", "remem_full", "with_silent_q",
+):
+    STATE_REWARD_MODE = "format_only"
+
 # deepspeed / transformers / slyme are only required for the training nodes
 # (rollout / loss / model loading). The pure-tensor reward + advantage helpers
 # (`_gdpo_per_reward_group_norm`, `_compute_*_reward`) must remain importable
@@ -1920,25 +1942,165 @@ def grpo_global_metrics(
     return metrics
 
 
-def _per_chunk_state_reward(flat_items, rollout_data, tokenizer):
-    """v12.11 (2026-05-01): per-chunk format-only state reward (ReMemR1 lite).
-
-    Returns [N_chunks] float tensor; 1.0 when the chunk's generated text
-    parses cleanly via parse_agent_output_v12 (well-formed think/answer/
-    tool_call), else 0.0.
-
-    This is the cheap subset of ReMemR1's state reward
-    (`compute_format_rewards` + `compute_action_rewards` in
-    /tmp/refs/ReMemR1/verl/trainer/ppo/metric_utils.py:86-178). The action
-    portion (matching teacher's silent/response/recall/compress at each
-    chunk) is left as a follow-up — format alone already gives per-step
-    feedback that ReMemR1 considers half the state signal.
-    """
+def _format_score_for_chunk(text: str) -> float:
+    """ReMemR1-style format reward (metric_utils.py:86): 1.0 if parsable."""
     from thinkstream.data.agent_protocol import parse_agent_output_v12
+    parsed = parse_agent_output_v12(text or "")
+    return 0.0 if parsed.get("format_error") else 1.0
+
+
+def _model_action_kind(text: str) -> str:
+    """Parse model output → coarse action label: silent/response/recall/compress/unknown."""
+    from thinkstream.data.agent_protocol import parse_agent_output_v12
+    p = parse_agent_output_v12(text or "")
+    kind = p.get("kind", "unknown")
+    if kind == "answer":
+        ans = (p.get("answer_text") or "").strip()
+        return "response" if ans else "silent"
+    if kind in ("recall", "compress"):
+        return kind
+    return "unknown"
+
+
+def _action_match_score(model_kind: str, gold_action: str) -> float:
+    """Per-chunk teacher-action match reward.
+
+    Aligns with v12_rewards.compute_per_chunk_silent_quality_v12 weights but
+    extends to all 4 action types instead of just silent/response.
+
+      both silent    → +1.0   (correct silence)
+      both response  → +0.5   (full credit handled by outcome reward)
+      both recall    → +0.5   (recall_quality reward handles details)
+      both compress  → +0.5
+      gold silent / model talked → -0.5  (false positive)
+      gold response / model silent → -0.5  (false negative)
+      mismatches across action types → 0.0
+    """
+    if not gold_action:
+        return 0.0
+    g = gold_action.lower()
+    if g in ("silent", "recall_silent"):
+        return 1.0 if model_kind == "silent" else -0.5
+    if g in ("response", "recall_response"):
+        return 0.5 if model_kind == "response" else -0.5
+    if g == "recall":
+        return 0.5 if model_kind == "recall" else 0.0
+    if g == "compress":
+        return 0.5 if model_kind == "compress" else 0.0
+    return 0.0
+
+
+def _word_recall_increment(generated: str, ground_truth_words: List[str]) -> float:
+    """ReMemR1 metric_utils.py:139 word-level recall: fraction of GT tokens present."""
+    if not ground_truth_words:
+        return 0.0
+    text = (generated or "").lower()
+    hits = sum(1 for w in ground_truth_words if w.lower() in text)
+    return hits / len(ground_truth_words)
+
+
+def _gold_action_at(raw_sample: Dict, chunk_idx: int) -> str:
+    """Pull teacher's expected action for this chunk from raw_sample.
+
+    Trajectory data carries `gold_action_per_chunk` as a dict {str(chunk_idx): action}.
+    Flat data may have it under top-level or under each card. Returns "" if absent.
+    """
+    gap = raw_sample.get("gold_action_per_chunk")
+    if isinstance(gap, dict):
+        v = gap.get(str(chunk_idx)) or gap.get(chunk_idx)
+        if v:
+            return str(v)
+    # Fallback: try sample_type field on the matching chunk record.
+    return ""
+
+
+def _estimate_chunk_token_len(chunk_result: Dict, gen_idx: int) -> int:
+    """v12.11 P1.2: cheap pre-tokenization estimate for dynamic bsz packing.
+
+    No actual tokenization — just heuristic from step_messages structure.
+    Recall multi-turn (shape B with 5 message turns) samples are ~30% longer
+    than non-recall (3 turns).
+
+    Tunable estimates calibrated to v12.10 production sampling:
+      base       (3-turn): ~5500 tokens (system+tools+visual_window+memory+ans)
+      recall     (5-turn): ~8000 tokens (adds <recall_result> + recalled frames)
+    """
+    sm = chunk_result.get("step_messages")
+    is_recall = False
+    if isinstance(sm, list) and gen_idx < len(sm):
+        v = sm[gen_idx]
+        if isinstance(v, list) and len(v) > 3:
+            is_recall = True
+    return 8000 if is_recall else 5500
+
+
+def _greedy_pack_by_token_budget(
+    seqlens: List[int], max_token_len: int,
+) -> List[List[int]]:
+    """v12.11 P1.2: greedy bin-pack items into batches by total token budget.
+
+    Approximates MemAgent's `rearrange_micro_batches` (Karmarkar-Karp) with
+    a simpler best-fit decreasing greedy. For per-chunk batching with
+    relatively uniform item sizes, the greedy gets within 5-10% of optimal.
+
+    Args:
+        seqlens: per-item estimated seq length
+        max_token_len: total budget per batch (≥ max(seqlens))
+
+    Returns:
+        list of batches; each batch is a list of original indices.
+
+    Algorithm (best-fit decreasing):
+      1. Sort items by length descending
+      2. For each item, place in the LIGHTEST existing batch that still
+         has room. If none, open a new batch.
+    """
+    if not seqlens:
+        return []
+    if max_token_len < max(seqlens):
+        # Single item exceeds budget — treat each item as its own batch.
+        return [[i] for i in range(len(seqlens))]
+    sorted_idx = sorted(range(len(seqlens)), key=lambda i: -seqlens[i])
+    bins: List[Tuple[List[int], int]] = []  # (indices, total_seqlen)
+    for idx in sorted_idx:
+        s = seqlens[idx]
+        # Find lightest bin that fits.
+        best = None
+        for b_idx in range(len(bins)):
+            if bins[b_idx][1] + s <= max_token_len:
+                if best is None or bins[b_idx][1] < bins[best][1]:
+                    best = b_idx
+        if best is not None:
+            bins[best] = (bins[best][0] + [idx], bins[best][1] + s)
+        else:
+            bins.append(([idx], s))
+    # Restore original-order indexing within each bin.
+    return [sorted(b[0]) for b in bins]
+
+
+def _per_chunk_state_reward(flat_items, rollout_data, tokenizer, mode: str):
+    """v12.11 P1.1 full: per-chunk state reward in 4 selectable modes.
+
+    Mode dispatch:
+      "format_only"   — format reward only (ReMemR1 lite). Returns 0/1.
+      "format_action" — format + teacher-action match. Returns ∈ [-0.5, 2.0].
+      "remem_full"    — format + action + word-level recall increment for
+                        recall/response steps. Returns ∈ [-0.5, 3.0].
+      "with_silent_q" — format + action + per-chunk silent_quality fold-in
+                        (our streaming-specific hallucinate/miss penalty).
+                        Returns ∈ [-1.1, 2.3].
+
+    Direct port of /tmp/refs/ReMemR1/verl/trainer/ppo/metric_utils.py:86,134
+    with extensions for streaming-video specific signals.
+
+    The mode is read from THINKSTREAM_STATE_REWARD_MODE; this function
+    accepts the resolved `mode` string for unit-testability.
+    """
     out = []
     for it in flat_items:
         s = it["sample_idx"]; g = it["gen_idx"]; c = it["chunk_idx"]
-        chunks = rollout_data.get(s, {}).get("chunk_results", [])
+        sample_data = rollout_data.get(s, {})
+        chunks = sample_data.get("chunk_results", [])
         if c >= len(chunks):
             out.append(0.0); continue
         gt_list = chunks[c].get("generated_tokens", [])
@@ -1950,8 +2112,52 @@ def _per_chunk_state_reward(flat_items, rollout_data, tokenizer):
         if not gt:
             out.append(0.0); continue
         text = tokenizer.decode(gt, skip_special_tokens=False)
-        parsed = parse_agent_output_v12(text)
-        out.append(0.0 if parsed.get("format_error") else 1.0)
+
+        # 1. format component (always applied)
+        score = _format_score_for_chunk(text)
+        if mode == "format_only":
+            out.append(score); continue
+
+        # 2. action match component
+        raw_sample = sample_data.get("raw_sample", {})
+        gold = _gold_action_at(raw_sample, chunks[c].get("chunk_idx", c))
+        model_kind = _model_action_kind(text)
+        score += _action_match_score(model_kind, gold)
+
+        if mode == "format_action":
+            out.append(score); continue
+
+        # 3. word-level recall increment (ReMemR1 full)
+        if mode == "remem_full":
+            gold_answer = raw_sample.get("gold_answer") or raw_sample.get("answer") or ""
+            gt_words = [w for w in str(gold_answer).split() if w.strip()]
+            if model_kind in ("response", "recall") and gt_words:
+                score += _word_recall_increment(text, gt_words)
+            out.append(score); continue
+
+        # 4. silent_quality fold-in (streaming-specific)
+        if mode == "with_silent_q":
+            from thinkstream.trainer.v12_rewards import (
+                compute_per_chunk_silent_quality_v12 as _per_chunk_sq,
+            )
+            from thinkstream.data.agent_protocol import parse_agent_output_v12
+            parsed_out = parse_agent_output_v12(text)
+            sq_input = [{
+                "chunk_idx": chunks[c].get("chunk_idx", c),
+                "kind": parsed_out.get("kind", "unknown"),
+                "answer_text": parsed_out.get("answer_text", ""),
+            }]
+            gap = raw_sample.get("gold_action_per_chunk", {}) or {}
+            try:
+                sq = _per_chunk_sq(sq_input, gap)
+                score += float(sq.get("silent_quality", 0.0))
+            except Exception:
+                pass
+            out.append(score); continue
+
+        # Unknown mode → fall back to format_only score
+        out.append(_format_score_for_chunk(text))
+
     return torch.tensor(out, dtype=torch.float)
 
 
@@ -2090,7 +2296,9 @@ def prepare_grpo_micro_batches(
                 rewards[it["sample_idx"] * group_size + it["gen_idx"]]
                 for it in flat_items
             ])
-            state_rew = _per_chunk_state_reward(flat_items, rollout_data, tokenizer)
+            state_rew = _per_chunk_state_reward(
+                flat_items, rollout_data, tokenizer, mode=STATE_REWARD_MODE,
+            )
             # Use the canonical port from v12_rollout (line 393).
             mixed_adv = _compute_mixed_advantage_v12_remem(
                 outcome_reward=outcome_rew,
@@ -2102,9 +2310,9 @@ def prepare_grpo_micro_batches(
             )
             flat_adv_tensor = mixed_adv
             logger.info(
-                "GRPO advantage mode=remem: mixed α=%.2f outcome + (1-α) state "
-                "over %d per-chunk items (state mean=%.3f, std=%.3f).",
-                STATE_ADVANTAGE_ALPHA, len(flat_items),
+                "GRPO advantage mode=remem state=%s: α=%.2f outcome + (1-α) "
+                "state over %d per-chunk items (state mean=%.3f, std=%.3f).",
+                STATE_REWARD_MODE, STATE_ADVANTAGE_ALPHA, len(flat_items),
                 float(state_rew.mean()), float(state_rew.std() + 1e-9),
             )
         except Exception as e:
@@ -2114,6 +2322,49 @@ def prepare_grpo_micro_batches(
             )
 
     total_chunk_items = len(flat_items)
+
+    # ─── v12.11 P1.2: dynamic-bsz token packing ─────────────────────────
+    # When USE_DYNAMIC_BSZ=1, bin-pack chunk items into batches by total
+    # estimated token count instead of fixed item count. Mirrors MemAgent's
+    # rearrange_micro_batches (verl/utils/seqlen_balancing.py:216) but at
+    # item granularity (pre-tokenization estimate). Eliminates the OOM
+    # spikes from variable-length chunks (recall multi-turn ~8K vs base
+    # ~5.5K) clumping into the same micro batch.
+    if USE_DYNAMIC_BSZ and flat_items:
+        seqlens = []
+        for it in flat_items:
+            chunks = rollout_data.get(it["sample_idx"], {}).get("chunk_results", [])
+            if it["chunk_idx"] < len(chunks):
+                seqlens.append(_estimate_chunk_token_len(
+                    chunks[it["chunk_idx"]], it["gen_idx"]
+                ))
+            else:
+                seqlens.append(5500)
+        partitions = _greedy_pack_by_token_budget(
+            seqlens, DYNAMIC_BSZ_MAX_TOKEN_LEN,
+        )
+        micro_batches = []
+        for part_idxs in partitions:
+            sel = torch.tensor(part_idxs, dtype=torch.long)
+            mb_updates = {
+                step_advantages: flat_adv_tensor[sel],
+                step_micro_rewards: flat_rew_tensor[sel],
+                step_micro_rewards_dict: {
+                    k: v[sel] for k, v in flat_rd.items()
+                },
+                step_micro_items: [flat_items[i] for i in part_idxs],
+            }
+            micro_batches.append(mb_updates)
+        logger.info(
+            "GRPO micro-batches mode=per_chunk dynamic-bsz: %d items → "
+            "%d batches (max_token_len=%d, sizes=%s, total_tokens=%d)",
+            total_chunk_items, len(partitions), DYNAMIC_BSZ_MAX_TOKEN_LEN,
+            [len(p) for p in partitions[:8]] + (["..."] if len(partitions) > 8 else []),
+            sum(seqlens),
+        )
+        return ctx.set(step_micro_batches, micro_batches)
+
+    # ─── Fixed micro_batch_size path (legacy / dynamic-bsz off) ─────────
     num_micro_batches = math.ceil(total_chunk_items / micro_batch_size)
     micro_batches = []
     for mb_idx in range(num_micro_batches):
