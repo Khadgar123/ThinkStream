@@ -957,6 +957,27 @@ class StreamingAgentLoop:
                 # recall_response has NO think (observation was already
                 # emitted in sample1 for this same chunk_idx).
 
+                # v12.6: post-parse recall-budget enforcement.
+                # The `allow_recall=False` flag became a no-op when v12.6
+                # stripped restricted-decoding (think_budget_sample_*) from
+                # inference.py. Replace it with a post-parse guard: if the
+                # second pass still emits another tool_call (recall or
+                # compress), override to "silent" and stash the offending
+                # text under `recall_step2_blocked` for telemetry. Matches
+                # DeepEyesV2 vl_agent.py recall_budget=1 contract; SFT shape B
+                # already trains "answer after recall_result" but a guard is
+                # cheap insurance against OOD drift / low-quality retrieval.
+                if recall_parsed["action"] in ("recall", "compress"):
+                    parsed["recall_step2_blocked"] = {
+                        "action": recall_parsed["action"],
+                        "raw_output": recall_output_text,
+                    }
+                    recall_parsed = {
+                        "action": "silent",
+                        "payload": {},
+                        "raw_output": "",
+                    }
+
                 # Merge recall results into parsed output
                 parsed["recall_step2"] = recall_parsed
                 parsed["recall_result"] = recall_result
