@@ -1321,34 +1321,17 @@ class DataCollatorForSupervisedDataset:
         batch["video_grid_thw"] = video_grid_thw
         batch["position_ids"] = position_ids
 
-        # CE Weight — balance <silent> vs <response> token frequencies.
-        #
-        # Cold-start format:  <think>...<silent>  or  <think>...<response>text
-        #   → both tokens appear in labels, reweighting is useful.
-        #
-        # Agent 3-action format: <action>silent</action>  (text word, NOT <silent> token)
-        #   → <silent> token never appears, n_silent == 0.
-        #   → Skip reweighting to avoid harmful downweighting of <response>.
-        response_id = self.tokenizer.convert_tokens_to_ids(["<response>"])[0]
-        silent_id = self.tokenizer.convert_tokens_to_ids(["<silent>"])[0]
-        n_response = (batch["labels"] == response_id).sum()
-        n_silent = (batch["labels"] == silent_id).sum()
-        ce_weight = torch.ones(self.vocab_size)
-        if n_silent > 0 and n_response > 0:
-            # Both classes present (cold-start data) — apply balanced weighting
-            total_n = n_response + n_silent
-            ce_weight[silent_id] = total_n / (2 * n_silent)
-            ce_weight[response_id] = total_n / (2 * n_response)
-            ce_weight = torch.clamp(ce_weight, 0.1, 10)
-        batch["ce_weight"] = ce_weight
-        rank0_print(
-            f"[CE] shape={input_ids.shape} "
-            f"n_silent={n_silent} n_response={n_response} "
-            f"w=[{ce_weight[silent_id]:.2f}, {ce_weight[response_id]:.2f}]"
-        )
+        # v12.6: <response>/<silent> are NOT v12 special tokens — the v12
+        # protocol uses <answer>...</answer> (response) and <answer></answer>
+        # (silent) where <answer> is text, NOT a single-id vocab entry. Under
+        # v12 the legacy CE-rebalance + v9 token-type span weighting both
+        # collapse to no-ops. Kept the ce_weight key as a uniform tensor so
+        # downstream loss code that consumes it doesn't have to branch; new
+        # callers should ignore this column.
+        batch["ce_weight"] = torch.ones(self.vocab_size)
 
-        # v9 token-type loss weighting (per-position, span-based).
-        # If phase unset, returns None and trainer falls back to uniform.
+        # v9 token-type loss weighting still honored when token_loss_phase
+        # is set (slyme legacy path); under v12 phase is None → returns None.
         token_loss_weight = build_token_loss_weight(
             batch["input_ids"], batch["labels"], self.tokenizer, self.token_loss_phase,
         )

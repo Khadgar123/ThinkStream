@@ -23,7 +23,6 @@ from transformers import AutoProcessor
 from thinkstream.model import MODEL_CLS, DEFAULT_VIDEO_FLEX_WINDOW_SIZE, get_text_config
 from thinkstream.model.inference import (
     StreamingWindowInferenceEngine,
-    think_budget_sample_restricted,
     streaming_video_chat,
 )
 from thinkstream.data.stream_data_processor import (

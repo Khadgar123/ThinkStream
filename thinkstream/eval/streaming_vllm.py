@@ -246,7 +246,7 @@ def _apply_step_output(runner: _SampleRunner, output_text: str) -> None:
 
 def _option_match(answer_text: str, options: List[str]) -> int:
     """Map free-text answer to an option index. Same fallback chain as
-    eval_baseline.parse_answer but operating on the agent <response>.
+    eval_baseline.parse_answer but operating on the agent <answer> (v12).
     """
     s = (answer_text or "").strip().upper()
     for i, opt in enumerate(options):
@@ -469,7 +469,7 @@ def streaming_predict_mcq_vllm(
             if not r.done:
                 r.current_chunk += 1
                 if r.current_chunk >= r.num_chunks:
-                    # Reached end without ever emitting <response>; mark done.
+                    # Reached end without ever emitting <answer> (v12 response); mark done.
                     r.done = True
 
         pbar.update(1)
@@ -659,7 +659,7 @@ def _apply_rollout_output(
 
     Differs from _apply_step_output (eval) in two ways:
       1. Does NOT set runner.done on response — RL rolls a few chunks past
-         ask_chunk so the model emits the full <think><action><response>
+         ask_chunk so the model emits the full <think> + <answer> (v12 response)
          under post-answer pressure (matches grpo.py legacy rollout).
       2. Records the legacy per-chunk dict (grpo.py:736-758 contract):
          action, think, payload, raw_output, generated_tokens,
