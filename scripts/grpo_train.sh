@@ -126,6 +126,55 @@ echo "====================================="
 export THINKSTREAM_AUDIT_DIR="${AUDIT_DIR}"
 export THINKSTREAM_OUTPUT_DIR="${OUTPUT_DIR}"
 
+# v12.11 (2026-05-01): five experimental switches read by grpo.py.
+# All env-driven so you can A/B without editing configs. Defaults match
+# legacy v12.10 behavior — safe baseline. Override per-run via env.
+#
+#   LOSS_BATCH_MODE       = trajectory  (legacy concat)         | per_chunk  (MemAgent)
+#   ADVANTAGE_MODE        = gdpo (default per-reward grp-norm)  | grpo | remem
+#   USE_STATE_ADVANTAGE   = 0                                   | 1  (ReMemR1 α-blend)
+#   STATE_ADV_ALPHA       = 0.7                                 | 0.0..1.0
+#   USE_DYNAMIC_BSZ       = 0                                   | 1  (token-len bin-pack)
+#   DYNAMIC_BSZ_MAX_TOKEN = 16384                               | 8K..64K
+#
+# Quick recipes:
+#   # Legacy production (v12.10 reproduction)
+#   bash scripts/grpo_train.sh
+#
+#   # MemAgent-style per-chunk loss (fixes OOM on long rollouts)
+#   THINKSTREAM_LOSS_BATCH_MODE=per_chunk bash scripts/grpo_train.sh
+#
+#   # Full ReMemR1 alignment (per-chunk + α-blend state advantage)
+#   THINKSTREAM_LOSS_BATCH_MODE=per_chunk \
+#   THINKSTREAM_ADVANTAGE_MODE=remem \
+#   THINKSTREAM_USE_STATE_ADVANTAGE=1 \
+#   THINKSTREAM_STATE_ADV_ALPHA=0.7 \
+#     bash scripts/grpo_train.sh
+export THINKSTREAM_LOSS_BATCH_MODE="${THINKSTREAM_LOSS_BATCH_MODE:-trajectory}"
+export THINKSTREAM_ADVANTAGE_MODE="${THINKSTREAM_ADVANTAGE_MODE:-gdpo}"
+export THINKSTREAM_USE_STATE_ADVANTAGE="${THINKSTREAM_USE_STATE_ADVANTAGE:-0}"
+export THINKSTREAM_STATE_ADV_ALPHA="${THINKSTREAM_STATE_ADV_ALPHA:-0.7}"
+export THINKSTREAM_USE_DYNAMIC_BSZ="${THINKSTREAM_USE_DYNAMIC_BSZ:-0}"
+export THINKSTREAM_DYNAMIC_BSZ_MAX_TOKEN="${THINKSTREAM_DYNAMIC_BSZ_MAX_TOKEN:-16384}"
+
+# CPU offload (P2): MemAgent uses param_offload + optimizer_offload for 14B
+# on 8 GPUs. For our 8B on 8 H20 (96GB) we don't need it, but flag exists
+# for memory-tight runs (debug 2-card or larger model variants).
+PARAM_OFFLOAD="${PARAM_OFFLOAD:-false}"
+OPTIMIZER_OFFLOAD="${OPTIMIZER_OFFLOAD:-false}"
+export PARAM_OFFLOAD OPTIMIZER_OFFLOAD
+
+echo "Mode flags:"
+echo "  LOSS_BATCH_MODE:       ${THINKSTREAM_LOSS_BATCH_MODE}"
+echo "  ADVANTAGE_MODE:        ${THINKSTREAM_ADVANTAGE_MODE}"
+echo "  USE_STATE_ADVANTAGE:   ${THINKSTREAM_USE_STATE_ADVANTAGE}"
+echo "  STATE_ADV_ALPHA:       ${THINKSTREAM_STATE_ADV_ALPHA}"
+echo "  USE_DYNAMIC_BSZ:       ${THINKSTREAM_USE_DYNAMIC_BSZ}"
+echo "  DYNAMIC_BSZ_MAX_TOKEN: ${THINKSTREAM_DYNAMIC_BSZ_MAX_TOKEN}"
+echo "  PARAM_OFFLOAD:         ${PARAM_OFFLOAD}"
+echo "  OPTIMIZER_OFFLOAD:     ${OPTIMIZER_OFFLOAD}"
+echo "====================================="
+
 TOKENIZERS_PARALLELISM=false \
 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
 torchrun --nproc_per_node=${NPROC} \

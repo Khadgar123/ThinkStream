@@ -8,6 +8,61 @@ from pathlib import Path
 from typing import List, Any, Dict, Optional, Tuple
 import torch
 
+# v12.11 (2026-05-01): Loss-time batching mode toggle.
+#
+# "trajectory" (legacy / safe default):
+#   1 batch item = 1 (sample_idx, gen_idx) trajectory rollout.
+#   _build_rollout_messages concatenates N chunks → single 50K-token sample.
+#   Original behavior; reproduces production runs prior to v12.11.
+#
+# "per_chunk" (MemAgent / ReMemR1 aligned):
+#   1 batch item = 1 (sample_idx, gen_idx, chunk_idx) chunk decision.
+#   _build_rollout_messages_single_chunk builds short ~6K prompts per chunk.
+#   Eliminates OOM + truncation on long-trajectory rollouts.
+#
+# Switch via env: THINKSTREAM_LOSS_BATCH_MODE=per_chunk
+# Anything other than "per_chunk" falls back to "trajectory".
+LOSS_BATCH_MODE = os.environ.get("THINKSTREAM_LOSS_BATCH_MODE", "trajectory").lower()
+if LOSS_BATCH_MODE not in ("trajectory", "per_chunk"):
+    LOSS_BATCH_MODE = "trajectory"
+
+# v12.11: ReMemR1-style mixed advantage. When enabled, per-step state
+# rewards (format + action) get group-normalized at (uid, step_id) level
+# and blended with the trajectory outcome advantage:
+#   advantage = α × outcome_adv + (1-α) × state_adv
+# Default α matches our docs/v12.0_protocol_migration_design.md §5.7
+# (we found α=0.7 worked better than ReMemR1's 0.8 because our per-step
+# signal is denser).
+USE_STATE_ADVANTAGE = (
+    os.environ.get("THINKSTREAM_USE_STATE_ADVANTAGE", "0") == "1"
+)
+STATE_ADVANTAGE_ALPHA = float(
+    os.environ.get("THINKSTREAM_STATE_ADV_ALPHA", "0.7")
+)
+
+# v12.11: Dynamic-bsz token packing (MemAgent verl/utils/seqlen_balancing.py).
+# When enabled, prepare_grpo_micro_batches groups samples by total token
+# count (max_token_len_per_gpu) instead of fixed micro_batch_size, balancing
+# per-batch sequence length so OOM is bounded by token budget not item count.
+USE_DYNAMIC_BSZ = (
+    os.environ.get("THINKSTREAM_USE_DYNAMIC_BSZ", "0") == "1"
+)
+DYNAMIC_BSZ_MAX_TOKEN_LEN = int(
+    os.environ.get("THINKSTREAM_DYNAMIC_BSZ_MAX_TOKEN", "16384")
+)
+
+# v12.11: Advantage aggregation mode — the EXISTING gdpo / grpo dispatch
+# in `gdpo_advantage.aggregate_advantages` is already switchable via the
+# `mode` arg, but until now it was only exposed as a positional kwarg.
+# Lift it to env so operators can A/B without touching configs:
+#   THINKSTREAM_ADVANTAGE_MODE=gdpo    (default — per-reward group-norm)
+#   THINKSTREAM_ADVANTAGE_MODE=grpo    (DeepSeekMath baseline — single scalar)
+#   THINKSTREAM_ADVANTAGE_MODE=remem   (gdpo outcome × α + state × (1-α),
+#                                       requires USE_STATE_ADVANTAGE=1)
+ADVANTAGE_MODE = os.environ.get("THINKSTREAM_ADVANTAGE_MODE", "gdpo").lower()
+if ADVANTAGE_MODE not in ("gdpo", "grpo", "remem"):
+    ADVANTAGE_MODE = "gdpo"
+
 # deepspeed / transformers / slyme are only required for the training nodes
 # (rollout / loss / model loading). The pure-tensor reward + advantage helpers
 # (`_gdpo_per_reward_group_norm`, `_compute_*_reward`) must remain importable
@@ -1170,12 +1225,20 @@ def compute_gdpo_advantages(
     rewards_masks: Auto[torch.Tensor],
     advantages: Ref[torch.Tensor],
     group_size: Auto[int],
-    advantage_mode: Auto[str] = "gdpo",
+    advantage_mode: Auto[str] = ADVANTAGE_MODE,
 ) -> Context:
     """Compute per-rollout advantages from the 8-reward dict + masks.
 
-    v11.4: dispatch to aggregate_gdpo (default) or aggregate_grpo based on
-    ``advantage_mode``. Pure-tensor algorithms in ``gdpo_advantage.py``.
+    v12.11: ``advantage_mode`` now defaults to env-driven ADVANTAGE_MODE
+    (set via THINKSTREAM_ADVANTAGE_MODE). Three values:
+
+      "gdpo"  — per-reward group-norm + weighted sum + batch-whiten.
+      "grpo"  — DeepSeekMath: weighted scalar reward → group z-norm.
+      "remem" — gdpo outcome advantage × α blended with per-step state
+                advantage × (1-α); requires THINKSTREAM_USE_STATE_ADVANTAGE=1
+                AND per-step state rewards present in rewards_dict.
+
+    Pure-tensor algorithms in ``gdpo_advantage.py``.
     Per-reward / per-component diagnostics are stashed in module-level
     ``_LAST_GDPO_DIAG`` so ``grpo_global_metrics`` can log them without
     adding another slyme Ref.
@@ -1528,34 +1591,46 @@ def build_grpo_inputs(
     all_items = []
     _preloaded_cache = {}
 
-    # v12.11 (2026-05-01): MemAgent-style per-chunk loss batching.
-    # Each item now has an extra "chunk_idx" field selecting which chunk's
-    # short prompt to build. Sequence length stays bounded (~6K) regardless
-    # of trajectory length, eliminating the 50K-token concatenation that
-    # caused OOM + truncation on rollouts with rollout_max_chunks=100.
+    # v12.11 (2026-05-01): mode-aware dispatch.
+    # - LOSS_BATCH_MODE="trajectory" → legacy concat builder (item carries no chunk_idx)
+    # - LOSS_BATCH_MODE="per_chunk"  → MemAgent-style single-chunk builder
+    # Both paths share the same downstream tokenization + collation pipeline.
+    use_per_chunk = LOSS_BATCH_MODE == "per_chunk"
+
     for item_desc in micro_items:
         sample_idx = item_desc["sample_idx"]
         gen_idx = item_desc["gen_idx"]
-        chunk_idx = item_desc.get("chunk_idx", 0)  # default 0 for back-compat
         sample_data = rollout_data[sample_idx]
-        chunk_results = sample_data.get("chunk_results", [])
-        if chunk_idx >= len(chunk_results):
-            # Defensive: skip if expansion gave a chunk past the rollout's actual length.
-            logger.warning(
-                "build_grpo_inputs: chunk_idx %d out of range for sample %d "
-                "(only %d chunks); skipping.",
-                chunk_idx, sample_idx, len(chunk_results),
-            )
-            continue
-        chunk_result = chunk_results[chunk_idx]
 
-        messages, video_meta, video_chunk_size = _build_rollout_messages_single_chunk(
-            raw_sample=sample_data["raw_sample"],
-            chunk_result=chunk_result,
-            gen_idx=gen_idx,
-            tokenizer=tokenizer,
-            frames_per_chunk=int(rollout_fpc),
-        )
+        if use_per_chunk:
+            chunk_idx = item_desc.get("chunk_idx", 0)
+            chunk_results = sample_data.get("chunk_results", [])
+            if chunk_idx >= len(chunk_results):
+                logger.warning(
+                    "build_grpo_inputs[per_chunk]: chunk_idx %d out of range for "
+                    "sample %d (only %d chunks); skipping.",
+                    chunk_idx, sample_idx, len(chunk_results),
+                )
+                continue
+            messages, video_meta, video_chunk_size = (
+                _build_rollout_messages_single_chunk(
+                    raw_sample=sample_data["raw_sample"],
+                    chunk_result=chunk_results[chunk_idx],
+                    gen_idx=gen_idx,
+                    tokenizer=tokenizer,
+                    frames_per_chunk=int(rollout_fpc),
+                )
+            )
+        else:
+            # Legacy: concatenate all chunks into one trajectory message list.
+            messages, video_meta, video_chunk_size = _build_rollout_messages(
+                raw_sample=sample_data["raw_sample"],
+                chunk_results=sample_data["chunk_results"],
+                gen_idx=gen_idx,
+                tokenizer=tokenizer,
+                frames_per_chunk=int(rollout_fpc),
+            )
+
         if sample_idx not in _preloaded_cache:
             pv = sample_data.get("_preloaded_video")
             _preloaded_cache[sample_idx] = (
@@ -1575,26 +1650,43 @@ def build_grpo_inputs(
         )
         result["position_ids"] = compute_position_ids(result, processor, model_type)
 
-        # v12.11: per-chunk samples should never approach the cutoff. If they
-        # do, something is misconfigured (e.g. visual frames duplicated across
-        # turns or memory state ballooning).
+        # Length guard. trajectory mode warns at 50K (legacy concat); per_chunk
+        # mode warns if anything > 85% (should never happen with 6K samples).
         seq_len = int(result["input_ids"].shape[-1])
         max_len = int(getattr(tokenizer, "model_max_length", 16384) or 16384)
-        if seq_len > max_len:
-            logger.warning(
-                "GRPO per-chunk sample %d/gen %d/chunk %d exceeds model_max_length "
-                "(seq_len=%d > %d). With v12.11 per-chunk batching this should not "
-                "happen unless visual_window or memory state is misconfigured. "
-                "Truncation will silently drop assistant tokens.",
-                sample_idx, gen_idx, chunk_idx, seq_len, max_len,
-            )
-        elif seq_len > 0.85 * max_len:
-            logger.info(
-                "GRPO per-chunk sample %d/gen %d/chunk %d at %.0f%% of cutoff "
-                "(seq_len=%d, max=%d).",
-                sample_idx, gen_idx, chunk_idx,
-                100 * seq_len / max_len, seq_len, max_len,
-            )
+        n_chunks = len(sample_data.get("chunk_results", []))
+        if use_per_chunk:
+            chunk_idx = item_desc.get("chunk_idx", 0)
+            if seq_len > max_len:
+                logger.warning(
+                    "GRPO per-chunk sample %d/gen %d/chunk %d exceeds "
+                    "model_max_length (seq_len=%d > %d). Per-chunk should never "
+                    "exceed; check visual/memory config.",
+                    sample_idx, gen_idx, chunk_idx, seq_len, max_len,
+                )
+            elif seq_len > 0.85 * max_len:
+                logger.info(
+                    "GRPO per-chunk sample %d/gen %d/chunk %d at %.0f%% of cutoff "
+                    "(seq_len=%d, max=%d).",
+                    sample_idx, gen_idx, chunk_idx,
+                    100 * seq_len / max_len, seq_len, max_len,
+                )
+        else:
+            if seq_len > max_len:
+                logger.warning(
+                    "GRPO trajectory sample exceeds model_max_length "
+                    "(seq_len=%d > %d) over %d chunks — collator will truncate, "
+                    "completion_mask + ref logprobs on truncated chunks will be "
+                    "DROPPED. Lower rollout_max_chunks or switch to "
+                    "THINKSTREAM_LOSS_BATCH_MODE=per_chunk.",
+                    seq_len, max_len, n_chunks,
+                )
+            elif seq_len > 0.85 * max_len:
+                logger.info(
+                    "GRPO trajectory sample at %.0f%% of cutoff (seq_len=%d, "
+                    "max=%d, n_chunks=%d) — close to truncation threshold.",
+                    100 * seq_len / max_len, seq_len, max_len, n_chunks,
+                )
 
         all_items.append(result)
 
@@ -1845,27 +1937,63 @@ def prepare_grpo_micro_batches(
     step_micro_items: Ref[List],
     step_micro_batches: Ref[list[dict[Ref, Any]]],
 ) -> Context:
-    """v12.11 (2026-05-01): MemAgent-style per-chunk micro-batching.
+    """v12.11 (2026-05-01): switchable micro-batching mode.
 
-    Was: 1 item = 1 trajectory (sample_idx, gen_idx). Each item's
-    ``_build_rollout_messages`` concatenated N chunks into a single 50K-token
-    sample → OOM + truncation on long trajectories.
+    LOSS_BATCH_MODE="trajectory" (default, legacy):
+        1 item = 1 (sample_idx, gen_idx) trajectory rollout. Original
+        behavior — produces concatenated N-chunk samples that may exceed
+        model_max_length on long trajectories. SAFE DEFAULT for reproducing
+        prior runs / A/B comparison.
 
-    Now: 1 item = 1 chunk (sample_idx, gen_idx, chunk_idx). N chunks become N
-    independent loss-batch entries, each a short ~6K-token sample. The
-    trajectory-level advantage is broadcast to every chunk in that
-    trajectory; ReMemR1-style per-step state advantage can be added later
-    on top (see verl/trainer/ppo/ray_trainer.py:1287-1314).
+    LOSS_BATCH_MODE="per_chunk" (MemAgent-style):
+        1 item = 1 (sample_idx, gen_idx, chunk_idx) chunk decision. N chunks
+        become N independent loss-batch entries, each ~6K tokens. Trajectory
+        advantage broadcasts to every chunk; ReMemR1 state advantage can be
+        added on top via USE_STATE_ADVANTAGE / ADVANTAGE_MODE=remem.
+        Eliminates OOM + truncation on long-trajectory rollouts.
 
-    micro_batch_size now means "chunks per micro batch", not trajectories.
-    For 8 H20 + 8B model + 6K avg per-chunk token len: micro_batch=4 → ~24K
-    forward tokens, comfortable. Operator should reduce MICRO_BATCH from
-    legacy trajectory-level setting to the new chunk-level meaning.
+    Switch via env: THINKSTREAM_LOSS_BATCH_MODE=per_chunk.
+
+    Operator notes for per_chunk mode:
+        - micro_batch_size now counts CHUNKS, not trajectories.
+        - For 8 H20 + 8B + 6K avg chunk: micro_batch=4-8 is comfortable.
+        - The trainer logs the expansion count.
     """
     total_samples = advantages.shape[0]  # = num_videos × group_size
 
+    if LOSS_BATCH_MODE == "trajectory":
+        # ─── LEGACY PATH ─────────────────────────────────────────────────
+        # 1 item per (sample_idx, gen_idx). Original v12.10 behavior.
+        num_micro_batches = math.ceil(total_samples / micro_batch_size)
+        micro_batches = []
+        for mb_idx in range(num_micro_batches):
+            start_idx = mb_idx * micro_batch_size
+            end_idx = min(start_idx + micro_batch_size, total_samples)
+            micro_items = [
+                {
+                    "sample_idx": flat_idx // group_size,
+                    "gen_idx": flat_idx % group_size,
+                }
+                for flat_idx in range(start_idx, end_idx)
+            ]
+            mb_updates = {
+                step_advantages: advantages[start_idx:end_idx],
+                step_micro_rewards: rewards[start_idx:end_idx],
+                step_micro_rewards_dict: {
+                    k: v[start_idx:end_idx] for k, v in rewards_dict.items()
+                },
+                step_micro_items: micro_items,
+            }
+            micro_batches.append(mb_updates)
+        logger.info(
+            "GRPO micro-batches mode=trajectory (legacy): %d items → %d batches × %d",
+            total_samples, num_micro_batches, micro_batch_size,
+        )
+        return ctx.set(step_micro_batches, micro_batches)
+
+    # ─── PER-CHUNK PATH (v12.11) ─────────────────────────────────────────
     # Build flat list of per-chunk items by enumerating chunk_results from
-    # each (sample_idx, gen_idx) pair. The chunk count varies per trajectory
+    # each (sample_idx, gen_idx) pair. Chunk count varies per trajectory
     # (depends on rollout_max_chunks + early-stop).
     flat_items: List[Dict[str, int]] = []
     flat_advantages: List[torch.Tensor] = []
@@ -1878,9 +2006,6 @@ def prepare_grpo_micro_batches(
             continue
         sample_data = rollout_data[sample_idx]
         chunk_results = sample_data.get("chunk_results", [])
-        # Determine which chunks this gen actually produced (some gens may
-        # finish early via response → fewer chunks). Padded entries have
-        # empty generated_tokens; treat them as inactive.
         active_chunk_count = 0
         for cr in chunk_results:
             gt_list = cr.get("generated_tokens", [])
@@ -1889,8 +2014,6 @@ def prepare_grpo_micro_batches(
                 length = len(gt) if not hasattr(gt, "numel") else int(gt.numel())
                 if length > 0:
                     active_chunk_count += 1
-        # If nothing active, still emit at least 1 item so advantage book-
-        # keeping doesn't stall (degenerate case — rollout produced nothing).
         active_chunk_count = max(1, active_chunk_count)
         for chunk_idx in range(active_chunk_count):
             flat_items.append({
@@ -1898,14 +2021,12 @@ def prepare_grpo_micro_batches(
                 "gen_idx": gen_idx,
                 "chunk_idx": chunk_idx,
             })
-            # Trajectory-level advantage broadcast to every chunk.
             flat_advantages.append(advantages[flat_idx:flat_idx + 1])
             flat_rewards.append(rewards[flat_idx:flat_idx + 1])
             for k in rewards_dict:
                 flat_rewards_dict[k].append(rewards_dict[k][flat_idx:flat_idx + 1])
 
     if not flat_items:
-        # No active chunks — degenerate case. Keep legacy behavior.
         flat_items = [
             {"sample_idx": flat_idx // group_size, "gen_idx": flat_idx % group_size, "chunk_idx": 0}
             for flat_idx in range(total_samples)
@@ -1921,12 +2042,10 @@ def prepare_grpo_micro_batches(
     total_chunk_items = len(flat_items)
     num_micro_batches = math.ceil(total_chunk_items / micro_batch_size)
     micro_batches = []
-
     for mb_idx in range(num_micro_batches):
         start_idx = mb_idx * micro_batch_size
         end_idx = min(start_idx + micro_batch_size, total_chunk_items)
         micro_items = flat_items[start_idx:end_idx]
-
         mb_updates = {
             step_advantages: flat_adv_tensor[start_idx:end_idx],
             step_micro_rewards: flat_rew_tensor[start_idx:end_idx],
@@ -1938,8 +2057,8 @@ def prepare_grpo_micro_batches(
         micro_batches.append(mb_updates)
 
     logger.info(
-        "GRPO micro-batches v12.11: expanded %d trajectories × group %d = %d "
-        "rollouts → %d per-chunk items → %d micro-batches of size %d",
+        "GRPO micro-batches mode=per_chunk: %d trajectories × group %d = %d "
+        "rollouts → %d per-chunk items → %d micro-batches × %d",
         total_samples // group_size, group_size, total_samples,
         total_chunk_items, num_micro_batches, micro_batch_size,
     )
