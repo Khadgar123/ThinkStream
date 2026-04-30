@@ -385,18 +385,36 @@ def get_rope_index_agent(
 ) -> Tuple[torch.Tensor, torch.Tensor]:
     """Agent-specific MROPE with temporal alignment for text tokens.
 
-    Wraps the base model's RoPE function and then overrides the temporal
-    dimension (dim=0) for specified text token spans so that text thinks
-    share the same temporal position as their corresponding video frames.
+    **Effective ONLY on Qwen2.5-VL.** This wrapper overrides position_ids[0]
+    (the temporal dimension) for annotated text spans so the text think
+    at chunk N gets the same temporal position id as the visual frames
+    of chunk N. In Qwen2.5-VL, position[0] for visual tokens directly
+    encodes time (`t_index = arange(T) × second_per_grid × 2`), so a
+    matching text override produces a real temporal anchoring effect.
+
+    On Qwen3-VL this wrapper is effectively a NO-OP for time semantics:
+    Qwen3-VL splits each video into single-frame blocks (`llm_grid_t=1`)
+    so visual position[0] is always 0 within a frame and only varies via
+    cumulative sequence offset. Time information lives instead in the
+    `<X.X seconds>` text tokens auto-inserted by Qwen3-VL processor (see
+    processing_qwen3_vl.py:217-224). Overriding text position[0] does
+    not move the time anchor — it just changes attention distance.
+
+    Currently NOT wired into the v12.6 SFT/RL/Eval entry points (which
+    use Qwen3-VL exclusively). Kept here for future Qwen2.5-VL ablations
+    where it would have material effect. v12.6 production = pure Qwen
+    official `get_rope_index_3` (no override).
 
     Args:
         text_temporal_positions: Per-batch list of span annotations.
             Each entry is a list of (token_start, token_end, timestamp_sec)
-            tuples. timestamp_sec is converted to the same temporal scale
-            as video frame positions.
+            tuples. timestamp_sec × 2 = the temporal position id (matches
+            Qwen2.5-VL's second_per_grid × 2 scaling).
             Example: [[(150, 200, 10.0), (200, 250, 12.0)]]
-            means tokens 150-200 get temporal_pos matching t=10s video frames.
-        base_model_type: "qwen2.5vl" or "qwen3vl", selects base RoPE function.
+            means tokens 150-200 get temporal_pos=20 (matching t=10s
+            video frames under second_per_grid_t=1.0).
+        base_model_type: "qwen2.5vl" (override is meaningful) or
+                         "qwen3vl" (override is a no-op for time semantics).
 
     Returns:
         position_ids: (3, B, L) tensor with temporal dim aligned.
