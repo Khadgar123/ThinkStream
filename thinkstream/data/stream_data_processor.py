@@ -877,7 +877,7 @@ def preprocess_qwen_visual_agent(sources, processor, model_type: str) -> Dict:
         )
 
     # ── Per-chunk video loading via ghost messages ──
-    # Each 2s chunk is loaded independently so non-contiguous ranges
+    # Each 1s chunk (v12.5) is loaded independently so non-contiguous ranges
     # (RC7 episodes) are handled correctly.
     split_videos: List[torch.Tensor] = []
     chunk_metadatas_list: List[dict] = []

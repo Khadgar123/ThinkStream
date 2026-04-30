@@ -1,7 +1,7 @@
 """
 Pass 1-A: Independent Per-Chunk Annotation
 
-Each 2s chunk annotated independently with 2 frames.
+Each 1s chunk (v12.5) annotated independently with 2 frames at FPS=2.
 No sliding window, no prior context, fully parallel.
 
 Output: Per-chunk JSON with visible_entities(desc), atomic_facts, ocr, spatial.

@@ -619,6 +619,13 @@ class StreamingAgentLoop:
         self.frames_root = frames_root
         self.video_root = video_root
         self.memory = MemoryState(tokenizer=tokenizer)
+        # v12.6: pre-init the captured-prompt buffer so early-exit paths in
+        # step() (raised exception before line 797 assignment) don't leave
+        # downstream readers (parsed["step_messages"] = self._last_step_messages
+        # near line 1067) with an AttributeError. None is a safe sentinel —
+        # _build_rollout_messages._captured_for_gen() falls back to legacy
+        # reconstruction when the field is None.
+        self._last_step_messages: Optional[List[Dict]] = None
 
     def _get_frame_paths(self, video_path: str, chunk_idx: int) -> Optional[List[str]]:
         """Build frame_paths for the current visual_window from pre-extracted frames."""
@@ -664,6 +671,8 @@ class StreamingAgentLoop:
     def reset(self):
         """Reset for a new video."""
         self.memory = MemoryState(tokenizer=self.memory._tokenizer)
+        # v12.6: clear stale captured prompt from previous video.
+        self._last_step_messages = None
 
     def _record_answer(self, answer_text: str, chunk_idx: int) -> None:
         """Attach an answer to the most-recent unanswered query.

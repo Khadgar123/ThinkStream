@@ -61,9 +61,14 @@ def _estimate_sample_tokens(sample: Dict) -> int:
       (1) Messages format (post-pass5): sum text in content + count video frames
       (2) Flat format: parse input.{system,memory,queries,visual_window} fields
 
-    Vision token cost per frame at the configured resolution is ~256 tokens
-    (Qwen2.5-VL/Qwen3-VL with merge_size=2 at ~150k pixels).
+    Vision token cost per frame matches config.VISUAL_TOKENS_PER_CHUNK / 2
+    = ~128 tokens at v12.5 resolution (min_pixels=100352, merge_size=2).
+    The earlier 256 figure assumed a higher resolution (~150k pixels)
+    and led to ~2× over-estimate, falsely flagging in-budget samples as
+    overlong.
     """
+    _VIS_TOK_PER_FRAME = 128  # matches config.VISUAL_TOKENS_PER_CHUNK / FRAMES_PER_CHUNK
+
     # ── Messages format ──
     if "messages" in sample:
         text_chars = 0
@@ -88,7 +93,7 @@ def _estimate_sample_tokens(sample: Dict) -> int:
                             vs = item.get("video_start", 0)
                             ve = item.get("video_end", vs)
                             n_frames += max(1, int(ve - vs) * 2)  # FPS=2
-        return text_chars // 3 + n_frames * 256
+        return text_chars // 3 + n_frames * _VIS_TOK_PER_FRAME
 
     # ── Flat format (legacy) ──
     inp = sample.get("input", {})
@@ -113,7 +118,7 @@ def _estimate_sample_tokens(sample: Dict) -> int:
     rf = inp.get("recalled_frames")
     if rf:
         n_frames += rf.get("n_frames", 0)
-    visual_tokens = n_frames * 256
+    visual_tokens = n_frames * _VIS_TOK_PER_FRAME
     return text_tokens + visual_tokens
 
 
