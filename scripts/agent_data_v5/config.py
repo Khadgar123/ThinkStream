@@ -200,7 +200,10 @@ PASS_CONTEXT_ESTIMATES = {
     "pass1a": {"input": 1_500, "output": 5_000, "thinking": 0},  # 2 frames per chunk
     # v12.5: thinking=0 (was implicit thinking budget under thinking=True).
     # output budget tightened: 32K cap, but typical body is 4-6K tokens.
-    "pass1b": {"input": 3_000, "output": 6_000, "thinking": 0},  # text-only, full video summary
+    # v12.5 (2026-04-30): input 3_000 → 16_000. Empirical measurement
+    # on 87 batch1 videos: avg 13,776 tokens, median 13,432, max 30,927.
+    # The old 3K estimate under-sized actual prompts by ~4.6×.
+    "pass1b": {"input": 16_000, "output": 6_000, "thinking": 0},  # text-only, full video summary
     "pass2_rollout":  {"input": 10_000, "output": 5_000, "thinking": 0},
     # v12.5: all passes now thinking=False. Estimates drop the thinking
     # column (was 16K-buffer reservations under thinking=True).

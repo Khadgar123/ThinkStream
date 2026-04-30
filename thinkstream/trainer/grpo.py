@@ -400,10 +400,27 @@ def rollout(
         train/infer parity for tool-call decisions.
         """
         from thinkstream.data.agent_protocol import TOOLS_SCHEMA
-        inputs = processor.apply_chat_template(
-            messages, tokenize=True, return_dict=True, return_tensors="pt",
+        video_metadata = []
+        has_video_meta = True
+        for msg in messages:
+            for item in msg.get("content", []):
+                if isinstance(item, dict) and item.get("type") == "video":
+                    meta = item.get("video_metadata")
+                    frames = item.get("video")
+                    if isinstance(meta, dict):
+                        video_metadata.append(meta)
+                    elif isinstance(frames, list) and frames:
+                        video_metadata.append({"total_num_frames": len(frames)})
+                    else:
+                        has_video_meta = False
+        template_kwargs = dict(
+            tokenize=True, return_dict=True, return_tensors="pt",
             add_generation_prompt=True, tools=TOOLS_SCHEMA,
+            do_sample_frames=False,
         )
+        if video_metadata and has_video_meta:
+            template_kwargs["video_metadata"] = video_metadata
+        inputs = processor.apply_chat_template(messages, **template_kwargs)
         inputs = {k: v.to(model_for_generation.device) if hasattr(v, 'to') else v
                   for k, v in inputs.items()}
         with torch.no_grad():

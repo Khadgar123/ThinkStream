@@ -493,14 +493,32 @@ def make_generate_fn(
         # sees a different system context than the model was trained on,
         # making tool-call tokens drift OOD.
         from thinkstream.data.agent_protocol import TOOLS_SCHEMA
-        inputs = processor.apply_chat_template(
-            messages,
+        # v12.6: collect per-video metadata for correct timestamp rendering
+        video_metadata = []
+        has_video_meta = True
+        for msg in messages:
+            for item in msg.get("content", []):
+                if isinstance(item, dict) and item.get("type") == "video":
+                    meta = item.get("video_metadata")
+                    frames = item.get("video")
+                    if isinstance(meta, dict):
+                        video_metadata.append(meta)
+                    elif isinstance(frames, list) and frames:
+                        # auto-fill so VideoMetadata() doesn't crash on empty dict
+                        video_metadata.append({"total_num_frames": len(frames)})
+                    else:
+                        has_video_meta = False
+        template_kwargs = dict(
             tokenize=True,
             return_dict=True,
             return_tensors="pt",
             add_generation_prompt=True,
             tools=TOOLS_SCHEMA,
+            do_sample_frames=False,
         )
+        if video_metadata and has_video_meta:
+            template_kwargs["video_metadata"] = video_metadata
+        inputs = processor.apply_chat_template(messages, **template_kwargs)
 
         # 2. Move to device
         inputs = {k: v.to(device) if hasattr(v, "to") else v for k, v in inputs.items()}

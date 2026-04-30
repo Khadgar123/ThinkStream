@@ -506,10 +506,30 @@ def preprocess_per_timestep(sample: Dict, processor) -> Dict:
         )
     messages = _resolve_video_paths(sample["messages"], base_path)
 
+    # v12.6: collect per-video metadata so Qwen3-VL renders <X.X seconds>
+    # with REAL video time. Without this, processor defaults fps=24 and
+    # timestamps are ~12x compressed.
+    video_metadata = []
+    has_video_meta = True
+    for msg in messages:
+        for item in msg.get("content", []):
+            if isinstance(item, dict) and item.get("type") == "video":
+                meta = item.get("video_metadata")
+                frames = item.get("video")
+                if isinstance(meta, dict):
+                    video_metadata.append(meta)
+                elif isinstance(frames, list) and frames:
+                    video_metadata.append({"total_num_frames": len(frames)})
+                else:
+                    has_video_meta = False
+
     from thinkstream.data.agent_protocol import TOOLS_SCHEMA
     template_kwargs = dict(
         tokenize=True, return_dict=True, return_tensors="pt", tools=TOOLS_SCHEMA,
+        do_sample_frames=False,  # frame_paths are already the exact frames to use
     )
+    if video_metadata and has_video_meta:
+        template_kwargs["video_metadata"] = video_metadata
 
     full_result = processor.apply_chat_template(messages, **template_kwargs)
 
