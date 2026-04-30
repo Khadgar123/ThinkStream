@@ -153,11 +153,17 @@ MAX_CANDIDATES_PER_VIDEO = {
 # on 2.6-min videos — 12× over the streaming benchmark median, creating an
 # "always-respond" prior that hurts silent-decision learning AND inflates
 # train→eval distribution shift. New caps target ~1.2 q/min.
-MAX_SAMPLES_PER_VIDEO = 30           # v12.8 (2026-04-30): 25 → 30 — give the
-                                     # round-robin cap more room so silent base
-                                     # samples (warmup / patrol / question_window
-                                     # / evidence_anchor) match or exceed response
-                                     # placements. Target train silent ratio 40-50%.
+MAX_SAMPLES_PER_VIDEO = 0            # v12.9 (2026-04-30): disable cap. pass3c
+                                     # now emits ONE sample per chunk (every
+                                     # chunk 0..num_chunks-1), so a 150s video
+                                     # produces ~150 samples. Train silent rate
+                                     # naturally matches runtime ~91%. The
+                                     # round-robin cap was hiding the silent
+                                     # sample shortage; with full per-chunk
+                                     # coverage the cap becomes unnecessary
+                                     # (and would actively harm coverage).
+                                     # 0 = no cap (sentinel honored by
+                                     # pipeline.py:872 round-robin block).
 # v12.6 (2026-04-30): 5 → 1, align with VideoLLM-online / MMDuet / VST
 # convention of "1 video = 1 trajectory, multiple questions inside".
 # Multi-traj per video creates 5× visual + memory_state overlap → effective
