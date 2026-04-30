@@ -1254,33 +1254,39 @@ def _select_base_chunks(
     rollout: Dict,
     cards_map: Dict[str, Dict],
 ) -> Dict[int, str]:
-    """Select which base chunks to generate samples for, with role labels.
+    """v12.9 (2026-04-30): emit ONE silent base sample for EVERY chunk.
 
-    Returns {chunk_idx: base_role} where base_role is one of:
-      evidence_anchor, compress_boundary, question_window,
-      warmup, patrol
+    Per-chunk SFT requires that each chunk decision (silent / response / recall
+    / compress) gets independent supervision. Previous logic only sampled
+    ~30 "key" chunks (warmup / evidence / question_window / patrol /
+    compress_boundary), leaving ~120 silent decisions per 150s video
+    untrained. v12.9 emits a sample for every chunk 0..num_chunks-1; chunks
+    that ALREADY have a placement (response / recall / compress) sample
+    are skipped in generate_base_samples via the `fork_chunks` set.
 
-    The role determines training loss weight via _get_sample_weight:
-    - evidence_anchor: HIGH weight — model must learn to observe/retain
-      facts that will be needed for future recall
-    - compress_boundary: MEDIUM weight — critical for compression quality
-    - question_window: MEDIUM weight — context around Q&A events
-    - warmup: LOW weight — cold-start, empty memory
-    - patrol: LOW weight — long-silent stretches
+    Net effect: silent samples per video grows from ~5-10 → ~num_chunks - placements,
+    naturally matching the runtime per-chunk silent rate (~85-95%).
+
+    Role labels are preserved for loss-weight scoring (some chunks are more
+    informative — evidence anchors, question windows). Patrol replaces
+    "no specific role" rather than gating which chunks to sample.
+
+    Returns {chunk_idx: base_role}; role ∈ {evidence_anchor, compress_boundary,
+    question_window, warmup, patrol}. ALL chunks 0..num_chunks-1 are present.
     """
     num_chunks = rollout["num_chunks"]
-    # Use dict to track role; later roles override earlier (higher priority wins)
     chunk_role: Dict[int, str] = {}
 
-    # 1. Warmup (lowest priority)
+    # Default role for every chunk = "patrol" (low-weight silent supervision).
+    # Higher-priority roles below override.
+    for c in range(num_chunks):
+        chunk_role[c] = "patrol"
+
+    # 1. Warmup (cold-start chunks, low priority but tagged for loss weight).
     for c in range(min(WARMUP_CHUNKS, num_chunks)):
         chunk_role[c] = "warmup"
 
-    # 5. Long-silent patrol (low priority, computed early so higher-priority overrides)
-    # We compute patrol positions first, then let evidence/compress/question override
-    all_selected = set(chunk_role.keys())
-
-    # Pre-compute evidence + question + compress chunks for patrol gap detection
+    # 2. Pre-compute evidence + question + compress chunks for role tagging.
     evidence_chunks = set()
     for placement in trajectory["placements"]:
         card = cards_map.get(placement["card_id"], {})
@@ -1312,31 +1318,11 @@ def _select_base_chunks(
         for c in cc[:2] + cc[-2:]:
             compress_chunks.add(c)
 
-    all_selected = all_selected | evidence_chunks | question_chunks | compress_chunks
-
-    # Patrol: fill long gaps
-    sorted_sel = sorted(all_selected)
-    prev = -1
-    for s in sorted_sel:
-        if s - prev > 10:
-            for c in range(prev + LONG_SILENT_SAMPLE_INTERVAL,
-                           s, LONG_SILENT_SAMPLE_INTERVAL):
-                chunk_role.setdefault(c, "patrol")
-        prev = s
-    if sorted_sel and num_chunks - 1 - sorted_sel[-1] > 10:
-        for c in range(sorted_sel[-1] + LONG_SILENT_SAMPLE_INTERVAL,
-                       num_chunks, LONG_SILENT_SAMPLE_INTERVAL):
-            chunk_role.setdefault(c, "patrol")
-
-    # 3. Question windows (medium priority, overrides warmup/patrol)
+    # 3. Higher-priority roles override default patrol.
     for c in question_chunks:
         chunk_role[c] = "question_window"
-
-    # 4. Compress boundaries (medium-high priority)
     for c in compress_chunks:
         chunk_role[c] = "compress_boundary"
-
-    # 2. Evidence anchors (highest priority — overrides everything)
     for c in evidence_chunks:
         chunk_role[c] = "evidence_anchor"
 

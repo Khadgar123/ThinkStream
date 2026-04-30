@@ -951,6 +951,7 @@ def _score_placement(
     used_ask_chunks: List[int],
     used_answers: Set[str],
     evidence: List[Dict] = None,
+    used_answer_forms: Set[str] = None,
 ) -> float:
     """Score a placement for greedy selection (8 dimensions). Higher = better."""
     card = cards_map.get(p["card_id"], {})
@@ -975,14 +976,25 @@ def _score_placement(
             if avg_conf >= 0.85:
                 score += 0.5  # high-confidence evidence
 
-    # 4. Diversity: unseen family bonus
+    # 4. Diversity: unseen family bonus.
+    # v12.6 (2026-04-30): doubled 2.0 → 4.0 because we collapsed
+    # MAX_TRAJECTORIES_PER_VIDEO 5 → 1. With only 1 traj/video, the single
+    # trajectory MUST cover diverse families; intra-traj diversity dominates.
     family = card.get("family", "")
     if family not in used_families:
-        score += 2.0
+        score += 4.0
 
-    # 5. Diversity: unseen sequence_type bonus
+    # 5. Diversity: unseen sequence_type bonus. v12.6: doubled 2.0 → 4.0
+    # for the same reason as #4.
     if p["sequence_type"] not in used_seq_types:
-        score += 2.0
+        score += 4.0
+
+    # 5a. v12.6: unseen answer_form bonus. With 1 traj/video we want every
+    # answer_form (binary / MC / number / short_exact / descriptive) to
+    # appear if possible — keeps the single trajectory rich across tasks.
+    af = card.get("answer_form", "")
+    if af and used_answer_forms is not None and af not in used_answer_forms:
+        score += 1.5
 
     # 5b. OVOBench-relevant rare-sequence boost.
     # v9.1 audit found event_watch=3.2% across the dataset — too low for AAR/EPM
@@ -995,16 +1007,13 @@ def _score_placement(
     }
     score += RARE_SEQ_BONUS.get(p["sequence_type"], 0.0)
 
-    # 5c. v12.6 (2026-04-30): Difficulty-tier bonus.
-    # Sim of v12.5 production showed only ~10% of rendered placements were
-    # T2/T3 (recall-required). The greedy diversity scoring above optimizes
-    # for family/sequence/spread but is blind to difficulty_tier. Without
-    # this bonus the model never learns to recall — ~88% of training samples
-    # have evidence in the visual window. Tier 3 gets a higher boost than
-    # tier 2 because it's 100% recall-required (vs ~50% for compressed).
+    # 5c. v12.6: Difficulty-tier bonus.
+    # v12.8 (2026-04-30): bumped 1.0→1.5 / 2.0→2.5. With MAX_QUESTIONS_PER_TRAJ
+    # cut to 8, fewer total QA placements compete; we need stronger tier bias
+    # to maintain needs-recall rate ≥ 30% of QA.
     TIER_BONUS = {
-        "medium_in_compressed": 1.0,
-        "hard_history_only": 2.0,
+        "medium_in_compressed": 1.5,
+        "hard_history_only": 2.5,
     }
     score += TIER_BONUS.get(p.get("difficulty_tier", ""), 0.0)
 
@@ -1165,6 +1174,7 @@ def plan_trajectories(
     used_ask_chunks: List[int] = []
     used_card_ids: Set[str] = set()
     used_answers: Set[str] = set()
+    used_answer_forms: Set[str] = set()  # v12.6 — diversify answer_form within traj
     selected: List[Dict] = []
 
     candidates = list(qa_placements)   # ← QA only; PN1 bypassed
@@ -1177,7 +1187,8 @@ def plan_trajectories(
                 continue
             s = _score_placement(p, cards_map, used_families,
                                  used_seq_types, used_ask_chunks,
-                                 used_answers, evidence)
+                                 used_answers, evidence,
+                                 used_answer_forms=used_answer_forms)
             scored.append((s, p))
 
         if not scored:
@@ -1198,6 +1209,9 @@ def plan_trajectories(
         canonical = card.get("canonical_answer", "").strip().lower()
         if canonical:
             used_answers.add(canonical)
+        af = card.get("answer_form", "")
+        if af:
+            used_answer_forms.add(af)
         candidates.remove(best)
 
     # --- Phase 1.5: v12.0 silent-region preservation ---
@@ -1403,14 +1417,17 @@ def plan_trajectories(
         # Sort by ask_chunk for temporal grouping
         pn1_sorted = sorted(pn1_cards, key=lambda p: p["ask_chunk"])
 
-        # v12.6 (2026-04-30): Duration-normalize PN1 to keep silent rate
-        # near 70% target. PN1 candidate cap is 44 (pass3a) but on short
-        # videos all 44 placed → PN1 dominates 60% of training data and
-        # drowns the recall-training signal. Cap to 0.10 narrations/sec
-        # (≈ 1 every 10s) so a 60s video gets ≤6 PN1, a 180s gets ≤18,
-        # a 320s gets ≤32. Covers half the prior cap on long videos and
-        # cuts short-video PN1 by ~3×.
-        PN1_PER_SEC = 0.10
+        # v12.10 (2026-04-30): 0.04 → 0.08. After v12.9 disabled
+        # MAX_SAMPLES_PER_VIDEO cap (per-chunk full coverage), PN1 no longer
+        # competes with silent base for cap slots. Doubling PN1/sec brings
+        # total utterance density from 5.6/min → 8.8/min on 150s video,
+        # matching VideoLLM-online LiveChat (4-8/min) and MMDuet MAGQA
+        # (3-5/min) ranges. PN1 is the proactive narration signal — denser
+        # PN1 = LiveCC-style continuous narration capability.
+        #   60s  → 4-5 PN1   (was 2-3)
+        #   150s → 12 PN1    (was 6)
+        #   320s → 25 PN1    (was 13)
+        PN1_PER_SEC = 0.08
         pn1_cap = max(2, int(num_chunks * PN1_PER_SEC))
         if len(pn1_sorted) > pn1_cap:
             # Evenly subsample preserving temporal coverage.

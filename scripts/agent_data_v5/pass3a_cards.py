@@ -65,8 +65,10 @@ FAMILY_TARGETS = {
     # Plus a new PN1 family (Proactive Narration) — see FAMILY_PROMPTS
     # for spec; LiveCC-style short observations at novel-event chunks.
     #
-    # OCR (9.1%) → 3 cards (F1)
-    "F1": 3,
+    # OCR (9.1%) → 4 cards (F1). v12.8 (2026-04-30): bumped 3→4 to fix
+    # -4pp OVO under-share when 1 traj × 8 q layout pushes diversity bonuses
+    # toward MC families and squeezes short_exact OCR placements.
+    "F1": 4,
     # ATR (7.1%) → 4 cards (F2 attribute-MC + S1 descriptive scene)
     "F2": 2, "S1": 2,
     # OJR (11.2%) → 4 cards (F3 number + R1 re-id + CR4 compositional)

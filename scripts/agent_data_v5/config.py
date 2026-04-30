@@ -153,13 +153,31 @@ MAX_CANDIDATES_PER_VIDEO = {
 # on 2.6-min videos — 12× over the streaming benchmark median, creating an
 # "always-respond" prior that hurts silent-decision learning AND inflates
 # train→eval distribution shift. New caps target ~1.2 q/min.
-MAX_SAMPLES_PER_VIDEO = 15           # was 30 — halve per-video corpus contribution
-MAX_TRAJECTORIES_PER_VIDEO = 5       # was 10 — match VideoLLM-online (3 conv/video)
-# v12.5 (2026-04-30): 3 → 5 to lower silent ratio from ~85% toward
-# 65-70%. Each extra question/traj converts 1 chunk from base silent →
-# response. With 5 q/traj × 2 traj/video + ~10 PN1 = ~20 questions/video,
-# silent rate ≈ (47-20)/47 = 57% on median video.
-MAX_QUESTIONS_PER_TRAJECTORY = 5     # was 3 — denser within-traj for v12.5
+MAX_SAMPLES_PER_VIDEO = 0            # v12.9 (2026-04-30): disable cap. pass3c
+                                     # now emits ONE sample per chunk (every
+                                     # chunk 0..num_chunks-1), so a 150s video
+                                     # produces ~150 samples. Train silent rate
+                                     # naturally matches runtime ~91%. The
+                                     # round-robin cap was hiding the silent
+                                     # sample shortage; with full per-chunk
+                                     # coverage the cap becomes unnecessary
+                                     # (and would actively harm coverage).
+                                     # 0 = no cap (sentinel honored by
+                                     # pipeline.py:872 round-robin block).
+# v12.6 (2026-04-30): 5 → 1, align with VideoLLM-online / MMDuet / VST
+# convention of "1 video = 1 trajectory, multiple questions inside".
+# Multi-traj per video creates 5× visual + memory_state overlap → effective
+# unique-sample count drops to ~30% of nominal → SFT loss collapses fast
+# without true generalization. With 1 long traj per video we get true
+# cross-video diversity; question density stays roughly constant by bumping
+# MAX_QUESTIONS_PER_TRAJECTORY 5 → 8.
+MAX_TRAJECTORIES_PER_VIDEO = 1
+# v12.10 (2026-04-30): 8 → 10. After v12.9 per-chunk SFT eliminated the
+# silent shortage problem, q_interval @ 150s was 18.8s (1 q every ~10s
+# avg incl PN1) — slightly sparser than industry norm. VideoLLM-online
+# LiveChat / MMDuet livechat sit at 1 per 7-15s. Bumping to 10 q/traj
+# brings q_interval to 15s on median videos.
+MAX_QUESTIONS_PER_TRAJECTORY = 10
 MAX_ACTIVE_QUERIES = 2               # unchanged — realistic user behavior
 
 # Backward compat aliases (deprecated — use token-based constants above)
