@@ -995,6 +995,19 @@ def _score_placement(
     }
     score += RARE_SEQ_BONUS.get(p["sequence_type"], 0.0)
 
+    # 5c. v12.6 (2026-04-30): Difficulty-tier bonus.
+    # Sim of v12.5 production showed only ~10% of rendered placements were
+    # T2/T3 (recall-required). The greedy diversity scoring above optimizes
+    # for family/sequence/spread but is blind to difficulty_tier. Without
+    # this bonus the model never learns to recall — ~88% of training samples
+    # have evidence in the visual window. Tier 3 gets a higher boost than
+    # tier 2 because it's 100% recall-required (vs ~50% for compressed).
+    TIER_BONUS = {
+        "medium_in_compressed": 1.0,
+        "hard_history_only": 2.0,
+    }
+    score += TIER_BONUS.get(p.get("difficulty_tier", ""), 0.0)
+
     # 6. Spread: distance from nearest used ask_chunk
     if used_ask_chunks:
         min_dist = min(abs(p["ask_chunk"] - c) for c in used_ask_chunks)
@@ -1389,6 +1402,21 @@ def plan_trajectories(
     if pn1_cards:
         # Sort by ask_chunk for temporal grouping
         pn1_sorted = sorted(pn1_cards, key=lambda p: p["ask_chunk"])
+
+        # v12.6 (2026-04-30): Duration-normalize PN1 to keep silent rate
+        # near 70% target. PN1 candidate cap is 44 (pass3a) but on short
+        # videos all 44 placed → PN1 dominates 60% of training data and
+        # drowns the recall-training signal. Cap to 0.10 narrations/sec
+        # (≈ 1 every 10s) so a 60s video gets ≤6 PN1, a 180s gets ≤18,
+        # a 320s gets ≤32. Covers half the prior cap on long videos and
+        # cuts short-video PN1 by ~3×.
+        PN1_PER_SEC = 0.10
+        pn1_cap = max(2, int(num_chunks * PN1_PER_SEC))
+        if len(pn1_sorted) > pn1_cap:
+            # Evenly subsample preserving temporal coverage.
+            step = len(pn1_sorted) / pn1_cap
+            pn1_sorted = [pn1_sorted[int(i * step)] for i in range(pn1_cap)]
+
         # v12.5 (iter 2): Bucket PN1 cards into 5-8 per trajectory
         # (rng-randomized) to keep total trajectory count low while
         # still placing all PN1. With 22 PN1 cards × 5-8 per traj = 3-5
