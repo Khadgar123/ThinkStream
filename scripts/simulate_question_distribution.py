@@ -27,7 +27,7 @@ sys.path.insert(0, str(ROOT))
 # ---------------------------------------------------------------------------
 
 import os as _os
-PROFILE = _os.environ.get("SIM_PROFILE", "v12.6").lower()  # "v12.5" or "v12.6"
+PROFILE = _os.environ.get("SIM_PROFILE", "v12.7").lower()  # v12.5 / v12.6 / v12.7
 
 if PROFILE == "v12.5":
     FAMILY_TARGETS = {
@@ -36,19 +36,35 @@ if PROFILE == "v12.5":
         "CR2": 1, "F7": 1, "F5": 1, "F6": 1, "N1": 2, "CR3": 1, "CR6": 1,
         "CR7": 1, "PN1": 44,
     }
-    PN1_PER_SEC_CAP = None      # no duration normalization
-    TIER_BONUS_T2 = 0.0          # no tier bias in greedy
+    PN1_PER_SEC_CAP = None
+    TIER_BONUS_T2 = 0.0
     TIER_BONUS_T3 = 0.0
-else:  # v12.6 fixes
+    MAX_TRAJ = 5
+    MAX_Q_PER_TRAJ = 5
+elif PROFILE == "v12.6":
     FAMILY_TARGETS = {
         "F1": 3, "F2": 2, "S1": 2, "F3": 1, "R1": 1, "CR4": 2, "F4": 3,
         "E1": 1, "M1": 2, "E2": 3, "C1": 1, "CR1": 1, "CR5": 2, "P1": 2,
         "CR2": 1, "F7": 1, "F5": 1, "F6": 2, "N1": 4, "CR3": 1, "CR6": 1,
         "CR7": 1, "PN1": 44,
     }
-    PN1_PER_SEC_CAP = 0.10       # cap ~ 0.1 narrations/sec
-    TIER_BONUS_T2 = 1.0          # +1.0 score → ~2× selection prob
-    TIER_BONUS_T3 = 2.0          # +2.0 → ~3× selection prob
+    PN1_PER_SEC_CAP = 0.10
+    TIER_BONUS_T2 = 1.0
+    TIER_BONUS_T3 = 2.0
+    MAX_TRAJ = 5
+    MAX_Q_PER_TRAJ = 5
+else:  # v12.7 — 1 traj/video, 8 q/traj
+    FAMILY_TARGETS = {
+        "F1": 3, "F2": 2, "S1": 2, "F3": 1, "R1": 1, "CR4": 2, "F4": 3,
+        "E1": 1, "M1": 2, "E2": 3, "C1": 1, "CR1": 1, "CR5": 2, "P1": 2,
+        "CR2": 1, "F7": 1, "F5": 1, "F6": 2, "N1": 4, "CR3": 1, "CR6": 1,
+        "CR7": 1, "PN1": 44,
+    }
+    PN1_PER_SEC_CAP = 0.10
+    TIER_BONUS_T2 = 1.0
+    TIER_BONUS_T3 = 2.0
+    MAX_TRAJ = 1
+    MAX_Q_PER_TRAJ = 8
 
 # OVO 12-task share (canonical, sorted desc)
 OVO_TASK_SHARE = {
@@ -91,10 +107,10 @@ MULTI_PROBE_PROBES = {
     "CR5": 3,  # multi-response reasoning
 }
 
-# pass3b density caps
-MAX_TRAJECTORIES_PER_VIDEO = 5
-MAX_QUESTIONS_PER_TRAJECTORY = 5
-NON_PN1_CAP = MAX_TRAJECTORIES_PER_VIDEO * MAX_QUESTIONS_PER_TRAJECTORY  # 25
+# pass3b density caps (profile-driven)
+MAX_TRAJECTORIES_PER_VIDEO = MAX_TRAJ
+MAX_QUESTIONS_PER_TRAJECTORY = MAX_Q_PER_TRAJ
+NON_PN1_CAP = MAX_TRAJECTORIES_PER_VIDEO * MAX_QUESTIONS_PER_TRAJECTORY
 
 # Final render cap (after pass3c base sample addition).
 MAX_SAMPLES_PER_VIDEO = 15
@@ -253,6 +269,35 @@ def simulate(duration_sec: int) -> dict:
     silent_rate_training = 5.0 / MAX_SAMPLES_PER_VIDEO  # ≈ 33%
     silent_rate = silent_rate_runtime  # legacy field
 
+    # Single-trajectory question density (assuming 1 trajectory/video).
+    # Number of QA placements (excluding PN1) = min(non-PN1 total, NON_PN1_CAP).
+    # When MAX_TRAJ=1, all non-PN1 placements live in 1 traj → q_per_traj = capped.
+    n_qa_in_traj = min(total_count, NON_PN1_CAP) / max(MAX_TRAJECTORIES_PER_VIDEO, 1)
+    # Time interval between asks within a trajectory
+    if n_qa_in_traj > 1:
+        # Trajectory spans the full video; questions evenly distributed.
+        q_interval_sec = duration_sec / n_qa_in_traj
+    else:
+        q_interval_sec = float('inf')
+
+    # Response vs Silent ratio (training data view).
+    # A "response" placement = generates an answer event (response_from_memory,
+    # recall_response, compress_response, multi_response, event_watch).
+    # A "silent" placement = unanswerable / pending / patrol / warmup base sample.
+    # Approximation: rendered_total ≈ (response events) + (silent base samples
+    # added by pass3c). With round-robin cap to 15:
+    response_events = sum(c for fam, tier, c in rendered if fam != "PN1")
+    pn1_events = sum(c for fam, tier, c in rendered if fam == "PN1")
+    # PN1 also produces a non-empty response (descriptive narration), count
+    # it as response. silent base samples added by pass3c are approximated
+    # as the residual to MAX_SAMPLES_PER_VIDEO.
+    response_in_train = response_events + pn1_events
+    silent_in_train = max(0, MAX_SAMPLES_PER_VIDEO - response_in_train)
+    response_silent_ratio_train = (
+        response_in_train / (response_in_train + silent_in_train)
+        if (response_in_train + silent_in_train) else 0.0
+    )
+
     return {
         "duration_sec": duration_sec,
         "chunks": chunks,
@@ -272,6 +317,12 @@ def simulate(duration_sec: int) -> dict:
         "silent_rate_runtime": silent_rate_runtime,
         "silent_rate_training": silent_rate_training,
         "runtime_active_chunks": runtime_active_chunks,
+        # New v12.7 metrics
+        "n_qa_in_traj": n_qa_in_traj,
+        "q_interval_sec": q_interval_sec,
+        "response_in_train": response_in_train,
+        "silent_in_train": silent_in_train,
+        "response_silent_ratio_train": response_silent_ratio_train,
     }
 
 
@@ -364,7 +415,32 @@ def print_report():
     print()
     print("  silent_RT     = runtime per-chunk silent rate (chunks - placements) / chunks")
     print("  silent_TRAIN  = training-data silent rate, train.jsonl sample_type=silent share")
-    print("  pass3b cap    = ≤25 non-PN1 placements/video; PN1 capped 0.10/sec in v12.6")
+    print(f"  pass3b cap    = ≤{NON_PN1_CAP} non-PN1 placements/video; PN1 capped {PN1_PER_SEC_CAP}/sec")
+
+    # Section 7: single-trajectory ask cadence + response/silent
+    print()
+    print("─" * 90)
+    print(f"7. PER-TRAJECTORY METRICS (MAX_TRAJ={MAX_TRAJ}, MAX_Q/TRAJ={MAX_Q_PER_TRAJ})")
+    print("─" * 90)
+    print(f"{'duration':>10}  {'qa/traj':>8}  {'q_interval':>11}  {'q_per_min':>10}  "
+          f"{'resp':>5}  {'silent':>7}  {'resp:silent':>13}")
+    for d, s in sims.items():
+        qpm = (60.0 / s['q_interval_sec']) if s['q_interval_sec'] != float('inf') else 0.0
+        ratio = (
+            f"{s['response_in_train']:.1f}:{s['silent_in_train']:.1f}"
+        )
+        print(f"{d:>5}s     "
+              f"  {s['n_qa_in_traj']:>8.1f}"
+              f"  {s['q_interval_sec']:>9.1f}s"
+              f"  {qpm:>9.2f}/m"
+              f"  {s['response_in_train']:>5.1f}"
+              f"  {s['silent_in_train']:>7.1f}"
+              f"  {ratio:>13}")
+    print()
+    print("  qa/traj         = QA placements (non-PN1) per trajectory")
+    print("  q_interval      = average seconds between asks within trajectory")
+    print("  q_per_min       = same in q/min (compare OVO 0.6 / StreamingBench 1.0)")
+    print("  resp:silent     = train.jsonl response (incl PN1) vs silent sample ratio")
 
     # Section 6: per-family table
     print()

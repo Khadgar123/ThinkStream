@@ -951,6 +951,7 @@ def _score_placement(
     used_ask_chunks: List[int],
     used_answers: Set[str],
     evidence: List[Dict] = None,
+    used_answer_forms: Set[str] = None,
 ) -> float:
     """Score a placement for greedy selection (8 dimensions). Higher = better."""
     card = cards_map.get(p["card_id"], {})
@@ -975,14 +976,25 @@ def _score_placement(
             if avg_conf >= 0.85:
                 score += 0.5  # high-confidence evidence
 
-    # 4. Diversity: unseen family bonus
+    # 4. Diversity: unseen family bonus.
+    # v12.6 (2026-04-30): doubled 2.0 → 4.0 because we collapsed
+    # MAX_TRAJECTORIES_PER_VIDEO 5 → 1. With only 1 traj/video, the single
+    # trajectory MUST cover diverse families; intra-traj diversity dominates.
     family = card.get("family", "")
     if family not in used_families:
-        score += 2.0
+        score += 4.0
 
-    # 5. Diversity: unseen sequence_type bonus
+    # 5. Diversity: unseen sequence_type bonus. v12.6: doubled 2.0 → 4.0
+    # for the same reason as #4.
     if p["sequence_type"] not in used_seq_types:
-        score += 2.0
+        score += 4.0
+
+    # 5a. v12.6: unseen answer_form bonus. With 1 traj/video we want every
+    # answer_form (binary / MC / number / short_exact / descriptive) to
+    # appear if possible — keeps the single trajectory rich across tasks.
+    af = card.get("answer_form", "")
+    if af and used_answer_forms is not None and af not in used_answer_forms:
+        score += 1.5
 
     # 5b. OVOBench-relevant rare-sequence boost.
     # v9.1 audit found event_watch=3.2% across the dataset — too low for AAR/EPM
@@ -1165,6 +1177,7 @@ def plan_trajectories(
     used_ask_chunks: List[int] = []
     used_card_ids: Set[str] = set()
     used_answers: Set[str] = set()
+    used_answer_forms: Set[str] = set()  # v12.6 — diversify answer_form within traj
     selected: List[Dict] = []
 
     candidates = list(qa_placements)   # ← QA only; PN1 bypassed
@@ -1177,7 +1190,8 @@ def plan_trajectories(
                 continue
             s = _score_placement(p, cards_map, used_families,
                                  used_seq_types, used_ask_chunks,
-                                 used_answers, evidence)
+                                 used_answers, evidence,
+                                 used_answer_forms=used_answer_forms)
             scored.append((s, p))
 
         if not scored:
@@ -1198,6 +1212,9 @@ def plan_trajectories(
         canonical = card.get("canonical_answer", "").strip().lower()
         if canonical:
             used_answers.add(canonical)
+        af = card.get("answer_form", "")
+        if af:
+            used_answer_forms.add(af)
         candidates.remove(best)
 
     # --- Phase 1.5: v12.0 silent-region preservation ---

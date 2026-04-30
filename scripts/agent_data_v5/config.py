@@ -154,12 +154,17 @@ MAX_CANDIDATES_PER_VIDEO = {
 # "always-respond" prior that hurts silent-decision learning AND inflates
 # train→eval distribution shift. New caps target ~1.2 q/min.
 MAX_SAMPLES_PER_VIDEO = 15           # was 30 — halve per-video corpus contribution
-MAX_TRAJECTORIES_PER_VIDEO = 5       # was 10 — match VideoLLM-online (3 conv/video)
-# v12.5 (2026-04-30): 3 → 5 to lower silent ratio from ~85% toward
-# 65-70%. Each extra question/traj converts 1 chunk from base silent →
-# response. With 5 q/traj × 2 traj/video + ~10 PN1 = ~20 questions/video,
-# silent rate ≈ (47-20)/47 = 57% on median video.
-MAX_QUESTIONS_PER_TRAJECTORY = 5     # was 3 — denser within-traj for v12.5
+# v12.6 (2026-04-30): 5 → 1, align with VideoLLM-online / MMDuet / VST
+# convention of "1 video = 1 trajectory, multiple questions inside".
+# Multi-traj per video creates 5× visual + memory_state overlap → effective
+# unique-sample count drops to ~30% of nominal → SFT loss collapses fast
+# without true generalization. With 1 long traj per video we get true
+# cross-video diversity; question density stays roughly constant by bumping
+# MAX_QUESTIONS_PER_TRAJECTORY 5 → 8.
+MAX_TRAJECTORIES_PER_VIDEO = 1
+# v12.6 (2026-04-30): 5 → 8. With only 1 trajectory we have to pack more
+# questions inside it; 8 still leaves ≥15s gap between asks on a 150s video.
+MAX_QUESTIONS_PER_TRAJECTORY = 8
 MAX_ACTIVE_QUERIES = 2               # unchanged — realistic user behavior
 
 # Backward compat aliases (deprecated — use token-based constants above)
