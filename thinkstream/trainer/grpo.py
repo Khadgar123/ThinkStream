@@ -529,9 +529,13 @@ def rollout(
                     "action": result.get("action", "unknown"),
                     "think": result.get("think", ""),
                     "payload": result.get("payload", {}),
-                    "raw_output": result.get("raw_output", ""),
+                    # v12.6 fix: parsed dict carries `raw` (set in
+                    # agent_loop._parse_agent_output line 41); reading
+                    # `raw_output` produced empty string → empty
+                    # generated_tokens → no logprob signal at training time.
+                    "raw_output": result.get("raw", ""),
                     "generated_tokens": tokenizer.encode(
-                        result.get("raw_output", ""), add_special_tokens=False,
+                        result.get("raw", ""), add_special_tokens=False,
                     ),
                     # Post-step memory bookkeeping (used by overflow_pen reward).
                     "memory_token_count": int(result.get("memory_token_count", 0)),
@@ -571,12 +575,20 @@ def rollout(
         for ci in range(max_chunks_seen):
             merged = {
                 "chunk_idx": ci,
-                "window_start": ci * 2,
-                "window_end": (ci + 1) * 2,
+                # v12.6 fix: was hardcoded ci*2 (legacy 2s/chunk). Use
+                # canonical AGENT_CHUNK_SEC so v12.5's 1s/chunk produces
+                # window_start=ci, NOT ci*2.
+                "window_start": ci * AGENT_CHUNK_SEC_RUNTIME,
+                "window_end": (ci + 1) * AGENT_CHUNK_SEC_RUNTIME,
                 "generated_tokens": [],
                 "memory_token_count": [],   # per-gen post-step memory size
                 "compress_budget": [],      # per-gen budget (constant within a run, kept per-gen for symmetry)
                 "recall_returned_chunks": [],  # per-gen retriever output
+                # v12.6: per-gen step_messages so _build_rollout_messages
+                # can rebuild the exact prompt the policy conditioned on.
+                # Loss-time logprobs need the same memory/visual_window/
+                # queries context the rollout used.
+                "step_messages": [],
             }
             for g in range(group_size):
                 if ci < len(per_gen_results[g]):
@@ -589,12 +601,14 @@ def rollout(
                     merged["recall_returned_chunks"].append(
                         list(cr_g.get("recall_returned_chunks") or [])
                     )
+                    merged["step_messages"].append(cr_g.get("step_messages"))
                 else:
                     # Pad with empty if this gen finished early
                     merged["generated_tokens"].append(torch.tensor([]))
                     merged["memory_token_count"].append(0)
                     merged["compress_budget"].append(0)
                     merged["recall_returned_chunks"].append([])
+                    merged["step_messages"].append(None)
             merged_chunk_results.append(merged)
 
         all_rollout_results.append({
@@ -1259,14 +1273,24 @@ def _build_rollout_messages(
     total_start = chunk_results[0]["window_start"]
     total_end = chunk_results[-1]["window_end"]
 
-    # v12.6: prefer the EXACT prompt messages captured at rollout time
-    # (chunk_results[i]['step_messages']). If absent (e.g. older rollouts
-    # or vLLM backend that didn't capture), fall back to the legacy
-    # video+question reconstruction — but warn loudly because logprobs
-    # will not match sampling-time context.
+    # v12.6: prefer the EXACT per-gen prompt messages captured at rollout
+    # time (chunk_results[i]['step_messages'][gen_idx]). The merge step
+    # stores step_messages as a list-of-G per chunk to mirror the per-gen
+    # generated_tokens schema. If captured for THIS gen_idx, replay those
+    # messages; otherwise fall back to legacy reconstruction (which loses
+    # memory/visual_window/queries context).
+    def _captured_for_gen(cr, gi):
+        sm = cr.get("step_messages")
+        if isinstance(sm, list) and gi < len(sm):
+            v = sm[gi]
+            return v if isinstance(v, list) and v else None
+        # Backward-compat: pre-merge format had step_messages as a single list
+        if isinstance(sm, list) and sm and isinstance(sm[0], dict):
+            return sm
+        return None
+
     has_captured_msgs = all(
-        isinstance(cr.get("step_messages"), list) and cr["step_messages"]
-        for cr in chunk_results
+        _captured_for_gen(cr, gen_idx) is not None for cr in chunk_results
     )
 
     if has_captured_msgs:
@@ -1279,7 +1303,7 @@ def _build_rollout_messages(
             {"role": "system", "content": SYSTEM_PROMPT_V12}
         ]
         for cr_idx, cr in enumerate(chunk_results):
-            step_msgs = cr["step_messages"]
+            step_msgs = _captured_for_gen(cr, gen_idx)
             # Skip the system head from each step's captured prompt
             # (already at messages[0]); append everything else.
             for m in step_msgs:

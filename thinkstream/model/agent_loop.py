@@ -287,6 +287,7 @@ def build_single_step_messages(
     min_pixels: int = 100352,
     max_pixels: int = 150528,
     frame_paths: Optional[List[str]] = None,
+    inter_chunk: bool = False,
 ) -> List[Dict]:
     """Build single-step chat messages matching training format.
 
@@ -294,6 +295,9 @@ def build_single_step_messages(
     Uses ``SYSTEM_PROMPT_V12`` (the only protocol). The ``<tools>`` block is
     rendered by the chat_template — callers must pass ``tools=TOOLS_SCHEMA``
     when invoking ``processor.apply_chat_template``.
+
+    inter_chunk=True drops <visual_window> + frames so the prompt matches
+    pass5 shape C (compress system trigger between visual chunks).
     """
     memory_text = format_memory_block(snapshot)
     user_content = build_user_content(
@@ -307,6 +311,7 @@ def build_single_step_messages(
         min_pixels=min_pixels,
         max_pixels=max_pixels,
         frame_paths=frame_paths,
+        inter_chunk=inter_chunk,
     )
 
     return [
@@ -482,12 +487,19 @@ def make_generate_fn(
         **kwargs,
     ) -> str:
         # 1. Apply chat template + process vision (tokenize=True handles images/videos)
+        # v12.6 fix: pass tools=TOOLS_SCHEMA so chat_template auto-renders the
+        # <tools> block in the system prompt — same convention as SFT
+        # data_processor and vLLM eval. Without it, the HF generation path
+        # sees a different system context than the model was trained on,
+        # making tool-call tokens drift OOD.
+        from thinkstream.data.agent_protocol import TOOLS_SCHEMA
         inputs = processor.apply_chat_template(
             messages,
             tokenize=True,
             return_dict=True,
             return_tensors="pt",
             add_generation_prompt=True,
+            tools=TOOLS_SCHEMA,
         )
 
         # 2. Move to device
@@ -757,11 +769,15 @@ class StreamingAgentLoop:
             user_input = user_question
 
         # 4. Build single-step messages (matching training format).
-        # Pass `queries=self.memory.queries` so the <queries> block is
-        # populated identically to the SFT input format — both for the
-        # current pending question and for any past Q/A pairs that the
-        # model has already produced answers for in this video.
-        frame_paths = self._get_frame_paths(video_path, chunk_idx)
+        # v12.6: when compress_trigger is the user_input AND no user
+        # question fires in the same step, mark inter_chunk=True so the
+        # prompt drops <visual_window> + frames — matches pass5 shape C
+        # (system event between visual chunks, not a visual decision).
+        is_inter_chunk = bool(compress_trigger and not user_question)
+        frame_paths = (
+            None if is_inter_chunk
+            else self._get_frame_paths(video_path, chunk_idx)
+        )
         messages = build_single_step_messages(
             snapshot,
             chunk_idx,
@@ -771,6 +787,7 @@ class StreamingAgentLoop:
             min_pixels=self.min_pixels,
             max_pixels=self.max_pixels,
             frame_paths=frame_paths,
+            inter_chunk=is_inter_chunk,
         )
         # v12.6: stash the EXACT messages used for generation so RL loss-time
         # reconstruction can replay the same prompt — see

@@ -183,6 +183,7 @@ def build_user_content(
     min_pixels: int = 100352,
     max_pixels: int = 150528,
     frame_paths: Optional[List[str]] = None,
+    inter_chunk: bool = False,
 ) -> List[Dict]:
     """Build the user content list for a single-step message.
 
@@ -200,11 +201,22 @@ def build_user_content(
         min_pixels, max_pixels: Resolution limits.
         frame_paths: Optional explicit frame paths (training). If None, uses
                      video_path with time range (inference).
+        inter_chunk: v12.6 — when True (compress system trigger fires
+                     between two visual chunks), DROP <visual_window> and
+                     the video frame block. Matches pass5 inter_chunk
+                     shape C (compress sample has memory + trigger only,
+                     no visual context). Compression is a system event
+                     between visual timesteps; treating it as a visual
+                     decision creates train/infer divergence.
     """
     chunk_sec = AGENT_CHUNK_SEC
     user_content = []
 
     # ── Zone B: Visual window + video frames (固定大小, position 稳定) ──
+    # v12.6: inter_chunk compress turns SKIP this block entirely (matches
+    # pass5 shape C). Compression is a system event between visual chunks
+    # and consumes no new frames; including a visual_window here would
+    # diverge from the SFT distribution.
     window_start = max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1)
     video_start = window_start * chunk_sec
     video_end = (chunk_idx + 1) * chunk_sec
@@ -212,29 +224,30 @@ def build_user_content(
     current_end = current_start + chunk_sec
     n_frames = (chunk_idx - window_start + 1) * FRAMES_PER_CHUNK
 
-    vw_header = json.dumps({
-        "start": video_start,
-        "end": video_end,
-        "frames": n_frames,
-        "current_time": [current_start, current_end],
-    })
-    user_content.append({
-        "type": "text",
-        "text": f"<visual_window>{vw_header}</visual_window>",
-    })
-
-    if frame_paths:
-        user_content.append({"type": "video", "video": frame_paths})
-    else:
-        user_content.append({
-            "type": "video",
-            "video": video_path,
-            "video_start": video_start,
-            "video_end": video_end,
-            "nframes": n_frames,
-            "min_pixels": min_pixels,
-            "max_pixels": max_pixels,
+    if not inter_chunk:
+        vw_header = json.dumps({
+            "start": video_start,
+            "end": video_end,
+            "frames": n_frames,
+            "current_time": [current_start, current_end],
         })
+        user_content.append({
+            "type": "text",
+            "text": f"<visual_window>{vw_header}</visual_window>",
+        })
+
+        if frame_paths:
+            user_content.append({"type": "video", "video": frame_paths})
+        else:
+            user_content.append({
+                "type": "video",
+                "video": video_path,
+                "video_start": video_start,
+                "video_end": video_end,
+                "nframes": n_frames,
+                "min_pixels": min_pixels,
+                "max_pixels": max_pixels,
+            })
 
     # ── Zone B continued: Recalled frames (recall_response only) ──
     if recalled_frames:

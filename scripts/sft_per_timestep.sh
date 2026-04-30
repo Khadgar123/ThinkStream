@@ -93,8 +93,9 @@ case $PHASE in
             --save_total_limit ${SAVE_LIMIT:-5} \
             --load_best_model_at_end True \
             --metric_for_best_model eval_loss \
-            --greater_is_better False \
-            --protocol_version v12"
+            --greater_is_better False"
+        # v12.6: --protocol_version flag removed from DataArguments (v12 is
+        # now the only supported protocol — see thinkstream/sft/argument.py).
         if [ -n "${RESUME_FROM_CHECKPOINT:-}" ]; then
             extra_args="${extra_args} --resume_from_checkpoint ${RESUME_FROM_CHECKPOINT}"
         fi
@@ -116,7 +117,7 @@ case $PHASE in
         datasets=stream_agent_p1
         lr=1e-5; epochs=3
         run_name="agent-ablate-p1"
-        extra_args="--class_balanced_sampler False"
+        extra_args=""  # class_balanced_sampler removed in v12.6
         ;;
     # Ablation: train only on recall samples.
     2)
@@ -124,7 +125,7 @@ case $PHASE in
         datasets=stream_agent_p2
         lr=5e-6; epochs=3
         run_name="agent-ablate-p2"
-        extra_args="--class_balanced_sampler False"
+        extra_args=""  # class_balanced_sampler removed in v12.6
         ;;
     # Ablation: train only on compress samples (system trigger + teacher gold range).
     C1)
@@ -132,7 +133,7 @@ case $PHASE in
         datasets=stream_agent_c1
         lr=3e-6; epochs=2
         run_name="agent-ablate-c1"
-        extra_args="--class_balanced_sampler False"
+        extra_args=""  # class_balanced_sampler removed in v12.6
         ;;
     *)
         echo "Unknown PHASE=$PHASE. Use: sft (production) | mixed (legacy) | 1 | 2 | C1 (ablation only)"

@@ -146,18 +146,30 @@ def run_one_ablation(
     cfg_dir.mkdir(parents=True, exist_ok=True)
     weights_path = write_reward_override(cfg_dir, weights)
 
-    # Trainer command (slyme path; switch to verl with --backend verl)
-    cmd = [
-        "torchrun", "--nproc_per_node=8",
-        "thinkstream/trainer/main_grpo.py",
-        f"--output_dir={cfg_dir}",
-        f"--max_steps={train_steps}",
-        f"--reward_weights_path={weights_path}",
-        "--audit_log_dir=" + str(cfg_dir / "audit"),
-    ]
+    # Trainer command — slyme RL is launched via the project's
+    # `bash scripts/grpo_train.sh` (not a single Python entry point;
+    # slyme orchestrates multi-node via @node DAG resolution). For verl
+    # backend use `python -m thinkstream.trainer_verl.main_grpo`.
+    #
+    # Reward override path: trainer reads THINKSTREAM_REWARD_WEIGHTS_PATH
+    # at GRPO node init (see thinkstream/trainer/grpo.py — env-driven
+    # weights loading is the only knob ablation_runner can flip without
+    # forking the trainer).
+    backend = os.environ.get("ABLATION_BACKEND", "slyme")
+    if backend == "verl":
+        cmd = [
+            "python", "-m", "thinkstream.trainer_verl.main_grpo",
+            "--config", "recipe/v12_grpo.yaml",
+        ]
+    else:
+        cmd = [
+            "bash", "scripts/grpo_train.sh",
+        ]
     env = os.environ.copy()
     env["THINKSTREAM_REWARD_WEIGHTS_PATH"] = str(weights_path)
     env["THINKSTREAM_OUTPUT_DIR"] = str(cfg_dir)
+    env["THINKSTREAM_AUDIT_DIR"] = str(cfg_dir / "audit")
+    env["MAX_STEPS"] = str(train_steps)
 
     if dry_run:
         logger.info(f"[DRY] {name}: would launch {' '.join(cmd)}")
