@@ -951,9 +951,27 @@ class StreamingAgentLoop:
                         "text": f"<recalled_frames>{rf_header}</recalled_frames>",
                     })
                     if "frame_paths" in recalled_frames:
+                        # v12.11 P1.1 fix (2026-05-01): attach video_metadata
+                        # so Qwen3-VL processor renders per-frame `<X.X seconds>`
+                        # at the ORIGINAL video time. Mirrors the SFT-side fix in
+                        # pass5_messages.py — keeps train/infer prompts identical
+                        # for the recalled-frames user turn.
+                        tr_start, tr_end = recalled_frames["time_range"]
+                        n_rf = len(recalled_frames["frame_paths"])
+                        tr_start_chunk = int(tr_start / float(AGENT_CHUNK_SEC))
                         tool_user_content.append({
                             "type": "video",
                             "video": recalled_frames["frame_paths"],
+                            "video_metadata": {
+                                "fps": float(FRAMES_PER_CHUNK / float(AGENT_CHUNK_SEC)),
+                                "frames_indices": [
+                                    tr_start_chunk * FRAMES_PER_CHUNK + i
+                                    for i in range(n_rf)
+                                ],
+                                "total_num_frames": int(
+                                    tr_end / float(AGENT_CHUNK_SEC)
+                                ) * FRAMES_PER_CHUNK,
+                            },
                         })
                 rr_json = _json.dumps({
                     "source": recall_result.get("source", ""),

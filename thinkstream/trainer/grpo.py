@@ -20,11 +20,15 @@ import torch
 #   _build_rollout_messages_single_chunk builds short ~6K prompts per chunk.
 #   Eliminates OOM + truncation on long-trajectory rollouts.
 #
-# Switch via env: THINKSTREAM_LOSS_BATCH_MODE=per_chunk
-# Anything other than "per_chunk" falls back to "trajectory".
-LOSS_BATCH_MODE = os.environ.get("THINKSTREAM_LOSS_BATCH_MODE", "trajectory").lower()
+# Switch via env: THINKSTREAM_LOSS_BATCH_MODE=trajectory
+# Default flipped to per_chunk in v12.11 — the audit on 2026-05-01 found
+# trajectory mode produces 50K+ token concatenated samples on long-trajectory
+# rollouts, which OOM under 16K context cap. per_chunk is now the corrected
+# default; trajectory remains opt-in for ablation against the legacy v12.10
+# behavior. Any value other than "per_chunk"/"trajectory" falls back to per_chunk.
+LOSS_BATCH_MODE = os.environ.get("THINKSTREAM_LOSS_BATCH_MODE", "per_chunk").lower()
 if LOSS_BATCH_MODE not in ("trajectory", "per_chunk"):
-    LOSS_BATCH_MODE = "trajectory"
+    LOSS_BATCH_MODE = "per_chunk"
 
 # v12.11: ReMemR1-style mixed advantage. When enabled, per-step state
 # rewards (format + action) get group-normalized at (uid, step_id) level
@@ -443,6 +447,24 @@ def rollout(
                 f"{e}. Install vllm + qwen_vl_utils or fall back to "
                 "use_vllm_rollout=False."
             ) from e
+        # v12.11 P0.5 (2026-05-01): inference_engine is currently always None
+        # because there is no vLLM construction node wired into the trainer
+        # init path (init_grpo_refs only sets it to None). Surface this as
+        # an explicit error rather than letting streaming_vllm_rollout crash
+        # with a less-informative AttributeError on llm.generate().
+        # Proper fix requires:
+        #   1. Construct vLLM LLM(model=args.model.name_or_path, ...) at init
+        #   2. After each train step, sync weights from training model to
+        #      vLLM workers (NCCL bridge or LLM.load_weights)
+        #   3. Free vLLM cache + restore at rollout boundary
+        # Tracked as a follow-up commit; meanwhile, keep use_vllm_rollout=False.
+        if inference_engine is None:
+            raise RuntimeError(
+                "use_vllm_rollout=True but inference_engine is None. The vLLM "
+                "construction path is not yet implemented for RL training "
+                "(see grpo.init_grpo_refs). Use use_vllm_rollout=False (HF "
+                "generate path) or wait for the dedicated vLLM-RL PR."
+            )
         # `inference_engine` is the vLLM LLM handle owned by the trainer
         # (unwrap_model_for_generation injects it on ZeRO-3 unwrap).
         all_rollout_results = streaming_vllm_rollout(
@@ -1136,6 +1158,24 @@ def _calc_rewards_v12_trajectory(
             all_masks["silent_quality"].append(
                 1.0 if silent_res["n_chunks_scored"] > 0 else 0.0
             )
+            # v12.11 P1.3 (2026-05-01): aggregate per-rollout behavior counters
+            # for ablation_runner. Stashed into module-global; emitted by
+            # grpo_global_metrics under behavior_* keys.
+            _BEHAVIOR_AGG["n_chunks_scored"] += silent_res.get("n_chunks_scored", 0)
+            _BEHAVIOR_AGG["n_correct_silent"] += silent_res.get("n_correct_silent", 0)
+            _BEHAVIOR_AGG["n_hallucinate"] += silent_res.get("n_hallucinate", 0)
+            _BEHAVIOR_AGG["n_missed"] += silent_res.get("n_missed", 0)
+            # Recall + compress decision usage rate (any chunk where model
+            # actually emitted recall/compress, regardless of correctness).
+            for co in chunk_outputs:
+                k = co.get("kind", "")
+                if k == "recall":
+                    _BEHAVIOR_AGG["n_recall_emitted"] += 1
+                elif k == "compress":
+                    if not co.get("format_error"):
+                        _BEHAVIOR_AGG["n_compress_well_formed"] += 1
+                    _BEHAVIOR_AGG["n_compress_emitted"] += 1
+                _BEHAVIOR_AGG["n_chunks_total"] += 1
 
     rewards_dict = {
         k: torch.tensor(all_rewards[k], dtype=torch.float) for k in keys
@@ -1221,6 +1261,47 @@ def calc_rewards(
 
 # Stash for grpo_global_metrics — populated each step by the GDPO node.
 _LAST_GDPO_DIAG: Dict[str, float] = {}
+
+# v12.11 P1.3 (2026-05-01): per-step behavior counters aggregated across
+# rollouts in the same training step. Reset by grpo_global_metrics after
+# emitting. Read by ablation_runner via behavior_* keys in grpo_step.jsonl.
+_BEHAVIOR_AGG: Dict[str, int] = {
+    "n_chunks_total": 0,
+    "n_chunks_scored": 0,
+    "n_correct_silent": 0,
+    "n_hallucinate": 0,
+    "n_missed": 0,
+    "n_recall_emitted": 0,
+    "n_compress_emitted": 0,
+    "n_compress_well_formed": 0,
+}
+
+
+def _drain_behavior_metrics() -> Dict[str, float]:
+    """Pop & reset _BEHAVIOR_AGG counters; return the behavior_* metric dict."""
+    global _BEHAVIOR_AGG
+    n_scored = _BEHAVIOR_AGG["n_chunks_scored"]
+    n_total = max(1, _BEHAVIOR_AGG["n_chunks_total"])
+    n_recall_chunks = max(1, _BEHAVIOR_AGG["n_recall_emitted"])
+    n_compress_chunks = max(1, _BEHAVIOR_AGG["n_compress_emitted"])
+    out = {
+        "behavior_n_chunks_total": _BEHAVIOR_AGG["n_chunks_total"],
+        "behavior_response_acc": (
+            (_BEHAVIOR_AGG["n_correct_silent"]
+             + (n_scored - _BEHAVIOR_AGG["n_correct_silent"]
+                - _BEHAVIOR_AGG["n_hallucinate"]
+                - _BEHAVIOR_AGG["n_missed"])) / max(1, n_scored)
+        ),
+        "behavior_silent_acc": _BEHAVIOR_AGG["n_correct_silent"] / max(1, n_scored),
+        "behavior_hallucinate_rate": _BEHAVIOR_AGG["n_hallucinate"] / max(1, n_scored),
+        "behavior_missed_rate": _BEHAVIOR_AGG["n_missed"] / max(1, n_scored),
+        "behavior_recall_used_rate": _BEHAVIOR_AGG["n_recall_emitted"] / n_total,
+        "behavior_compress_format_rate": (
+            _BEHAVIOR_AGG["n_compress_well_formed"] / n_compress_chunks
+        ),
+    }
+    _BEHAVIOR_AGG = {k: 0 for k in _BEHAVIOR_AGG}
+    return out
 
 
 def _gdpo_per_reward_group_norm(
@@ -1972,6 +2053,9 @@ def grpo_global_metrics(
         "reward_var": reward_var,
         **component_means,
         **dict(_LAST_GDPO_DIAG),
+        # v12.11 P1.3: drain per-step behavior counters → behavior_* keys
+        # consumed by ablation_runner.compute_summary.
+        **_drain_behavior_metrics(),
     }
 
     # v12.6: persist per-step metrics to grpo_step.jsonl (audit writer set

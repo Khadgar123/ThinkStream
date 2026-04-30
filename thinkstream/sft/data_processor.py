@@ -578,17 +578,22 @@ def preprocess_per_timestep(sample: Dict, processor) -> Dict:
     # Unmask all assistant turns (each can have its own [start, end] range).
     for ans_start, ans_end in assistant_spans:
         labels[0, ans_start: ans_end + 2] = input_ids[0, ans_start: ans_end + 2]
-    ans_start, ans_end = assistant_spans[0]
 
     full_result["labels"] = labels
     full_result["input_ids"] = input_ids
 
-    # Vanilla CE per DeepEyesV2 multiturn_sft_dataset.py:170 — uniform
-    # weight 1.0 across the assistant span.
+    # v12.11 P1.2 fix (2026-05-01): expose ALL assistant spans, not just the
+    # first. Multi-turn recall samples have 2 assistant turns (tool_call +
+    # final answer); the first-turn-only metric was missing the final answer
+    # in eval. The first span is kept for backward compat; ans_spans is the
+    # canonical multi-span view (used by ALL eval / metric code in v12.11+).
+    ans_start, ans_end = assistant_spans[0]
     full_result["eval_meta"] = {
         "sample_type": sample.get("sample_type", "?"),
-        "ans_start": ans_start,
+        "ans_start": ans_start,           # legacy: first span only
         "ans_end": ans_end,
+        "ans_spans": list(assistant_spans),  # v12.11: all spans (1 or 2 turns)
+        "n_assistant_turns": len(assistant_spans),
     }
     return full_result
 
