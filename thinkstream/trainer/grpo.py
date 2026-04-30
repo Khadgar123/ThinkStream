@@ -1638,7 +1638,7 @@ def grpo_global_metrics(
 
     # GDPO per-reward advantage stats + post-whiten total (populated by
     # compute_gdpo_advantages on the same step). Stash → log; harmless if empty.
-    return {
+    metrics = {
         "grad_norm": grad_norm,
         "learning_rate": lr,
         "reward_mean": reward_mean,
@@ -1646,6 +1646,18 @@ def grpo_global_metrics(
         **component_means,
         **dict(_LAST_GDPO_DIAG),
     }
+
+    # v12.6: persist per-step metrics to grpo_step.jsonl (audit writer set
+    # by env THINKSTREAM_AUDIT_DIR / THINKSTREAM_OUTPUT_DIR). Without this
+    # ablation_runner.py has nothing to read for per-step convergence
+    # comparison. Step counter is module-global so we tag each row.
+    global _GRPO_STEP_COUNTER
+    _GRPO_STEP_COUNTER += 1
+    step_writer, _ = _grpo_audit_writers()
+    if step_writer is not None:
+        step_writer.write({"step": _GRPO_STEP_COUNTER, **metrics})
+
+    return metrics
 
 
 @node

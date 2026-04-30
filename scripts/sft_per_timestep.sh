@@ -100,43 +100,27 @@ case $PHASE in
             extra_args="${extra_args} --resume_from_checkpoint ${RESUME_FROM_CHECKPOINT}"
         fi
         ;;
-    mixed)
-        # Backward-compat: full union (train.jsonl). Use this only if
-        # you do NOT plan to run GDPO afterwards, or for single-stage
-        # baselines where SFT-seen / RL-disjoint distinction is moot.
-        llm=${LLM:-/home/tione/notebook/gaozhenkun/model/Qwen3-VL-8B-Instruct}
-        datasets=stream_agent_p5            # already the merged mix
-        lr=2e-5; epochs=3
-        run_name="agent-mixed"
-        # class_balanced_sampler defaults to True in DataArguments;
-        # set False here if you want a uniform-sampling ablation.
-        ;;
-    # Ablation: train only on basic silent+response samples.
-    1)
-        llm=${LLM:-Qwen/Qwen2.5-VL-3B-Instruct}
-        datasets=stream_agent_p1
-        lr=1e-5; epochs=3
-        run_name="agent-ablate-p1"
-        extra_args=""  # class_balanced_sampler removed in v12.6
-        ;;
-    # Ablation: train only on recall samples.
-    2)
-        llm=${LLM:-Qwen/Qwen2.5-VL-3B-Instruct}
-        datasets=stream_agent_p2
-        lr=5e-6; epochs=3
-        run_name="agent-ablate-p2"
-        extra_args=""  # class_balanced_sampler removed in v12.6
-        ;;
-    # Ablation: train only on compress samples (system trigger + teacher gold range).
-    C1)
-        llm=${LLM:-Qwen/Qwen2.5-VL-3B-Instruct}
-        datasets=stream_agent_c1
-        lr=3e-6; epochs=2
-        run_name="agent-ablate-c1"
-        extra_args=""  # class_balanced_sampler removed in v12.6
+    mixed|1|2|C1)
+        # v12.6: legacy PHASEs (mixed, 1, 2, C1) are gated. They pointed at
+        # archived flat datasets (stream_agent_p1/p2/p5/c1) that don't have
+        # the messages key required by preprocess_per_timestep. To re-enable,
+        # convert those datasets through pass5_messages.py first OR use
+        # PHASE=sft on the canonical messages dataset.
+        echo "ERROR: PHASE=$PHASE is archived in v12.6."
+        echo "  Legacy phases pointed at flat *_full.jsonl datasets (no"
+        echo "  'messages' key); preprocess_per_timestep now requires"
+        echo "  messages format. To run an ablation:"
+        echo "    1) Convert the flat dataset:"
+        echo "       python -m scripts.agent_data_v5.pass5_messages \\"
+        echo "         --input flat --final-dir <dir>"
+        echo "    2) Add a stream_agent_<name> entry in"
+        echo "       thinkstream/sft/data_list.py pointing at the .messages.jsonl"
+        echo "    3) Run with PHASE=sft DATASETS=stream_agent_<name>"
+        exit 2
         ;;
     *)
-        echo "Unknown PHASE=$PHASE. Use: sft (production) | mixed (legacy) | 1 | 2 | C1 (ablation only)"
+        echo "Unknown PHASE=$PHASE. Use: sft (production)."
+        echo "  Legacy phases (mixed | 1 | 2 | C1) archived in v12.6 — see error above."
         exit 1
         ;;
 esac

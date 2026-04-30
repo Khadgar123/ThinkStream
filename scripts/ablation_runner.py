@@ -212,13 +212,35 @@ def collect_metrics(audit_dir: Path) -> List[Dict]:
 
 
 def compute_summary(metrics_a0: List[Dict], metrics_a1: List[Dict]) -> Dict:
-    """Compute final-window mean for each tracked metric."""
+    """Compute final-window mean for each tracked metric.
+
+    v12.6: keys aligned with what grpo.grpo_global_metrics actually writes
+    (reward_*_mean from rewards_dict). A0 vs A1 differs only in
+    silent_quality WEIGHT, so the silent_quality REWARD itself should
+    converge similarly in both runs (it's still computed, just not
+    weighted into the advantage). The observable difference is in
+    behavioral signals proxied by outcome convergence + reward variance:
+      - reward_outcome_mean      should rise faster in A0 if turn signal
+                                 helps avoid silent collapse during early
+                                 training (the v11 failure mode)
+      - reward_silent_quality_mean tells us how often the model gets
+                                 silent/respond decisions right
+      - reward_var               higher means GDPO has signal to work
+                                 with; collapse → near 0
+    """
     def _last_window_mean(rows: List[Dict], key: str, window: int = 10) -> float:
         vals = [r.get(key) for r in rows[-window:] if r.get(key) is not None]
         return sum(vals) / len(vals) if vals else 0.0
 
-    keys = ["outcome_mean", "silent_acc", "response_acc",
-            "hallucinate_rate", "missed_rate"]
+    keys = [
+        "reward_outcome_mean",
+        "reward_silent_quality_mean",
+        "reward_timing_mean",
+        "reward_format_mean",
+        "reward_spam_mean",
+        "reward_mean",
+        "reward_var",
+    ]
     out = {"A0_turn_on": {}, "A1_turn_off": {}}
     for k in keys:
         out["A0_turn_on"][k]  = _last_window_mean(metrics_a0, k)
@@ -284,15 +306,17 @@ def main():
     print("=" * 78)
     print(json.dumps(summary, indent=2))
 
-    # Interpretation hint
-    delta_silent = summary.get("delta_silent_acc", 0.0)
-    delta_halluc = summary.get("delta_hallucinate_rate", 0.0)
+    # Interpretation hint — based on what trainer actually emits.
+    delta_outcome = summary.get("delta_reward_outcome_mean", 0.0)
+    delta_silent_q = summary.get("delta_reward_silent_quality_mean", 0.0)
     print("\nExpected directional findings:")
-    print(f"  delta_silent_acc (A0 - A1)        = {delta_silent:+.3f}  (>0 means turn signal helps)")
-    print(f"  delta_hallucinate_rate (A0 - A1)  = {delta_halluc:+.3f}  (<0 means turn signal helps)")
-    if delta_silent > 0.02 and delta_halluc < -0.02:
-        print("  → silent_quality EARNS its weight.")
-    elif abs(delta_silent) < 0.01 and abs(delta_halluc) < 0.01:
+    print(f"  delta_reward_outcome_mean        (A0 - A1) = {delta_outcome:+.3f}")
+    print(f"     >0 → silent_quality term shapes early policy toward better outcome")
+    print(f"  delta_reward_silent_quality_mean (A0 - A1) = {delta_silent_q:+.3f}")
+    print(f"     >0 → A0 actually achieves better silent/respond decisions")
+    if delta_outcome > 0.02 and delta_silent_q > 0.02:
+        print("  → silent_quality EARNS its weight (helps both decisions and outcome).")
+    elif abs(delta_outcome) < 0.01 and abs(delta_silent_q) < 0.01:
         print("  → silent_quality has NO measurable effect — drop it for simplicity.")
     else:
         print("  → mixed effect; inspect per-step curves before deciding.")
