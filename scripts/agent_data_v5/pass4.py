@@ -194,12 +194,20 @@ def _build_trajectory_record(
         if not meta.get("gold_answer"):
             # Base/silent samples without a real question — skip.
             continue
-        # Find this card's response/recall_response chunk(s).
+        # Find this card's answer-bearing chunk(s).
+        # v12.6: pass3c._merge_recall_pairs_v12 collapses
+        #   recall_query + recall_response/recall_silent → sample_type="recall"
+        # so that label is the v12.5+ equivalent of "recall_response" for the
+        # purpose of "the chunk where the answer lands". Without "recall" in
+        # this set, recall-multi-turn questions appear with empty ask_chunks
+        # and outcome/timing rewards score them at 0 incorrectly.
+        # Also include "recall_response" (legacy unmerged pre-v12.5 trajectories)
+        # for backward-compat with archived data.
         ask_chunks = sorted({
             int(x.get("chunk_idx", 0))
             for x in sorted_samples
             if x.get("card_id") == cid
-            and x.get("sample_type") in ("response", "recall_response")
+            and x.get("sample_type") in ("response", "recall_response", "recall")
         })
         questions.append({
             "card_id": cid,
@@ -221,9 +229,21 @@ def _build_trajectory_record(
     # supervision for silent_quality reward, independent of which card
     # owns that chunk. Multiple samples on one chunk pick the most
     # informative non-silent action (response > recall > compress > silent).
+    # v12.6: priority order updated for the merged sample_type="recall"
+    # (which carries v12_assistant_turn_1=tool_call AND turn_2=answer in
+    # one record — see pass3c._merge_recall_pairs_v12). It scores below a
+    # plain `response` (no tool needed) but above `compress` (which is a
+    # system-event between chunks, not a primary answer-bearing turn).
+    # Legacy unmerged labels (recall_query, recall_response, recall_silent)
+    # are kept here so archived pre-v12.5 trajectories still classify.
     action_priority = {
-        "response": 0, "recall_response": 1, "recall_query": 2,
-        "compress": 3, "recall_silent": 4, "silent": 5,
+        "response": 0,
+        "recall": 1,            # v12.5+ merged shape B
+        "recall_response": 1,   # legacy
+        "recall_query": 2,      # legacy
+        "compress": 3,
+        "recall_silent": 4,     # legacy
+        "silent": 5,
     }
     gold_action_per_chunk: Dict[int, str] = {}
     for s in sorted_samples:

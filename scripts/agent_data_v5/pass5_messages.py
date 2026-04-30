@@ -116,14 +116,26 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
             "text": f"<visual_window>{vw_header}</visual_window>",
         })
 
-        # Pass4 flat files may omit frame_paths — infer from video_id.
+        # Pass4 flat files may omit frame_paths — infer from video_id +
+        # chunk_idx offset (NOT just frame_000001..n which would bind every
+        # late chunk to video-start frames). Mirrors pass1a get_chunk_frame_paths
+        # (chunk_idx × FRAMES_PER_CHUNK) so frame numbers track real video time.
         if "frame_paths" not in vw and "frames" in vw:
             vid = sample.get("video_id", "")
             if vid:
-                vw["frame_paths"] = [
-                    f"data/agent_v5/frames/{vid}/frame_{i+1:06d}.jpg"
-                    for i in range(vw["frames"])
-                ]
+                from thinkstream.data.agent_protocol import (
+                    FRAMES_PER_CHUNK as _FPC,
+                    VISUAL_WINDOW_CHUNKS as _VWC,
+                )
+                window_start = max(0, chunk_idx - _VWC + 1)
+                paths: List[str] = []
+                for ci in range(window_start, chunk_idx + 1):
+                    for fi in range(_FPC):
+                        fnum = ci * _FPC + fi + 1
+                        paths.append(
+                            f"data/agent_v5/frames/{vid}/frame_{fnum:06d}.jpg"
+                        )
+                vw["frame_paths"] = paths
 
         if "frame_paths" in vw:
             user_content.append({

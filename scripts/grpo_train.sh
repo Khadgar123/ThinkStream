@@ -83,8 +83,19 @@ PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 DEEPSPEED="${SCRIPT_DIR}/zero3.json"
 ENTRY="${PROJECT_DIR}/thinkstream/train.py"
 
-OUTPUT_DIR="${PROJECT_DIR}/output/${RUN_NAME}"
-AUDIT_DIR=${AUDIT_DIR:-${OUTPUT_DIR}/audit}
+# v12.6: honor THINKSTREAM_OUTPUT_DIR / THINKSTREAM_AUDIT_DIR if exported by
+# upstream caller (e.g. scripts/ablation_runner.py); else default to per-run
+# directory under output/. Also honor MAX_STEPS for short ablation runs.
+OUTPUT_DIR="${THINKSTREAM_OUTPUT_DIR:-${PROJECT_DIR}/output/${RUN_NAME}}"
+AUDIT_DIR="${THINKSTREAM_AUDIT_DIR:-${AUDIT_DIR:-${OUTPUT_DIR}/audit}}"
+export THINKSTREAM_AUDIT_DIR="${AUDIT_DIR}"
+# Ablation runner sets MAX_STEPS to cap training length; pass through to
+# trainer via --max_steps when set.
+if [ -n "${MAX_STEPS:-}" ]; then
+    MAX_STEPS_ARG="--max_steps ${MAX_STEPS}"
+else
+    MAX_STEPS_ARG=""
+fi
 
 mkdir -p "${OUTPUT_DIR}" "${AUDIT_DIR}"
 

@@ -1171,10 +1171,49 @@ async def run_pipeline(
         json.dump(per_video_stats, f, indent=2, ensure_ascii=False)
     logger.info(f"Per-video distribution audit → {audit_path}")
 
+    # v12.6: chain pass4 (trajectory grouping) + pass5_messages (ShareGPT
+    # conversion) so a single pipeline invocation produces every file the
+    # downstream trainers actually default to:
+    #   - SFT default reads train_sft_messages.jsonl  (pass5 output)
+    #   - RL  default reads train_rl_trajectories.jsonl (pass4 output)
+    # Without this chain, users had to remember two extra commands. Skipping
+    # if SKIP_PASS45 env is set (useful when only re-running pass1-3).
+    if not os.environ.get("SKIP_PASS45"):
+        logger.info("=" * 60)
+        logger.info("PASS 4: trajectory grouping (per-video → per-trajectory rows)")
+        logger.info("=" * 60)
+        try:
+            from scripts.agent_data_v5 import pass4 as _pass4_mod
+            _pass4_mod.main()
+        except SystemExit:
+            pass
+        except Exception as e:
+            logger.error(f"pass4 failed: {e}; SFT/RL default datasets may be missing")
+
+        logger.info("=" * 60)
+        logger.info("PASS 5: messages-format conversion (LLaMA-Factory ShareGPT)")
+        logger.info("=" * 60)
+        try:
+            import sys as _sys
+            from scripts.agent_data_v5 import pass5_messages as _pass5_mod
+            _argv_backup = _sys.argv
+            _sys.argv = ["pass5_messages", "--input", "traj"]
+            try:
+                _pass5_mod.main()
+            finally:
+                _sys.argv = _argv_backup
+        except SystemExit:
+            pass
+        except Exception as e:
+            logger.error(f"pass5_messages failed: {e}; SFT default dataset missing")
+
     logger.info("=" * 60)
     logger.info("PIPELINE COMPLETE")
     logger.info(f"Total samples: {len(passed_samples)}")
     logger.info(f"Output: {FINAL_DIR}")
+    logger.info("Next:")
+    logger.info("  SFT: bash scripts/sft_per_timestep.sh   (reads train_sft_messages.jsonl)")
+    logger.info("  RL:  bash scripts/grpo_train.sh         (reads train_rl_trajectories.jsonl)")
     logger.info("=" * 60)
 
     return stats

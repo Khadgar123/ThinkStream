@@ -83,7 +83,7 @@ V12_REWARD_DICT_KEYS: tuple = (
     "silent_quality",   # streaming-specific: +0.3 correct silence, -0.6 hallucinate, -0.6 missed
 )
 
-V12_DEFAULT_REWARD_WEIGHTS: Dict[str, float] = {
+_V12_PRODUCTION_WEIGHTS: Dict[str, float] = {
     "outcome":          1.0,    # primary signal — DeepEyesV2 0.8 ↑ to 1.0 (drop format weight)
     "timing":           0.3,    # streaming bonus/penalty
     "format":           0.1,    # weak — gate-like; per DeepEyesV2 0.2 but lower since
@@ -91,6 +91,35 @@ V12_DEFAULT_REWARD_WEIGHTS: Dict[str, float] = {
     "spam":            -0.2,    # NEGATIVE — over-budget tool penalty (additive)
     "silent_quality":   0.2,    # streaming-specific decision quality (no industry analog)
 }
+
+
+def _load_reward_weights() -> Dict[str, float]:
+    """Resolve reward weights, honoring THINKSTREAM_REWARD_WEIGHTS_PATH override.
+
+    v12.6: ablation_runner.py writes a JSON override per ablation; this
+    function picks it up at module-import time. Falls back to production
+    weights if env var is unset or file is missing/malformed.
+    """
+    import json as _json
+    import os as _os
+    p = _os.environ.get("THINKSTREAM_REWARD_WEIGHTS_PATH")
+    if p:
+        try:
+            with open(p) as _f:
+                override = _json.load(_f)
+            if isinstance(override, dict):
+                merged = dict(_V12_PRODUCTION_WEIGHTS)
+                merged.update({
+                    k: float(v) for k, v in override.items()
+                    if k in _V12_PRODUCTION_WEIGHTS
+                })
+                return merged
+        except (OSError, ValueError):
+            pass
+    return dict(_V12_PRODUCTION_WEIGHTS)
+
+
+V12_DEFAULT_REWARD_WEIGHTS: Dict[str, float] = _load_reward_weights()
 
 # Multi-level advantage mixing coefficient. final_adv = α·outcome + (1-α)·state
 V12_ADVANTAGE_MIX_ALPHA: float = 0.7

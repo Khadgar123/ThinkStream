@@ -192,6 +192,62 @@ def check_advantage_aggregation():
 # Cross-validation: slyme path == verl path
 # ===========================================================================
 
+def check_recall_multiturn_shape():
+    """pass3c merge + pass5 emission produce SFT shape B for recall samples.
+
+    Invariant: a sample with sample_type="recall" + v12_assistant_turn_1/2
+    must produce 5 messages [sys, user, asst, user, asst] — matching the
+    runtime multi-turn recall path in agent_loop.step().
+    """
+    print("\n[Recall multi-turn shape (pass3c merge → pass5 → runtime)]")
+    from scripts.agent_data_v5.pass5_messages import build_messages
+    from pathlib import Path as _P
+
+    merged = {
+        "chunk_idx": 42, "sample_type": "recall",
+        "video_id": "v", "trajectory_id": "t", "video_path": "/tmp/x.mp4",
+        "_require_pre_extracted_frames": False,
+        "input": {
+            "visual_window": {"video_start": 26.0, "video_end": 42.0,
+                              "frames": 32, "frame_indices": list(range(32))},
+            "memory": {"compressed_segments": [], "recent_thinks": []},
+            "queries": [{"question": "q?", "answers": []}],
+            "user_input": "q?",
+            "recalled_frames": {"time_range": [10, 20], "n_frames": 8,
+                                "source": "historical_frames",
+                                "frame_paths": ["data/agent_v5/frames/v/frame_000021.jpg"]},
+            "recall_result": None,
+        },
+        "recall_result": {"source": "historical_frames", "time": "10-20",
+                          "text_content": "ans", "returned_chunks": [10, 12]},
+        "v12_assistant_turn_1": "<think>need recall</think><tool_call>\n{\"name\":\"recall\",\"arguments\":{\"query\":\"x\",\"time_range\":\"10-20\"}}\n</tool_call>",
+        "v12_assistant_turn_2": "<think>found</think><answer>ans</answer>",
+    }
+    msgs = build_messages(merged, _P("/tmp"))
+    roles = [m["role"] for m in msgs]
+    expected = ["system", "user", "assistant", "user", "assistant"]
+    assert roles == expected, f"expected {expected}, got {roles}"
+    print(f"  ✓ shape B: {' → '.join(roles)}")
+    # First assistant must be the recall tool_call
+    asst1 = msgs[2]["content"][0]["text"]
+    assert "tool_call" in asst1 and "recall" in asst1, "asst1 should be recall tool_call"
+    print("  ✓ assistant turn 1 = recall tool_call")
+    # Tool turn (user role) must carry recall_result
+    tool_user = msgs[3]["content"]
+    has_rr = any("recall_result" in (c.get("text") or "")
+                 or "returned_chunks" in (c.get("text") or "")
+                 for c in tool_user if c.get("type") == "text")
+    has_rr |= any("historical_frames" in (c.get("text") or "")
+                  for c in tool_user if c.get("type") == "text")
+    assert has_rr, "tool turn should carry recall_result"
+    print("  ✓ tool turn = user role with <recall_result>")
+    # Second assistant must be the final answer
+    asst2 = msgs[4]["content"][0]["text"]
+    assert "<answer>" in asst2, "asst2 should contain <answer>"
+    print("  ✓ assistant turn 2 = final <answer>")
+    return True
+
+
 def check_slyme_vs_verl_parity():
     """Same trajectory → same per-component reward dict on both paths."""
     print("\n[slyme vs verl reward parity]")
@@ -260,6 +316,7 @@ def main():
         ("SFT loss-mask",          check_sft_loss_mask),
         ("Reward invariants",      check_reward_invariants),
         ("Advantage aggregation",  check_advantage_aggregation),
+        ("Recall multi-turn shape", check_recall_multiturn_shape),
         ("slyme vs verl parity",   check_slyme_vs_verl_parity),
     ]
 

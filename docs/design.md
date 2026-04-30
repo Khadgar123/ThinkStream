@@ -90,8 +90,10 @@ assistant 输出 `<tool_call>{"name":"recall","arguments":{"query","time_range"}
 帧 + `<recall_result>` → assistant 给最终 answer。**单 chunk 内 2-turn**，
 在数据里是 shape B（`v12_assistant_turn_1/_2`）。
 
-帧的 MROPE 时间位置 = 帧首次出现时的 timestamp（不是当前 chunk 的位置）——
-通过 chat_template 的 `video_start/video_end` 参数设置。
+recall 帧的"原始时间位置"主要通过 user content 里的
+`<recalled_frames time_range="..."/>` text tag + `video_start/video_end`
+metadata 让模型在**语义层面**理解这些是历史帧。**MROPE position id
+不会严格复用历史绝对位置** — 详见 §6 现状说明。
 
 ## 6. 输入布局（位置编码）
 
