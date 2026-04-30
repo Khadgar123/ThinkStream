@@ -1193,7 +1193,6 @@ def compute_gdpo_advantages(
     adv, diag = _aggregate_advantages(
         rewards_dict, rewards_masks, group_size, mode=advantage_mode,
     )
-    diag["advantage_mode"] = advantage_mode
 
     global _LAST_GDPO_DIAG
     _LAST_GDPO_DIAG = diag
