@@ -13,39 +13,12 @@ from typing import Optional
 
 @dataclass
 class ModelArguments:
-    # v12.0: Qwen3-VL is REQUIRED when protocol_version=v12. Qwen2.5-VL's
-    # bundled chat_template has NO tools support — passing tools= is a
-    # silent no-op (verified against Qwen/Qwen2.5-VL-7B-Instruct
-    # chat_template.json). Qwen3-VL renders the full Hermes <tools>...
-    # <tool_call>...<tool_response> protocol. See verification report in
-    # docs/v12.0_protocol_migration_design.md §11.
-    # Default kept as Qwen2.5-VL for v11 backward compat. v12 users must
-    # explicitly pass --model_name_or_path Qwen/Qwen3-VL-8B-Instruct.
-    model_name_or_path: Optional[str] = field(default="Qwen/Qwen2.5-VL-3B-Instruct")
+    # v12 protocol REQUIRES Qwen3-VL (Qwen2.5-VL's chat_template has no
+    # tools support). Pass --model_name_or_path Qwen/Qwen3-VL-8B-Instruct.
+    model_name_or_path: Optional[str] = field(default="Qwen/Qwen3-VL-8B-Instruct")
     tune_mm_llm: bool = field(default=True)
     tune_mm_mlp: bool = field(default=True)
     tune_mm_vision: bool = field(default=False)
-    add_agent_special_tokens: bool = field(
-        default=False,
-        metadata={
-            "help": "v11.4: industry-convention default is False — agent "
-            "structural tags (<action>, <response>, <query>, <summary>, "
-            "etc.) are kept as TEXT in assistant content and tokenized as "
-            "multi-token sequences by the existing BPE. This sidesteps "
-            "the cold-start magnitude bug that v11.3 hit when these tags "
-            "were registered as new single-token vocab entries — every "
-            "sub-token is already well-trained, so the model learns the "
-            "tag sequence naturally without smart_init. DeepEyes / "
-            "ReMemR1 / Qwen-VL official finetune all follow this pattern. "
-            "Set True only if you specifically need single-token tags for "
-            "inference efficiency AND are willing to retrain with smart_init "
-            "(see thinkstream/sft/data_processor.py:smart_init_special_token_embeddings). "
-            "Caveat: the existing v11.3 ckpt was trained with this flag "
-            "implicitly True (legacy register_special_tokens path) and "
-            "cannot be directly continued with False — you'd need to "
-            "retrain from a fresh base model."
-        },
-    )
 
 
 @dataclass
@@ -84,8 +57,9 @@ class DataArguments:
     video_fps: float = field(default=1.0)
 
     # Per-timestep agent config
-    agent_chunk_sec: float = field(default=2.0)
-    visual_window_chunks: int = field(default=12)
+    # v12.5: 1s/chunk, 16-chunk visual window (16s @ 2fps = 32 frames).
+    agent_chunk_sec: float = field(default=1.0)
+    visual_window_chunks: int = field(default=16)
     max_sample_tokens: Optional[int] = field(
         default=12000,
         metadata={
@@ -118,109 +92,6 @@ class DataArguments:
         metadata={"help": "Write audit log every N steps (1 = every step)."},
     )
 
-    # Class-balanced sampler (single-phase mixed SFT)
-    class_balanced_sampler: bool = field(
-        default=True,
-        metadata={
-            "help": "Use ClassBalancedDistributedSampler so rare actions "
-            "(recall/compress/response) are not drowned by silent. "
-            "Recommended for single-phase mixed SFT. Set False to use the "
-            "default HF distributed sampler (uniform)."
-        },
-    )
-    class_balance_smoothing: float = field(
-        default=0.85,
-        metadata={
-            "help": "Smoothing exponent for inverse-frequency class weights. "
-            "Effective sampling weight per class ∝ count^(1 - smoothing). "
-            "1.0 = pure inv-freq (most aggressive), 0.0 = uniform.\n\n"
-            "History: v11.2's 0.7 caused compress collapse. v11.3's 1.0 "
-            "over-corrected (silent_acc regressed 99%→86%). v11.4 settled "
-            "on 0.85 as calibrated midpoint.\n\n"
-            "v12.5 audit (2026-04-29): NEW data distribution after the "
-            "MAX_SAMPLES_PER_VIDEO=15 cap removal. With silent=85% (was "
-            "70% in v11.4), 0.85 yields effective per-sample-class weights:\n"
-            "    silent (15,483)^0.15 = 4.04\n"
-            "    compress (2,107)^0.15 = 3.20\n"
-            "    response (540)^0.15  = 2.66\n"
-            "    recall (99)^0.15     = 1.92\n"
-            "  → effective batch: ~34% silent / 27% compress / 22% response / 16% recall\n\n"
-            "This is reasonable balance. If you want MORE response signal "
-            "(industry survey shows QA-streaming systems range 50-95% silent; "
-            "ThinkStream is QA-style so 85% raw is normal):\n"
-            "    smoothing=0.95 → ~25% silent / 30% response (very aggressive)\n"
-            "    smoothing=0.85 → ~34% silent / 22% response (current default) ✓\n"
-            "    smoothing=0.50 → ~55% silent / 14% response (closer to natural)\n"
-            "    smoothing=0.00 → 85% silent (raw distribution, no rebalance)\n\n"
-            "Don't go below 0.7 unless you've measured silent_acc — historical "
-            "compress collapse at 0.7 may be specific to v11 distribution."
-        },
-    )
-    unique_think_weight: bool = field(
-        default=False,
-        metadata={
-            "help": "v11.3: when True, multiply each sample's class-balanced "
-            "weight by its memory-uniqueness rate (set/len of recent_thinks). "
-            "Down-weights static-scene videos where the teacher correctly "
-            "reports 'scene unchanged' but those repeats add no training "
-            "signal. ~5% of videos see >5% repetition; the worst case (a "
-            "yoga session) is 28% repeated. Off by default — enable when "
-            "monitoring train/n_frac_silent shows over-fit on quiet scenes."
-        },
-    )
-
-    # v12.0: protocol version selector. Removed from explicit UI in v12.5
-    # because all production data is now v12, but kept as a hidden flag so
-    # ablation runs on archived v11 data still work without code changes.
-    protocol_version: str = field(
-        default="v12",
-        metadata={
-            "help": "Agent protocol: 'v11' (legacy <action>X</action>) or "
-            "'v12' (official Qwen <tool_call>+<answer>). Default v12."
-        },
-    )
-
-    # v11.5: StreamMind-style focal+alpha on action keyword positions.
-    # Attacks the "collapse to silent" failure mode that span_weight + class-
-    # balanced sampler alone cannot fix: silent samples reach p=0.99 quickly
-    # but vanilla CE keeps recording loss>0 there, so its gradient continues
-    # pushing silent's logit higher → other action keywords drift to -inf.
-    # Focal (1-p)^gamma kills the gradient on already-correct silent tokens;
-    # alpha = inv_freq^softening (StreamMind §5.1) lifts rare-class signal
-    # without the over-correction of pure inverse frequency.
-    focal_alpha_action: bool = field(
-        default=True,
-        metadata={
-            "help": "v11.5: enable focal+alpha multiplier on the action "
-            "keyword token position (the token inside <action>...</action>). "
-            "Multiplies into the existing token_loss_weight, so span_weight "
-            "and class-balanced sampler still apply — focal+alpha just adds "
-            "a per-token, per-class scaling on the decision token to fight "
-            "silent collapse. Inspired by StreamMind (arXiv 2503.06220 §5.1) "
-            "ablation showing focal+alpha >> inverse-freq >> vanilla CE on "
-            "stream-decision class imbalance."
-        },
-    )
-    focal_gamma: float = field(
-        default=2.0,
-        metadata={
-            "help": "Focal exponent gamma for the (1-p_correct)^gamma factor. "
-            "2.0 is RetinaNet/StreamMind default. Higher = more aggressive "
-            "down-weighting of confident predictions (pushes harder on hard "
-            "examples). Set 0.0 to disable focal but keep alpha."
-        },
-    )
-    alpha_softening: float = field(
-        default=0.5,
-        metadata={
-            "help": "Power applied to inv-freq for the per-class alpha "
-            "weight: alpha_c = (1 / P_c)^softening, normalized so silent=1.0. "
-            "0.5 = sqrt-inv (StreamMind-style soft); 1.0 = pure inverse "
-            "frequency (over-corrects on rare classes); 0.0 = uniform "
-            "(disables alpha but keeps focal). 0.5 is the calibrated default "
-            "from long-tail literature (CB-Loss / Focal-Loss original)."
-        },
-    )
 
 
 @dataclass

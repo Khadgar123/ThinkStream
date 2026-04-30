@@ -128,45 +128,6 @@ def test_spam_v12():
     print("✓ spam_v12")
 
 
-def test_compress_quality_v12():
-    from thinkstream.trainer.v12_rewards import compute_compress_quality_v12 as f
-
-    # Perfect: same range, identical text
-    r = f(
-        summary_text="chef cooks pasta",
-        summary_range=[4, 12],
-        gold_summary_text="chef cooks pasta",
-        gold_range=[4, 12],
-    )
-    assert abs(r - 1.0) < 1e-6, r  # iou=1.0, text=1.0 (all gold tokens covered)
-
-    # Disjoint range
-    r = f(
-        summary_text="chef cooks pasta",
-        summary_range=[4, 8],
-        gold_summary_text="chef cooks pasta",
-        gold_range=[10, 14],
-    )
-    # iou = 0/8 = 0, text = 1.0 → score = 0.5
-    assert abs(r - 0.5) < 1e-6, r
-
-    # Partial range overlap
-    r = f(
-        summary_text="chef cooks",
-        summary_range=[4, 10],
-        gold_summary_text="chef cooks pasta tomato",
-        gold_range=[6, 12],
-    )
-    # iou = 4/8 = 0.5, text = 2/4 = 0.5 → score = 0.5
-    assert abs(r - 0.5) < 1e-6, r
-
-    # No data
-    assert f(None, None, None, None) == 0.0
-    assert f("text", None, None, None) == 0.0
-
-    print("✓ compress_quality_v12")
-
-
 def test_v12_advantage_aggregation():
     """Test multi-level GRPO advantage: 2 videos × 4 rollouts each, 3 chunks per rollout."""
     from thinkstream.trainer.v12_rewards import aggregate_v12_advantages
@@ -251,51 +212,6 @@ def test_v12_reward_keys_match():
     # spam weight must be negative (additive penalty)
     assert V12_DEFAULT_REWARD_WEIGHTS["spam"] < 0
     print("✓ v12 reward keys + weights consistency")
-
-
-def test_recall_quality_v12():
-    """v12.2 recall_quality: chunk-level hit_rate vs support_chunks gold."""
-    from thinkstream.trainer.v12_rewards import compute_recall_quality_v12 as f
-
-    # Sample didn't fire recall → 0.0 (caller masks)
-    assert f([], [1, 2, 3], recall_fired=False) == 0.0
-
-    # Fired but no support_chunks → 0.0 (caller masks)
-    assert f([[5, 6]], [], recall_fired=True) == 0.0
-
-    # Fired but retriever returned nothing → -0.5 explicit penalty
-    assert f([], [1, 2, 3], recall_fired=True) == -0.5
-    assert f([[]], [1, 2, 3], recall_fired=True) == -0.5
-
-    # Perfect hit: returned ⊇ support → 1.0
-    assert f([[1, 2, 3]], [1, 2, 3], recall_fired=True) == 1.0
-
-    # Partial: 2/3 of support hit → ~0.667
-    r = f([[1, 2, 99]], [1, 2, 3], recall_fired=True)
-    assert abs(r - 2/3) < 1e-6, r
-
-    # Multi-call union: 2 separate recalls together cover all support
-    assert f([[1], [2, 3]], [1, 2, 3], recall_fired=True) == 1.0
-
-    # Query leaks gold answer → -0.3 (anti-cheat)
-    r = f(
-        [[1, 2, 3]], [1, 2, 3],
-        recall_fired=True,
-        query_text="find the chef in red apron",
-        gold_answer="red apron",
-    )
-    assert r == -0.3, f"expected -0.3 leak penalty, got {r}"
-
-    # Query unrelated to gold answer → normal hit_rate
-    r = f(
-        [[1, 2, 3]], [1, 2, 3],
-        recall_fired=True,
-        query_text="when did the chef start",
-        gold_answer="red apron",
-    )
-    assert r == 1.0
-
-    print("✓ recall_quality_v12")
 
 
 def test_silent_quality_v12():

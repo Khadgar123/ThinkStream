@@ -34,7 +34,6 @@ from transformers import AutoProcessor, AutoTokenizer
 from thinkstream.sft.argument import DataArguments
 from thinkstream.sft.data_processor import (
     build_per_timestep_messages_v12 as build_per_timestep_messages,
-    register_special_tokens,
     update_processor_pixels,
 )
 
@@ -140,7 +139,6 @@ def main():
     model.eval()
 
     processor = AutoProcessor.from_pretrained(args.ckpt)
-    register_special_tokens(processor, model_type)
     data_args = DataArguments(dataset_use="", model_type=model_type, max_sample_tokens=12000)
     processor = update_processor_pixels(processor, data_args)
     if hasattr(processor, "video_processor") and hasattr(processor.video_processor, "do_sample_frames"):

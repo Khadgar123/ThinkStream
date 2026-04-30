@@ -37,7 +37,6 @@ import torch
 from transformers import AutoProcessor
 
 from thinkstream.sft.data_processor import (
-    register_special_tokens,
     build_per_timestep_messages_v12 as build_per_timestep_messages,
     update_processor_pixels,
 )
@@ -120,7 +119,6 @@ def main():
     processor = AutoProcessor.from_pretrained(args.ckpt)
     # Special tokens are usually saved with the SFT ckpt, but harmless to
     # ensure registration so missing ones don't blow up tokenization.
-    register_special_tokens(processor, "qwen3vl")
     # Mirror SFT pixel/fps config so visual features match training distribution.
     processor = update_processor_pixels(processor, DataArguments())
 

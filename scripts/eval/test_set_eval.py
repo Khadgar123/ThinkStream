@@ -45,7 +45,6 @@ from thinkstream.sft.argument import DataArguments, TrainingArguments
 from thinkstream.sft.data_processor import (
     PerTimestepDataset,
     PerTimestepDataCollator,
-    register_special_tokens,
     update_processor_pixels,
 )
 from thinkstream.sft.trainer import WeightedSFTTrainer
@@ -101,8 +100,6 @@ def main():
     model.eval()
 
     processor = AutoProcessor.from_pretrained(args.ckpt)
-    register_special_tokens(processor, model_type)
-
     tokenizer = AutoTokenizer.from_pretrained(
         args.ckpt,
         model_max_length=16384,

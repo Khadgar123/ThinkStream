@@ -18,9 +18,19 @@ from typing import Dict, List, Optional
 # Constants (canonical values, importable by all consumers)
 # ---------------------------------------------------------------------------
 
-AGENT_CHUNK_SEC = 2
-VISUAL_WINDOW_CHUNKS = 12
-FRAMES_PER_CHUNK = 2
+# v12.5: canonical values now live in scripts/agent_data_v5/config.py.
+# Kept here as fallbacks when that import isn't available (deployed inference
+# environments without the data-construction package).
+try:
+    from scripts.agent_data_v5.config import (
+        AGENT_CHUNK_SEC,
+        VISUAL_WINDOW_CHUNKS,
+        FRAMES_PER_CHUNK,
+    )
+except ImportError:
+    AGENT_CHUNK_SEC = 1
+    VISUAL_WINDOW_CHUNKS = 16
+    FRAMES_PER_CHUNK = 2
 
 # ---------------------------------------------------------------------------
 # Memory Formatting
@@ -308,8 +318,8 @@ def build_user_content(
 # when tools=tools is passed to apply_chat_template).
 
 SYSTEM_PROMPT_V12 = (
-    "You are a streaming video agent. You observe 2-second video chunks and maintain memory.\n\n"
-    "Each turn you receive: visual frames (recent 24s window) + memory state. "
+    "You are a streaming video agent. You observe 1-second video chunks and maintain memory.\n\n"
+    "Each turn you receive: visual frames (recent 16s window) + memory state. "
     "You may either (a) call a tool, (b) emit a final answer, or (c) emit an empty "
     "answer if no response is warranted.\n\n"
     "Tools:\n"

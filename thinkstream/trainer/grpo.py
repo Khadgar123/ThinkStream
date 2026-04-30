@@ -65,7 +65,10 @@ from thinkstream.data.stream_data_processor import (
     compute_position_ids,
     make_raw_data_module,
 )
-from thinkstream.data.agent_protocol import SYSTEM_PROMPT_V12
+from thinkstream.data.agent_protocol import (
+    SYSTEM_PROMPT_V12,
+    AGENT_CHUNK_SEC as AGENT_CHUNK_SEC_RUNTIME,
+)
 from thinkstream.model.patch import build_video_block_mask
 from thinkstream.model import MODEL_CLS, get_text_config, DEFAULT_VIDEO_FLEX_WINDOW_SIZE
 
@@ -388,10 +391,18 @@ def rollout(
     # ─── Legacy HF rollout backend (default, kept for parity / fallback) ───
 
     def _generate_fn(messages, processor, max_new_tokens=256, **kwargs):
-        """Wrap model generation for StreamingAgentLoop."""
+        """Wrap model generation for StreamingAgentLoop.
+
+        v12.6 fix: pass tools=TOOLS_SCHEMA so chat_template auto-renders the
+        <tools> block in system prompt — same behavior as SFT data_processor
+        (data_processor.py:574). Without tools=, the rollout policy receives
+        a different system context than what SFT trained on, breaking
+        train/infer parity for tool-call decisions.
+        """
+        from thinkstream.data.agent_protocol import TOOLS_SCHEMA
         inputs = processor.apply_chat_template(
             messages, tokenize=True, return_dict=True, return_tensors="pt",
-            add_generation_prompt=True,
+            add_generation_prompt=True, tools=TOOLS_SCHEMA,
         )
         inputs = {k: v.to(model_for_generation.device) if hasattr(v, 'to') else v
                   for k, v in inputs.items()}
@@ -532,8 +543,16 @@ def rollout(
                     "recall_returned_chunks": list(
                         result.get("recall_returned_chunks") or []
                     ),
-                    "window_start": chunk_idx * 2,
-                    "window_end": (chunk_idx + 1) * 2,
+                    # v12.6 fix: chunk_idx × AGENT_CHUNK_SEC (was hardcoded ×2
+                    # under v11 2s/chunk; v12.5 uses 1s/chunk).
+                    "window_start": chunk_idx * AGENT_CHUNK_SEC_RUNTIME,
+                    "window_end": (chunk_idx + 1) * AGENT_CHUNK_SEC_RUNTIME,
+                    # v12.6 fix: capture the EXACT prompt messages the
+                    # policy conditioned on (full memory/visual_window/
+                    # queries/recall context). _build_rollout_messages
+                    # below reuses these so loss-time logprobs match
+                    # sampling-time logprobs.
+                    "step_messages": result.get("step_messages"),
                 })
                 # Early stop if model responded — but NOT for trajectory
                 # rollouts where multiple questions are asked at different
@@ -611,8 +630,6 @@ from thinkstream.trainer.v12_rewards import (
     compute_timing_reward_v12 as _compute_timing_reward_v12,
     compute_format_reward_v12 as _compute_format_reward_v12,
     compute_spam_score_v12 as _compute_spam_score_v12,
-    compute_compress_quality_v12 as _compute_compress_quality_v12,
-    compute_recall_quality_v12 as _compute_recall_quality_v12,
     compute_silent_quality_v12 as _compute_silent_quality_v12,
     aggregate_v12_advantages as _aggregate_v12_advantages,
     # v12.4 — multi-question trajectory + per-chunk silent_quality
@@ -1242,40 +1259,78 @@ def _build_rollout_messages(
     total_start = chunk_results[0]["window_start"]
     total_end = chunk_results[-1]["window_end"]
 
-    messages: List[Dict[str, Any]] = [
-        {"role": "system", "content": SYSTEM_PROMPT_V12}
-    ]
+    # v12.6: prefer the EXACT prompt messages captured at rollout time
+    # (chunk_results[i]['step_messages']). If absent (e.g. older rollouts
+    # or vLLM backend that didn't capture), fall back to the legacy
+    # video+question reconstruction — but warn loudly because logprobs
+    # will not match sampling-time context.
+    has_captured_msgs = all(
+        isinstance(cr.get("step_messages"), list) and cr["step_messages"]
+        for cr in chunk_results
+    )
 
-    for cr_idx, cr in enumerate(chunk_results):
-        w_start, w_end = cr["window_start"], cr["window_end"]
-        is_last = cr_idx == num_chunks - 1
-        user_content: List[Dict] = [
-            {
-                "type": "video",
-                "video": abs_video_path,
-                "video_start": w_start,
-                "video_end": w_end,
-            }
+    if has_captured_msgs:
+        # Trajectory shape: keep exactly one system turn + each chunk's
+        # captured user content + the assistant's actual generation. For
+        # multi-turn recall samples, step_messages already includes the
+        # [user(chunk N), assistant(recall), user(tool_result)] tail; we
+        # only append the FINAL assistant generation per chunk.
+        messages: List[Dict[str, Any]] = [
+            {"role": "system", "content": SYSTEM_PROMPT_V12}
         ]
-
-        # v12.5 fix: question fires at the chunk_idx where rollout injected it.
-        # chunk_idx = the absolute chunk index of THIS step (cr_idx if rollout
-        # ran from chunk 0, but use the explicit field when present).
-        cur_chunk_idx = int(cr.get("chunk_idx", cr_idx))
-        q_text = question_at_chunk.get(cur_chunk_idx)
-        if q_text:
-            user_content.append({"type": "text", "text": "\n" + q_text})
-        messages.append({"role": "user", "content": user_content})
-
-        gen_text = tokenizer.decode(
-            cr["generated_tokens"][gen_idx], skip_special_tokens=False
+        for cr_idx, cr in enumerate(chunk_results):
+            step_msgs = cr["step_messages"]
+            # Skip the system head from each step's captured prompt
+            # (already at messages[0]); append everything else.
+            for m in step_msgs:
+                if m.get("role") == "system":
+                    continue
+                messages.append(m)
+            # Append assistant generation from the rollout
+            gen_text = tokenizer.decode(
+                cr["generated_tokens"][gen_idx], skip_special_tokens=False
+            )
+            for _sp in ("<|im_end|>", "<|endoftext|>"):
+                if gen_text.endswith(_sp):
+                    gen_text = gen_text[: -len(_sp)]
+            messages.append(
+                {"role": "assistant", "content": [{"type": "text", "text": gen_text}]}
+            )
+    else:
+        # Fallback: legacy video+question reconstruction. WARNING: this
+        # drops <memory>/<visual_window>/<queries>, breaking train/infer
+        # logprob parity. Used only when step_messages is missing.
+        logger.warning(
+            "_build_rollout_messages: chunk_results missing step_messages; "
+            "using legacy reconstruction — logprobs may drift from rollout."
         )
-        for _sp in ("<|im_end|>", "<|endoftext|>"):
-            if gen_text.endswith(_sp):
-                gen_text = gen_text[: -len(_sp)]
-        messages.append(
-            {"role": "assistant", "content": [{"type": "text", "text": gen_text}]}
-        )
+        messages: List[Dict[str, Any]] = [
+            {"role": "system", "content": SYSTEM_PROMPT_V12}
+        ]
+        for cr_idx, cr in enumerate(chunk_results):
+            w_start, w_end = cr["window_start"], cr["window_end"]
+            user_content: List[Dict] = [
+                {
+                    "type": "video",
+                    "video": abs_video_path,
+                    "video_start": w_start,
+                    "video_end": w_end,
+                }
+            ]
+            cur_chunk_idx = int(cr.get("chunk_idx", cr_idx))
+            q_text = question_at_chunk.get(cur_chunk_idx)
+            if q_text:
+                user_content.append({"type": "text", "text": "\n" + q_text})
+            messages.append({"role": "user", "content": user_content})
+            gen_text = tokenizer.decode(
+                cr["generated_tokens"][gen_idx], skip_special_tokens=False
+            )
+            for _sp in ("<|im_end|>", "<|endoftext|>"):
+                if gen_text.endswith(_sp):
+                    gen_text = gen_text[: -len(_sp)]
+            messages.append(
+                {"role": "assistant", "content": [{"type": "text", "text": gen_text}]}
+            )
 
     video_meta = build_video_meta(
         abs_path=abs_video_path,

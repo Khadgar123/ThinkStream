@@ -96,21 +96,25 @@ Run the respective `transfer_annotation_format.py` scripts under the `thinkstrea
 - `thinkstream/eval/ovo_bench/transfer_annotation_format.py`
 - `thinkstream/eval/rtvu/transfer_annotation_format.py`
 
-After conversion, start the evaluation script. Always pass
-`--use_agent_loop` so the eval drives `StreamingAgentLoop` (the same
-per-timestep, system-trigger-injecting, recall-orchestrating runtime
-the model was trained against). Without the flag, eval falls back to a
-deprecated streaming-chat path that has no compress/recall protocol.
+After conversion, run the v12 streaming agent eval. The canonical entry
+is `scripts/eval/ovo/run_sft.sh`, which drives `StreamingAgentLoop`
+(the same per-timestep, system-trigger-injecting, recall-orchestrating
+runtime the model was trained against — chunk-by-chunk fresh-KV
+inference with memory + queries text persistence).
 
 ```bash
-bash scripts/eval/ovo/eval.sh \
-    --use_agent_loop \
+bash scripts/eval/ovo/run_sft.sh \
     --benchmark_dir /path/to/ovo_bench \
     --model_path /path/to/ckpt \
     --model_type qwen3vl
 ```
 *Note: You need to change the model checkpoint (`--model_path`) and
 benchmark dir to your own paths.*
+
+The legacy `eval.sh` script does NOT drive the agent loop and should
+not be used for v12 evaluation. The retired `--use_agent_loop` flag
+referenced in earlier README revisions has been removed; `run_sft.sh`
+is now the only sanctioned path.
 
 ### Inference
 

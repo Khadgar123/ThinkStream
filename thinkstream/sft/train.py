@@ -33,12 +33,7 @@ project_root = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(project_root))
 
 from thinkstream.sft.trainer import WeightedSFTTrainer
-from thinkstream.sft.data_processor import (
-    make_per_timestep_data_module,
-    register_special_tokens,
-    smart_init_special_token_embeddings,
-    SPECIAL_TOKENS_AGENT,
-)
+from thinkstream.sft.data_processor import make_per_timestep_data_module
 from thinkstream.sft.argument import ModelArguments, DataArguments, TrainingArguments
 
 local_rank = None
@@ -87,18 +82,6 @@ def train(attn_implementation="flash_attention_2"):
     )
     model_args, data_args, training_args = parser.parse_args_into_dataclasses()
 
-    # Mirror DataArguments fields onto training_args so trainer.compute_loss
-    # / _get_train_sampler can access them via self.args. HfArgumentParser
-    # routes flags by name to whichever dataclass declares them; trainer
-    # historically read class_balanced_sampler / focal_alpha_action via
-    # getattr(self.args, ...). v12.0 makes the propagation explicit.
-    for _f in (
-        "class_balanced_sampler", "class_balance_smoothing",
-        "unique_think_weight", "focal_alpha_action", "focal_gamma",
-        "alpha_softening", "protocol_version",
-    ):
-        if hasattr(data_args, _f):
-            setattr(training_args, _f, getattr(data_args, _f))
 
     local_rank = training_args.local_rank
     os.makedirs(training_args.output_dir, exist_ok=True)
@@ -140,60 +123,20 @@ def train(attn_implementation="flash_attention_2"):
     rank0_print(f"Model: {model_args.model_name_or_path} ({model.__class__.__name__})")
     rank0_print(f"Model type: {data_args.model_type}")
 
-    # ── Processor + special tokens ──
-    processor = AutoProcessor.from_pretrained(model_args.model_name_or_path)
-    # v11.4: industry-convention default — DON'T add agent tags as new
-    # tokenizer entries. Tags stay as TEXT in assistant content and BPE
-    # tokenizes them as multi-token sequences (e.g. <action> → < + action
-    # + >). Every sub-token is well-trained existing vocab, so there's
-    # no cold-start magnitude bug. DeepEyes / ReMemR1 / Qwen-VL official
-    # finetune all follow this pattern. See docs/v11.4_special_token_research.md.
-    #
-    # Set add_agent_special_tokens=True only for inference-efficient
-    # single-token tags (legacy mode). Then smart_init runs to seed the
-    # new tokens from natural-word embeddings (mitigates but doesn't
-    # eliminate the cold-start risk).
-    # v12.0: hard guard against Qwen2.5-VL — its bundled chat_template
-    # silently drops tools= (no <tools> block, no <tool_call>, no tool role
-    # rendering). Training under v12 protocol on 2.5-VL would produce
-    # divergent train/inference formats. Verified against
-    # Qwen/Qwen2.5-VL-{3,7,72}B-Instruct chat_template.json.
-    if data_args.protocol_version == "v12" and data_args.model_type != "qwen3vl":
+    # ── Processor ──
+    # v12: Qwen3-VL official tool protocol. Agent tags stay as plain text
+    # (BPE multi-token sequences). No vocabulary resize, no embedding
+    # smart-init — DeepEyesV2 / Qwen-VL official finetune / VST all follow
+    # this pattern. v12 hard-requires Qwen3-VL because Qwen2.5-VL's bundled
+    # chat_template silently drops `tools=`.
+    if data_args.model_type != "qwen3vl":
         raise RuntimeError(
-            f"protocol_version=v12 REQUIRES Qwen3-VL (model_type=qwen3vl); "
+            f"v12 protocol REQUIRES Qwen3-VL (model_type=qwen3vl); "
             f"got model_type={data_args.model_type!r}. Qwen2.5-VL's chat "
-            f"template has no tools support — see "
-            f"docs/v12.0_protocol_migration_design.md §11. "
-            f"Either pass --model_name_or_path Qwen/Qwen3-VL-8B-Instruct "
-            f"or use --protocol_version v11."
+            f"template has no tools support."
         )
-
-    if data_args.protocol_version == "v12":
-        if model_args.add_agent_special_tokens:
-            rank0_print(
-                "[v12.0] add_agent_special_tokens=True is IGNORED under "
-                "protocol_version=v12. v12 uses official Qwen tool protocol "
-                "(<tool_call>{json}</tool_call>, <answer>...</answer>); "
-                "<think> is already in Qwen3-VL vocab and tokenizes as a "
-                "multi-token sequence in Qwen2.5-VL — both safe."
-            )
-        else:
-            rank0_print("[v12.0] no special tokens added (official Qwen tool protocol)")
-    elif model_args.add_agent_special_tokens:
-        rank0_print("[v11.4 legacy] register_special_tokens enabled — "
-                    "adding agent tags to vocab + smart_init seeding")
-        register_special_tokens(processor, data_args.model_type)
-        model.resize_token_embeddings(len(processor.tokenizer))
-        if data_args.model_type == "qwen3vl":
-            _agent_tags = [t for t in SPECIAL_TOKENS_AGENT
-                           if t not in ("<think>", "</think>")]
-        else:
-            _agent_tags = list(SPECIAL_TOKENS_AGENT)
-        smart_init_special_token_embeddings(model, processor, _agent_tags)
-    else:
-        rank0_print("[v11.4 industry mode] add_agent_special_tokens=False — "
-                    "agent tags will be tokenized as multi-token sequences "
-                    "by the base BPE; no resize, no smart_init.")
+    processor = AutoProcessor.from_pretrained(model_args.model_name_or_path)
+    rank0_print("[v12.0] no special tokens added (official Qwen tool protocol)")
 
     model.config.use_cache = False
 

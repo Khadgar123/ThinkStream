@@ -120,8 +120,25 @@ DATASET_REGISTRY = {
     # density cap). New datasets preserve all 47,289 verified samples
     # from pass3e (no post-cap drop), organized by trajectory.
     #
-    # SFT trainer ingests `*_full.jsonl` directly — flat per-step rows,
-    # 18,229 samples (11.2x recovery vs `train_sft.jsonl`).
+    # v12.6: SFT trainer ingests `*_messages.jsonl` (LLaMA-Factory
+    # ShareGPT format) produced by pass5_messages.py from
+    # `train_sft_trajectories.jsonl`. Each row = one chunk's snapshot
+    # rendered as messages. The flat `*_full.jsonl` form is kept here as
+    # `stream_agent_sft_full` for backward compat with archived ablations
+    # but the canonical entry is `stream_agent_sft`.
+    "stream_agent_sft": {
+        "annotation_path": _agent_path("train_sft_messages.jsonl"),
+        "data_path": "./",
+    },
+    "stream_agent_val": {
+        "annotation_path": _agent_path("val_messages.jsonl"),
+        "data_path": "./",
+    },
+    "stream_agent_test": {
+        "annotation_path": _agent_path("test_messages.jsonl"),
+        "data_path": "./",
+    },
+    # Legacy flat format — pre pass5_messages converter
     "stream_agent_sft_full": {
         "annotation_path": _agent_path("train_sft_full.jsonl"),
         "data_path": "./",

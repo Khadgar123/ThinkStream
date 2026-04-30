@@ -56,10 +56,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 logger = logging.getLogger("recall_audit")
 
-AGENT_CHUNK_SEC = 2.0
-
-
-# ---------------------------------------------------------------------------
+from thinkstream.data.agent_protocol import AGENT_CHUNK_SEC  # canonical (v12.5: 1s/chunk)
 # Sample loading + query extraction
 # ---------------------------------------------------------------------------
 

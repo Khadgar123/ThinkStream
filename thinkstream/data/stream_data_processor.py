@@ -466,7 +466,7 @@ QWEN_TEMPLATE_WO_SYSTEM = (
 # Agent 3-action message builder (for Stage 6 sft_final.jsonl data)
 # ---------------------------------------------------------------------------
 
-AGENT_CHUNK_SEC = 2.0  # Fixed 2s chunk for agent data
+from thinkstream.data.agent_protocol import AGENT_CHUNK_SEC  # canonical, v12.5: 1s/chunk
 
 def _build_agent_messages(
     item: Dict[str, Any], base_path: Path, remaining_video_chunks: int = 3

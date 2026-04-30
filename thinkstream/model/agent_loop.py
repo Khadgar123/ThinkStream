@@ -632,14 +632,17 @@ class StreamingAgentLoop:
         if not frame_dir.exists():
             return None
 
-        # ffmpeg frame_000001.jpg corresponds to t=0s, frame_000002.jpg to t=1s, ...
-        start_frame = int(video_start) + 1
-        end_frame = int(video_end) + 1
+        # v12.6 fix: index frames by chunk_idx × FRAMES_PER_CHUNK + 1.
+        # The seconds-based variant (int(video_start)+1) was off-by-half
+        # under FPS=2 — matches pass1a_evidence.get_chunk_frame_paths so
+        # SFT and inference read the same frame set per chunk.
         frame_paths = []
-        for i in range(start_frame, end_frame + 1):
-            fp = frame_dir / f"frame_{i:06d}.jpg"
-            if fp.exists():
-                frame_paths.append(str(fp))
+        for ci in range(window_start, chunk_idx + 1):
+            for fi in range(FRAMES_PER_CHUNK):
+                fnum = ci * FRAMES_PER_CHUNK + fi + 1
+                fp = frame_dir / f"frame_{fnum:06d}.jpg"
+                if fp.exists():
+                    frame_paths.append(str(fp))
 
         # If too few frames found, fall back to online decoding
         if len(frame_paths) < max(1, n_frames // 2):
@@ -769,6 +772,12 @@ class StreamingAgentLoop:
             max_pixels=self.max_pixels,
             frame_paths=frame_paths,
         )
+        # v12.6: stash the EXACT messages used for generation so RL loss-time
+        # reconstruction can replay the same prompt — see
+        # thinkstream/trainer/grpo.py:_build_rollout_messages. Without this
+        # the loss path conditions logprobs on a stripped-down context (no
+        # <memory>, <visual_window>, <queries>) and gradient direction drifts.
+        self._last_step_messages = messages
 
         # 5. Generate
         output_text = self.generate_fn(
@@ -849,32 +858,64 @@ class StreamingAgentLoop:
                             frame_dir = Path(self.frames_root) / vp.with_suffix("")
                         rf_paths = []
                         if frame_dir.exists():
+                            # v12.6 fix: same chunk×FRAMES_PER_CHUNK convention
+                            # used everywhere else (pass1a, _get_frame_paths,
+                            # streaming_vllm). Old code used seconds-based
+                            # offsets which were off-by-half under FPS=2.
                             for rc in returned_chunks:
-                                rc_start = rc * AGENT_CHUNK_SEC + 1
-                                rc_end = (rc + 1) * AGENT_CHUNK_SEC
-                                for fnum in range(rc_start, rc_end + 1):
+                                for fi in range(FRAMES_PER_CHUNK):
+                                    fnum = rc * FRAMES_PER_CHUNK + fi + 1
                                     fp = frame_dir / f"frame_{fnum:06d}.jpg"
                                     if fp.exists():
                                         rf_paths.append(str(fp))
                         if rf_paths:
                             recalled_frames["frame_paths"] = rf_paths
 
-                # Build recall_response input. The pending question is
-                # already expressed via the <queries> block (entry with
-                # empty answers list); training data shows pending status
-                # this same way and never via memory.pending_questions.
-                recall_messages = build_single_step_messages(
-                    snapshot,
-                    chunk_idx,
-                    video_path,
-                    user_input="Continue following the protocol to respond.",
-                    queries=self.memory.queries,
-                    recalled_frames=recalled_frames,
-                    recall_result=recall_result,
-                    min_pixels=self.min_pixels,
-                    max_pixels=self.max_pixels,
-                    frame_paths=frame_paths,
-                )
+                # v12.6 fix: build true multi-turn recall prompt matching
+                # SFT shape B (pass5_messages.py:212-260).
+                # Old behavior REBUILT a fresh single-turn prompt with
+                # recall_result inlined into the same user content, dropping
+                # the model's own recall tool_call from context — train/infer
+                # divergence. New behavior:
+                #   [system, user(chunk N), assistant(recall tool_call),
+                #    user(recall_result + recalled_frames)] → generate answer
+                # This is byte-identical to the SFT trajectory the model saw.
+                import json as _json
+                recall_messages = list(messages)             # [system, user(chunk N)]
+                recall_messages.append({                      # model's own recall turn
+                    "role": "assistant",
+                    "content": [{"type": "text", "text": output_text}],
+                })
+                tool_user_content = []
+                if recalled_frames:
+                    rf_header = _json.dumps({
+                        "time_range": recalled_frames["time_range"],
+                        "source": recalled_frames.get("source", "historical_frames"),
+                        "n_frames": recalled_frames["n_frames"],
+                    })
+                    tool_user_content.append({
+                        "type": "text",
+                        "text": f"<recalled_frames>{rf_header}</recalled_frames>",
+                    })
+                    if "frame_paths" in recalled_frames:
+                        tool_user_content.append({
+                            "type": "video",
+                            "video": recalled_frames["frame_paths"],
+                        })
+                rr_json = _json.dumps({
+                    "source": recall_result.get("source", ""),
+                    "time": recall_result.get("time", ""),
+                    "text": recall_result.get(
+                        "text_content", recall_result.get("text", "")
+                    ),
+                }, ensure_ascii=False)
+                tool_user_content.append({
+                    "type": "text",
+                    "text": f"<recall_result>{rr_json}</recall_result>",
+                })
+                recall_messages.append({
+                    "role": "user", "content": tool_user_content,
+                })
 
                 # Second generate (allow_recall=False to prevent infinite loop)
                 recall_gen_kwargs = dict(generate_kwargs)
@@ -996,5 +1037,16 @@ class StreamingAgentLoop:
             )
         else:
             parsed["compress_succeeded"] = None  # N/A this step
+
+        # v12.6: surface the prompt actually used (build_single_step_messages
+        # output, possibly extended with the recall multi-turn shape) so RL
+        # loss-time reconstruction can rebuild the exact context the policy
+        # conditioned on. Captured AFTER recall extension so multi-turn
+        # recall samples carry the [..., assistant(tool_call), user(tool_result)]
+        # tail used at the second generate.
+        if locals().get("recall_messages") is not None:
+            parsed["step_messages"] = recall_messages
+        else:
+            parsed["step_messages"] = self._last_step_messages
 
         return parsed

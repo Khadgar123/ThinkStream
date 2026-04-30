@@ -108,13 +108,19 @@ def _resolve_frame_paths(
     if not frame_dir.exists():
         return None
 
-    start_frame = int(video_start) + 1
-    end_frame = int(video_end) + 1
+    # v12.6 fix: index frames by chunk_idx × FRAMES_PER_CHUNK, NOT by
+    # int(video_start)+1. Under FPS=2 + FRAMES_PER_CHUNK=2 the latter
+    # produced off-by-half frame indices (1 frame per second instead of 2).
+    # Matches pass1a_evidence.get_chunk_frame_paths convention so SFT and
+    # eval read the same frames for the same chunk_idx.
     paths = []
-    for i in range(start_frame, end_frame + 1):
-        fp = frame_dir / f"frame_{i:06d}.jpg"
-        if fp.exists():
-            paths.append(str(fp))
+    for ci in range(window_start, chunk_idx + 1):
+        for fi in range(FRAMES_PER_CHUNK):
+            # 1-indexed frame numbers: chunk 0 → frame_000001, frame_000002
+            fnum = ci * FRAMES_PER_CHUNK + fi + 1
+            fp = frame_dir / f"frame_{fnum:06d}.jpg"
+            if fp.exists():
+                paths.append(str(fp))
 
     if len(paths) < max(1, n_frames // 2):
         return None

@@ -1,0 +1,113 @@
+# ThinkStream v12.6 GRPO recipe — verl 0.4+ format.
+#
+# Designed for 8×H20 (96GB HBM each, 768GB total) — bf16, ZeRO-3.
+# Cross-validates the slyme path: same algorithm (GRPO + GDPO mixed advantage),
+# same reward set (5 minimal: outcome / timing / format / spam / silent_quality),
+# same model (Qwen3-VL-8B-Instruct).
+
+# ─── model ────────────────────────────────────────────────────────────────
+actor_rollout_ref:
+  model:
+    path: Qwen/Qwen3-VL-8B-Instruct
+    dtype: bfloat16
+    trust_remote_code: true
+
+  # Actor (policy) — the trained model. ZeRO-3 across 8 H20.
+  actor:
+    strategy: fsdp                # verl 0.4+: fsdp | megatron
+    fsdp_config:
+      strategy: zero3
+      offload_params: false       # 96GB HBM has room — don't offload
+      offload_optimizer: false    # H20 compute is the bottleneck, NOT memory
+    optim:
+      lr: 1.0e-6                  # GRPO papers use 1e-6 for 7B-class
+      weight_decay: 0.01
+      lr_warmup_steps: 10
+      lr_scheduler: cosine
+    ppo_mini_batch_size: 32       # samples per gradient accum window
+    ppo_micro_batch_size_per_gpu: 1
+    use_kl_loss: false            # GRPO doesn't use KL term against ref
+    entropy_coeff: 0.0
+    grad_clip: 1.0
+
+  # Reference policy (frozen, for KL). GRPO uses ref only for KL diagnostic;
+  # set use_kl_loss=false above so this is unused at training time. We keep
+  # ref loaded for eval logging only.
+  ref:
+    fsdp_config:
+      strategy: zero3
+      offload_params: true        # ref doesn't need optimizer state — offload
+    log_prob_micro_batch_size_per_gpu: 4
+
+  # Rollout — vLLM-backed multi-turn streaming.
+  rollout:
+    name: vllm                    # verl 0.4+ supports vllm rollout natively
+    n: 8                          # group_size G
+    temperature: 1.0
+    top_p: 1.0
+    top_k: -1
+    response_length: 2048         # max_new_tokens per chunk turn
+    prompt_length: 16384          # max prompt per chunk (matches SFT cutoff)
+    gpu_memory_utilization: 0.55  # H20 96GB; leave 45% for ZeRO-3 actor + grad
+    enforce_eager: false          # CUDA graph for fast generate
+    free_cache_engine: true       # release vLLM engine between training steps
+    # ThinkStream-specific multi-turn config (drives chunk-level rollout)
+    multi_turn:
+      enable: true
+      adapter: thinkstream.trainer_verl.multiturn_rollout:VerlChunkLevelRollout
+      max_turns: 360              # 5min × 1s/chunk + slack
+      build_messages_fn: thinkstream.sft.data_processor:build_per_timestep_messages_v12
+      update_state_fn: thinkstream.trainer.v12_rollout:default_v12_update_state
+
+# ─── reward ───────────────────────────────────────────────────────────────
+reward_model:
+  reward_manager: naive            # we compute everything in reward_fn directly
+  reward_fn_path: thinkstream.trainer_verl.reward_fn:compute_thinkstream_reward
+  reward_weights:                  # matches V12_DEFAULT_REWARD_WEIGHTS
+    outcome:        1.0
+    timing:         0.3
+    format:         0.1
+    spam:          -0.2
+    silent_quality: 0.2
+
+# ─── advantage ────────────────────────────────────────────────────────────
+algorithm:
+  adv_estimator: grpo              # verl 0.4 supports: gae|grpo|reinforce_plus_plus|rloo
+  gamma: 1.0
+  lam: 1.0
+  # ThinkStream-specific: multi-level mixed advantage (ReMemR1 ICLR'26).
+  # Drives the post-aggregation step that mixes outcome (video-level) and
+  # state (chunk-level) advantages at α=0.7. Implemented in
+  # thinkstream.trainer.v12_rewards:aggregate_v12_advantages.
+  custom_aggregator: thinkstream.trainer.v12_rewards:aggregate_v12_advantages
+  custom_aggregator_kwargs:
+    alpha: 0.7
+
+# ─── data ────────────────────────────────────────────────────────────────
+data:
+  train_files: data/agent_v5/final/train_rl_trajectories.jsonl
+  val_files:   data/agent_v5/final/val_trajectories.jsonl
+  train_batch_size: 8              # videos per training step
+  val_batch_size:   8
+  max_prompt_length: 16384
+  max_response_length: 2048
+  filter_overlong_prompts: true
+  truncation: error                # fail loudly on > prompt_length
+  custom_dataset:
+    path: thinkstream.trainer_verl.dataset:build_rl_dataset
+
+# ─── trainer ─────────────────────────────────────────────────────────────
+trainer:
+  total_epochs: 1                  # 1 RL epoch matches the SFT stage convention
+  total_training_steps: null       # auto = epochs × len(dataset) // batch
+  project_name: thinkstream-v12
+  experiment_name: grpo-v126-verl
+  logger: [console, wandb]
+  save_freq: 50                    # save ckpt every 50 steps
+  test_freq: 25                    # eval on val every 25 steps
+  default_local_dir: saves/grpo-v126-verl
+
+# ─── ray cluster (verl uses Ray for orchestration) ───────────────────────
+ray_init:
+  num_cpus: 32
+  # Single-node 8-GPU. Multi-node would set address: auto + RAY_ADDRESS env.

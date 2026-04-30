@@ -84,8 +84,7 @@ class OVOBenchAdapter:
     """
 
     NAME = "ovo_bench"
-    AGENT_CHUNK_SEC = 2.0  # Must match data_processor / agent_loop
-
+    from thinkstream.data.agent_protocol import AGENT_CHUNK_SEC  # canonical (v12.5: 1s/chunk)
     @staticmethod
     def num_chunks_for(item: Dict) -> int:
         """How many chunks to stream before/at the question.
@@ -204,8 +203,7 @@ class OurOpenEndedAdapter:
     """
 
     NAME = "our_val"
-    AGENT_CHUNK_SEC = 2.0
-
+    from thinkstream.data.agent_protocol import AGENT_CHUNK_SEC  # canonical (v12.5: 1s/chunk)
     @staticmethod
     def question_chunk(item: Dict) -> int:
         # Our val items have an `ask_chunk` (or `chunk_idx` for single-step)
@@ -274,8 +272,7 @@ class MCNoTimingAdapter:
     """
 
     NAME = "mc_no_timing"
-    AGENT_CHUNK_SEC = 2.0
-
+    from thinkstream.data.agent_protocol import AGENT_CHUNK_SEC  # canonical (v12.5: 1s/chunk)
     @staticmethod
     def question_chunk_for(item: Dict, total_chunks: int) -> int:
         return total_chunks - 1

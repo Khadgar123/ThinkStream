@@ -40,10 +40,11 @@ IGNORE_INDEX = -100
 # ---------------------------------------------------------------------------
 
 class WeightedSFTTrainer(Trainer):
-    """Trainer that supports per-sample loss weighting.
+    """HF Trainer subclass with audit logging + per-class eval metrics.
 
-    If the batch contains 'sample_weights', weight per-sample loss
-    before reduction. Otherwise fall back to standard loss.
+    Vanilla CE on assistant tokens (DeepEyesV2 / Qwen-VL official convention).
+    No per-class loss reweighting, no class-balanced sampler — uniform on
+    the trajectory's natural sample distribution.
     """
 
     def __init__(self, *args, **kwargs):
@@ -67,232 +68,20 @@ class WeightedSFTTrainer(Trainer):
         self._audit_every = max(1, int(getattr(self.args, "audit_log_every", 1)))
         return 0
 
-    def _get_train_sampler(self, train_dataset=None):
-        """Override default sampler to enable class-balanced sampling.
-
-        With --class_balanced_sampler (default True), build a distributed
-        WeightedRandomSampler so action types like recall/compress/response
-        are not drowned by silent (~70% of mixed-phase data).
-        """
-        ds = train_dataset if train_dataset is not None else self.train_dataset
-
-        # v11.5: lazy-init focal+alpha state from dataset class distribution
-        # (called here because _get_train_sampler runs once at training start
-        # and has access to the train_dataset). Skipped in v12: protocol has
-        # no action keyword position to apply focal+α onto.
-        _protocol_v12 = (
-            getattr(self.args, "protocol_version", "v11") == "v12"
-        )
-        if (not _protocol_v12
-                and getattr(self.args, "focal_alpha_action", False)
-                and not hasattr(self, "_focal_alpha")
-                and ds is not None):
-            self._init_focal_alpha(ds)
-
-        use_balanced = getattr(self.args, "class_balanced_sampler", False)
-        if ds is None or not use_balanced:
-            try:
-                return super()._get_train_sampler(train_dataset)
-            except TypeError:
-                return super()._get_train_sampler()
-
-        from thinkstream.sft.data_processor import ClassBalancedDistributedSampler
-        try:
-            sample_types = [s.get("sample_type", "silent") for s in ds.samples]
-        except AttributeError:
-            try:
-                return super()._get_train_sampler(train_dataset)
-            except TypeError:
-                return super()._get_train_sampler()
-
-        # v11.3: optional per-sample uniqueness weighting on top of class-balance.
-        extra_weights = None
-        if getattr(self.args, "unique_think_weight", False):
-            extra_weights = [float(s.get("_unique_rate", 1.0)) for s in ds.samples]
-
-        sampler = ClassBalancedDistributedSampler(
-            sample_types=sample_types,
-            num_samples=len(sample_types),
-            seed=self.args.seed,
-            smoothing=getattr(self.args, "class_balance_smoothing", 0.7),
-            extra_weights=extra_weights,
-        )
-        if self._audit_step_writer is not None:
-            try:
-                self._audit_step_writer.write({
-                    "event": "class_balanced_sampler_init",
-                    "n_total": len(sample_types),
-                    "per_rank": len(sampler),
-                    "world_size": sampler.world_size,
-                    "class_weights": {
-                        k: round(v, 3)
-                        for k, v in sampler._cls_weights_summary.items()
-                    },
-                })
-            except Exception:
-                pass
-        return sampler
-
-    def _init_focal_alpha(self, train_dataset) -> None:
-        """Compute per-sample-type alpha = (1/P_c)^softening, normalized to silent=1.
-
-        StreamMind §5.1: alpha lifts rare-class contribution on the action
-        keyword position; softening=0.5 (sqrt-inv) is the long-tail-literature
-        default — pure inverse-freq (1.0) over-corrects on ultra-rare classes
-        (recall_query at 2.5%) and destabilizes early training.
-
-        Stored on self._focal_alpha (dict[str, float]). Lookup in compute_loss
-        by sample_meta[i]["sample_type"]; missing classes fall back to 1.0.
-        """
-        from collections import Counter
-        try:
-            sample_types = [s.get("sample_type", "silent") for s in train_dataset.samples]
-        except AttributeError:
-            self._focal_alpha = {}
-            return
-
-        softening = float(getattr(self.args, "alpha_softening", 0.5))
-        n_total = len(sample_types)
-        if n_total == 0:
-            self._focal_alpha = {}
-            return
-
-        counts = Counter(sample_types)
-        alpha_raw = {}
-        for cls, cnt in counts.items():
-            p_c = cnt / n_total
-            alpha_raw[cls] = (1.0 / max(p_c, 1e-9)) ** softening
-
-        # Anchor on silent so silent's effective gradient stays unchanged
-        # (focal will down-weight it because it's already correct; alpha=1
-        # just means "no extra rebalance for silent itself").
-        anchor = alpha_raw.get("silent", 1.0)
-        if anchor <= 0:
-            anchor = 1.0
-        self._focal_alpha = {k: v / anchor for k, v in alpha_raw.items()}
-
-        if self._audit_step_writer is not None:
-            try:
-                self._audit_step_writer.write({
-                    "event": "focal_alpha_init",
-                    "n_total": n_total,
-                    "n_classes": len(counts),
-                    "softening": softening,
-                    "gamma": float(getattr(self.args, "focal_gamma", 2.0)),
-                    "class_counts": dict(counts),
-                    "alpha": {k: round(v, 4) for k, v in self._focal_alpha.items()},
-                })
-            except Exception:
-                pass
-
     def compute_loss(self, model, inputs, return_outputs=False, **kwargs):
-        sample_weights = inputs.pop("sample_weights", None)
-        token_loss_weight = inputs.pop("token_loss_weight", None)
+        # Vanilla CE on assistant tokens (DeepEyesV2 / Qwen-VL official
+        # convention). No per-class re-weighting; data is balanced enough
+        # that uniform weight + standard sampler is sufficient.
+        sample_weights = inputs.pop("sample_weights", None)  # ignored (always 1.0)
+        token_loss_weight = inputs.pop("token_loss_weight", None)  # ignored (uniform)
         sample_meta = inputs.pop("sample_meta", None)
         eval_meta = inputs.pop("eval_meta", None)
         # Keep input_ids handy for argmax-vs-gold accumulation during eval
         eval_input_ids = inputs["input_ids"] if not self.model.training else None
 
         outputs = model(**inputs)
-
+        loss = outputs.loss
         per_sample_loss_for_audit = None
-        if (sample_weights is None or sample_weights.numel() == 0) and token_loss_weight is None:
-            loss = outputs.loss
-        else:
-            logits = outputs.logits
-            labels = inputs["labels"]
-
-            shift_logits = logits[..., :-1, :].contiguous()
-            shift_labels = labels[..., 1:].contiguous()
-
-            B, L, V = shift_logits.shape
-            loss_fct = torch.nn.CrossEntropyLoss(reduction="none")
-            per_token_loss = loss_fct(
-                shift_logits.view(B * L, V), shift_labels.view(B * L)
-            ).view(B, L)
-
-            valid_mask = (shift_labels != IGNORE_INDEX).float()
-
-            # v9: per-token weight (span-based: think/action/response/query/summary)
-            if token_loss_weight is not None:
-                tw = token_loss_weight[..., 1:].contiguous().to(per_token_loss.device)
-                effective_mask = valid_mask * tw
-            else:
-                effective_mask = valid_mask
-
-            # v11.5: StreamMind-style focal+alpha on action keyword positions.
-            # Multiplies into effective_mask only at the keyword token(s) inside
-            # <action>...</action>. Silent collapse mechanics:
-            #   - silent samples reach p_correct≈0.99 within 50 steps, but
-            #     vanilla CE still records loss>0 → gradient keeps strengthening
-            #     silent's logit → other action keywords drift to -inf
-            #   - focal (1-p)^gamma kills the "already-learned silent" gradient
-            #   - alpha (sqrt-inv-freq) lifts rare-class signal proportionally
-            # Only touches the decision token; content tokens (think/response/
-            # summary) are untouched so generation quality training is preserved.
-            #
-            # v12.0: skip entirely. v12 protocol has no action keyword position
-            # (no softmax over {silent, response, recall, compress}); compress
-            # is system-triggered + recall is a tool call inside free text.
-            # Vanilla CE is the design (DeepEyesV2 multiturn_sft_dataset.py:170).
-            _protocol_v12 = (
-                getattr(self.args, "protocol_version", "v11") == "v12"
-            )
-            if (not _protocol_v12
-                    and self.model.training
-                    and getattr(self.args, "focal_alpha_action", False)
-                    and eval_meta is not None
-                    and sample_meta is not None
-                    and getattr(self, "_focal_alpha", None)):
-                try:
-                    gamma = float(getattr(self.args, "focal_gamma", 2.0))
-                    # p_correct = exp(-CE), focal factor = (1-p)^gamma
-                    p_correct = torch.exp(-per_token_loss).clamp(min=0.0, max=1.0)
-                    focal_factor = (1.0 - p_correct).pow(gamma)
-
-                    alpha_per_sample = torch.tensor(
-                        [self._focal_alpha.get(
-                            (m or {}).get("sample_type") or "silent", 1.0)
-                         for m in sample_meta],
-                        device=per_token_loss.device,
-                        dtype=per_token_loss.dtype,
-                    )
-
-                    # Mark action keyword positions in shifted frame.
-                    # eval_meta positions are absolute in input_ids;
-                    # logits[p-1] predicts input_ids[p], so shifted index = p-1.
-                    kw_mask = torch.zeros_like(per_token_loss, dtype=torch.bool)
-                    for b, em in enumerate(eval_meta):
-                        if not em:
-                            continue
-                        for p in (em.get("action_keyword_positions") or []):
-                            idx = p - 1
-                            if 0 <= idx < L:
-                                kw_mask[b, idx] = True
-
-                    kw_multiplier = torch.where(
-                        kw_mask,
-                        alpha_per_sample.unsqueeze(1) * focal_factor,
-                        torch.ones_like(per_token_loss),
-                    )
-                    effective_mask = effective_mask * kw_multiplier
-                except Exception as e:
-                    import logging as _logging
-                    _logging.getLogger(__name__).debug(
-                        "focal_alpha skipped: %s", e
-                    )
-
-            per_sample_loss = (
-                (per_token_loss * effective_mask).sum(dim=1)
-                / effective_mask.sum(dim=1).clamp(min=1)
-            )
-            per_sample_loss_for_audit = per_sample_loss.detach()
-
-            if sample_weights is not None and sample_weights.numel() > 0:
-                sample_weights = sample_weights.to(per_sample_loss.device)
-                loss = (per_sample_loss * sample_weights).sum() / sample_weights.sum()
-            else:
-                loss = per_sample_loss.mean()
 
         # ── Eval-time accuracy accumulation (teacher-forced argmax) ──
         # Done before audit because audit guard requires model.training=True
@@ -418,60 +207,18 @@ class WeightedSFTTrainer(Trainer):
             return -1.0
 
     # -----------------------------------------------------------------
-    # Eval-time argmax accuracy (teacher-forced) — see data_processor's
-    # _extract_eval_positions. Tracks per-class:
-    #   - action_match / action_total  → eval/action_acc[_<class>]
-    #   - post_match   / post_total    → eval/post_action_acc[_<class>]
-    # silent_eos_rate is just post_action_acc filtered to silent samples.
+    # Eval-time argmax accuracy (teacher-forced).
+    #   - v12_argmax_match / v12_argmax_total : holistic argmax over the
+    #     full assistant span [ans_start, ans_end]. Per-class breakdown by
+    #     sample_type. (v11's per-position metrics on <action>/<summary>/
+    #     <query>/<response> are gone — v12 has no fixed structural spans.)
     # -----------------------------------------------------------------
 
     def _reset_eval_accumulator(self):
         self._eval_acc = {
-            "action_match":  defaultdict(int),
-            "action_total":  defaultdict(int),
-            "post_match":    defaultdict(int),
-            "post_total":    defaultdict(int),
-            # v11.3: per-token argmax counts inside <summary>/<query>/<response>
-            # spans. Compress range coverage / recall query format / response
-            # content quality, all teacher-forced.
-            "summary_match": defaultdict(int),
-            "summary_total": defaultdict(int),
-            "query_match":   defaultdict(int),
-            "query_total":   defaultdict(int),
-            # v11.4: response content argmax (response / recall_response samples).
-            "response_match": defaultdict(int),
-            "response_total": defaultdict(int),
-            # v11.4: closed-book format compliance — does the model emit
-            # <action> at the pre-action position? action_acc above is
-            # teacher-forced "given <action>, what's inside" (open-book);
-            # this measures "did you decide to start <action>".
-            "format_match":  defaultdict(int),
-            "format_total":  defaultdict(int),
-            # v12.0: simpler holistic argmax over the entire assistant span
-            # (ans_start..ans_end). v11's per-position structural metrics
-            # don't apply because v12 has no <action> keyword nor fixed
-            # <summary>/<query>/<response> spans (everything goes inside
-            # <tool_call> JSON or <answer>). Per-class breakdown still
-            # works since sample_type is propagated.
             "v12_argmax_match":  defaultdict(int),
             "v12_argmax_total":  defaultdict(int),
         }
-
-    @staticmethod
-    def _argmax_match_at(preds, input_ids, b, positions, L) -> tuple:
-        """Return (n_match, n_total) for teacher-forced argmax over positions.
-
-        logits[p-1] predicts token at position p, so we compare preds[b, p-1]
-        against input_ids[b, p]. Positions outside [1, L) are skipped.
-        """
-        m = 0; n = 0
-        for p in positions:
-            if p <= 0 or p >= L:
-                continue
-            n += 1
-            if preds[b, p - 1].item() == int(input_ids[b, p].item()):
-                m += 1
-        return m, n
 
     def _accumulate_eval_argmax(self, logits, input_ids, eval_meta) -> None:
         """Teacher-forced argmax match at known structural positions."""
@@ -483,68 +230,6 @@ class WeightedSFTTrainer(Trainer):
                     continue
                 stype = meta.get("sample_type", "?") or "?"
 
-                kw_positions = meta.get("action_keyword_positions") or []
-                if kw_positions:
-                    self._eval_acc["action_total"][stype] += 1
-                    self._eval_acc["action_total"]["_all"] += 1
-                    all_match = True
-                    for p in kw_positions:
-                        if p <= 0 or p >= L:
-                            all_match = False
-                            break
-                        if preds[b, p - 1].item() != int(input_ids[b, p].item()):
-                            all_match = False
-                            break
-                    if all_match:
-                        self._eval_acc["action_match"][stype] += 1
-                        self._eval_acc["action_match"]["_all"] += 1
-
-                pp = meta.get("post_action_position")
-                if pp is not None and 0 < pp < L:
-                    self._eval_acc["post_total"][stype] += 1
-                    self._eval_acc["post_total"]["_all"] += 1
-                    if preds[b, pp - 1].item() == int(input_ids[b, pp].item()):
-                        self._eval_acc["post_match"][stype] += 1
-                        self._eval_acc["post_match"]["_all"] += 1
-
-                # Summary span (compress samples) — token-level argmax acc.
-                summary_positions = meta.get("summary_span_positions") or []
-                if summary_positions:
-                    m, n = self._argmax_match_at(preds, input_ids, b, summary_positions, L)
-                    self._eval_acc["summary_total"][stype] += n
-                    self._eval_acc["summary_total"]["_all"] += n
-                    self._eval_acc["summary_match"][stype] += m
-                    self._eval_acc["summary_match"]["_all"] += m
-
-                # Query span (recall_query samples) — token-level argmax acc.
-                query_positions = meta.get("query_span_positions") or []
-                if query_positions:
-                    m, n = self._argmax_match_at(preds, input_ids, b, query_positions, L)
-                    self._eval_acc["query_total"][stype] += n
-                    self._eval_acc["query_total"]["_all"] += n
-                    self._eval_acc["query_match"][stype] += m
-                    self._eval_acc["query_match"]["_all"] += m
-
-                # v11.4: response span (response / recall_response samples).
-                response_positions = meta.get("response_span_positions") or []
-                if response_positions:
-                    m, n = self._argmax_match_at(preds, input_ids, b, response_positions, L)
-                    self._eval_acc["response_total"][stype] += n
-                    self._eval_acc["response_total"]["_all"] += n
-                    self._eval_acc["response_match"][stype] += m
-                    self._eval_acc["response_match"]["_all"] += m
-
-                # v11.4: closed-book format compliance — at the position
-                # before <action>, does the model's argmax equal <action>?
-                pre_action_pos = meta.get("pre_action_position")
-                action_open_id = meta.get("action_open_token_id")
-                if (pre_action_pos is not None and action_open_id is not None
-                        and 0 <= pre_action_pos < L):
-                    self._eval_acc["format_total"][stype] += 1
-                    self._eval_acc["format_total"]["_all"] += 1
-                    if preds[b, pre_action_pos].item() == int(action_open_id):
-                        self._eval_acc["format_match"][stype] += 1
-                        self._eval_acc["format_match"]["_all"] += 1
 
                 # v12.0: holistic teacher-forced argmax over the FULL
                 # assistant span. Replaces v11's per-position structural
@@ -686,11 +371,6 @@ class WeightedSFTTrainer(Trainer):
         # Pack 12 counters × len(all_keys) into one tensor for a single all_reduce
         n = len(all_keys)
         bands = [
-            "action_match", "action_total", "post_match", "post_total",
-            "summary_match", "summary_total", "query_match", "query_total",
-            # v11.4
-            "response_match", "response_total", "format_match", "format_total",
-            # v12.0
             "v12_argmax_match", "v12_argmax_total",
             # v12.1 behavioral metrics
             "v12_kind_match", "v12_kind_total",
@@ -712,82 +392,6 @@ class WeightedSFTTrainer(Trainer):
 
     def _finalize_eval_metrics(self) -> Dict[str, float]:
         out: Dict[str, float] = {}
-        # Overall action accuracy
-        tot_a = self._eval_acc["action_total"].get("_all", 0)
-        if tot_a > 0:
-            out["eval/action_accuracy"] = (
-                self._eval_acc["action_match"].get("_all", 0) / tot_a
-            )
-        # Per-class action accuracy
-        for stype, tot in self._eval_acc["action_total"].items():
-            if stype == "_all" or tot == 0:
-                continue
-            out[f"eval/action_acc_{stype}"] = (
-                self._eval_acc["action_match"].get(stype, 0) / tot
-            )
-        # Per-class post-action transition accuracy (silent_eos_rate is
-        # the silent slice — surfaced as its own metric for visibility).
-        for stype, tot in self._eval_acc["post_total"].items():
-            if stype == "_all" or tot == 0:
-                continue
-            acc = self._eval_acc["post_match"].get(stype, 0) / tot
-            out[f"eval/post_action_acc_{stype}"] = acc
-            if stype == "silent":
-                out["eval/silent_eos_rate"] = acc
-        # v11.3: compress range coverage = token-level argmax acc inside
-        # <summary>...</summary>. Surfaced overall + per-class so a drop
-        # specifically on compress samples is visible.
-        sum_tot = self._eval_acc["summary_total"].get("_all", 0)
-        if sum_tot > 0:
-            out["eval/summary_argmax_acc"] = (
-                self._eval_acc["summary_match"].get("_all", 0) / sum_tot
-            )
-        for stype, tot in self._eval_acc["summary_total"].items():
-            if stype == "_all" or tot == 0:
-                continue
-            out[f"eval/summary_argmax_acc_{stype}"] = (
-                self._eval_acc["summary_match"].get(stype, 0) / tot
-            )
-        # v11.3: recall query format/content quality under teacher forcing.
-        q_tot = self._eval_acc["query_total"].get("_all", 0)
-        if q_tot > 0:
-            out["eval/query_argmax_acc"] = (
-                self._eval_acc["query_match"].get("_all", 0) / q_tot
-            )
-        for stype, tot in self._eval_acc["query_total"].items():
-            if stype == "_all" or tot == 0:
-                continue
-            out[f"eval/query_argmax_acc_{stype}"] = (
-                self._eval_acc["query_match"].get(stype, 0) / tot
-            )
-        # v11.4: response content argmax (response / recall_response samples).
-        r_tot = self._eval_acc["response_total"].get("_all", 0)
-        if r_tot > 0:
-            out["eval/response_argmax_acc"] = (
-                self._eval_acc["response_match"].get("_all", 0) / r_tot
-            )
-        for stype, tot in self._eval_acc["response_total"].items():
-            if stype == "_all" or tot == 0:
-                continue
-            out[f"eval/response_argmax_acc_{stype}"] = (
-                self._eval_acc["response_match"].get(stype, 0) / tot
-            )
-        # v11.4: CLOSED-BOOK format compliance — does the model emit <action>
-        # at the pre-action position? Critical contrast against open-book
-        # eval/action_accuracy: action_acc=0.98 + format_compliance=0.05
-        # is the smoking gun for the cold-start init bug (model knows what
-        # token follows <action>, but never emits <action> itself).
-        f_tot = self._eval_acc["format_total"].get("_all", 0)
-        if f_tot > 0:
-            out["eval/format_compliance"] = (
-                self._eval_acc["format_match"].get("_all", 0) / f_tot
-            )
-        for stype, tot in self._eval_acc["format_total"].items():
-            if stype == "_all" or tot == 0:
-                continue
-            out[f"eval/format_compliance_{stype}"] = (
-                self._eval_acc["format_match"].get(stype, 0) / tot
-            )
         # v12.0: holistic assistant-span argmax accuracy.
         v12_tot = self._eval_acc["v12_argmax_total"].get("_all", 0)
         if v12_tot > 0:
@@ -887,11 +491,9 @@ class WeightedSFTTrainer(Trainer):
 
     def _reset_train_metrics(self):
         self._train_metrics = {
-            "loss_sum":     defaultdict(float),
-            "loss_n":       defaultdict(int),
-            "weight_sum":   defaultdict(float),
-            "action_match": defaultdict(int),
-            "action_total": defaultdict(int),
+            "loss_sum":   defaultdict(float),
+            "loss_n":     defaultdict(int),
+            "weight_sum": defaultdict(float),
         }
 
     def _accumulate_train_metrics(
@@ -920,34 +522,8 @@ class WeightedSFTTrainer(Trainer):
             self._train_metrics["weight_sum"][stype] += w
             self._train_metrics["weight_sum"]["_all"] += w
 
-        # Teacher-forced action argmax (mirrors eval logic). Skipped if
-        # eval_meta absent — that just means the collator didn't emit
-        # action_keyword_positions for this batch.
-        if eval_meta is None or logits is None or input_ids is None:
-            return
-        with torch.no_grad():
-            preds = logits.argmax(dim=-1)
-            B, L = preds.shape
-            for b, m in enumerate(eval_meta):
-                if not m:
-                    continue
-                stype = (m.get("sample_type") or "?")
-                kw_positions = m.get("action_keyword_positions") or []
-                if not kw_positions:
-                    continue
-                self._train_metrics["action_total"][stype] += 1
-                self._train_metrics["action_total"]["_all"] += 1
-                all_match = True
-                for p in kw_positions:
-                    if p <= 0 or p >= L:
-                        all_match = False
-                        break
-                    if preds[b, p - 1].item() != int(input_ids[b, p].item()):
-                        all_match = False
-                        break
-                if all_match:
-                    self._train_metrics["action_match"][stype] += 1
-                    self._train_metrics["action_match"]["_all"] += 1
+        # v12: action_keyword_positions doesn't exist (no <action> vocab).
+        # Per-class loss + weight is the only signal we accumulate here.
 
     def _flush_train_metrics(self) -> Dict[str, float]:
         out: Dict[str, float] = {}
@@ -967,14 +543,6 @@ class WeightedSFTTrainer(Trainer):
             )
             if stype != "_all":
                 out[f"train/n_frac_{stype}"] = n / n_total
-        # Per-class action argmax accuracy
-        for stype, tot in self._train_metrics["action_total"].items():
-            if tot == 0:
-                continue
-            suffix = "" if stype == "_all" else f"_{stype}"
-            out[f"train/action_argmax_acc{suffix}"] = (
-                self._train_metrics["action_match"].get(stype, 0) / tot
-            )
         self._reset_train_metrics()
         return out
 

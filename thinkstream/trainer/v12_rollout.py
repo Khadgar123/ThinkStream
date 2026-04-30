@@ -48,17 +48,28 @@ import torch
 
 @dataclass
 class ChunkLevelRolloutConfig:
-    """Match ReMemR1/MemAgent recurrent config conventions."""
+    """v12.5 chunk-level rollout config. Matches ReMemR1/MemAgent recurrent
+    config conventions. Defaults aligned with 1s/chunk + 16s visual window +
+    16k SFT cutoff_len.
+    """
     group_size: int = 8                  # G = rollouts per (video, chunk)
-    max_chunks_per_video: int = 30       # hard ceiling on streaming length
-    max_prompt_length: int = 8192        # memory + visual_window + queries
+    # v12.5: 5-minute video × 1 chunk/s = 300 chunks. Hard ceiling at 360
+    # leaves slack for slightly-overlong videos. Streaming inference uses
+    # the actual video duration; this is a safety cap to bound rollout cost.
+    max_chunks_per_video: int = 360
+    # v12.5: align with SFT cutoff_len. memory(≤4000) + visual_window(2048) +
+    # queries(~300) + system+tools(~400) + recall(~500) + headroom.
+    max_prompt_length: int = 16384
     max_response_length: int = 2048      # think + answer/tool_call
-    chunk_visual_tokens: int = 6144      # ≈ 24 frames × 256 vis tokens
-    # Mixed advantage mixing (ReMemR1 default 0.8, ThinkStream skews lower
-    # because per-step signal is denser)
+    # v12.5: 16 chunks × 2 frames × 128 vis tokens = 4096
+    chunk_visual_tokens: int = 4096
+    # Mixed advantage mixing (ReMemR1 default 0.8; ThinkStream uses 0.7
+    # because per-step state reward is denser in long-horizon videos).
     advantage_alpha: float = 0.7
-    # Compress-trigger heuristic: every K chunks if memory exceeds this
-    compress_trigger_every: int = 8
+    # Compress trigger is driven by token-budget in MemoryState
+    # (RECENT_THINKS_TOKEN_BUDGET=4000, threshold=3200), not by chunk count.
+    # Kept here only for backward-compat with old rollout call sites.
+    compress_trigger_every: int = 0  # 0 = disabled, use token-budget
 
 
 @dataclass

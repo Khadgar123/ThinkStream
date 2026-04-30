@@ -147,95 +147,18 @@ def compute_spam_score_v12(
     return 0.5 * excess_recall + 0.3 * excess_compress
 
 
-def compute_compress_quality_v12(
-    summary_text: Optional[str],
-    summary_range: Optional[List[int]],
-    gold_summary_text: Optional[str],
-    gold_range: Optional[List[int]],
-    *,
-    rouge_fn=None,
-) -> float:
-    """v12 compress quality: applicable ONLY on chunks where action=compress.
-
-    Returns coverage score ∈ [0, 1]:
-      - range_iou: |[s1,e1] ∩ [s2,e2]| / |[s1,e1] ∪ [s2,e2]|
-      - text_match: rouge_fn if provided, else fuzzy bag-of-words overlap
-      - score = 0.5 * range_iou + 0.5 * text_match
-
-    For non-compress chunks the rollout caller passes None → returns 0
-    AND the rollout MUST mask this column out (mask=0) when calling
-    per_reward_group_norm to avoid distorting GRPO advantage.
-    """
-    if summary_text is None or gold_summary_text is None:
-        return 0.0
-    if summary_range is None or gold_range is None:
-        range_iou = 0.0
-    else:
-        s1, e1 = sorted(summary_range)
-        s2, e2 = sorted(gold_range)
-        inter = max(0, min(e1, e2) - max(s1, s2))
-        union = max(e1, e2) - min(s1, s2)
-        range_iou = inter / union if union > 0 else 0.0
-
-    if rouge_fn is not None:
-        text_match = float(rouge_fn(summary_text, gold_summary_text))
-    else:
-        a_tokens = set(summary_text.lower().split())
-        b_tokens = set(gold_summary_text.lower().split())
-        text_match = len(a_tokens & b_tokens) / len(b_tokens) if b_tokens else 0.0
-
-    return 0.5 * range_iou + 0.5 * text_match
+# compute_compress_quality_v12 / compute_recall_quality_v12 removed (v12.6).
+# Industry consensus (DeepEyesV2 / ReTool / MMSearch-R1 / Practitioner's Guide
+# arXiv:2510.01132) — gold-locked tool-quality rewards lock policy to teacher's
+# specific compress range / retrieval span, suppressing exploration. Tool
+# credit now flows entirely via outcome × GRPO group-norm: a chunk's
+# compress / recall is good iff downstream answers in the same trajectory
+# are right (compared to other group rollouts on the same video).
 
 
 # ===========================================================================
-# v12.2 — recall_quality + silent_quality (closes the two reward gaps)
+# Trajectory-level outcome (multi-question)
 # ===========================================================================
-
-
-def compute_recall_quality_v12(
-    recall_returned_chunks: List[List[int]],   # per-chunk retriever output (one inner list per recall call)
-    support_chunks: List[int],                  # gold evidence chunks (from pass3a metadata)
-    *,
-    recall_fired: bool,
-    query_text: Optional[str] = None,
-    gold_answer: Optional[str] = None,
-) -> float:
-    """v12 recall quality — chunk-level hit-rate with explicit failure penalty.
-
-    Industry survey (Apr 2026): ReMemR1 uses word-level F1 (HotpotQA);
-    MemAgent / DeepEyesV2 / ReTool use only end-task correctness. ThinkStream
-    is the first to use directly-annotated `support_chunks` (per-card gold
-    evidence positions) as recall ground truth.
-
-    Returns ∈ [-0.5, 1.0]:
-      support_chunks empty / unknown:   0.0   (caller mask=0)
-      !recall_fired:                    0.0   (caller mask=0; sample didn't recall)
-      recall_fired AND returned empty: -0.5   (queried but retrieved nothing)
-      recall_fired AND query leaks gold answer: -0.3  (anti-cheat)
-      recall_fired AND non-empty union:  hit_rate ∈ [0, 1]
-        where hit_rate = |returned ∩ support| / |support|
-
-    The query-leak check guards against the model writing the gold answer
-    INSIDE its query (which would game the retriever's BM25 score).
-    """
-    if not recall_fired:
-        return 0.0
-    if not support_chunks:
-        return 0.0
-    union: set = set()
-    for chunks in recall_returned_chunks:
-        if chunks:
-            union.update(int(c) for c in chunks)
-    if not union:
-        # v11.4 lesson: "fired but retrieved nothing" is the most informative
-        # failure case; mask=0 would silently drop it. Explicit penalty so
-        # advantage learns to write better queries.
-        return -0.5
-    if query_text and gold_answer:
-        if str(gold_answer).strip().lower() in query_text.strip().lower():
-            return -0.3
-    gold = set(int(c) for c in support_chunks)
-    return len(union & gold) / len(gold)
 
 
 def compute_trajectory_outcome_v12(

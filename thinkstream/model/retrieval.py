@@ -36,8 +36,7 @@ import torch
 
 logger = logging.getLogger(__name__)
 
-AGENT_CHUNK_SEC = 2.0
-FRAMES_PER_CHUNK = 2
+from thinkstream.data.agent_protocol import AGENT_CHUNK_SEC, FRAMES_PER_CHUNK  # noqa: F401
 
 
 # ─── Protocol ────────────────────────────────────────────────────────────────

@@ -79,9 +79,13 @@ def run_streaming_inference_for_item(
     Returns list of {"chunk_idx": int, "text": str}.
     """
     raise NotImplementedError(
-        "Plug in vLLM engine here. The current scaffold only handles"
-        " adapter logic + scoring. See scripts/eval/eval_baseline_vllm.py"
-        " for the v11 inference loop to fork."
+        "v12 online inference is not driven from this scaffold — use\n"
+        "  scripts/eval/ovo/run_sft.sh\n"
+        "which invokes StreamingAgentLoop directly (chunk-by-chunk\n"
+        "fresh-KV runtime that matches SFT training). This v12_ovo_eval.py\n"
+        "module retains only the offline-scoring adapters; the in-line\n"
+        "vLLM streaming loop lives in thinkstream/eval/streaming_vllm.py\n"
+        "via streaming_vllm_rollout()."
     )
 
 

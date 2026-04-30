@@ -50,7 +50,7 @@ from scripts.eval.ovo.eval_full import (
 )
 
 
-AGENT_CHUNK_SEC = 2.0
+from thinkstream.data.agent_protocol import AGENT_CHUNK_SEC  # canonical (v12.5: 1s/chunk)
 DEFAULT_VISUAL_WINDOW_SEC = 24.0  # 12 chunks × 2s, matches agent_loop default
 
 

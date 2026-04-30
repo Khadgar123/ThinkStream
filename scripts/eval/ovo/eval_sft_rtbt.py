@@ -35,7 +35,6 @@ from thinkstream.data.agent_protocol import (
 )
 from thinkstream.sft.argument import DataArguments
 from thinkstream.sft.data_processor import (
-    register_special_tokens,
     update_processor_pixels,
 )
 from thinkstream.model.agent_loop import make_generate_fn
@@ -67,13 +66,16 @@ def _get_frame_paths(video_path, chunk_idx, frames_root, video_root):
     if not frame_dir.exists():
         return None
 
-    start_frame = int(video_start) + 1
-    end_frame = int(video_end) + 1
+    # v12.6 fix: chunk-indexed frame numbers, NOT seconds. Matches
+    # pass1a_evidence.get_chunk_frame_paths so SFT and eval read the
+    # same frames per chunk under FPS=2 + FRAMES_PER_CHUNK=2.
     frame_paths = []
-    for i in range(start_frame, end_frame + 1):
-        fp = frame_dir / f"frame_{i:06d}.jpg"
-        if fp.exists():
-            frame_paths.append(str(fp))
+    for ci in range(window_start, chunk_idx + 1):
+        for fi in range(FRAMES_PER_CHUNK):
+            fnum = ci * FRAMES_PER_CHUNK + fi + 1
+            fp = frame_dir / f"frame_{fnum:06d}.jpg"
+            if fp.exists():
+                frame_paths.append(str(fp))
 
     n_expected = (chunk_idx - window_start + 1) * FRAMES_PER_CHUNK
     if len(frame_paths) < max(1, n_expected // 2):
@@ -190,7 +192,6 @@ def main():
     model = model.cuda()
     model.eval()
     processor = AutoProcessor.from_pretrained(args.ckpt)
-    register_special_tokens(processor, model_type)
     processor = update_processor_pixels(processor, DataArguments())
     if hasattr(processor, "video_processor") and hasattr(processor.video_processor, "do_sample_frames"):
         processor.video_processor.do_sample_frames = False

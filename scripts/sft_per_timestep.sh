@@ -65,13 +65,14 @@ case $PHASE in
         # v11.2: in-loop eval on stream_agent_val (1,550-sample held-out
         # video-disjoint pool). Subsampled to EVAL_N (default 300) so
         # one eval pass takes ~2 min on 8×GPU instead of ~10 min.
-        # v12.5 default: stream_agent_sft_full (18,229 samples, 11.2x
-        # recovery vs legacy stream_agent_sft=1,635 post-cap). The flat
-        # file is the unpacked form of train_sft_trajectories.jsonl
-        # produced by `python -m scripts.agent_data_v5.pass4`.
-        # Override with DATASETS=stream_agent_sft for the v11.1 baseline.
+        # v12.6 default: stream_agent_sft (LLaMA-Factory ShareGPT messages
+        # format; pass5_messages.py converts trajectory→messages preserving
+        # all 18,229 samples). This is the canonical entry — flat
+        # train_sft_full.jsonl is kept as stream_agent_sft_full for
+        # backward-compat with archived ablations only.
+        # Override with DATASETS=stream_agent_sft_full to use legacy flat.
         llm=${LLM:-/home/tione/notebook/gaozhenkun/model/Qwen3-VL-8B-Instruct}
-        datasets=${DATASETS:-stream_agent_sft_full}
+        datasets=${DATASETS:-stream_agent_sft}
         eval_datasets=${EVAL_DATASETS:-stream_agent_val}
         # v12.5: corpus 11.2x larger; reduce default epochs proportionally
         # so total steps stay in the v11.1 ballpark (was 4×154=616; now

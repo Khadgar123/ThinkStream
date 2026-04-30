@@ -75,7 +75,6 @@ from thinkstream.model.agent_loop import (
 from thinkstream.model.retrieval import make_retriever
 from thinkstream.sft.argument import DataArguments
 from thinkstream.sft.data_processor import (
-    register_special_tokens,
     update_processor_pixels,
 )
 
@@ -704,7 +703,6 @@ def main():
     model = model.cuda()
     model.eval()
     processor = AutoProcessor.from_pretrained(args.ckpt)
-    register_special_tokens(processor, model_type)
     processor = update_processor_pixels(processor, DataArguments())
     if hasattr(processor, "video_processor") and hasattr(processor.video_processor, "do_sample_frames"):
         processor.video_processor.do_sample_frames = False

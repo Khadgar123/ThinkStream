@@ -27,7 +27,6 @@ sys.path.insert(0, str(project_root))
 from thinkstream.sft.trainer import WeightedSFTTrainer
 from thinkstream.sft.data_processor import (
     make_per_timestep_data_module,
-    register_special_tokens,
     PerTimestepDataset,
     PerTimestepDataCollator,
 )
@@ -82,7 +81,6 @@ def main():
     )
 
     processor = AutoProcessor.from_pretrained(checkpoint_dir)
-    register_special_tokens(processor, data_args.model_type)
 
     tokenizer = AutoTokenizer.from_pretrained(
         checkpoint_dir,
