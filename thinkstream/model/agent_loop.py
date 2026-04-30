@@ -1007,6 +1007,7 @@ class StreamingAgentLoop:
 
                 # Merge recall results into parsed output
                 parsed["recall_step2"] = recall_parsed
+                parsed["recall_step2_raw_text"] = recall_output_text  # v12.11 P0.6 — exposed for loss
                 parsed["recall_result"] = recall_result
                 # Override action to the final action (response or silent)
                 if recall_parsed["action"] in ("response", "silent"):

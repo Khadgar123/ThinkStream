@@ -617,19 +617,38 @@ def rollout(
                     video_path=abs_video_path,
                     user_question=q,
                 )
+                # v12.11 P0.6 fix: for recall multi-turn, the FINAL assistant
+                # turn that loss-time message reconstruction appends should be
+                # the SECOND-pass answer, not the first-pass tool_call. The
+                # first-pass tool_call already lives inside step_messages
+                # (captured by agent_loop). Storing first-pass here meant:
+                #   loss messages = [..., user, assistant(tool_call from step_msgs),
+                #                    user(recall_result), assistant(tool_call AGAIN)]
+                # → no final answer was ever trained, recall got trained twice.
+                final_text = result.get("raw", "") or ""
+                if (result.get("action") == "recall"
+                        and result.get("recall_step2") is not None):
+                    second_pass = result.get("recall_step2_raw_text", "") or ""
+                    if second_pass:
+                        final_text = second_pass
                 # Store result with generated tokens for reward/loss computation
                 chunk_results_g.append({
                     "chunk_idx": chunk_idx,
                     "action": result.get("action", "unknown"),
                     "think": result.get("think", ""),
                     "payload": result.get("payload", {}),
-                    # v12.6 fix: parsed dict carries `raw` (set in
-                    # agent_loop._parse_agent_output line 41); reading
-                    # `raw_output` produced empty string → empty
-                    # generated_tokens → no logprob signal at training time.
-                    "raw_output": result.get("raw", ""),
+                    "raw_output": final_text,
                     "generated_tokens": tokenizer.encode(
-                        result.get("raw", ""), add_special_tokens=False,
+                        final_text, add_special_tokens=False,
+                    ),
+                    # v12.11 P0.6: keep first-pass for diagnostics / format-reward
+                    # if needed (recall tool_call format check), but it's NOT
+                    # used as the final assistant turn.
+                    "recall_first_pass_text": (
+                        result.get("raw", "")
+                        if result.get("action") == "recall"
+                        and result.get("recall_step2") is not None
+                        else ""
                     ),
                     # Post-step memory bookkeeping (used by overflow_pen reward).
                     "memory_token_count": int(result.get("memory_token_count", 0)),
@@ -1453,12 +1472,27 @@ def _build_rollout_messages_single_chunk(
         {"role": "assistant", "content": [{"type": "text", "text": gen_text}]}
     )
 
-    # Per-chunk video_meta covers exactly this chunk's window.
+    # v12.11 P0.7 fix (2026-05-01): video_meta must describe the FULL 16s
+    # visual_window (VISUAL_WINDOW_CHUNKS × frames_per_chunk frames), not the
+    # 1-second window stored on chunk_result. The rollout-time visual context
+    # at chunk N is [max(0, N-15), N+1] (16s sliding window); video_meta
+    # below mirrors that range so loader produces the correct frame count
+    # and chunk_metadatas (used for Qwen3-VL `<X.X seconds>` text tokens).
+    #
+    # NOTE: this fixes the train/infer divergence where video_meta said
+    # num_chunks=1 (1s of frames) but step_messages had 32 frames from the
+    # 16s window — placeholder count mismatch caused MROPE drift.
+    from thinkstream.data.agent_protocol import VISUAL_WINDOW_CHUNKS
+    chunk_idx = int(chunk_result.get("chunk_idx", 0))
+    visual_window_start = max(0, chunk_idx - VISUAL_WINDOW_CHUNKS + 1)
+    visual_window_end_exclusive = chunk_idx + 1  # exclusive in chunk units
+    n_window_chunks = visual_window_end_exclusive - visual_window_start
+
     video_meta = build_video_meta(
         abs_path=abs_video_path,
-        total_start=chunk_result["window_start"],
-        total_end=chunk_result["window_end"],
-        num_chunks=1,
+        total_start=visual_window_start * (chunk_result["window_end"] - chunk_result["window_start"]),
+        total_end=visual_window_end_exclusive * (chunk_result["window_end"] - chunk_result["window_start"]),
+        num_chunks=n_window_chunks,
         frames_per_chunk=frames_per_chunk,
     )
     video_chunk_size = chunk_result["window_end"] - chunk_result["window_start"]
@@ -1653,13 +1687,24 @@ def build_grpo_inputs(
                 frames_per_chunk=int(rollout_fpc),
             )
 
-        if sample_idx not in _preloaded_cache:
-            pv = sample_data.get("_preloaded_video")
-            _preloaded_cache[sample_idx] = (
-                (pv["split_videos"], pv["video_kwargs"], pv["chunk_metadatas"])
-                if pv
-                else None
-            )
+        # v12.11 P0.7 fix (2026-05-01): per-chunk path can NOT reuse the
+        # trajectory-level preloaded_frames cache. The cache splits the
+        # FULL video into N trajectory chunks (1 chunk each); per-chunk
+        # loss needs the 16s visual_window (16 chunks) at this chunk's
+        # position. Pass preloaded_frames=None so the loader reads from
+        # disk using the corrected video_meta range. Trajectory mode keeps
+        # the cache (its split aligns with rollout's per-turn videos).
+        if use_per_chunk:
+            preloaded_for_call = None
+        else:
+            if sample_idx not in _preloaded_cache:
+                pv = sample_data.get("_preloaded_video")
+                _preloaded_cache[sample_idx] = (
+                    (pv["split_videos"], pv["video_kwargs"], pv["chunk_metadatas"])
+                    if pv
+                    else None
+                )
+            preloaded_for_call = _preloaded_cache[sample_idx]
 
         result = process_messages_to_model_inputs(
             messages=messages,
@@ -1668,7 +1713,7 @@ def build_grpo_inputs(
             processor=processor,
             model_type=model_type,
             add_generation_prompt=False,
-            preloaded_frames=_preloaded_cache[sample_idx],
+            preloaded_frames=preloaded_for_call,
         )
         result["position_ids"] = compute_position_ids(result, processor, model_type)
 
@@ -2099,8 +2144,9 @@ def _per_chunk_state_reward(flat_items, rollout_data, tokenizer, mode: str):
     out = []
     for it in flat_items:
         s = it["sample_idx"]; g = it["gen_idx"]; c = it["chunk_idx"]
-        sample_data = rollout_data.get(s, {})
-        chunks = sample_data.get("chunk_results", [])
+        # v12.11 P0.3 fix: rollout_data is List, not Dict.
+        sample_data = rollout_data[s] if s < len(rollout_data) else {}
+        chunks = sample_data.get("chunk_results", []) if sample_data else []
         if c >= len(chunks):
             out.append(0.0); continue
         gt_list = chunks[c].get("generated_tokens", [])
@@ -2241,10 +2287,13 @@ def prepare_grpo_micro_batches(
     flat_advantages: List[torch.Tensor] = []
     flat_rewards: List[torch.Tensor] = []
     flat_rewards_dict: Dict[str, List[torch.Tensor]] = {k: [] for k in rewards_dict}
+    # v12.11 P0.3 fix: rollout_data is List[dict] (one entry per video),
+    # not a dict — earlier `if sample_idx not in rollout_data` was checking
+    # membership against the LIST and silently skipping every chunk.
     for flat_idx in range(total_samples):
         sample_idx = flat_idx // group_size
         gen_idx = flat_idx % group_size
-        if sample_idx not in rollout_data:
+        if sample_idx >= len(rollout_data):
             continue
         sample_data = rollout_data[sample_idx]
         chunk_results = sample_data.get("chunk_results", [])
@@ -2333,7 +2382,13 @@ def prepare_grpo_micro_batches(
     if USE_DYNAMIC_BSZ and flat_items:
         seqlens = []
         for it in flat_items:
-            chunks = rollout_data.get(it["sample_idx"], {}).get("chunk_results", [])
+            # v12.11 P0.3 fix: rollout_data is List, not Dict.
+            sample_data = (
+                rollout_data[it["sample_idx"]]
+                if it["sample_idx"] < len(rollout_data)
+                else {}
+            )
+            chunks = sample_data.get("chunk_results", []) if sample_data else []
             if it["chunk_idx"] < len(chunks):
                 seqlens.append(_estimate_chunk_token_len(
                     chunks[it["chunk_idx"]], it["gen_idx"]

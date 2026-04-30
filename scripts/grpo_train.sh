@@ -78,14 +78,17 @@ DATASET=${DATASET:-stream_agent_rl_traj}
 SAVE_STEPS=${SAVE_STEPS:-200}
 RUN_NAME=${RUN_NAME:-agent-grpo}
 
+# v12.11 P0.1 fix (2026-05-01): SCRIPT_DIR / PROJECT_DIR MUST be defined
+# before any ${PROJECT_DIR} expansion. Previous order caused unbound-variable
+# crash under `set -u` when VLLM_ROLLOUT_FRAMES_ROOT was unset.
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+ENTRY="${PROJECT_DIR}/thinkstream/train.py"
+
 # v12.6: pre-extracted frames root — eliminates 300s+ online video decode per rollout.
 # When unset, falls back to legacy in-line video decoding.
 VLLM_ROLLOUT_FRAMES_ROOT=${VLLM_ROLLOUT_FRAMES_ROOT:-${PROJECT_DIR}/data/agent_v5/frames}
 VLLM_ROLLOUT_VIDEO_ROOT=${VLLM_ROLLOUT_VIDEO_ROOT:-/home/tione/notebook/gaozhenkun/hzh/data/datasets/VideoMind-Dataset/cosmo_cap/videos}
-
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
-ENTRY="${PROJECT_DIR}/thinkstream/train.py"
 
 # v12.11 P2.1 (2026-05-01): pick deepspeed config based on offload flags.
 # zero3_offload.json adds CPU offload for params + optimizer state, matching
