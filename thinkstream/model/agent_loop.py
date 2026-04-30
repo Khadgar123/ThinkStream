@@ -666,8 +666,17 @@ class StreamingAgentLoop:
         else:
             frame_dir = Path(self.frames_root) / vp.with_suffix("")
 
+        # v12.6 fix (2026-04-30): videos may come from multiple source datasets
+        # with different directory structures. The nested path above only works
+        # when video_root matches; for cross-dataset backups or mixed pools,
+        # frames are stored flat as {frames_root}/{video_stem}. Try flat lookup
+        # as a fallback before giving up.
         if not frame_dir.exists():
-            return None
+            flat_dir = Path(self.frames_root) / vp.stem
+            if flat_dir.exists():
+                frame_dir = flat_dir
+            else:
+                return None
 
         # v12.6 fix: index frames by chunk_idx × FRAMES_PER_CHUNK + 1.
         # The seconds-based variant (int(video_start)+1) was off-by-half
