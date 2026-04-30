@@ -1007,16 +1007,13 @@ def _score_placement(
     }
     score += RARE_SEQ_BONUS.get(p["sequence_type"], 0.0)
 
-    # 5c. v12.6 (2026-04-30): Difficulty-tier bonus.
-    # Sim of v12.5 production showed only ~10% of rendered placements were
-    # T2/T3 (recall-required). The greedy diversity scoring above optimizes
-    # for family/sequence/spread but is blind to difficulty_tier. Without
-    # this bonus the model never learns to recall — ~88% of training samples
-    # have evidence in the visual window. Tier 3 gets a higher boost than
-    # tier 2 because it's 100% recall-required (vs ~50% for compressed).
+    # 5c. v12.6: Difficulty-tier bonus.
+    # v12.8 (2026-04-30): bumped 1.0→1.5 / 2.0→2.5. With MAX_QUESTIONS_PER_TRAJ
+    # cut to 8, fewer total QA placements compete; we need stronger tier bias
+    # to maintain needs-recall rate ≥ 30% of QA.
     TIER_BONUS = {
-        "medium_in_compressed": 1.0,
-        "hard_history_only": 2.0,
+        "medium_in_compressed": 1.5,
+        "hard_history_only": 2.5,
     }
     score += TIER_BONUS.get(p.get("difficulty_tier", ""), 0.0)
 
@@ -1421,15 +1418,14 @@ def plan_trajectories(
         pn1_sorted = sorted(pn1_cards, key=lambda p: p["ask_chunk"])
 
         # v12.6: Duration-normalize PN1 to keep silent rate near 70% target.
-        # v12.7 (2026-04-30): 0.10 → 0.06. With MAX_TRAJECTORIES_PER_VIDEO=1
-        # the QA budget shrank from 25 → 12 placements; PN1 was eating the
-        # remaining MAX_SAMPLES_PER_VIDEO slots on long videos and drowning
-        # the recall-training signal. 0.06/sec (~1 every 17s) leaves room
-        # for QA + silent base samples in the cap.
-        #   60s  → 4 PN1   (was 6)
-        #   180s → 11 PN1  (was 18)
-        #   320s → 19 PN1  (was 32)
-        PN1_PER_SEC = 0.06
+        # v12.8 (2026-04-30): 0.06 → 0.04. PN1 was 43% of train data after
+        # cap, drowning user-Q training. 0.04/sec (~1 every 25s) brings PN1
+        # share to ~15-20% of train, matching its capability-as-feature role
+        # rather than dominant signal.
+        #   60s  → 2-3 PN1
+        #   150s → 6 PN1
+        #   320s → 13 PN1
+        PN1_PER_SEC = 0.04
         pn1_cap = max(2, int(num_chunks * PN1_PER_SEC))
         if len(pn1_sorted) > pn1_cap:
             # Evenly subsample preserving temporal coverage.

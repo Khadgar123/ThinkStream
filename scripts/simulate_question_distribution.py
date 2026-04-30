@@ -27,7 +27,7 @@ sys.path.insert(0, str(ROOT))
 # ---------------------------------------------------------------------------
 
 import os as _os
-PROFILE = _os.environ.get("SIM_PROFILE", "v12.7").lower()  # v12.5 / v12.6 / v12.7
+PROFILE = _os.environ.get("SIM_PROFILE", "v12.8").lower()  # v12.5 / v12.6 / v12.7 / v12.8
 
 if PROFILE == "v12.5":
     FAMILY_TARGETS = {
@@ -53,7 +53,7 @@ elif PROFILE == "v12.6":
     TIER_BONUS_T3 = 2.0
     MAX_TRAJ = 5
     MAX_Q_PER_TRAJ = 5
-else:  # v12.7 — 1 traj/video, 12 q/traj, MAX_SAMPLES=25, PN1=0.06/s
+elif PROFILE == "v12.7":
     FAMILY_TARGETS = {
         "F1": 3, "F2": 2, "S1": 2, "F3": 1, "R1": 1, "CR4": 2, "F4": 3,
         "E1": 1, "M1": 2, "E2": 3, "C1": 1, "CR1": 1, "CR5": 2, "P1": 2,
@@ -65,6 +65,18 @@ else:  # v12.7 — 1 traj/video, 12 q/traj, MAX_SAMPLES=25, PN1=0.06/s
     TIER_BONUS_T3 = 2.0
     MAX_TRAJ = 1
     MAX_Q_PER_TRAJ = 12
+else:  # v12.8 — silent-leaning balanced config
+    FAMILY_TARGETS = {
+        "F1": 4, "F2": 2, "S1": 2, "F3": 1, "R1": 1, "CR4": 2, "F4": 3,
+        "E1": 1, "M1": 2, "E2": 3, "C1": 1, "CR1": 1, "CR5": 2, "P1": 2,
+        "CR2": 1, "F7": 1, "F5": 1, "F6": 2, "N1": 4, "CR3": 1, "CR6": 1,
+        "CR7": 1, "PN1": 44,
+    }
+    PN1_PER_SEC_CAP = 0.04
+    TIER_BONUS_T2 = 1.5
+    TIER_BONUS_T3 = 2.5
+    MAX_TRAJ = 1
+    MAX_Q_PER_TRAJ = 8
 
 # OVO 12-task share (canonical, sorted desc)
 OVO_TASK_SHARE = {
@@ -112,9 +124,13 @@ MAX_TRAJECTORIES_PER_VIDEO = MAX_TRAJ
 MAX_QUESTIONS_PER_TRAJECTORY = MAX_Q_PER_TRAJ
 NON_PN1_CAP = MAX_TRAJECTORIES_PER_VIDEO * MAX_QUESTIONS_PER_TRAJECTORY
 
-# Final render cap (after pass3c base sample addition). v12.7: 15 → 25 to
-# admit silent base samples alongside placements; matches config.py.
-MAX_SAMPLES_PER_VIDEO = 25 if PROFILE == "v12.7" else 15
+# Final render cap (after pass3c base sample addition).
+if PROFILE == "v12.8":
+    MAX_SAMPLES_PER_VIDEO = 30
+elif PROFILE == "v12.7":
+    MAX_SAMPLES_PER_VIDEO = 25
+else:
+    MAX_SAMPLES_PER_VIDEO = 15
 
 # Pass3a verify yield (from comments — average across families).
 VERIFY_YIELD = 0.88
@@ -281,19 +297,55 @@ def simulate(duration_sec: int) -> dict:
     else:
         q_interval_sec = float('inf')
 
-    # Response vs Silent ratio (training data view).
-    # A "response" placement = generates an answer event (response_from_memory,
-    # recall_response, compress_response, multi_response, event_watch).
-    # A "silent" placement = unanswerable / pending / patrol / warmup base sample.
-    # Approximation: rendered_total ≈ (response events) + (silent base samples
-    # added by pass3c). With round-robin cap to 15:
-    response_events = sum(c for fam, tier, c in rendered if fam != "PN1")
-    pn1_events = sum(c for fam, tier, c in rendered if fam == "PN1")
-    # PN1 also produces a non-empty response (descriptive narration), count
-    # it as response. silent base samples added by pass3c are approximated
-    # as the residual to MAX_SAMPLES_PER_VIDEO.
-    response_in_train = response_events + pn1_events
-    silent_in_train = max(0, MAX_SAMPLES_PER_VIDEO - response_in_train)
+    # Response vs Silent ratio (training data view) — bucket-aware approximation
+    # of pipeline.py:872 round-robin.
+    #
+    # Buckets: pass3c emits per-(family, action) and per-base-role samples.
+    # Round-robin cycles each bucket; the per-bucket cursor controls which
+    # samples survive when total candidates > cap.
+    # Approximate bucket counts per video:
+    #   response_buckets = #unique non-PN1 families with placements + 1 (PN1)
+    #   silent_buckets   = 5 fixed base roles (warmup, patrol, question_window
+    #                      silent, evidence_anchor, compress_boundary)
+    #   compress_buckets = ~1 (compression events)
+    placements_pre_cap = sum(c for fam, tier, c in capped)  # incl PN1
+    families_with_placements = len({fam for fam, tier, c in capped
+                                     if fam != "PN1" and c >= 0.3})
+    response_buckets = max(1, families_with_placements) + (1 if pn1_n > 0 else 0)
+    silent_buckets = 5  # warmup / patrol / question_window_silent / evidence_anchor / compress_boundary
+    compress_buckets = 1
+    total_buckets = response_buckets + silent_buckets + compress_buckets
+    # Each bucket fills proportionally up to cap; respect supply per bucket.
+    # Approximate supply: response = placements_pre_cap (split across buckets),
+    # silent = 5 buckets × ~5 samples each = 25 candidates,
+    # compress = 1 bucket × ~3 candidates.
+    response_supply = placements_pre_cap
+    silent_supply_per_bucket = 5
+    silent_supply = silent_buckets * silent_supply_per_bucket
+    compress_supply = 3
+    total_supply = response_supply + silent_supply + compress_supply
+    if total_supply > MAX_SAMPLES_PER_VIDEO:
+        # Round-robin allocates picks per bucket cycle. Each bucket gets
+        # ~ MAX_SAMPLES_PER_VIDEO / total_buckets picks; cap by supply.
+        picks_per_bucket = MAX_SAMPLES_PER_VIDEO / total_buckets
+        response_in_train = min(response_supply, picks_per_bucket * response_buckets)
+        silent_in_train = min(silent_supply, picks_per_bucket * silent_buckets)
+        compress_in_train = min(compress_supply, picks_per_bucket * compress_buckets)
+        # Re-normalize residual back to cap if any bucket underfilled
+        actual = response_in_train + silent_in_train + compress_in_train
+        if actual < MAX_SAMPLES_PER_VIDEO:
+            residual = MAX_SAMPLES_PER_VIDEO - actual
+            # distribute residual to buckets with remaining supply
+            response_room = response_supply - response_in_train
+            silent_room = silent_supply - silent_in_train
+            if response_room + silent_room > 0:
+                share_r = response_room / (response_room + silent_room) if (response_room + silent_room) else 0
+                response_in_train += residual * share_r
+                silent_in_train += residual * (1 - share_r)
+    else:
+        response_in_train = response_supply
+        silent_in_train = silent_supply
+        compress_in_train = compress_supply
     response_silent_ratio_train = (
         response_in_train / (response_in_train + silent_in_train)
         if (response_in_train + silent_in_train) else 0.0
