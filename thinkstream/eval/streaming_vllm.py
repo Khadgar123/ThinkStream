@@ -25,7 +25,7 @@ import time
 from copy import deepcopy
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 import tqdm
@@ -154,7 +154,13 @@ def _prepare_step_messages(runner: _SampleRunner) -> List[Dict]:
     chunk_idx = runner.current_chunk
     snapshot = runner.memory.snapshot(chunk_idx)
 
-    user_question = runner.query if chunk_idx == runner.ask_chunk else None
+    # v12.6 #15: trajectory schema support — look up the per-chunk question
+    # from the precomputed map. Falls back to legacy single-question
+    # behavior (runner.query at runner.ask_chunk) when the map is empty.
+    if runner.question_at_chunk:
+        user_question = runner.question_at_chunk.get(chunk_idx)
+    else:
+        user_question = runner.query if chunk_idx == runner.ask_chunk else None
     if user_question:
         ask_time = chunk_idx * AGENT_CHUNK_SEC
         already = any(
@@ -561,6 +567,28 @@ class _RolloutRunner:
     _last_trigger: bool = False
     # Per-chunk results, shape matches grpo.py:736-758 contract.
     chunk_results: List[Dict] = field(default_factory=list)
+    # v12.6 #15: trajectory schema support — each chunk may carry its own
+    # question (multi-ask trajectories from pass4 train_rl_trajectories.jsonl).
+    # Built once per runner from raw_sample["questions"]; lookup in
+    # _prepare_step_messages.
+    question_at_chunk: Dict[int, str] = field(default_factory=dict)
+    # Per-runner retriever for recall tool execution (BM25 index per video).
+    # None = recall second-pass disabled (vLLM legacy behavior pre-#15).
+    retriever: Optional[object] = None
+
+    def _record_answer_to_memory(self, answer_text: str, chunk_idx: int) -> None:
+        """Mirror agent_loop.StreamingAgentLoop._record_answer.
+
+        Attach the recall second-pass answer to the most-recent unanswered
+        query so the next chunk's <queries> block carries it forward.
+        """
+        if not answer_text:
+            return
+        response_time = chunk_idx * AGENT_CHUNK_SEC
+        for q in reversed(self.memory.queries):
+            if not q.get("answers"):
+                self.memory.answer_query(q["question"], answer_text, response_time)
+                break
 
 
 _USER_INPUT_RE = re.compile(r"<user_input>(.*?)</user_input>", re.DOTALL)
@@ -594,6 +622,33 @@ def _extract_user_question(raw_sample: Dict) -> Optional[str]:
             if c.get("role") == "user":
                 return c.get("content", "")
     return None
+
+
+def _extract_question_at_chunk_map(raw_sample: Dict) -> Dict[int, str]:
+    """v12.6 #15: build {chunk_idx → question_text} for trajectory rows.
+
+    Mirrors grpo.py:_extract_questions_at_chunks. Trajectory format
+    (pass4 train_rl_trajectories.jsonl) carries questions[*].ask_chunks,
+    multiple cards per trajectory each firing at one or more chunks.
+    Falls back to single-question (input.user_input / conversations) for
+    flat datasets — those rows produce a 1-entry map keyed by
+    raw_sample.chunk_idx.
+    """
+    out: Dict[int, str] = {}
+    # Schema A: trajectory (v12.5+)
+    if (isinstance(raw_sample.get("questions"), list)
+            and isinstance(raw_sample.get("gold_action_per_chunk"), dict)):
+        for q in raw_sample["questions"]:
+            q_text = q.get("question") or q.get("gold_answer", "")
+            for ac in q.get("ask_chunks") or []:
+                out[int(ac)] = q_text
+        return out
+    # Schema B: flat single-question fallback
+    single_q = _extract_user_question(raw_sample)
+    if single_q is not None:
+        ck = int(raw_sample.get("chunk_idx", 0))
+        out[ck] = single_q
+    return out
 
 
 def _apply_rollout_output(
@@ -676,6 +731,7 @@ def streaming_vllm_rollout(
     frames_root: Optional[str] = None,
     video_root: Optional[str] = None,
     compress_budget: Optional[int] = None,
+    enable_recall: bool = True,
 ) -> List[Dict]:
     """vLLM-batched RL rollout matching grpo.py:617-803 output contract.
 
@@ -718,10 +774,32 @@ def streaming_vllm_rollout(
             video_path = str(Path(data_path) / rel_video)
         else:
             video_path = rel_video or ""
-        ask_chunk = int(raw_sample.get("chunk_idx", rollout_max_chunks - 1))
-        question = _extract_user_question(raw_sample)
-        max_chunks_this = min(ask_chunk + rollout_extra_chunks, rollout_max_chunks)
+
+        # v12.6 #15: build per-chunk question map (trajectory schema) +
+        # latest-firing ask_chunk for max_chunks bound. Trajectory rows
+        # may have multiple ask_chunks across multiple cards; we extend
+        # the rollout horizon past the LATEST one so each fires its
+        # response window.
+        q_at_chunk = _extract_question_at_chunk_map(raw_sample)
+        if q_at_chunk:
+            latest_ask = max(q_at_chunk.keys())
+            # Legacy fields for back-compat: pick the canonical first ask_chunk
+            ask_chunk = min(q_at_chunk.keys())
+            question = q_at_chunk[ask_chunk]
+        else:
+            ask_chunk = int(raw_sample.get("chunk_idx", rollout_max_chunks - 1))
+            latest_ask = ask_chunk
+            question = None
+        max_chunks_this = min(latest_ask + rollout_extra_chunks, rollout_max_chunks)
+
         for g in range(group_size):
+            # v12.6 #15: per-runner BM25 retriever for recall tool execution.
+            # Each rollout has its own memory state → its own think archive →
+            # its own retriever index. Only built if enable_recall=True.
+            runner_retriever = None
+            if enable_recall:
+                from thinkstream.model.retrieval import BM25Retriever
+                runner_retriever = BM25Retriever()
             runners.append(_RolloutRunner(
                 sample_idx=s_idx,
                 gen_idx=g,
@@ -735,6 +813,8 @@ def streaming_vllm_rollout(
                 video_root=video_root,
                 min_pixels=min_pixels,
                 max_pixels=max_pixels,
+                question_at_chunk=q_at_chunk,
+                retriever=runner_retriever,
             ))
 
     if not runners:
@@ -785,8 +865,9 @@ def streaming_vllm_rollout(
             continue
         outputs = llm.generate(vllm_inputs, sampling_params=sampling_params)
 
-        # Phase C: apply outputs + advance state
-        for r, out in zip(live_active, outputs):
+        # Phase C: apply outputs + collect runners that emitted recall
+        recall_runners: List[Tuple[_RolloutRunner, List[Dict], str]] = []
+        for r, out, msgs in zip(live_active, outputs, messages_list):
             try:
                 text = out.outputs[0].text
                 _apply_rollout_output(r, text, tokenizer, compress_budget=compress_budget)
@@ -794,15 +875,158 @@ def streaming_vllm_rollout(
                 r.error = f"apply:{e}"
                 r.done = True
                 continue
+
+            last_action = r.chunk_results[-1]["action"]
+            # v12.6 #15: queue recall runners for second-pass; DO NOT advance
+            # chunk_idx — recall is single-chunk multi-turn (shape B).
+            if last_action == "recall" and r.retriever is not None and enable_recall:
+                # Index this chunk's think into the per-runner retriever before
+                # querying (matches HF agent_loop.step:799-805 ordering).
+                think_text = r.chunk_results[-1].get("think", "")
+                if think_text:
+                    try:
+                        r.retriever.index_chunk(chunk_idx, r.video_path, think_text)
+                    except Exception:
+                        pass
+                recall_runners.append((r, msgs, text))
+                continue
+
             r.current_chunk += 1
             # RL stops only when (a) the runner reached max_chunks (a few
             # past ask_chunk) or (b) it emitted a response after ask_chunk.
             # Mirrors grpo.py:760-761 early-stop.
-            last_action = r.chunk_results[-1]["action"]
             if r.current_chunk >= r.max_chunks:
                 r.done = True
             elif last_action == "response" and chunk_idx >= r.ask_chunk:
                 r.done = True
+
+        # ── Phase D: recall second-pass (batched vLLM generate) ──
+        # For each recall-emitting runner, build the multi-turn prompt:
+        #   [system, user(chunk N), assistant(recall tool_call),
+        #    user(<recalled_frames> + <recall_result>)]
+        # then generate the final answer turn. Mirrors agent_loop.step()'s
+        # recall branch (lines 868-908) to maintain SFT/runtime parity.
+        if recall_runners:
+            recall_msgs_batch: List[List[Dict]] = []
+            recall_meta: List[Tuple[_RolloutRunner, Dict, Optional[Dict]]] = []
+            for r, first_msgs, first_text in recall_runners:
+                try:
+                    parsed = _parse_agent_output(first_text)
+                    query = parsed.get("payload", {}).get("query", {})
+                    if not query:
+                        # Malformed recall — record empty result + advance
+                        r.chunk_results[-1]["recall_returned_chunks"] = []
+                        r.current_chunk += 1
+                        if r.current_chunk >= r.max_chunks:
+                            r.done = True
+                        continue
+                    recall_result = r.retriever(query, r.memory.retrieval_archive)
+                    returned_chunks = recall_result.get("returned_chunks", [])
+                    r.chunk_results[-1]["recall_returned_chunks"] = list(returned_chunks)
+
+                    # Build recalled_frames metadata (matching shape B in pass5)
+                    recalled_frames = None
+                    if returned_chunks and recall_result.get("source") == "historical_frames":
+                        t_start = returned_chunks[0] * AGENT_CHUNK_SEC
+                        t_end = (returned_chunks[-1] + 1) * AGENT_CHUNK_SEC
+                        recalled_frames = {
+                            "time_range": [int(t_start), int(t_end)],
+                            "n_frames": len(returned_chunks) * FRAMES_PER_CHUNK,
+                            "source": "historical_frames",
+                        }
+
+                    # Multi-turn message construction: original prompt +
+                    # assistant(first_text) + user(tool result + frames)
+                    rc_msgs = list(first_msgs)
+                    rc_msgs.append({
+                        "role": "assistant",
+                        "content": [{"type": "text", "text": first_text}],
+                    })
+                    tool_user_content = []
+                    if recalled_frames:
+                        rf_header = json.dumps({
+                            "time_range": recalled_frames["time_range"],
+                            "source": recalled_frames["source"],
+                            "n_frames": recalled_frames["n_frames"],
+                        })
+                        tool_user_content.append({
+                            "type": "text",
+                            "text": f"<recalled_frames>{rf_header}</recalled_frames>",
+                        })
+                    rr_json = json.dumps({
+                        "source": recall_result.get("source", ""),
+                        "time": recall_result.get("time", ""),
+                        "text": recall_result.get(
+                            "text_content", recall_result.get("text", "")
+                        ),
+                    }, ensure_ascii=False)
+                    tool_user_content.append({
+                        "type": "text",
+                        "text": f"<recall_result>{rr_json}</recall_result>",
+                    })
+                    rc_msgs.append({"role": "user", "content": tool_user_content})
+
+                    recall_msgs_batch.append(rc_msgs)
+                    recall_meta.append((r, recall_result, recalled_frames))
+                except Exception as e:
+                    r.error = f"recall_prep:{e}"
+                    r.current_chunk += 1
+                    if r.current_chunk >= r.max_chunks:
+                        r.done = True
+
+            if recall_msgs_batch:
+                try:
+                    rc_inputs = [
+                        prepare_vllm_input(m, processor, tools=TOOLS_SCHEMA)
+                        for m in recall_msgs_batch
+                    ]
+                    rc_outputs = llm.generate(rc_inputs, sampling_params=sampling_params)
+                except Exception as e:
+                    for r, _, _ in recall_meta:
+                        r.error = f"recall_gen:{e}"
+                        r.current_chunk += 1
+                        if r.current_chunk >= r.max_chunks:
+                            r.done = True
+                else:
+                    for (r, recall_result, recalled_frames), rc_out in zip(
+                        recall_meta, rc_outputs
+                    ):
+                        try:
+                            rc_text = rc_out.outputs[0].text
+                            rc_parsed = _parse_agent_output(rc_text)
+                            # Update memory with the final-answer turn
+                            if rc_parsed.get("action") == "response":
+                                ans = rc_parsed.get("payload", {}).get("response", "")
+                                if ans:
+                                    r._record_answer_to_memory(ans, r.current_chunk)
+                            # Append a SECOND chunk_results entry for the
+                            # answer turn (shape B = 2 assistant emissions).
+                            # Reusing _apply_rollout_output keeps the schema
+                            # uniform, but DOES NOT re-index a think.
+                            r.chunk_results.append({
+                                "chunk_idx": r.current_chunk,
+                                "action": rc_parsed.get("action") or "unknown",
+                                "think": rc_parsed.get("think", ""),
+                                "payload": rc_parsed.get("payload", {}),
+                                "raw_output": rc_text,
+                                "generated_tokens": tokenizer.encode(
+                                    rc_text, add_special_tokens=False),
+                                "memory_token_count": r.memory.count_recent_tokens(),
+                                "compress_budget": compress_budget,
+                                "recall_returned_chunks": list(
+                                    recall_result.get("returned_chunks") or []
+                                ),
+                                "window_start": r.current_chunk * int(AGENT_CHUNK_SEC),
+                                "window_end": (r.current_chunk + 1) * int(AGENT_CHUNK_SEC),
+                                "_recall_second_pass": True,
+                            })
+                        except Exception as e:
+                            r.error = f"recall_apply:{e}"
+                        r.current_chunk += 1
+                        if r.current_chunk >= r.max_chunks:
+                            r.done = True
+                        elif rc_parsed.get("action") == "response" and chunk_idx >= r.ask_chunk:
+                            r.done = True
 
     # ── Group runners back: per-sample list of G trajectories ──
     per_sample: Dict[int, List[_RolloutRunner]] = defaultdict(list)
