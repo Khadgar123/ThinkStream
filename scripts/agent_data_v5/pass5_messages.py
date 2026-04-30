@@ -138,9 +138,26 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
                 vw["frame_paths"] = paths
 
         if "frame_paths" in vw:
+            # v12.6: attach video_metadata so Qwen3-VL processor renders
+            # per-frame `<X.X seconds>` text tokens with REAL video time.
+            # Without metadata, processor defaults to fps=24 + indices=0..N
+            # → timestamps anchored at sequence start, not real video time.
+            from thinkstream.data.agent_protocol import (
+                FRAMES_PER_CHUNK as _FPC,
+                VISUAL_WINDOW_CHUNKS as _VWC,
+            )
+            n_frames = len(vw["frame_paths"])
+            window_start = max(0, chunk_idx - _VWC + 1)
             user_content.append({
                 "type": "video",
                 "video": _resolve_paths(vw["frame_paths"], base_path),
+                "video_metadata": {
+                    "fps": float(_FPC / chunk_sec),
+                    "frames_indices": [
+                        window_start * _FPC + i for i in range(n_frames)
+                    ],
+                    "total_num_frames": (chunk_idx + 1) * _FPC,
+                },
             })
         elif "frame_indices" in vw and video_path:
             user_content.append({
@@ -171,9 +188,24 @@ def build_messages(sample: Dict, base_path: Path) -> List[Dict]:
             "text": f"\n<recalled_frames>{rf_header}</recalled_frames>",
         })
         if "frame_paths" in rf:
+            # v12.6: anchor recalled frames at their REAL video time so
+            # Qwen3-VL renders `<X.X seconds>` matching when the frame
+            # originally appeared, not where it lands in the sequence.
+            from thinkstream.data.agent_protocol import (
+                FRAMES_PER_CHUNK as _FPC,
+            )
+            tr0, tr1 = rf["time_range"]
+            n_rf = len(rf["frame_paths"])
             user_content.append({
                 "type": "video",
                 "video": _resolve_paths(rf["frame_paths"], base_path),
+                "video_metadata": {
+                    "fps": float(_FPC / chunk_sec),
+                    "frames_indices": [
+                        int(tr0 * _FPC) + i for i in range(n_rf)
+                    ],
+                    "total_num_frames": int(tr1 * _FPC),
+                },
             })
         elif video_path:
             user_content.append({

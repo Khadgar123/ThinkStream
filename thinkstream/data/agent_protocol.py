@@ -237,7 +237,25 @@ def build_user_content(
         })
 
         if frame_paths:
-            user_content.append({"type": "video", "video": frame_paths})
+            # v12.6: attach video_metadata so Qwen3-VL processor renders
+            # per-frame timestamp tokens (`<X.X seconds>`) with REAL video
+            # time. Without metadata, processor defaults to fps=24 and
+            # frame_indices=0..N → wrong timestamps that always start at 0.
+            # Real video time = (chunk_idx × FRAMES_PER_CHUNK + i) / FPS.
+            # See processing_qwen3_vl.py:217-224 for how metadata drives
+            # the `<X.X seconds>` text-layer temporal anchor.
+            user_content.append({
+                "type": "video",
+                "video": frame_paths,
+                "video_metadata": {
+                    "fps": float(FRAMES_PER_CHUNK / chunk_sec),
+                    "frames_indices": [
+                        window_start * FRAMES_PER_CHUNK + i
+                        for i in range(len(frame_paths))
+                    ],
+                    "total_num_frames": (chunk_idx + 1) * FRAMES_PER_CHUNK,
+                },
+            })
         else:
             user_content.append({
                 "type": "video",
@@ -261,7 +279,24 @@ def build_user_content(
             "text": f"\n<recalled_frames>{rf_header}</recalled_frames>",
         })
         if recalled_frames.get("frame_paths"):
-            user_content.append({"type": "video", "video": recalled_frames["frame_paths"]})
+            # v12.6: timestamps for recall frames must reference their
+            # ORIGINAL video time (not start at 0). Reconstruct
+            # frames_indices from time_range to get the real `<T seconds>`
+            # text token anchored to historical chunk position.
+            tr_start, tr_end = recalled_frames["time_range"]
+            n_rf = len(recalled_frames["frame_paths"])
+            rf_chunks = max(1, (tr_end - tr_start))  # in chunks (chunk_sec=1)
+            user_content.append({
+                "type": "video",
+                "video": recalled_frames["frame_paths"],
+                "video_metadata": {
+                    "fps": float(FRAMES_PER_CHUNK / chunk_sec),
+                    "frames_indices": [
+                        int(tr_start * FRAMES_PER_CHUNK) + i for i in range(n_rf)
+                    ],
+                    "total_num_frames": int(tr_end * FRAMES_PER_CHUNK),
+                },
+            })
         elif video_path:
             user_content.append({
                 "type": "video",
