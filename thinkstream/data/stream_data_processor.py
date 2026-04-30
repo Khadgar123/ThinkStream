@@ -183,6 +183,147 @@ def load_video_frames(
     return split_videos, video_kwargs, chunk_metadatas
 
 
+def _resolve_frame_dir(video_path: str, frames_root: str, video_root: Optional[str] = None) -> Optional[Path]:
+    """Find the pre-extracted frame directory for a video, with flat fallback."""
+    vp = Path(video_path)
+    if video_root:
+        try:
+            rel = vp.relative_to(Path(video_root))
+            stem = rel.with_suffix("")
+            frame_dir = Path(frames_root) / stem
+        except ValueError:
+            frame_dir = Path(frames_root) / vp.with_suffix("")
+    else:
+        frame_dir = Path(frames_root) / vp.with_suffix("")
+
+    if not frame_dir.exists():
+        flat_dir = Path(frames_root) / vp.stem
+        if flat_dir.exists():
+            frame_dir = flat_dir
+        else:
+            return None
+    return frame_dir
+
+
+def _get_all_frame_paths(video_path: str, frames_root: str, video_root: Optional[str] = None) -> Optional[List[str]]:
+    """Return sorted list of all frame_*.jpg paths under the resolved frame dir."""
+    frame_dir = _resolve_frame_dir(video_path, frames_root, video_root)
+    if frame_dir is None:
+        return None
+    frame_files = sorted(frame_dir.glob("frame_*.jpg"))
+    if len(frame_files) < 2:
+        return None
+    return [str(f) for f in frame_files]
+
+
+def _preload_from_frame_paths(
+    frame_paths: List[str],
+    *,
+    frames_per_chunk: int = 2,
+    max_chunks: int = 120,
+    min_pixels: Optional[int] = None,
+    max_pixels: Optional[int] = None,
+    processor=None,
+    vit_patch_size: Optional[int] = None,
+    model_type: str = "",
+) -> Dict[str, Any]:
+    """Load video frames from pre-extracted JPEGs (no online video decode)."""
+    is_qwen3vl = model_type == "qwen3vl"
+
+    if min_pixels is None or max_pixels is None:
+        if processor is None:
+            raise ValueError("Either (min_pixels, max_pixels) or processor must be provided.")
+        _min, _max = _get_video_pixels(processor)
+        min_pixels = min_pixels or _min
+        max_pixels = max_pixels or _max
+
+    max_frames = max_chunks * frames_per_chunk
+    if len(frame_paths) > max_frames:
+        frame_paths = frame_paths[:max_frames]
+
+    total_nframes = len(frame_paths)
+    num_chunks = max(1, total_nframes // frames_per_chunk)
+    actual_nframes = num_chunks * frames_per_chunk
+    if actual_nframes < len(frame_paths):
+        frame_paths = frame_paths[:actual_nframes]
+        total_nframes = actual_nframes
+
+    fps = float(frames_per_chunk)
+    video_duration = total_nframes / fps
+    video_chunk_size = max(1.0, float(math.ceil(video_duration / max_chunks)))
+
+    ghost_message = [
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "video",
+                    "video": frame_paths,
+                    "min_pixels": min_pixels,
+                    "max_pixels": max_pixels,
+                }
+            ],
+        }
+    ]
+
+    pvi_kwargs = dict(return_video_kwargs=True)
+    if vit_patch_size is not None:
+        pvi_kwargs["image_patch_size"] = vit_patch_size
+    elif processor is not None:
+        pvi_kwargs["image_patch_size"] = _resolve_vit_patch_size(processor)
+    if is_qwen3vl:
+        pvi_kwargs["return_video_metadata"] = True
+
+    _, video_inputs_list, video_kwargs = process_vision_info(
+        ghost_message,
+        **pvi_kwargs,
+    )
+
+    if is_qwen3vl:
+        big_video_tensor, video_metadata = video_inputs_list[0]
+    else:
+        big_video_tensor = video_inputs_list[0]
+        video_metadata = None
+
+    split_videos = list(torch.split(big_video_tensor, frames_per_chunk, dim=0))
+    if len(split_videos) > num_chunks:
+        split_videos = split_videos[:num_chunks]
+    elif len(split_videos) < num_chunks:
+        while len(split_videos) < num_chunks:
+            split_videos.append(split_videos[-1].clone() if split_videos else torch.zeros(1, 3, 224, 224))
+
+    chunk_metadatas = None
+    if is_qwen3vl and video_metadata is not None:
+        all_indices = video_metadata["frames_indices"]
+        if isinstance(all_indices, torch.Tensor):
+            chunk_idx_splits = list(torch.split(all_indices, frames_per_chunk))
+        else:
+            chunk_idx_splits = [
+                all_indices[i : i + frames_per_chunk]
+                for i in range(0, len(all_indices), frames_per_chunk)
+            ]
+        chunk_idx_splits = chunk_idx_splits[: len(split_videos)]
+        chunk_metadatas = [
+            {**video_metadata, "frames_indices": ci} for ci in chunk_idx_splits
+        ]
+
+    return {
+        "video_path": frame_paths[0] if frame_paths else "",
+        "video_start": 0.0,
+        "video_end": video_duration,
+        "video_fps": fps,
+        "total_video_frames": total_nframes,
+        "video_duration": video_duration,
+        "video_chunk_size": video_chunk_size,
+        "num_iterations": num_chunks,
+        "frames_per_chunk": frames_per_chunk,
+        "total_nframes": total_nframes,
+        "split_videos": split_videos,
+        "video_kwargs": video_kwargs,
+        "chunk_metadatas": chunk_metadatas,
+    }
+
+
 def preload_video(
     video_path: str,
     *,
@@ -195,6 +336,8 @@ def preload_video(
     processor=None,
     vit_patch_size: Optional[int] = None,
     model_type: str,
+    frames_root: Optional[str] = None,
+    video_root: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Pre-load video metadata and decoded frames in one shot.
 
@@ -208,6 +351,21 @@ def preload_video(
     ``streaming_video_chat`` or extracting ``(split_videos, video_kwargs,
     chunk_metadatas)`` for ``process_messages_to_model_inputs``.
     """
+    # v12.6: prefer pre-extracted JPEG frames (no online video decode).
+    if frames_root:
+        frame_paths = _get_all_frame_paths(video_path, frames_root, video_root)
+        if frame_paths:
+            return _preload_from_frame_paths(
+                frame_paths,
+                frames_per_chunk=frames_per_chunk,
+                max_chunks=max_chunks,
+                min_pixels=min_pixels,
+                max_pixels=max_pixels,
+                processor=processor,
+                vit_patch_size=vit_patch_size,
+                model_type=model_type,
+            )
+
     decoder = VideoDecoder(video_path)
     video_fps = decoder.metadata.average_fps
     total_video_frames = decoder.metadata.num_frames
@@ -1383,6 +1541,8 @@ class LazyRawDataset(Dataset):
         frames_per_chunk: int = FRAMES_PER_CHUNK,
         max_chunks: int = DEFAULT_MAX_CHUNKS,
         model_type: str = "",
+        frames_root: Optional[str] = None,
+        video_root: Optional[str] = None,
     ):
         super().__init__()
 
@@ -1431,6 +1591,8 @@ class LazyRawDataset(Dataset):
         self._min_pixels = min_px
         self._max_pixels = max_px
         self._vit_patch_size = _resolve_vit_patch_size(processor)
+        self._frames_root = frames_root
+        self._video_root = video_root
 
     def __len__(self):
         return len(self.list_data_dict)
@@ -1452,6 +1614,8 @@ class LazyRawDataset(Dataset):
             max_pixels=self._max_pixels,
             vit_patch_size=self._vit_patch_size,
             model_type=self._model_type,
+            frames_root=self._frames_root,
+            video_root=self._video_root,
         )
         item = {**item, "_preloaded_video": preloaded}
         return item
@@ -1469,6 +1633,8 @@ def make_raw_data_module(
     frames_per_chunk: int = FRAMES_PER_CHUNK,
     max_chunks: int = DEFAULT_MAX_CHUNKS,
     model_type: str = "",
+    frames_root: Optional[str] = None,
+    video_root: Optional[str] = None,
 ) -> Dict:
     """Make dataset and collator that return raw JSON data (for GRPO)."""
     train_dataset = LazyRawDataset(
@@ -1477,6 +1643,8 @@ def make_raw_data_module(
         frames_per_chunk=frames_per_chunk,
         max_chunks=max_chunks,
         model_type=model_type,
+        frames_root=frames_root,
+        video_root=video_root,
     )
     return dict(
         train_dataset=train_dataset,

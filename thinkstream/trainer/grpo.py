@@ -1769,6 +1769,8 @@ def init_grpo_dataset(
     rollout_fpc: Auto[float],
     rollout_max_chunks: Auto[int],
     model_type: Auto[str],
+    vllm_rollout_frames_root: Auto[Optional[str]] = None,
+    vllm_rollout_video_root: Auto[Optional[str]] = None,
 ) -> Context:
     """
     Initialises a raw (unprocessed) dataset for the GRPO pipeline.
@@ -1804,6 +1806,8 @@ def init_grpo_dataset(
         frames_per_chunk=int(rollout_fpc),
         max_chunks=rollout_max_chunks,
         model_type=model_type,
+        frames_root=vllm_rollout_frames_root,
+        video_root=vllm_rollout_video_root,
     )
     return ctx.update(
         {
