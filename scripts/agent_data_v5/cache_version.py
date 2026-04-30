@@ -36,30 +36,15 @@ from .config import (
 # ---------------------------------------------------------------------------
 
 STAGE_VERSIONS: Dict[str, str] = {
-    "1a": "v9.1",
-    "1b": "v9.1",   # tightened state_changes fallback
-    "2":  "v9.1",
-    "3a": "v9.4.1", # v9.3: 8 family prompts MC-primary, N1 → MC, F5/F6
-                    #       targets bumped, F6 verify range +8 forward.
-                    # v9.4: 4 reasoning families CR1/CR2/CR3/CR4 added
-                    #       (FAMILY_TARGETS / RETENTION_CLASS / FORCE_ATTEMPT
-                    #       / FAMILY_PROMPTS / classify_chunks all touched).
-                    # v9.4.1: HLD/N1 prompt corrected — gt is now literally
-                    #       "Unable to answer" (matches OVO HLD 186/186
-                    #       samples). Previous v9.4 had the inverse design
-                    #       (gt = real visible option), which would teach the
-                    #       wrong refusal direction at HLD eval.
-    "3b": "v12.0",  # v12.0: bumped jointly with 3c/4 so the entire pass3
-                    #       chain rebuilds under new code. pass3b_placement had
-                    #       material changes in this commit (new visibility
-                    #       checks, trajectory planning tweaks).
-    "3c": "v12.0",  # v12.0: THINKSTREAM_PROTOCOL=v12 output format — tool_call +
-                    #       answer tags instead of action/response. Bumped to
-                    #       invalidate all v11-format cached samples.
-    "4":  "v12.0", # v12.0: protocol-aware verification supporting v12
-                    #       <tool_call>/<answer> format. v11-specific checks
-                    #       (action/response tags) replaced with v12-equivalents.
-                    #       Bumped jointly with 3c to force full rebuild.
+    "1a": "v12.5",  # v12.5: 2s/chunk → 1s/chunk + FPS 1→2 + prompt overhaul
+    "1b": "v12.5",  # v12.5: 2s/chunk → 1s/chunk, state_changes scaled accordingly
+    "2":  "v12.5",  # v12.5: config overhaul (1s/chunk, 16-chunk window, 4000 tok budget)
+    "3a": "v12.5", # v12.5: 1s/chunk upstream (1a/1b/2) — all downstream
+                    #       stages invalidated to rebuild under new chunk
+                    #       granularity, FPS=2, 16-chunk window, 4000 tok.
+    "3b": "v12.5",  # v12.5: same — placement must recompute with 1s chunks.
+    "3c": "v12.5",  # v12.5: sample generation must use 1s-chunk rollouts.
+    "4":  "v12.5", # v12.5: verification must re-run on 1s-chunk samples.
 }
 
 STAGE_DIRS: Dict[str, Path] = {
