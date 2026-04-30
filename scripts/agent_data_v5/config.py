@@ -172,13 +172,12 @@ MAX_SAMPLES_PER_VIDEO = 0            # v12.9 (2026-04-30): disable cap. pass3c
 # cross-video diversity; question density stays roughly constant by bumping
 # MAX_QUESTIONS_PER_TRAJECTORY 5 → 8.
 MAX_TRAJECTORIES_PER_VIDEO = 1
-# v12.8 (2026-04-30): 12 → 8. User feedback: "怎么 response 比 silent 多？"
-# At 12 q/traj the train resp:silent went 67:33 (response-heavy), conflicting
-# with streaming reality where silent dominates per-chunk decisions. Cutting
-# QA placement budget frees round-robin slots for silent base samples while
-# keeping q_interval ≥ 18s on median videos (still 1× StreamingBench 60s/q
-# but order-of-magnitude correct).
-MAX_QUESTIONS_PER_TRAJECTORY = 8
+# v12.10 (2026-04-30): 8 → 10. After v12.9 per-chunk SFT eliminated the
+# silent shortage problem, q_interval @ 150s was 18.8s (1 q every ~10s
+# avg incl PN1) — slightly sparser than industry norm. VideoLLM-online
+# LiveChat / MMDuet livechat sit at 1 per 7-15s. Bumping to 10 q/traj
+# brings q_interval to 15s on median videos.
+MAX_QUESTIONS_PER_TRAJECTORY = 10
 MAX_ACTIVE_QUERIES = 2               # unchanged — realistic user behavior
 
 # Backward compat aliases (deprecated — use token-based constants above)

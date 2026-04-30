@@ -1417,15 +1417,17 @@ def plan_trajectories(
         # Sort by ask_chunk for temporal grouping
         pn1_sorted = sorted(pn1_cards, key=lambda p: p["ask_chunk"])
 
-        # v12.6: Duration-normalize PN1 to keep silent rate near 70% target.
-        # v12.8 (2026-04-30): 0.06 → 0.04. PN1 was 43% of train data after
-        # cap, drowning user-Q training. 0.04/sec (~1 every 25s) brings PN1
-        # share to ~15-20% of train, matching its capability-as-feature role
-        # rather than dominant signal.
-        #   60s  → 2-3 PN1
-        #   150s → 6 PN1
-        #   320s → 13 PN1
-        PN1_PER_SEC = 0.04
+        # v12.10 (2026-04-30): 0.04 → 0.08. After v12.9 disabled
+        # MAX_SAMPLES_PER_VIDEO cap (per-chunk full coverage), PN1 no longer
+        # competes with silent base for cap slots. Doubling PN1/sec brings
+        # total utterance density from 5.6/min → 8.8/min on 150s video,
+        # matching VideoLLM-online LiveChat (4-8/min) and MMDuet MAGQA
+        # (3-5/min) ranges. PN1 is the proactive narration signal — denser
+        # PN1 = LiveCC-style continuous narration capability.
+        #   60s  → 4-5 PN1   (was 2-3)
+        #   150s → 12 PN1    (was 6)
+        #   320s → 25 PN1    (was 13)
+        PN1_PER_SEC = 0.08
         pn1_cap = max(2, int(num_chunks * PN1_PER_SEC))
         if len(pn1_sorted) > pn1_cap:
             # Evenly subsample preserving temporal coverage.

@@ -27,7 +27,7 @@ sys.path.insert(0, str(ROOT))
 # ---------------------------------------------------------------------------
 
 import os as _os
-PROFILE = _os.environ.get("SIM_PROFILE", "v12.9").lower()  # v12.5 / v12.6 / v12.7 / v12.8 / v12.9
+PROFILE = _os.environ.get("SIM_PROFILE", "v12.10").lower()  # v12.5..v12.10
 
 if PROFILE == "v12.5":
     FAMILY_TARGETS = {
@@ -77,7 +77,7 @@ elif PROFILE == "v12.8":
     TIER_BONUS_T3 = 2.5
     MAX_TRAJ = 1
     MAX_Q_PER_TRAJ = 8
-else:  # v12.9 — per-chunk full coverage, no cap
+elif PROFILE == "v12.9":
     FAMILY_TARGETS = {
         "F1": 4, "F2": 2, "S1": 2, "F3": 1, "R1": 1, "CR4": 2, "F4": 3,
         "E1": 1, "M1": 2, "E2": 3, "C1": 1, "CR1": 1, "CR5": 2, "P1": 2,
@@ -89,6 +89,18 @@ else:  # v12.9 — per-chunk full coverage, no cap
     TIER_BONUS_T3 = 2.5
     MAX_TRAJ = 1
     MAX_Q_PER_TRAJ = 8
+else:  # v12.10 — denser utterance: 10 q/traj + PN1 0.08/sec
+    FAMILY_TARGETS = {
+        "F1": 4, "F2": 2, "S1": 2, "F3": 1, "R1": 1, "CR4": 2, "F4": 3,
+        "E1": 1, "M1": 2, "E2": 3, "C1": 1, "CR1": 1, "CR5": 2, "P1": 2,
+        "CR2": 1, "F7": 1, "F5": 1, "F6": 2, "N1": 4, "CR3": 1, "CR6": 1,
+        "CR7": 1, "PN1": 44,
+    }
+    PN1_PER_SEC_CAP = 0.08
+    TIER_BONUS_T2 = 1.5
+    TIER_BONUS_T3 = 2.5
+    MAX_TRAJ = 1
+    MAX_Q_PER_TRAJ = 10
 
 # OVO 12-task share (canonical, sorted desc)
 OVO_TASK_SHARE = {
@@ -137,9 +149,7 @@ MAX_QUESTIONS_PER_TRAJECTORY = MAX_Q_PER_TRAJ
 NON_PN1_CAP = MAX_TRAJECTORIES_PER_VIDEO * MAX_QUESTIONS_PER_TRAJECTORY
 
 # Final render cap (after pass3c base sample addition).
-# v12.9: 0 = no cap (every chunk emits a sample). For sim purposes we treat
-# this as "render = duration_sec" since pass3c emits 1 sample per chunk.
-if PROFILE == "v12.9":
+if PROFILE in ("v12.9", "v12.10"):
     MAX_SAMPLES_PER_VIDEO = 0      # no cap; per-chunk full coverage
 elif PROFILE == "v12.8":
     MAX_SAMPLES_PER_VIDEO = 30
