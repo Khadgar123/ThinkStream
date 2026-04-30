@@ -1268,6 +1268,118 @@ def _extract_questions_at_chunks(raw_sample) -> Dict[int, str]:
     return out
 
 
+def _build_rollout_messages_single_chunk(
+    raw_sample, chunk_result, gen_idx, tokenizer, frames_per_chunk,
+):
+    """v12.11 (2026-05-01): MemAgent-style per-chunk message builder.
+
+    Returns messages for ONE chunk decision only (3-turn standard, or 5-turn
+    shape B for recall multi-turn). This mirrors MemAgent's
+    ``MemoryAgent.action()`` which constructs a fresh prompt each step (see
+    /tmp/refs/MemAgent/recurrent/impls/memory.py:175). Memory flows across
+    chunks via TEXT inside ``step_messages`` (the policy already saw the
+    compressed memory state token at rollout time); we simply replay that
+    captured prompt and append the chunk's actual generated assistant turn.
+
+    Loss-time KV is bounded by per-chunk prompt length (~3-6K tokens) instead
+    of N × that for the legacy concatenated path. This is the same trick
+    ReMemR1 uses (verl/trainer/ppo/ray_trainer.py:1278) where each action
+    is its own batch entry, indexed by ``step_uid = uid + str(step_id)``.
+
+    The legacy ``_build_rollout_messages`` (concatenated trajectory) is
+    retained for diagnostics; not used in the per-chunk build path.
+
+    Args:
+        raw_sample: original sample dict (for video_path / data_path).
+        chunk_result: one entry from chunk_results (carries step_messages,
+            generated_tokens, window_start/end, chunk_idx).
+        gen_idx: which group rollout to replay.
+        tokenizer: HF tokenizer (for decoding generated_tokens).
+        frames_per_chunk: matches FRAMES_PER_CHUNK (used for video_meta).
+
+    Returns:
+        (messages, video_meta, video_chunk_size) — same shape as the
+        legacy multi-chunk builder, but for a single-chunk slice.
+    """
+    data_path = raw_sample.get("data_path", "")
+    video_path = raw_sample.get("video_path", "")
+    abs_video_path = str(_make_abs_paths(Path(data_path), video_path))
+
+    # Pull the captured prompt the policy actually saw for this chunk + gen.
+    sm = chunk_result.get("step_messages")
+    step_msgs = None
+    if isinstance(sm, list) and gen_idx < len(sm):
+        v = sm[gen_idx]
+        if isinstance(v, list) and v:
+            step_msgs = v
+    elif isinstance(sm, list) and sm and isinstance(sm[0], dict):
+        # Pre-merge legacy format: single list (gen_idx not split yet).
+        step_msgs = sm
+
+    if step_msgs is None:
+        # Fallback: legacy reconstruction. Will drop <memory>/<queries>
+        # context — train/infer logprobs will diverge. Same warning as the
+        # multi-chunk builder.
+        logger.warning(
+            "_build_rollout_messages_single_chunk: chunk %d missing step_messages "
+            "for gen %d — using legacy reconstruction (logprob drift).",
+            int(chunk_result.get("chunk_idx", -1)), gen_idx,
+        )
+        question_at_chunk = _extract_questions_at_chunks(raw_sample)
+        cur_chunk_idx = int(chunk_result.get("chunk_idx", 0))
+        q_text = question_at_chunk.get(cur_chunk_idx)
+        user_content: List[Dict] = [{
+            "type": "video",
+            "video": abs_video_path,
+            "video_start": chunk_result["window_start"],
+            "video_end": chunk_result["window_end"],
+        }]
+        if q_text:
+            user_content.append({"type": "text", "text": "\n" + q_text})
+        messages = [
+            {"role": "system", "content": SYSTEM_PROMPT_V12},
+            {"role": "user", "content": user_content},
+        ]
+    else:
+        # Replay the captured prompt verbatim. Its system head stays as the
+        # FIRST element (we don't dedup since this is a fresh per-chunk
+        # conversation, not a concatenation across chunks).
+        messages = list(step_msgs)
+        if not messages or messages[0].get("role") != "system":
+            # Rare case: captured prompt had no system; prepend ours.
+            messages = [
+                {"role": "system", "content": SYSTEM_PROMPT_V12}
+            ] + messages
+
+    # Append the chunk's actual generated assistant turn (the model's output).
+    gen_tokens_list = chunk_result.get("generated_tokens", [])
+    if gen_idx < len(gen_tokens_list):
+        gt = gen_tokens_list[gen_idx]
+        # Tolerate both torch.Tensor and list[int] shapes.
+        if hasattr(gt, "tolist"):
+            gt = gt.tolist()
+        gen_text = tokenizer.decode(gt, skip_special_tokens=False)
+    else:
+        gen_text = ""
+    for _sp in ("<|im_end|>", "<|endoftext|>"):
+        if gen_text.endswith(_sp):
+            gen_text = gen_text[: -len(_sp)]
+    messages.append(
+        {"role": "assistant", "content": [{"type": "text", "text": gen_text}]}
+    )
+
+    # Per-chunk video_meta covers exactly this chunk's window.
+    video_meta = build_video_meta(
+        abs_path=abs_video_path,
+        total_start=chunk_result["window_start"],
+        total_end=chunk_result["window_end"],
+        num_chunks=1,
+        frames_per_chunk=frames_per_chunk,
+    )
+    video_chunk_size = chunk_result["window_end"] - chunk_result["window_start"]
+    return messages, video_meta, video_chunk_size
+
+
 def _build_rollout_messages(
     raw_sample, chunk_results, gen_idx, tokenizer, frames_per_chunk
 ):
@@ -1416,12 +1528,30 @@ def build_grpo_inputs(
     all_items = []
     _preloaded_cache = {}
 
+    # v12.11 (2026-05-01): MemAgent-style per-chunk loss batching.
+    # Each item now has an extra "chunk_idx" field selecting which chunk's
+    # short prompt to build. Sequence length stays bounded (~6K) regardless
+    # of trajectory length, eliminating the 50K-token concatenation that
+    # caused OOM + truncation on rollouts with rollout_max_chunks=100.
     for item_desc in micro_items:
-        sample_idx, gen_idx = item_desc["sample_idx"], item_desc["gen_idx"]
+        sample_idx = item_desc["sample_idx"]
+        gen_idx = item_desc["gen_idx"]
+        chunk_idx = item_desc.get("chunk_idx", 0)  # default 0 for back-compat
         sample_data = rollout_data[sample_idx]
-        messages, video_meta, video_chunk_size = _build_rollout_messages(
+        chunk_results = sample_data.get("chunk_results", [])
+        if chunk_idx >= len(chunk_results):
+            # Defensive: skip if expansion gave a chunk past the rollout's actual length.
+            logger.warning(
+                "build_grpo_inputs: chunk_idx %d out of range for sample %d "
+                "(only %d chunks); skipping.",
+                chunk_idx, sample_idx, len(chunk_results),
+            )
+            continue
+        chunk_result = chunk_results[chunk_idx]
+
+        messages, video_meta, video_chunk_size = _build_rollout_messages_single_chunk(
             raw_sample=sample_data["raw_sample"],
-            chunk_results=sample_data["chunk_results"],
+            chunk_result=chunk_result,
             gen_idx=gen_idx,
             tokenizer=tokenizer,
             frames_per_chunk=int(rollout_fpc),
@@ -1445,28 +1575,25 @@ def build_grpo_inputs(
         )
         result["position_ids"] = compute_position_ids(result, processor, model_type)
 
-        # v12.6 length guard: _build_rollout_messages concatenates N chunks ×
-        # (user + assistant). Each chunk ~3-5k tokens, so trajectories with
-        # rollout_max_chunks=100 easily exceed cutoff_len=16384. The downstream
-        # collator silently truncates → late chunks' assistant spans get cut →
-        # completion_mask + ref logprobs both lose those positions. Warn loudly
-        # so operators can lower rollout_max_chunks or shorten per-chunk budget.
+        # v12.11: per-chunk samples should never approach the cutoff. If they
+        # do, something is misconfigured (e.g. visual frames duplicated across
+        # turns or memory state ballooning).
         seq_len = int(result["input_ids"].shape[-1])
         max_len = int(getattr(tokenizer, "model_max_length", 16384) or 16384)
-        n_chunks = len(sample_data.get("chunk_results", []))
         if seq_len > max_len:
             logger.warning(
-                "GRPO rollout sample exceeds tokenizer.model_max_length "
-                "(seq_len=%d > %d) over %d chunks — collator will truncate, "
-                "completion_mask + ref logprobs on truncated chunks will be "
-                "DROPPED. Lower rollout_max_chunks or per-chunk visual_tokens.",
-                seq_len, max_len, n_chunks,
+                "GRPO per-chunk sample %d/gen %d/chunk %d exceeds model_max_length "
+                "(seq_len=%d > %d). With v12.11 per-chunk batching this should not "
+                "happen unless visual_window or memory state is misconfigured. "
+                "Truncation will silently drop assistant tokens.",
+                sample_idx, gen_idx, chunk_idx, seq_len, max_len,
             )
         elif seq_len > 0.85 * max_len:
             logger.info(
-                "GRPO rollout sample at %.0f%% of cutoff (seq_len=%d, max=%d, "
-                "n_chunks=%d) — close to truncation threshold.",
-                100 * seq_len / max_len, seq_len, max_len, n_chunks,
+                "GRPO per-chunk sample %d/gen %d/chunk %d at %.0f%% of cutoff "
+                "(seq_len=%d, max=%d).",
+                sample_idx, gen_idx, chunk_idx,
+                100 * seq_len / max_len, seq_len, max_len,
             )
 
         all_items.append(result)
@@ -1709,6 +1836,7 @@ def prepare_grpo_micro_batches(
     advantages: Auto[torch.Tensor],
     rewards: Auto[torch.Tensor],
     rewards_dict: Auto[Dict[str, torch.Tensor]],
+    rollout_data: Auto[Dict[str, Any]],
     micro_batch_size: Auto[int],
     group_size: Auto[int],
     step_advantages: Ref[torch.Tensor],
@@ -1717,31 +1845,104 @@ def prepare_grpo_micro_batches(
     step_micro_items: Ref[List],
     step_micro_batches: Ref[list[dict[Ref, Any]]],
 ) -> Context:
-    total_samples = advantages.shape[0]
-    num_micro_batches = math.ceil(total_samples / micro_batch_size)
+    """v12.11 (2026-05-01): MemAgent-style per-chunk micro-batching.
+
+    Was: 1 item = 1 trajectory (sample_idx, gen_idx). Each item's
+    ``_build_rollout_messages`` concatenated N chunks into a single 50K-token
+    sample → OOM + truncation on long trajectories.
+
+    Now: 1 item = 1 chunk (sample_idx, gen_idx, chunk_idx). N chunks become N
+    independent loss-batch entries, each a short ~6K-token sample. The
+    trajectory-level advantage is broadcast to every chunk in that
+    trajectory; ReMemR1-style per-step state advantage can be added later
+    on top (see verl/trainer/ppo/ray_trainer.py:1287-1314).
+
+    micro_batch_size now means "chunks per micro batch", not trajectories.
+    For 8 H20 + 8B model + 6K avg per-chunk token len: micro_batch=4 → ~24K
+    forward tokens, comfortable. Operator should reduce MICRO_BATCH from
+    legacy trajectory-level setting to the new chunk-level meaning.
+    """
+    total_samples = advantages.shape[0]  # = num_videos × group_size
+
+    # Build flat list of per-chunk items by enumerating chunk_results from
+    # each (sample_idx, gen_idx) pair. The chunk count varies per trajectory
+    # (depends on rollout_max_chunks + early-stop).
+    flat_items: List[Dict[str, int]] = []
+    flat_advantages: List[torch.Tensor] = []
+    flat_rewards: List[torch.Tensor] = []
+    flat_rewards_dict: Dict[str, List[torch.Tensor]] = {k: [] for k in rewards_dict}
+    for flat_idx in range(total_samples):
+        sample_idx = flat_idx // group_size
+        gen_idx = flat_idx % group_size
+        if sample_idx not in rollout_data:
+            continue
+        sample_data = rollout_data[sample_idx]
+        chunk_results = sample_data.get("chunk_results", [])
+        # Determine which chunks this gen actually produced (some gens may
+        # finish early via response → fewer chunks). Padded entries have
+        # empty generated_tokens; treat them as inactive.
+        active_chunk_count = 0
+        for cr in chunk_results:
+            gt_list = cr.get("generated_tokens", [])
+            if gen_idx < len(gt_list):
+                gt = gt_list[gen_idx]
+                length = len(gt) if not hasattr(gt, "numel") else int(gt.numel())
+                if length > 0:
+                    active_chunk_count += 1
+        # If nothing active, still emit at least 1 item so advantage book-
+        # keeping doesn't stall (degenerate case — rollout produced nothing).
+        active_chunk_count = max(1, active_chunk_count)
+        for chunk_idx in range(active_chunk_count):
+            flat_items.append({
+                "sample_idx": sample_idx,
+                "gen_idx": gen_idx,
+                "chunk_idx": chunk_idx,
+            })
+            # Trajectory-level advantage broadcast to every chunk.
+            flat_advantages.append(advantages[flat_idx:flat_idx + 1])
+            flat_rewards.append(rewards[flat_idx:flat_idx + 1])
+            for k in rewards_dict:
+                flat_rewards_dict[k].append(rewards_dict[k][flat_idx:flat_idx + 1])
+
+    if not flat_items:
+        # No active chunks — degenerate case. Keep legacy behavior.
+        flat_items = [
+            {"sample_idx": flat_idx // group_size, "gen_idx": flat_idx % group_size, "chunk_idx": 0}
+            for flat_idx in range(total_samples)
+        ]
+        flat_adv_tensor = advantages
+        flat_rew_tensor = rewards
+        flat_rd = rewards_dict
+    else:
+        flat_adv_tensor = torch.cat(flat_advantages, dim=0)
+        flat_rew_tensor = torch.cat(flat_rewards, dim=0)
+        flat_rd = {k: torch.cat(v, dim=0) for k, v in flat_rewards_dict.items()}
+
+    total_chunk_items = len(flat_items)
+    num_micro_batches = math.ceil(total_chunk_items / micro_batch_size)
     micro_batches = []
 
     for mb_idx in range(num_micro_batches):
         start_idx = mb_idx * micro_batch_size
-        end_idx = min(start_idx + micro_batch_size, total_samples)
-        micro_items = [
-            {
-                "sample_idx": flat_idx // group_size,
-                "gen_idx": flat_idx % group_size,
-            }
-            for flat_idx in range(start_idx, end_idx)
-        ]
+        end_idx = min(start_idx + micro_batch_size, total_chunk_items)
+        micro_items = flat_items[start_idx:end_idx]
 
         mb_updates = {
-            step_advantages: advantages[start_idx:end_idx],
-            step_micro_rewards: rewards[start_idx:end_idx],
+            step_advantages: flat_adv_tensor[start_idx:end_idx],
+            step_micro_rewards: flat_rew_tensor[start_idx:end_idx],
             step_micro_rewards_dict: {
-                k: v[start_idx:end_idx] for k, v in rewards_dict.items()
+                k: v[start_idx:end_idx] for k, v in flat_rd.items()
             },
             step_micro_items: micro_items,
         }
         micro_batches.append(mb_updates)
 
+    logger.info(
+        "GRPO micro-batches v12.11: expanded %d trajectories × group %d = %d "
+        "rollouts → %d per-chunk items → %d micro-batches of size %d",
+        total_samples // group_size, group_size, total_samples,
+        total_chunk_items, num_micro_batches, micro_batch_size,
+    )
     return ctx.set(step_micro_batches, micro_batches)
 
 
