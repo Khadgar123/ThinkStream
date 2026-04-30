@@ -53,18 +53,18 @@ elif PROFILE == "v12.6":
     TIER_BONUS_T3 = 2.0
     MAX_TRAJ = 5
     MAX_Q_PER_TRAJ = 5
-else:  # v12.7 — 1 traj/video, 8 q/traj
+else:  # v12.7 — 1 traj/video, 12 q/traj, MAX_SAMPLES=25, PN1=0.06/s
     FAMILY_TARGETS = {
         "F1": 3, "F2": 2, "S1": 2, "F3": 1, "R1": 1, "CR4": 2, "F4": 3,
         "E1": 1, "M1": 2, "E2": 3, "C1": 1, "CR1": 1, "CR5": 2, "P1": 2,
         "CR2": 1, "F7": 1, "F5": 1, "F6": 2, "N1": 4, "CR3": 1, "CR6": 1,
         "CR7": 1, "PN1": 44,
     }
-    PN1_PER_SEC_CAP = 0.10
+    PN1_PER_SEC_CAP = 0.06
     TIER_BONUS_T2 = 1.0
     TIER_BONUS_T3 = 2.0
     MAX_TRAJ = 1
-    MAX_Q_PER_TRAJ = 8
+    MAX_Q_PER_TRAJ = 12
 
 # OVO 12-task share (canonical, sorted desc)
 OVO_TASK_SHARE = {
@@ -112,8 +112,9 @@ MAX_TRAJECTORIES_PER_VIDEO = MAX_TRAJ
 MAX_QUESTIONS_PER_TRAJECTORY = MAX_Q_PER_TRAJ
 NON_PN1_CAP = MAX_TRAJECTORIES_PER_VIDEO * MAX_QUESTIONS_PER_TRAJECTORY
 
-# Final render cap (after pass3c base sample addition).
-MAX_SAMPLES_PER_VIDEO = 15
+# Final render cap (after pass3c base sample addition). v12.7: 15 → 25 to
+# admit silent base samples alongside placements; matches config.py.
+MAX_SAMPLES_PER_VIDEO = 25 if PROFILE == "v12.7" else 15
 
 # Pass3a verify yield (from comments — average across families).
 VERIFY_YIELD = 0.88

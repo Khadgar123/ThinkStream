@@ -1420,14 +1420,16 @@ def plan_trajectories(
         # Sort by ask_chunk for temporal grouping
         pn1_sorted = sorted(pn1_cards, key=lambda p: p["ask_chunk"])
 
-        # v12.6 (2026-04-30): Duration-normalize PN1 to keep silent rate
-        # near 70% target. PN1 candidate cap is 44 (pass3a) but on short
-        # videos all 44 placed → PN1 dominates 60% of training data and
-        # drowns the recall-training signal. Cap to 0.10 narrations/sec
-        # (≈ 1 every 10s) so a 60s video gets ≤6 PN1, a 180s gets ≤18,
-        # a 320s gets ≤32. Covers half the prior cap on long videos and
-        # cuts short-video PN1 by ~3×.
-        PN1_PER_SEC = 0.10
+        # v12.6: Duration-normalize PN1 to keep silent rate near 70% target.
+        # v12.7 (2026-04-30): 0.10 → 0.06. With MAX_TRAJECTORIES_PER_VIDEO=1
+        # the QA budget shrank from 25 → 12 placements; PN1 was eating the
+        # remaining MAX_SAMPLES_PER_VIDEO slots on long videos and drowning
+        # the recall-training signal. 0.06/sec (~1 every 17s) leaves room
+        # for QA + silent base samples in the cap.
+        #   60s  → 4 PN1   (was 6)
+        #   180s → 11 PN1  (was 18)
+        #   320s → 19 PN1  (was 32)
+        PN1_PER_SEC = 0.06
         pn1_cap = max(2, int(num_chunks * PN1_PER_SEC))
         if len(pn1_sorted) > pn1_cap:
             # Evenly subsample preserving temporal coverage.

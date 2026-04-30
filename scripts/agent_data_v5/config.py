@@ -153,7 +153,15 @@ MAX_CANDIDATES_PER_VIDEO = {
 # on 2.6-min videos — 12× over the streaming benchmark median, creating an
 # "always-respond" prior that hurts silent-decision learning AND inflates
 # train→eval distribution shift. New caps target ~1.2 q/min.
-MAX_SAMPLES_PER_VIDEO = 15           # was 30 — halve per-video corpus contribution
+MAX_SAMPLES_PER_VIDEO = 25           # v12.7 (2026-04-30): 15 → 25 to let pass3c
+                                     # base silent/patrol samples through round-robin
+                                     # alongside placements. Under v12.7 (1 traj × 8 q
+                                     # + ~12 PN1 = ~20 events/video) cap=15 was being
+                                     # fully consumed by placement events, leaving 0
+                                     # silent base samples in train.jsonl. Cap=25
+                                     # restores ~5-7 silent samples per video, lifting
+                                     # train silent rate from ~0% back to the target
+                                     # 30-40% range.
 # v12.6 (2026-04-30): 5 → 1, align with VideoLLM-online / MMDuet / VST
 # convention of "1 video = 1 trajectory, multiple questions inside".
 # Multi-traj per video creates 5× visual + memory_state overlap → effective
@@ -162,9 +170,12 @@ MAX_SAMPLES_PER_VIDEO = 15           # was 30 — halve per-video corpus contrib
 # cross-video diversity; question density stays roughly constant by bumping
 # MAX_QUESTIONS_PER_TRAJECTORY 5 → 8.
 MAX_TRAJECTORIES_PER_VIDEO = 1
-# v12.6 (2026-04-30): 5 → 8. With only 1 trajectory we have to pack more
-# questions inside it; 8 still leaves ≥15s gap between asks on a 150s video.
-MAX_QUESTIONS_PER_TRAJECTORY = 8
+# v12.7 (2026-04-30): 8 → 12. With only 1 trajectory we have to pack more
+# questions to keep silent_RT around the 70% target on short/medium videos.
+# At 12 q/traj on a 150s video → 12.5s between asks (4.8 q/min); still less
+# dense than v12.6's 9s/q (6.7 q/min). Long videos (240s+) still naturally
+# stretch q_interval to 20s+.
+MAX_QUESTIONS_PER_TRAJECTORY = 12
 MAX_ACTIVE_QUERIES = 2               # unchanged — realistic user behavior
 
 # Backward compat aliases (deprecated — use token-based constants above)
