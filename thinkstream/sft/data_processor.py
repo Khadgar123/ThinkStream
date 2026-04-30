@@ -199,11 +199,20 @@ def build_per_timestep_messages_v12(sample: Dict, base_path: Path) -> List[Dict]
       message in shape B (matches Qwen3-VL chat_template tool branch which
       nests <tool_response> inside the <|im_start|>user wrapper).
     """
-    from thinkstream.data.agent_protocol import SYSTEM_PROMPT_V12
+    # v12.6: import canonical chunk_sec via agent_protocol (which already
+    # falls back gracefully when scripts.agent_data_v5.config isn't on the
+    # path — e.g. inference container). Earlier the direct
+    # `from scripts.agent_data_v5.config import AGENT_CHUNK_SEC` would raise
+    # ModuleNotFoundError when training was launched outside the project
+    # root. Going through agent_protocol routes through the same fallback
+    # chain SFT/eval/RL all use.
+    from thinkstream.data.agent_protocol import (
+        SYSTEM_PROMPT_V12,
+        AGENT_CHUNK_SEC,
+    )
 
     inp = sample["input"]
     chunk_idx = sample["chunk_idx"]
-    from scripts.agent_data_v5.config import AGENT_CHUNK_SEC
     chunk_sec = float(AGENT_CHUNK_SEC)
     inter_chunk = bool(sample.get("v12_inter_chunk", False))
     is_recall_multiturn = (
@@ -616,37 +625,27 @@ class PerTimestepDataset(Dataset):
                 )
             all_samples.extend(annotations)
 
-        # v12.6: defensive empty-sample filter, accepts EITHER schema:
-        #  (1) Messages format (post pass5_messages):
-        #      sample["messages"] = [{"role":..., "content":...}, ...]
-        #      requires non-empty messages list with at least one assistant turn.
-        #  (2) Legacy flat format (pre-pass5):
-        #      sample["input"]["visual_window"]["frames"] > 0 AND sample["output"]
-        #      kept for backward-compat with archived ablations.
+        # v12.6: filter strictly to messages-format samples. preprocess_per_timestep
+        # raises on missing 'messages' key (line ~448), so admitting flat-format
+        # samples here would silently pass the dataset boundary then crash inside
+        # training. Legacy flat datasets must be converted via pass5_messages.py
+        # first; the original dual-schema filter caused confusing late-stage
+        # crashes when a stale dataset path slipped through.
         def _is_valid_messages(s: Dict) -> bool:
             msgs = s.get("messages")
             if not isinstance(msgs, list) or not msgs:
                 return False
             return any(m.get("role") == "assistant" for m in msgs)
 
-        def _is_valid_flat(s: Dict) -> bool:
-            return bool(
-                isinstance(s.get("input"), dict)
-                and s["input"].get("system")
-                and isinstance(s["input"].get("visual_window"), dict)
-                and s["input"]["visual_window"].get("frames", 0) > 0
-                and s.get("output")
-            )
-
         before = len(all_samples)
-        all_samples = [
-            s for s in all_samples
-            if _is_valid_messages(s) or _is_valid_flat(s)
-        ]
+        all_samples = [s for s in all_samples if _is_valid_messages(s)]
         empty_dropped = before - len(all_samples)
         if empty_dropped > 0:
-            rank0_print(f"  Dropped {empty_dropped} empty/corrupted samples "
-                        f"(missing messages OR input/visual_window/output)")
+            rank0_print(
+                f"  Dropped {empty_dropped} samples — they had no 'messages' "
+                f"key or no assistant turn. If this is a flat-format dataset, "
+                f"convert via:  python -m scripts.agent_data_v5.pass5_messages"
+            )
 
         # Estimate num_tokens for every sample (used for length-based filtering
         # AND HF Trainer's group_by_length sampler). Skipping this leaves every

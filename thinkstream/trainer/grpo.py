@@ -1428,6 +1428,31 @@ def build_grpo_inputs(
             preloaded_frames=_preloaded_cache[sample_idx],
         )
         result["position_ids"] = compute_position_ids(result, processor, model_type)
+
+        # v12.6 length guard: _build_rollout_messages concatenates N chunks ×
+        # (user + assistant). Each chunk ~3-5k tokens, so trajectories with
+        # rollout_max_chunks=100 easily exceed cutoff_len=16384. The downstream
+        # collator silently truncates → late chunks' assistant spans get cut →
+        # completion_mask + ref logprobs both lose those positions. Warn loudly
+        # so operators can lower rollout_max_chunks or shorten per-chunk budget.
+        seq_len = int(result["input_ids"].shape[-1])
+        max_len = int(getattr(tokenizer, "model_max_length", 16384) or 16384)
+        n_chunks = len(sample_data.get("chunk_results", []))
+        if seq_len > max_len:
+            logger.warning(
+                "GRPO rollout sample exceeds tokenizer.model_max_length "
+                "(seq_len=%d > %d) over %d chunks — collator will truncate, "
+                "completion_mask + ref logprobs on truncated chunks will be "
+                "DROPPED. Lower rollout_max_chunks or per-chunk visual_tokens.",
+                seq_len, max_len, n_chunks,
+            )
+        elif seq_len > 0.85 * max_len:
+            logger.info(
+                "GRPO rollout sample at %.0f%% of cutoff (seq_len=%d, max=%d, "
+                "n_chunks=%d) — close to truncation threshold.",
+                100 * seq_len / max_len, seq_len, max_len, n_chunks,
+            )
+
         all_items.append(result)
 
     input_ids = torch.nn.utils.rnn.pad_sequence(
