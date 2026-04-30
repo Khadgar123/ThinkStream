@@ -1179,33 +1179,46 @@ async def run_pipeline(
     # Without this chain, users had to remember two extra commands. Skipping
     # if SKIP_PASS45 env is set (useful when only re-running pass1-3).
     if not os.environ.get("SKIP_PASS45"):
+        import sys as _sys
+        _argv_backup = _sys.argv
+
         logger.info("=" * 60)
         logger.info("PASS 4: trajectory grouping (per-video → per-trajectory rows)")
         logger.info("=" * 60)
+        # v12.6 fix: isolate sys.argv so pass4's argparser doesn't see the
+        # outer pipeline's `run --api_base ...` flags. Without this swap,
+        # pass4.main() raises SystemExit('unrecognized arguments...') which
+        # the broad try/except below silently swallows → pass4 never runs →
+        # downstream pass5 has no train_*_trajectories.jsonl input → SFT
+        # default dataset stays missing. Match pass5's argv-isolation idiom.
         try:
             from scripts.agent_data_v5 import pass4 as _pass4_mod
-            _pass4_mod.main()
-        except SystemExit:
-            pass
+            _sys.argv = ["pass4"]
+            try:
+                _pass4_mod.main()
+            finally:
+                _sys.argv = _argv_backup
+        except SystemExit as _e:
+            logger.warning(f"pass4 SystemExit (rc={_e.code}); inspect logs above")
         except Exception as e:
             logger.error(f"pass4 failed: {e}; SFT/RL default datasets may be missing")
+            _sys.argv = _argv_backup
 
         logger.info("=" * 60)
         logger.info("PASS 5: messages-format conversion (LLaMA-Factory ShareGPT)")
         logger.info("=" * 60)
         try:
-            import sys as _sys
             from scripts.agent_data_v5 import pass5_messages as _pass5_mod
-            _argv_backup = _sys.argv
             _sys.argv = ["pass5_messages", "--input", "traj"]
             try:
                 _pass5_mod.main()
             finally:
                 _sys.argv = _argv_backup
-        except SystemExit:
-            pass
+        except SystemExit as _e:
+            logger.warning(f"pass5_messages SystemExit (rc={_e.code}); inspect logs above")
         except Exception as e:
             logger.error(f"pass5_messages failed: {e}; SFT default dataset missing")
+            _sys.argv = _argv_backup
 
     logger.info("=" * 60)
     logger.info("PIPELINE COMPLETE")

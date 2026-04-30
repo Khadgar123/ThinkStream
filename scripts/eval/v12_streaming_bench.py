@@ -65,7 +65,7 @@ def enrich_question_text(trajectory: Dict) -> List[Dict]:
         cid = q["card_id"]
         text = ""
         for s in samples_by_card.get(cid, []):
-            if s.get("sample_type") in ("response", "recall_response"):
+            if s.get("sample_type") in ("response", "recall_response", "recall"):
                 text = (s.get("input") or {}).get("user_input") or ""
                 if text:
                     break

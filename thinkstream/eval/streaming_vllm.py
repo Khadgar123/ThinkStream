@@ -999,27 +999,45 @@ def streaming_vllm_rollout(
                                 ans = rc_parsed.get("payload", {}).get("response", "")
                                 if ans:
                                     r._record_answer_to_memory(ans, r.current_chunk)
-                            # Append a SECOND chunk_results entry for the
-                            # answer turn (shape B = 2 assistant emissions).
-                            # Reusing _apply_rollout_output keeps the schema
-                            # uniform, but DOES NOT re-index a think.
-                            r.chunk_results.append({
-                                "chunk_idx": r.current_chunk,
-                                "action": rc_parsed.get("action") or "unknown",
-                                "think": rc_parsed.get("think", ""),
-                                "payload": rc_parsed.get("payload", {}),
-                                "raw_output": rc_text,
-                                "generated_tokens": tokenizer.encode(
-                                    rc_text, add_special_tokens=False),
-                                "memory_token_count": r.memory.count_recent_tokens(),
-                                "compress_budget": compress_budget,
-                                "recall_returned_chunks": list(
-                                    recall_result.get("returned_chunks") or []
-                                ),
-                                "window_start": r.current_chunk * int(AGENT_CHUNK_SEC),
-                                "window_end": (r.current_chunk + 1) * int(AGENT_CHUNK_SEC),
-                                "_recall_second_pass": True,
-                            })
+
+                            # v12.6 #22 fix: FOLD the second-pass result into
+                            # the SAME chunk_results entry rather than append
+                            # a new list element. The downstream merger zips
+                            # by list index ci; appending here would shift
+                            # all subsequent chunks by 1 → reward/advantage
+                            # alignment breaks.
+                            #
+                            # Both assistant turns (recall tool_call + final
+                            # answer) are still trained: completion_mask
+                            # rebuilds messages from step_messages (which
+                            # carries the full multi-turn shape) and
+                            # find_assistant_spans picks up BOTH spans →
+                            # both contribute to GRPO logprob. The chunk's
+                            # "primary action" for reward eval is the final
+                            # answer turn, so raw_output/action are
+                            # overwritten with the second-pass result;
+                            # first-pass tokens are kept for diagnostics.
+                            entry = r.chunk_results[-1]
+                            first_pass_tokens = entry.get("generated_tokens", [])
+                            entry["_recall_first_text"] = entry.get("raw_output", "")
+                            entry["_recall_first_action"] = entry.get("action", "")
+                            entry["_recall_first_payload"] = entry.get("payload", {})
+                            entry["_recall_first_tokens"] = first_pass_tokens
+                            entry["raw_output"] = rc_text
+                            entry["action"] = rc_parsed.get("action") or "unknown"
+                            entry["think"] = rc_parsed.get("think", entry.get("think", ""))
+                            entry["payload"] = rc_parsed.get("payload", {})
+                            # Concatenate generated_tokens so loss-time logprob
+                            # accounting covers both assistant turns even when
+                            # the merger ignores step_messages.
+                            entry["generated_tokens"] = list(first_pass_tokens) + list(
+                                tokenizer.encode(rc_text, add_special_tokens=False)
+                            )
+                            entry["memory_token_count"] = r.memory.count_recent_tokens()
+                            entry["recall_returned_chunks"] = list(
+                                recall_result.get("returned_chunks") or []
+                            )
+                            entry["recall_multiturn"] = True
                         except Exception as e:
                             r.error = f"recall_apply:{e}"
                         r.current_chunk += 1

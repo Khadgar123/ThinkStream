@@ -455,7 +455,7 @@ def main():
             samples.append(json.loads(line))
     scorable = []
     for s in samples:
-        if s.get("sample_type") not in ("response", "recall_response"):
+        if s.get("sample_type") not in ("response", "recall_response", "recall"):
             continue
         gold = extract_gold(s)
         kind = gold_kind(gold)

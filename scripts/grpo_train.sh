@@ -89,10 +89,11 @@ ENTRY="${PROJECT_DIR}/thinkstream/train.py"
 OUTPUT_DIR="${THINKSTREAM_OUTPUT_DIR:-${PROJECT_DIR}/output/${RUN_NAME}}"
 AUDIT_DIR="${THINKSTREAM_AUDIT_DIR:-${AUDIT_DIR:-${OUTPUT_DIR}/audit}}"
 export THINKSTREAM_AUDIT_DIR="${AUDIT_DIR}"
-# Ablation runner sets MAX_STEPS to cap training length; pass through to
-# trainer via --max_steps when set.
+# v12.6: Ablation runner sets MAX_STEPS to cap training length. The slyme
+# trainer expects the slyme-style flag `--args.train.max_steps`; this
+# shell var gets appended to torchrun below when non-empty.
 if [ -n "${MAX_STEPS:-}" ]; then
-    MAX_STEPS_ARG="--max_steps ${MAX_STEPS}"
+    MAX_STEPS_ARG="--args.train.max_steps ${MAX_STEPS}"
 else
     MAX_STEPS_ARG=""
 fi
@@ -155,4 +156,5 @@ torchrun --nproc_per_node=${NPROC} \
     --args.train.time_reward_window 5 \
     --args.train.time_reward_slack 3.0 \
     --args.train.dataloader.num_workers 4 \
-    --args.train.dataloader.pin_memory True
+    --args.train.dataloader.pin_memory True \
+    ${MAX_STEPS_ARG}
