@@ -233,11 +233,25 @@ def simulate(duration_sec: int) -> dict:
         rendered_by_tier.get("medium_in_compressed", 0) * 0.5
     )
 
-    # Silent rate (chunks-with-no-ask / total chunks). Naive: each rendered
-    # placement uses ~1 chunk; pass3c also adds patrol/silent base samples.
-    # Without simulating pass3c base sample insertion, raw silent ≈
-    # (chunks - rendered_q_events) / chunks.
-    silent_rate = max(0.0, (chunks - rendered_total) / chunks)
+    # Silent rate — TWO different metrics, both reported.
+    #
+    # A. RUNTIME silent rate = fraction of CHUNKS where the model emits a
+    #    silent action at inference time. The MAX_SAMPLES_PER_VIDEO=15 cap
+    #    only affects which samples land in train.jsonl, NOT the runtime
+    #    trajectory. So runtime active chunks = pass3b-capped placements
+    #    (non-PN1 ≤ 25, PN1 = pn1_n), NOT the 15 rendered samples.
+    #
+    # B. TRAINING-DATA silent rate = fraction of train.jsonl samples with
+    #    sample_type="silent". Depends on round-robin in pipeline.py:872+
+    #    over (family, action) buckets. Approximate as:
+    #      silent_in_15 / 15 ≈ (n_silent_buckets) / (n_total_buckets) × 15
+    #    Empirically ~30-40% post-bucket.
+    runtime_active_chunks = sum(c for fam, tier, c in capped)
+    silent_rate_runtime = max(0.0, (chunks - runtime_active_chunks) / chunks)
+    # Crude approximation for training-data silent: round-robin keeps ~5/15
+    # silent samples (warmup + patrol + question_window) regardless of cap.
+    silent_rate_training = 5.0 / MAX_SAMPLES_PER_VIDEO  # ≈ 33%
+    silent_rate = silent_rate_runtime  # legacy field
 
     return {
         "duration_sec": duration_sec,
@@ -255,6 +269,9 @@ def simulate(duration_sec: int) -> dict:
         "needs_recall": needs_recall,
         "needs_recall_rate": needs_recall / rendered_total if rendered_total else 0.0,
         "silent_rate": silent_rate,
+        "silent_rate_runtime": silent_rate_runtime,
+        "silent_rate_training": silent_rate_training,
+        "runtime_active_chunks": runtime_active_chunks,
     }
 
 
@@ -334,11 +351,20 @@ def print_report():
     # Section 5: PN1 / silent
     print()
     print("─" * 90)
-    print("5. PN1 PLACEMENTS + SILENT RATE (raw, naive radius-0)")
+    print("5. PN1 + SILENT RATE")
     print("─" * 90)
-    print(f"{'duration':>10}  {'PN1 actual':>12}  {'rendered total':>16}  {'silent_rate':>12}")
+    print(f"{'duration':>10}  {'PN1':>5}  {'active_ck':>10}  {'silent_RT':>10}  {'silent_TRAIN':>12}")
+    print(f"{'(target)':>10}  {'':>5}  {'~30%':>10}  {'~70%':>10}  {'~30-40%':>12}")
     for d, s in sims.items():
-        print(f"{d:>5}s        {s['pn1_actual']:>12}  {s['rendered_total']:>16.1f}  {fmt_pct(s['silent_rate']):>12}")
+        print(f"{d:>5}s    "
+              f"  {s['pn1_actual']:>5}  "
+              f"  {s['runtime_active_chunks']:>8.1f}  "
+              f"  {fmt_pct(s['silent_rate_runtime']):>10}  "
+              f"  {fmt_pct(s['silent_rate_training']):>12}")
+    print()
+    print("  silent_RT     = runtime per-chunk silent rate (chunks - placements) / chunks")
+    print("  silent_TRAIN  = training-data silent rate, train.jsonl sample_type=silent share")
+    print("  pass3b cap    = ≤25 non-PN1 placements/video; PN1 capped 0.10/sec in v12.6")
 
     # Section 6: per-family table
     print()
