@@ -86,10 +86,16 @@ FAMILY_TARGETS = {
     "F7": 1,
     # REC (5.0%) → 1 card (F5 repetition counting)
     "F5": 1,
-    # FPD (6.2%) → 1 card (F6 future prediction)
-    "F6": 1,
-    # HLD (11.3%) → 2 cards (N1 — multi-tier ask placement gives 6 placements)
-    "N1": 2,
+    # FPD (6.2%) → 2 cards (F6 future prediction). v12.6 (2026-04-30):
+    # bumped 1→2 to correct -52% under-share vs OVO target (sim showed 3.0%
+    # actual vs 6.2% target).
+    "F6": 2,
+    # HLD (11.3%) → 4 cards (N1 — multi-tier ask placement gives 12 placements).
+    # v12.6 (2026-04-30): bumped 2→4 because N1 is the primary recall-training
+    # signal (3-tier placement forces evidence out of visual_window) AND HLD
+    # was -48% under OVO share (5.9% actual vs 11.3% target). N1 cards survive
+    # pass3b density cap better than 1-card families due to the +tier bonus.
+    "N1": 4,
     # CR3/CR6/CR7 — kept at 1 each
     "CR3": 1, "CR6": 1, "CR7": 1,
     # PN1 (Proactive Narration) — NEW v12.5 family. LiveCC-style short
