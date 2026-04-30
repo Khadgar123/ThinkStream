@@ -448,7 +448,7 @@ async def run_pipeline(
 
         uncached_1a = [v for v in videos if not load_1a(v["video_id"])]
         tracker_1a = ProgressTracker("pass1a", len(uncached_1a), AUDIT_DIR)
-        VIDEO_CONCURRENCY_1A = 8
+        VIDEO_CONCURRENCY_1A = 16
         video_semaphore_1a = asyncio.Semaphore(VIDEO_CONCURRENCY_1A)
         logger.info(f"PASS 1-A: {len(uncached_1a)} uncached videos, video_concurrency={VIDEO_CONCURRENCY_1A}, chunk_concurrency={client_1a.max_concurrent}")
 
@@ -456,7 +456,7 @@ async def run_pipeline(
         logger.info("PASS 1-B: Entity Alignment + State Changes")
         logger.info("=" * 60)
 
-        VIDEO_CONCURRENCY_1B = 8
+        VIDEO_CONCURRENCY_1B = 16
         video_semaphore_1b = asyncio.Semaphore(VIDEO_CONCURRENCY_1B)
         tracker_1b = ProgressTracker("pass1b", len(videos), AUDIT_DIR)
         logger.info(f"PASS 1-B: video_concurrency={VIDEO_CONCURRENCY_1B}, chunk_concurrency={client_1b.max_concurrent}")
