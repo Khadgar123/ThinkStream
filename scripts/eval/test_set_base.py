@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-"""Fair base-model eval on our test.jsonl — two video-context modes.
+"""Fair base-model eval on our test.jsonl — three video-context modes.
 
 Extracts the user question and gold answer from each test sample,
 asks the base model the question with visual context, and scores the
 output via OVO-style prefix/substring match.
 
-Two modes (--mode):
+Modes (--mode):
   offline    — full video [0, video_end] uniformly sampled to 64 frames.
                This is the base-VLM ceiling: "what's the best a strong
                offline VLM can do given full information?"
@@ -16,6 +16,17 @@ Two modes (--mode):
                "given the SAME visual context our agent has at decision
                time, what does base produce?" — the relevant comparison
                for measuring what the agent protocol adds.
+  probe      — difficulty-tagging mode. For every sample, runs THREE
+               probes and reports per-sample (p_visual, p_text,
+               p_recall_oracle) plus a category label:
+                 A. visual:        visual_window only          (= streaming)
+                 B. text:          no video, question only     (text-leak detector)
+                 C. recall_oracle: visual_window + teacher-chosen
+                                   recall_result.frame_paths    (recall ceiling)
+               Each probe runs --g samples (default 4) with do_sample=True.
+               Categories: trivially_visual / text_leak /
+               recall_required / too_hard / unknown.  Use this to filter
+               training data into the GRPO Goldilocks band (~30-70%).
 
 Only scores Yes/No, integer, and single-letter responses (587 of 1,600
 test samples after filtering response/recall_response). Descriptive
@@ -174,50 +185,87 @@ def resolve_video_path(sample, video_root):
     return str(base / vp)
 
 
-def build_messages(video_input, question, is_frame_paths=False):
-    """Build messages for base model eval.
+SYSTEM_PROMPT = (
+    "You are a helpful video understanding assistant. Watch the "
+    "video carefully and answer questions based on what you observe. "
+    "If the question is yes/no, answer with Yes or No. If the "
+    "question asks for a count, answer with the integer."
+)
 
-    Args:
-        video_input: either a video file path (offline mode) or a list of
-            pre-extracted frame paths (streaming mode).
-        question: user question text.
-        is_frame_paths: if True, video_input is a list of frame paths and
-            we pass it directly to the processor (no online decoding).
+
+def build_messages(question, frames=None, recall_frames=None):
+    """Build messages for base-model eval.
+
+    - frames=None, recall_frames=None: text-only (probe B: text-leak).
+    - frames set, recall_frames=None : visual context (probe A / streaming/offline).
+    - frames set, recall_frames set  : visual + recall (probe C: recall ceiling).
+
+    `frames` and `recall_frames` are lists of pre-extracted frame paths.
     """
-    video_content: dict
-    if is_frame_paths:
-        video_content = {
-            "type": "video",
-            "video": video_input,
-        }
-    else:
-        video_content = {
-            "type": "video",
-            "video": video_input,
-        }
+    user_content = []
+    if frames:
+        user_content.append({"type": "video", "video": list(frames)})
+    if recall_frames:
+        user_content.append({"type": "video", "video": list(recall_frames)})
+    user_content.append({"type": "text", "text": question})
     return [
-        {
-            "role": "system",
-            "content": [
-                {
-                    "type": "text",
-                    "text": (
-                        "You are a helpful video understanding assistant. Watch the "
-                        "video carefully and answer questions based on what you observe. "
-                        "If the question is yes/no, answer with Yes or No. If the "
-                        "question asks for a count, answer with the integer."
-                    ),
-                }
-            ],
-        },
-        {
-            "role": "user",
-            "content": [
-                video_content,
-                {"type": "text", "text": question},
-            ],
-        },
+        {"role": "system", "content": [{"type": "text", "text": SYSTEM_PROMPT}]},
+        {"role": "user", "content": user_content},
     ]
+
+
+def run_inference(
+    model, processor, messages, *,
+    max_new_tokens, num_samples=1, temperature=0.7, top_p=0.95, pad_id=None,
+):
+    """Run a single batched generate. Returns list of decoded strings (len = num_samples)."""
+    inputs = processor.apply_chat_template(
+        messages, tokenize=True, return_dict=True, return_tensors="pt",
+        add_generation_prompt=True,
+    )
+    inputs = {
+        k: v.to(model.device) if hasattr(v, "to") else v
+        for k, v in inputs.items()
+    }
+    prompt_len = inputs["input_ids"].shape[1]
+    do_sample = num_samples > 1
+    with torch.no_grad():
+        gen = model.generate(
+            **inputs,
+            max_new_tokens=max_new_tokens,
+            do_sample=do_sample,
+            temperature=temperature if do_sample else 1.0,
+            top_p=top_p if do_sample else 1.0,
+            num_return_sequences=num_samples,
+            pad_token_id=pad_id,
+        )
+    texts = []
+    for i in range(gen.shape[0]):
+        texts.append(
+            processor.tokenizer.decode(gen[i, prompt_len:], skip_special_tokens=True)
+        )
+    return texts
+
+
+def categorize_difficulty(p_A, p_B, p_C, *,
+                          high=0.7, low=0.3):
+    """Bucket a sample by (p_visual, p_text, p_recall_oracle).
+
+    - text_leak        : p_B high — solvable from question alone.
+    - trivially_visual : p_A high (and p_B not high) — visual window suffices.
+    - recall_required  : p_A low, p_C high — needs the recalled frames.
+    - too_hard         : p_C low (or visual high then C unknown) — even oracle can't solve.
+    - unknown          : otherwise (mid-range; needs more samples).
+    """
+    if p_B is not None and p_B >= high:
+        return "text_leak"
+    if p_A is not None and p_A >= high:
+        return "trivially_visual"
+    if p_C is not None and p_A is not None and p_A < low and p_C >= high:
+        return "recall_required"
+    if p_C is not None and p_C < low:
+        return "too_hard"
+    return "unknown"
 
 
 def main():
@@ -230,9 +278,30 @@ def main():
     p.add_argument(
         "--mode",
         default="streaming",
-        choices=["offline", "streaming"],
-        help="offline = full video [0, video_end]; streaming = only the "
-        "visual_window slice the agent sees at decision time.",
+        choices=["offline", "streaming", "probe"],
+        help="offline = full video; streaming = visual_window only; "
+        "probe = run all 3 difficulty probes (visual / text / "
+        "recall_oracle) per sample for difficulty tagging.",
+    )
+    p.add_argument(
+        "--g", type=int, default=4,
+        help="probe mode: samples per probe (G≥2 enables sampled p̂; G=1 = greedy).",
+    )
+    p.add_argument(
+        "--probe_temp", type=float, default=0.7,
+        help="probe mode: sampling temperature for p̂ estimate.",
+    )
+    p.add_argument(
+        "--probe_max_recall_frames", type=int, default=8,
+        help="probe mode: cap on recall_result.frame_paths used for probe C.",
+    )
+    p.add_argument(
+        "--probe_high", type=float, default=0.7,
+        help="probe mode: p̂ threshold for 'easy' (text_leak / trivially_visual).",
+    )
+    p.add_argument(
+        "--probe_low", type=float, default=0.3,
+        help="probe mode: p̂ threshold for 'hard' (too_hard).",
     )
     p.add_argument("--n", type=int, default=200, help="Max samples to evaluate")
     p.add_argument("--max_new_tokens", type=int, default=64)
@@ -309,6 +378,47 @@ def main():
     skipped = 0
     t0 = time.time()
     root_path = Path(args.test_jsonl).resolve().parent.parent.parent.parent  # .../ThinkStream
+
+    def _abs_frames(rel_paths):
+        out = []
+        for fp in rel_paths or []:
+            pp = Path(fp)
+            out.append(str(pp if pp.is_absolute() else root_path / pp))
+        return out
+
+    def _sampled_visual_frames(s):
+        """Resolve the streaming visual_window frame paths for sample s."""
+        inp = s.get("input", {})
+        vw = inp.get("visual_window", {})
+        return _abs_frames(vw.get("frame_paths", []))
+
+    def _sampled_recall_frames(s, max_frames):
+        """Resolve teacher-chosen recall_result.frame_paths (probe C)."""
+        inp = s.get("input", {})
+        rr = inp.get("recall_result") or {}
+        paths = _abs_frames(rr.get("frame_paths", []))
+        if max_frames and len(paths) > max_frames:
+            paths = paths[:max_frames]
+        return paths
+
+    def _estimate_p(messages):
+        """Run G samples → return (p_correct or None, n_total). None if messages is None."""
+        if messages is None:
+            return None, 0
+        try:
+            texts = run_inference(
+                model, processor, messages,
+                max_new_tokens=args.max_new_tokens,
+                num_samples=max(1, args.g),
+                temperature=args.probe_temp,
+                pad_id=pad_id,
+            )
+        except Exception as e:
+            print(f"  probe inference failed: {type(e).__name__}: {e}")
+            return None, 0
+        n_correct = sum(int(score(t, gold, kind, scoring=args.scoring)) for t in texts)
+        return (n_correct / len(texts) if texts else None), len(texts)
+
     for i, (s, gold, kind) in enumerate(scorable):
         try:
             chunk_idx = int(s.get("chunk_idx", 0))
@@ -318,16 +428,47 @@ def main():
                 skipped += 1
                 continue
 
+            # ---- PROBE MODE ----------------------------------------
+            if args.mode == "probe":
+                visual_frames = _sampled_visual_frames(s)
+                recall_frames = _sampled_recall_frames(s, args.probe_max_recall_frames)
+
+                msgs_A = build_messages(question, frames=visual_frames) if visual_frames else None
+                msgs_B = build_messages(question)
+                msgs_C = (build_messages(question, frames=visual_frames, recall_frames=recall_frames)
+                          if visual_frames and recall_frames else None)
+
+                p_A, n_A = _estimate_p(msgs_A)
+                p_B, n_B = _estimate_p(msgs_B)
+                p_C, n_C = _estimate_p(msgs_C)
+                category = categorize_difficulty(p_A, p_B, p_C,
+                                                 high=args.probe_high, low=args.probe_low)
+
+                results.append({
+                    "idx": i,
+                    "sample_id": s.get("sample_id") or s.get("trajectory_id"),
+                    "sample_type": s.get("sample_type"),
+                    "kind": kind,
+                    "gold": gold,
+                    "p_visual": p_A, "n_visual": n_A,
+                    "p_text": p_B, "n_text": n_B,
+                    "p_recall_oracle": p_C, "n_recall_oracle": n_C,
+                    "category": category,
+                })
+                if (i + 1) % 20 == 0:
+                    rate = (i + 1) / (time.time() - t0)
+                    print(f"[{i+1}/{len(scorable)}] {rate:.2f} samples/sec")
+                continue
+
+            # ---- OFFLINE / STREAMING MODES -------------------------
             if args.mode == "offline":
                 video_path = resolve_video_path(s, args.video_root)
                 if not video_path:
                     skipped += 1
                     continue
-                # Infer pre-extracted frame directory from video basename
                 video_basename = Path(video_path).stem
                 frame_dir = root_path / "data" / "agent_v5" / "frames" / video_basename
                 if not frame_dir.exists():
-                    # fallback: infer from sample's existing frame_paths
                     inp = s.get("input", {})
                     vw = inp.get("visual_window", {})
                     frame_paths = vw.get("frame_paths", [])
@@ -346,43 +487,20 @@ def main():
                     sampled = [str(all_frames[i]) for i in indices]
                 else:
                     sampled = [str(f) for f in all_frames]
-                messages = build_messages(sampled, question, is_frame_paths=True)
+                messages = build_messages(question, frames=sampled)
             else:  # streaming: use pre-extracted frame_paths from visual_window
-                inp = s.get("input", {})
-                vw = inp.get("visual_window", {})
-                frame_paths = vw.get("frame_paths", [])
-                if not frame_paths:
+                abs_paths = _sampled_visual_frames(s)
+                if not abs_paths:
                     skipped += 1
                     continue
-                # Resolve relative paths to absolute
-                abs_paths = []
-                for fp in frame_paths:
-                    p = Path(fp)
-                    if p.is_absolute():
-                        abs_paths.append(str(p))
-                    else:
-                        abs_paths.append(str(root_path / fp))
-                messages = build_messages(abs_paths, question, is_frame_paths=True)
-            inputs = processor.apply_chat_template(
-                messages,
-                tokenize=True, return_dict=True, return_tensors="pt",
-                add_generation_prompt=True,
-            )
-            inputs = {
-                k: v.to(model.device) if hasattr(v, "to") else v
-                for k, v in inputs.items()
-            }
+                messages = build_messages(question, frames=abs_paths)
 
-            prompt_len = inputs["input_ids"].shape[1]
-            with torch.no_grad():
-                gen = model.generate(
-                    **inputs,
-                    max_new_tokens=args.max_new_tokens,
-                    do_sample=False,
-                    pad_token_id=pad_id,
-                )
-            new_tokens = gen[0, prompt_len:]
-            text = processor.tokenizer.decode(new_tokens, skip_special_tokens=True)
+            text = run_inference(
+                model, processor, messages,
+                max_new_tokens=args.max_new_tokens,
+                num_samples=1,
+                pad_id=pad_id,
+            )[0]
 
             correct = score(text, gold, kind, scoring=args.scoring)
             if args.mode == "offline":
@@ -412,21 +530,63 @@ def main():
         print("No successful runs.")
         return
 
-    by = defaultdict(lambda: {"n": 0, "correct": 0})
-    for r in results:
-        for k in (r["kind"], "_all"):
-            by[k]["n"] += 1
-            by[k]["correct"] += int(r["correct"])
+    summary_payload = {}
+    if args.mode == "probe":
+        # Per-probe mean p̂, per-kind, per-category distribution.
+        from collections import Counter
+        cat_counts = Counter(r["category"] for r in results)
+        kind_p = defaultdict(lambda: {"n": 0, "p_A": 0.0, "p_B": 0.0, "p_C": 0.0,
+                                       "n_A": 0, "n_B": 0, "n_C": 0})
+        for r in results:
+            for k in (r["kind"], "_all"):
+                v = kind_p[k]
+                v["n"] += 1
+                if r["p_visual"] is not None:
+                    v["p_A"] += r["p_visual"]; v["n_A"] += 1
+                if r["p_text"] is not None:
+                    v["p_B"] += r["p_text"]; v["n_B"] += 1
+                if r["p_recall_oracle"] is not None:
+                    v["p_C"] += r["p_recall_oracle"]; v["n_C"] += 1
+        print()
+        print(f"{'kind':<12} {'n':>5} {'p_visual':>10} {'p_text':>10} {'p_recall':>10}")
+        print("-" * 53)
+        for k in sorted(kind_p.keys()):
+            v = kind_p[k]
+            pa = v["p_A"]/v["n_A"] if v["n_A"] else float("nan")
+            pb = v["p_B"]/v["n_B"] if v["n_B"] else float("nan")
+            pc = v["p_C"]/v["n_C"] if v["n_C"] else float("nan")
+            print(f"{k:<12} {v['n']:>5} {pa:>10.3f} {pb:>10.3f} {pc:>10.3f}")
+        print()
+        print("Difficulty category distribution:")
+        for cat, n in cat_counts.most_common():
+            print(f"  {cat:<22} {n:>5} ({n/len(results)*100:.1f}%)")
+        print()
+        print(f"Recommendation: trivially_visual + text_leak should be dropped or hardened;")
+        print(f"recall_required is the GRPO golden band (advantage > 0).")
+        summary_payload = {
+            "by_kind": {k: dict(v) for k, v in kind_p.items()},
+            "categories": dict(cat_counts),
+            "thresholds": {"high": args.probe_high, "low": args.probe_low},
+            "g": args.g,
+            "probe_temp": args.probe_temp,
+        }
+    else:
+        by = defaultdict(lambda: {"n": 0, "correct": 0})
+        for r in results:
+            for k in (r["kind"], "_all"):
+                by[k]["n"] += 1
+                by[k]["correct"] += int(r["correct"])
+        print()
+        header = f"{'kind':<15}  {'n':>5}  {'accuracy':>10}"
+        print(header)
+        print("-" * len(header))
+        for k in sorted(by.keys()):
+            v = by[k]
+            if v["n"] == 0:
+                continue
+            print(f"{k:<15}  {v['n']:>5}  {v['correct']/v['n']:>10.3f}")
+        summary_payload = {"by_kind": {k: dict(v) for k, v in by.items()}}
 
-    print()
-    header = f"{'kind':<15}  {'n':>5}  {'accuracy':>10}"
-    print(header)
-    print("-" * len(header))
-    for k in sorted(by.keys()):
-        v = by[k]
-        if v["n"] == 0:
-            continue
-        print(f"{k:<15}  {v['n']:>5}  {v['correct']/v['n']:>10.3f}")
     print()
     print(f"Skipped: {skipped} (missing video / missing question / errors)")
 
@@ -441,7 +601,7 @@ def main():
                 "test_jsonl": args.test_jsonl,
                 "n_samples": len(results),
                 "n_skipped": skipped,
-                "by_kind": {k: dict(v) for k, v in by.items()},
+                **summary_payload,
                 "samples": results,
             }, f, indent=2, ensure_ascii=False)
         print(f"Wrote {args.out}")
