@@ -487,6 +487,15 @@ def rollout(
                 min_pixels=rollout_min_pixels,
                 max_pixels=rollout_max_pixels,
                 max_new_tokens=rollout_max_new_tokens,
+                # v12.5 fix (2026-04-30): plumb frames_root/video_root so the
+                # HF rollout backend uses pre-extracted JPEG frames instead of
+                # in-line video decode (read_video_torchcodec). Same args
+                # already passed to vLLM backend at line 382-383; this fixes
+                # the 713s/step rollout slowness reported in user's audit.
+                # When frames_root is None (config not set), falls back to
+                # video-decode path for backward compat.
+                frames_root=vllm_rollout_frames_root,
+                video_root=vllm_rollout_video_root,
             )
 
             chunk_results_g: List[Dict[str, Any]] = []
@@ -1144,22 +1153,88 @@ def compute_gdpo_advantages(
     return ctx.set(advantages, adv)
 
 
+def _extract_questions_at_chunks(raw_sample) -> Dict[int, str]:
+    """Build {chunk_idx → user_question_text} from any of the 3 raw_sample
+    schemas the trainer accepts.
+
+    BUG FIX (2026-04-30, post pass1 v12.5 audit): the previous implementation
+    of _build_rollout_messages only read raw_sample["conversations"], which
+    v12.5 trajectory data and v12 flat data DON'T have. Result: questions
+    NEVER appeared in the loss-time message reconstruction → policy was
+    trained as "answer without seeing the question", a hard distribution
+    mismatch from rollout (which DOES inject the question via StreamingAgentLoop).
+
+    Schemas handled:
+      A) Trajectory (v12.4+): raw_sample = {"questions": [{"question",
+         "ask_chunks": [int, ...], ...}, ...]} — multiple cards, each may fire
+         at multiple ask_chunks (multi-response F7/M1).
+      B) Flat (v12 SFT): raw_sample = {"input": {"user_input": str}, "chunk_idx": int}
+      C) Legacy v11: raw_sample = {"conversations": [{"role":"user","content":...,
+         "timestamp": float}, ...]} — kept for backward-compat.
+
+    Returns the same chunk→question map that the rollout path already builds
+    (mirrors grpo.rollout's _question_at_chunk construction).
+    """
+    out: Dict[int, str] = {}
+
+    # Schema A: trajectory
+    if (isinstance(raw_sample.get("questions"), list)
+            and isinstance(raw_sample.get("gold_action_per_chunk"), dict)):
+        for q in raw_sample["questions"]:
+            q_text = q.get("question") or q.get("gold_answer", "")
+            for ac in q.get("ask_chunks") or []:
+                out[int(ac)] = q_text
+        return out
+
+    # Schema B: flat input.user_input
+    if "input" in raw_sample and raw_sample["input"].get("user_input"):
+        ck = int(raw_sample.get("chunk_idx", 0))
+        out[ck] = raw_sample["input"]["user_input"]
+        return out
+
+    # Schema B'): older messages format with <user_input> tags
+    if "messages" in raw_sample:
+        ck = int(raw_sample.get("chunk_idx", 0))
+        for msg in raw_sample["messages"]:
+            if msg.get("role") == "user":
+                content = msg.get("content", "")
+                if isinstance(content, list):
+                    for item in content:
+                        if isinstance(item, dict) and item.get("type") == "text":
+                            text = item.get("text", "")
+                            m = re.search(r'<user_input>(.*?)</user_input>', text)
+                            if m:
+                                out[ck] = m.group(1)
+                                return out
+        return out
+
+    # Schema C: legacy conversations[]
+    if "conversations" in raw_sample:
+        for c in raw_sample["conversations"]:
+            if c.get("role") == "user":
+                ts = float(c.get("timestamp", 0.0))
+                # Map timestamp → chunk_idx using AGENT_CHUNK_SEC (= 1 in v12.5)
+                ck = int(ts)  # 1s/chunk so timestamp seconds == chunk_idx
+                out[ck] = c.get("content", "")
+        return out
+
+    return out
+
+
 def _build_rollout_messages(
     raw_sample, chunk_results, gen_idx, tokenizer, frames_per_chunk
 ):
-    # (Kept identical to original implementation...)
     data_path = raw_sample.get("data_path", "")
     video_path = raw_sample.get("video_path", "")
     abs_video_path = str(_make_abs_paths(Path(data_path), video_path))
 
-    pending_queries = sorted(
-        [
-            (float(c.get("timestamp", 0.0)), c.get("content", ""))
-            for c in raw_sample.get("conversations", [])
-            if c.get("role") == "user"
-        ],
-        key=lambda x: x[0],
-    )
+    # v12.5 fix: build chunk→question map from whichever schema the sample
+    # carries (trajectory / flat / legacy). MUST mirror the rollout path's
+    # question injection (rollout in this file builds an identical map at
+    # line 430-477) so the loss-time reconstruction sees the same conditional
+    # context the policy generated under.
+    question_at_chunk = _extract_questions_at_chunks(raw_sample)
+
     num_chunks = len(chunk_results)
     if num_chunks == 0:
         raise ValueError("No chunk results – cannot build messages.")
@@ -1183,20 +1258,13 @@ def _build_rollout_messages(
             }
         ]
 
-        chunk_queries: List[str] = []
-        while pending_queries:
-            ts = pending_queries[0][0]
-            if ts < w_start:
-                pending_queries.pop(0)
-                continue
-            if is_last or ts < w_end:
-                chunk_queries.append(pending_queries.pop(0)[1])
-            else:
-                break
-        if chunk_queries:
-            user_content.append(
-                {"type": "text", "text": "\n" + "\n".join(chunk_queries)}
-            )
+        # v12.5 fix: question fires at the chunk_idx where rollout injected it.
+        # chunk_idx = the absolute chunk index of THIS step (cr_idx if rollout
+        # ran from chunk 0, but use the explicit field when present).
+        cur_chunk_idx = int(cr.get("chunk_idx", cr_idx))
+        q_text = question_at_chunk.get(cur_chunk_idx)
+        if q_text:
+            user_content.append({"type": "text", "text": "\n" + q_text})
         messages.append({"role": "user", "content": user_content})
 
         gen_text = tokenizer.decode(
