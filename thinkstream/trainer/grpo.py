@@ -1920,6 +1920,41 @@ def grpo_global_metrics(
     return metrics
 
 
+def _per_chunk_state_reward(flat_items, rollout_data, tokenizer):
+    """v12.11 (2026-05-01): per-chunk format-only state reward (ReMemR1 lite).
+
+    Returns [N_chunks] float tensor; 1.0 when the chunk's generated text
+    parses cleanly via parse_agent_output_v12 (well-formed think/answer/
+    tool_call), else 0.0.
+
+    This is the cheap subset of ReMemR1's state reward
+    (`compute_format_rewards` + `compute_action_rewards` in
+    /tmp/refs/ReMemR1/verl/trainer/ppo/metric_utils.py:86-178). The action
+    portion (matching teacher's silent/response/recall/compress at each
+    chunk) is left as a follow-up — format alone already gives per-step
+    feedback that ReMemR1 considers half the state signal.
+    """
+    from thinkstream.data.agent_protocol import parse_agent_output_v12
+    out = []
+    for it in flat_items:
+        s = it["sample_idx"]; g = it["gen_idx"]; c = it["chunk_idx"]
+        chunks = rollout_data.get(s, {}).get("chunk_results", [])
+        if c >= len(chunks):
+            out.append(0.0); continue
+        gt_list = chunks[c].get("generated_tokens", [])
+        if g >= len(gt_list):
+            out.append(0.0); continue
+        gt = gt_list[g]
+        if hasattr(gt, "tolist"):
+            gt = gt.tolist()
+        if not gt:
+            out.append(0.0); continue
+        text = tokenizer.decode(gt, skip_special_tokens=False)
+        parsed = parse_agent_output_v12(text)
+        out.append(0.0 if parsed.get("format_error") else 1.0)
+    return torch.tensor(out, dtype=torch.float)
+
+
 @node
 def prepare_grpo_micro_batches(
     ctx: Context,
@@ -1929,6 +1964,7 @@ def prepare_grpo_micro_batches(
     rewards: Auto[torch.Tensor],
     rewards_dict: Auto[Dict[str, torch.Tensor]],
     rollout_data: Auto[Dict[str, Any]],
+    tokenizer: Auto[Any],
     micro_batch_size: Auto[int],
     group_size: Auto[int],
     step_advantages: Ref[torch.Tensor],
@@ -2038,6 +2074,44 @@ def prepare_grpo_micro_batches(
         flat_adv_tensor = torch.cat(flat_advantages, dim=0)
         flat_rew_tensor = torch.cat(flat_rewards, dim=0)
         flat_rd = {k: torch.cat(v, dim=0) for k, v in flat_rewards_dict.items()}
+
+    # ─── v12.11 P1.1: ReMemR1 mixed advantage ─────────────────────────────
+    # When ADVANTAGE_MODE=remem AND USE_STATE_ADVANTAGE=1, replace the
+    # broadcast trajectory advantage with α·outcome_adv + (1-α)·state_adv
+    # (line-by-line port of ReMemR1 ray_trainer.py:1287-1314 via the
+    # already-existing compute_mixed_advantage_v12 helper).
+    if ADVANTAGE_MODE == "remem" and USE_STATE_ADVANTAGE and flat_items:
+        try:
+            video_uid_per_row = [str(it["sample_idx"]) for it in flat_items]
+            chunk_idx_per_row = [int(it["chunk_idx"]) for it in flat_items]
+            # outcome reward = trajectory's broadcast outcome reward.
+            # rewards is [num_traj]; sample at flat_idx = sample_idx*group_size + gen_idx
+            outcome_rew = torch.stack([
+                rewards[it["sample_idx"] * group_size + it["gen_idx"]]
+                for it in flat_items
+            ])
+            state_rew = _per_chunk_state_reward(flat_items, rollout_data, tokenizer)
+            # Use the canonical port from v12_rollout (line 393).
+            mixed_adv = _compute_mixed_advantage_v12_remem(
+                outcome_reward=outcome_rew,
+                state_reward=state_rew,
+                video_uid_per_row=video_uid_per_row,
+                chunk_idx_per_row=chunk_idx_per_row,
+                alpha=STATE_ADVANTAGE_ALPHA,
+                use_adv=True,
+            )
+            flat_adv_tensor = mixed_adv
+            logger.info(
+                "GRPO advantage mode=remem: mixed α=%.2f outcome + (1-α) state "
+                "over %d per-chunk items (state mean=%.3f, std=%.3f).",
+                STATE_ADVANTAGE_ALPHA, len(flat_items),
+                float(state_rew.mean()), float(state_rew.std() + 1e-9),
+            )
+        except Exception as e:
+            logger.warning(
+                "GRPO ReMemR1 mixed advantage failed (%s); falling back to "
+                "broadcast trajectory advantage.", e,
+            )
 
     total_chunk_items = len(flat_items)
     num_micro_batches = math.ceil(total_chunk_items / micro_batch_size)
